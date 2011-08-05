@@ -1,0 +1,357 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-15 15:43+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid ""
+"%s\n"
+"Powered by:\n"
+"\t%s\n"
+"\t%s\n"
+"\t%s"
+msgstr ""
+
+msgid "&Log off"
+msgstr ""
+
+#, c-format
+msgid "About '%s'"
+msgstr ""
+
+msgid "About Shell..."
+msgstr ""
+
+#, c-format
+msgid "Account '%s' is locked"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Activities Log"
+msgstr ""
+
+#, c-format
+msgid "Another instance of '%s' is already running, aborting."
+msgstr ""
+
+msgid "Application help"
+msgstr ""
+
+msgid "Are you sure you want to log-off current user session?"
+msgstr ""
+
+#, c-format
+msgid ""
+"Cannot create standard directory structure\n"
+"'%s'"
+msgstr ""
+
+msgid "Clear activities log"
+msgstr ""
+
+msgid "Clear log"
+msgstr ""
+
+msgid "Configure shell options"
+msgstr ""
+
+msgid "Confirm log-off"
+msgstr ""
+
+#, c-format
+msgid "Copyright: %s"
+msgstr ""
+
+#, c-format
+msgid "Could not change security role of the system account '%s'"
+msgstr ""
+
+#, c-format
+msgid "Crash report generated in '%s'"
+msgstr ""
+
+msgid "Customize user interface"
+msgstr ""
+
+msgid "Data"
+msgstr ""
+
+msgid "Date:"
+msgstr ""
+
+msgid "Description:"
+msgstr ""
+
+msgid "Developers:"
+msgstr ""
+
+msgid "Display information about Sell appplication"
+msgstr ""
+
+msgid "E&xit"
+msgstr ""
+
+msgid "Ekosfera Multipurpose Extendable Application Shell"
+msgstr ""
+
+msgid "Ekosfera Shell"
+msgstr ""
+
+#, c-format
+msgid "Ekosfera Shell [%s: %s]"
+msgstr ""
+
+msgid "Enable logging to file"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+#, c-format
+msgid "Error accessing plugin interface for '%s'"
+msgstr ""
+
+msgid "Error(s) occured"
+msgstr ""
+
+msgid "Exit application"
+msgstr ""
+
+msgid "Fatal exception occured"
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "Full screen"
+msgstr ""
+
+msgid "GUI elements font:"
+msgstr ""
+
+msgid "Generic information"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Level"
+msgstr ""
+
+msgid "Loaded modules"
+msgstr ""
+
+#, c-format
+msgid "Log On - '%s'"
+msgstr ""
+
+msgid "Log off from current user session"
+msgstr ""
+
+msgid "Log to file"
+msgstr ""
+
+msgid "Log-off cancelled"
+msgstr ""
+
+msgid "Log-off cancelled. Operation aborted."
+msgstr ""
+
+msgid ""
+"Log-off is required to make requested changes.\n"
+"Click 'Yes' if want to log-off, 'No' to cancel changes."
+msgstr ""
+
+msgid "Log-off required"
+msgstr ""
+
+msgid "Maximum value of time range is not valid"
+msgstr ""
+
+msgid "Menu font:"
+msgstr ""
+
+msgid "Miminum time value may not be greater than maximum"
+msgstr ""
+
+msgid "Minimum value of time range is not valid"
+msgstr ""
+
+msgid "N/A"
+msgstr ""
+
+msgid "New user name may not be the same as the old one"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+#, c-format
+msgid "Password length must not be shorter than %d symbols"
+msgstr ""
+
+msgid "Password:"
+msgstr ""
+
+#, c-format
+msgid "Plugin module '%s' could not be loaded"
+msgstr ""
+
+#, c-format
+msgid "Plugin module entry point could not be found in '%s'"
+msgstr ""
+
+#, c-format
+msgid "Product version: %s"
+msgstr ""
+
+msgid "Product web site"
+msgstr ""
+
+msgid "Registered plugins"
+msgstr ""
+
+msgid "Remember password"
+msgstr ""
+
+msgid "Role:"
+msgstr ""
+
+msgid "Security information was not initialized properly"
+msgstr ""
+
+msgid "Select user interface language"
+msgstr ""
+
+msgid "Set Device Date and Time"
+msgstr ""
+
+msgid "Shell Options..."
+msgstr ""
+
+msgid "Show|hide application log"
+msgstr ""
+
+msgid "Show|hide plugin list pane"
+msgstr ""
+
+msgid "Show|hide quick access toolbar"
+msgstr ""
+
+msgid "Sync with PC Date and Time"
+msgstr ""
+
+msgid "System administrator account may not be locked"
+msgstr ""
+
+#, c-format
+msgid ""
+"The following error(s) occurred while loading plugin modules:\n"
+"\t%s"
+msgstr ""
+
+msgid "Time value is out of range"
+msgstr ""
+
+msgid "Time, (HH:MM:SS):"
+msgstr ""
+
+msgid "Timestamp"
+msgstr ""
+
+msgid "Toggle full screen mode"
+msgstr ""
+
+msgid "Translators:"
+msgstr ""
+
+msgid "Unhandled exception caught, program will terminate."
+msgstr ""
+
+#, c-format
+msgid "Unidentified error occured while loading '%s' plugin module"
+msgstr ""
+
+#, c-format
+msgid "User '%s' is system user and may not be deleted"
+msgstr ""
+
+msgid "User may not delete itself"
+msgstr ""
+
+#, c-format
+msgid "User name length must not be shorter than %d symbols"
+msgstr ""
+
+msgid "User name must begin with alphanumeric symbol"
+msgstr ""
+
+msgid "User name must end with alphanumeric symbol"
+msgstr ""
+
+msgid "User:"
+msgstr ""
+
+#, c-format
+msgid "Users with role '%s' do not have rights to add security accounts"
+msgstr ""
+
+#, c-format
+msgid "Users with role '%s' do not have rights to change security accounts"
+msgstr ""
+
+#, c-format
+msgid "Users with role '%s' do not have rights to delete security accounts"
+msgstr ""
+
+#, c-format
+msgid "Users with role '%s' may not change account role to '%s'"
+msgstr ""
+
+#, c-format
+msgid "Users with role '%s' may only add less secure accounts"
+msgstr ""
+
+#, c-format
+msgid "Users with role '%s' may only change less secure accounts"
+msgstr ""
+
+#, c-format
+msgid "Users with role '%s' may only delete less secure accounts"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "View Log"
+msgstr ""
+
+msgid "View Plugin List"
+msgstr ""
+
+msgid "View Toolbar"
+msgstr ""
+
+msgid "Vsevolod V Gromov <vsevolod.gromov@mailfrom.ru>"
+msgstr ""
+
+msgid "Warning"
+msgstr ""

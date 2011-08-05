@@ -1,0 +1,716 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-15 15:43+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid ""
+"\n"
+"Details: '%s'"
+msgstr ""
+
+#, c-format
+msgid "%d bytes received."
+msgstr ""
+
+#, c-format
+msgid "%d bytes sent."
+msgstr ""
+
+msgid "1 Stop Bit"
+msgstr ""
+
+msgid "1.5 Stop Bits"
+msgstr ""
+
+msgid "2 Stop Bits"
+msgstr ""
+
+msgid "A character-buffer overrun has occurred. The next character is lost."
+msgstr ""
+
+msgid "Actual data size is unexpected for this command."
+msgstr ""
+
+msgid "Advanced"
+msgstr ""
+
+msgid "An I/O error occurred during communications with the device."
+msgstr ""
+
+msgid "An input buffer overflow has occurred. There is either no room in the input buffer, or a character was received after the end-of-file (EOF) character."
+msgstr ""
+
+msgid "Automatically reset channel on RX timeout"
+msgstr ""
+
+msgid "Baud rate"
+msgstr ""
+
+msgid "Byte size"
+msgstr ""
+
+msgid "CRC data error."
+msgstr ""
+
+msgid "Calculate per-byte timeout estimate in ms"
+msgstr ""
+
+msgid "Cancelling boot mode..."
+msgstr ""
+
+msgid "Cannot change RX buffer length while channel is active."
+msgstr ""
+
+msgid "Cannot change RX timeout while channel is active."
+msgstr ""
+
+msgid "Cannot change TX buffer length while channel is active."
+msgstr ""
+
+msgid "Cannot change TX timeout while channel is active."
+msgstr ""
+
+msgid "Cannot change baud rate while channel is active."
+msgstr ""
+
+msgid "Cannot change data bit length while channel is active."
+msgstr ""
+
+msgid "Cannot change device while channel is active."
+msgstr ""
+
+msgid "Cannot change parity while channel is active."
+msgstr ""
+
+msgid "Cannot change port while channel is active."
+msgstr ""
+
+msgid "Cannot change stop bits while channel is active."
+msgstr ""
+
+#, c-format
+msgid "Cannot find channel name for label \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Cannot get OS version in %s, (err=%lx)"
+msgstr ""
+
+#, c-format
+msgid "Cannot not read from %s"
+msgstr ""
+
+msgid "Channel"
+msgstr ""
+
+msgid "Channel is not set."
+msgstr ""
+
+#, c-format
+msgid "Channel name '%s' is not registered"
+msgstr ""
+
+msgid "Client address"
+msgstr ""
+
+#, c-format
+msgid "Client connection accepted on %d from '%s'"
+msgstr ""
+
+msgid "Client socket (network) connection channel"
+msgstr ""
+
+msgid "Client socket channel configuration GUI."
+msgstr ""
+
+msgid "Client socket connection is lost"
+msgstr ""
+
+msgid "Close EKONNECT device channel"
+msgstr ""
+
+msgid "Close client socket channel"
+msgstr ""
+
+msgid "Close server socket channel"
+msgstr ""
+
+msgid "Close stub channel"
+msgstr ""
+
+msgid "Close uart channel"
+msgstr ""
+
+msgid "Communication channel configuration"
+msgstr ""
+
+msgid "Connected device is appliance, not hub."
+msgstr ""
+
+msgid "Connected device is hub, not appliance."
+msgstr ""
+
+#, c-format
+msgid "Connection to '%s:%d' is refused by peer"
+msgstr ""
+
+#, c-format
+msgid "Could not find '%s' entry in FTDI driver."
+msgstr ""
+
+msgid "Could not set operation timeout while socket is connected"
+msgstr ""
+
+msgid "Could not set server socket port while server is active"
+msgstr ""
+
+msgid "Could not set target address while socket is connected"
+msgstr ""
+
+msgid "Could not set target port while socket is connected"
+msgstr ""
+
+#, c-format
+msgid "Could not use '%d' as target port"
+msgstr ""
+
+#, c-format
+msgid "Could not use '%s' as target address"
+msgstr ""
+
+msgid "Current I/O rate"
+msgstr ""
+
+msgid "Data size in header does not equal to real data size; data packet may be incomplete."
+msgstr ""
+
+msgid "Delay after device reboot, ms"
+msgstr ""
+
+#, c-format
+msgid "Device '%s' closed."
+msgstr ""
+
+msgid "Device EEPROM erase failed"
+msgstr ""
+
+msgid "Device EEPROM not programmed"
+msgstr ""
+
+msgid "Device EEPROM read failed"
+msgstr ""
+
+msgid "Device EEPROM write failed"
+msgstr ""
+
+msgid "Device is not found"
+msgstr ""
+
+msgid "Device is not open"
+msgstr ""
+
+msgid "Device is not ready."
+msgstr ""
+
+msgid "Device name"
+msgstr ""
+
+msgid "Device not open for erase"
+msgstr ""
+
+msgid "Device not open for write"
+msgstr ""
+
+msgid "Driver input-output error"
+msgstr ""
+
+msgid "EEPROM not present in device"
+msgstr ""
+
+msgid "EKONNECT adapter direct connection channel"
+msgstr ""
+
+#, c-format
+msgid "EKONNECT device '%s' opened. Configured for %d baud, %d data bits, %s, %s."
+msgstr ""
+
+msgid "EkonnectIoChannel constructor"
+msgstr ""
+
+msgid "EkonnectIoChannelConfigPane constructor."
+msgstr ""
+
+#, c-format
+msgid "Entering boot mode, %d s remaining..."
+msgstr ""
+
+#, c-format
+msgid ""
+"Error occured while reading from socket:\n"
+"'%s'"
+msgstr ""
+
+#, c-format
+msgid ""
+"Error occured while writing to socket:\n"
+"'%s'"
+msgstr ""
+
+msgid "Even"
+msgstr ""
+
+#, c-format
+msgid "FTDI call error occured. Returned status is '%s'."
+msgstr ""
+
+msgid "FTDI device driver is not found or not installed on this machine."
+msgstr ""
+
+msgid "Failed to write device"
+msgstr ""
+
+msgid "Generic"
+msgstr ""
+
+msgid "Get EKONNECT device channel configuration string"
+msgstr ""
+
+msgid "Get EKONNECT device channel-specific error code"
+msgstr ""
+
+msgid "Get channel-specific error code"
+msgstr ""
+
+msgid "Get client socket channel configuration string"
+msgstr ""
+
+msgid "Get client socket channel-specific error code"
+msgstr ""
+
+msgid "Get server socket channel configuration string"
+msgstr ""
+
+msgid "Get server socket channel-specific error code"
+msgstr ""
+
+msgid "Get stub channel configuration string"
+msgstr ""
+
+msgid "Get uart channel configuration string"
+msgstr ""
+
+msgid "Host is not found"
+msgstr ""
+
+msgid "IO channel factory class"
+msgstr ""
+
+msgid "Input/Output socket error"
+msgstr ""
+
+msgid "Insufficient resources"
+msgstr ""
+
+msgid "Invalid (uninitialized) socket"
+msgstr ""
+
+msgid "Invalid arguments"
+msgstr ""
+
+msgid "Invalid baud rate"
+msgstr ""
+
+msgid "Invalid handle"
+msgstr ""
+
+msgid "Invalid parameter"
+msgstr ""
+
+msgid "Invalid socket address"
+msgstr ""
+
+msgid "Invalid socket operation"
+msgstr ""
+
+msgid "Invalid socket port"
+msgstr ""
+
+#, c-format
+msgid "Listening for incoming client connections on port %d"
+msgstr ""
+
+msgid "Mark"
+msgstr ""
+
+msgid "No socket error"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Odd"
+msgstr ""
+
+msgid "Open EKONNECT device channel"
+msgstr ""
+
+msgid "Open client socket channel"
+msgstr ""
+
+msgid "Open server socket channel"
+msgstr ""
+
+msgid "Open stub channel"
+msgstr ""
+
+msgid "Open uart channel"
+msgstr ""
+
+msgid "Operation not supported"
+msgstr ""
+
+msgid "Operation timeout (s)"
+msgstr ""
+
+msgid "Packet retries"
+msgstr ""
+
+msgid "Packet timeout, ms"
+msgstr ""
+
+msgid "Parity"
+msgstr ""
+
+msgid "Pending data packet is too long."
+msgstr ""
+
+#, c-format
+msgid "Port '%s' closed."
+msgstr ""
+
+#, c-format
+msgid "Port '%s' opened. Configured for %d baud, %d data bits, %s, %s."
+msgstr ""
+
+msgid "Port name"
+msgstr ""
+
+msgid "Protocol"
+msgstr ""
+
+msgid "RPC Server is inactive."
+msgstr ""
+
+msgid "RPC execution was cancelled"
+msgstr ""
+
+msgid "RPC execution was prematurely cancelled due to timeout"
+msgstr ""
+
+msgid "RPC failed due to communication layer"
+msgstr ""
+
+msgid "RPC has to many parameters, breaking call to prevent stack overflow"
+msgstr ""
+
+msgid "RPC id of response does not match one of request"
+msgstr ""
+
+msgid "RPC not ready to respond (requested data not ready and|or device is busy)"
+msgstr ""
+
+#, c-format
+msgid "RPC parameter %d value error"
+msgstr ""
+
+msgid "RPC signature is unknown"
+msgstr ""
+
+msgid "RPC signatures of caller and callee do not match"
+msgstr ""
+
+msgid "RPC stack is corrupt and unusable"
+msgstr ""
+
+msgid "RPC succeeded"
+msgstr ""
+
+#, c-format
+msgid "RPC with sig='%s' and id='%d' failed with error: '%s'"
+msgstr ""
+
+msgid "RPC with this id is not implemented in client"
+msgstr ""
+
+msgid "RS232 direct connection channel"
+msgstr ""
+
+msgid "RX buffer size"
+msgstr ""
+
+msgid "RX timeout in ms"
+msgstr ""
+
+#, c-format
+msgid "Rate control functionality is not supported in '%s'"
+msgstr ""
+
+msgid "Receive bytes from a channel"
+msgstr ""
+
+msgid "Request device programming mode"
+msgstr ""
+
+msgid "Requested device address is out of range."
+msgstr ""
+
+msgid "Requested rate value is not supported."
+msgstr ""
+
+msgid "Rescan EKONNECT devices"
+msgstr ""
+
+msgid "Rescan serial ports"
+msgstr ""
+
+msgid "Reset EKONNECT device channel IO buffers"
+msgstr ""
+
+msgid "Reset channel IO buffers"
+msgstr ""
+
+msgid "Reset client socket channel IO buffers"
+msgstr ""
+
+msgid "Reset server socket channel IO buffers"
+msgstr ""
+
+msgid "Reset to defaults"
+msgstr ""
+
+msgid "Return currently set channel rate"
+msgstr ""
+
+msgid "Return default channel rate value"
+msgstr ""
+
+msgid "Return true if EKONNECT device channel is open"
+msgstr ""
+
+msgid "Return true if client socket channel is open and connected to server"
+msgstr ""
+
+msgid "Return true if requested channel rate is supported"
+msgstr ""
+
+msgid "Return true if stub channel is open"
+msgstr ""
+
+msgid "Return true if uart channel is open"
+msgstr ""
+
+msgid "Return true, if server socket channel is listening"
+msgstr ""
+
+msgid "Return variant array of supported rates"
+msgstr ""
+
+msgid "Select channel:"
+msgstr ""
+
+msgid "Send bytes over a channel"
+msgstr ""
+
+msgid "Server address"
+msgstr ""
+
+msgid "Server port"
+msgstr ""
+
+msgid "Server socket (network) connection channel"
+msgstr ""
+
+#, c-format
+msgid "Server socket cannot listen on port %d"
+msgstr ""
+
+msgid "Set EKONNECT device channel configuration string"
+msgstr ""
+
+msgid "Set client socket channel configuration string"
+msgstr ""
+
+msgid "Set rate query failed"
+msgstr ""
+
+msgid "Set server socket channel configuration string"
+msgstr ""
+
+msgid "Set stub channel configuration string"
+msgstr ""
+
+msgid "Set uart channel configuration string"
+msgstr ""
+
+msgid "Slave address"
+msgstr ""
+
+msgid "Slave address end value"
+msgstr ""
+
+msgid "Slave address start value"
+msgstr ""
+
+msgid "Socket memory exhausted"
+msgstr ""
+
+msgid "SocketClientIoChannel constructor"
+msgstr ""
+
+msgid "SocketClientIoChannelConfigPane constructor."
+msgstr ""
+
+msgid "SocketServerIoChannel constructor"
+msgstr ""
+
+msgid "SocketServerIoChannelConfigPane constructor."
+msgstr ""
+
+msgid "Space"
+msgstr ""
+
+msgid "Start slave address value must not be greater than end address"
+msgstr ""
+
+msgid "Stop bits"
+msgstr ""
+
+#, c-format
+msgid "Stop listening for incoming client connections on port %d"
+msgstr ""
+
+msgid "Stub Io channel does not have any adjustable settings"
+msgstr ""
+
+msgid "Stub channel"
+msgstr ""
+
+msgid "Stub channel configuration GUI."
+msgstr ""
+
+msgid "Stub io channel is closed"
+msgstr ""
+
+msgid "Stub io channel is open"
+msgstr ""
+
+msgid "StubIoChannel constructor"
+msgstr ""
+
+msgid "StubIoChannelConfigPane constructor."
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Supply power for connected device"
+msgstr ""
+
+msgid "TX buffer size"
+msgstr ""
+
+msgid "TX timeout in ms"
+msgstr ""
+
+msgid "The application tried to transmit a character, but the output buffer was full."
+msgstr ""
+
+msgid "The hardware detected a break condition."
+msgstr ""
+
+msgid "The hardware detected a framing error."
+msgstr ""
+
+msgid "The hardware detected a parity error."
+msgstr ""
+
+msgid "The requested mode is not supported, or the file handle is invalid."
+msgstr ""
+
+msgid "The socket is non-blocking and the operation would block"
+msgstr ""
+
+msgid "The timeout for socket operation expired"
+msgstr ""
+
+msgid "Try to (re)boot connected device in normal mode"
+msgstr ""
+
+msgid "Try to (re)boot connected device in programming mode"
+msgstr ""
+
+msgid "Try to set channel rate"
+msgstr ""
+
+msgid "UART channel configuration GUI."
+msgstr ""
+
+msgid "UartIoChannel constructor"
+msgstr ""
+
+msgid "UartIoChannelConfigPane constructor."
+msgstr ""
+
+msgid "Unknown FTDI device error"
+msgstr ""
+
+msgid "Unknown FTDI status."
+msgstr ""
+
+msgid "Unknown RPC status"
+msgstr ""
+
+msgid "Unknown command."
+msgstr ""
+
+#, c-format
+msgid "Unknown error %d."
+msgstr ""
+
+msgid "Unknown signature"
+msgstr ""
+
+msgid "Unknown socket error"
+msgstr ""
+
+msgid "Use standard RS232 socket"
+msgstr ""
+
+#, c-format
+msgid "Wrong class name in configuration string. Expected %s, got %s."
+msgstr ""
+
+msgid "Wrong data size alignment (not multiple of 2)."
+msgstr ""
+
+#, c-format
+msgid "Wrong data size. Expected %d bytes, %d bytes received."
+msgstr ""
+
+#, c-format
+msgid "Wrong data size. Expected %d or %d bytes, got %d bytes"
+msgstr ""

@@ -1,0 +1,723 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-15 15:43+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "\"%s\" is not a valid floating point number"
+msgstr ""
+
+#, c-format
+msgid "Adding users with role '%s' is not allowed"
+msgstr ""
+
+msgid "Administrator"
+msgstr ""
+
+#, c-format
+msgid "Argument '%s' is not hardware ID class"
+msgstr ""
+
+msgid "Battery power"
+msgstr ""
+
+msgid "Block index"
+msgstr ""
+
+#, c-format
+msgid "CRC error in block %d in file '%s'"
+msgstr ""
+
+#, c-format
+msgid "Cannot call method %s.%s of type %s without an object."
+msgstr ""
+
+#, c-format
+msgid "Cannot create file '%s'."
+msgstr ""
+
+msgid "Cannot create worker thread"
+msgstr ""
+
+msgid "Cannot find file|directory"
+msgstr ""
+
+msgid "Cannot find path"
+msgstr ""
+
+msgid "Cannot get property without an object."
+msgstr ""
+
+msgid "Cannot launch worker thread"
+msgstr ""
+
+msgid "Cannot set property without an object."
+msgstr ""
+
+msgid "Charging"
+msgstr ""
+
+#, c-format
+msgid "Child page index %d is out of [0, %d[ range."
+msgstr ""
+
+#, c-format
+msgid "Class \"%s\" is not registered."
+msgstr ""
+
+#, c-format
+msgid "Class method %s, taking %d parameters, is not found in class %s"
+msgstr ""
+
+msgid "Contents:"
+msgstr ""
+
+#, c-format
+msgid "Could not access the composite file '%s'. File is either non-existent or not accessible for read."
+msgstr ""
+
+msgid "Could not append block of unknown type to the composite file."
+msgstr ""
+
+msgid "Could not append block to the composite file."
+msgstr ""
+
+msgid "Could not append empty block to the composite file."
+msgstr ""
+
+#, c-format
+msgid "Could not convert %d to a byte"
+msgstr ""
+
+#, c-format
+msgid "Could not convert '%.0f' to integer"
+msgstr ""
+
+#, c-format
+msgid "Could not convert '%.0f' to unsigned integer"
+msgstr ""
+
+#, c-format
+msgid "Could not convert '%f.0' to integer"
+msgstr ""
+
+#, c-format
+msgid "Could not convert '%s' to a byte"
+msgstr ""
+
+#, c-format
+msgid "Could not convert '%s' to a single character"
+msgstr ""
+
+#, c-format
+msgid "Could not convert '%s' to signed integer"
+msgstr ""
+
+msgid "Could not convert 64 bit integer to string"
+msgstr ""
+
+#, c-format
+msgid "Could not convert binary buffer %d bytes long to a byte"
+msgstr ""
+
+#, c-format
+msgid "Could not convert binary buffer %d bytes long to a single character"
+msgstr ""
+
+#, c-format
+msgid "Could not convert binary buffer %d bytes long to floating point number, eight bytes expected"
+msgstr ""
+
+#, c-format
+msgid "Could not convert binary buffer %d bytes long to integer, four bytes expected"
+msgstr ""
+
+#, c-format
+msgid "Could not convert binary buffer %d bytes long to unsigned integer, four bytes expected"
+msgstr ""
+
+msgid "Could not convert collection to a string value"
+msgstr ""
+
+msgid "Could not convert generic pointer to a string value"
+msgstr ""
+
+msgid "Could not convert integer to string"
+msgstr ""
+
+#, c-format
+msgid "Could not convert string '%s' to %s"
+msgstr ""
+
+#, c-format
+msgid "Could not convert string '%s' to floating point value"
+msgstr ""
+
+msgid "Could not convert unsigned 64 bit integer to string"
+msgstr ""
+
+msgid "Could not convert unsigned integer to string"
+msgstr ""
+
+msgid "Could not convert variant containing object reference to a binary buffer"
+msgstr ""
+
+msgid "Could not convert variant containing object reference to a numeric value"
+msgstr ""
+
+msgid "Could not convert variant containing object reference to a string value"
+msgstr ""
+
+msgid "Could not convert variant to a byte"
+msgstr ""
+
+msgid "Could not convert variant to a character"
+msgstr ""
+
+msgid "Could not convert variant to generic pointer"
+msgstr ""
+
+msgid "Could not convert variant to interface reference"
+msgstr ""
+
+msgid "Could not convert variant to wxObject reference"
+msgstr ""
+
+msgid "Could not convert wxObject reference to a string value"
+msgstr ""
+
+msgid "Could not create composite file from empty base block."
+msgstr ""
+
+#, c-format
+msgid "Could not find the header. File '%s' is either not composite, or corrupt."
+msgstr ""
+
+#, c-format
+msgid "Could not open file '%s' for reading"
+msgstr ""
+
+#, c-format
+msgid "Could not open file '%s' for reading."
+msgstr ""
+
+#, c-format
+msgid "Could not read block %d from file '%s'"
+msgstr ""
+
+#, c-format
+msgid "Could not read the composite file '%s'."
+msgstr ""
+
+#, c-format
+msgid "Could not read the table. File '%s' is either not composite, or corrupt."
+msgstr ""
+
+msgid "Current power code"
+msgstr ""
+
+msgid "Data:"
+msgstr ""
+
+msgid "Developer"
+msgstr ""
+
+#, c-format
+msgid "Device %d is not a hub."
+msgstr ""
+
+msgid "Device production number within year"
+msgstr ""
+
+msgid "Device production year"
+msgstr ""
+
+#, c-format
+msgid "Device type %d is not an appliance."
+msgstr ""
+
+msgid "Device type id"
+msgstr ""
+
+msgid "Disk Error"
+msgstr ""
+
+msgid "Disk drive is not ready|no media in drive"
+msgstr ""
+
+msgid "Disk is write protected"
+msgstr ""
+
+msgid "Division by zero encountered"
+msgstr ""
+
+msgid "Empty enum restriction definition is not allowed."
+msgstr ""
+
+msgid "Empty string"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+#, c-format
+msgid ""
+"Error composing DATETIME from:\n"
+"year: %d, month: %d, day: %d,\n"
+"hour: %d, minute: %d, second: %d, millisecond: %d"
+msgstr ""
+
+#, c-format
+msgid ""
+"Error composing time-only DATETIME from:\n"
+"hour: %d, minute: %d, second: %d, millisecond: %d"
+msgstr ""
+
+#, c-format
+msgid "Error reading base file '%s'."
+msgstr ""
+
+#, c-format
+msgid "Error reading block file '%s'."
+msgstr ""
+
+#, c-format
+msgid "File '%s' already exists."
+msgstr ""
+
+#, c-format
+msgid "File '%s' does not exist or is not accessible for reading."
+msgstr ""
+
+#, c-format
+msgid "File '%s' is composite. Composite file may not be used as base block for composite file."
+msgstr ""
+
+#, c-format
+msgid "File '%s' table CRC is corrupt."
+msgstr ""
+
+msgid "File operation timed-out"
+msgstr ""
+
+msgid "File system object is invalid"
+msgstr ""
+
+msgid "File|path name is invalid"
+msgstr ""
+
+msgid "Firmware id revision"
+msgstr ""
+
+msgid "Firmware id version"
+msgstr ""
+
+msgid "Functionality mask"
+msgstr ""
+
+msgid "Guest"
+msgstr ""
+
+msgid "Header:"
+msgstr ""
+
+#, c-format
+msgid "Help for plugin '%s'"
+msgstr ""
+
+msgid "Internal Error"
+msgstr ""
+
+#, c-format
+msgid "Invalid data file page offset specified: %d"
+msgstr ""
+
+#, c-format
+msgid "Invalid enumeration %s item index %d."
+msgstr ""
+
+#, c-format
+msgid "Invalid method signature value: %d."
+msgstr ""
+
+#, c-format
+msgid "Invalid registered plugin index: %d."
+msgstr ""
+
+msgid "Invalid role value"
+msgstr ""
+
+msgid "Item is not of indexed type"
+msgstr ""
+
+#, c-format
+msgid "Main header page index %d out of [0, %d[ range."
+msgstr ""
+
+msgid "Mains power"
+msgstr ""
+
+msgid "Make file system call failed"
+msgstr ""
+
+msgid "Maximum power code"
+msgstr ""
+
+#, c-format
+msgid "Method %s, taking %d parameters, is not found in class %s"
+msgstr ""
+
+#, c-format
+msgid "Method %s.%s of type %s does not expect parameters."
+msgstr ""
+
+msgid "Minimum power code"
+msgstr ""
+
+msgid "No Error"
+msgstr ""
+
+msgid "No file system is found"
+msgstr ""
+
+#, c-format
+msgid "No schema entry is registered for hub %d."
+msgstr ""
+
+msgid "No value exists"
+msgstr ""
+
+msgid "Non-marked session"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Object already exists"
+msgstr ""
+
+#, c-format
+msgid "Object type is incompatible with '%s'"
+msgstr ""
+
+msgid "Operation is not supported for this type"
+msgstr ""
+
+#, c-format
+msgid "Overflow in operation '%s'"
+msgstr ""
+
+#, c-format
+msgid "Page index %d out of [0, %d[ range."
+msgstr ""
+
+#, c-format
+msgid "Parameter list expected in call to %s.%s of type %s."
+msgstr ""
+
+msgid "Password is not valid"
+msgstr ""
+
+#, c-format
+msgid "Plugin '%s' activated"
+msgstr ""
+
+#, c-format
+msgid "Plugin '%s' activation error: '%s'"
+msgstr ""
+
+#, c-format
+msgid "Plugin '%s' de-activated"
+msgstr ""
+
+msgid "Power status flags"
+msgstr ""
+
+#, c-format
+msgid "Power status: %d%%"
+msgstr ""
+
+#, c-format
+msgid "Property %s.%s does not have default value."
+msgstr ""
+
+msgid "Restriction value may not be NULL for non-empty restriction type"
+msgstr ""
+
+msgid "Restriction value may not be non-NULL for empty restriction type"
+msgstr ""
+
+#, c-format
+msgid "Select '%s' language"
+msgstr ""
+
+#, c-format
+msgid "Session %d:"
+msgstr ""
+
+#, c-format
+msgid "Sizes of items are different, %d and %d"
+msgstr ""
+
+msgid "Superuser"
+msgstr ""
+
+msgid "The drive number is invalid"
+msgstr ""
+
+msgid "The file or directory has read-only attribute, or the directory is not empty"
+msgstr ""
+
+msgid "The logical drive has no work area"
+msgstr ""
+
+#, c-format
+msgid "The method %s.%s of type %s is class method."
+msgstr ""
+
+#, c-format
+msgid "The method %s.%s of type %s is not a class method and cannot be called without an object."
+msgstr ""
+
+#, c-format
+msgid "There is no \"%s\" property in class \"%s\"."
+msgstr ""
+
+msgid "Thread is already executing"
+msgstr ""
+
+msgid "Thread is in stopping stage and could not be re-started until after termination"
+msgstr ""
+
+#, c-format
+msgid "Toolbar with id: '%d' already exists"
+msgstr ""
+
+msgid "UID contains invalid symbol(s)"
+msgstr ""
+
+msgid "UID string size is not valid"
+msgstr ""
+
+#, c-format
+msgid "Underflow in operation '%s'"
+msgstr ""
+
+msgid "Unique identifier"
+msgstr ""
+
+#, c-format
+msgid "Unknown XML sequence '%s'"
+msgstr ""
+
+#, c-format
+msgid "Unknown class method signature: %d."
+msgstr ""
+
+#, c-format
+msgid "Unknown configuration property '%s'"
+msgstr ""
+
+msgid "Unknown device."
+msgstr ""
+
+#, c-format
+msgid "Unknown device: %d."
+msgstr ""
+
+msgid "Unknown exception occured in worker thread"
+msgstr ""
+
+msgid "Unknown exception occured upon exiting worker thread"
+msgstr ""
+
+#, c-format
+msgid "Unknown file system result value: %d"
+msgstr ""
+
+#, c-format
+msgid "Unknown method signature: %d."
+msgstr ""
+
+msgid "Unknown parser error."
+msgstr ""
+
+#, c-format
+msgid "Unknown plugin ID: %d."
+msgstr ""
+
+#, c-format
+msgid "Unknown signature %d"
+msgstr ""
+
+#, c-format
+msgid "Unknown string escape sequence with character '%c'"
+msgstr ""
+
+#, c-format
+msgid "Unknown string escape sequence with character code 0x%X"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+#, c-format
+msgid "User '%s' already exists"
+msgstr ""
+
+#, c-format
+msgid "User '%s' does not exist"
+msgstr ""
+
+msgid "User Interface Language Changed"
+msgstr ""
+
+msgid "User Interface Language is changed. It will not take place until after application is restarted."
+msgstr ""
+
+#, c-format
+msgid "Users with role '%s' may only change themselves"
+msgstr ""
+
+msgid "Validation error"
+msgstr ""
+
+#, c-format
+msgid ""
+"Validation failed for %s\n"
+"%s"
+msgstr ""
+
+msgid "Validator is not associated with control"
+msgstr ""
+
+#, c-format
+msgid "Value %d is out of [%d, %d] range"
+msgstr ""
+
+#, c-format
+msgid "Value %f is out of [%f, %f] range"
+msgstr ""
+
+#, c-format
+msgid "Value %s is not a member of enumeration %s."
+msgstr ""
+
+#, c-format
+msgid "Value '%s'=%d is out of [%d, %d] range"
+msgstr ""
+
+#, c-format
+msgid "Value '%s'=%f is out of [%f, %f] range"
+msgstr ""
+
+#, c-format
+msgid "Value must be greater than or equal to %f"
+msgstr ""
+
+#, c-format
+msgid "Value must be in range [%f, %f]"
+msgstr ""
+
+#, c-format
+msgid "Value must be less than or equal to %f"
+msgstr ""
+
+msgid "Value name may not be the empty string."
+msgstr ""
+
+#, c-format
+msgid "Value of %s must be greater than %s"
+msgstr ""
+
+#, c-format
+msgid "Value of %s must be greater than or equal to %s"
+msgstr ""
+
+#, c-format
+msgid "Value of %s must be less than %s"
+msgstr ""
+
+#, c-format
+msgid "Value of %s must be less than or equal to %s"
+msgstr ""
+
+#, c-format
+msgid ""
+"Value of %s must be one of:\n"
+"\t%s"
+msgstr ""
+
+#, c-format
+msgid "Value of %s must fall in [%s,%s[ range"
+msgstr ""
+
+#, c-format
+msgid "Value of %s must fall in [%s,%s] range"
+msgstr ""
+
+#, c-format
+msgid "Value of %s must fall in ]%s,%s[ range"
+msgstr ""
+
+#, c-format
+msgid "Value of %s must fall in ]%s,%s] range"
+msgstr ""
+
+#, c-format
+msgid "Value with name '%s' already exists."
+msgstr ""
+
+#, c-format
+msgid "Value with name '%s' does not exist."
+msgstr ""
+
+#, c-format
+msgid "Wide character with code 0x%X encountered in place where only eight-bit characters allowed"
+msgstr ""
+
+#, c-format
+msgid "Wrong configuration name. Expected '%s', got '%s'"
+msgstr ""
+
+#, c-format
+msgid "Wrong element count in range restriction definition. Expected 2, encountered %d."
+msgstr ""
+
+#, c-format
+msgid "Wrong parameters count in call to %s.%s of type %s. Expected %d, got %d."
+msgstr ""
+
+msgid "Wrong range restriction. Min value may not be greater than Max one."
+msgstr ""
+
+msgid "Wrong restriction type. Array type is expected."
+msgstr ""
+
+msgid "XML document is malformed."
+msgstr ""
+
+msgid "getAllLabels service is only valid for enumeration properties"
+msgstr ""
+
+msgid "getAllValues service is only valid for enumeration properties"
+msgstr ""
+
+msgid "getEnumItem service is only valid for enumeration properties"
+msgstr ""
+
+msgid "getValueLabel service is only valid for enumeration properties"
+msgstr ""

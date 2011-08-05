@@ -1,0 +1,367 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: esshell-base\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-15 15:43+0400\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Vsevolod <vsevolod.gromov@stream.ru>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#, c-format
+msgid ""
+"%s\n"
+"Powered by:\n"
+"\t%s\n"
+"\t%s\n"
+"\t%s"
+msgstr ""
+"%s\n"
+"Используется:\n"
+"\t%s\n"
+"\t%s\n"
+"\t%s"
+
+msgid "&Log off"
+msgstr "Завершить сессию"
+
+#, c-format
+msgid "About '%s'"
+msgstr "О программе '%s'"
+
+msgid "About Shell..."
+msgstr "Об оболочке..."
+
+#, c-format
+msgid "Account '%s' is locked"
+msgstr "Учетная запись '%s' заблокирована"
+
+msgid "Actions"
+msgstr "Действия"
+
+msgid "Activities Log"
+msgstr "Журнал событий"
+
+#, c-format
+msgid "Another instance of '%s' is already running, aborting."
+msgstr "Другой экземпляр '%s' уже выполняется, отмена запуска."
+
+msgid "Application help"
+msgstr "Показать файл справки по приложению"
+
+msgid "Are you sure you want to log-off current user session?"
+msgstr "Вы уверены, что хотите завершить текущую сессию пользователя?"
+
+#, c-format
+msgid ""
+"Cannot create standard directory structure\n"
+"'%s'"
+msgstr ""
+"Невозможно создать стандартные папки\n"
+"'%s'"
+
+msgid "Clear activities log"
+msgstr "Очистить журнал событий"
+
+msgid "Clear log"
+msgstr "Очистить журнал"
+
+msgid "Configure shell options"
+msgstr "Настроить опции оболочки"
+
+msgid "Confirm log-off"
+msgstr "Подтверждение завершения сессии"
+
+#, c-format
+msgid "Copyright: %s"
+msgstr "Авт. права: %s"
+
+#, c-format
+msgid "Could not change security role of the system account '%s'"
+msgstr "Невозможно изменить роль системной учетной записи '%s'"
+
+#, c-format
+msgid "Crash report generated in '%s'"
+msgstr "Отчет об ошибках создан в '%s'"
+
+msgid "Customize user interface"
+msgstr "Настройка интерфейса пользователя"
+
+msgid "Data"
+msgstr "Данные"
+
+msgid "Date:"
+msgstr "Дата:"
+
+msgid "Description:"
+msgstr "Описание:"
+
+msgid "Developers:"
+msgstr "Разработчики:"
+
+msgid "Display information about Sell appplication"
+msgstr "Показать информацию о приложении"
+
+msgid "E&xit"
+msgstr "Выйти"
+
+msgid "Ekosfera Multipurpose Extendable Application Shell"
+msgstr "Многоцелевая Расширяемая Программная Оболочка Экосфера"
+
+msgid "Ekosfera Shell"
+msgstr "МРПО Экосфера"
+
+#, c-format
+msgid "Ekosfera Shell [%s: %s]"
+msgstr "МПРО Экосфера [%s: %s]"
+
+msgid "Enable logging to file"
+msgstr "Включить запись журнала в файл"
+
+msgid "Error"
+msgstr "Ошибка"
+
+#, c-format
+msgid "Error accessing plugin interface for '%s'"
+msgstr "Ошибка получения интерфейса для модуля '%s'"
+
+msgid "Error(s) occured"
+msgstr "Возникли ошибки"
+
+msgid "Exit application"
+msgstr "Выйти из приложения"
+
+msgid "Fatal exception occured"
+msgstr "Возникла критическая ошибка"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "Full screen"
+msgstr ""
+
+msgid "GUI elements font:"
+msgstr "Шрифт элементов интерфейса:"
+
+msgid "Generic information"
+msgstr "Общая информация"
+
+msgid "Help"
+msgstr "Справка"
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "Level"
+msgstr "Уровень"
+
+msgid "Loaded modules"
+msgstr "Загруженные модули"
+
+#, c-format
+msgid "Log On - '%s'"
+msgstr "Войти - '%s'"
+
+msgid "Log off from current user session"
+msgstr "Выйти из текущей сессии пользователя"
+
+msgid "Log to file"
+msgstr "Запись в файл"
+
+msgid "Log-off cancelled"
+msgstr "Выход из сессии отменен"
+
+msgid "Log-off cancelled. Operation aborted."
+msgstr "Выход из сессии отменен. Операция отменена."
+
+msgid ""
+"Log-off is required to make requested changes.\n"
+"Click 'Yes' if want to log-off, 'No' to cancel changes."
+msgstr ""
+"Для вступления в силу запрашиваемых изменений необходимо\n"
+"завершить текущую сессию.\n"
+"Нажмите 'Да', если хотите завершить сессию, 'Нет' для отмены имзменений."
+
+msgid "Log-off required"
+msgstr "Требуется выход из сессии"
+
+msgid "Maximum value of time range is not valid"
+msgstr "Значение максимума временного периода неверно"
+
+msgid "Menu font:"
+msgstr "Шрифт элементов меню:"
+
+msgid "Miminum time value may not be greater than maximum"
+msgstr "Значение минимума не может быть больше максимума"
+
+msgid "Minimum value of time range is not valid"
+msgstr "Значение минимума временного периода неверно"
+
+msgid "N/A"
+msgstr "Н/Д"
+
+msgid "New user name may not be the same as the old one"
+msgstr "Новое имя пользователя не может быть таким же, как старое"
+
+msgid "Options"
+msgstr "Настройки"
+
+#, c-format
+msgid "Password length must not be shorter than %d symbols"
+msgstr "Длина пароля не может быть короче, чем %d символов"
+
+msgid "Password:"
+msgstr "Пароль:"
+
+#, c-format
+msgid "Plugin module '%s' could not be loaded"
+msgstr "Подключаемый модуль '%s' не может быть загружен"
+
+#, c-format
+msgid "Plugin module entry point could not be found in '%s'"
+msgstr "Корневая процедура модуля '%s' не найдена"
+
+#, c-format
+msgid "Product version: %s"
+msgstr "Версия продукта: %s"
+
+msgid "Product web site"
+msgstr "Веб сайт продукта"
+
+msgid "Registered plugins"
+msgstr "Зарегистрированные модули"
+
+msgid "Remember password"
+msgstr "Запомнить пароль"
+
+msgid "Role:"
+msgstr "Роль:"
+
+msgid "Security information was not initialized properly"
+msgstr "Данные безопасности не были правильно инициализированы"
+
+msgid "Select user interface language"
+msgstr "Выберите язык пользовательского интерфейса"
+
+msgid "Set Device Date and Time"
+msgstr "Установите время и дату устройства"
+
+msgid "Shell Options..."
+msgstr "Настройки оболочки..."
+
+msgid "Show|hide application log"
+msgstr "Показать/спрятать журнал приложения"
+
+msgid "Show|hide plugin list pane"
+msgstr "Показать/спрятать список подключаемых модулей"
+
+msgid "Show|hide quick access toolbar"
+msgstr "Показать/спрятать панель быстрого доступа"
+
+msgid "Sync with PC Date and Time"
+msgstr "Синхронизировать со временем и датой ПК"
+
+msgid "System administrator account may not be locked"
+msgstr "Учетная запись системного администратора не может быть заблокирована"
+
+#, c-format
+msgid ""
+"The following error(s) occurred while loading plugin modules:\n"
+"\t%s"
+msgstr ""
+"Следующие ошибки возникли при загрузке поключаемых модулей:\n"
+"\t%s"
+
+msgid "Time value is out of range"
+msgstr "Значение времени лежит вне допустимого диапазона"
+
+msgid "Time, (HH:MM:SS):"
+msgstr "Время, (ЧЧ:ММ:СС):"
+
+msgid "Timestamp"
+msgstr "Временная метка"
+
+msgid "Toggle full screen mode"
+msgstr ""
+
+msgid "Translators:"
+msgstr "Локализаторы:"
+
+msgid "Unhandled exception caught, program will terminate."
+msgstr "Возникла необработанная исключительная ситуация, приложение будет остановлено."
+
+#, c-format
+msgid "Unidentified error occured while loading '%s' plugin module"
+msgstr "Неизвестная ошибка при загрузке модуля '%s'"
+
+#, c-format
+msgid "User '%s' is system user and may not be deleted"
+msgstr "Пользователь '%s' является системным, и не может быть удален"
+
+msgid "User may not delete itself"
+msgstr "Пользователь не может удалить сам себя"
+
+#, c-format
+msgid "User name length must not be shorter than %d symbols"
+msgstr "Имя пользователя не может быть короче, чем %d символов"
+
+msgid "User name must begin with alphanumeric symbol"
+msgstr "Имя пользователя должно начинаться с буквенно-цифрового символа"
+
+msgid "User name must end with alphanumeric symbol"
+msgstr "Имя пользователя должно оканчиваться на буквенно-цифровой символ"
+
+msgid "User:"
+msgstr "Пользователь:"
+
+#, c-format
+msgid "Users with role '%s' do not have rights to add security accounts"
+msgstr "У пользователей с ролью '%s' недостаточно прав для добавления учетных записей"
+
+#, c-format
+msgid "Users with role '%s' do not have rights to change security accounts"
+msgstr "У пользователей с ролью '%s' недостаточно прав для изменения учетных записей"
+
+#, c-format
+msgid "Users with role '%s' do not have rights to delete security accounts"
+msgstr "У пользователей с ролью '%s' недостаточно прав для удаления учетных записей"
+
+#, c-format
+msgid "Users with role '%s' may not change account role to '%s'"
+msgstr "Пользователи с ролью '%s' не могут менять роль учетной записи на '%s'"
+
+#, c-format
+msgid "Users with role '%s' may only add less secure accounts"
+msgstr "Пользователи с ролью '%s' могут добавлять только учетные записи с меньшим уровнем доступа"
+
+#, c-format
+msgid "Users with role '%s' may only change less secure accounts"
+msgstr "Пользователи с ролью '%s' могут изменять только учетные записи с меньшим уровнем доступа"
+
+#, c-format
+msgid "Users with role '%s' may only delete less secure accounts"
+msgstr "Пользователи с ролью '%s' могут удалять только учетные записи с меньшим уровнем доступа"
+
+msgid "View"
+msgstr "Вид"
+
+msgid "View Log"
+msgstr "Показать журнал"
+
+msgid "View Plugin List"
+msgstr "Показать список модулей"
+
+msgid "View Toolbar"
+msgstr "Показать панель"
+
+msgid "Vsevolod V Gromov <vsevolod.gromov@mailfrom.ru>"
+msgstr "Всеволод Громов <vsevolod.gromov@mailfrom.ru>"
+
+msgid "Warning"
+msgstr "Предупреждение"

@@ -1,0 +1,730 @@
+# Russian translations for PACKAGE package.
+# Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# vsevolod <EMAIL@ADDRESS>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-15 15:43+0400\n"
+"PO-Revision-Date: 2011-04-15 09:35+0300\n"
+"Last-Translator: Vsevolod <vsevolod.gromov@stream.ru>\n"
+"Language-Team: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#, c-format
+msgid "\"%s\" is not a valid floating point number"
+msgstr "'%s' не является допустимым вещественным числом"
+
+#, c-format
+msgid "Adding users with role '%s' is not allowed"
+msgstr "Добавление пользователей с доступом '%s' запрещено"
+
+msgid "Administrator"
+msgstr "Администратор"
+
+#, c-format
+msgid "Argument '%s' is not hardware ID class"
+msgstr ""
+
+msgid "Battery power"
+msgstr ""
+
+msgid "Block index"
+msgstr ""
+
+#, c-format
+msgid "CRC error in block %d in file '%s'"
+msgstr ""
+
+#, c-format
+msgid "Cannot call method %s.%s of type %s without an object."
+msgstr "Невозможно выполнить метод %s.%s типа %s без экземпляра объекта. "
+
+#, c-format
+msgid "Cannot create file '%s'."
+msgstr ""
+
+msgid "Cannot create worker thread"
+msgstr "Невозможно создать поток"
+
+msgid "Cannot find file|directory"
+msgstr "Невозможно найти файл|директорию"
+
+msgid "Cannot find path"
+msgstr "Невозможно найти путь"
+
+msgid "Cannot get property without an object."
+msgstr "Невозможно прочесть свойство без экземпляра объекта."
+
+msgid "Cannot launch worker thread"
+msgstr "Невозможно запустить поток"
+
+msgid "Cannot set property without an object."
+msgstr "Невозможно записать свойство без экземпляра объекта."
+
+msgid "Charging"
+msgstr ""
+
+#, c-format
+msgid "Child page index %d is out of [0, %d[ range."
+msgstr "Индекс %d дочерней страницы выпадает из диапазона [0, %d[."
+
+#, c-format
+msgid "Class \"%s\" is not registered."
+msgstr "Класс '%s' не зарегистрирован."
+
+#, c-format
+msgid "Class method %s, taking %d parameters, is not found in class %s"
+msgstr "Метод класса %s, принимающий %d параметров, не найден в классе %s."
+
+msgid "Contents:"
+msgstr "Содержание:"
+
+#, c-format
+msgid "Could not access the composite file '%s'. File is either non-existent or not accessible for read."
+msgstr ""
+
+msgid "Could not append block of unknown type to the composite file."
+msgstr ""
+
+msgid "Could not append block to the composite file."
+msgstr ""
+
+msgid "Could not append empty block to the composite file."
+msgstr ""
+
+#, c-format
+msgid "Could not convert %d to a byte"
+msgstr "Невозможно преобразовать %d в byte"
+
+#, c-format
+msgid "Could not convert '%.0f' to integer"
+msgstr "Невозможно преобразовать '%.0f' в integer"
+
+#, c-format
+msgid "Could not convert '%.0f' to unsigned integer"
+msgstr "Невозможно преобразовать '%.0f' в unsigned integer"
+
+#, c-format
+msgid "Could not convert '%f.0' to integer"
+msgstr "Невозможно преобразовать '%f.0' в integer"
+
+#, c-format
+msgid "Could not convert '%s' to a byte"
+msgstr "Невозможно преобразовать '%s' в byte"
+
+#, c-format
+msgid "Could not convert '%s' to a single character"
+msgstr "Невозможно преобразовать '%s' в char"
+
+#, c-format
+msgid "Could not convert '%s' to signed integer"
+msgstr "Невозможно преобразовать '%s' в signed integer"
+
+msgid "Could not convert 64 bit integer to string"
+msgstr "Невозможно преобразовать 64 bit integer в строку "
+
+#, c-format
+msgid "Could not convert binary buffer %d bytes long to a byte"
+msgstr "Невозможно преобразовать буфер длиной %d байт в byte"
+
+#, c-format
+msgid "Could not convert binary buffer %d bytes long to a single character"
+msgstr "Невозможно преобразовать буфер длиной %d байт в single character"
+
+#, c-format
+msgid "Could not convert binary buffer %d bytes long to floating point number, eight bytes expected"
+msgstr ""
+
+#, c-format
+msgid "Could not convert binary buffer %d bytes long to integer, four bytes expected"
+msgstr ""
+
+#, c-format
+msgid "Could not convert binary buffer %d bytes long to unsigned integer, four bytes expected"
+msgstr ""
+
+msgid "Could not convert collection to a string value"
+msgstr ""
+
+msgid "Could not convert generic pointer to a string value"
+msgstr ""
+
+msgid "Could not convert integer to string"
+msgstr ""
+
+#, c-format
+msgid "Could not convert string '%s' to %s"
+msgstr ""
+
+#, c-format
+msgid "Could not convert string '%s' to floating point value"
+msgstr ""
+
+msgid "Could not convert unsigned 64 bit integer to string"
+msgstr ""
+
+msgid "Could not convert unsigned integer to string"
+msgstr ""
+
+msgid "Could not convert variant containing object reference to a binary buffer"
+msgstr ""
+
+msgid "Could not convert variant containing object reference to a numeric value"
+msgstr ""
+
+msgid "Could not convert variant containing object reference to a string value"
+msgstr ""
+
+msgid "Could not convert variant to a byte"
+msgstr ""
+
+msgid "Could not convert variant to a character"
+msgstr ""
+
+msgid "Could not convert variant to generic pointer"
+msgstr ""
+
+msgid "Could not convert variant to interface reference"
+msgstr ""
+
+msgid "Could not convert variant to wxObject reference"
+msgstr ""
+
+msgid "Could not convert wxObject reference to a string value"
+msgstr ""
+
+msgid "Could not create composite file from empty base block."
+msgstr ""
+
+#, c-format
+msgid "Could not find the header. File '%s' is either not composite, or corrupt."
+msgstr ""
+
+#, c-format
+msgid "Could not open file '%s' for reading"
+msgstr ""
+
+#, c-format
+msgid "Could not open file '%s' for reading."
+msgstr ""
+
+#, c-format
+msgid "Could not read block %d from file '%s'"
+msgstr ""
+
+#, c-format
+msgid "Could not read the composite file '%s'."
+msgstr ""
+
+#, c-format
+msgid "Could not read the table. File '%s' is either not composite, or corrupt."
+msgstr ""
+
+msgid "Current power code"
+msgstr ""
+
+msgid "Data:"
+msgstr "Данные:"
+
+msgid "Developer"
+msgstr "Разработчик"
+
+#, c-format
+msgid "Device %d is not a hub."
+msgstr "Устройство %d не пульт."
+
+msgid "Device production number within year"
+msgstr ""
+
+msgid "Device production year"
+msgstr ""
+
+#, c-format
+msgid "Device type %d is not an appliance."
+msgstr "Устройство %d не является измерительной головкой."
+
+msgid "Device type id"
+msgstr ""
+
+msgid "Disk Error"
+msgstr "Дисковоя ошибка"
+
+msgid "Disk drive is not ready|no media in drive"
+msgstr "Диск не готов|носитель отсутствует"
+
+msgid "Disk is write protected"
+msgstr "Диск защищен от записи"
+
+msgid "Division by zero encountered"
+msgstr ""
+
+msgid "Empty enum restriction definition is not allowed."
+msgstr "Пустое определение перечесляемого типа не допускается."
+
+msgid "Empty string"
+msgstr "Пустая строка"
+
+msgid "Error"
+msgstr "Ошибка"
+
+#, c-format
+msgid ""
+"Error composing DATETIME from:\n"
+"year: %d, month: %d, day: %d,\n"
+"hour: %d, minute: %d, second: %d, millisecond: %d"
+msgstr ""
+"Ошибка инициализации DATETIME из компонентов:\n"
+"год: %d, месяц: %d, день: %d,\n"
+"час: %d, минута: %d, секунда: %d, миллисекунда: %d"
+
+#, c-format
+msgid ""
+"Error composing time-only DATETIME from:\n"
+"hour: %d, minute: %d, second: %d, millisecond: %d"
+msgstr ""
+
+#, c-format
+msgid "Error reading base file '%s'."
+msgstr ""
+
+#, c-format
+msgid "Error reading block file '%s'."
+msgstr ""
+
+#, c-format
+msgid "File '%s' already exists."
+msgstr ""
+
+#, c-format
+msgid "File '%s' does not exist or is not accessible for reading."
+msgstr ""
+
+#, c-format
+msgid "File '%s' is composite. Composite file may not be used as base block for composite file."
+msgstr ""
+
+#, c-format
+msgid "File '%s' table CRC is corrupt."
+msgstr ""
+
+msgid "File operation timed-out"
+msgstr "Таймаут файловой операции"
+
+msgid "File system object is invalid"
+msgstr "Неправильный объект файловой системы "
+
+msgid "File|path name is invalid"
+msgstr "Неправильный путь|имя файла"
+
+msgid "Firmware id revision"
+msgstr ""
+
+msgid "Firmware id version"
+msgstr ""
+
+msgid "Functionality mask"
+msgstr ""
+
+msgid "Guest"
+msgstr "Гость"
+
+msgid "Header:"
+msgstr "Заголовок:"
+
+#, c-format
+msgid "Help for plugin '%s'"
+msgstr "Справка для модуля '%s'"
+
+msgid "Internal Error"
+msgstr "Внутренняя ошибка"
+
+#, c-format
+msgid "Invalid data file page offset specified: %d"
+msgstr "Указано неверное смещение страницы данных: %d"
+
+#, c-format
+msgid "Invalid enumeration %s item index %d."
+msgstr "Для перечисляемого типа %s указан неверный индекс члена %d. "
+
+#, c-format
+msgid "Invalid method signature value: %d."
+msgstr "Неверное значение сигнатуры метода: %d"
+
+#, c-format
+msgid "Invalid registered plugin index: %d."
+msgstr "Неверный индекс подкл. модуля: %d."
+
+msgid "Invalid role value"
+msgstr ""
+
+msgid "Item is not of indexed type"
+msgstr ""
+
+#, c-format
+msgid "Main header page index %d out of [0, %d[ range."
+msgstr "Индекс главной страницы %d должен быть в диапазоне [0, %d[."
+
+msgid "Mains power"
+msgstr ""
+
+msgid "Make file system call failed"
+msgstr "Вызов форматирования файловой системы не выполнен."
+
+msgid "Maximum power code"
+msgstr ""
+
+#, c-format
+msgid "Method %s, taking %d parameters, is not found in class %s"
+msgstr "Метод %s, принимающий %d параметров, не найден в классе %s"
+
+#, c-format
+msgid "Method %s.%s of type %s does not expect parameters."
+msgstr "Метод %s.%s типа %s не принимает входных параметров."
+
+msgid "Minimum power code"
+msgstr ""
+
+msgid "No Error"
+msgstr "Нет ошибок."
+
+msgid "No file system is found"
+msgstr "Файловая система не обнаружена."
+
+#, c-format
+msgid "No schema entry is registered for hub %d."
+msgstr "Функциональная схема не зарегистрирована для пульта %d."
+
+msgid "No value exists"
+msgstr ""
+
+msgid "Non-marked session"
+msgstr ""
+
+msgid "None"
+msgstr "Нет"
+
+msgid "Object already exists"
+msgstr "Объект уже существует."
+
+#, c-format
+msgid "Object type is incompatible with '%s'"
+msgstr ""
+
+msgid "Operation is not supported for this type"
+msgstr ""
+
+#, c-format
+msgid "Overflow in operation '%s'"
+msgstr ""
+
+#, c-format
+msgid "Page index %d out of [0, %d[ range."
+msgstr "Индекс страницы %d должен быть в диапазоне [0, %d[."
+
+#, c-format
+msgid "Parameter list expected in call to %s.%s of type %s."
+msgstr "Вызов метода %s.%s, типа %s, ожидает список входных параметров."
+
+msgid "Password is not valid"
+msgstr "Пароль не верен"
+
+#, c-format
+msgid "Plugin '%s' activated"
+msgstr "Модуль '%s' активирован"
+
+#, c-format
+msgid "Plugin '%s' activation error: '%s'"
+msgstr ""
+
+#, c-format
+msgid "Plugin '%s' de-activated"
+msgstr "Модуль '%s' деактивирован"
+
+msgid "Power status flags"
+msgstr ""
+
+#, c-format
+msgid "Power status: %d%%"
+msgstr ""
+
+#, c-format
+msgid "Property %s.%s does not have default value."
+msgstr "Свойство %s.%s не имеет значения по-умолчанию."
+
+msgid "Restriction value may not be NULL for non-empty restriction type"
+msgstr "Значение ограничения не может быть пустым для не-пустого типа ограничения."
+
+msgid "Restriction value may not be non-NULL for empty restriction type"
+msgstr "Значение ограничения не может быть не-пустым для пустого типа ограничения"
+
+#, c-format
+msgid "Select '%s' language"
+msgstr "Выберите язык '%s'"
+
+#, c-format
+msgid "Session %d:"
+msgstr "Сессия %d:"
+
+#, c-format
+msgid "Sizes of items are different, %d and %d"
+msgstr "Размеры элементов отличаются, %d и %d"
+
+msgid "Superuser"
+msgstr "Суперпользователь"
+
+msgid "The drive number is invalid"
+msgstr "Неверный номер дискового устройства"
+
+msgid "The file or directory has read-only attribute, or the directory is not empty"
+msgstr "Файл или папка доступны только для чтения, или папка не является пустой"
+
+msgid "The logical drive has no work area"
+msgstr "Логический диск не содержит рабочей области"
+
+#, c-format
+msgid "The method %s.%s of type %s is class method."
+msgstr "Метод %s.%s типа %s является методом класса."
+
+#, c-format
+msgid "The method %s.%s of type %s is not a class method and cannot be called without an object."
+msgstr "Метод %s.%s типа %s не является методом класса, и не может быть вызван без экземпляра объекта."
+
+#, c-format
+msgid "There is no \"%s\" property in class \"%s\"."
+msgstr "Свойства \"%s\" у объекта \"%s\" нет."
+
+msgid "Thread is already executing"
+msgstr "Поток уже выполняется"
+
+msgid "Thread is in stopping stage and could not be re-started until after termination"
+msgstr ""
+
+#, c-format
+msgid "Toolbar with id: '%d' already exists"
+msgstr ""
+
+msgid "UID contains invalid symbol(s)"
+msgstr ""
+
+msgid "UID string size is not valid"
+msgstr ""
+
+#, c-format
+msgid "Underflow in operation '%s'"
+msgstr ""
+
+msgid "Unique identifier"
+msgstr "Уникальный идентификатор"
+
+#, c-format
+msgid "Unknown XML sequence '%s'"
+msgstr "Неизвестная последовательность XML '%s'"
+
+#, c-format
+msgid "Unknown class method signature: %d."
+msgstr "Неизвестная сигнатура %d метода класса."
+
+#, c-format
+msgid "Unknown configuration property '%s'"
+msgstr "Неизвестный конфигурационный параметр'%s'"
+
+msgid "Unknown device."
+msgstr "Неизвестное устройство."
+
+#, c-format
+msgid "Unknown device: %d."
+msgstr "Неизвестное устройство: %d."
+
+msgid "Unknown exception occured in worker thread"
+msgstr "Неизветсное исключение возникло в рабочем потоке"
+
+msgid "Unknown exception occured upon exiting worker thread"
+msgstr "Неизвестная ошибка возникла при выходе из рабочего потока"
+
+#, c-format
+msgid "Unknown file system result value: %d"
+msgstr "Неизвестный результат файловой операции: %d"
+
+#, c-format
+msgid "Unknown method signature: %d."
+msgstr "Неизвестная сигнатура метода: %d. "
+
+msgid "Unknown parser error."
+msgstr "Неизвестная ошибка парсера."
+
+#, c-format
+msgid "Unknown plugin ID: %d."
+msgstr "Неизвестный идентификатор подкл. модуля: %d."
+
+#, c-format
+msgid "Unknown signature %d"
+msgstr "Неизвестная сигнатура %d."
+
+#, c-format
+msgid "Unknown string escape sequence with character '%c'"
+msgstr "Неизвестная управляющая последовательность с символом '%c'"
+
+#, c-format
+msgid "Unknown string escape sequence with character code 0x%X"
+msgstr "Неизвестная управляющая последовательность с кодом 0x%X"
+
+msgid "User"
+msgstr "Пользователь"
+
+#, c-format
+msgid "User '%s' already exists"
+msgstr "Пользователь '%s' уже существует"
+
+#, c-format
+msgid "User '%s' does not exist"
+msgstr "Пользователь '%s' не существует"
+
+msgid "User Interface Language Changed"
+msgstr "Язык пользовательского интерфейса изменен"
+
+msgid "User Interface Language is changed. It will not take place until after application is restarted."
+msgstr "Язык пользовательского интерфейса изменен. Изменения вступят в силу только после перезагрузки приложения."
+
+#, c-format
+msgid "Users with role '%s' may only change themselves"
+msgstr "Пользователи с ролью '%s' могут менять только свои данные"
+
+msgid "Validation error"
+msgstr "Ошибка проверки"
+
+#, c-format
+msgid ""
+"Validation failed for %s\n"
+"%s"
+msgstr ""
+"Проверка не прошла для %s\n"
+"%s"
+
+msgid "Validator is not associated with control"
+msgstr "Проверяющий объект не ассоциирован с элементом"
+
+#, c-format
+msgid "Value %d is out of [%d, %d] range"
+msgstr "Значение %d выпадает из диапазона [%d, %d]"
+
+#, c-format
+msgid "Value %f is out of [%f, %f] range"
+msgstr "Значение %f выпадает из диапазона [%f, %f]"
+
+#, c-format
+msgid "Value %s is not a member of enumeration %s."
+msgstr "Значение %s не является членом перечисляемого типа %s."
+
+#, c-format
+msgid "Value '%s'=%d is out of [%d, %d] range"
+msgstr "Значение '%s'=%d выпадает из диапазона [%d, %d]"
+
+#, c-format
+msgid "Value '%s'=%f is out of [%f, %f] range"
+msgstr "Значение '%s'=%f выпадает из диапазона [%f, %f]"
+
+#, c-format
+msgid "Value must be greater than or equal to %f"
+msgstr "Значение должно быть больше или равно %f"
+
+#, c-format
+msgid "Value must be in range [%f, %f]"
+msgstr "Значение должно лежать в диапазоне [%f, %f]"
+
+#, c-format
+msgid "Value must be less than or equal to %f"
+msgstr "Значение должно быть меньше или равно %f"
+
+msgid "Value name may not be the empty string."
+msgstr "Имя значения не может быть пустой строкой."
+
+#, c-format
+msgid "Value of %s must be greater than %s"
+msgstr "Значение %s должно быть больше, чем %s"
+
+#, c-format
+msgid "Value of %s must be greater than or equal to %s"
+msgstr "Значение %s должно быть больше, или равно %s"
+
+#, c-format
+msgid "Value of %s must be less than %s"
+msgstr "Значение %s должно быть меньше, чем %s"
+
+#, c-format
+msgid "Value of %s must be less than or equal to %s"
+msgstr "Значение %s должно быть меньше, или равно %s"
+
+#, c-format
+msgid ""
+"Value of %s must be one of:\n"
+"\t%s"
+msgstr ""
+"Значение %s должно быть одним из:\n"
+"\t%s"
+
+#, c-format
+msgid "Value of %s must fall in [%s,%s[ range"
+msgstr "Значение %s должно лежать в диапазоне [%s, %s["
+
+#, c-format
+msgid "Value of %s must fall in [%s,%s] range"
+msgstr "Значение %s должно лежать в диапазоне [%s, %s]"
+
+#, c-format
+msgid "Value of %s must fall in ]%s,%s[ range"
+msgstr "Значение %s должно лежать в диапазоне ]%s, %s["
+
+#, c-format
+msgid "Value of %s must fall in ]%s,%s] range"
+msgstr "Значение %s должно лежать в диапазоне ]%s, %s]"
+
+#, c-format
+msgid "Value with name '%s' already exists."
+msgstr "Значение с именем '%s' уже существует."
+
+#, c-format
+msgid "Value with name '%s' does not exist."
+msgstr "Значение с именем '%s' не существует."
+
+#, c-format
+msgid "Wide character with code 0x%X encountered in place where only eight-bit characters allowed"
+msgstr "Многобайтовый символ с кодом 0x%X обнаружен там где допустимы только восьмибитовые символы."
+
+#, c-format
+msgid "Wrong configuration name. Expected '%s', got '%s'"
+msgstr "Неверное имя конфигурации. Вместо '%s' выставлено '%s'"
+
+#, c-format
+msgid "Wrong element count in range restriction definition. Expected 2, encountered %d."
+msgstr "Неверное число элементов в определении ограничения по диапазону. Ожидалось 2, найдено %d."
+
+#, c-format
+msgid "Wrong parameters count in call to %s.%s of type %s. Expected %d, got %d."
+msgstr "Неверное число параметров в вызове %s.%s типа %s. Ожидалось %d, получено %d."
+
+msgid "Wrong range restriction. Min value may not be greater than Max one."
+msgstr "Неверное ограничение по диапазону. Минимум не может быть больше максимума."
+
+msgid "Wrong restriction type. Array type is expected."
+msgstr "Неверный тип ограничения. Ожидается ограничение типа \"массив\"."
+
+msgid "XML document is malformed."
+msgstr "Документ XML неверно сформирован."
+
+msgid "getAllLabels service is only valid for enumeration properties"
+msgstr "getAllLabels метод доступен только для свойств перечисляемого типа."
+
+msgid "getAllValues service is only valid for enumeration properties"
+msgstr ""
+
+msgid "getEnumItem service is only valid for enumeration properties"
+msgstr "getEnumItems метод доступен только для свойств перечисляемого типа."
+
+msgid "getValueLabel service is only valid for enumeration properties"
+msgstr "getValueLabel метод доступен только для свойств перечисляемого типа."
