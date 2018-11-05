@@ -1,0 +1,1783 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-18 15:36+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Limited discoverable"
+msgstr ""
+
+msgid "Positioning"
+msgstr ""
+
+msgid "Networking"
+msgstr ""
+
+msgid "Rendering"
+msgstr ""
+
+msgid "Capturing"
+msgstr ""
+
+msgid "Object transfer"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Telephony"
+msgstr ""
+
+msgid "Information"
+msgstr ""
+
+msgid "Computer"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "LAN access"
+msgstr ""
+
+msgid "Peripheral"
+msgstr ""
+
+msgid "Imaging"
+msgstr ""
+
+msgid "Wearable"
+msgstr ""
+
+msgid "Toy"
+msgstr ""
+
+msgid "Health"
+msgstr ""
+
+msgid "Unclassified"
+msgstr ""
+
+msgid "Desktop"
+msgstr ""
+
+msgid "Server"
+msgstr ""
+
+msgid "Laptop"
+msgstr ""
+
+msgid "Handheld"
+msgstr ""
+
+msgid "Palmtop"
+msgstr ""
+
+msgid "Cellular phone"
+msgstr ""
+
+msgid "Cordless phone"
+msgstr ""
+
+msgid "Smartphone"
+msgstr ""
+
+msgid "Wired modem or voice gateway"
+msgstr ""
+
+msgid "Common ISDN Access"
+msgstr ""
+
+msgid "Fully available"
+msgstr ""
+
+#, c-format
+msgid "1-17% utilized"
+msgstr ""
+
+#, c-format
+msgid "17-33% utilized"
+msgstr ""
+
+#, c-format
+msgid "33-50% utilized"
+msgstr ""
+
+#, c-format
+msgid "50-67% utilized"
+msgstr ""
+
+#, c-format
+msgid "67-83% utilized"
+msgstr ""
+
+#, c-format
+msgid "83-99% utilized"
+msgstr ""
+
+msgid "No service available"
+msgstr ""
+
+msgid "Uncategorized"
+msgstr ""
+
+msgid "Headset"
+msgstr ""
+
+msgid "Hands-free"
+msgstr ""
+
+msgid "Headset hands-free"
+msgstr ""
+
+msgid "Microphone"
+msgstr ""
+
+msgid "Loudspeaker"
+msgstr ""
+
+msgid "Headphones"
+msgstr ""
+
+msgid "Portable audio"
+msgstr ""
+
+msgid "Car audio"
+msgstr ""
+
+msgid "Set top box"
+msgstr ""
+
+msgid "HiFi audio"
+msgstr ""
+
+msgid "VCR"
+msgstr ""
+
+msgid "Video camera"
+msgstr ""
+
+msgid "Camcorder"
+msgstr ""
+
+msgid "Video monitor"
+msgstr ""
+
+msgid "Video display and loudspeaker"
+msgstr ""
+
+msgid "Video display conferencing"
+msgstr ""
+
+msgid "Gaming/Toy"
+msgstr ""
+
+msgid "Keyboard"
+msgstr ""
+
+msgid "Pointing device"
+msgstr ""
+
+msgid "Joystick"
+msgstr ""
+
+msgid "Gamepad"
+msgstr ""
+
+msgid "Remote control"
+msgstr ""
+
+msgid "Sensing device"
+msgstr ""
+
+msgid "Digitizer tablet"
+msgstr ""
+
+msgid "Card Reader"
+msgstr ""
+
+msgid "Display"
+msgstr ""
+
+msgid "Camera"
+msgstr ""
+
+msgid "Scanner"
+msgstr ""
+
+msgid "Printer"
+msgstr ""
+
+msgid "Wrist watch"
+msgstr ""
+
+msgid "Pager"
+msgstr ""
+
+msgid "Jacket"
+msgstr ""
+
+msgid "Helmet"
+msgstr ""
+
+msgid "Glasses"
+msgstr ""
+
+msgid "Robot"
+msgstr ""
+
+msgid "Vehicle"
+msgstr ""
+
+msgid "Doll/Action figure"
+msgstr ""
+
+msgid "Controller"
+msgstr ""
+
+msgid "Game"
+msgstr ""
+
+msgid "Blood pressure monitor"
+msgstr ""
+
+msgid "Thermometer"
+msgstr ""
+
+msgid "Weighting scale"
+msgstr ""
+
+msgid "Glucose meter"
+msgstr ""
+
+msgid "Pulse Oximeter"
+msgstr ""
+
+msgid "Heart/Pulse rate monitor"
+msgstr ""
+
+msgid "Health data display"
+msgstr ""
+
+msgid "Unknown device"
+msgstr ""
+
+msgid "Device class: "
+msgstr ""
+
+msgid ""
+"\n"
+"Device details: "
+msgstr ""
+
+msgid ""
+"\n"
+"Device services: "
+msgstr ""
+
+#, c-format
+msgid "Descriptor property '%s' is not valid for descriptor kind '%s'"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "Broadcastable"
+msgstr ""
+
+msgid "Have extended properties"
+msgstr ""
+
+msgid "Notification"
+msgstr ""
+
+msgid "Indication"
+msgstr ""
+
+msgid "Read"
+msgstr ""
+
+msgid "Write"
+msgstr ""
+
+msgid "Write without response"
+msgstr ""
+
+msgid "Signed write"
+msgstr ""
+
+msgid "Read not permitted"
+msgstr ""
+
+msgid "Write not permitted"
+msgstr ""
+
+msgid "Insufficient authentication"
+msgstr ""
+
+msgid "Request not supported"
+msgstr ""
+
+msgid "Invalid offset"
+msgstr ""
+
+msgid "Invalid attribute length"
+msgstr ""
+
+msgid "Insufficient encryption"
+msgstr ""
+
+msgid "Generic failure"
+msgstr ""
+
+msgid "Unknown failure"
+msgstr ""
+
+msgid "Bluetooth client connection channel"
+msgstr ""
+
+msgid "Bluetooth device address"
+msgstr ""
+
+msgid "Bluetooth device name"
+msgstr ""
+
+msgid "Bluetooth service class"
+msgstr ""
+
+msgid "Bluetooth service name"
+msgstr ""
+
+msgid "Open Bluetooth channel"
+msgstr ""
+
+msgid "Close Bluetooth channel"
+msgstr ""
+
+msgid "Return true if Bluetooth channel is open"
+msgstr ""
+
+msgid "Send bytes over a channel"
+msgstr ""
+
+msgid "Receive bytes from a channel"
+msgstr ""
+
+msgid "Reset channel IO buffers"
+msgstr ""
+
+msgid "Get channel-specific error code"
+msgstr ""
+
+msgid "Get channel-specific error string"
+msgstr ""
+
+msgid "EsChannelIoBluetoothClient constructor"
+msgstr ""
+
+msgid "Bluetooth LE byte streaming service channel"
+msgstr ""
+
+msgid "Bluetooth LE device address"
+msgstr ""
+
+msgid "Subscribe to pending notifications"
+msgstr ""
+
+msgid "Open Bluetooth LE channel"
+msgstr ""
+
+msgid "Close Bluetooth LE channel"
+msgstr ""
+
+msgid "Return true if Bluetooth LE channel is open"
+msgstr ""
+
+msgid "EsChannelIoBluetoothLE constructor"
+msgstr ""
+
+msgid "Could not change device address while device connection is active"
+msgstr ""
+
+msgid "EKONNECT adapter direct connection channel"
+msgstr ""
+
+msgid "Device name"
+msgstr ""
+
+msgid "Baud rate"
+msgstr ""
+
+msgid "Byte size"
+msgstr ""
+
+msgid "Parity"
+msgstr ""
+
+msgid "Stop bits"
+msgstr ""
+
+msgid "RX timeout in ms"
+msgstr ""
+
+msgid "TX timeout in ms"
+msgstr ""
+
+msgid "RX buffer size"
+msgstr ""
+
+msgid "TX buffer size"
+msgstr ""
+
+msgid "Automatically reset channel on RX timeout"
+msgstr ""
+
+msgid "Use standard RS232 socket"
+msgstr ""
+
+msgid "Open EKONNECT device channel"
+msgstr ""
+
+msgid "Close EKONNECT device channel"
+msgstr ""
+
+msgid "Return true if EKONNECT device channel is open"
+msgstr ""
+
+msgid "Get channel id string"
+msgstr ""
+
+msgid "Reset EKONNECT device channel IO buffers"
+msgstr ""
+
+msgid "Get EKONNECT device channel-specific error code"
+msgstr ""
+
+msgid "Get EKONNECT device channel-specific error string"
+msgstr ""
+
+msgid "Configure auxiliary power supply via Econnect cable"
+msgstr ""
+
+msgid "Configure Econnect cable for programming"
+msgstr ""
+
+msgid "Return true if requested channel rate is supported"
+msgstr ""
+
+msgid "Return variant array of supported rates"
+msgstr ""
+
+msgid "Return default channel rate value"
+msgstr ""
+
+msgid "Return currently set channel rate"
+msgstr ""
+
+msgid "Try to set channel rate"
+msgstr ""
+
+msgid "EsChannelIoEkonnect constructor"
+msgstr ""
+
+msgid "Cannot change device while channel is active."
+msgstr ""
+
+msgid "Cannot change data bit length while channel is active."
+msgstr ""
+
+msgid "Cannot change parity while channel is active."
+msgstr ""
+
+msgid "Cannot change stop bits while channel is active."
+msgstr ""
+
+msgid "Cannot change RX timeout while channel is active."
+msgstr ""
+
+msgid "Cannot change TX timeout while channel is active."
+msgstr ""
+
+msgid "Cannot change RX buffer length while channel is active."
+msgstr ""
+
+msgid "Cannot change TX buffer length while channel is active."
+msgstr ""
+
+#, c-format
+msgid "Channel name '%s' is not registered"
+msgstr ""
+
+msgid "Client socket (network) connection channel"
+msgstr ""
+
+msgid "Server address"
+msgstr ""
+
+msgid "Server port"
+msgstr ""
+
+msgid "Operation timeout (s)"
+msgstr ""
+
+msgid "Open client socket channel"
+msgstr ""
+
+msgid "Close client socket channel"
+msgstr ""
+
+msgid "Return true if client socket channel is open and connected to server"
+msgstr ""
+
+msgid "Reset client socket channel IO buffers"
+msgstr ""
+
+msgid "Get client socket channel-specific error code"
+msgstr ""
+
+msgid "Get client socket channel-specific error string"
+msgstr ""
+
+msgid "EsChannelIoSocketClient constructor"
+msgstr ""
+
+msgid "Server socket (network) connection channel"
+msgstr ""
+
+msgid "Open server socket channel"
+msgstr ""
+
+msgid "Close server socket channel"
+msgstr ""
+
+msgid "Return true, if server socket channel is listening"
+msgstr ""
+
+msgid "Reset server socket channel IO buffers"
+msgstr ""
+
+msgid "Get server socket channel-specific error code"
+msgstr ""
+
+msgid "Get server socket channel-specific error string"
+msgstr ""
+
+msgid "EsChannelIoSocketServer constructor"
+msgstr ""
+
+msgid "Stub channel"
+msgstr ""
+
+msgid "Open stub channel"
+msgstr ""
+
+msgid "Close stub channel"
+msgstr ""
+
+msgid "Return true if stub channel is open"
+msgstr ""
+
+msgid "EsChannelIoStub constructor"
+msgstr ""
+
+msgid "UART direct connection channel"
+msgstr ""
+
+msgid "Port name"
+msgstr ""
+
+msgid "Open uart channel"
+msgstr ""
+
+msgid "Close uart channel"
+msgstr ""
+
+msgid "Return true if uart channel is open"
+msgstr ""
+
+msgid "EsChannelIoUart constructor"
+msgstr ""
+
+msgid "Calculate per-byte timeout estimate in ms"
+msgstr ""
+
+msgid "Generic FTDI device"
+msgstr ""
+
+#, c-format
+msgid "FTDI I2C MPSSE must be open to perform operation '%s'"
+msgstr ""
+
+#, c-format
+msgid "FTDI SPI MPSSE must be open to perform operation '%s'"
+msgstr ""
+
+msgid "FTDI device driver is not found or not installed on this device"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Invalid handle"
+msgstr ""
+
+msgid "Device is not found"
+msgstr ""
+
+msgid "Device is not open"
+msgstr ""
+
+msgid "Driver input-output error"
+msgstr ""
+
+msgid "Insufficient resources"
+msgstr ""
+
+msgid "Invalid parameter"
+msgstr ""
+
+msgid "Invalid baud rate"
+msgstr ""
+
+msgid "Device not open for erase"
+msgstr ""
+
+msgid "Device not open for write"
+msgstr ""
+
+msgid "Failed to write device"
+msgstr ""
+
+msgid "Device EEPROM read failed"
+msgstr ""
+
+msgid "Device EEPROM write failed"
+msgstr ""
+
+msgid "Device EEPROM erase failed"
+msgstr ""
+
+msgid "EEPROM not present in device"
+msgstr ""
+
+msgid "Device EEPROM not programmed"
+msgstr ""
+
+msgid "Invalid arguments"
+msgstr ""
+
+msgid "Operation not supported"
+msgstr ""
+
+msgid "Unknown FTDI device error"
+msgstr ""
+
+msgid "Unknown FTDI status."
+msgstr ""
+
+#, c-format
+msgid "FTDI call error occured. Returned status is '%s'."
+msgstr ""
+
+msgid "FTDI Driver was not found on this device, or was not loaded"
+msgstr ""
+
+#, c-format
+msgid "Rate control functionality is not supported in '%s'"
+msgstr ""
+
+#, c-format
+msgid "RPC with signature ='%s' and id ='%d' failed with error: '%s'"
+msgstr ""
+
+#, c-format
+msgid ""
+"\n"
+"Details: '%s'"
+msgstr ""
+
+msgid "Unique Id string"
+msgstr ""
+
+msgid "Protocol io monitor"
+msgstr ""
+
+msgid "Client address"
+msgstr ""
+
+msgid "Packet timeout, ms"
+msgstr ""
+
+msgid "Master channel"
+msgstr ""
+
+msgid "Set rate query failed"
+msgstr ""
+
+msgid "Channel is not set."
+msgstr ""
+
+msgid "RPC Server is inactive."
+msgstr ""
+
+msgid "Slave address"
+msgstr ""
+
+msgid "Unknown signature"
+msgstr ""
+
+msgid "RPC with this idGet is not implemented in client"
+msgstr ""
+
+msgid "RPC stack is corrupt and unusable"
+msgstr ""
+
+msgid "RPC execution was prematurely cancelled due to timeout"
+msgstr ""
+
+msgid "RPC has to many parameters, breaking call to prevent stack overflow"
+msgstr ""
+
+msgid "RPC signature is unknown"
+msgstr ""
+
+msgid "RPC signatures of caller and callee do not match"
+msgstr ""
+
+msgid "RPC idGet of response does not match one of request"
+msgstr ""
+
+msgid "RPC failed due to communication layer"
+msgstr ""
+
+msgid "RPC not ready to respond (requested data not ready and|or device is busy)"
+msgstr ""
+
+#, c-format
+msgid "RPC parameter %d value error"
+msgstr ""
+
+msgid "RPC succeeded"
+msgstr ""
+
+msgid "RPC execution was cancelled"
+msgstr ""
+
+msgid "Unknown RPC status"
+msgstr ""
+
+msgid "Data size in header does not equal to real data size; data packet may be incomplete."
+msgstr ""
+
+msgid "Wrong data size alignment (not multiple of 2)."
+msgstr ""
+
+msgid "CRC data error."
+msgstr ""
+
+msgid "Unknown command."
+msgstr ""
+
+msgid "Pending data packet is too long."
+msgstr ""
+
+msgid "Actual data size is unexpected for this command."
+msgstr ""
+
+msgid "Requested rate value is not supported."
+msgstr ""
+
+msgid "Requested device address is out of range."
+msgstr ""
+
+msgid "Device is not ready."
+msgstr ""
+
+#, c-format
+msgid "Unknown error %d."
+msgstr ""
+
+msgid "Trying to create Socket address object with unknown or unsupported address type"
+msgstr ""
+
+msgid "Incompatible socket type and address; IPV4 or IPV6 address expected"
+msgstr ""
+
+msgid "Incompatible socket type and address; Bluetooth address expected"
+msgstr ""
+
+msgid "Socket already opened with other address"
+msgstr ""
+
+msgid "Socket already opened with another socket type specification"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Object not initialized"
+msgstr ""
+
+msgid "Socket engine is not initialized"
+msgstr ""
+
+msgid "Network subsystem is down"
+msgstr ""
+
+msgid "Socket type is not supported"
+msgstr ""
+
+msgid "Invalid parameter in socket operation"
+msgstr ""
+
+msgid "Socket is busy"
+msgstr ""
+
+msgid "Socket is not connected"
+msgstr ""
+
+msgid "Invalid (uninitialized) socket"
+msgstr ""
+
+msgid "Temporary socket service error; try again later"
+msgstr ""
+
+msgid "Non recoverable socket service error"
+msgstr ""
+
+msgid "Socket address type or family is not supported"
+msgstr ""
+
+msgid "Socket address is invalid"
+msgstr ""
+
+msgid "Socket address type is not specified"
+msgstr ""
+
+msgid "Not enough memory to complete socket service call"
+msgstr ""
+
+msgid "Could not find host"
+msgstr ""
+
+msgid "No more socket descriptors available"
+msgstr ""
+
+msgid "No more buffer space available, socket cannot not be created"
+msgstr ""
+
+msgid "Specified protocol is not supported"
+msgstr ""
+
+msgid "Specified option is not supported for this protocol"
+msgstr ""
+
+msgid "Protocol type is wrong for this socket type"
+msgstr ""
+
+msgid "Socket type is not supported in specified address family"
+msgstr ""
+
+msgid "Address is in use"
+msgstr ""
+
+msgid "Socket is already connected"
+msgstr ""
+
+msgid "Socket does not support operation"
+msgstr ""
+
+msgid "Connection aborted"
+msgstr ""
+
+msgid "Connection reset by peer"
+msgstr ""
+
+msgid "Network dropped connection on reset"
+msgstr ""
+
+msgid "Remote host actively refuses connection"
+msgstr ""
+
+msgid "Socket operation timed out"
+msgstr ""
+
+msgid "Socket operation was cancelled"
+msgstr ""
+
+msgid "No data of requested type is available"
+msgstr ""
+
+msgid "Socket operation pointer parameter is invalid"
+msgstr ""
+
+msgid "Could not resolve service from port"
+msgstr ""
+
+msgid "Could not resolve port from service"
+msgstr ""
+
+msgid "Cannot assign requested address. The requested address is not valid in its context"
+msgstr ""
+
+msgid "Message is too long. A message sent on a datagram socket is larger than the allowed limit"
+msgstr ""
+
+msgid "Unknown socket error"
+msgstr ""
+
+msgid "Client network socket"
+msgstr ""
+
+msgid "Throw exceptions on Socket errors"
+msgstr ""
+
+msgid "Client Socket type"
+msgstr ""
+
+msgid "Service discovery server"
+msgstr ""
+
+msgid "Browse group descriptor"
+msgstr ""
+
+msgid "Public browse group"
+msgstr ""
+
+msgid "Serial Port"
+msgstr ""
+
+msgid "LAN Access"
+msgstr ""
+
+msgid "Dial-up Networking"
+msgstr ""
+
+msgid "Synchronization"
+msgstr ""
+
+msgid "Object Push"
+msgstr ""
+
+msgid "File Transfer"
+msgstr ""
+
+msgid "Synchronization Command channel"
+msgstr ""
+
+msgid "Cordless Telephony"
+msgstr ""
+
+msgid "Advanced Audio Distribution source"
+msgstr ""
+
+msgid "Advanced Audio Distribution sink"
+msgstr ""
+
+msgid "Audio/Video Remote Control target"
+msgstr ""
+
+msgid "Advanced Audio Distribution"
+msgstr ""
+
+msgid "Audio/Video Remote Control"
+msgstr ""
+
+msgid "Audio/Video Remote Controller/Video conferencing"
+msgstr ""
+
+msgid "Intercom"
+msgstr ""
+
+msgid "Fax"
+msgstr ""
+
+msgid "Headset audio gateway"
+msgstr ""
+
+msgid "WAP interoperability"
+msgstr ""
+
+msgid "WAP client interoperability"
+msgstr ""
+
+msgid "Personal Area Networking User"
+msgstr ""
+
+msgid "Personal Area Networking Network Access Point"
+msgstr ""
+
+msgid "Personal Area Networking Group ad-hoc Network"
+msgstr ""
+
+msgid "Direct Printing"
+msgstr ""
+
+msgid "Reference Printing"
+msgstr ""
+
+msgid "Basic Imaging"
+msgstr ""
+
+msgid "Imaging responder"
+msgstr ""
+
+msgid "Imaging automatic archive"
+msgstr ""
+
+msgid "Imaging reference objects"
+msgstr ""
+
+msgid "Hands-Free"
+msgstr ""
+
+msgid "Hands-Free audio gateway"
+msgstr ""
+
+msgid "Direct printing reference objects"
+msgstr ""
+
+msgid "Direct printing UI"
+msgstr ""
+
+msgid "Basic printing"
+msgstr ""
+
+msgid "Printing status"
+msgstr ""
+
+msgid "Human Interface Device"
+msgstr ""
+
+msgid "Hardcopy cable replacement"
+msgstr ""
+
+msgid "Hardcopy cable replacement-printer"
+msgstr ""
+
+msgid "Hardcopy cable replacement-scanner"
+msgstr ""
+
+msgid "Video conferencing gateway"
+msgstr ""
+
+msgid "Audio-Video"
+msgstr ""
+
+msgid "SIM access"
+msgstr ""
+
+msgid "Phonebook access client"
+msgstr ""
+
+msgid "Phonebook access server"
+msgstr ""
+
+msgid "Phonebook access"
+msgstr ""
+
+msgid "Message access server"
+msgstr ""
+
+msgid "Message notification server"
+msgstr ""
+
+msgid "Message access"
+msgstr ""
+
+msgid "Global navigation satellite system"
+msgstr ""
+
+msgid "Global navigation satellite system server"
+msgstr ""
+
+msgid "3D Synchronization - display"
+msgstr ""
+
+msgid "3D Synchronization - glasses"
+msgstr ""
+
+msgid "3D Synchronization"
+msgstr ""
+
+msgid "Multi-Profile Specification profile"
+msgstr ""
+
+msgid "Multi-Profile Specification service"
+msgstr ""
+
+msgid "PnP information"
+msgstr ""
+
+msgid "Generic networking"
+msgstr ""
+
+msgid "Generic file transfer"
+msgstr ""
+
+msgid "Generic audio"
+msgstr ""
+
+msgid "Generic telephony"
+msgstr ""
+
+msgid "Video source"
+msgstr ""
+
+msgid "Video sink"
+msgstr ""
+
+msgid "Video distribution"
+msgstr ""
+
+msgid "Health device"
+msgstr ""
+
+msgid "Health device source"
+msgstr ""
+
+msgid "Health device sink"
+msgstr ""
+
+msgid "Bluetooth classic engine is not initialized"
+msgstr ""
+
+msgid "Bluetooth LE engine is not initialized"
+msgstr ""
+
+msgid "Device Name"
+msgstr ""
+
+msgid "Appearance"
+msgstr ""
+
+msgid "Peripheral Privacy Flag"
+msgstr ""
+
+msgid "Reconnection Address"
+msgstr ""
+
+msgid "Peripheral Preferred Connection Parameters"
+msgstr ""
+
+msgid "Service Changed"
+msgstr ""
+
+msgid "Alert Level"
+msgstr ""
+
+msgid "Tx Power Level"
+msgstr ""
+
+msgid "Date Time"
+msgstr ""
+
+msgid "Day of Week"
+msgstr ""
+
+msgid "Day Date Time"
+msgstr ""
+
+msgid "Exact Time 256"
+msgstr ""
+
+msgid "DST Offset"
+msgstr ""
+
+msgid "Time Zone"
+msgstr ""
+
+msgid "Local Time Information"
+msgstr ""
+
+msgid "Time with DST"
+msgstr ""
+
+msgid "Time Accuracy"
+msgstr ""
+
+msgid "Time Source"
+msgstr ""
+
+msgid "Reference Time Information"
+msgstr ""
+
+msgid "Time Update Control Point"
+msgstr ""
+
+msgid "Time Update State"
+msgstr ""
+
+msgid "Glucose Measurement"
+msgstr ""
+
+msgid "Battery Level"
+msgstr ""
+
+msgid "Temperature Measurement"
+msgstr ""
+
+msgid "Temperature Type"
+msgstr ""
+
+msgid "Intermediate Temperature"
+msgstr ""
+
+msgid "Measurement Interval"
+msgstr ""
+
+msgid "Boot Keyboard Input Report"
+msgstr ""
+
+msgid "System ID"
+msgstr ""
+
+msgid "Model Number String"
+msgstr ""
+
+msgid "Serial Number String"
+msgstr ""
+
+msgid "Firmware Revision String"
+msgstr ""
+
+msgid "Hardware Revision String"
+msgstr ""
+
+msgid "Software Revision String"
+msgstr ""
+
+msgid "Manufacturer Name String"
+msgstr ""
+
+msgid "IEEE 11073-20601 Regulatory Certification Data List"
+msgstr ""
+
+msgid "Current Time"
+msgstr ""
+
+msgid "Magnetic Declination"
+msgstr ""
+
+msgid "Scan Refresh"
+msgstr ""
+
+msgid "Boot Keyboard Output Report"
+msgstr ""
+
+msgid "Boot Mouse Input Report"
+msgstr ""
+
+msgid "Glucose Measurement Context"
+msgstr ""
+
+msgid "Blood Pressure Measurement"
+msgstr ""
+
+msgid "Intermediate Cuff Pressure"
+msgstr ""
+
+msgid "Heart Rate Measurement"
+msgstr ""
+
+msgid "Body Sensor Location"
+msgstr ""
+
+msgid "Heart Rate Control Point"
+msgstr ""
+
+msgid "Alert Status"
+msgstr ""
+
+msgid "Ringer Control Point"
+msgstr ""
+
+msgid "Ringer Setting"
+msgstr ""
+
+msgid "Alert Category ID Bit Mask"
+msgstr ""
+
+msgid "Alert Category ID"
+msgstr ""
+
+msgid "Alert Notification Control Point"
+msgstr ""
+
+msgid "Unread Alert Status"
+msgstr ""
+
+msgid "New Alert"
+msgstr ""
+
+msgid "Supported New Alert Category"
+msgstr ""
+
+msgid "Supported Unread Alert Category"
+msgstr ""
+
+msgid "Blood Pressure Feature"
+msgstr ""
+
+msgid "HID Information"
+msgstr ""
+
+msgid "Report Map"
+msgstr ""
+
+msgid "HID Control Point"
+msgstr ""
+
+msgid "Report"
+msgstr ""
+
+msgid "Protocol Mode"
+msgstr ""
+
+msgid "Scan Interval Window"
+msgstr ""
+
+msgid "PnP ID"
+msgstr ""
+
+msgid "Glucose Feature"
+msgstr ""
+
+msgid "Record Access Control Point"
+msgstr ""
+
+msgid "RSC Measurement"
+msgstr ""
+
+msgid "RSC Feature"
+msgstr ""
+
+msgid "SC Control Point"
+msgstr ""
+
+msgid "Digital"
+msgstr ""
+
+msgid "Analog"
+msgstr ""
+
+msgid "Aggregate"
+msgstr ""
+
+msgid "CSC Measurement"
+msgstr ""
+
+msgid "CSC Feature"
+msgstr ""
+
+msgid "Sensor Location"
+msgstr ""
+
+msgid "PLX Spot-Check Measurement"
+msgstr ""
+
+msgid "PLX Continuous Measurement"
+msgstr ""
+
+msgid "PLX Features"
+msgstr ""
+
+msgid "Cycling Power Measurement"
+msgstr ""
+
+msgid "Cycling Power Vector"
+msgstr ""
+
+msgid "Cycling Power Feature"
+msgstr ""
+
+msgid "Cycling Power Control Point"
+msgstr ""
+
+msgid "Location and Speed"
+msgstr ""
+
+msgid "Navigation"
+msgstr ""
+
+msgid "Position Quality"
+msgstr ""
+
+msgid "LN Feature"
+msgstr ""
+
+msgid "LN Control Point"
+msgstr ""
+
+msgid "Elevation"
+msgstr ""
+
+msgid "Pressure"
+msgstr ""
+
+msgid "Temperature"
+msgstr ""
+
+msgid "Humidity"
+msgstr ""
+
+msgid "True Wind Speed"
+msgstr ""
+
+msgid "True Wind Direction"
+msgstr ""
+
+msgid "Apparent Wind Speed"
+msgstr ""
+
+msgid "Apparent Wind Direction "
+msgstr ""
+
+msgid "Gust Factor"
+msgstr ""
+
+msgid "Pollen Concentration"
+msgstr ""
+
+msgid "UV Index"
+msgstr ""
+
+msgid "Irradiance"
+msgstr ""
+
+msgid "Rainfall"
+msgstr ""
+
+msgid "Wind Chill"
+msgstr ""
+
+msgid "Heat Index"
+msgstr ""
+
+msgid "Dew Point"
+msgstr ""
+
+msgid "Descriptor Value Changed"
+msgstr ""
+
+msgid "Aerobic Heart Rate Lower Limit"
+msgstr ""
+
+msgid "Aerobic Threshold"
+msgstr ""
+
+msgid "Age"
+msgstr ""
+
+msgid "Anaerobic Heart Rate Lower Limit"
+msgstr ""
+
+msgid "Anaerobic Heart Rate Upper Limit"
+msgstr ""
+
+msgid "Anaerobic Threshold"
+msgstr ""
+
+msgid "Aerobic Heart Rate Upper Limit"
+msgstr ""
+
+msgid "Date of Birth"
+msgstr ""
+
+msgid "Date of Threshold Assessment"
+msgstr ""
+
+msgid "Email Address"
+msgstr ""
+
+msgid "Fat Burn Heart Rate Lower Limit"
+msgstr ""
+
+msgid "Fat Burn Heart Rate Upper Limit"
+msgstr ""
+
+msgid "First Name"
+msgstr ""
+
+msgid "Five Zone Heart Rate Limits"
+msgstr ""
+
+msgid "Gender"
+msgstr ""
+
+msgid "Heart Rate Max"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Hip Circumference"
+msgstr ""
+
+msgid "Last Name"
+msgstr ""
+
+msgid "Maximum Recommended Heart Rate"
+msgstr ""
+
+msgid "Resting Heart Rate"
+msgstr ""
+
+msgid "Sport Type for Aerobic and Anaerobic Thresholds"
+msgstr ""
+
+msgid "Three Zone Heart Rate Limits"
+msgstr ""
+
+msgid "Two Zone Heart Rate Limit"
+msgstr ""
+
+msgid "VO2 Max"
+msgstr ""
+
+msgid "Waist Circumference"
+msgstr ""
+
+msgid "Weight"
+msgstr ""
+
+msgid "Database Change Increment"
+msgstr ""
+
+msgid "User Index"
+msgstr ""
+
+msgid "Body Composition Feature"
+msgstr ""
+
+msgid "Body Composition Measurement"
+msgstr ""
+
+msgid "Weight Measurement"
+msgstr ""
+
+msgid "Weight Scale Feature"
+msgstr ""
+
+msgid "User Control Point"
+msgstr ""
+
+msgid "Magnetic Flux Density - 2D"
+msgstr ""
+
+msgid "Magnetic Flux Density - 3D"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Barometric Pressure Trend"
+msgstr ""
+
+msgid "Bond Management Control Point"
+msgstr ""
+
+msgid "Bond Management Feature"
+msgstr ""
+
+msgid "Central Address Resolution"
+msgstr ""
+
+msgid "CGM Measurement"
+msgstr ""
+
+msgid "CGM Feature"
+msgstr ""
+
+msgid "CGM Status"
+msgstr ""
+
+msgid "CGM Session Start Time"
+msgstr ""
+
+msgid "CGM Session Run Time"
+msgstr ""
+
+msgid "CGM Specific Ops Control Point"
+msgstr ""
+
+msgid "Indoor Positioning Configuration"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid "Local North Coordinate"
+msgstr ""
+
+msgid "Local East Coordinate"
+msgstr ""
+
+msgid "Floor Number"
+msgstr ""
+
+msgid "Altitude"
+msgstr ""
+
+msgid "Uncertainty"
+msgstr ""
+
+msgid "Location Name"
+msgstr ""
+
+msgid "Characteristic Extended Properties"
+msgstr ""
+
+msgid "Characteristic User Description"
+msgstr ""
+
+msgid "Client Characteristic Configuration"
+msgstr ""
+
+msgid "Server Characteristic Configuration"
+msgstr ""
+
+msgid "Characteristic Format"
+msgstr ""
+
+msgid "Characteristic Aggregate Format"
+msgstr ""
+
+msgid "Valid Range"
+msgstr ""
+
+msgid "External Report Reference"
+msgstr ""
+
+msgid "Report Reference"
+msgstr ""
+
+msgid "Generic Access"
+msgstr ""
+
+msgid "Generic Attribute"
+msgstr ""
+
+msgid "Immediate Alert"
+msgstr ""
+
+msgid "Link Loss"
+msgstr ""
+
+msgid "Tx Power"
+msgstr ""
+
+msgid "Current Time Service"
+msgstr ""
+
+msgid "Reference Time Update Service"
+msgstr ""
+
+msgid "Next DST Change Service"
+msgstr ""
+
+msgid "Glucose"
+msgstr ""
+
+msgid "Health Thermometer"
+msgstr ""
+
+msgid "Device Information"
+msgstr ""
+
+msgid "Heart Rate"
+msgstr ""
+
+msgid "Phone Alert Status Service"
+msgstr ""
+
+msgid "Battery Service"
+msgstr ""
+
+msgid "Blood Pressure"
+msgstr ""
+
+msgid "Alert Notification Service"
+msgstr ""
+
+msgid "Scan Parameters"
+msgstr ""
+
+msgid "Running Speed and Cadence"
+msgstr ""
+
+msgid "Automation IO"
+msgstr ""
+
+msgid "Cycling Speed and Cadence"
+msgstr ""
+
+msgid "Cycling Power"
+msgstr ""
+
+msgid "Location and Navigation"
+msgstr ""
+
+msgid "Environmental Sensing"
+msgstr ""
+
+msgid "Body Composition"
+msgstr ""
+
+msgid "User Data"
+msgstr ""
+
+msgid "Weight Scale"
+msgstr ""
+
+msgid "Bond Management"
+msgstr ""
+
+msgid "Continuous Glucose Monitoring"
+msgstr ""
+
+msgid "Internet Protocol Support"
+msgstr ""
+
+msgid "Indoor Positioning"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Odd"
+msgstr ""
+
+msgid "Even"
+msgstr ""
+
+msgid "Mark"
+msgstr ""
+
+msgid "Space"
+msgstr ""
+
+msgid "1 Stop Bit"
+msgstr ""
+
+msgid "1.5 Stop Bits"
+msgstr ""
+
+msgid "2 Stop Bits"
+msgstr ""

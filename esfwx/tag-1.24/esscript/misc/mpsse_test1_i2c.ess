@@ -1,0 +1,278 @@
+/// FTxxxx MPSSE script test.
+/// Interfacing the I2C with OPT3001 on it.
+///
+
+// Enumerate available MPSSE devices
+var devInfos = EsFtdiDriver::enumerate(
+      true,   //< Include busy devices
+      true    //< Include only MPSSE-capable devices
+    );
+
+if( !devInfos#countGet() )
+  throw "Could not find any MPSSE-capable devices";
+
+// Take the first found device and open it  
+var dev = EsFtdiDriver::deviceCreate(
+  EsFtdiDeviceKind$$MPSSE_I2C,
+  devInfos[0]
+);
+  
+if( !dev )
+  throw EsStr::format(
+    "Could not create MPSSE device of type %s for %s",
+    EsFtdiDeviceKind$$MPSSE_I2C$$label,
+    devInfos[0]
+  );
+
+if( !dev.open() )
+  throw EsStr::format(
+    "Could not open MPSSE device %s",
+    devInfos[0]
+  );
+
+// Set OS systicks period to 1 ms
+var systick = EsUtilities::systickChange(
+  1
+);
+
+const c_opt3001_addr = 0x44;
+
+function opt3001rawToVal(raw)
+{
+  return ((raw & 0x0FFF) * (1 << (raw >> 12)) ) / 100.; 
+}
+/*
+function opt3001valToRaw(val)
+{
+  val *= 100.;
+  return ((raw & 0x0FFF) * (1 << (raw >> 12)) ) / 100.; 
+}*/
+
+function opt3001registerRead(bus, addr, reg)
+var buff;
+{
+  bus.write(
+    addr,
+    reg#asByte(),
+    EsFtdiMpsseI2cIO$$START_BIT
+  );
+  
+  buff = bus.read(
+    addr,
+    2,
+    EsFtdiMpsseI2cIO$$START_BIT|
+    EsFtdiMpsseI2cIO$$STOP_BIT|
+    EsFtdiMpsseI2cIO$$NACK_LAST_BYTE
+  );
+  
+  if( 2 == buff#countGet() )
+    return buff[1] + (buff[0] << 8);
+}
+
+function opt3001registerWrite(bus, addr, reg, data)
+var buff = B"\0\0\0";
+{
+  buff[0] = reg;
+  buff[1] = (data >> 8) & 0xFF;
+  buff[2] = (data & 0xFF);
+  
+  return 3 == bus.write(
+    addr,
+    buff,
+    EsFtdiMpsseI2cIO$$START_BIT|
+    EsFtdiMpsseI2cIO$$STOP_BIT|
+    EsFtdiMpsseI2cIO$$BREAK_ON_NACK
+  );
+}
+
+function opt3001idRead(bus, addr)
+var id = [];
+{
+  id += 
+    opt3001registerRead(bus, addr, 0x7E);
+    
+  id +=   
+    opt3001registerRead(bus, addr, 0x7F);
+  
+  return id;
+}
+
+function opt3001limitLowRead(bus, addr)
+{
+  return opt3001rawToVal(
+    opt3001registerRead(
+      bus, 
+      addr, 
+      0x02
+    )
+  );
+}
+
+function opt3001limitHighRead(bus, addr)
+{
+  return opt3001rawToVal(
+    opt3001registerRead(
+      bus, 
+      addr, 
+      0x03
+    )
+  );
+}
+
+function opt3001configRead(bus, addr)
+var raw, cfg = []; //< range, conv time, conv mode, overflow, conv ready, result higher, result lower, INT latch mode, INT polarity mode, mask exp in result, fault count till INT
+{
+  raw = opt3001registerRead(bus, addr, 0x01);
+  cfg += (raw >> 12) & 0x0F;     //< Range
+  cfg += (raw & 0x0800) ? //< Conversion time
+    800 : 
+    100;
+  cfg += ((raw >> 9) & 0x03); //< Conv mode
+  cfg += (raw >> 8) & 0x01; //< Overflow
+  cfg += (raw >> 7) & 0x01; //< Conversion ready
+  cfg += (raw >> 6) & 0x01; //< Result is higher
+  cfg += (raw >> 5) & 0x01; //< Result is lower
+  cfg += (raw >> 4) & 0x01; //< INT latch mode
+  cfg += (raw >> 3) & 0x01; //< INT Polarity
+  cfg += (raw >> 2) & 0x01; //< Mask exponent in result
+  cfg += raw & 0x03;        //< Fault count till INT
+
+  return cfg;
+}
+
+function opt3001configWrite(bus, addr, range, convTime, convMode, latchMode, polMode, expMask, faultCnt )
+var raw; //< conv mode, overflow, conv ready, result higher, result lower, INT latch mode, INT polarity mode, mask exp in result, fault count till INT
+{
+  raw = (range & 0x0F) << 12;
+  
+  if( 800 == convTime )
+    raw |= 0x0800;
+    
+  raw += (convMode & 0x03) << 9;
+  raw += (latchMode & 0x01) << 4;
+  raw += (polMode & 0x01) << 3;
+  raw += (expMask & 0x01) << 2;
+  raw += (faultCnt & 0x03);
+  
+  return opt3001registerWrite(
+    bus,
+    addr,
+    0x01,
+    raw
+  );
+}
+
+function opt3001resultRead(bus, addr)
+{
+  return opt3001rawToVal(
+    opt3001registerRead(
+      bus, 
+      addr, 
+      0
+    )
+  );
+}
+
+dev$clockRate = EsFtdiMpsseI2cClock$$FAST;
+dev.configApply();
+
+// Lookup devices on I1C bus
+var addr, addrs = [], tmp, str, tmo;
+for(addr = 0; addr < 128; ++addr)
+{
+  // Ping devices for read
+  if( 
+    dev.ping(
+      addr,
+      false
+    )
+  )
+    addrs += addr;
+}
+
+if( addrs#countGet() )
+{
+  EsScriptDebug::log(
+    "Found I2C devices on bus: %s",
+    addrs
+  );
+  
+  if( c_opt3001_addr in addrs )
+  {
+    EsScriptDebug::log(
+      "OPT3001 found."
+    );
+  
+    tmp = opt3001idRead(dev, c_opt3001_addr);
+    EsScriptDebug::log(
+      "OPT3001 IDs: [MFG: 0x%04X DEV: 0x%04X]",
+      tmp[0],
+      tmp[1]
+    );
+  
+    tmp = opt3001configRead(dev, c_opt3001_addr);
+    str = "OPT3001 config:\nrange=" + tmp[0]#asString() + 
+      "\nconv time=" + tmp[1]#asString() + 
+      "\nconv mode=" + (( 0 == tmp[2] ) ? "Shutdown" : (( 1 == tmp[2] ) ? "Single-shot" : "Continuous")) + 
+      "\noverflow=" + tmp[3]#asString() + 
+      "\nconv ready=" + tmp[4]#asString() + 
+      "\nresult higher=" + tmp[5]#asString() + 
+      "\nresult lower=" + tmp[6]#asString() + 
+      "\nINT latch mode=" + (tmp[7] ? "Window" : "Hysteresis") + 
+      "\nINT polarity mode=" + (tmp[8] ? "Active High" : "Active Low") + 
+      "\nmask EXP in result=" + tmp[9]#asString() + 
+      "\nfault count till INT=" + (1 << tmp[10]);
+    
+    EsScriptDebug::log( 
+      "%s\nStarting one-shot conversions...",
+      str
+    );
+
+    tmo = 100;
+    while( 1 )
+    {
+      if( 
+        !opt3001configWrite(
+          dev, 
+          c_opt3001_addr, 
+          0x0C, 
+          tmo, 
+          1, 
+          0, //< Hyst. mode
+          1, //< Active high
+          0, //< Do not mask EXP
+          3  //< Fault count = 8
+        )
+      )
+      {
+        EsScriptDebug::log("Could not start conversion");
+        break;
+      }
+
+      EsThreadWorker::sleep(tmo+200);
+      
+      tmp = opt3001configRead(dev, c_opt3001_addr);
+      
+      str = EsStr::format(
+        "Result: RNG:%d, EXP:%dms, MOD:%d, OVF:%d, READY:%d, LUX:%0.2f",
+        tmp[0],        
+        tmp[1],        
+        tmp[2],
+        tmp[3],
+        tmp[4],
+        opt3001resultRead(dev, c_opt3001_addr)
+      );
+
+      EsScriptDebug::log(str);
+    }
+  }
+}
+else
+  EsScriptDebug::log(
+    "I2C devices not found"
+  );
+
+dev.close();
+
+// Restore OS systicks
+EsUtilities::systickRestore( systick );

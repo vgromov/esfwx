@@ -1,0 +1,159 @@
+// Test Socket scripted server
+//
+object ServerImpl
+{
+  var m_srv;
+
+  new()
+  {
+    // Create SocketServer instance, assign us to it as ioHandler implementor
+    // Use weak referencing to avoid refcount lock
+    m_srv = new EsSocketServer(
+      EsSocketType$$ConnectionOriented    
+    );
+    
+    m_srv$ioHandler = $weakReference;
+
+    m_srv$address = new EsSocketAddr(
+      EsSocketAddrType$$IPV4,
+      "127.0.0.1",
+      6000
+    );
+  }
+
+  function open()
+  {
+    return m_srv.open();
+  }
+
+  // Implement server methods
+  //  
+  function onClientCannotBeAdded(srv, addr)
+  {
+    EsScriptDebug::log(
+      "Client with address %s could not be added", 
+      addr.asRawString()
+    );
+  }
+
+  function onClientAdding(srv, addr)
+  {
+    EsScriptDebug::log(
+      "Adding client with address %s", 
+      addr.asRawString()
+    );
+  }
+
+  function onClientAdded(srv, addr)
+  {
+    EsScriptDebug::log(
+      "Client with address %s added, client count reached %d", 
+      addr.asRawString(),
+      srv$clientsCount
+    );
+  }
+
+  function onClientRemoving(srv, addr)
+  {
+    EsScriptDebug::log(
+      "removing Client with address %s", 
+      addr.asRawString()
+    );
+  }
+
+  function onClientRemoved(srv, addr)
+  {
+    EsScriptDebug::log(
+      "Client with address %s removed, client count reached %d", 
+      addr.asRawString(),
+      srv$clientsCount
+    );
+  }
+
+  function onClientDisconnected(srv, addr)
+  {
+    EsScriptDebug::log(
+      "Detected disconnect of the Client with address %s", 
+      addr.asRawString()
+    );
+  }
+
+  function onClientClosing(srv, addr, noFarewell)
+  {
+    if( noFarewell )
+    {
+      EsScriptDebug::log(
+        "Client with address %s is closing from client side, no server farewell is being sent", 
+        addr.asRawString()
+      );
+      
+      return;
+    }
+    
+    EsScriptDebug::log(
+      "Client with address %s is closing from Server side, sending farewell sequence", 
+      addr.asRawString()
+    );
+    
+    // All that is returned from this callback, will be interpreted 
+    // by the server code as bin buffer, and sent to the closing client as a 
+    // farewell message
+    //
+    return B"SRVBYE!";
+  }
+
+  function onClientClosed(srv, addr)
+  {
+    EsScriptDebug::log(
+      "Client with address %s is closed", 
+      addr.asRawString()
+    );
+  }
+
+  function onClientDataReceived(srv, addr, indata)
+  {
+    // Check if we're receiving farewell from client - do not respond
+    // and initiate client disconnect instead
+    //
+    if( indata == B"BYECLI!" )
+    {
+      EsScriptDebug::log(
+        "Recieved farewell from client %s, closing connection to it, no Server farewell needed",
+        addr.asRawString()
+      );
+
+      //< Setting disconnect flag, no subsequent server farewell needed
+      srv.clientDisconnect(
+        addr, 
+        true
+      );
+
+      return;
+    }
+
+    // Data recieved from specific client, are passed as indata bin buffer parameter
+    // Any immediate response may be passed as a return value
+    //
+    // As soon as our demo is an echo server, immediately send back recieved data
+    //
+    EsScriptDebug::log(
+      "Recieved %d bytes from client %s, echoing back",
+      indata#countGet(),
+      addr.asRawString()
+    );
+
+    return indata;
+  }
+}
+
+var srv = new ServerImpl();
+
+if( srv.open() )
+{
+  EsScriptDebug::log("Server opened, listening for incoming client connections");
+
+  while(1)
+  {
+    EsThreadWorker::sleep(500); // Do nothing on main script thread, server is running in its own threads
+  }
+}

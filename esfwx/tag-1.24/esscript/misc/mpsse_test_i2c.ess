@@ -1,0 +1,107 @@
+/// FTxxxx MPSSE script test.
+/// Interfacing the I2C bus.
+///
+
+// Enumerate available MPSSE devices
+var devInfos = EsFtdiDriver::enumerate(
+      true,   //< Include busy devices
+      true    //< Include only MPSSE-capable devices
+    );
+
+if( !devInfos#countGet() )
+  throw "Could not find any MPSSE-capable devices";
+
+// Take the first found device and open it  
+var dev = EsFtdiDriver::deviceCreate(
+  EsFtdiDeviceKind$$MPSSE_I2C,
+  devInfos[0]
+);
+  
+if( !dev )
+  throw EsStr::format(
+    "Could not create MPSSE device of type %s for %s",
+    EsFtdiDeviceKind$$MPSSE_I2C$$label,
+    devInfos[0]
+  );
+
+if( !dev.open() )
+  throw EsStr::format(
+    "Could not open MPSSE device %s",
+    devInfos[0]
+  );
+
+// Set OS systicks period to 1 ms
+var systick = EsUtilities::systickChange(
+  1
+);
+
+const c_as7261_addr = 0x49; //< AS7261 address
+
+dev$clockRate = EsFtdiMpsseI2cClock$$FAST;
+dev.configApply();
+
+// Lookup devices on I1C bus
+var addr, addrs = [], buff;
+for(addr = 0; addr < 128; ++addr)
+{
+  // Ping devices for read
+  if( 
+    dev.ping(
+      addr,
+      false
+    )
+  )
+    addrs += addr;
+}
+
+/*if( addrs#countGet() )
+{
+  EsScriptDebug::log(
+    "Found I2C devices on bus: %s",
+    addrs
+  );
+  
+  if( c_as7261_addr in addrs )
+  {
+    EsScriptDebug::log(
+      "AS7261 found. Reading STATUS register in loop..."
+    );
+*/  
+    while( !__scriptHost$aborting )
+    {
+      dev.write(
+        c_as7261_addr,
+        B"\0", //< STATUS register address
+        EsFtdiMpsseI2cIO$$START_BIT
+      );
+      buff = dev.read(
+        c_as7261_addr,
+        1,
+        EsFtdiMpsseI2cIO$$START_BIT|
+        EsFtdiMpsseI2cIO$$STOP_BIT|
+        EsFtdiMpsseI2cIO$$NACK_LAST_BYTE
+      );
+
+      if( 1 == buff#countGet() )
+        EsScriptDebug::log(
+          "AS7261 STATUS returned '%s'",
+          buff
+        );
+      else
+        EsScriptDebug::log(
+          "AS7261 STATUS read failed!"
+        );
+    
+      EsThreadWorker::sleep(1000);
+    } /*
+  }
+}
+else
+  EsScriptDebug::log(
+    "I2C devices not found"
+  );
+*/
+dev.close();
+
+// Restore OS systicks
+EsUtilities::systickRestore( systick );

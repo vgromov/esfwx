@@ -1,0 +1,90 @@
+// ECC Project generator script
+//
+
+/// Supported IDEs
+enum PROJECT_ECCVER {
+  XE9         = 17;
+  XE10        = 18;
+  XE11        = 19;
+}
+
+/// Supported platforms
+enum PROJECT_PLATFORM
+{
+  Win32       = 1, "Windows 32bit";
+  Win64       = 2, "Windows 64bit";
+  OSX32       = 4, "MAC OSX 32bit";
+  Android     = 16, "Android 32bit";
+  iOSDevice32 = 64, "IOS devices, 32bit";
+  iOSDevice64 = 1024, "IOS devices, 64bit";
+}
+
+/// Supported project types
+enum PROJECT_TYPE {
+  Package     = 0, "ECC Package";
+  Console     = 1, "Console application";
+  Application = 2, "Forms application";
+}
+
+/// Supported project frameworks
+enum PROJECT_FRAMEWORK {
+  None        = 0, "Framework-newtral";
+  VCL         = 1, "VCL framework";
+  FMX         = 2, "FMX framework";
+}
+
+// Project version information.
+enum PROJECT_VERSION {
+  // Common
+  Major           = 1;
+  Minor           = 21;
+  Release         = 1;
+  Build           = 12;
+  Code            = 21; 
+  CompanyName     = "ECO-E";
+  FileDescription = null;
+  OriginalFilename= null;
+  InternalName    = null;
+  ProductName     = null;
+  ID              = null; //< Modern windows, OSX and Mobile - specific
+  LegalTrademarks = null;
+  Comments        = null;
+  // Android - specific
+  persistent      = False;
+  restoreAnyVersion=False;
+  installLocation = auto;
+  largeHeap       = False;
+  theme           = TitleBar;
+  hardwareAccelerated= true;
+  apiKey          = null;
+}
+
+// Project basic information
+const PROJECT_INFO = [
+  "escore",                                                 ///< Name
+  "{568a6490-6378-46cd-8043-4dd1d19f8d06}",                 ///< GUID
+  PROJECT_FRAMEWORK$$None,                                  ///< Framework
+  PROJECT_TYPE$$Package,                                    ///< Project type
+  [                                                         ///< Platforms
+    PROJECT_PLATFORM$$Win32,
+    PROJECT_PLATFORM$$Win64,
+    PROJECT_PLATFORM$$OSX32,
+    PROJECT_PLATFORM$$Android,
+    PROJECT_PLATFORM$$iOSDevice32,
+    PROJECT_PLATFORM$$iOSDevice64
+  ],
+  PROJECT_PLATFORM$$Win32,                                  ///< Default selected platform
+  [                                                         ///< Project configurations, in an order of appearance
+    "Debug",
+    "Release"
+  ],
+  "Debug"                                                   ///< Default selected configuration
+];
+
+ 
+  LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+  OSX     = osx: <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=$(MSBuildProjectName);CFBundleVersion=1.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);NSHighResolutionCapable=true;LSApplicationCategoryType=public.app-category.utilities;NSLocationAlwaysUsageDescription=The reason for accessing the location information of the user;NSLocationWhenInUseUsageDescription=The reason for accessing the location information of the user;NSContactsUsageDescription=The reason for accessing the contacts</VerInfo_Keys>
+  IOS     = <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDevelopmentRegion=en;CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=$(MSBuildProjectName);CFBundleInfoDictionaryVersion=7.1;CFBundleVersion=1.0.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;LSRequiresIPhoneOS=true;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);UIDeviceFamily=iPhone &amp; iPad;CFBundleResourceSpecification=ResourceRules.plist;NSLocationAlwaysUsageDescription=The reason for accessing the location information of the user;NSLocationWhenInUseUsageDescription=The reason for accessing the location information of the user;FMLocalNotificationPermission=false;UIBackgroundModes=;NSContactsUsageDescription=The reason for accessing the contacts;NSPhotoLibraryUsageDescription=The reason for accessing the photo library;NSCameraUsageDescription=The reason for accessing the camera</VerInfo_Keys>
+  Android = :       <VerInfo_Keys>package=com.embarcadero.$(MSBuildProjectName);label=$(MSBuildProjectName);versionCode=1;versionName=1.0.0;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=</VerInfo_Keys>
+
+}

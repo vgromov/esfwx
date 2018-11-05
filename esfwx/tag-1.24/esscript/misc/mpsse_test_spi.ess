@@ -1,0 +1,49 @@
+/// FTxxxx MPSSE script test.
+/// Interfacing the SPI bus.
+///
+
+// Enumerate available MPSSE devices
+var devInfos = EsFtdiDriver::enumerate(
+      true,   //< Include busy devices
+      true    //< Include only MPSSE-capable devices
+    );
+
+if( !devInfos#countGet() )
+  throw "Could not find any MPSSE-capable devices";
+
+// Take the first found device and open it  
+var dev = EsFtdiDriver::deviceCreate(
+  EsFtdiDeviceKind$$MPSSE_SPI,
+  devInfos[0]
+);
+  
+if( !dev )
+  throw EsStr::format(
+    "Could not create MPSSE device of type %s for %s",
+    EsFtdiDeviceKind$$MPSSE_SPI$$label,
+    devInfos[0]
+  );
+
+if( !dev.open() )
+  throw EsStr::format(
+    "Could not open MPSSE device %s",
+    devInfos[0]
+  );
+
+// Set OS systicks period to 1 ms
+var systick = EsUtilities::systickChange(
+  1
+);
+
+dev$clockRate = 16000000;
+dev$mode = EsFtdiMpsseSpiCpolCpha$$MODE3; //< Capture on rising edge
+dev$csLineCtl = EsFtdiMpsseSpiCsLine$$DBUS3;
+dev$csLineActiveHigh = false;
+dev.configApply();
+
+// Initiate OLED display IO
+//
+dev.close();
+
+// Restore OS systicks
+EsUtilities::systickRestore( systick );

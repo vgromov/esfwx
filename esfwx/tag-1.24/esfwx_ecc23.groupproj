@@ -1,0 +1,84 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{61147DC0-3577-4DB6-AE19-B796020754BC}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="escore\escore_ecc23.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="escomm\escomm_ecc23.cbproj">
+            <Dependencies>escore\escore_ecc23.cbproj</Dependencies>
+        </Projects>
+        <Projects Include="esmath\esmath_ecc23.cbproj">
+            <Dependencies>escore\escore_ecc23.cbproj</Dependencies>
+        </Projects>
+        <Projects Include="esscript\esscript_ecc23.cbproj">
+            <Dependencies>escore\escore_ecc23.cbproj</Dependencies>
+        </Projects>
+        <Projects Include="tests\tests_ecc23.cbproj">
+            <Dependencies>escore\escore_ecc23.cbproj;escomm\escomm_ecc23.cbproj;esmath\esmath_ecc23.cbproj;esscript\esscript_ecc23.cbproj</Dependencies>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="escore_ecc23">
+        <MSBuild Projects="escore\escore_ecc23.cbproj"/>
+    </Target>
+    <Target Name="escore_ecc23:Clean">
+        <MSBuild Projects="escore\escore_ecc23.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="escore_ecc23:Make">
+        <MSBuild Projects="escore\escore_ecc23.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="escomm_ecc23" DependsOnTargets="escore_ecc23">
+        <MSBuild Projects="escomm\escomm_ecc23.cbproj"/>
+    </Target>
+    <Target Name="escomm_ecc23:Clean" DependsOnTargets="escore_ecc23:Clean">
+        <MSBuild Projects="escomm\escomm_ecc23.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="escomm_ecc23:Make" DependsOnTargets="escore_ecc23:Make">
+        <MSBuild Projects="escomm\escomm_ecc23.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="esmath_ecc23" DependsOnTargets="escore_ecc23">
+        <MSBuild Projects="esmath\esmath_ecc23.cbproj"/>
+    </Target>
+    <Target Name="esmath_ecc23:Clean" DependsOnTargets="escore_ecc23:Clean">
+        <MSBuild Projects="esmath\esmath_ecc23.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="esmath_ecc23:Make" DependsOnTargets="escore_ecc23:Make">
+        <MSBuild Projects="esmath\esmath_ecc23.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="esscript_ecc23" DependsOnTargets="escore_ecc23">
+        <MSBuild Projects="esscript\esscript_ecc23.cbproj"/>
+    </Target>
+    <Target Name="esscript_ecc23:Clean" DependsOnTargets="escore_ecc23:Clean">
+        <MSBuild Projects="esscript\esscript_ecc23.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="esscript_ecc23:Make" DependsOnTargets="escore_ecc23:Make">
+        <MSBuild Projects="esscript\esscript_ecc23.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="tests_ecc23" DependsOnTargets="escore_ecc23;escomm_ecc23;esmath_ecc23;esscript_ecc23">
+        <MSBuild Projects="tests\tests_ecc23.cbproj"/>
+    </Target>
+    <Target Name="tests_ecc23:Clean" DependsOnTargets="escore_ecc23:Clean;escomm_ecc23:Clean;esmath_ecc23:Clean;esscript_ecc23:Clean">
+        <MSBuild Projects="tests\tests_ecc23.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="tests_ecc23:Make" DependsOnTargets="escore_ecc23:Make;escomm_ecc23:Make;esmath_ecc23:Make;esscript_ecc23:Make">
+        <MSBuild Projects="tests\tests_ecc23.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="escore_ecc23;escomm_ecc23;esmath_ecc23;esscript_ecc23;tests_ecc23"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="escore_ecc23:Clean;escomm_ecc23:Clean;esmath_ecc23:Clean;esscript_ecc23:Clean;tests_ecc23:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="escore_ecc23:Make;escomm_ecc23:Make;esmath_ecc23:Make;esscript_ecc23:Make;tests_ecc23:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

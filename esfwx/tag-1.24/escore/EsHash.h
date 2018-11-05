@@ -1,0 +1,110 @@
+#ifndef _es_hash_h_
+#define _es_hash_h_
+
+// forward declarations
+//
+class EsString;
+
+/// FNV-1a hash support classes
+///
+class ESCORE_CLASS EsHashFNV_1a_32
+{
+public:
+	EsHashFNV_1a_32();
+	EsHashFNV_1a_32(const EsHashFNV_1a_32& src);
+	EsHashFNV_1a_32(const EsString& str);
+	EsHashFNV_1a_32(const EsByteString& bstr);
+	EsHashFNV_1a_32(const EsBinBuffer& buff);
+
+	void update(const EsString& str) ES_NOTHROW;
+	void update(const EsByteString& bstr) ES_NOTHROW;
+  void update(const EsBinBuffer& buff) ES_NOTHROW;
+	void reset() ES_NOTHROW;
+	esU32 get() const ES_NOTHROW { return m_hash; }
+
+	const EsHashFNV_1a_32& operator=(const EsHashFNV_1a_32& src) ES_NOTHROW;
+
+protected:
+	esU32 m_hash;
+};
+
+class ESCORE_CLASS EsHashFNV_1a_64
+{
+public:
+	EsHashFNV_1a_64();
+	EsHashFNV_1a_64(const EsHashFNV_1a_64& src);
+	EsHashFNV_1a_64(const EsString& str);
+	EsHashFNV_1a_64(const EsByteString& str);
+	EsHashFNV_1a_64(const EsBinBuffer& buff);
+
+	void update(const EsString& str) ES_NOTHROW;
+	void update(const EsByteString& bstr) ES_NOTHROW;
+	void update(const EsBinBuffer& buff) ES_NOTHROW;
+	void reset() ES_NOTHROW;
+	esU64 get() const ES_NOTHROW { return m_hash; }
+
+	const EsHashFNV_1a_64& operator=(const EsHashFNV_1a_64& src) ES_NOTHROW;
+
+protected:
+	esU64 m_hash;
+};
+//---------------------------------------------------------------------------
+
+// FNV-1a hash implementation
+//
+// specializations for the FNV1(a) algorithms
+template< typename FNV_T >
+struct FNV_Traits
+{
+	typedef FNV_T T;
+	static const T c_prime = 16777619;	// the prime number to initialize the generator
+	static const T c_init = 2166136261;// initial value
+};
+//---------------------------------------------------------------------------
+
+template<>
+struct FNV_Traits<esU32>
+{
+	typedef esU32 T;
+	static const T c_prime = 16777619;	// the prime number to initialize the generator
+	static const T c_init = 2166136261;// initial value
+};
+//---------------------------------------------------------------------------
+
+template<>
+struct FNV_Traits<esU64>
+{
+	typedef esU64 T;
+	static const T c_prime = IMMEDIATE_UINT64(1099511628211);	// the prime number to initialize the generator
+	static const T c_init = IMMEDIATE_UINT64(14695981039346656037);// initial value
+};
+//---------------------------------------------------------------------------
+
+template< typename T >
+inline T fnv1a(esU8 b, T hash) ES_NOTHROW
+{
+	return (static_cast<T>(b) ^ hash) * FNV_Traits<T>::c_prime;
+}
+//---------------------------------------------------------------------------
+
+template< typename T >
+inline T fnv1a(esU16 w, T hash) ES_NOTHROW
+{
+	const esU8* pb = reinterpret_cast<const esU8*>(&w);
+	hash = fnv1a< T >(*pb++, hash);
+	return fnv1a< T >(*pb, hash);
+}
+//---------------------------------------------------------------------------
+
+template< typename T >
+inline T fnv1a(esU32 u, T hash) ES_NOTHROW
+{
+	const esU8* pb = reinterpret_cast<const esU8*>(&u);
+	hash = fnv1a< T >(*pb++, hash);
+	hash = fnv1a< T >(*pb++, hash);
+	hash = fnv1a< T >(*pb++, hash);
+	return fnv1a< T >(*pb, hash);
+}
+//---------------------------------------------------------------------------
+
+#endif // _es_hash_h_

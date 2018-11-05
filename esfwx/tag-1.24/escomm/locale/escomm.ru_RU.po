@@ -1,0 +1,696 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: escomm\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-24 14:49+0400\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Vsevolod V Gromov <gromov.vsevolod@yandex.ru>\n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.5.5\n"
+
+msgid "EKONNECT adapter direct connection channel"
+msgstr "Канал прямого соединения через EKONNECT"
+
+msgid "Device name"
+msgstr "Имя устройства"
+
+msgid "Baud rate"
+msgstr "Скорость"
+
+msgid "Byte size"
+msgstr "Размер байта"
+
+msgid "Parity"
+msgstr "Четность"
+
+msgid "Stop bits"
+msgstr "Стоп биты"
+
+msgid "RX timeout in ms"
+msgstr "Время ожидания RX в мс"
+
+msgid "TX timeout in ms"
+msgstr "Время ожидания TX в мс"
+
+msgid "RX buffer size"
+msgstr "Размер буфера RX"
+
+msgid "TX buffer size"
+msgstr "Размер буфера TX"
+
+msgid "Automatically reset channel on RX timeout"
+msgstr "Автоматически сбрасывать канал при истечении времени ожидания RX"
+
+msgid "Use standard RS232 socket"
+msgstr "Использовать стандартное гнездо RS232"
+
+msgid "Open EKONNECT device channel"
+msgstr "Открыть канал EKONNECT"
+
+msgid "Close EKONNECT device channel"
+msgstr "Закрыть канал устройства EKONNECT"
+
+msgid "Return true if EKONNECT device channel is open"
+msgstr ""
+
+msgid "Send bytes over a channel"
+msgstr ""
+
+msgid "Receive bytes from a channel"
+msgstr ""
+
+msgid "Reset EKONNECT device channel IO buffers"
+msgstr "Сбросить буферы ввода-вывода устройства EKONNECT"
+
+msgid "Get EKONNECT device channel-specific error code"
+msgstr ""
+
+#, fuzzy
+msgid "Get EKONNECT device channel-specific error string"
+msgstr "Сбросить буферы ввода-вывода устройства EKONNECT"
+
+msgid "Configure auxiliary power supply via Econnect cable"
+msgstr ""
+
+msgid "Configure Econnect cable for programming"
+msgstr ""
+
+msgid "Return true if requested channel rate is supported"
+msgstr ""
+
+msgid "Return variant array of supported rates"
+msgstr ""
+
+msgid "Return default channel rate value"
+msgstr ""
+
+msgid "Return currently set channel rate"
+msgstr ""
+
+msgid "Try to set channel rate"
+msgstr ""
+
+msgid "EsChannelIoEkonnect constructor"
+msgstr ""
+
+msgid "Cannot change device while channel is active."
+msgstr "Невозможно сменить устройство при активном канале."
+
+msgid "Cannot change data bit length while channel is active."
+msgstr "Невозможно изменить длину данных при активном канале."
+
+msgid "Cannot change parity while channel is active."
+msgstr "Невозможно сменить четность при активном канале."
+
+msgid "Cannot change stop bits while channel is active."
+msgstr "Невозможно изменить стоп биты при активном канале."
+
+msgid "Cannot change RX timeout while channel is active."
+msgstr "Невозможно изменить время ожидания RX при активном канале."
+
+msgid "Cannot change TX timeout while channel is active."
+msgstr "Невозможно изменить время ожидания TX при активном канале."
+
+msgid "Cannot change RX buffer length while channel is active."
+msgstr "Невозможно изменить длину буфера RX при активном канале."
+
+msgid "Cannot change TX buffer length while channel is active."
+msgstr "Невозможно изменить длину буфера TX при активном канале."
+
+#, c-format
+msgid "Channel name '%s' is not registered"
+msgstr "Канал '%s' не зарегистрирован"
+
+msgid "Client socket (network) connection channel"
+msgstr "Клиентский сетевой коммуникационный канал"
+
+msgid "Server address"
+msgstr "Адрес сервера"
+
+msgid "Server port"
+msgstr "Порт сервера"
+
+msgid "Operation timeout (s)"
+msgstr "Время ожидания операции (сек)"
+
+msgid "Open client socket channel"
+msgstr "Открыть канал клиентского сокета"
+
+msgid "Close client socket channel"
+msgstr "Закрыть клиентский сетевой канал"
+
+msgid "Return true if client socket channel is open and connected to server"
+msgstr ""
+
+msgid "Reset client socket channel IO buffers"
+msgstr "Сбросить буферы ввода-вывода клиентского сетевого канала"
+
+msgid "Get client socket channel-specific error code"
+msgstr ""
+
+#, fuzzy
+msgid "Get client socket channel-specific error string"
+msgstr "Сбросить буферы ввода-вывода клиентского сетевого канала"
+
+msgid "EsChannelIoSocketClient constructor"
+msgstr ""
+
+msgid "Could not set target address while socket is connected"
+msgstr "Невозможно установить адрес удаленного устройства пока сокет активен"
+
+msgid "Could not set target port while socket is connected"
+msgstr "Невозможно установить порт удаленного устройства пока сокет активен"
+
+msgid "Could not set operation timeout while socket is connected"
+msgstr "Невозможно установить время ожидания операции при активном сокете"
+
+msgid "Server socket (network) connection channel"
+msgstr "Серверный сетевой коммуникационный канал"
+
+msgid "Open server socket channel"
+msgstr "Открыть канал серверного сокета"
+
+msgid "Close server socket channel"
+msgstr "Закрыть серверный сетевой канал"
+
+msgid "Return true, if server socket channel is listening"
+msgstr ""
+
+msgid "Reset server socket channel IO buffers"
+msgstr "Сбросить буферы ввода-вывода серверного сетевого канала"
+
+msgid "Get server socket channel-specific error code"
+msgstr ""
+
+#, fuzzy
+msgid "Get server socket channel-specific error string"
+msgstr "Сбросить буферы ввода-вывода серверного сетевого канала"
+
+msgid "EsChannelIoSocketServer constructor"
+msgstr ""
+
+#, c-format
+msgid "Server socket cannot listen on port %d"
+msgstr "Серверный сокет не может принимать соединения на порте %d"
+
+#, fuzzy, c-format
+msgid "Client connection accepted from '%s'"
+msgstr "Клиентское соединение принято на порту %d от '%s'"
+
+msgid "Could not set server socket port while server is active"
+msgstr "Невозможно установить серверный порт пока сокет активен"
+
+msgid "Stub channel"
+msgstr "Канал-заглушка"
+
+msgid "Open stub channel"
+msgstr ""
+
+msgid "Close stub channel"
+msgstr ""
+
+msgid "Return true if stub channel is open"
+msgstr ""
+
+msgid "Reset channel IO buffers"
+msgstr "Сбросить буферы ввода-вывода канала"
+
+msgid "Get channel-specific error code"
+msgstr ""
+
+msgid "Get channel-specific error string"
+msgstr ""
+
+msgid "EsChannelIoStub constructor"
+msgstr ""
+
+msgid "RS232 direct connection channel"
+msgstr "Канал прямого соединения через RS232"
+
+msgid "Port name"
+msgstr "Имя порта"
+
+msgid "Open uart channel"
+msgstr "Открыть последовательный канал"
+
+msgid "Close uart channel"
+msgstr "Закрыть последовательный канал"
+
+msgid "Return true if uart channel is open"
+msgstr ""
+
+msgid "EsChannelIoUart constructor"
+msgstr ""
+
+msgid "Calculate per-byte timeout estimate in ms"
+msgstr ""
+
+msgid "Cannot change port while channel is active."
+msgstr "Невозможно сменить порт при активном канале."
+
+msgid "Cannot change baud rate while channel is active."
+msgstr "Невозможно изменить скорость при активном канале."
+
+msgid "The requested mode is not supported, or the file handle is invalid."
+msgstr ""
+"Запрашиваемый режим не поддерживается, или идентификатор файла неверен."
+
+msgid "The hardware detected a break condition."
+msgstr "Аппаратное обеспечение зарегистрировало разрыв связи."
+
+msgid "The hardware detected a framing error."
+msgstr "Аппаратное обеспечение зарегистрировало ошибку кадра данных."
+
+msgid "An I/O error occurred during communications with the device."
+msgstr "Ошибка ввода-вывода возникла во время коммуникации с устройством."
+
+msgid "A character-buffer overrun has occurred. The next character is lost."
+msgstr "Возникло переполнение буфера. Следующий байт потерян."
+
+msgid ""
+"An input buffer overflow has occurred. There is either no room in the input "
+"buffer, or a character was received after the end-of-file (EOF) character."
+msgstr ""
+"Возникло переполнение входного буфера. Либо размер буфера недостаточен, либо "
+"байт был получен после признака EOF."
+
+msgid "The hardware detected a parity error."
+msgstr "Аппаратное обеспечение зарегистрировало ошибку четности."
+
+msgid ""
+"The application tried to transmit a character, but the output buffer was "
+"full."
+msgstr "Приложение попыталось передать байт, но исходящий буфер полон."
+
+#, c-format
+msgid "Cannot get OS version in %s, (err=%lx)"
+msgstr "Невозможно получить версию ОС в %s, (код=%lx)"
+
+#, c-format
+msgid "Cannot not read from %s"
+msgstr "Невозможно считать из %s"
+
+msgid "FTDI device driver is not found or not installed on this machine."
+msgstr "Драйвер устройств FTDI не найден или не установлен на этой машине."
+
+#, c-format
+msgid "Could not find '%s' entry in FTDI driver."
+msgstr "Метод '%s' не найден в библиотеке драйвера FTDI."
+
+msgid "Success"
+msgstr "Успешно"
+
+msgid "Invalid handle"
+msgstr "Неверный идентификатор"
+
+msgid "Device is not found"
+msgstr "Устройство не найдено"
+
+msgid "Device is not open"
+msgstr "Устройство не активно"
+
+msgid "Driver input-output error"
+msgstr "Ошибка ввода-вывода в драйвере"
+
+msgid "Insufficient resources"
+msgstr "Не хватает ресурсов"
+
+msgid "Invalid parameter"
+msgstr "Неверный параметр"
+
+msgid "Invalid baud rate"
+msgstr "Неверная скорость"
+
+msgid "Device not open for erase"
+msgstr "Устройство не готово к стиранию"
+
+msgid "Device not open for write"
+msgstr "Устройство не готово к записи"
+
+msgid "Failed to write device"
+msgstr "Ошибка записи в устройство"
+
+msgid "Device EEPROM read failed"
+msgstr "Чтение EEPROM устройства закончилось ошибкой"
+
+msgid "Device EEPROM write failed"
+msgstr "Запись EEPROM устройства закончилось ошибкой"
+
+msgid "Device EEPROM erase failed"
+msgstr "Стирание EEPROM устройства закончилось неудачей"
+
+msgid "EEPROM not present in device"
+msgstr "В устройстве отсутствует EEPROM"
+
+msgid "Device EEPROM not programmed"
+msgstr "EEPROM устройства не запрограмирован"
+
+msgid "Invalid arguments"
+msgstr "Неверные параметры"
+
+msgid "Operation not supported"
+msgstr "Операция не поддерживается"
+
+msgid "Unknown FTDI device error"
+msgstr "Неизвестная ошибка устройства FTDI"
+
+msgid "Unknown FTDI status."
+msgstr "Неизвестный статус FTDI."
+
+#, c-format
+msgid "FTDI call error occured. Returned status is '%s'."
+msgstr "Ошибка вызова драйвера FTDI. Статус '%s'."
+
+#, c-format
+msgid "Wrong data size. Expected %d bytes, %d bytes received."
+msgstr "Неверный размер данных. Ожидалось %d байт, получено %d байт"
+
+#, c-format
+msgid "Rate control functionality is not supported in '%s'"
+msgstr "Управление скоростью передачи не поддерживается в '%s'"
+
+#, fuzzy, c-format
+msgid "RPC with signature ='%s' and id ='%d' failed with error: '%s'"
+msgstr "Вызов RPC с сигнатурой='%s' и id='%d' завершился с ошибкой: '%s'"
+
+#, c-format
+msgid ""
+"\n"
+"Details: '%s'"
+msgstr ""
+"\n"
+"Подробности: '%s'"
+
+msgid "Unique Id string"
+msgstr ""
+
+msgid "Protocol io monitor"
+msgstr ""
+
+msgid "Client address"
+msgstr "Адрес клиента"
+
+msgid "Packet timeout, ms"
+msgstr "Время ожидания пакета, мс"
+
+msgid "Packet retries"
+msgstr "Повт. пакетов"
+
+#, fuzzy
+msgid "Master channel"
+msgstr "Канал-заглушка"
+
+msgid "Set rate query failed"
+msgstr "Запрос установки скорости завершился ошибкой"
+
+msgid "Channel is not set."
+msgstr "Канал не выбран."
+
+msgid "RPC Server is inactive."
+msgstr "Сервер RPC не активен."
+
+msgid "Slave address"
+msgstr "Адрес ведомого"
+
+msgid "Unknown signature"
+msgstr "Неизвестная сигнатура"
+
+#, fuzzy
+msgid "RPC with this idGet is not implemented in client"
+msgstr "RPC с таким идентификатором не реализована на стороне клиента"
+
+msgid "RPC stack is corrupt and unusable"
+msgstr "Стек RPC поврежден"
+
+msgid "RPC execution was prematurely cancelled due to timeout"
+msgstr ""
+"Выполнение RPC было преждевременно завершено из-за истечения времени ожидания"
+
+msgid "RPC has to many parameters, breaking call to prevent stack overflow"
+msgstr ""
+"Слишком много параметров RPC. Вызов прерван для предотвращения переполнения "
+"стека"
+
+msgid "RPC signature is unknown"
+msgstr "Неизвестная сигнатура RPC"
+
+msgid "RPC signatures of caller and callee do not match"
+msgstr "Сигнатуры RPC вызывающей и вызываемой сторон не совпадают"
+
+#, fuzzy
+msgid "RPC idGet of response does not match one of request"
+msgstr "ID ответа и запроса вызова RPC не соответствуют друг другу"
+
+msgid "RPC failed due to communication layer"
+msgstr "Ошибка RPC на уровне коммуникации"
+
+msgid ""
+"RPC not ready to respond (requested data not ready and|or device is busy)"
+msgstr ""
+"Подсистема RPC не готова к ответу (запрашиваемые данные не готовы и/или "
+"устройство занято)"
+
+#, c-format
+msgid "RPC parameter %d value error"
+msgstr "Ошибка значения параметра RPC %d"
+
+msgid "RPC succeeded"
+msgstr "Успешный вызов RPC"
+
+msgid "RPC execution was cancelled"
+msgstr ""
+
+msgid "Unknown RPC status"
+msgstr "Неизвестный статус RPC"
+
+msgid ""
+"Data size in header does not equal to real data size; data packet may be "
+"incomplete."
+msgstr ""
+"Размер данных в заголовке не соответствует полученному занчению. Пакет "
+"данных, возможно, получен не полностью."
+
+msgid "Wrong data size alignment (not multiple of 2)."
+msgstr "Неверное выравнивание размера данных (не кратно 2)."
+
+msgid "CRC data error."
+msgstr "Ошибка CRC данных."
+
+msgid "Unknown command."
+msgstr "Неизвестная команда."
+
+msgid "Pending data packet is too long."
+msgstr "Текущий пакет данных слишком длинный."
+
+msgid "Actual data size is unexpected for this command."
+msgstr "Полученный размер данных не подходит для этой команды."
+
+msgid "Requested rate value is not supported."
+msgstr "Запрашиваемое значение скорости не поддерживается"
+
+msgid "Requested device address is out of range."
+msgstr "Запрашиваемый адрес устройства находится вне допустимого диапазона"
+
+msgid "Device is not ready."
+msgstr "Устройство не готово."
+
+#, c-format
+msgid "Unknown error %d."
+msgstr "Неизвестная ошибка %d."
+
+#, c-format
+msgid ""
+"Error occured while writing to socket:\n"
+"'%s'"
+msgstr ""
+"Ошибка записи в сокет:\n"
+"'%s'"
+
+#, c-format
+msgid ""
+"Error occured while reading from socket:\n"
+"'%s'"
+msgstr ""
+"Ошибка чтения из сокета:\n"
+"'%s'"
+
+#, c-format
+msgid "Could not use '%s' as target address"
+msgstr "Невозможно использовать '%s' в качестве адреса удаленного устройства"
+
+#, c-format
+msgid "Could not use '%d' as target port"
+msgstr "Невозможно использовать '%d' в качестве удаленного порта"
+
+#, c-format
+msgid "Connection to '%s:%d' is refused by peer"
+msgstr "Соединение с '%s:%d' отклонено удаленным устройством"
+
+msgid "No socket error"
+msgstr "Ошибки отсутствуют"
+
+msgid "Invalid socket operation"
+msgstr "Неверная операция сокета"
+
+msgid "Input/Output socket error"
+msgstr "Ошибка ввода-вывода сокета"
+
+msgid "Invalid socket address"
+msgstr "Неверный адрес сокета"
+
+msgid "Invalid (uninitialized) socket"
+msgstr "Неверный (неинициализированный) сокет"
+
+msgid "Host is not found"
+msgstr "Хост не найден"
+
+msgid "Invalid socket port"
+msgstr "Неверный порт сокета"
+
+msgid "The socket is non-blocking and the operation would block"
+msgstr ""
+"Сокет не является блокирующим, в то время, как запрашиваемая операция "
+"вызовет блокировку."
+
+msgid "The timeout for socket operation expired"
+msgstr "Время ожидания поерации в сокете истекло"
+
+msgid "Socket memory exhausted"
+msgstr "Не хватает памяти для сокета"
+
+msgid "Unknown socket error"
+msgstr "Неизвестная ошибка сокета"
+
+msgid "None"
+msgstr "Нет"
+
+msgid "Odd"
+msgstr "Нечет"
+
+msgid "Even"
+msgstr "Чет"
+
+msgid "Mark"
+msgstr "Уст. бит"
+
+msgid "Space"
+msgstr "Неуст. бит"
+
+msgid "1 Stop Bit"
+msgstr "1 стоп бит"
+
+msgid "1.5 Stop Bits"
+msgstr "1.5 стоп бита"
+
+msgid "2 Stop Bits"
+msgstr "2 стоп бита"
+
+#~ msgid "%d bytes received."
+#~ msgstr "получено %d байт."
+
+#~ msgid "%d bytes sent."
+#~ msgstr "послано %d байт."
+
+#~ msgid "Advanced"
+#~ msgstr "Расширенные"
+
+#~ msgid "Cancelling boot mode..."
+#~ msgstr "Отмена режима загрузчика..."
+
+#~ msgid "Cannot find channel name for label \"%s\""
+#~ msgstr "Невозможно найти имя канала по описанию '%s'"
+
+#~ msgid "Channel"
+#~ msgstr "Канал"
+
+#~ msgid "Client socket channel configuration GUI."
+#~ msgstr "Интерфейс конфигурации клиентского сетевого канала"
+
+#~ msgid "Client socket connection is lost"
+#~ msgstr "Соединение с клиентом потеряно"
+
+#~ msgid "Communication channel configuration"
+#~ msgstr "Конфигурация коммуникационного канала"
+
+#~ msgid "Connected device is appliance, not hub."
+#~ msgstr "Подсоединена ИГ, а не БОИ"
+
+#~ msgid "Connected device is hub, not appliance."
+#~ msgstr "Подсоединен БОИ, а не ИГ"
+
+#~ msgid "Current I/O rate"
+#~ msgstr "Текущая скорость ввода-вывода"
+
+#~ msgid "Delay after device reboot, ms"
+#~ msgstr "Задержка после перезагрузки устройства, мс"
+
+#~ msgid "Device '%s' closed."
+#~ msgstr "Устройство '%s' закрыто."
+
+#~ msgid ""
+#~ "EKONNECT device '%s' opened. Configured for %d baud, %d data bits, %s, %s."
+#~ msgstr ""
+#~ "Устройство EKONNECT '%s' активно. Сконфигурировано на %d бод, %d битов "
+#~ "данных, %s, %s."
+
+#~ msgid "Entering boot mode, %d s remaining..."
+#~ msgstr "Вход в режим загрузчика, осталось %d сек. ..."
+
+#~ msgid "Generic"
+#~ msgstr "Основные"
+
+#~ msgid "Listening for incoming client connections on port %d"
+#~ msgstr "Ожидание входящих клиентских соединений на порте %d"
+
+#~ msgid "Port '%s' closed."
+#~ msgstr "Порт '%s' закрыт."
+
+#~ msgid "Port '%s' opened. Configured for %d baud, %d data bits, %s, %s."
+#~ msgstr "Порт '%s' открыт. Настроен на %d бод, %d бит данных, %s, %s."
+
+#~ msgid "Protocol"
+#~ msgstr "Протокол"
+
+#~ msgid "Request device programming mode"
+#~ msgstr "Запрашивать режим программирования устройства"
+
+#~ msgid "Rescan EKONNECT devices"
+#~ msgstr "Заново найти устройства EKONNECT"
+
+#~ msgid "Rescan serial ports"
+#~ msgstr "Заново найти последовательнве порты"
+
+#~ msgid "Reset to defaults"
+#~ msgstr "Сбросить в значения по-умолчанию"
+
+#~ msgid "Select channel:"
+#~ msgstr "Выберите канал:"
+
+#~ msgid "Slave address end value"
+#~ msgstr "Конечное значение адреса клиента"
+
+#~ msgid "Slave address start value"
+#~ msgstr "Начальное значение адреса клиента"
+
+#~ msgid "Stop listening for incoming client connections on port %d"
+#~ msgstr "Прекращено ожидание входящих соединений на порте %d"
+
+#~ msgid "Stub Io channel does not have any adjustable settings"
+#~ msgstr "Канал-заглушка не имеет никаких настроек"
+
+#~ msgid "Supply power for connected device"
+#~ msgstr "Подавать питание для подсоединенного устройства"
+
+#~ msgid "Wrong class name in configuration string. Expected %s, got %s."
+#~ msgstr ""
+#~ "Неверное имя класса в конфигурационной строке. Ожидалось %s, получено %s."
+
+#~ msgid "Wrong data size. Expected %d or %d bytes, got %d bytes"
+#~ msgstr "Неверный размер данных. Ожидалось %d или %d байт, получено %d байт."

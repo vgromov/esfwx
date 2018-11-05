@@ -1,0 +1,1 @@
+xgettext -C -T --no-location --no-wrap -d escomm -k_ -k_i -o locale/escomm.pot *.cpp *.h *.hxx

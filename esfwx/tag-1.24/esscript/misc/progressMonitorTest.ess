@@ -1,0 +1,81 @@
+function progressLevel2(parentTask)
+var idx,
+  progressTask1 = new EsProgressMonitorTask("level21"),
+  progressTask2 = new EsProgressMonitorTask("level22"),
+  progressTask3 = new EsProgressMonitorTask("level23");
+{
+  progressTask1.initialize("Level21 task...", 10, 0);
+  progressTask2.initialize("Level22 task...", 100, 0);
+  progressTask3.initialize("Level23 task...", 500, 0);
+
+  progressTask1.attachTo(parentTask);
+  progressTask2.attachTo(parentTask);
+  progressTask3.attachTo(parentTask);
+
+  for(idx = 0; idx < 500; ++idx)
+  {
+    EsThreadWorker::sleep(50);
+    
+    if( idx >= progressTask1$range )
+    {
+      if( !progressTask1$complete )
+        progressTask1.end("Level21 task ended");
+    }
+    else
+      progressTask1$position = idx;
+
+    if( idx >= progressTask2$range )
+    {
+      if( !progressTask2$complete )
+        progressTask2.end("Level22 task ended");
+    }
+    else
+      progressTask2$position = idx;
+
+    if( idx >= progressTask3$range )
+    {
+      if( !progressTask3$complete )
+        progressTask3.end("Level23 task ended");
+    }
+    else
+      progressTask3$position = idx;
+  }
+}
+
+function progressLevel1(parentTask)
+var progressTask = new EsProgressMonitorTask("level1"), idx;
+{
+  progressTask.initialize("Level1 task...", 100, 0);
+  progressTask.attachTo(parentTask);
+
+  for(idx = 0; idx < 100; ++idx)
+  {
+    EsThreadWorker::sleep(100);
+    progressTask$position = idx;
+  }
+}
+
+function progressLevel0()
+var progressTask = new EsProgressMonitorTask("level0"), idx;
+{
+  progressTask.initialize("Top level task progress", 10, 0);
+  progressTask.attachTo(__scriptHost$progressMonitor);
+  
+  for(idx = 0; idx < 10; ++idx )
+  {
+    EsThreadWorker::sleep(100);
+    
+    if( idx > 5 )
+    {
+      progressLevel1(progressTask);
+      
+      if( idx > 6 )
+        progressLevel2(progressTask);
+    }
+
+    progressTask$position = idx;
+  }
+}
+
+// Start progress test execution
+progressLevel0();

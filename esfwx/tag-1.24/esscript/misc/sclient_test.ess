@@ -1,0 +1,139 @@
+// Socket client scripting test
+//
+
+object ClientImpl
+{
+  var m_cli;
+
+  new()
+  {
+    m_cli = new EsSocketClient(
+      EsSocketType$$ConnectionOriented    
+    );
+
+    m_cli$ioHandler = $weakReference;
+
+    m_cli$address = new EsSocketAddr(
+      EsSocketAddrType$$IPV4,
+      "127.0.0.1",     //< Server IP address    
+      6000    //< Server port
+    );
+  }
+
+  function open()
+  {
+    return m_cli.open();
+  }
+
+  function close()
+  {
+    m_cli.close();
+  }
+
+  // Client io handler callbacks
+
+  // If we're going offline, we may notify server about it,
+  // by returning farewell binary sequence
+  //
+  function onSendFarewell(cli)
+  {
+    EsScriptDebug::log("We're closing... sending farewell to server");
+    return B"BYECLI!";
+  }
+
+  // Server sent us farewell - it's going down. We may safely close connection
+  function onServerFarewellReceived(cli, srvbye)
+  {
+    EsScriptDebug::log(
+      "Server farewell received: %s",
+      EsStr::fromByteString(srvbye)
+    );
+  }
+}
+
+const clientCnt = 50;
+
+/// Create clientCnt clients, connect them to server
+var idx, client, clients = [];
+for(idx = 0; idx < clientCnt; ++idx)
+{
+  client = new ClientImpl();
+  EsScriptDebug::log("Client %d created", idx);
+
+  if( client.open() )
+    EsScriptDebug::log("Client %d opened", idx);
+  else
+    EsScriptDebug::log("Client %d failed to open", idx);
+
+  clients += client;  
+}
+
+// Perform some IO with server
+var str, bs;
+for(idx = 0; idx < clients#countGet(); ++idx)
+{
+  client = clients[idx];
+  if( client.m_cli$isActive )  
+  {
+    str = EsStr::format(
+      "Data from client %d",
+      idx
+    ); 
+
+   EsScriptDebug::log(
+      "Sending test data to server from Client %s, waiting for Server to echo back...", 
+      str
+    );
+
+    bs = EsStr::toByteString(
+        str
+    );
+
+    client.m_cli.send(
+      bs,
+      1000 //< 1s timeout
+    );
+
+    // Reading Sever echo...
+    bs = client.m_cli.receive(
+      bs#countGet(),
+      1000
+    );
+
+    if( !bs#isEmpty() )
+      EsScriptDebug::log(
+        "Server echoed '%s' to Client %s", 
+        EsStr::fromByteString(
+          bs,
+          EsStrByteEncoding$$UTF8
+        ),
+        str
+      );
+    else
+      EsScriptDebug::log(
+        "Server did not respond with echo in 1s"
+      );
+  }
+}
+
+// Wait for some time
+EsThreadWorker::sleep(10000);
+
+// Close all clients
+for(idx = 0; idx < clients#countGet(); ++idx)
+{
+  client = clients[idx];
+  if( client.m_cli$isActive )  
+  {
+    EsScriptDebug::log(
+      "Closing client %d",
+      idx
+    );
+
+    client.close();
+  }
+}
+
+// Wait for some time
+EsThreadWorker::sleep(10000);
+

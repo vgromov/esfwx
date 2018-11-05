@@ -1,0 +1,189 @@
+/// FTxxxx MPSSE script test.
+/// Controlling 28BYJ-48 stepper motor with direct GPIO writes.
+///
+
+// Orange - C0
+// Yellow - C1
+// Pink   - C2
+// Blue   - C3
+//
+
+// Half-step phases
+const c_phases2 = [
+  0x01,
+  0x03,
+  0x02,
+  0x06,
+  0x04,
+  0x0C,
+  0x08,
+  0x09
+];
+
+// Full step phases
+const c_phases = [
+  0x09,
+  0x03,
+  0x06,
+  0x0C
+];
+
+const c_stepsPerRound = 512; // Internal gear steps count is 64 per 360deg, while outer gear has additional ratio of 1:63.68395
+
+const c_pinHold = 1;
+
+// Enumerate available MPSSE devices
+var devInfos = EsFtdiDriver::enumerate(
+      false,  //< Do not include busy devices
+      true    //< Include only MPSSE-capable devices
+    );
+
+if( !devInfos#countGet() )
+  throw "Could not find any non-busy MPSSE-capable devices";
+
+// Take the first found device and open it  
+var dev = EsFtdiDriver::deviceCreate(
+  EsFtdiDeviceKind$$MPSSE_I2C,
+  devInfos[0]
+);
+  
+if( !dev )
+  throw EsStr::format(
+    "Could not create MPSSE device of type %s for %s",
+    EsFtdiDeviceKind$$MPSSE_I2C$$label,
+    devInfos[0]
+  );
+
+if( !dev.open() )
+  throw EsStr::format(
+    "Could not open MPSSE device %s",
+    devInfos[0]
+  );
+
+// Set OS systicks period to 1 ms
+var systick = EsUtilities::systickChange(
+  1
+);
+
+var task = new EsProgressMonitorTask("gpiotask");
+
+var dir = 0x0F;
+
+// Zero-out GPIO pins
+dev.GPIOwrite(
+  dir,
+  0
+);
+
+var phase, step, stepsPerRound;
+
+// Rotate 1 full round forward in halfsteps
+task.attachTo(__scriptHost$progressMonitor);
+
+stepsPerRound = c_stepsPerRound*c_phases2#countGet();
+task$range = stepsPerRound;
+task$position = 0;
+task$text = "Rotating stepper motor forward 1 round in halfsteps";
+phase = 0;
+for(step = 0; step < stepsPerRound; ++step )
+{
+  dev.GPIOwrite(
+    dir,
+    c_phases2[ phase++ ]
+  );
+  if( phase > 7 )
+    phase = 0;
+  
+  task$position = step;
+
+  EsThreadWorker::sleep(
+    c_pinHold
+  );
+}
+
+// Zero-out GPIO pins
+dev.GPIOwrite(
+  dir,
+  0
+);
+
+stepsPerRound = c_stepsPerRound*c_phases#countGet();
+task$range = stepsPerRound;
+task$position = 0;
+task$text = "Rotating stepper motor forward 1 round in fullfsteps";
+phase = 0;
+for(step = 0; step < stepsPerRound; ++step )
+{
+  dev.GPIOwrite(
+    dir,
+    c_phases[ phase++ ]
+  );
+  if( phase > 3 )
+    phase = 0;
+  
+  task$position = step;
+
+  EsThreadWorker::sleep(c_pinHold);
+}
+
+// Zero-out GPIO pins
+dev.GPIOwrite(
+  dir,
+  0
+);
+
+stepsPerRound = c_stepsPerRound*c_phases2#countGet();
+task$range = stepsPerRound;
+task$position = 0;
+task$text = "Rotating stepper motor backwards 1 round in halfsteps";
+phase = 7;
+for(step = 0; step < stepsPerRound; ++step )
+{
+  dev.GPIOwrite(
+    dir,
+    c_phases2[ phase-- ]
+  );
+  if( phase < 0 )
+    phase = 7;
+  
+  task$position = step;
+
+  EsThreadWorker::sleep(c_pinHold);
+}
+
+// Zero-out GPIO pins
+dev.GPIOwrite(
+  dir,
+  0
+);
+
+stepsPerRound = c_stepsPerRound*c_phases#countGet();
+task$range = stepsPerRound;
+task$position = 0;
+task$text = "Rotating stepper motor backwards 1 round in fullsteps";
+phase = 3;
+for(step = 0; step < stepsPerRound; ++step )
+{
+  dev.GPIOwrite(
+    dir,
+    c_phases[ phase-- ]
+  );
+  if( phase < 0 )
+    phase = 3;
+  
+  task$position = step;
+
+  EsThreadWorker::sleep(c_pinHold);
+}
+
+// Zero-out GPIO pins
+dev.GPIOwrite(
+  dir,
+  0
+);
+task = null;
+
+dev.close();
+
+// Restore OS systicks
+EsUtilities::systickRestore( systick );

@@ -1,0 +1,1 @@
+xgettext -C -T --no-location --no-wrap --force-po -D ./ -D alglib -d esmath -k_ -k_i -o locale/esmath.pot *.cpp *.h
