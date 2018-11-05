@@ -1,5 +1,5 @@
 # top-level cmakefile for ekosfera framework
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.10)
 project(framework)
 
 set(ESFWX_STANDALONE_BUILD 0 CACHE BOOL "Build framework components as part of some project (Default - 0), or as stand-alone (1)")
@@ -10,8 +10,8 @@ set(frameworkVendorShort "ECO-E" CACHE INTERNAL "")
 set(framework						"ECO-E Framework" CACHE INTERNAL "")
 set(frameworkCopyright	"Copyright 2009-2018" CACHE INTERNAL "")
 set(framework_VER_MAJOR	1 CACHE INTERNAL "")
-set(framework_VER_MINOR	23 CACHE INTERNAL "")
-set(framework_BUILD_NUM	2 CACHE INTERNAL "")	
+set(framework_VER_MINOR	24 CACHE INTERNAL "")
+set(framework_BUILD_NUM	0 CACHE INTERNAL "")	
 
 # framework version file generation
 #
