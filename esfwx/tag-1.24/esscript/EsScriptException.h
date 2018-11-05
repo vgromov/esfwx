@@ -11,14 +11,14 @@ public:
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 __fastcall
 #endif
-	EsScriptException(const EsString& reason, const EsScriptDebugInfoIntf::Ptr& debugInfo, int cnt = -1);
+	EsScriptException(const EsString& reason, const EsScriptDebugInfoIntf::Ptr& debugInfo, int cnt = -1, bool doLogErrors = true);
 
 public:
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
   virtual __fastcall ~EsScriptException();
 #endif
 
-	static void Throw(const EsString& reason, const EsScriptDebugInfoIntf::Ptr& debugInfo = EsScriptDebugInfoIntf::Ptr());
+	static void Throw(const EsString& reason, const EsScriptDebugInfoIntf::Ptr& debugInfo = EsScriptDebugInfoIntf::Ptr(), bool doLogErrors = true);
 	static void ReThrow(const EsException& ex, const EsScriptDebugInfoIntf::Ptr& debugInfo = EsScriptDebugInfoIntf::Ptr());
 
 	bool hasDebugInfo() const;

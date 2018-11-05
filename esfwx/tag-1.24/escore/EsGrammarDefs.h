@@ -52,11 +52,12 @@ struct ContextName : public ContextName ## Base { \
   EsString m_input; \
   SourceInputType m_inputType; \
   int m_errCnt; \
+  bool m_doLogErrors; \
   CustomGrammars \
   ContextName( const EsString& input, const EsAssocContainerIntf::Ptr& fileRefs, SourceInputType inputType = fromString, \
-    const EsBreakIntf::Ptr& brk = EsBreakIntf::Ptr() ) : \
+    const EsBreakIntf::Ptr& brk = EsBreakIntf::Ptr(), bool doLogErrors = true) : \
     m_grammar(*this), m_skipGrammar(*this), m_fileRefs(fileRefs), \
-    m_errHandler(*this), m_brk(brk), m_inputType(inputType), m_errCnt(0)
+    m_errHandler(*this), m_brk(brk), m_inputType(inputType), m_errCnt(0), m_doLogErrors(doLogErrors)
 
 #define PARSER_CONTEXT_IMPL_BEGIN( ContextName ) PARSER_CONTEXT_CUSTOM_IMPL_BEGIN(ContextName, )
 

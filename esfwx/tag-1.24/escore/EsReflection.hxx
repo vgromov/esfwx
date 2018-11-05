@@ -315,6 +315,8 @@ REFL_METHOD_ENTRIES_BEGIN
   REFL_METHOD_ENTRY_NR4(                                    esU16,              esU32,            esU32,            esBA)
   REFL_METHOD_ENTRY_NR5(                                    esU16,              esU32,            esU32,            esU32,        esBA)
   REFL_METHOD_ENTRY3(           esU32,                      esU16,              esU32,            esBA)
+  REFL_METHOD_ENTRY_NR1(                                    esU8)
+  REFL_METHOD_ENTRY_NR1(                                    esU32)
 REFL_METHOD_ENTRIES_END
 
 // reflected class functions go here. NB! add new definitions at the end of list only!
@@ -466,6 +468,9 @@ REFL_CLASS_METHOD_ENTRIES_BEGIN
 	REFL_CLASS_METHOD_ENTRY5(			EsString,										cr_EsString,			  cr_EsString,  cr_EsVariant,	cr_EsVariant,	cr_EsVariant )
 	REFL_CLASS_METHOD_ENTRY6(			EsString,										cr_EsString,			  cr_EsString,  cr_EsVariant,	cr_EsVariant,	cr_EsVariant,	cr_EsVariant )
 	REFL_CLASS_METHOD_ENTRY7(			EsString,										cr_EsString,			  cr_EsString,  cr_EsVariant,	cr_EsVariant,	cr_EsVariant,	cr_EsVariant,	cr_EsVariant )
+  REFL_CLASS_METHOD_ENTRY4(     EsBaseIntfPtr,              cr_EsBinBuffer,     esU8,         ulong,        ulong)
+  REFL_CLASS_METHOD_ENTRY4(     EsBaseIntfPtr,              cr_EsBinBuffer,     esU16,        ulong,        ulong)
+  REFL_CLASS_METHOD_ENTRY4(     EsBaseIntfPtr,              cr_EsBinBuffer,     esU32,        ulong,        ulong)
 REFL_CLASS_METHOD_ENTRIES_END
 
 // undefine all. do not change these lines

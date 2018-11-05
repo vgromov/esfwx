@@ -18,12 +18,12 @@ EsException::EsException(const EsException& src) :
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 Exception(src.m_msg.c_str()),
 #endif
-m_code(src.m_code),
-m_severity(src.m_severity),
-m_facility(src.m_facility),
 m_msg(src.m_msg),
 m_data(src.m_data),
-m_dbg(src.m_dbg)
+m_dbg(src.m_dbg),
+m_code(src.m_code),
+m_severity(src.m_severity),
+m_facility(src.m_facility)
 {
 }
 //---------------------------------------------------------------------------
@@ -31,35 +31,45 @@ m_dbg(src.m_dbg)
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 __fastcall
 #endif
-EsException::EsException(ulong code, ulong severity, ulong facility, const EsString& msg,
-	const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/) :
+EsException::EsException(
+  ulong code, 
+  ulong severity, 
+  ulong facility, 
+  const EsString& msg,
+	const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/,
+  bool doLogErrors /*= true*/
+) :
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 Exception(msg.c_str()),
 #endif
-m_code(code),
-m_severity(severity),
-m_facility(facility),
 m_msg(msg),
 m_data(EsVariant::VAR_VARIANT_COLLECTION),
-m_dbg(dbg)
+m_dbg(dbg),
+m_code(code),
+m_severity(severity),
+m_facility(facility)
 {
-	logEsException();
+  if( doLogErrors )
+	  logEsException();
 }
 //---------------------------------------------------------------------------
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 __fastcall
 #endif
-EsException::EsException(const EsException& src, const EsScriptDebugInfoIntf::Ptr& dbg) :
+EsException::EsException(
+  const EsException& src, 
+  const EsScriptDebugInfoIntf::Ptr& dbg
+) :
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 Exception(src.m_msg.c_str()),
 #endif
-m_severity(src.m_severity),
-m_facility(src.m_facility),
-m_code(src.m_code),
 m_msg(src.m_msg),
 m_data(src.m_data),
-m_dbg(dbg)
+m_dbg(dbg),
+m_code(src.m_code),
+m_severity(src.m_severity),
+m_facility(src.m_facility)
 {
 }
 //---------------------------------------------------------------------------

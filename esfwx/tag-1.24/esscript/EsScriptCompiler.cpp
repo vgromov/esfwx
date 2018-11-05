@@ -880,7 +880,8 @@ struct EsScriptCompilerExprParser : public EsScriptCompilerGrammar<CtxT>
 // Customized Parser context impl
 PARSER_CONTEXT_CUSTOM_IMPL_BEGIN(
   EsScriptCompiler, 
-  typedef EsScriptCompilerExprParser<EsScriptCompiler> ExprGrammarT; ExprGrammarT m_grammar_expr; 
+  typedef EsScriptCompilerExprParser<EsScriptCompiler> ExprGrammarT; 
+  ExprGrammarT m_grammar_expr; 
 )
 , m_grammar_expr(*this)
   PARSER_CONTEXT_IMPL_INIT_BEGIN
@@ -932,7 +933,8 @@ PARSER_CONTEXT_CUSTOM_IMPL_BEGIN(
       if(doThrow)
         EsScriptException::Throw(
           getErrorDescr(id),
-          debugInfoCreateAt(pos)
+          debugInfoCreateAt(pos),
+          m_doLogErrors
         );
       else
       {
@@ -940,7 +942,8 @@ PARSER_CONTEXT_CUSTOM_IMPL_BEGIN(
           new EsScriptException( //< Just create temporaty object instance - it posts an error event, without interrupting compilation thread
             getErrorDescr(id),
             debugInfoCreateAt(pos),
-            m_errCnt
+            m_errCnt,
+            m_doLogErrors
           )
         );
 
@@ -5825,7 +5828,8 @@ bool EsScriptParser::parse(const EsString& in)
     in,
     dummyFiles,
     fromString,
-    brk
+    brk,
+    false //< Do not log errors
   );
 
   try

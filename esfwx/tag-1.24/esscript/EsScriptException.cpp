@@ -16,8 +16,9 @@
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 __fastcall
 #endif
-EsScriptException::EsScriptException(const EsString& reason, const EsScriptDebugInfoIntf::Ptr& debugInfo, int cnt /*= -1*/) :
-EsException(0,
+EsScriptException::EsScriptException(const EsString& reason, const EsScriptDebugInfoIntf::Ptr& debugInfo, int cnt /*= -1*/, bool doLogErrors /*= true*/) :
+EsException(
+  0,
 	EsException::severityGeneric,
 	EsException::facilityEsScript,
 	debugInfo ?
@@ -27,7 +28,8 @@ EsException(0,
       reason
      ) :
     reason,
-	  debugInfo
+	debugInfo,
+  doLogErrors
 )
 {
   const EsVariant::Array& payload = {
@@ -62,11 +64,15 @@ EsScriptDebugInfoIntf::Ptr EsScriptException::debugInfoGet() const
 }
 //---------------------------------------------------------------------------
 
-void EsScriptException::Throw(const EsString& reason, const EsScriptDebugInfoIntf::Ptr& debugInfo /*= EsScriptDebugInfoIntf::Ptr()*/)
+void EsScriptException::Throw(const EsString& reason, const EsScriptDebugInfoIntf::Ptr& debugInfo /*= EsScriptDebugInfoIntf::Ptr()*/, bool doLogErrors /*= true*/)
 {
   ES_DEBUG_TRACE(esT("EsScriptException::Throw"));
 
-	throw EsScriptException(reason, debugInfo);
+	throw EsScriptException(
+    reason, 
+    debugInfo, 
+    doLogErrors
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -76,8 +82,9 @@ void EsScriptException::ReThrow(const EsException& ex, const EsScriptDebugInfoIn
 
 	if( EsException::facilityEsScript != ex.facilityGet() )
     EsScriptException::Throw(
-        ex.messageGet(),
-        debugInfo
+      ex.messageGet(),
+      debugInfo,
+      false //< Do not log errors multiple times
     );
   else
 		throw;

@@ -44,7 +44,9 @@ public:
 	__fastcall
 #endif
 	EsException(ulong code, ulong severity, ulong facility,	const EsString& msg,
-		const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr());
+		const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr(),
+    bool doLogErrors = true
+  );
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 	__fastcall
@@ -113,12 +115,12 @@ protected:
   void logEsException() const ES_NOTHROW;
 
 protected:
-	ulong m_severity;
-	ulong m_facility;
-	ulong m_code;
 	EsString m_msg;
 	EsVariant m_data;
 	EsScriptDebugInfoIntf::Ptr m_dbg;
+  ulong m_code;
+  ulong m_severity;
+  ulong m_facility;
 
 private:
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
