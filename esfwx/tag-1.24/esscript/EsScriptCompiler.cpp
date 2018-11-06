@@ -5819,6 +5819,14 @@ bool EsScriptParser::parse(const EsString& in)
   if(m_isParsed && m_hashPrev == in.hashGet()) //< Do not re-parse what was already parsed
     return m_isParsed;
 
+  if(in.empty())
+  {
+    reset();
+    m_isParsed = true;
+
+    return m_isParsed;
+  }
+
   EsBreakIntf::Ptr brk; //< == TODO
 
 #if (1 == ES_USE_COMPILER_IMPLEMENTATION)
