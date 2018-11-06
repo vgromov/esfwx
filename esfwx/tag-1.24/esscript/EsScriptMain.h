@@ -4,15 +4,15 @@
 ES_DECL_INTF_BEGIN2(D558F74B, 4D8A4b21, A441FB9E, D5F74C32, EsScriptIntf, EsBaseIntf)
 
 	/// Include paths manipulation
-	ES_DECL_INTF_METHOD(void, includePathAdd)(const EsString& path) = 0;
+	ES_DECL_INTF_METHOD(void, includePathAdd)(const EsString& path, bool doThrow = true) = 0;
 	ES_DECL_INTF_METHOD(void, includePathsClear)() = 0;
-	ES_DECL_INTF_METHOD(void, includePathsSet)(const EsStringArray& paths) = 0;
+	ES_DECL_INTF_METHOD(void, includePathsSet)(const EsStringArray& paths, bool doThrow = true) = 0;
 	ES_DECL_INTF_METHOD(const EsStringArray&, includePathsGet)() const = 0;
 
 	/// Link paths manipulation
-	ES_DECL_INTF_METHOD(void, linkPathAdd)(const EsString& path) = 0;
+	ES_DECL_INTF_METHOD(void, linkPathAdd)(const EsString& path, bool doThrow = true) = 0;
 	ES_DECL_INTF_METHOD(void, linkPathsClear)() = 0;
-	ES_DECL_INTF_METHOD(void, linkPathsSet)(const EsStringArray& paths) = 0;
+	ES_DECL_INTF_METHOD(void, linkPathsSet)(const EsStringArray& paths, bool doThrow = true) = 0;
 	ES_DECL_INTF_METHOD(const EsStringArray&, linkPathsGet)() const = 0;
 
 	/// Compilation status check
@@ -146,118 +146,118 @@ public:
 	//
 
 	// include paths manipulation
-	ES_DECL_REFLECTED_INTF_METHOD1(void, includePathAdd, cr_EsString);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, includePathsClear);
-	ES_DECL_INTF_METHOD(void, includePathsSet)(const EsStringArray& paths);
-	ES_DECL_INTF_METHOD(const EsStringArray&, includePathsGet)() const { return m_includes; }
+	ES_DECL_REFLECTED_INTF_METHOD2(void, includePathAdd, cr_EsString, bool) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, includePathsClear) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, includePathsSet)(const EsStringArray& paths, bool doThrow = true) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(const EsStringArray&, includePathsGet)() const ES_OVERRIDE { return m_includes; }
 
 	// link paths manipulation
-	ES_DECL_REFLECTED_INTF_METHOD1(void, linkPathAdd, cr_EsString);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, linkPathsClear);
-	ES_DECL_INTF_METHOD(void, linkPathsSet)(const EsStringArray& paths);
-	ES_DECL_INTF_METHOD(const EsStringArray&, linkPathsGet)() const { return m_linkPaths; }
+	ES_DECL_REFLECTED_INTF_METHOD2(void, linkPathAdd, cr_EsString, bool) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, linkPathsClear) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, linkPathsSet)(const EsStringArray& paths, bool doThrow = true) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(const EsStringArray&, linkPathsGet)() const ES_OVERRIDE { return m_linkPaths; }
 
 	// compilation status check
-	ES_DECL_INTF_METHOD(bool, isCompiled)() const { return m_compiled; }
+	ES_DECL_INTF_METHOD(bool, isCompiled)() const ES_OVERRIDE { return m_compiled; }
 
 	// run string script compilation
-	ES_DECL_REFLECTED_INTF_METHOD1(bool, compileText, cr_EsString);
-	ES_DECL_REFLECTED_INTF_METHOD1(bool, compileFile, cr_EsString);
-	ES_DECL_INTF_METHOD(bool, compileText)(cr_EsString txt, const EsBreakIntf::Ptr& brk);
-	ES_DECL_INTF_METHOD(bool, compileFile)(cr_EsString file, const EsBreakIntf::Ptr& brk);
+	ES_DECL_REFLECTED_INTF_METHOD1(bool, compileText, cr_EsString) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD1(bool, compileFile, cr_EsString) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(bool, compileText)(cr_EsString txt, const EsBreakIntf::Ptr& brk) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(bool, compileFile)(cr_EsString file, const EsBreakIntf::Ptr& brk) ES_OVERRIDE;
 
 	// access script virtual machine
-	ES_DECL_INTF_METHOD(EsScriptMachine&, vm)();
-	ES_DECL_INTF_METHOD(const EsScriptMachine&, vm)() const;
+	ES_DECL_INTF_METHOD(EsScriptMachine&, vm)() ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(const EsScriptMachine&, vm)() const ES_OVERRIDE;
 
 	/// Progress monitor access
-	ES_DECL_INTF_METHOD(EsProgressMonitorIntf::Ptr, progressMonitorGet)() const;
-	ES_DECL_INTF_METHOD(void, progressMonitorSet)(const EsProgressMonitorIntf::Ptr& monitor);
+	ES_DECL_INTF_METHOD(EsProgressMonitorIntf::Ptr, progressMonitorGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, progressMonitorSet)(const EsProgressMonitorIntf::Ptr& monitor) ES_OVERRIDE;
 
   /// Custom call handling, with delegation to VirtualMachine
-	ES_DECL_REFLECTED_INTF_CONST_METHOD2(EsVariant, callClassMethod, cr_EsString, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, callMethod, cr_EsString, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD1(EsVariant, call, cr_EsString);
-	ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, call, cr_EsString, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD3(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD4(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD5(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD6(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD7(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, classCall, cr_EsString);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD2(EsVariant, classCall, cr_EsString, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD3(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD4(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD5(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD6(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD7(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
+	ES_DECL_REFLECTED_INTF_CONST_METHOD2(EsVariant, callClassMethod, cr_EsString, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, callMethod, cr_EsString, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD1(EsVariant, call, cr_EsString) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, call, cr_EsString, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD3(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD4(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD5(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD6(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD7(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, classCall, cr_EsString) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD2(EsVariant, classCall, cr_EsString, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD3(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD4(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD5(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD6(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD7(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
 
 	/// Reflected virtual machine proxies
 	///
 
 	/// Signal we want to abort execution
-	ES_DECL_REFLECTED_INTF_METHOD0(void, execAbort);
+	ES_DECL_REFLECTED_INTF_METHOD0(void, execAbort) ES_OVERRIDE;
 
 	/// Rewind script machine
-	ES_DECL_REFLECTED_INTF_METHOD0(void, rewind);
+	ES_DECL_REFLECTED_INTF_METHOD0(void, rewind) ES_OVERRIDE;
 
 	/// Startup method execution
-	ES_DECL_REFLECTED_INTF_METHOD0(EsVariant, exec);
+	ES_DECL_REFLECTED_INTF_METHOD0(EsVariant, exec) ES_OVERRIDE;
 
 	/// Script methods execution
-	ES_DECL_REFLECTED_INTF_METHOD1(EsVariant, exec, cr_EsString);
-	ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, exec, cr_EsString, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD3(EsVariant, exec, cr_EsString, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD4(EsVariant, exec, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD5(EsVariant, exec, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD6(EsVariant, exec, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
+	ES_DECL_REFLECTED_INTF_METHOD1(EsVariant, exec, cr_EsString) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, exec, cr_EsString, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD3(EsVariant, exec, cr_EsString, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD4(EsVariant, exec, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD5(EsVariant, exec, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD6(EsVariant, exec, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
 
 	/// Script constant access
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, constantGet, cr_EsString);
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, constantGet, cr_EsString) ES_OVERRIDE;
 
 	/// Script variables access
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, variableGet, cr_EsString);
-	ES_DECL_REFLECTED_INTF_METHOD2(void, variableSet, cr_EsString, cr_EsVariant);
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, variableGet, cr_EsString) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(void, variableSet, cr_EsString, cr_EsVariant) ES_OVERRIDE;
 
 	/// Shortcuts for creating objects with different count of parameters passed to ctor
-	ES_DECL_REFLECTED_INTF_METHOD1(EsBaseIntfPtr, objectCreate, cr_EsString);
-	ES_DECL_REFLECTED_INTF_METHOD2(EsBaseIntfPtr, objectCreate, cr_EsString, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD3(EsBaseIntfPtr, objectCreate, cr_EsString, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD4(EsBaseIntfPtr, objectCreate, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD5(EsBaseIntfPtr, objectCreate, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD6(EsBaseIntfPtr, objectCreate, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	virtual EsBaseIntfPtr objectCreate(cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
+	ES_DECL_REFLECTED_INTF_METHOD1(EsBaseIntfPtr, objectCreate, cr_EsString) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(EsBaseIntfPtr, objectCreate, cr_EsString, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD3(EsBaseIntfPtr, objectCreate, cr_EsString, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD4(EsBaseIntfPtr, objectCreate, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD5(EsBaseIntfPtr, objectCreate, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD6(EsBaseIntfPtr, objectCreate, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	virtual EsBaseIntfPtr objectCreate(cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
 
   /// Optional source module information access
-  ES_DECL_INTF_METHOD(bool, hasSourceModulesInfo)() const ES_NOTHROW;
-  ES_DECL_INTF_METHOD(EsVariant, sourceModuleExecutableLinesGet)(const EsString& srcPath) const ES_NOTHROW;
-  ES_DECL_INTF_METHOD(EsVariant, sourceModuleHashGet)(const EsString& srcPath) const ES_NOTHROW;
-  ES_DECL_INTF_METHOD(EsString::Array, sourceModulesPathsGet)() const ES_NOTHROW;
-  ES_DECL_INTF_METHOD(bool, hasSourceModule)(const EsString& srcPath) const ES_NOTHROW;
+  ES_DECL_INTF_METHOD(bool, hasSourceModulesInfo)() const ES_NOTHROW ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(EsVariant, sourceModuleExecutableLinesGet)(const EsString& srcPath) const ES_NOTHROW ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(EsVariant, sourceModuleHashGet)(const EsString& srcPath) const ES_NOTHROW ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(EsString::Array, sourceModulesPathsGet)() const ES_NOTHROW ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, hasSourceModule)(const EsString& srcPath) const ES_NOTHROW ES_OVERRIDE;
   
   /// Return translatables aggregated during compilation
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsStringArray, translatablesGet);
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsStringArray, translatablesGet) ES_OVERRIDE;
 
 	/// Compiled binary access
 	///
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsBinBuffer, compiledBinaryGet, bool);
-	ES_DECL_REFLECTED_INTF_METHOD2(void, compiledBinarySet, cr_EsBinBuffer, bool);
-	ES_DECL_REFLECTED_INTF_METHOD3(EsBinBuffer, compiledBinaryLoad, cr_EsString, bool, cr_EsString);
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsBinBuffer, compiledBinaryGet, bool) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(void, compiledBinarySet, cr_EsBinBuffer, bool) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD3(EsBinBuffer, compiledBinaryLoad, cr_EsString, bool, cr_EsString) ES_OVERRIDE;
 
 	// reset script contents
-	ES_DECL_INTF_METHOD(void, reset)();
+	ES_DECL_INTF_METHOD(void, reset)() ES_OVERRIDE;
 
   // Marshalling
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(void, marshal, cr_EsVariant);
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(void, marshal, cr_EsVariant) ES_OVERRIDE;
 
 #if	defined(ES_USE_SCRIPTLETS) && 1 == ES_USE_SCRIPTLETS
 	// named scriptlet creation|manipulation
 	//
-	ES_DECL_INTF_METHOD(EsScriptletIntf::Ptr, scriptletCreate)(const EsString& name, const EsString& src, const EsString& args = EsString::null());
-	ES_DECL_INTF_METHOD(EsScriptletIntf::Ptr, scriptletGet)(const EsString& name, size_t paramCount) const;
-	ES_DECL_INTF_METHOD(EsScriptletIntfPtrArray, scriptletsGet)() const;
-	ES_DECL_INTF_METHOD(EsScriptletIntfPtrArray, scriptletsLoad)(const EsString& file, const EsString& key = EsString::null());
-	ES_DECL_INTF_METHOD(void, scriptletsReset)();
+	ES_DECL_INTF_METHOD(EsScriptletIntf::Ptr, scriptletCreate)(const EsString& name, const EsString& src, const EsString& args = EsString::null()) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(EsScriptletIntf::Ptr, scriptletGet)(const EsString& name, size_t paramCount) const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(EsScriptletIntfPtrArray, scriptletsGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(EsScriptletIntfPtrArray, scriptletsLoad)(const EsString& file, const EsString& key = EsString::null()) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, scriptletsReset)() ES_OVERRIDE;
 #endif
 
 	/// Reflected services

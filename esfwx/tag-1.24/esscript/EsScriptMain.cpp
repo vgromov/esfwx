@@ -53,9 +53,9 @@ ES_REFLECTION_REGISTRAR_END
 ES_DECL_BASE_CLASS_INFO_CUSTOM_BEGIN(EsScript, NO_CLASS_DESCR)
   // Reflected interface
   //
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScript, EsScriptIntf, includePathAdd, void_Call_cr_EsString, NO_METHOD_DESCR)
+	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScript, EsScriptIntf, includePathAdd, void_Call_cr_EsString_bool, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScript, EsScriptIntf, includePathsClear, void_Call, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScript, EsScriptIntf, linkPathAdd, void_Call_cr_EsString, NO_METHOD_DESCR)
+	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScript, EsScriptIntf, linkPathAdd, void_Call_cr_EsString_bool, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScript, EsScriptIntf, linkPathsClear, void_Call, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScript, EsScriptIntf, compileText, bool_Call_cr_EsString, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScript, EsScriptIntf, compileFile, bool_Call_cr_EsString, NO_METHOD_DESCR)
@@ -200,7 +200,10 @@ EsStringArray EsScript::get_includePaths() const
 
 void EsScript::set_includePaths(const EsStringArray& paths)
 {
-	includePathsSet(paths);
+	includePathsSet(
+    paths,
+    false
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -212,7 +215,10 @@ EsStringArray EsScript::get_linkPaths() const
 
 void EsScript::set_linkPaths(const EsStringArray& paths)
 {
-	linkPathsSet(paths);
+	linkPathsSet(
+    paths, 
+    false
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -280,12 +286,13 @@ void EsScript::pathAdd(const EsString& path, EsStringArray& collection, const Es
 }
 //---------------------------------------------------------------------------
 
-void EsScript::includePathAdd(const EsString& path)
+void EsScript::includePathAdd(const EsString& path, bool doThrow /*= true*/)
 {
 	pathAdd(
     path,
     m_includes,
-    esT("include paths")
+    esT("include paths"),
+    doThrow
   );
 }
 //---------------------------------------------------------------------------
@@ -296,22 +303,24 @@ void EsScript::includePathsClear()
 }
 //---------------------------------------------------------------------------
 
-void EsScript::includePathsSet(const EsString::Array& paths)
+void EsScript::includePathsSet(const EsString::Array& paths, bool doThrow /*= true*/)
 {
 	m_includes.clear();
   for(size_t idx = 0; idx < paths.size(); ++idx)
       includePathAdd(
-        paths[idx]
+        paths[idx],
+        doThrow
       );
 }
 //---------------------------------------------------------------------------
 
-void EsScript::linkPathAdd(const EsString& path)
+void EsScript::linkPathAdd(const EsString& path, bool doThrow /*= true*/)
 {
 	pathAdd(
     path,
     m_linkPaths,
-    esT("link paths")
+    esT("link paths"),
+    doThrow
   );
 }
 //---------------------------------------------------------------------------
@@ -322,11 +331,14 @@ void EsScript::linkPathsClear()
 }
 //---------------------------------------------------------------------------
 
-void EsScript::linkPathsSet(const EsStringArray& paths)
+void EsScript::linkPathsSet(const EsStringArray& paths, bool doThrow /*= true*/)
 {
 	m_linkPaths.clear();
 	for(size_t idx = 0; idx < paths.size(); ++idx)
-		linkPathAdd( paths[idx] );
+		linkPathAdd( 
+      paths[idx],
+      doThrow
+    );
 }
 //---------------------------------------------------------------------------
 
