@@ -47,6 +47,7 @@ public:
 	ES_DECL_REFLECTED_INTF_CONST_METHOD2(bool, hasProperty, cr_EsString, cr_EsString);
 	ES_DECL_REFLECTED_INTF_CONST_METHOD2(bool, propertyCanRead, cr_EsString, cr_EsString);
 	ES_DECL_REFLECTED_INTF_CONST_METHOD2(bool, propertyCanWrite, cr_EsString, cr_EsString);
+
 	/// Property attributes access
 	ES_DECL_REFLECTED_INTF_CONST_METHOD2(EsStringArray, propertyAttributeNamesGet, cr_EsString, cr_EsString);
 	ES_DECL_REFLECTED_INTF_CONST_METHOD3(bool, propertyHasAttribute, cr_EsString, cr_EsString, cr_EsString);
