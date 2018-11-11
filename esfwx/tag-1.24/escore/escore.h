@@ -10,13 +10,13 @@
 // escore export-import defines
 #ifdef ES_DYNAMIC_LINKAGE
 #	ifdef ESCORE_EXPORTS
-#		define ESCORE_CLASS	      ES_EXPORT_SPEC
-#   define ESCORE_FUNC(type)  ES_FUNCEXPORT_SPEC(type)
-#		define ESCORE_DATA(type)	ES_DATAEXPORT_SPEC(type)
+#	  define ESCORE_CLASS	    ES_EXPORT_SPEC
+#     define ESCORE_FUNC(type)  ES_FUNCEXPORT_SPEC(type)
+#	  define ESCORE_DATA(type)	ES_DATAEXPORT_SPEC(type)
 #	else
-#		define ESCORE_CLASS	      ES_IMPORT_SPEC
-#		define ESCORE_FUNC(type)  ES_FUNCIMPORT_SPEC(type)
-#		define ESCORE_DATA(type)	ES_DATAIMPORT_SPEC(type)
+#	  define ESCORE_CLASS	    ES_IMPORT_SPEC
+#	  define ESCORE_FUNC(type)  ES_FUNCIMPORT_SPEC(type)
+#	  define ESCORE_DATA(type)	ES_DATAIMPORT_SPEC(type)
 #	endif
 #else
 #	define ESCORE_CLASS

@@ -7,37 +7,37 @@
   extern "C" {
 #endif
 
-ESCORE_FUNC( int)     es_finite(double d);
-ESCORE_FUNC( int)     es_isnan(double d);
-ESCORE_FUNC( int)     es_finitef(float f);
-ESCORE_FUNC( int)     es_isnanf(float f);
+ESCORE_FUNC( int,     es_finite(double d) );
+ESCORE_FUNC( int,     es_isnan(double d)  );
+ESCORE_FUNC( int,     es_finitef(float f) );
+ESCORE_FUNC( int,     es_isnanf(float f)  );
 
-ESCORE_FUNC( double)  es_abs(double f);
-ESCORE_FUNC( float)   es_ceilf(float f);
-ESCORE_FUNC( double)  es_ceil(double d);
-ESCORE_FUNC( float)   es_logf(float f);
-ESCORE_FUNC( double)  es_log(double d);
-ESCORE_FUNC( float)   es_log10f(float f);
-ESCORE_FUNC( double)  es_log10(double d);
-ESCORE_FUNC( double)  es_log2(double x);
-ESCORE_FUNC( double)  es_logN(double n, double d);
-ESCORE_FUNC( float)   es_powf(float x, float n);
-ESCORE_FUNC( double)  es_pow(double x, double n);
-ESCORE_FUNC( double)  es_exp(double n);
-ESCORE_FUNC( double)  es_sqrt(double x);
-ESCORE_FUNC( double)  es_modf(double x, double* ipart);
-ESCORE_FUNC( float )  es_modff(float x, float* intpart);
+ESCORE_FUNC( double,  es_abs(double f)    );
+ESCORE_FUNC( float,   es_ceilf(float f)   );
+ESCORE_FUNC( double,  es_ceil(double d)   );
+ESCORE_FUNC( float,   es_logf(float f)    );
+ESCORE_FUNC( double,  es_log(double d)    );
+ESCORE_FUNC( float,   es_log10f(float f)  );
+ESCORE_FUNC( double,  es_log10(double d)  );
+ESCORE_FUNC( double,  es_log2(double x)   );
+ESCORE_FUNC( double,  es_logN(double n, double d) );
+ESCORE_FUNC( float,   es_powf(float x, float n)   );
+ESCORE_FUNC( double,  es_pow(double x, double n)  );
+ESCORE_FUNC( double,  es_exp(double n)    );
+ESCORE_FUNC( double,  es_sqrt(double x)   );
+ESCORE_FUNC( double,  es_modf(double x, double* ipart)  );
+ESCORE_FUNC( float ,  es_modff(float x, float* intpart) );
 
-ESCORE_FUNC( double)  es_sin(double rad);
-ESCORE_FUNC( double)  es_sinh(double val);
-ESCORE_FUNC( double)  es_asin(double val);
-ESCORE_FUNC( double)  es_cos(double rad);
-ESCORE_FUNC( double)  es_cosh(double val);
-ESCORE_FUNC( double)  es_acos(double val);
-ESCORE_FUNC( double)  es_tan(double val);
-ESCORE_FUNC( double)  es_tanh(double val);
-ESCORE_FUNC( double)  es_atan(double val);
-ESCORE_FUNC( double)  es_atan_yx(double y, double x);
+ESCORE_FUNC( double,  es_sin(double rad)  );
+ESCORE_FUNC( double,  es_sinh(double val) );
+ESCORE_FUNC( double,  es_asin(double val) );
+ESCORE_FUNC( double,  es_cos(double rad)  );
+ESCORE_FUNC( double,  es_cosh(double val) );
+ESCORE_FUNC( double,  es_acos(double val) );
+ESCORE_FUNC( double,  es_tan(double val)  );
+ESCORE_FUNC( double,  es_tanh(double val) );
+ESCORE_FUNC( double,  es_atan(double val) );
+ESCORE_FUNC( double,  es_atan_yx(double y, double x)   );
 
 #ifdef __cplusplus
   }
@@ -49,7 +49,7 @@ ESCORE_FUNC( double)  es_atan_yx(double y, double x);
   extern "C" {
 #endif
 
-ESCORE_FUNC( double)  es_logN(double n, double d);
+ESCORE_FUNC( double, es_logN(double n, double d) );
 
 #ifdef __cplusplus
   }

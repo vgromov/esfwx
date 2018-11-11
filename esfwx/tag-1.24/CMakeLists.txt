@@ -5,13 +5,13 @@ project(framework)
 set(ESFWX_STANDALONE_BUILD 0 CACHE BOOL "Build framework components as part of some project (Default - 0), or as stand-alone (1)")
 
 # framework version definitions
-set(frameworkVendor			"ECO-Electronics" CACHE INTERNAL "")
+set(frameworkVendor	 "ECO-Electronics" CACHE INTERNAL "")
 set(frameworkVendorShort "ECO-E" CACHE INTERNAL "")
-set(framework						"ECO-E Framework" CACHE INTERNAL "")
-set(frameworkCopyright	"Copyright 2009-2018" CACHE INTERNAL "")
-set(framework_VER_MAJOR	1 CACHE INTERNAL "")
-set(framework_VER_MINOR	24 CACHE INTERNAL "")
-set(framework_BUILD_NUM	0 CACHE INTERNAL "")	
+set(framework		 "ECO-E Framework" CACHE INTERNAL "")
+set(frameworkCopyright	 "Copyright 2009-2018" CACHE INTERNAL "")
+set(framework_VER_MAJOR	 1 CACHE INTERNAL "")
+set(framework_VER_MINOR	 24 CACHE INTERNAL "")
+set(framework_BUILD_NUM	 0 CACHE INTERNAL "")	
 
 # framework version file generation
 #
@@ -24,7 +24,10 @@ configure_file (
   # otherwise, host project defines which components to build
  if( ${ESFWX_STANDALONE_BUILD} )
   set(BUILD_SHARED_LIBS 0 CACHE BOOL "Build shared framework libraries (Default - 0 i.e. static)")
-	include(esframework-macros.cmake)
+ 
+ include(esframework-macros.cmake)
+ ES_REQUIRE_MODERNCPP()
+
 	if(MSVC)
 		# use UNICODE under MSVC
 		add_definitions(-DUNICODE -D_UNICODE)

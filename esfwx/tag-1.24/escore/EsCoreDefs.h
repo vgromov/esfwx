@@ -66,11 +66,11 @@
 
 // compiler vendor specifics
 //
-#define ES_COMPILER_VENDOR_UNDEFINED		0
+#define ES_COMPILER_VENDOR_UNDEFINED	  0
 #define ES_COMPILER_VENDOR_BORLAND			1
-#define ES_COMPILER_VENDOR_MS						2
-#define ES_COMPILER_VENDOR_INTEL				3
-#define ES_COMPILER_VENDOR_GNUC					4
+#define ES_COMPILER_VENDOR_MS				    2
+#define ES_COMPILER_VENDOR_INTEL			  3
+#define ES_COMPILER_VENDOR_GNUC				  4
 #define ES_COMPILER_VENDOR_DIGITALMARS	5
 
 #if defined(__BORLANDC__)
@@ -137,60 +137,60 @@
 # if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 #   if !defined(ES_CLANG) && defined(ECC_PACKAGE)
 #     pragma warn -8118
-#     define ES_EXPORT_SPEC             PACKAGE
-#     define ES_IMPORT_SPEC             PACKAGE
-#     define ES_FUNCEXPORT_SPEC(type)   type PACKAGE
-#     define ES_FUNCIMPORT_SPEC(type)   type PACKAGE
-#     define ES_DATAEXPORT_SPEC(type)   type PACKAGE
-#     define ES_DATAIMPORT_SPEC(type)   type PACKAGE
+#     define ES_EXPORT_SPEC                  PACKAGE
+#     define ES_IMPORT_SPEC                  PACKAGE
+#     define ES_FUNCEXPORT_SPEC(type, decl)  type PACKAGE decl
+#     define ES_FUNCIMPORT_SPEC(type, decl)  type PACKAGE decl
+#     define ES_DATAEXPORT_SPEC(type, decl)  type PACKAGE decl
+#     define ES_DATAIMPORT_SPEC(type, decl)  type PACKAGE decl
 #   else
 #     if __CODEGEARC__ < 0x0700
-#       define ES_EXPORT_SPEC           __export
-#       define ES_IMPORT_SPEC           __import
-#       define ES_FUNCEXPORT_SPEC(type) type __export
-#       define ES_FUNCIMPORT_SPEC(type) type __import
-#       define ES_DATAEXPORT_SPEC(type) type __export
-#       define ES_DATAIMPORT_SPEC(type) type __import
+#       define ES_EXPORT_SPEC                 __export
+#       define ES_IMPORT_SPEC                 __import
+#       define ES_FUNCEXPORT_SPEC(type, decl) type __export decl
+#       define ES_FUNCIMPORT_SPEC(type, decl) type __import decl
+#       define ES_DATAEXPORT_SPEC(type, decl) type __export decl
+#       define ES_DATAIMPORT_SPEC(type, decl) type __import decl
 #     elif __CODEGEARC__ < 0x0710
         // XE8
-#       define ES_EXPORT_SPEC           __declspec(dllexport)
-#       define ES_IMPORT_SPEC           __declspec(dllimport)
-#       define ES_FUNCEXPORT_SPEC(type) __declspec(dllexport) type
-#       define ES_FUNCIMPORT_SPEC(type) __declspec(dllimport) type
-#       define ES_DATAEXPORT_SPEC(type) __declspec(dllexport) type
-#       define ES_DATAIMPORT_SPEC(type) __declspec(dllimport) type
+#       define ES_EXPORT_SPEC                 __declspec(dllexport)
+#       define ES_IMPORT_SPEC                 __declspec(dllimport)
+#       define ES_FUNCEXPORT_SPEC(type, decl) __declspec(dllexport) type decl
+#       define ES_FUNCIMPORT_SPEC(type, decl) __declspec(dllimport) type decl
+#       define ES_DATAEXPORT_SPEC(type, decl) __declspec(dllexport) type decl
+#       define ES_DATAIMPORT_SPEC(type, decl) __declspec(dllimport) type decl
 #     elif __CODEGEARC__ < 0x0740
         // XE9, XE10, XE11
-#       define ES_EXPORT_SPEC           __declspec(dllexport)
-#       define ES_IMPORT_SPEC           __declspec(dllimport)
-#       define ES_FUNCEXPORT_SPEC(type) type __declspec(dllexport)
-#       define ES_FUNCIMPORT_SPEC(type) type __declspec(dllimport)
-#       define ES_DATAEXPORT_SPEC(type) type __declspec(dllexport)
-#       define ES_DATAIMPORT_SPEC(type) type __declspec(dllimport)
+#       define ES_EXPORT_SPEC                 __declspec(dllexport)
+#       define ES_IMPORT_SPEC                 __declspec(dllimport)
+#       define ES_FUNCEXPORT_SPEC(type, decl) type __declspec(dllexport) decl
+#       define ES_FUNCIMPORT_SPEC(type, decl) type __declspec(dllimport) decl
+#       define ES_DATAEXPORT_SPEC(type, decl) type __declspec(dllexport) decl
+#       define ES_DATAIMPORT_SPEC(type, decl) type __declspec(dllimport) decl
 #     endif
 #   endif
 # elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC
-#   define ES_EXPORT_SPEC               __attribute__((visibility("default")))
+#   define ES_EXPORT_SPEC                     __attribute__((visibility("default")))
 #   define ES_IMPORT_SPEC
-#   define ES_FUNCEXPORT_SPEC(type)     type __attribute__((visibility("default")))
-#   define ES_FUNCIMPORT_SPEC(type)
-#   define ES_DATAEXPORT_SPEC(type)     type __attribute__((visibility("default")))
-#   define ES_DATAIMPORT_SPEC(type)
+#   define ES_FUNCEXPORT_SPEC(type, decl)     type decl __attribute__((visibility("default")))
+#   define ES_FUNCIMPORT_SPEC(type, decl)     type decl
+#   define ES_DATAEXPORT_SPEC(type, decl)     type decl __attribute__((visibility("default")))
+#   define ES_DATAIMPORT_SPEC(type, decl)     type decl
 # else // Not using borland toolchain - prefer platform specs
-#   define ES_EXPORT_SPEC               __declspec(dllexport)
-#   define ES_IMPORT_SPEC               __declspec(dllimport)
-#   define ES_FUNCEXPORT_SPEC(type)     __declspec(dllexport) type
-#   define ES_FUNCIMPORT_SPEC(type)     __declspec(dllimport) type
-#   define ES_DATAEXPORT_SPEC(type)     __declspec(dllexport) type
-#   define ES_DATAIMPORT_SPEC(type)     __declspec(dllimport) type
+#   define ES_EXPORT_SPEC                     __declspec(dllexport)
+#   define ES_IMPORT_SPEC                     __declspec(dllimport)
+#   define ES_FUNCEXPORT_SPEC(type, decl)     __declspec(dllexport) type decl
+#   define ES_FUNCIMPORT_SPEC(type, decl)     __declspec(dllimport) type decl
+#   define ES_DATAEXPORT_SPEC(type, decl)     __declspec(dllexport) type decl
+#   define ES_DATAIMPORT_SPEC(type, decl)     __declspec(dllimport) type decl
 # endif
 #else
 # define ES_EXPORT_SPEC
 # define ES_IMPORT_SPEC
-# define ES_FUNCEXPORT_SPEC(type)       type
-# define ES_FUNCIMPORT_SPEC(type)       type
-# define ES_DATAEXPORT_SPEC(type)       type
-# define ES_DATAIMPORT_SPEC(type)       type
+# define ES_FUNCEXPORT_SPEC(type)             type
+# define ES_FUNCIMPORT_SPEC(type)             type
+# define ES_DATAEXPORT_SPEC(type)             type
+# define ES_DATAIMPORT_SPEC(type)             type
 #endif
 
 // endianness detection

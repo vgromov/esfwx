@@ -691,7 +691,6 @@ template <typename T>
 void EsVector<T>::operator+= (const EsVector<T>& other)
 {
 	append(other);
-	return *this;
 }
 //---------------------------------------------------------------------------
 
