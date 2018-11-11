@@ -6,17 +6,17 @@
 
 #define NO_METHOD_DESCR	EsString::null()
 
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
+#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
 #	define ES_INTERNAL_METHOD_CAST(OwnerT, MethodName, Sig, CallT) \
-		EsCastCallToMember<EsBaseImplCallT>( (EsBaseImplCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) CallT)
+    __pragma(warning(disable: 4191)) \
+	  EsCastCallToMember<EsBaseImplCallT>( (EsBaseImplCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) CallT)
 #	define ES_INTERNAL_INTF_METHOD_CAST(OwnerT, IntfType, MethodName, Sig, CallT) \
+    __pragma(warning(disable: 4191)) \
 	  EsCastCallToMember<EsBaseImplCallT>( (EsBaseImplCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) CallT)
 #else
 #	define ES_INTERNAL_METHOD_CAST(OwnerT, MethodName, Sig, CallT) \
-    __pragma(warning(disable: 4191)) \
-	  EsCastCallToMember<EsBaseImplCallT>( (EsBaseImplCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) CallT)
+		EsCastCallToMember<EsBaseImplCallT>( (EsBaseImplCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) CallT)
 #	define ES_INTERNAL_INTF_METHOD_CAST(OwnerT, IntfType, MethodName, Sig, CallT) \
-    __pragma(warning(disable: 4191)) \
 	  EsCastCallToMember<EsBaseImplCallT>( (EsBaseImplCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) CallT)
 #endif
 
@@ -39,19 +39,19 @@ static EsMethodInfo ES_CONCAT4(s_, MethodName, _, Sig)( \
 
 // reflected class method info delcaration macros
 //
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
-#define ES_DECL_REFLECTED_CLASS_METHOD_INFO(OwnerT, MethodName, MethodAlias, Sig, Descr) \
-static EsMethodInfo ES_CONCAT4(s_, MethodName, _, Sig)( \
-	s_class, Sig, ES_CONCAT(Sig, _paramsCount), ES_STRINGIZE(MethodAlias), Descr, \
-	(EsClassCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) & OwnerT :: MethodName, \
-  0);
+#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
+# define ES_DECL_REFLECTED_CLASS_METHOD_INFO(OwnerT, MethodName, MethodAlias, Sig, Descr) \
+  __pragma(warning(disable:4191)) \
+  static EsMethodInfo ES_CONCAT4(s_, MethodName, _, Sig)( \
+    s_class, Sig, ES_CONCAT(Sig, _paramsCount), ES_STRINGIZE(MethodAlias), Descr, \
+    (EsClassCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) & OwnerT :: MethodName, \
+    0);
 #else
-#define ES_DECL_REFLECTED_CLASS_METHOD_INFO(OwnerT, MethodName, MethodAlias, Sig, Descr) \
-__pragma(warning(disable:4191)) \
-static EsMethodInfo ES_CONCAT4(s_, MethodName, _, Sig)( \
-	s_class, Sig, ES_CONCAT(Sig, _paramsCount), ES_STRINGIZE(MethodAlias), Descr, \
-	(EsClassCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) & OwnerT :: MethodName, \
-  0);
+# define ES_DECL_REFLECTED_CLASS_METHOD_INFO(OwnerT, MethodName, MethodAlias, Sig, Descr) \
+  static EsMethodInfo ES_CONCAT4(s_, MethodName, _, Sig)( \
+    s_class, Sig, ES_CONCAT(Sig, _paramsCount), ES_STRINGIZE(MethodAlias), Descr, \
+    (EsClassCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) & OwnerT :: MethodName, \
+    0);
 #endif
 
 #define ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(OwnerT, MethodName, Sig, Descr) \

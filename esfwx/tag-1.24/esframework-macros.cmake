@@ -44,13 +44,11 @@ set(headerExtensions .h .hpp .hxx .ipp .xpm .cxx .hmxz .def .inc .cc .pot .ru_RU
 # modern CPP requirement macro
 MACRO(ES_REQUIRE_MODERNCPP)
   if (CMAKE_VERSION VERSION_LESS "3.1")
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+    if(${CMAKE_COMPILER_IS_GNUCXX})
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
     endif()
-  elseif( MSVC AND (1910 LESS_EQUAL ${MSVC_VERSION}))
-    set(CMAKE_CXX_STANDARD 14 CACHE STRING "")
   else()
-    set(CMAKE_CXX_STANDARD 11 CACHE STRING "")
+    set(CMAKE_CXX_STANDARD 14 CACHE STRING "")
   endif()
 ENDMACRO(ES_REQUIRE_MODERNCPP)
 

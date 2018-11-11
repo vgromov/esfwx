@@ -1,4 +1,4 @@
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
+#if (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND) || (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC)
 #	define ES_INTERNAL_THIS_CAST( Intf ) (Intf*)((esU8*)this + ES_CONCAT(offs, Intf))
 #	define ES_INTERNAL_THIS_CONSTCAST( Intf ) (const Intf*)((const esU8*)this + ES_CONCAT(offs, Intf))
 #else
@@ -1331,8 +1331,8 @@ public:
 		return 0;
 	}
 	ES_DECL_INTF_METHOD(void, destroy)() ES_NOTHROW ES_OVERRIDE
-  { 
-    BaseImplT::destroy(); 
+  {
+    BaseImplT::destroy();
   }
 	ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
 	{
@@ -1385,8 +1385,8 @@ public:
 		return 0;
 	}
 	ES_DECL_INTF_METHOD(void, destroy)() ES_NOTHROW ES_OVERRIDE
-  { 
-    BaseImplT::destroy(); 
+  {
+    BaseImplT::destroy();
   }
 	ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
 	{
@@ -1442,8 +1442,8 @@ public:
 		return 0;
 	}
 	ES_DECL_INTF_METHOD(void, destroy)() ES_NOTHROW ES_OVERRIDE
-  { 
-    BaseImplT::destroy(); 
+  {
+    BaseImplT::destroy();
   }
 	ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
 	{
@@ -1502,8 +1502,8 @@ public:
 		return 0;
 	}
 	ES_DECL_INTF_METHOD(void, destroy)() ES_NOTHROW ES_OVERRIDE
-  { 
-    BaseImplT::destroy(); 
+  {
+    BaseImplT::destroy();
   }
 	ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
 	{

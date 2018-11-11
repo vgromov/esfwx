@@ -1,6 +1,8 @@
 // This file must not be included in project directly
 // It's implicitly included in EsDateTime.cpp
 //
+#include <windows.h>
+#include <timezoneapi.h>
 
 static esDT internalNow()
 {
