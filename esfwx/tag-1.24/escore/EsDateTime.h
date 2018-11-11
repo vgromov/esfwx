@@ -86,12 +86,12 @@ public:
 	bool operator<= (const EsTimeSpan& other) const { return operator<(other) || operator==(other); }
 	bool operator> (const EsTimeSpan& other) const { return !operator<=(other); }
 	bool operator>= (const EsTimeSpan& other) const { return operator==(other) || operator>(other); }
-	friend ESCORE_FUNC( EsTimeSpan) operator+ (const EsTimeSpan& _1, const EsTimeSpan& _2);
-	friend ESCORE_FUNC( EsTimeSpan) operator+ (const EsTimeSpan& _1, llong _2); // we may add llong, which is interpreted as milliseconds
-	friend ESCORE_FUNC( EsTimeSpan) operator- (const EsTimeSpan& _1, const EsTimeSpan& _2);
-	friend ESCORE_FUNC( EsTimeSpan) operator- (const EsTimeSpan& _1, llong _2);
-	friend ESCORE_FUNC( EsTimeSpan) operator* (const EsTimeSpan& _1, llong _2);
-	friend ESCORE_FUNC( EsTimeSpan) operator/ (const EsTimeSpan& _1, llong _2);
+	friend ESCORE_FUNC( EsTimeSpan, operator+ (const EsTimeSpan& _1, const EsTimeSpan& _2) );
+	friend ESCORE_FUNC( EsTimeSpan, operator+ (const EsTimeSpan& _1, llong _2) ); //< We may add llong, which is interpreted as milliseconds
+	friend ESCORE_FUNC( EsTimeSpan, operator- (const EsTimeSpan& _1, const EsTimeSpan& _2) );
+	friend ESCORE_FUNC( EsTimeSpan, operator- (const EsTimeSpan& _1, llong _2) );
+	friend ESCORE_FUNC( EsTimeSpan, operator* (const EsTimeSpan& _1, llong _2) );
+	friend ESCORE_FUNC( EsTimeSpan, operator/ (const EsTimeSpan& _1, llong _2) );
 
 	// variant conversion helpers for Reflection
 	static esDT fromVariant(const EsVariant& var);
@@ -116,12 +116,12 @@ private:
 
 	friend class EsDateTime;
 };
-ESCORE_FUNC( EsTimeSpan) operator+ (const EsTimeSpan& _1, const EsTimeSpan& _2);
-ESCORE_FUNC( EsTimeSpan) operator+ (const EsTimeSpan& _1, llong _2); // we may add llong, which is interpreted as milliseconds
-ESCORE_FUNC( EsTimeSpan) operator- (const EsTimeSpan& _1, const EsTimeSpan& _2);
-ESCORE_FUNC( EsTimeSpan) operator- (const EsTimeSpan& _1, llong _2);
-ESCORE_FUNC( EsTimeSpan) operator* (const EsTimeSpan& _1, llong _2);
-ESCORE_FUNC( EsTimeSpan) operator/ (const EsTimeSpan& _1, llong _2);
+ESCORE_FUNC( EsTimeSpan, operator+ (const EsTimeSpan& _1, const EsTimeSpan& _2) );
+ESCORE_FUNC( EsTimeSpan, operator+ (const EsTimeSpan& _1, llong _2) ); //< We may add llong, which is interpreted as milliseconds
+ESCORE_FUNC( EsTimeSpan, operator- (const EsTimeSpan& _1, const EsTimeSpan& _2) );
+ESCORE_FUNC( EsTimeSpan, operator- (const EsTimeSpan& _1, llong _2) );
+ESCORE_FUNC( EsTimeSpan, operator* (const EsTimeSpan& _1, llong _2) );
+ESCORE_FUNC( EsTimeSpan, operator/ (const EsTimeSpan& _1, llong _2) );
 
 /// EsDateTime reflected class wrapper around native esDT type
 ///
@@ -289,11 +289,11 @@ public:
   const EsDateTime& operator-= (const EsDateTime& other);
   const EsDateTime& operator-= (llong other);
 
-	friend ESCORE_FUNC( EsDateTime) operator+ (const EsDateTime& _1, const EsTimeSpan& _2);
-	friend ESCORE_FUNC( EsDateTime) operator+ (const EsDateTime& _1, llong _2); // we may add llong, which is interpreted as milliseconds
-	friend ESCORE_FUNC( EsDateTime) operator- (const EsDateTime& _1, const EsTimeSpan& _2);
-	friend ESCORE_FUNC( EsTimeSpan) operator- (const EsDateTime& _1, const EsDateTime& _2);
-	friend ESCORE_FUNC( EsDateTime) operator- (const EsDateTime& _1, llong _2); // we may subtract llong, which is interpreted as milliseconds
+	friend ESCORE_FUNC( EsDateTime, operator+ (const EsDateTime& _1, const EsTimeSpan& _2) );
+	friend ESCORE_FUNC( EsDateTime, operator+ (const EsDateTime& _1, llong _2) ); //< We may add llong, which is interpreted as milliseconds
+	friend ESCORE_FUNC( EsDateTime, operator- (const EsDateTime& _1, const EsTimeSpan& _2) );
+	friend ESCORE_FUNC( EsTimeSpan, operator- (const EsDateTime& _1, const EsDateTime& _2) );
+	friend ESCORE_FUNC( EsDateTime, operator- (const EsDateTime& _1, llong _2) ); //< We may subtract llong, which is interpreted as milliseconds
 
 	// Variant conversion helpers for Reflection
 	static esDT fromVariant(const EsVariant& var);
@@ -325,11 +325,11 @@ private:
 	mutable ulong m_msec;
 };
 
-ESCORE_FUNC( EsDateTime) operator+ (const EsDateTime& _1, const EsTimeSpan& _2);
-ESCORE_FUNC( EsDateTime) operator+ (const EsDateTime& _1, llong _2);
-ESCORE_FUNC( EsDateTime) operator- (const EsDateTime& _1, const EsTimeSpan& _2);
-ESCORE_FUNC( EsTimeSpan) operator- (const EsDateTime& _1, const EsDateTime& _2);
-ESCORE_FUNC( EsDateTime) operator- (const EsDateTime& _1, llong _2);
+ESCORE_FUNC( EsDateTime, operator+ (const EsDateTime& _1, const EsTimeSpan& _2) );
+ESCORE_FUNC( EsDateTime, operator+ (const EsDateTime& _1, llong _2) );
+ESCORE_FUNC( EsDateTime, operator- (const EsDateTime& _1, const EsTimeSpan& _2) );
+ESCORE_FUNC( EsTimeSpan, operator- (const EsDateTime& _1, const EsDateTime& _2) );
+ESCORE_FUNC( EsDateTime, operator- (const EsDateTime& _1, llong _2) );
 
 #endif // _es_date_time_h_
  

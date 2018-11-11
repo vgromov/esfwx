@@ -64,13 +64,13 @@ ESCORE_FUNC( double, es_logN(double n, double d) );
   extern "C" {
 #endif
 
-ESCORE_FUNC( size_t) es_strlen(ES_CTSTR s);
-ESCORE_FUNC( int) es_strcmp(ES_CTSTR s1, ES_CTSTR s2);
-ESCORE_FUNC( int) es_stricmp(ES_CTSTR s1, ES_CTSTR s2);
-ESCORE_FUNC( int) es_strncmp(ES_CTSTR s1, ES_CTSTR s2, size_t n);
-ESCORE_FUNC( ES_CTSTR) es_strchr(ES_CTSTR s, ES_CHAR c);
-ESCORE_FUNC( ES_CTSTR) es_strstr(ES_CTSTR s1, ES_CTSTR s2);
-ESCORE_FUNC( size_t) es_strftime(ES_CHAR* buff, size_t nsize, ES_CTSTR format, const struct tm *timeptr);
+ESCORE_FUNC( size_t, es_strlen(ES_CTSTR s) );
+ESCORE_FUNC( int, es_strcmp(ES_CTSTR s1, ES_CTSTR s2)       );
+ESCORE_FUNC( int, es_stricmp(ES_CTSTR s1, ES_CTSTR s2)      );
+ESCORE_FUNC( int, es_strncmp(ES_CTSTR s1, ES_CTSTR s2, size_t n) );
+ESCORE_FUNC( ES_CTSTR, es_strchr(ES_CTSTR s, ES_CHAR c)     );
+ESCORE_FUNC( ES_CTSTR, es_strstr(ES_CTSTR s1, ES_CTSTR s2)  );
+ESCORE_FUNC( size_t, es_strftime(ES_CHAR* buff, size_t nsize, ES_CTSTR format, const struct tm *timeptr) );
 
 #ifdef __cplusplus
   }
@@ -79,6 +79,6 @@ ESCORE_FUNC( size_t) es_strftime(ES_CHAR* buff, size_t nsize, ES_CTSTR format, c
 #endif
 
 // Special short-cut for exception throwing, before actual exception class is declared
-ESCORE_FUNC( void) EsExceptionThrow(ES_CTSTR error);
+ESCORE_FUNC( void, EsExceptionThrow(ES_CTSTR error) );
 
 #endif // _es_core_rtl_h_

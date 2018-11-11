@@ -72,7 +72,7 @@ namespace EsUtilities
 ///
 /// @return	.
 ///
-ESCORE_FUNC( ulong) osErrorCodeGet();
+ESCORE_FUNC( ulong, osErrorCodeGet() );
 
 /// Get error string from OS error code.
 ///
@@ -80,13 +80,13 @@ ESCORE_FUNC( ulong) osErrorCodeGet();
 ///
 /// @return	.
 ///
-ESCORE_FUNC( EsString) osErrorStringGet(ulong code);
+ESCORE_FUNC( EsString, osErrorStringGet(ulong code) );
 
 /// Return assoc container of environment variables.
 ///
 /// @return	.
 ///
-ESCORE_FUNC( EsStringIndexedMap) environmentVarsListGet();
+ESCORE_FUNC( EsStringIndexedMap, environmentVarsListGet() );
 
 /// Global logging wrappers.
 ///
@@ -97,28 +97,28 @@ ESCORE_FUNC( EsStringIndexedMap) environmentVarsListGet();
 /// @param	msg	The message.
 /// @param	val	(optional) the value.
 ///
-ESCORE_FUNC( void) logInfo(const EsString& msg, const EsVariant& val = EsVariant::null());
+ESCORE_FUNC( void, logInfo(const EsString& msg, const EsVariant& val = EsVariant::null()) );
 
 /// Logs a debug.
 ///
 /// @param	msg	The message.
 /// @param	val	(optional) the value.
 ///
-ESCORE_FUNC( void) logDebug(const EsString& msg, const EsVariant& val = EsVariant::null());
+ESCORE_FUNC( void, logDebug(const EsString& msg, const EsVariant& val = EsVariant::null()) );
 
 /// Logs a warning.
 ///
 /// @param	msg	The message.
 /// @param	val	(optional) the value.
 ///
-ESCORE_FUNC( void) logWarning(const EsString& msg, const EsVariant& val = EsVariant::null());
+ESCORE_FUNC( void, logWarning(const EsString& msg, const EsVariant& val = EsVariant::null()) );
 
 /// Logs an error.
 ///
 /// @param	msg	The message.
 /// @param	val	(optional) the value.
 ///
-ESCORE_FUNC( void) logError(const EsString& msg, const EsVariant& val = EsVariant::null());
+ESCORE_FUNC( void, logError(const EsString& msg, const EsVariant& val = EsVariant::null()) );
 
 /// Logs custom message
 ///
@@ -126,7 +126,7 @@ ESCORE_FUNC( void) logError(const EsString& msg, const EsVariant& val = EsVarian
 /// @param	msg	The message.
 /// @param	val	(optional) the value.
 ///
-ESCORE_FUNC( void) logCustom(ulong id, const EsString& msg, const EsVariant& val = EsVariant::null());
+ESCORE_FUNC( void, logCustom(ulong id, const EsString& msg, const EsVariant& val = EsVariant::null()) );
 
 /// Return readable asl string.
 ///
@@ -134,7 +134,7 @@ ESCORE_FUNC( void) logCustom(ulong id, const EsString& msg, const EsVariant& val
 ///
 /// @return	.
 ///
-ESCORE_FUNC( EsString) aslStringGet(ulong asl);
+ESCORE_FUNC( EsString, aslStringGet(ulong asl) );
 
 /// Get languages installed under the specified directory. only use non-empty language folders
 /// containing mo files with specified base name.
@@ -144,7 +144,7 @@ ESCORE_FUNC( EsString) aslStringGet(ulong asl);
 ///
 /// @return	.
 ///
-ESCORE_FUNC( EsString::Array) installedLanguagesGet(const EsString& languagesRoot, const EsString& baseMoName);
+ESCORE_FUNC( EsString::Array, installedLanguagesGet(const EsString& languagesRoot, const EsString& baseMoName) );
 
 /// Convert GUID to string.
 ///
@@ -155,7 +155,7 @@ ESCORE_FUNC( EsString::Array) installedLanguagesGet(const EsString& languagesRoo
 ///
 /// @return	String representation of GUID.
 ///
-ESCORE_FUNC( EsString) GUIDtoStr(const GUID& guid, bool canonical = false);
+ESCORE_FUNC( EsString, GUIDtoStr(const GUID& guid, bool canonical = false) );
 
 /// Get GUID from its string representation.
 /// Throw error if str is not valid representation of GUID.
@@ -165,7 +165,7 @@ ESCORE_FUNC( EsString) GUIDtoStr(const GUID& guid, bool canonical = false);
 ///
 /// @return	GUID.
 ///
-ESCORE_FUNC( GUID) GUIDfromStr(const EsString& str);
+ESCORE_FUNC( GUID, GUIDfromStr(const EsString& str) );
 
 #ifdef ES_USE_CRYPTO_LEGACY
 
@@ -176,7 +176,7 @@ ESCORE_FUNC( GUID) GUIDfromStr(const EsString& str);
 ///
 /// @return	Compressed and encoded data block.
 ///
-ESCORE_FUNC( EsBinBuffer) bToE(const EsBinBuffer& b, const EsString& key);
+ESCORE_FUNC( EsBinBuffer, bToE(const EsBinBuffer& b, const EsString& key) );
 
 /// Decrypt and decompress source block e using supplied key
 ///
@@ -185,7 +185,7 @@ ESCORE_FUNC( EsBinBuffer) bToE(const EsBinBuffer& b, const EsString& key);
 ///
 /// @return	Decoded and decompressed data block.
 ///
-ESCORE_FUNC( EsBinBuffer) eToB(const EsBinBuffer& e, const EsString& key);
+ESCORE_FUNC( EsBinBuffer, eToB(const EsBinBuffer& e, const EsString& key) );
 
 /// String codec based on bToE|eToB.
 ///
@@ -194,7 +194,7 @@ ESCORE_FUNC( EsBinBuffer) eToB(const EsBinBuffer& e, const EsString& key);
 ///
 /// @return	The given data converted to an EsString.
 ///
-ESCORE_FUNC( EsString) sToE(const EsString& s, const EsString& key);
+ESCORE_FUNC( EsString, sToE(const EsString& s, const EsString& key) );
 
 /// Converts this object to the s.
 ///
@@ -203,7 +203,7 @@ ESCORE_FUNC( EsString) sToE(const EsString& s, const EsString& key);
 ///
 /// @return	The given data converted to an EsString.
 ///
-ESCORE_FUNC( EsString) eToS(const EsString& e, const EsString& key);
+ESCORE_FUNC( EsString, eToS(const EsString& e, const EsString& key) );
 
 #endif // ES_USE_CRYPTO_LEGACY
 
@@ -358,14 +358,14 @@ inline double round0(double val) ES_NOTHROW
 /// Floating point numbers equality comparison
 ///
 /// Double internals-aware equality comparison
-ESCORE_FUNC( bool) areEqualFloats(double _1, double _2, size_t maxUlps = 1) ES_NOTHROW;
+ESCORE_FUNC( bool, areEqualFloats(double _1, double _2, size_t maxUlps = 1) ES_NOTHROW );
 
 /// Float internals-aware equality comparison
-ESCORE_FUNC( bool) areEqualFloats(float _1, float _2, size_t maxUlps = 1) ES_NOTHROW;
+ESCORE_FUNC( bool, areEqualFloats(float _1, float _2, size_t maxUlps = 1) ES_NOTHROW );
 
 /// Platform-specific stuff
 ///
-ESCORE_FUNC( void) urlOpen(const EsString& url);
+ESCORE_FUNC( void, urlOpen(const EsString& url) );
 
 #if defined( ES_POSIX_COMPAT )
 
@@ -375,8 +375,8 @@ ESCORE_FUNC( void) urlOpen(const EsString& url);
 #if ES_OS != ES_OS_ANDROID
 
 /// Sysctl call wrappers
-ESCORE_FUNC( int) sysctlIntGet(int subjId, int dataId);
-ESCORE_FUNC( EsString) sysctlStrGet(int subjId, int dataId);
+ESCORE_FUNC( int, sysctlIntGet(int subjId, int dataId) );
+ESCORE_FUNC( EsString, sysctlStrGet(int subjId, int dataId) );
 
 #endif
 
@@ -388,26 +388,24 @@ ESCORE_FUNC( EsString) sysctlStrGet(int subjId, int dataId);
 /// Try to find registry key in svc object. Return empty variant if nothing was found
 /// otherwise, return either integer or string value, depending on key type
 ///
-ESCORE_FUNC( EsVariant) macosSvcRegValSearch(io_service_t svc, const io_name_t plane,
-  CFStringRef key, IOOptionBits searchOptions = kIORegistryIterateRecursively );
+ESCORE_FUNC( EsVariant, macosSvcRegValSearch(io_service_t svc, const io_name_t plane, CFStringRef key, IOOptionBits searchOptions = kIORegistryIterateRecursively ) );
 
 
 /// Try to read registry key from svc object. Return empty variant if nothing read
 /// otherwise, return either integer or string value, depending on key type
 ///
-ESCORE_FUNC( EsVariant) macosSvcRegValGet(io_service_t svc, CFStringRef key);
+ESCORE_FUNC( EsVariant, macosSvcRegValGet(io_service_t svc, CFStringRef key) );
 
 /// Try to locate and retrieve VID, PID, and serial information for the USB
 /// device, which is identified by /dev/xxx path string
 /// If found, returned is collection of [VID,PID,Serial], null variant otherwise
 ///
-ESCORE_FUNC( EsVariant) macosUsbInfoGetByParam(const io_name_t paramPlane,
-  CFStringRef paramKey, const EsVariant& paramVal);
+ESCORE_FUNC( EsVariant, macosUsbInfoGetByParam(const io_name_t paramPlane, CFStringRef paramKey, const EsVariant& paramVal) );
 
 # elif ES_OS == ES_OS_ANDROID
 
-ESCORE_FUNC(JNIEnv*) jniEnvGet();
-ESCORE_FUNC(JavaVM*) jvmGet();
+ESCORE_FUNC(JNIEnv*, jniEnvGet() );
+ESCORE_FUNC(JavaVM*, jvmGet() );
 
 # endif
 

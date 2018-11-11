@@ -714,12 +714,12 @@ private:
 /// Reflection registrar declaration and implementation macros
 ///
 #	define ES_DECL_REFLECTION_REGISTRAR(ExportSpec, ModuleName) \
-	namespace ModuleName { ExportSpec( void) reflectionInit(); \
-  ExportSpec( void) reflectionInitDynamic(EsClassRegistryAccessorT); \
-  ExportSpec( void) reflectionUninitDynamic(); } \
-  extern "C" ExportSpec( void) _##ModuleName##_##reflectionInit(); \
-  extern "C" ExportSpec( void) _##ModuleName##_##reflectionInitDynamic(void* accPfn); \
-  extern "C" ExportSpec( void) _##ModuleName##_##reflectionUninitDynamic();
+	namespace ModuleName { ExportSpec( void, reflectionInit() ); \
+  ExportSpec( void, reflectionInitDynamic(EsClassRegistryAccessorT) ); \
+  ExportSpec( void, reflectionUninitDynamic() ); } \
+  extern "C" ExportSpec( void, _##ModuleName##_##reflectionInit() ); \
+  extern "C" ExportSpec( void, _##ModuleName##_##reflectionInitDynamic(void* accPfn) ); \
+  extern "C" ExportSpec( void, _##ModuleName##_##reflectionUninitDynamic() );
 
 #	define ES_DECL_REFLECTION_REGISTRAR_NO_EXPORT(ModuleName) \
 	namespace ModuleName { void reflectionInit(); \

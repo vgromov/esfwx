@@ -1106,12 +1106,12 @@ private:
 namespace EsXml
 {
 // Convert wide string to UTF8
-ESCORE_FUNC( EsByteString) as_utf8(const ES_WCHAR* str);
-ESCORE_FUNC( EsByteString) as_utf8(const EsWideString& str);
+ESCORE_FUNC( EsByteString, as_utf8(const ES_WCHAR* str) );
+ESCORE_FUNC( EsByteString, as_utf8(const EsWideString& str) );
 
 // Convert UTF8 to wide string
-ESCORE_FUNC( EsWideString) as_wide(const char* str);
-ESCORE_FUNC( EsWideString) as_wide(const EsByteString& str);
+ESCORE_FUNC( EsWideString, as_wide(const char* str) );
+ESCORE_FUNC( EsWideString, as_wide(const EsByteString& str) );
 
 // Memory allocation function interface; returns pointer to allocated memory or NULL on failure
 typedef void* (*allocation_function)(size_t size);
@@ -1120,20 +1120,20 @@ typedef void* (*allocation_function)(size_t size);
 typedef void (*deallocation_function)(void* ptr);
 
 // Override default memory management functions. All subsequent allocations/deallocations will be performed via supplied functions.
-ESCORE_FUNC( void) set_memory_management_functions(allocation_function allocate, deallocation_function deallocate);
+ESCORE_FUNC( void, set_memory_management_functions(allocation_function allocate, deallocation_function deallocate) );
 
 // Get current memory management functions
-ESCORE_FUNC( allocation_function) get_memory_allocation_function();
-ESCORE_FUNC( deallocation_function) get_memory_deallocation_function();
+ESCORE_FUNC( allocation_function, get_memory_allocation_function() );
+ESCORE_FUNC( deallocation_function, get_memory_deallocation_function() );
 }
 
 #if (defined(_MSC_VER) || defined(__ICC))
 namespace std
 {
 	// Workarounds for (non-standard) iterator category detection for older versions (MSVC7/IC8 and earlier)
-ESCORE_FUNC( std::bidirectional_iterator_tag) _Iter_cat(const EsXmlNodeIterator&);
-ESCORE_FUNC( std::bidirectional_iterator_tag) _Iter_cat(const EsXmlAttributeIterator&);
-ESCORE_FUNC( std::bidirectional_iterator_tag) _Iter_cat(const EsXmlNamedNodeIterator&);
+ESCORE_FUNC( std::bidirectional_iterator_tag, _Iter_cat(const EsXmlNodeIterator&) );
+ESCORE_FUNC( std::bidirectional_iterator_tag, _Iter_cat(const EsXmlAttributeIterator&) );
+ESCORE_FUNC( std::bidirectional_iterator_tag, _Iter_cat(const EsXmlNamedNodeIterator&) );
 }
 #endif
 
@@ -1141,9 +1141,9 @@ ESCORE_FUNC( std::bidirectional_iterator_tag) _Iter_cat(const EsXmlNamedNodeIter
 namespace std
 {
 	// Workarounds for (non-standard) iterator category detection
-ESCORE_FUNC( std::bidirectional_iterator_tag) __iterator_category(const EsXmlNodeIterator&);
-ESCORE_FUNC( std::bidirectional_iterator_tag) __iterator_category(const EsXmlAttributeIterator&);
-ESCORE_FUNC( std::bidirectional_iterator_tag) __iterator_category(const EsXmlNamedNodeIterator&);
+ESCORE_FUNC( std::bidirectional_iterator_tag, __iterator_category(const EsXmlNodeIterator&) );
+ESCORE_FUNC( std::bidirectional_iterator_tag, __iterator_category(const EsXmlAttributeIterator&) );
+ESCORE_FUNC( std::bidirectional_iterator_tag, __iterator_category(const EsXmlNamedNodeIterator&) );
 }
 #endif
 

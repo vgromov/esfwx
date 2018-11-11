@@ -11,17 +11,17 @@
 #ifdef ES_DYNAMIC_LINKAGE
 #	ifdef ESCORE_EXPORTS
 #	  define ESCORE_CLASS	    ES_EXPORT_SPEC
-#     define ESCORE_FUNC(type)  ES_FUNCEXPORT_SPEC(type)
-#	  define ESCORE_DATA(type)	ES_DATAEXPORT_SPEC(type)
+#   define ESCORE_FUNC      ES_FUNCEXPORT_SPEC
+#	  define ESCORE_DATA	    ES_DATAEXPORT_SPEC
 #	else
 #	  define ESCORE_CLASS	    ES_IMPORT_SPEC
-#	  define ESCORE_FUNC(type)  ES_FUNCIMPORT_SPEC(type)
-#	  define ESCORE_DATA(type)	ES_DATAIMPORT_SPEC(type)
+#	  define ESCORE_FUNC      ES_FUNCIMPORT_SPEC
+#	  define ESCORE_DATA	    ES_DATAIMPORT_SPEC
 #	endif
 #else
 #	define ESCORE_CLASS
-#	define ESCORE_FUNC(type)    type
-#	define ESCORE_DATA(type)    type
+#	define ESCORE_FUNC(type, decl) type decl
+#	define ESCORE_DATA(type, decl) type decl
 #endif
 
 // STL stuff

@@ -5,7 +5,7 @@
 //
 namespace EsLocale
 {
-  ESCORE_FUNC(const std::locale&) locale() ES_NOTHROW;
+  ESCORE_FUNC(const std::locale&, locale() ES_NOTHROW );
 }
 
 /// String class. Uses std::basic_string internally.
