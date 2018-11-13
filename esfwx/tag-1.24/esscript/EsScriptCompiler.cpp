@@ -2685,7 +2685,7 @@ protected:
       ES_ASSERT(m_cs);
 
       m_compiler.m_codeScope = this;
-      ESSCRIPT_COMPILER_TRACE2( esT("CodeSectionScope(compiler, cs='%s')"), m_cs->nameGet().c_str() )
+      ESSCRIPT_COMPILER_TRACE2( esT("CodeSectionScope(compiler, cs='%s')"), m_cs->nameGet() )
     }
 
     ~CodeSectionScope() ES_NOTHROW
@@ -2746,7 +2746,7 @@ protected:
           );
       }
 
-      ESSCRIPT_COMPILER_TRACE2( esT("~CodeSectionScope() '%s'"), m_cs->nameGet().c_str() )
+      ESSCRIPT_COMPILER_TRACE2( esT("~CodeSectionScope() '%s'"), m_cs->nameGet() )
       m_compiler.m_codeScope = m_prev;
     }
 
@@ -2781,7 +2781,7 @@ protected:
 
       m_compiler.m_objectScope = this;
       m_metaclass = script.metaclassDeclare(obj, baseObj);
-      ESSCRIPT_COMPILER_TRACE3(esT("ObjectScope(compiler, script, obj='%s', baseObj='%s')"), obj.c_str(), baseObj.c_str())
+      ESSCRIPT_COMPILER_TRACE3(esT("ObjectScope(compiler, script, obj='%s', baseObj='%s')"), obj, baseObj)
     }
 
     ObjectScope(EsScriptCompiler& compiler, const EsScriptObjectIntf::Ptr& fld) :
@@ -2792,12 +2792,12 @@ protected:
       ES_ASSERT(m_prev);
       ES_ASSERT(m_metaclass);
       m_compiler.m_objectScope = this;
-      ESSCRIPT_COMPILER_TRACE2(esT("ObjectScope(compiler, fld='%s')"), m_metaclass->typeNameGet().c_str())
+      ESSCRIPT_COMPILER_TRACE2(esT("ObjectScope(compiler, fld='%s')"), m_metaclass->typeNameGet())
     }
 
     ~ObjectScope() 
     {
-      ESSCRIPT_COMPILER_TRACE2(esT("~ObjectScope() '%s'"), m_metaclass->typeNameGet().c_str())
+      ESSCRIPT_COMPILER_TRACE2(esT("~ObjectScope() '%s'"), m_metaclass->typeNameGet())
       m_compiler.m_objectScope = m_prev;
     }
 

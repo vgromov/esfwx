@@ -192,3 +192,10 @@ const EsString& EsStdNames::label() ES_NOTHROW
   return s_label;
 }
 //---------------------------------------------------------------------------
+
+const EsString& EsStdNames::buffer() ES_NOTHROW
+{
+  static const EsString s_buffer(esT("buffer"), EsString::doHashInit);
+  return s_buffer;
+}
+//---------------------------------------------------------------------------

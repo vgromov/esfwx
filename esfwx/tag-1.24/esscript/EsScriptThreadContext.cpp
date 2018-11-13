@@ -96,17 +96,17 @@ EsString EsScriptThreadContext::instructionAsString(const EsScriptInstruction& i
     ulong mask = instr.payloadMask();
     if( mask & EsScriptInstruction::Payload0 )
       result += EsString::format(
-        esT( "; payload[0]: %d" ),
+        esT( "; payload[0]: %u" ),
         instr.raw0get()
       );
     if( mask & EsScriptInstruction::Payload1 )
       result += EsString::format(
-        esT( "; payload[1]: %d" ),
+        esT( "; payload[1]: %u" ),
         instr.raw1get()
       );
     if( mask & EsScriptInstruction::Payload2 )
       result += EsString::format(
-        esT( "; payload[2]: %d" ),
+        esT( "; payload[2]: %u" ),
         instr.raw2get()
       );
     if( mask & EsScriptInstruction::Payload3 )
@@ -145,7 +145,6 @@ EsScriptDebugInfoIntf::Ptr EsScriptThreadContext::currentDebugInfoGet() const ES
   return nullptr;
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 class EsScriptOptbl
@@ -1105,7 +1104,6 @@ void EsScriptThreadContext::doBinOp(long opid)
   ES_ASSERT(opidBwAnd <= opid && opidGrEqual >= opid);
   ES_ASSERT(m_csScope);
 
-  // pop _2 from data stack, operate on _1 inplace, in data stack
   EsScriptValAccessorIntf::Ptr _2 = m_csScope->stackPop();
   EsScriptValAccessorIntf::Ptr _1 = m_csScope->stackPop();
   EsVariant tmp;
@@ -1117,7 +1115,7 @@ void EsScriptThreadContext::doBinOp(long opid)
     tmp
   );
 
-  // replace with temporary accessor on the top of the stack
+  // Push temporary accessor on the top of the stack
   m_csScope->stackPush(
     EsScriptTmpValAccessor::create(tmp)
   );

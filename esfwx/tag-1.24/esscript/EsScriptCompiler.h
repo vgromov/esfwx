@@ -11,12 +11,12 @@ namespace EsScriptUtilities
 /// @param brk      [in]      optional parameter which allow passing breaker interface to the
 ///                           compiler, and aborting compilation process
 ///
-ESSCRIPT_FUNC(bool) compileFromString(
+ESSCRIPT_FUNC(bool, compileFromString(
   const EsString& src,
   EsScriptMachine& machine, 
   const EsAssocContainerIntf::Ptr& modulesInfo,
   const EsBreakIntf::Ptr& brk = EsBreakIntf::Ptr()
-);
+) );
 
 /// Compile script file into machine instructions.
 /// @param src      [in]      string containing input script file
@@ -24,19 +24,19 @@ ESSCRIPT_FUNC(bool) compileFromString(
 ///                           by compiled instructions and data
 /// @param brk      [in]      optional parameter which allow passing breaker interface to the
 ///                           compiler, and aborting compilation process
-ESSCRIPT_FUNC(bool) compileFromFile(
+ESSCRIPT_FUNC(bool, compileFromFile(
   const EsString& src,
   EsScriptMachine& machine, 
   const EsAssocContainerIntf::Ptr& modulesInfo,
   const EsBreakIntf::Ptr& brk = EsBreakIntf::Ptr()
-);
+) );
 
 /// Compile scriptlet contents into machine instructions.
 /// @param src      [in]      reference to scriptlet to be compiled
 /// @param brk      [in]      parameter which allow passing breaker interface to the
 ///                           compiler, and aborting compilation process
 ///
-ESSCRIPT_FUNC(bool) compileFromScriptlet(EsScriptlet& src, const EsBreakIntf::Ptr& brk);
+ESSCRIPT_FUNC(bool, compileFromScriptlet(EsScriptlet& src, const EsBreakIntf::Ptr& brk) );
 
 }
 

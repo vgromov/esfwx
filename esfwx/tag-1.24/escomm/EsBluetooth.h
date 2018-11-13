@@ -237,13 +237,13 @@ protected:
 namespace EsBluetoothUUID
 {
   /// Bluetooth base UUID constant
-  ESCOMM_FUNC(const GUID&) base();
+  ESCOMM_FUNC(const GUID&, base() );
 
   /// Get full UUID from shortened 16|32 UUID
-  ESCOMM_FUNC(GUID) fromShortened(ulong uuid);
+  ESCOMM_FUNC(GUID, fromShortened(ulong uuid) );
 
   /// UUID validity check. Return true, if uuid 'grows' from the BT base UUID
-  ESCOMM_FUNC(bool) isOk(const GUID& uuid);
+  ESCOMM_FUNC(bool, isOk(const GUID& uuid) );
 }
 
 /// Bluetooth service UUID decoder
@@ -535,33 +535,31 @@ private:
 namespace EsBluetooth
 {
   /// Global initialization
-  ESCOMM_FUNC( void) initialize();
+  ESCOMM_FUNC( void, initialize() );
 
   /// Global initialization check
-  ESCOMM_FUNC( bool) initialized();
+  ESCOMM_FUNC( bool, initialized() );
 
   /// Global uninitialization
-  ESCOMM_FUNC( void) uninitialize();
+  ESCOMM_FUNC( void, uninitialize() );
 
   /// Return any address string
-  ESCOMM_FUNC( const EsString&) anyAddr();
+  ESCOMM_FUNC( const EsString&, anyAddr() );
 
   /// Retrieve string representation of device CoD
-  ESCOMM_FUNC( EsString) codDescriptionGet(ulong cod);
+  ESCOMM_FUNC( EsString, codDescriptionGet(ulong cod) );
 
   /// Retrieve string representation of radio manufacturer
-  ESCOMM_FUNC( EsString) mfgStringGet(ulong mfg);
+  ESCOMM_FUNC( EsString, mfgStringGet(ulong mfg) );
 
   /// Retrieve string representation of bluetooth address
-  ESCOMM_FUNC( EsString) addrStringGet(ullong addr);
+  ESCOMM_FUNC( EsString, addrStringGet(ullong addr) );
 
   /// Try to resolve bluetooth address string to device name
-  ESCOMM_FUNC( bool) addrToNameResolve(const EsString& addr, ulong flags,
-    EsString& name, bool doInquiry = false, ulong inquiryTmo = 0);
+  ESCOMM_FUNC( bool, addrToNameResolve(const EsString& addr, ulong flags, EsString& name, bool doInquiry = false, ulong inquiryTmo = 0) );
 
   /// Try to resolve bluetooth device name string to device address
-  ESCOMM_FUNC( bool) nameToAddrResolve(const EsString& name, ulong flags,
-    EsString& addr, bool doInquiry = false, ulong inquiryTmo = 0);
+  ESCOMM_FUNC( bool, nameToAddrResolve(const EsString& name, ulong flags, EsString& addr, bool doInquiry = false, ulong inquiryTmo = 0) );
 }
 
 #endif // ES_COMM_USE_BLUETOOTH

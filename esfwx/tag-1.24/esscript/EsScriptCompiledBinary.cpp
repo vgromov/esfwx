@@ -624,7 +624,7 @@ void EsScriptCompiledBinaryWriter::metaclassesWrite()
 	for(size_t idx = 0; idx < metaclasses.size(); ++idx)
 	{
 		EsScriptObjectIntf::Ptr metaclass = metaclasses[idx];
-		ESSCRIPT_COMPILED_TRACE3(esT("Metaclass '%s' written, rc=%d"), metaclass->typeNameGet().c_str(), metaclass->refGet())
+		ESSCRIPT_COMPILED_TRACE3(esT("Metaclass '%s' written, rc=%d"), metaclass->typeNameGet(), metaclass->refGet())
 		metaclassWrite(metaclass);
 	}
 }

@@ -539,16 +539,16 @@ private:
 namespace EsBluetoothLE
 {
   /// Global initialization
-  ESCOMM_FUNC( void) initialize();
+  ESCOMM_FUNC( void, initialize() );
 
   /// Global initialization check
-  ESCOMM_FUNC( bool) initialized();
+  ESCOMM_FUNC( bool, initialized() );
 
   /// Global uninitialization
-  ESCOMM_FUNC( void) uninitialize();
+  ESCOMM_FUNC( void, uninitialize() );
 
   /// Return Bluetooth LE result code string by code value
-  ESCOMM_FUNC( EsString) resultCodeStringGet(EsBluetoothLEresult code);
+  ESCOMM_FUNC( EsString, resultCodeStringGet(EsBluetoothLEresult code) );
 }
 
 #endif // ES_COMM_USE_BLUETOOTH_LE

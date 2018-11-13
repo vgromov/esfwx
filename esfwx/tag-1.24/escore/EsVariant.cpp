@@ -1007,7 +1007,7 @@ long EsVariant::asLong(const std::locale& loc /*= EsLocale::locale()*/) const
 	case VAR_UINT64:
 		if( m_value.m_ullong > LONG_MAX ) // unsigned integer bigger than maximum long
 		{
-			EsString str = EsString::fromUInt64(m_value.m_ullong, 10, loc);
+			const EsString str = EsString::fromUInt64(m_value.m_ullong, 10, loc);
 			EsException::Throw(
         _("Could not convert '%s' to signed integer"),
         str
@@ -2482,16 +2482,41 @@ EsVariant EsVariant::operator+(const EsVariant& v) const
       if( VAR_OBJECT == m_type )
       {
         obj = const_cast<EsVariant*>(this)->asExistingObject();
-			  return obj->call(EsStdNames::add(), v);
+			  return obj->call(
+          EsStdNames::add(), 
+          v
+        );
       }
       else
       {
         ES_ASSERT(VAR_OBJECT == v.m_type);
         obj = v.asExistingObject();
-        return obj->call(EsStdNames::add(), *this);
+
+        if(
+          VAR_STRING == m_type &&
+          obj->hasMethod({ 0, EsStdNames::asString() })
+        )
+        {
+          return asString() + 
+            obj->call(EsStdNames::asString()).asString();
+        }
+        else if(
+          VAR_BIN_BUFFER == m_type &&
+          obj->hasProperty(EsStdNames::buffer())
+        )
+        {
+          return asBinBuffer() +
+            obj->propertyGet(EsStdNames::buffer()).asBinBuffer();
+        }
+        else
+          return obj->call(
+            EsStdNames::add(), 
+            *this
+          );
       }
 		}
 	}
+
 	double result = asDouble() + v.asDouble();
 	return doReturnTyped(result, m_type, v.m_type);
 }
