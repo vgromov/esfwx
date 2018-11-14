@@ -81,7 +81,10 @@ m_name(name)
 	ESSCRIPT_VALACCESS_TRACE4(
     esT("EsScriptValAccessor (%s %p) created with '%s'"),
 		m_name,
-		this,
+		EsVariant(
+      this,
+      EsVariant::ACCEPT_POINTER
+    ),
 		EsScriptMachine::traceVariant(m_val)
   )
 }
@@ -91,7 +94,10 @@ EsScriptValAccessor::~EsScriptValAccessor()
 	ESSCRIPT_VALACCESS_TRACE4(
     esT("EsScriptValAccessor (%s %p) deleted (had '%s')"),
 		m_name,
-		this,
+    EsVariant(
+      this,
+      EsVariant::ACCEPT_POINTER
+    ),
 		EsScriptMachine::traceVariant(m_val)
   )
 }

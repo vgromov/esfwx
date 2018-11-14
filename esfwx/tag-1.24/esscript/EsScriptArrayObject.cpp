@@ -52,9 +52,7 @@ EsScriptObjectIntf::Ptr EsScriptArrayObject::createMetaclass(const EsScriptConte
 
 	ES_ASSERT(expr);
 	tmp->m_expr = expr;
-	EsScriptObjectIntf::Ptr result( tmp.release() ); 	
-	
-	return result; 
+	return tmp.release()->asBaseIntfPtrDirect(); 	
 }
 
 ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::binBufferSet)(const EsBinBuffer& buff)

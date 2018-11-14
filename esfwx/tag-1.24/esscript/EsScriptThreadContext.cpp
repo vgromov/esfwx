@@ -419,7 +419,7 @@ EsScriptInstructionOpcode EsScriptThreadContext::exec(
         instr-beg,
         instructionAsString(
           (*instr)
-        ).c_str()
+        )
       );
 #endif
 
@@ -1724,7 +1724,10 @@ EsReflectedClassIntf::Ptr EsScriptThreadContext::objectCreateWithParameters(
   const EsClassInfo* info = EsClassInfo::classInfoGet(name);
   if(info)
   {
-		EsReflectedClassIntf::Ptr result = info->classCallMethod(EsStdNames::reflectedCtr(), params).asExistingObject();
+		EsReflectedClassIntf::Ptr result = info->classCallMethod(
+      EsStdNames::reflectedCtr(), 
+      params
+    ).asExistingObject();
 
     // Add script object creation support for streams, injecting current script metaclass manager as object factory instance
     EsStreamIntf::Ptr stream = result;

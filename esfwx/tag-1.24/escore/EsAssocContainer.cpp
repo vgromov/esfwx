@@ -68,12 +68,12 @@ m_owner(owner, false, false)
 }
 //---------------------------------------------------------------------------
 
-EsAssocContainerIntf::Ptr EsAssocContainer::create(EsBaseIntf* owner /*= 0*/)
+EsAssocContainerIntf::Ptr EsAssocContainer::create(EsBaseIntf* owner /*= nullptr*/)
 {
   std::unique_ptr<EsAssocContainer> tmp(new EsAssocContainer(owner));
   tmp->m_dynamic = true;
 
-  return EsAssocContainerIntf::Ptr(tmp.release());
+  return tmp.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 

@@ -490,7 +490,11 @@ EsString EsScript::absoluteFileNameGet(
 bool EsScript::compileFile( const EsString& file, const EsBreakIntf::Ptr& brk )
 {
 	m_compiled = false;
-	const EsString& srcFile = absoluteFileNameGet(file, m_includes);
+	const EsString& srcFile = absoluteFileNameGet(
+    file, 
+    m_includes
+  );
+
 	// check source file existence
 	if( !EsPath::exists(srcFile, EsString::null()) )
 		EsScriptException::Throw(

@@ -101,14 +101,21 @@ m_subscriptionInitialized(false)
 EsScriptObjectIntf::Ptr EsScriptIfObject::createMetaclass(const EsScriptContext::Ptr& ctx)
 {
 	// create if metaclass wo expression code section
-	std::unique_ptr<EsScriptIfObject> tmp( new EsScriptIfObject(ctx, ofMetaclass|ofIf,
-		EsScriptObjectDataBufferPtr(), EsScriptCodeSection::Ptr()) );
+	std::unique_ptr<EsScriptIfObject> tmp( 
+    new EsScriptIfObject(
+      ctx, 
+      ofMetaclass|ofIf,
+		  EsScriptObjectDataBufferPtr(), 
+      EsScriptCodeSection::Ptr()
+    ) 
+  );
 	ES_ASSERT(tmp.get());
 	// install expression code section
 	EsScriptCodeSection::Ptr expr = EsScriptCodeSection::create(esT("condition"), EsString::nullArray(), tmp.get());
 	ES_ASSERT(expr);
 	tmp->m_expr = expr;
-	EsScriptObjectIntf::Ptr result( tmp.release() );
+	EsScriptObjectIntf::Ptr result = tmp.release()->asBaseIntfPtrDirect();
+
 	// add branches
 	EsScriptObjectIntf::Ptr branch = EsScriptIfBranchObject::createMetaclass(ctx, true);
 	result->fieldConditionalAdd(branch);

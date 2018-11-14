@@ -2490,29 +2490,19 @@ EsVariant EsVariant::operator+(const EsVariant& v) const
       else
       {
         ES_ASSERT(VAR_OBJECT == v.m_type);
-        obj = v.asExistingObject();
 
-        if(
-          VAR_STRING == m_type &&
-          obj->hasMethod({ 0, EsStdNames::asString() })
-        )
-        {
-          return asString() + 
-            obj->call(EsStdNames::asString()).asString();
-        }
-        else if(
-          VAR_BIN_BUFFER == m_type &&
-          obj->hasProperty(EsStdNames::buffer())
-        )
-        {
-          return asBinBuffer() +
-            obj->propertyGet(EsStdNames::buffer()).asBinBuffer();
-        }
+        if( VAR_STRING == m_type )
+          return asString() + v.asString();
+        else if( VAR_BIN_BUFFER == m_type )
+          return asBinBuffer() + v.asBinBuffer();
         else
+        {
+          obj = v.asExistingObject();
           return obj->call(
-            EsStdNames::add(), 
+            EsStdNames::add(),
             *this
           );
+        }
       }
 		}
 	}

@@ -185,24 +185,46 @@ m_val(val)
 {
 	m_dynamic = true;
 	ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
-	ESSCRIPT_VALACCESS_TRACE3(esT("EsScriptTmpValAccessor (%p) created with '%s'"), this, EsScriptMachine::traceVariant(m_val).c_str())
+	ESSCRIPT_VALACCESS_TRACE3(
+    esT("EsScriptTmpValAccessor (%p) created with '%s'"), 
+    EsVariant(
+      this,
+      EsVariant::ACCEPT_POINTER
+    ),
+    EsScriptMachine::traceVariant(m_val)
+  )
 }
 
 EsScriptTmpValAccessor::~EsScriptTmpValAccessor()
 {
-	ESSCRIPT_VALACCESS_TRACE3(esT("EsScriptTmpValAccessor (%p) deleted (had '%s')"), this, EsScriptMachine::traceVariant(m_val).c_str())
+	ESSCRIPT_VALACCESS_TRACE3(
+    esT("EsScriptTmpValAccessor (%p) deleted (had '%s')"), 
+    EsVariant(
+      this,
+      EsVariant::ACCEPT_POINTER
+    ),
+    EsScriptMachine::traceVariant(m_val)
+  )
 }
 
 ES_IMPL_INTF_METHOD(EsVariant&, EsScriptTmpValAccessor::get)()
 {
-	ESSCRIPT_VALACCESS_TRACE2(esT("EsScriptTmpValAccessor::get()='%s'"), EsScriptMachine::traceVariant(m_val).c_str())
+	ESSCRIPT_VALACCESS_TRACE2(
+    esT("EsScriptTmpValAccessor::get()='%s'"), 
+    EsScriptMachine::traceVariant(m_val)
+  )
+
 	return m_val;
 }
 
 ES_IMPL_INTF_METHOD(void, EsScriptTmpValAccessor::set)(const EsVariant& val)
 {
 	ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
-	ESSCRIPT_VALACCESS_TRACE3(esT("EsScriptTmpValAccessor::set='%s', (had '%s')"), EsScriptMachine::traceVariant(val).c_str(), EsScriptMachine::traceVariant(m_val).c_str())
+	ESSCRIPT_VALACCESS_TRACE3(
+    esT("EsScriptTmpValAccessor::set='%s', (had '%s')"), 
+    EsScriptMachine::traceVariant(val), 
+    EsScriptMachine::traceVariant(m_val)
+  )
 
 	if( m_val.isObject() )
 	{
@@ -231,14 +253,23 @@ EsItemAccessor::EsItemAccessor(const EsScriptValAccessorIntf::Ptr& valAcc, const
 	m_valAcc = valAcc;
 	m_idxExprAcc = idxExprAcc;
 
-	ESSCRIPT_VALACCESS_TRACE2(esT("EsItemAccessor (%p) created"), this)
+	ESSCRIPT_VALACCESS_TRACE2(
+    esT("EsItemAccessor (%p) created"), 
+    EsVariant(
+      this,
+      EsVariant::ACCEPT_POINTER
+    )
+  )
 }
 
 EsItemAccessor::~EsItemAccessor()
 {
 	ESSCRIPT_VALACCESS_TRACE3(
     esT("EsItemAccessor (%p) deleted, (had '%s')"),
-    this,
+    EsVariant(
+      this,
+      EsVariant::ACCEPT_POINTER
+    ),
     trace()
   )
 }
@@ -300,13 +331,23 @@ m_idx(0)
 	m_dynamic = true;
 	m_valAcc = valAcc;
 
-	ESSCRIPT_VALACCESS_TRACE2(esT("EsAutoItemAccessor (%p) created"), this)
+	ESSCRIPT_VALACCESS_TRACE2(
+    esT("EsAutoItemAccessor (%p) created"), 
+    EsVariant(
+      this,
+      EsVariant::ACCEPT_POINTER
+    )
+  )
 }
 
 EsAutoItemAccessor::~EsAutoItemAccessor()
 {
-	ESSCRIPT_VALACCESS_TRACE3(esT("EsAutoItemAccessor (%p) deleted, (had '%s')"),
-		this,
+	ESSCRIPT_VALACCESS_TRACE3(
+    esT("EsAutoItemAccessor (%p) deleted, (had '%s')"),
+    EsVariant(
+      this,
+      EsVariant::ACCEPT_POINTER
+    ),
 		trace()
   )
 }
@@ -374,7 +415,10 @@ m_instr(instr)
 
 	ESSCRIPT_VALACCESS_TRACE3(
     esT("EsPropertyAccessor (%p) $'%s' created"),
-		this,
+    EsVariant(
+      this,
+      EsVariant::ACCEPT_POINTER
+    ),
 		m_propName
   )
 }
@@ -383,7 +427,10 @@ EsPropertyAccessor::~EsPropertyAccessor()
 {
 	ESSCRIPT_VALACCESS_TRACE4(
     esT("EsPropertyAccessor (%p) $'%s' deleted, (had '%s')"),
-		this,
+    EsVariant(
+      this,
+      EsVariant::ACCEPT_POINTER
+    ),
 		m_propName,
 		trace()
   )
@@ -429,10 +476,12 @@ ES_IMPL_INTF_METHOD(EsVariant&, EsPropertyAccessor::get)()
   else
   	m_valCache = obj->propertyGet(m_propName);
 
-	ESSCRIPT_VALACCESS_TRACE4(esT("EsPropertyAccessor::get()('%s$%s') returns '%s'"),
-		obj->typeNameGet().c_str(),
-		m_propName.c_str(),
-		EsScriptMachine::traceVariant(m_valCache).c_str())
+	ESSCRIPT_VALACCESS_TRACE4(
+    esT("EsPropertyAccessor::get()('%s$%s') returns '%s'"),
+		obj->typeNameGet(),
+		m_propName,
+		EsScriptMachine::traceVariant(m_valCache)
+  )
 
 	return m_valCache;
 }

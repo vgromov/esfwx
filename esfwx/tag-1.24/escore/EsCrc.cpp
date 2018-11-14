@@ -82,7 +82,7 @@ EsBaseIntfPtr EsCRC8::NEW(cr_EsBinBuffer buff, esU8 initialSum)
   ES_ASSERT(p);
 
 	p->m_dynamic = true;
-	return p->asBaseIntfPtrDirect();
+	return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -98,7 +98,7 @@ EsBaseIntfPtr EsCRC8::NEW(cr_EsBinBuffer buff, esU8 initialSum, ulong from, ulon
     to
   );
 
-  return p->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -218,7 +218,7 @@ EsBaseIntfPtr EsChecksum16::NEW()
 
 	p->m_dynamic = true;
 
-	return p->asBaseIntfPtrDirect();
+	return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -229,7 +229,7 @@ EsBaseIntfPtr EsChecksum16::NEW(cr_EsBinBuffer buff)
 
 	p->m_dynamic = true;
 
-	return p->asBaseIntfPtrDirect();
+	return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -240,7 +240,7 @@ EsBaseIntfPtr EsChecksum16::NEW(cr_EsBinBuffer buff, esU16 initial)
 
   p->m_dynamic = true;
 
-  return p->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -257,7 +257,7 @@ EsBaseIntfPtr EsChecksum16::NEW(cr_EsBinBuffer buff, esU16 initial, ulong from, 
     to
   );
 
-  return p->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -401,7 +401,7 @@ EsBaseIntfPtr EsCRC16_CCIITT::NEW()
 	std::unique_ptr<EsCRC16_CCIITT> p( new EsCRC16_CCIITT() );
   ES_ASSERT(p);
 	p->m_dynamic = true;
-	return p->asBaseIntfPtrDirect();
+	return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -410,7 +410,7 @@ EsBaseIntfPtr EsCRC16_CCIITT::NEW(esU16 initialSum)
   std::unique_ptr<EsCRC16_CCIITT> p( new EsCRC16_CCIITT(nullptr, 0, initialSum) );
   ES_ASSERT(p);
 	p->m_dynamic = true;
-	return p->asBaseIntfPtrDirect();
+	return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -419,7 +419,7 @@ EsBaseIntfPtr EsCRC16_CCIITT::NEW(cr_EsBinBuffer buff, esU16 initialSum)
   std::unique_ptr<EsCRC16_CCIITT> p( new EsCRC16_CCIITT(buff, initialSum) );
   ES_ASSERT(p);
 	p->m_dynamic = true;
-	return p->asBaseIntfPtrDirect();
+	return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -435,7 +435,7 @@ EsBaseIntfPtr EsCRC16_CCIITT::NEW(cr_EsBinBuffer buff, esU16 initialSum, ulong f
     to
   );
 
-  return p->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -546,7 +546,7 @@ EsBaseIntfPtr EsCRC32_IEEE802_3::NEW()
 	std::unique_ptr<EsCRC32_IEEE802_3> p( new EsCRC32_IEEE802_3 );
   ES_ASSERT(p);
 	p->m_dynamic = true;
-	return p->asBaseIntfPtrDirect();
+	return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -555,7 +555,7 @@ EsBaseIntfPtr EsCRC32_IEEE802_3::NEW(esU32 initialSum)
   std::unique_ptr<EsCRC32_IEEE802_3> p( new EsCRC32_IEEE802_3(nullptr, 0, initialSum) );
   ES_ASSERT(p);
   p->m_dynamic = true;
-	return p->asBaseIntfPtrDirect();
+	return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -564,7 +564,7 @@ EsBaseIntfPtr EsCRC32_IEEE802_3::NEW(cr_EsBinBuffer buff, esU32 initalSum)
   std::unique_ptr<EsCRC32_IEEE802_3> p( new EsCRC32_IEEE802_3(buff, initalSum) );
   ES_ASSERT(p);
 	p->m_dynamic = true;
-	return p->asBaseIntfPtrDirect();
+	return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -580,7 +580,7 @@ EsBaseIntfPtr EsCRC32_IEEE802_3::NEW(cr_EsBinBuffer buff, esU32 initalSum, ulong
     to
   );
 
-  return p->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
