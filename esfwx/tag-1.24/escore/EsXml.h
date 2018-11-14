@@ -287,8 +287,8 @@ public:
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 // Borland C++ workaround
-ESCORE_FUNC( bool) operator&&(const EsXmlAttribute& lhs, bool rhs);
-ESCORE_FUNC( bool) operator||(const EsXmlAttribute& lhs, bool rhs);
+ESCORE_FUNC( bool, operator&&(const EsXmlAttribute& lhs, bool rhs) );
+ESCORE_FUNC( bool, operator||(const EsXmlAttribute& lhs, bool rhs) );
 #endif
 
 // Parsing status, returned as part of EsXmlParseResult object
@@ -563,8 +563,8 @@ public:
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 // Borland C++ workaround
-ESCORE_FUNC( bool) operator&&(const EsXmlNode& lhs, bool rhs);
-ESCORE_FUNC( bool) operator||(const EsXmlNode& lhs, bool rhs);
+ESCORE_FUNC( bool, operator&&(const EsXmlNode& lhs, bool rhs) );
+ESCORE_FUNC( bool, operator||(const EsXmlNode& lhs, bool rhs) );
 #endif
 
 // A helper for working with text inside PCDATA nodes
@@ -637,8 +637,8 @@ public:
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 // Borland C++ workaround
-ESCORE_FUNC( bool) operator&&(const EsXmlText& lhs, bool rhs);
-ESCORE_FUNC( bool) operator||(const EsXmlText& lhs, bool rhs);
+ESCORE_FUNC( bool, operator&&(const EsXmlText& lhs, bool rhs) );
+ESCORE_FUNC( bool, operator||(const EsXmlText& lhs, bool rhs) );
 #endif
 
 // Child node iterator (a bidirectional iterator over a collection of EsXmlNode)
@@ -1037,8 +1037,8 @@ public:
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 // Borland C++ workaround
-ESCORE_FUNC( bool) operator&&(const EsXmlXpathNode& lhs, bool rhs);
-ESCORE_FUNC( bool) operator||(const EsXmlXpathNode& lhs, bool rhs);
+ESCORE_FUNC( bool, operator&&(const EsXmlXpathNode& lhs, bool rhs) );
+ESCORE_FUNC( bool, operator||(const EsXmlXpathNode& lhs, bool rhs) );
 #endif
 
 // A fixed-size collection of XPath nodes
