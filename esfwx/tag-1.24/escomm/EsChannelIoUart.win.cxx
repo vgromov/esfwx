@@ -363,6 +363,7 @@ esU32 EsChannelIoUart::internalGetBytes(esU8* data, esU32 len, esU32 tmo)
 {
   bool timeout = false;
   esU32 localTmo = tmo;
+  esU32 spentTmo = 0;
   esU8* pos = data;
   esU8* end = data+len;
 
@@ -374,10 +375,14 @@ esU32 EsChannelIoUart::internalGetBytes(esU8* data, esU32 len, esU32 tmo)
           pos < end &&
           !internalIsBreaking() )
     {
-      esU32 toRead = std::min(queryUnreadBytes(), static_cast<esU32>(end-pos));
+      esU32 toRead = std::min(
+          queryUnreadBytes(), 
+          static_cast<esU32>(end-pos)
+      );
+
       if( toRead )
       {
-        localTmo = tmo; // reset local timeout
+        localTmo = (tmo > spentTmo) ? tmo-spentTmo : 0; // reset local timeout
         esU32 result = 0;
         m_sysError = 0;
 
@@ -396,8 +401,11 @@ esU32 EsChannelIoUart::internalGetBytes(esU8* data, esU32 len, esU32 tmo)
         if( tmo )
           EsThread::sleep(ES_UART_READ_SLEEP_GRANULARITY);
 
-        if( localTmo > ES_UART_READ_SLEEP_GRANULARITY )
+        if(localTmo > ES_UART_READ_SLEEP_GRANULARITY)
+        {
           localTmo -= ES_UART_READ_SLEEP_GRANULARITY;
+          spentTmo += ES_UART_READ_SLEEP_GRANULARITY;
+        }
         else
         {
           timeout = true;

@@ -93,7 +93,6 @@ void EsSocketClient::doClose(bool graceful, bool doThrow)
   m_impl->close(doThrow);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 namespace EsReflection {
@@ -120,8 +119,8 @@ ES_DECL_CLASS_INFO_END
 
 typedef EsReflection::EsSocketClient EsSocketClientReflected;
 //---------------------------------------------------------------------------
+//--------------------------------------------------------------------------- 
 
-//---------------------------------------------------------------------------
 EsSocketClientReflected::Client::Client(EsSocketClientReflected& owner) :
 m_owner(owner)
 {}
@@ -192,7 +191,6 @@ void EsSocketClientReflected::Client::onServerFarewellReceived(EsBinBuffer::cons
   }
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 EsSocketClientReflected::EsSocketClient() :

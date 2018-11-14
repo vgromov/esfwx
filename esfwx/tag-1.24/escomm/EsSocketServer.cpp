@@ -233,7 +233,6 @@ void EsSocketServer::Listener::onExitWorker()
   }
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 EsSocketServer::Handler::Handler(EsSocketServer& owner, const EsSocketAddr& addr, EsSocketType type) :

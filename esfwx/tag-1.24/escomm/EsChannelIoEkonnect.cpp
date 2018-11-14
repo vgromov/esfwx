@@ -754,6 +754,7 @@ esU32 EsChannelIoEkonnect::internalGetBytes(esU8* data, esU32 len, esU32 tmo /*=
 {
 	bool timeout = false;
 	esU32 localTmo = tmo;
+  esU32 spentTmo = 0;
 	esU8* pos = data;
 	esU8* end = data+len;
 
@@ -772,7 +773,7 @@ esU32 EsChannelIoEkonnect::internalGetBytes(esU8* data, esU32 len, esU32 tmo /*=
 
 			if( toRead )
 			{
-				localTmo = tmo; // reset local timeout
+				localTmo = (tmo > spentTmo) ? tmo - spentTmo : 0; // reset local timeout
 				esU32 result = 0;
 
 				m_io->ftRead(
@@ -807,8 +808,11 @@ esU32 EsChannelIoEkonnect::internalGetBytes(esU8* data, esU32 len, esU32 tmo /*=
 				if( tmo )
 					EsThread::sleep(SLEEP_GRANULARITY);
 
-				if( localTmo > SLEEP_GRANULARITY )
-					localTmo -= SLEEP_GRANULARITY;
+        if(localTmo > SLEEP_GRANULARITY)
+        {
+          localTmo -= SLEEP_GRANULARITY;
+          spentTmo += SLEEP_GRANULARITY;
+        }
 				else
 				{
 					timeout = true;
