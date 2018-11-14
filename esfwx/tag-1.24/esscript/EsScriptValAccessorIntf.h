@@ -53,7 +53,11 @@ ES_DECL_INTF_END
 #endif
 
 #ifdef DEBUG
-#	define ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(v)		if( (v).isObject() ) { EsScriptValAccessorIntf::Ptr acc = (v).asObject(); if( acc ) ES_FAIL_MSG(esT("value is value accessor")); }
+#	define ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(v)  \
+  if( (v).isObject() ) { \
+    EsScriptValAccessorIntf::Ptr acc = (v).asObject(); \
+    if( acc ) ES_FAIL_MSG(esT("value is value accessor")); \
+  }
 #else
 #	define ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(v)
 #endif
