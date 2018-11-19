@@ -27,6 +27,7 @@
 // STL stuff
 #include <limits>
 #include <memory>
+#include <cstring>
 #include <locale>
 #include <algorithm>
 #include <vector>

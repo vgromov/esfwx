@@ -732,7 +732,11 @@ inline void EsVector<esU8>::resize( EsVector<esU8>::size_type newSize, EsVector<
 	if( m_size < newSize )
 	{
 		internalReserve(newSize);
-		memset(((pointer)m_ptr)+m_size, val, newSize-m_size);
+		memset(
+		  reinterpret_cast<pointer>(m_ptr)+m_size,
+		  val,
+		  newSize-m_size
+    );
 	}
 	m_size = newSize;
 }

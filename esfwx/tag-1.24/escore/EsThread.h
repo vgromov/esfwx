@@ -1,4 +1,4 @@
-#ifndef _es_thread_h_ 
+#ifndef _es_thread_h_
 #define _es_thread_h_
 
 /// Non-reflected thread state
@@ -110,11 +110,7 @@ private:
   typedef esU32 ResultT;
   typedef LPVOID ParamT;
 #elif defined(ES_POSIX_COMPAT)
-# if ES_OS != ES_OS_ANDROID
-#   define ES_THREADCALL  __cdecl
-# else
-#   define ES_THREADCALL
-# endif
+# define ES_THREADCALL
   typedef void* ResultT;
   typedef void* ParamT;
   static EsThreadId pthreadIdGet(pthread_t* thread);

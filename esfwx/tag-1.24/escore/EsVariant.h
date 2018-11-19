@@ -242,7 +242,7 @@ public: // Constructor and destructor:
 		if(m_value.m_intf.m_ptr && m_value.m_intf.m_own)
 			m_value.m_intf.m_ptr->incRef();
 	}
-	
+
 	// Construct the value of type void pointer
 	//
 	// PRECONDITION: None
@@ -294,10 +294,10 @@ public: // Services that work with type of the variant:
   /// Check if variant is of boolean type.
   /// @return           - true, if variant is of boolean type,
   ///                   - false otherwise.
-  ///                   
-  inline bool isBool() const ES_NOTHROW 
-  { 
-    return VAR_BOOL == m_type; 
+  ///
+  inline bool isBool() const ES_NOTHROW
+  {
+    return VAR_BOOL == m_type;
   }
 
 	/// Whether the variant is of numeric type, so the arithmetic
@@ -600,8 +600,8 @@ public: // Assignment operators:
 	// POSTCONDITION: The previous value is discarded.
 	// The new value has type VAR_BIN_BUFFER, and value specified.
 	//
-	inline EsVariant& operator= (const EsBinBuffer& v) 
-	{  
+	inline EsVariant& operator= (const EsBinBuffer& v)
+	{
 		assignBinBuffer(v);
 		return *this;
 	}
@@ -644,7 +644,7 @@ public: // Assignment operators:
 	// The new value has the same type and value as the one given.
 	//
 	EsVariant& operator=(const EsBaseIntf::Ptr& v);
-	
+
 	// Assignment operator that takes variable of type OtherIntfT::Ptr.
 	// Variant will take ref-counted ownership of the object
 	//
@@ -658,7 +658,7 @@ public: // Assignment operators:
 	{
 		return operator= ( v.template request< EsBaseIntf >() );
 	}
-		
+
 	// Assignment operator that takes variable of type void*.
 	//
 	// PRECONDITION: None
@@ -749,8 +749,8 @@ public: // Conversion services:
 	//
 	inline int asInt(const std::locale& loc = EsLocale::locale()) const
 	{
-		ES_COMPILE_TIME_ASSERT(sizeof(int) == sizeof(long), IntSizeEqLongSize); // Careful with architectures where sizes of int and long do not match
-		return (int)asLong(loc);
+		//ES_COMPILE_TIME_ASSERT(sizeof(int) == sizeof(long), IntSizeEqLongSize); // Careful with architectures where sizes of int and long do not match
+		return static_cast<int>( asLong(loc) );
 	}
 
 	// Interpret the variant value as unsigned integer type, if possible.
@@ -767,8 +767,8 @@ public: // Conversion services:
 	//
 	inline unsigned asUInt(const std::locale& loc = EsLocale::locale()) const
 	{
-		ES_COMPILE_TIME_ASSERT(sizeof(unsigned) == sizeof(unsigned long), UnsignedSizeEqUnsignedLongSize); // Careful with architectures where sizes of int and long do not match
-		return (unsigned)asULong(loc);
+		//ES_COMPILE_TIME_ASSERT(sizeof(unsigned) == sizeof(unsigned long), UnsignedSizeEqUnsignedLongSize); // Careful with architectures where sizes of int and long do not match
+		return static_cast<unsigned>( asULong(loc) );
 	}
 
 	// Interpret the variant value as long integer type, if possible.
@@ -962,7 +962,7 @@ public: // Conversion services:
 	//
 	void* asPointer();
 
-	// Interpret the variant value as generic pointer, if possible.	
+	// Interpret the variant value as generic pointer, if possible.
 	//
 	// PRECONDITION: An exception is thrown in case the value is not of type object.
 	//
@@ -971,7 +971,7 @@ public: // Conversion services:
 	inline void* asPointer() const
 	{
 		return const_cast<EsVariant*>(this)->asPointer();
-	}	
+	}
 
 	// Discard the value of the variant type.
 	//
@@ -1521,7 +1521,7 @@ public: // Conversion services:
   EsVariant classCall(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3);
   EsVariant classCall(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4);
   EsVariant classCall(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5);
-  
+
   /// Deal with variant container constness
   EsVariant call(const EsString& method) const;
   EsVariant call(const EsString& method, const EsVariant& arg0) const;
@@ -1909,7 +1909,7 @@ public: //< Semi-public services that has to be used carefully:
 			break;
 		case VAR_OBJECT:
 			doAssignToEmpty(other.m_value.m_intf.m_ptr, other.m_value.m_intf.m_own);
-			break;			
+			break;
 		default:
 			m_value.m_ullong = other.m_value.m_ullong; // This will work for all the other types
 			m_type = other.m_type;

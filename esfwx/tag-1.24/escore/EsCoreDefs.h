@@ -37,6 +37,7 @@
 #define ES_OS_IOS         	3
 #define ES_OS_ANDROID				4
 #define ES_OS_LINUX         5
+#define ES_OS_UNIX          6
 
 #if defined(__WINDOWS__) || defined(__WIN32__) || _WIN32 || _WIN64
 #	define ES_OS							ES_OS_WINDOWS
@@ -53,8 +54,11 @@
 #	define ES_OS							ES_OS_ANDROID
 # define ES_IS_MOBILE_OS
 # define ES_POSIX_COMPAT
-#elif defined(__LINUX__) || defined(__linux__) || defined(__linux)
+#elif defined(linux) || defined(__LINUX__) || defined(__linux__) || defined(__linux)
 # define ES_OS              ES_OS_LINUX
+# define ES_POSIX_COMPAT
+#elif defined(unix) || defined(__UNIX__) || defined(__unix__) || defined(__unix)
+# define ES_OS              ES_OS_UNIX
 # define ES_POSIX_COMPAT
 #else
 #	define ES_OS							ES_OS_UNDEFINED
@@ -279,10 +283,13 @@
 #     endif
 #   endif // __cplusplus
 # endif
+# if ESCOMPILER_VENDOR_GCC == ES_COMPILER_VENDOR
+#   define _BSD_SOURCE //< Ensure we wiil gettimeofday in time.h
+# endif
 #	include <unistd.h>
 #	include <stdlib.h>
-#   include <stdio.h>
-#   include <errno.h>
+# include <stdio.h>
+# include <errno.h>
 #	include <time.h>
 #	include <pthread.h>
 #	include <semaphore.h>
@@ -421,39 +428,39 @@ inline void ES_DELETE(T*& ptr)
       template<bool b> struct EsCompileTimeAssert {};
       template<> struct EsCompileTimeAssert<true> { typedef void (* triggerT)(void); };
     }
-#   define ES_COMPILE_TIME_ASSERT(expr, msg) typedef _es_debug_ns_::EsCompileTimeAssert< (bool)(expr) >::triggerT ES_CONCAT4(COMPILE_TIME_ASSERTION_, __LINE__, _, msg)
+#  define ES_COMPILE_TIME_ASSERT(expr, msg) typedef _es_debug_ns_::EsCompileTimeAssert< (bool)(expr) >::triggerT ES_CONCAT4(COMPILE_TIME_ASSERTION_, __LINE__, _, msg)
 # endif
 #endif
 
 // Debugging trace stuff
 //
 #ifdef ES_DEBUG
-#	if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS && defined(__cplusplus)
+# if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS && defined(__cplusplus)
 #   define ES_DEBUG_TRACE_INIT      do{ _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG); _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_WNDW); } while(0)
 #   define ES_DEBUG_TRACE(...)	    OutputDebugString(EsString(EsString::format(__VA_ARGS__) + esT("\n")).c_str())
 #   define ES_DEBUG_TRACE_RAW(...)  do{ char _tmpdbg[256]; snprintf(_tmpdbg, 255, __VA_ARGS__); _tmpdbg[255] = 0; OutputDebugStringA(_tmpdbg); } while(0)
-# 	define USE_MEMLEAK_DETECTION  0
-#	elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND && ES_OS == ES_OS_WINDOWS
+#   define USE_MEMLEAK_DETECTION  0
+# elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND && ES_OS == ES_OS_WINDOWS
 #    define ES_DEBUG_TRACE_INIT     ((void)0)
 #    define ES_DEBUG_TRACE(...)	    OutputDebugString(EsString::format(__VA_ARGS__).c_str())
 #    define ES_DEBUG_TRACE_RAW(...) do{ char _tmpdbg[256]; snprintf(_tmpdbg, 255, __VA_ARGS__); _tmpdbg[255] = 0; OutputDebugStringA(_tmpdbg); } while(0)
 #    define USE_MEMLEAK_DETECTION   0
-#	else
+# else
 #   define ES_DEBUG_TRACE_INIT      ((void)0)
 #   define ES_DEBUG_TRACE(...)      ((void)0)
 #   define ES_DEBUG_TRACE_RAW(...)  ((void)0)
 #   define USE_MEMLEAK_DETECTION    0
-#	endif
+# endif
 #else
 # define ES_DEBUG_TRACE_INIT        ((void)0)
-#	define ES_DEBUG_TRACE(...)        ((void)0)
+# define ES_DEBUG_TRACE(...)        ((void)0)
 # define ES_DEBUG_TRACE_RAW(...)    ((void)0)
 # define USE_MEMLEAK_DETECTION      0
 #endif
 
 // Use advanced memleak detection
 #if defined(ES_DEBUG) && !defined(USE_MEMLEAK_DETECTION)
-#	define USE_MEMLEAK_DETECTION      1
+# define USE_MEMLEAK_DETECTION      1
 #endif
 
 // Memory leak detection

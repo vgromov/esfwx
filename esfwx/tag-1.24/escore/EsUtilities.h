@@ -64,6 +64,19 @@ ES_DECL_REFLECTED_SERVICES_END
 }
 //---------------------------------------------------------------------------
 
+/// Additional Core types definitions
+///
+#if (ES_OS_LINUX == ES_OS) || (ES_OS_LINUX == ES_OS)
+
+struct EsGUID
+{
+  uint8_t data[16];
+};
+typedef EsGUID GUID;
+
+#endif
+//---------------------------------------------------------------------------
+
 /// Core utility functions and templates
 ///
 namespace EsUtilities
@@ -441,9 +454,9 @@ private:
 #ifdef ES_MODERN_CPP
 /// Scoped action helper. Constructor expects two functors,
 /// the first one is executed upon scoped object construction,
-/// the second one is executed in object destructor. 
+/// the second one is executed in object destructor.
 /// If constructor functor throws, soped action is considered invalid, and no destructor functor is executed.
-/// 
+///
 class EsScopedAction
 {
 public:

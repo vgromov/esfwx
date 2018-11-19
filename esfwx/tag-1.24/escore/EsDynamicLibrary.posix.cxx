@@ -33,9 +33,9 @@ EsDynamicLibrary::Ptr EsDynamicLibrary::load(const EsString& path, bool doThrow 
 	else if( doThrow )
     EsException::Throw(
       _("Could not load library '%s'; reason: '%s'"),
-      path.c_str(),
-		  EsString::fromUtf8( dlerror() ).c_str()
-     );
+      path,
+		  EsString::fromUtf8( dlerror() )
+    );
 
 	return EsDynamicLibrary::Ptr();
 }
@@ -49,9 +49,9 @@ void* EsDynamicLibrary::symbolAddrGet(const EsString& name, bool doThrow /*= tru
   {
 		EsException::Throw(
       _("Could not find symbol: '%s', in '%s'; reason: '%s'"),
-      name.c_str(),
-      m_path.c_str(),
-      EsString::fromUtf8( dlerror() ).c_str()
+      name,
+      m_path,
+      EsString::fromUtf8( dlerror() )
     );
   }
 
@@ -62,7 +62,7 @@ void* EsDynamicLibrary::symbolAddrGet(const EsString& name, bool doThrow /*= tru
 EsDynamicLibrary::Pfn EsDynamicLibrary::procAddrGetAorW(const EsString& name, bool doThrow /*= true*/)
 {
 	return procAddrGet(
-    name, 
+    name,
     doThrow
   );
 }
