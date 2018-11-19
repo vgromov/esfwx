@@ -98,11 +98,11 @@ struct fnv1a_impl< T, argT, 1 >
 template < typename T, typename argT >
 struct fnv1a_impl< T, argT, 2 >
 {
-  static inline T calculate(argT b, T hash) ES_NOTHROW
+  static inline T calculate(argT w, T hash) ES_NOTHROW
   {
     const esU8* pb = reinterpret_cast<const esU8*>(&w);
-    hash = fnv1a_impl< T, esU8 >::calculate(*pb++, hash);
-    return fnv1a_impl< T, esU8 >::calculate(*pb, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    return fnv1a_impl< T, esU8, 1 >::calculate(*pb, hash);
   }
 };
 //---------------------------------------------------------------------------
@@ -113,10 +113,10 @@ struct fnv1a_impl< T, argT, 4 >
   static inline T calculate(argT b, T hash) ES_NOTHROW
   {
     const esU8* pb = reinterpret_cast<const esU8*>(&u);
-    hash = fnv1a_impl< T, esU8 >::calculate(*pb++, hash);
-    hash = fnv1a_impl< T, esU8 >::calculate(*pb++, hash);
-    hash = fnv1a_impl< T, esU8 >::calculate(*pb++, hash);
-    return fnv1a_impl< T, esU8 >::calculate(*pb, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    return fnv1a_impl< T, esU8, 1 >::calculate(*pb, hash);
   }
 };
 //---------------------------------------------------------------------------
@@ -124,22 +124,26 @@ struct fnv1a_impl< T, argT, 4 >
 template < typename T, typename argT >
 struct fnv1a_impl< T, argT, 8 >
 {
-  static inline T calculate(argT u, T hash) ES_NOTHROW
+  static inline T calculate(argT uu, T hash) ES_NOTHROW
   {
-    const esU8* pb = reinterpret_cast<const esU8*>(&u);
-    hash = fnv1a_implfnv1a< T, esU8 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8 >::calculate(*pb++, hash);
-    return fnv1a_implfnv1a< T, esU8 >::calculate(*pb, hash);
+    const esU8* pb = reinterpret_cast<const esU8*>(&uu);
+    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
+    return fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb, hash);
   }
 };
 //---------------------------------------------------------------------------
 
-
+template < typename T, typename argT >
+inline T fnv1a(argT v, T hash) ES_NOTHROW
+{
+  return fnv1a_impl<T, argT, sizeof(argT)>::calculate(v, hash);
+};
 //---------------------------------------------------------------------------
 
 #endif // _es_hash_h_

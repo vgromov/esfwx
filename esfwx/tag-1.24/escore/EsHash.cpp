@@ -50,7 +50,7 @@ void EsHashFNV_1a_32::update(const EsString& str) ES_NOTHROW
   EsString::const_pointer cp = str.c_str();
 
 	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU32, EsString::value_type, sizeof(EsString::value_type)>(
+		m_hash = fnv1a<esU32, EsString::value_type>(
 		  cp[idx],
 		  m_hash
     );
@@ -63,7 +63,7 @@ void EsHashFNV_1a_32::update(const EsBinBuffer& buff) ES_NOTHROW
   EsBinBuffer::const_pointer cp = buff.data();
 
 	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU32, EsBinBuffer::value_type, sizeof(EsBinBuffer::value_type)>(
+		m_hash = fnv1a<esU32, EsBinBuffer::value_type>(
 		  cp[idx],
 		  m_hash
     );
@@ -76,7 +76,7 @@ void EsHashFNV_1a_32::update(const EsByteString& bstr) ES_NOTHROW
   EsByteString::const_pointer cp = bstr.c_str();
 
 	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU32, EsByteString::value_type, sizeof(EsByteString::value_type)>(
+		m_hash = fnv1a<esU32, EsByteString::value_type>(
 		  cp[idx],
 		  m_hash
     );
@@ -135,7 +135,7 @@ void EsHashFNV_1a_64::update(const EsString& str) ES_NOTHROW
   EsString::const_pointer cp = str.data();
 
 	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU64, EsString::value_type, sizeof(EsString::value_type)>(
+		m_hash = fnv1a<esU64, EsString::value_type>(
 		  cp[idx],
 		  m_hash
     );
@@ -148,7 +148,7 @@ void EsHashFNV_1a_64::update(const EsBinBuffer& buff) ES_NOTHROW
   EsBinBuffer::const_pointer cp = buff.data();
 
 	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU64, EsBinBuffer::value_type, sizeof(EsBinBuffer::value_type)>(
+		m_hash = fnv1a<esU64, EsBinBuffer::value_type>(
 		  cp[idx],
 		  m_hash
     );
@@ -161,7 +161,7 @@ void EsHashFNV_1a_64::update(const EsByteString& bstr) ES_NOTHROW
   EsByteString::const_pointer cp = bstr.c_str();
 
 	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU64, EsByteString::value_type, sizeof(EsByteString::value_type)>(
+		m_hash = fnv1a<esU64, EsByteString::value_type>(
 		  cp[idx],
 		  m_hash
     );
