@@ -110,7 +110,7 @@ struct fnv1a_impl< T, argT, 2 >
 template < typename T, typename argT >
 struct fnv1a_impl< T, argT, 4 >
 {
-  static inline T calculate(argT b, T hash) ES_NOTHROW
+  static inline T calculate(argT u, T hash) ES_NOTHROW
   {
     const esU8* pb = reinterpret_cast<const esU8*>(&u);
     hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
