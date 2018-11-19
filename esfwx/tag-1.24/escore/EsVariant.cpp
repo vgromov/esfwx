@@ -18,11 +18,11 @@
 #define defVarCollectionSize 16
 
 #ifndef UNICODE
-const int sc_ES_CHAR_MIN = SCHAR_MIN; // cover both signed and unsigned char, -127 ..
-const int sc_ES_CHAR_MAX = UCHAR_MAX; // cover both signed and unsigned char, .. 255
+const int sc_ES_CHAR_MIN = std::numeric_limits<signed char>::min(); // cover both signed and unsigned char, -127 ..
+const int sc_ES_CHAR_MAX = std::numeric_limits<unsigned char>::max(); // cover both signed and unsigned char, .. 255
 #else
-const int sc_ES_CHAR_MIN = SHRT_MIN; // cover both signed and unsigned
-const int sc_ES_CHAR_MAX = USHRT_MAX;
+const int sc_ES_CHAR_MIN = std::numeric_limits<short>::min(); // cover both signed and unsigned
+const int sc_ES_CHAR_MAX = std::numeric_limits<unsigned short>::max();
 #endif
 //--------------------------------------------------------------------------------
 
@@ -692,7 +692,7 @@ EsString::value_type EsVariant::asChar(const std::locale& loc/* = EsLocale::loca
           str
         );
 			}
-			
+
 			return EsUtilities::roundTo<EsString::value_type>(val);
 		}
 	case VAR_BIN_BUFFER:
@@ -704,7 +704,7 @@ EsString::value_type EsVariant::asChar(const std::locale& loc/* = EsLocale::loca
 				EsByteString bs(buff.begin(), buff.end());
 				str = EsString::fromUtf8(bs);
 			}
-				
+
 			if( str.size() != 1 )
 				EsException::Throw(
           esT("Could not convert binary buffer %d bytes long to a single character"),
@@ -757,7 +757,7 @@ esU8 EsVariant::asByte(const std::locale& loc /*= EsLocale::locale()*/) const
           esT("Could not convert %d to a byte"),
           m_value.m_ullong
         );
-	
+
 			return (esU8)c;
 		}
 #else
@@ -803,7 +803,7 @@ esU8 EsVariant::asByte(const std::locale& loc /*= EsLocale::locale()*/) const
 
 			return static_cast<esU8>(str[0]);
 		}
-	case VAR_POINTER:		
+	case VAR_POINTER:
 	case VAR_OBJECT:
 	case VAR_STRING_COLLECTION:
 	case VAR_VARIANT_COLLECTION:
@@ -846,7 +846,7 @@ esU32 EsVariant::asInternalDWord(const std::locale& loc /*= EsLocale::locale()*/
 			double val = EsUtilities::round0(m_value.m_double);
 			if( val < 0.0 )
 			{
-				if( val < LONG_MIN )
+				if( val < std::numeric_limits<long>::min() )
 				{
 					EsException::Throw(
             _("Could not convert '%f.0' to double word"),
@@ -856,7 +856,7 @@ esU32 EsVariant::asInternalDWord(const std::locale& loc /*= EsLocale::locale()*/
 				}
 				return (unsigned)(long)val; // not (unsigned long)!
 			}
-			if( val > ULONG_MAX )
+			if( val > std::numeric_limits<unsigned long>::max() )
 			{
 				EsException::Throw(
           _("Could not convert '%f.0' to double word"),
@@ -931,7 +931,7 @@ esU64 EsVariant::asInternalQWord(const std::locale& loc /*= EsLocale::locale()*/
 			double val = EsUtilities::round0(m_value.m_double);
 			if( val < 0.0 )
 			{
-				if( val < (double)LLONG_MIN )
+				if( val < static_cast<double>(std::numeric_limits<long long>::min() )
 				{
 					EsException::Throw(
             esT("Could not convert '%f.0' to quad word"),
@@ -941,7 +941,7 @@ esU64 EsVariant::asInternalQWord(const std::locale& loc /*= EsLocale::locale()*/
 				}
 				return static_cast<unsigned long long>(static_cast<long long>(val)); // not (unsigned long long)!
 			}
-			if( val > (double)ULLONG_MAX )
+			if( val > static_cast<double>(std::numeric_limits<unsigned long long>::max()) )
 			{
 				EsException::Throw(
           esT("Could not convert '%f.0' to quad word"),
@@ -998,14 +998,14 @@ long EsVariant::asLong(const std::locale& loc /*= EsLocale::locale()*/) const
 	case VAR_BOOL:
 		ES_ASSERT(m_value.m_ullong <= 1);
 	case VAR_INT64:
-		ES_ASSERT( m_value.m_llong >= LONG_MIN && m_value.m_llong <= LONG_MAX );
+		ES_ASSERT( m_value.m_llong >= std::numeric_limits<long>::min() && m_value.m_llong <= std::numeric_limits<long>::max() );
 	case VAR_BYTE:
 	case VAR_CHAR:
 	case VAR_INT:
 		return (long)m_value.m_llong;
 	case VAR_UINT:
 	case VAR_UINT64:
-		if( m_value.m_ullong > LONG_MAX ) // unsigned integer bigger than maximum long
+		if( m_value.m_ullong > std::numeric_limits<long>::max() ) // unsigned integer bigger than maximum long
 		{
 			const EsString str = EsString::fromUInt64(m_value.m_ullong, 10, loc);
 			EsException::Throw(
@@ -1015,11 +1015,14 @@ long EsVariant::asLong(const std::locale& loc /*= EsLocale::locale()*/) const
 
 			ES_FAIL;
 		}
-		return (long)m_value.m_llong;
+		return static_cast<long>(m_value.m_llong);
 	case VAR_DOUBLE:
 		{
 			double val = EsUtilities::round0(m_value.m_double);
-			if( val < (double)LONG_MIN || val > (double)LONG_MAX )
+			if(
+			  val < static_cast<double>(std::numeric_limits<long>::min()) ||
+			  val > static_cast<double>(std::numeric_limits<long>::max())
+      )
 			{
 				EsException::Throw(
           _("Could not convert '%.0f' to signed integer"),
@@ -1081,7 +1084,7 @@ long long EsVariant::asLLong(const std::locale& loc /*= EsLocale::locale()*/) co
 		return m_value.m_llong;
 	case VAR_UINT:
 	case VAR_UINT64:
-		if( m_value.m_ullong > LLONG_MAX ) // unsigned integer bigger than maximum long
+		if( m_value.m_ullong > std::numeric_limits<long long>::max() ) // unsigned integer bigger than maximum long
 		{
 			EsString str = EsString::fromUInt64(m_value.m_ullong, 10, loc);
 			EsException::Throw(
@@ -1095,7 +1098,7 @@ long long EsVariant::asLLong(const std::locale& loc /*= EsLocale::locale()*/) co
 	case VAR_DOUBLE:
 		{
 			double val = EsUtilities::round0(m_value.m_double);
-			if( val < (double)LLONG_MIN || val > (double)LLONG_MAX )
+			if( val < (double)std::numeric_limits<long long>::min() || val > (double)std::numeric_limits<long long>::max() )
 			{
 				EsException::Throw(
           esT("Could not convert '%.0f' to 64 bit signed integer"),
@@ -1154,7 +1157,7 @@ unsigned long EsVariant::asULong(const std::locale& loc /*= EsLocale::locale()*/
 	case VAR_BOOL:
 		ES_ASSERT(m_value.m_ullong <= 1);
 	case VAR_UINT64:
-		ES_ASSERT( m_value.m_ullong <= ULONG_MAX );
+		ES_ASSERT( m_value.m_ullong <= std::numeric_limits<unsigned long>::max() );
 	case VAR_BYTE:
 	case VAR_CHAR:
 	case VAR_UINT:
@@ -1174,7 +1177,7 @@ unsigned long EsVariant::asULong(const std::locale& loc /*= EsLocale::locale()*/
 	case VAR_DOUBLE:
 		{
 			double val = EsUtilities::round0(m_value.m_double);
-			if( val < 0.0 || val > (double)ULONG_MAX )
+			if( val < 0.0 || val > (double)std::numeric_limits<unsigned long>::max() )
 			{
 				EsException::Throw(
           _("Could not convert '%.0f' to unsigned integer"),
@@ -1201,7 +1204,7 @@ unsigned long EsVariant::asULong(const std::locale& loc /*= EsLocale::locale()*/
 		}
 	case VAR_STRING:
 		{
-			const EsString& str = doInterpretAsString(); 
+			const EsString& str = doInterpretAsString();
 			return EsString::toULong(str, 0, loc);
 		}
 	case VAR_OBJECT:
@@ -1252,7 +1255,7 @@ unsigned long long EsVariant::asULLong(const std::locale& loc /*= EsLocale::loca
 	case VAR_DOUBLE:
 		{
 			double val = EsUtilities::round0(m_value.m_double);
-			if( val < 0.0 || val > (double)ULLONG_MAX )
+			if( val < 0.0 || val > (double)std::numeric_limits<unsigned long long>::max() )
 			{
 				EsException::Throw(
           esT("Could not convert '%.0f' to 64 bit unsigned integer"),
@@ -1319,7 +1322,7 @@ double EsVariant::asDouble(const std::locale& loc /*= EsLocale::locale()*/) cons
 		return static_cast<double>(m_value.m_llong);
 	case VAR_UINT:
 	case VAR_UINT64:
-	case VAR_POINTER:	
+	case VAR_POINTER:
 		return static_cast<double>(m_value.m_ullong);
 	case VAR_DOUBLE:
 		return m_value.m_double;
@@ -1400,7 +1403,7 @@ EsBinBuffer EsVariant::asBinBuffer() const
 	case VAR_STRING:
 		result = EsString::hexToBin(doInterpretAsString());
 		break;
-	case VAR_POINTER:	
+	case VAR_POINTER:
 		EsException::ThrowNotSupportedForThisType();
 		break;
 	case VAR_OBJECT:
@@ -1459,7 +1462,7 @@ EsString EsVariant::asString(const std::locale& loc /*= EsLocale::locale()*/) co
 	case VAR_STRING:
 		result = doInterpretAsString();
 		break;
-	case VAR_POINTER:		
+	case VAR_POINTER:
 		EsException::Throw(esT("Could not convert generic pointer to a string value"));
 		ES_FAIL;
 		break;
@@ -1487,7 +1490,7 @@ EsString EsVariant::asString(const std::locale& loc /*= EsLocale::locale()*/) co
 		ES_FAIL; // we are never here, pacify compilers in debug mode
 		break;
 	}
-	return result; 
+	return result;
 }
 
 EsString EsVariant::asString(unsigned mask, const std::locale& loc /*= EsLocale::locale()*/) const
@@ -2095,7 +2098,7 @@ bool EsVariant::operator<(const EsVariant& v) const
 	case VAR_UINT64:
 	case VAR_INT64:
 	case VAR_DOUBLE:
-	case VAR_POINTER:	
+	case VAR_POINTER:
 		return asDouble() < v.asDouble(); // works very well even for CHAR, UINT and INT, precision is not decreased
 	case VAR_BIN_BUFFER:
 		return asBinBuffer() < v.asBinBuffer();
@@ -2128,7 +2131,7 @@ bool EsVariant::operator>(const EsVariant& v) const
 	case VAR_UINT64:
 	case VAR_INT64:
 	case VAR_DOUBLE:
-	case VAR_POINTER:	
+	case VAR_POINTER:
 		return asDouble() > v.asDouble(); // works very well even for CHAR, UINT and INT, precision is not decreased
 	case VAR_BIN_BUFFER:
 		return asBinBuffer() > v.asBinBuffer();
@@ -2194,7 +2197,7 @@ static void doAndOrXorOnObjects(EsVariant& result, const EsVariant& v1, const Es
 		obj = v2.asExistingObject();
 		val2 = obj->propertyGet(EsStdNames::value());
 	}
-	
+
 	if( andOrXor < 0 )
 	{
 		ES_ASSERT(andOrXor == doAnd);
@@ -2208,7 +2211,7 @@ static void doAndOrXorOnObjects(EsVariant& result, const EsVariant& v1, const Es
 	else
 	{
 		ES_ASSERT(andOrXor == doOr);
-		result |= val2;		
+		result |= val2;
 	}
 }
 
@@ -2223,9 +2226,9 @@ EsVariant EsVariant::operator|(const EsVariant& v) const
 	case VAR_OBJECT: // assume object's zero check
 		doAndOrXorOnObjects(result, *this, v, doOr);
 		break;
-	case VAR_POINTER:	
+	case VAR_POINTER:
 		EsException::ThrowNotSupportedForThisType();
-		ES_FAIL;		
+		ES_FAIL;
 	case VAR_BYTE:
 		result.doAssignToEmpty((esU8)(asByte() | v.asByte()));
 		break;
@@ -2262,9 +2265,9 @@ EsVariant EsVariant::operator&(const EsVariant& v) const
 	case VAR_OBJECT: // assume object's zero check
 		doAndOrXorOnObjects(result, *this, v, doAnd);
 		break;
-	case VAR_POINTER:	
+	case VAR_POINTER:
 		EsException::ThrowNotSupportedForThisType();
-		ES_FAIL;		
+		ES_FAIL;
 	case VAR_BYTE:
 		result.doAssignToEmpty((esU8)(asByte() & v.asByte()));
 		break;
@@ -2301,10 +2304,10 @@ EsVariant EsVariant::operator^(const EsVariant& v) const
 	case VAR_OBJECT: // assume object's zero check
 		doAndOrXorOnObjects(result, *this, v, doXor);
 		break;
-	case VAR_POINTER:	
+	case VAR_POINTER:
 		EsException::ThrowNotSupportedForThisType();
 		ES_FAIL;
-		break;		
+		break;
 	case VAR_BYTE:
 		result.doAssignToEmpty((esU8)(asByte() ^ v.asByte()));
 		break;
@@ -2340,7 +2343,7 @@ EsVariant EsVariant::operator~() const
 		break;
 	case VAR_BOOL:
 	case VAR_OBJECT: // assume object's zero check
-	case VAR_POINTER:	
+	case VAR_POINTER:
 		result.doAssignToEmpty((bool)!asBool());
 		break;
 	case VAR_INT:
@@ -2419,22 +2422,22 @@ static EsVariant doReturnTyped(double result, EsVariant::Type type1, EsVariant::
 		break;
 	case EsVariant::VAR_CHAR:
 		if( result >= -128.0 && result <= 256.0 ) // hardcode range here, do not use defines
-			return (EsString::value_type)(char)result;
+			return static_cast<EsString::value_type>(static_cast<char>(result);
 		break;
 	case EsVariant::VAR_UINT:
-		if( result >= 0.0 && result <= (double)UINT_MAX )
-			return (unsigned)result;
+		if( result >= 0.0 && result <= static_cast<double>(std::numeric_limits<unsigned int>::max()) )
+			return static_cast<unsigned>(result);
 		break;
 	case EsVariant::VAR_INT:
-		if( result >= (double)INT_MIN && result <= (double)INT_MAX )
+		if( result >= (double)std::numeric_limits<int>::min() && result <= (double)std::numeric_limits<int>::max() )
 			return (int)result;
 		break;
 	case EsVariant::VAR_UINT64:
-		if( result >= 0.0 && result <= (double)ULLONG_MAX )
+		if( result >= 0.0 && result <= (double)std::numeric_limits<unsigned long long>::max() )
 			return (unsigned)result;
 		break;
 	case EsVariant::VAR_INT64:
-		if( result >= (double)LLONG_MIN && result <= (double)LLONG_MAX )
+		if( result >= (double)std::numeric_limits<long long>::min() && result <= (double)std::numeric_limits<long long>::max() )
 			return (int)result;
 		break;
 	default:
@@ -2483,7 +2486,7 @@ EsVariant EsVariant::operator+(const EsVariant& v) const
       {
         obj = const_cast<EsVariant*>(this)->asExistingObject();
 			  return obj->call(
-          EsStdNames::add(), 
+          EsStdNames::add(),
           v
         );
       }
@@ -2870,7 +2873,7 @@ EsVariant& EsVariant::operator++()
 		++m_value.m_ullong;
 		break;
 	case VAR_INT:
-		if( m_value.m_llong == INT_MAX )
+		if( m_value.m_llong == std::numeric_limits<int>::max() )
 		{
 			EsException::ThrowOverflowInOperation(OPERATOR_AUTOINCREMENT_STRING);
 			ES_FAIL;
@@ -2878,7 +2881,7 @@ EsVariant& EsVariant::operator++()
 		++m_value.m_llong;
 		break;
 	case VAR_UINT:
-		if( m_value.m_ullong == UINT_MAX )
+		if( m_value.m_ullong == std::numeric_limits<unsigned int>::max() )
 		{
 			EsException::ThrowOverflowInOperation(OPERATOR_AUTOINCREMENT_STRING);
 			ES_FAIL;
@@ -2886,7 +2889,7 @@ EsVariant& EsVariant::operator++()
 		++m_value.m_ullong;
 		break;
 	case VAR_INT64:
-		if( m_value.m_llong == LLONG_MAX )
+		if( m_value.m_llong == std::numeric_limits<long long>::max() )
 		{
 			EsException::ThrowOverflowInOperation(OPERATOR_AUTOINCREMENT_STRING);
 			ES_FAIL;
@@ -2894,7 +2897,7 @@ EsVariant& EsVariant::operator++()
 		++m_value.m_llong;
 		break;
 	case VAR_UINT64:
-		if( m_value.m_ullong == ULLONG_MAX )
+		if( m_value.m_ullong == std::numeric_limits<unsigned long long>::max() )
 		{
 			EsException::ThrowOverflowInOperation(OPERATOR_AUTOINCREMENT_STRING);
 			ES_FAIL;
@@ -2935,7 +2938,7 @@ EsVariant& EsVariant::operator--()
 		--m_value.m_ullong;
 		break;
 	case VAR_INT:
-		if( m_value.m_llong == INT_MIN )
+		if( m_value.m_llong == std::numeric_limits<int>::min() )
 		{
 			EsException::ThrowUnderflowInOperation(OPERATOR_AUTODECREMENT_STRING);
 			ES_FAIL;
@@ -2943,7 +2946,7 @@ EsVariant& EsVariant::operator--()
 		--m_value.m_llong;
 		break;
 	case VAR_INT64:
-		if( m_value.m_llong == LLONG_MIN )
+		if( m_value.m_llong == std::numeric_limits<long long>::min() )
 		{
 			EsException::ThrowUnderflowInOperation(OPERATOR_AUTODECREMENT_STRING);
 			ES_FAIL;
@@ -2999,13 +3002,13 @@ bool EsVariant::has(const EsVariant& v) const
 		EsReflectedClassIntf::Ptr obj = asExistingObject();
 		if( obj->hasMethod(
         EsMethodInfoKeyT(
-          1, 
+          1,
           esT("has")
         )
-      ) 
+      )
     )
   		return obj->call(
-        esT("has"), 
+        esT("has"),
         v
       ).asBool();
 	}
