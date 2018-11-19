@@ -127,14 +127,14 @@ struct fnv1a_impl< T, argT, 8 >
   static inline T calculate(argT uu, T hash) ES_NOTHROW
   {
     const esU8* pb = reinterpret_cast<const esU8*>(&uu);
-    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
-    hash = fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb++, hash);
-    return fnv1a_implfnv1a< T, esU8, 1 >::calculate(*pb, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    hash = fnv1a_impl< T, esU8, 1 >::calculate(*pb++, hash);
+    return fnv1a_impl< T, esU8, 1 >::calculate(*pb, hash);
   }
 };
 //---------------------------------------------------------------------------
