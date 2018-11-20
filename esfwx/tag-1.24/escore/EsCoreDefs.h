@@ -174,12 +174,21 @@
 #     endif
 #   endif
 # elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC
-#   define ES_EXPORT_SPEC                     __attribute__((visibility("default")))
-#   define ES_IMPORT_SPEC
-#   define ES_FUNCEXPORT_SPEC(type, decl)     type decl __attribute__((visibility("default")))
-#   define ES_FUNCIMPORT_SPEC(type, decl)     type decl
-#   define ES_DATAEXPORT_SPEC(type, decl)     type decl __attribute__((visibility("default")))
-#   define ES_DATAIMPORT_SPEC(type, decl)     type decl
+#   if ES_OS == ES_OS_WINDOWS
+#     define ES_EXPORT_SPEC                   __attribute__((dllexport))
+#     define ES_IMPORT_SPEC                   __attribute__((dllimport))
+#     define ES_FUNCEXPORT_SPEC(type, decl)   type decl __attribute__((dllexport))
+#     define ES_FUNCIMPORT_SPEC(type, decl)   type decl __attribute__((dllimport))
+#     define ES_DATAEXPORT_SPEC(type, decl)   type decl __attribute__((dllexport))
+#     define ES_DATAIMPORT_SPEC(type, decl)   type decl __attribute__((dllimport))
+#   else
+#     define ES_EXPORT_SPEC                   __attribute__((visibility("default")))
+#     define ES_IMPORT_SPEC                   __attribute__((visibility("default")))
+#     define ES_FUNCEXPORT_SPEC(type, decl)   type decl __attribute__((visibility("default")))
+#     define ES_FUNCIMPORT_SPEC(type, decl)   type decl __attribute__((visibility("default")))
+#     define ES_DATAEXPORT_SPEC(type, decl)   type decl __attribute__((visibility("default")))
+#     define ES_DATAIMPORT_SPEC(type, decl)   type decl __attribute__((visibility("default")))
+#   endif
 # else // Not using borland toolchain - prefer platform specs
 #   define ES_EXPORT_SPEC                     __declspec(dllexport)
 #   define ES_IMPORT_SPEC                     __declspec(dllimport)

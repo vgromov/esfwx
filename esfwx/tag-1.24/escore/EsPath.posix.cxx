@@ -1,5 +1,8 @@
 //---------------------------------------------------------------------------
 #include <sys/stat.h>
+#if (ES_OS == ES_OS_LINUX) || (ES_OS == ES_OS_UNIX)
+# include <limits.h> //< PATH_MAX
+#endif
 
 //---------------------------------------------------------------------------
 long EsPath::isExisting(const EsString& obj)

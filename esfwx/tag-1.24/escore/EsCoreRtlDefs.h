@@ -32,11 +32,11 @@
 #	ifdef __cplusplus
 #   include <cmath>
 #	  include <cfloat>
-#	  define esFiniteF	  std::isfinite<float>
-#	  define esIsInfF     std::isinf<float>
-#	  define esIsInf      std::isinf<double>
-#	  define esIsNanF		  std::isnan<float>
-#	  define esIsNan		  std::isnan<double>
+#	  define esFiniteF(f) std::isfinite(static_cast<float>(f))
+#	  define esIsInfF(f)  std::isinf(static_cast<float>(f))
+#	  define esIsInf(d)   std::isinf(static_cast<double>(d))
+#	  define esIsNanF(f)  std::isnan(static_cast<float>(f))
+#	  define esIsNan(d)		std::isnan(static_cast<double>(d))
 #   define esCeil       std::ceil
 #   define esLog        std::log
 #   define esLog10      std::log10

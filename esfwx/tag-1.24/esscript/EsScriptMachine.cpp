@@ -776,9 +776,7 @@ void EsScriptMachine::linkAdd(const EsString& link)
         if( pfn )
         {
           // Dynamically register foreign reflected classes in our own reflection registry
-          reinterpret_cast<void (*)(void*)>(
-            pfn
-          )( EsClassInfo::classes );
+          reinterpret_cast<void (*)(EsClassRegistryAccessorT)>(pfn)( EsClassInfo::classes );
         }
 
 				m_links[ fname.fileNameExtGet() ] = lib;

@@ -931,7 +931,7 @@ esU64 EsVariant::asInternalQWord(const std::locale& loc /*= EsLocale::locale()*/
 			double val = EsUtilities::round0(m_value.m_double);
 			if( val < 0.0 )
 			{
-				if( val < static_cast<double>(std::numeric_limits<long long>::min() )
+				if( val < static_cast<double>(std::numeric_limits<long long>::min()) )
 				{
 					EsException::Throw(
             esT("Could not convert '%f.0' to quad word"),
@@ -2422,7 +2422,7 @@ static EsVariant doReturnTyped(double result, EsVariant::Type type1, EsVariant::
 		break;
 	case EsVariant::VAR_CHAR:
 		if( result >= -128.0 && result <= 256.0 ) // hardcode range here, do not use defines
-			return static_cast<EsString::value_type>(static_cast<char>(result);
+			return static_cast<EsString::value_type>(static_cast<char>(result));
 		break;
 	case EsVariant::VAR_UINT:
 		if( result >= 0.0 && result <= static_cast<double>(std::numeric_limits<unsigned int>::max()) )
@@ -2857,7 +2857,7 @@ EsVariant& EsVariant::operator++()
 		++m_value.m_ullong;
 		break;
 	case VAR_BYTE:
-		if( m_value.m_ullong >= UCHAR_MAX )
+		if( m_value.m_ullong >= std::numeric_limits<unsigned char>::max() )
 		{
 			EsException::ThrowOverflowInOperation(OPERATOR_AUTOINCREMENT_STRING);
 			ES_FAIL;

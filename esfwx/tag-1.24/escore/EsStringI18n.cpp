@@ -378,8 +378,8 @@ void EsStringI18n::currentLocaleSet(const EsString& loc)
 	translationsLoad(loc);
 
   EsEventDispatcher::eventPost(
-    ES_EVTC_I18N, 
-    static_cast<ulong>(EsEvtI18n::LocaleChanged), 
+    ES_EVTC_I18N,
+    static_cast<ulong>(EsEvtI18n::LocaleChanged),
     loc
   );
 }
@@ -905,6 +905,10 @@ static int internalLangCodeGetFromLanguage(const EsString& lang)
 # include "EsStringI18n.mac.cxx"
 #elif ES_OS == ES_OS_ANDROID
 # include "EsStringI18n.android.cxx"
+#elif defined(ES_POSIX_COMPAT)
+# include "EsStringI18n.posix.cxx"
+#else
+# error "OS locale services are not implemented for the current platform"
 #endif
 //---------------------------------------------------------------------------
 

@@ -112,7 +112,7 @@ EsString EsUtilities::sysctlStrGet(int subjId, int dataId)
 #if ES_OS != ES_OS_MAC && ES_OS != ES_OS_IOS
 void EsUtilities::urlOpen(const EsString& url)
 {
-  EsByteString cmd = "x-www-browser ");
+  EsByteString cmd = "x-www-browser ";
   cmd += EsString::toUtf8(
     EsString::toString(
       url,

@@ -104,7 +104,11 @@
 #   define esPrintf         wprintf
 #   define esStrlen					wcslen
 #   define esStrcmp					wcscmp
-#   define esStricmp				_wcsicmp
+#   if (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS) || (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND)
+#     define esStricmp			_wcsicmp
+#   else
+#     define esStricmp      wcscasecmp
+#   endif
 #	  define esStrncmp				wcsncmp
 #   define esStrchr					wcsrchr
 #   define esStrstr					wcsstr

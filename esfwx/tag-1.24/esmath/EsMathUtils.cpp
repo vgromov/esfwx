@@ -1,7 +1,7 @@
 #include "esmathpch.h"
 #pragma hdrstop
 
-#include "EsMath.h"
+#include "EsMathUtils.h"
 
 // Static linking under BCC - use dependencies ordering for modules
 // and static objects initialization

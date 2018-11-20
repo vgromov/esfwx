@@ -67,12 +67,23 @@ ES_DECL_REFLECTED_SERVICES_END
 /// Additional Core types definitions
 ///
 #if (ES_OS_LINUX == ES_OS) || (ES_OS_LINUX == ES_OS)
-
+/// GUID data compatibility declaration for non-Windows OSes
 struct EsGUID
 {
-  uint8_t data[16];
+  uint32_t Data1;
+  uint16_t Data2;
+  uint16_t Data3;
+  uint8_t Data4[ 8 ];
+
+  static const EsGUID& null() ES_NOTHROW;
 };
 typedef EsGUID GUID;
+
+# ifndef GUID_NULL
+#   define GUID_NULL EsGUID::null()
+# endif
+
+ES_COMPILE_TIME_ASSERT(sizeof(EsGUID) == 16, _EsGUID_size_is_equal_to_16_bytes_);
 
 #endif
 //---------------------------------------------------------------------------

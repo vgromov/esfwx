@@ -1,5 +1,6 @@
 //---------------------------------------------------------------------------
 #include <sys/stat.h>
+#include <fcntl.h>
 
 #ifndef O_BINARY
 # define ES_O_BINARY  0

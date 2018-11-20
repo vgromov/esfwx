@@ -69,7 +69,7 @@ typedef const EsBinBuffer&		cr_EsBinBuffer;
 
 // dummy define for variant-to variant casts
 typedef const EsVariant&			cr_EsVariant;
-#define To_EsVariant(var)			(var)	
+#define To_EsVariant(var)			(var)
 #define To_cr_EsVariant(var)	(var)
 #define From_EsVariant(v)			(v)
 #define From_cr_EsVariant(v)	(v)
@@ -122,17 +122,17 @@ typedef const EsVariant&			cr_EsVariant;
 #define esBA_TS								EsBinBuffer
 #define To_TS_TYPE(x)					x ##_TS
 // POD reflection type standard range checks
-#define Check_esU8_Range(var)	EsNumericCheck::checkRangeUInteger(0, 255, var.asULong())
-#define Check_esI8_Range(var)	EsNumericCheck::checkRangeInteger(-128, 127, var.asLong())
-#define Check_esU16_Range(var) 	EsNumericCheck::checkRangeUInteger(0, USHRT_MAX, var.asULong())
-#define Check_esI16_Range(var)	EsNumericCheck::checkRangeInteger(SHRT_MIN, SHRT_MAX, var.asLong())
-#define Check_esU32_Range(var)	EsNumericCheck::checkRangeUInteger(0, ULONG_MAX, var.asULong())
-#define Check_esI32_Range(var)	EsNumericCheck::checkRangeInteger(LONG_MIN, LONG_MAX, var.asLong())
-#define Check_esU64_Range(var)	EsNumericCheck::checkRangeULLInteger(0UL, ULLONG_MAX, var.asULLong())
-#define Check_esI64_Range(var)	EsNumericCheck::checkRangeLLInteger(LLONG_MIN, LLONG_MAX, var.asLLong())
+#define Check_esU8_Range(var)	EsNumericCheck::checkRangeUInteger(0, std::numeric_limits<uint8_t>::max(), var.asULong())
+#define Check_esI8_Range(var)	EsNumericCheck::checkRangeInteger(std::numeric_limits<int8_t>::min(), std::numeric_limits<int8_t>::max(), var.asLong())
+#define Check_esU16_Range(var) 	EsNumericCheck::checkRangeUInteger(0, std::numeric_limits<uint16_t>::max(), var.asULong())
+#define Check_esI16_Range(var)	EsNumericCheck::checkRangeInteger(std::numeric_limits<int16_t>::min(), std::numeric_limits<int16_t>::max(), var.asLong())
+#define Check_esU32_Range(var)	EsNumericCheck::checkRangeUInteger(0, std::numeric_limits<uint32_t>::max(), var.asULong())
+#define Check_esI32_Range(var)	EsNumericCheck::checkRangeInteger(std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max(), var.asLong())
+#define Check_esU64_Range(var)	EsNumericCheck::checkRangeULLInteger(0UL, std::numeric_limits<uint64_t>::max(), var.asULLong())
+#define Check_esI64_Range(var)	EsNumericCheck::checkRangeLLInteger(std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max(), var.asLLong())
 #define Check_esDT_Range			Check_esI64_Range
-#define Check_esF_Range(var)	EsNumericCheck::checkRangeFloat(-FLT_MAX, FLT_MAX, var.asDouble())
-#define Check_esD_Range(var)	EsNumericCheck::checkRangeFloat(-DBL_MAX, DBL_MAX, var.asDouble())
+#define Check_esF_Range(var)	EsNumericCheck::checkRangeFloat(-std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), var.asDouble())
+#define Check_esD_Range(var)	EsNumericCheck::checkRangeFloat(-std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), var.asDouble())
 
 // reflection helpers
 //
@@ -244,11 +244,11 @@ ES_DECL_INTF_END
 class ESCORE_CLASS ES_INTF_IMPL1(EsAttributes, EsAttributesIntf)
 
 protected:
-	EsAttributes(const EsString& ownerName, bool interlocked) ES_NOTHROW : 
+	EsAttributes(const EsString& ownerName, bool interlocked) ES_NOTHROW :
   m_contents(
-    ownerName, 
-    interlocked ? 
-      EsStringIndexedMap::ContainerUsesInterlock : 
+    ownerName,
+    interlocked ?
+      EsStringIndexedMap::ContainerUsesInterlock :
       EsStringIndexedMap::ContainerWithoutInterlock
   )
   {}
@@ -671,7 +671,7 @@ protected:
 	void appendPropertyInfos(PropertyInfosT& out, bool onlyPersistent, bool allHierarchy) const;
 	void appendMethodKeys(EsMethodInfoKeysT& out, bool allHierarchy) const;
 	void appendClassMethodKeys(EsMethodInfoKeysT& out, bool allHierarchy) const;
-	
+
 protected:
 	// Ancestor classes
 	const EsClassInfo* m_ancestor;
@@ -761,7 +761,7 @@ private:
 
 // specific macros family, allowing to utilize dualistic nature of classes implementing reflected interfaces
 // the specific object calls on specific interfaces may be tried first on native (C++) interface,
-// if one is implemented by the object, otherwise, if object implements reflection interface, 
+// if one is implemented by the object, otherwise, if object implements reflection interface,
 // the named service call attempt is performed
 //
 #include <escore/EsReflectionDualCallDefs.h>

@@ -108,6 +108,15 @@ EsString EsUtilities::aslStringGet(ulong asl)
 }
 //---------------------------------------------------------------------------
 
+#if (ES_OS_LINUX == ES_OS) || (ES_OS_LINUX == ES_OS)
+const EsGUID& EsGUID::null() ES_NOTHROW
+{
+  static const EsGUID sc_null = {0};
+
+  return sc_null;
+}
+#endif
+
 // convert GUID to string
 EsString EsUtilities::GUIDtoStr(const GUID& guid, bool canonical /*= false*/)
 {
@@ -250,7 +259,7 @@ EsString EsUtilities::sToE(const EsString& s, const EsString& key)
 		const EsBinBuffer& out = EsUtilities::bToE(in, key);
 		return EsString::binToHex(out);
 	}
-	
+
 	return EsString::null();
 }
 
@@ -265,7 +274,7 @@ EsString EsUtilities::eToS(const EsString& e, const EsString& key)
 		EsString::const_pointer end = beg+(out.size() / EsString::value_size);
 		return EsString(beg, end);
 	}
-	
+
 	return EsString::null();
 }
 

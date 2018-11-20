@@ -1115,8 +1115,9 @@ EsString EsString::format(const std::locale& loc, EsString::const_pointer fmt, c
 //
 static inline void checkCharRange(int c)
 {
-  ES_COMPILE_TIME_ASSERT(CHAR_MIN < 0, charMustBeOfSignedType); // Watch that the char is a signed type
-  if ( c < CHAR_MIN || c > UCHAR_MAX ) // Check -127 .. 255
+  ES_COMPILE_TIME_ASSERT(std::numeric_limits<char>::min() < 0, charMustBeOfSignedType); // Watch that the char is a signed type
+
+  if ( c < std::numeric_limits<char>::min() || c > std::numeric_limits<unsigned char>::max() ) // Check -127 .. 255
     EsException::Throw(
       _("Wide character with code 0x%X encountered in place where only eight-bit characters allowed"),
       static_cast<unsigned>(c)
@@ -1499,9 +1500,9 @@ bool EsString::hexToBinNibble( int ch, esU8& nibble ) ES_NOTHROW
 size_t EsString::hexToBin( EsString::const_pointer hex, size_t hexLen, EsBinBuffer::pointer bin, size_t binLen ) ES_NOTHROW
 {
   return hexToBin<EsString::value_type>(
-    hex, 
-    hexLen, 
-    bin, 
+    hex,
+    hexLen,
+    bin,
     binLen
   );
 }
@@ -1516,10 +1517,10 @@ EsBinBuffer EsString::hexToBin( const EsString& hex )
     result.resize( hex.size()/2 );
 
     hexToBin(
-      hex.c_str(), 
-      hex.size(), 
-      &result[0], 
-      result.size() 
+      hex.c_str(),
+      hex.size(),
+      &result[0],
+      result.size()
     );
   }
 

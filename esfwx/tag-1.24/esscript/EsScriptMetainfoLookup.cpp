@@ -43,7 +43,7 @@ m_meta(meta)
 
 EsBaseIntfPtr EsScriptMetainfoLookup::NEW(cr_EsBaseIntfPtr meta)
 {
-  std::unique_ptr<EsScriptMetainfoLookup> tmp = std::make_unique<EsScriptMetainfoLookup>(meta);
+  std::unique_ptr<EsScriptMetainfoLookup> tmp( new EsScriptMetainfoLookup(meta) );
   ES_ASSERT(tmp);
 
   tmp->m_dynamic = true;
@@ -105,7 +105,7 @@ static void fqNameToReadable(EsString& fqName)
   long paramcnt = EsString::toLong(
     tok.get_nextToken()
   );
-  
+
   const EsString& sig = tok.get_nextToken(); //< Get signature
   ES_ASSERT(!sig.empty());
 
@@ -189,7 +189,7 @@ EsStringArray EsScriptMetainfoLookup::objectNamesFind(cr_EsString start) const
 }
 //--------------------------------------------------------------------------------
 
-EsStringArray EsScriptMetainfoLookup::globalFunctionsFind(cr_EsString start) const 
+EsStringArray EsScriptMetainfoLookup::globalFunctionsFind(cr_EsString start) const
 {
   EsStringArray methods = m_meta->fqNamesGet(EsString::null());
 
@@ -259,7 +259,7 @@ EsStringArray EsScriptMetainfoLookup::objectVariablesFind(cr_EsString obj, cr_Es
 
   EsStringArray vars = meta->varNamesGet();
   filterAndSort(
-    vars, 
+    vars,
     start
   );
 
@@ -276,7 +276,7 @@ EsStringArray EsScriptMetainfoLookup::objectFieldsFind(cr_EsString obj, cr_EsStr
 
   EsStringArray flds = meta->fieldNamesGet();
   filterAndSort(
-    flds, 
+    flds,
     start
   );
 

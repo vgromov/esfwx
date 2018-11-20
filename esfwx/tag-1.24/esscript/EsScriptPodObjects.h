@@ -46,7 +46,7 @@ protected:
 };
 
 // "friend declaration requires elaborate type" work-around
-#if defined(__clang__)
+#if defined(__clang__) || defined(ES_COMPILER_VENDOR_GNUC)
 # define FRIEND_DATA_MONIKER_T friend DataMonikerT
 #else
 # define FRIEND_DATA_MONIKER_T friend class DataMonikerT

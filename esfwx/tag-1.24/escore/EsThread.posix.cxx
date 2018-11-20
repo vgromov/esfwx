@@ -4,6 +4,8 @@
 # if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 #   include <Androidapi.NativeActivity.hpp>
 # endif
+#elif (ES_OS == ES_OS_LINUX) || (ES_OS == ES_OS_UNIX)
+# include <limits.h> //< PTHREAD_STACK_MIN
 #endif
 //---------------------------------------------------------------------------
 
@@ -123,14 +125,22 @@ void EsThread::threadCreate()
   ES_ASSERT(EsThreadIdNone == m_id);
 
   checkPthreadError(
-    pthread_create(&m_thread, &m_threadAttr, &EsThread::threadWorker, (void*)this)
-    );
+    pthread_create(
+      &m_thread,
+      &m_threadAttr,
+      &EsThread::threadWorker,
+      (void*)this
+    )
+  );
   m_id = pthreadIdGet(&m_thread);
 
 #ifndef ES_PTHREAD_NO_PRIO
   checkPthreadError(
-    pthread_setschedprio(&m_thread, priorityCalc())
-    );
+    pthread_setschedprio(
+      m_thread,
+      priorityCalc()
+    )
+  );
 #endif
 }
 //---------------------------------------------------------------------------

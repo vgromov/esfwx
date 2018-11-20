@@ -137,12 +137,12 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
 # define PLUS       ch_p(esT('+'))
 # define MINUS      ch_p(esT('-'))
 # define OPMUL      ch_p(esT('*'))
-# define OPDIV      ch_p(esT('/'))  
+# define OPDIV      ch_p(esT('/'))
 # define OPMOD      ch_p(esT('%'))
 # define OPNOT      ch_p(esT('!'))
 // access
 # define OPMTDACC   ch_p(esT('.'))
-# define OPFLDACC   ch_p(esT('.'))  
+# define OPFLDACC   ch_p(esT('.'))
 # define OPPROPACC  ch_p(esT('$'))
 # define OPENUMACC  str_p(esT("$$"))
 # define OPVSVCACC  ch_p(esT('#'))
@@ -175,7 +175,7 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
 //
 # define REQUIRE    str_p(esT("require"))
 # define LINKBIN    str_p(esT("link"))
-# define VARIABLE   str_p(esT("var")) 
+# define VARIABLE   str_p(esT("var"))
 # define CONSTANT   str_p(esT("const"))
 # define CTOR       str_p(EsStdNames::reflectedCtr().c_str())
 # define DTOR       str_p(EsStdNames::reflectedDtr().c_str())
@@ -184,7 +184,7 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
 # define RETURN     str_p(esT("return"))
 # define NEWOBJ     str_p(EsStdNames::reflectedCtr().c_str())
 # define EXTSYM     str_p(esT("extern"))
-# define OBJECT     str_p(esT("object"))  
+# define OBJECT     str_p(esT("object"))
 # define EXTENDS    str_p(esT("extends"))
 # define BTRUE      str_p(esT("true"))
 # define BFALSE     str_p(esT("false"))
@@ -200,7 +200,7 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
 # define SWITCH     str_p(esT("switch"))
 # define CASE       str_p(esT("case"))
 # define DEFAULT    str_p(esT("default"))
-# define LABEL      str_p(esT("label")) 
+# define LABEL      str_p(esT("label"))
 # define GOTO       str_p(esT("goto"))
 # define THROWEX    str_p(esT("throw"))
 # define RETHROWEX  str_p(esT("rethrow"))
@@ -234,7 +234,7 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
 
     // UINT char parser
     static const escape_char_parser<c_escapes, uint8_t> c_escape_uint8_p = escape_char_parser<c_escapes, uint8_t>();
-    
+
     // init reserved words symbol table
     const EsStringIndexedMap& rw = EsScript::reservedWordsGet();
     for(size_t idx = 0; idx < rw.countGet(); ++idx )
@@ -245,74 +245,74 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
       NULLC;
 
     boolVal =
-      BTRUE | 
+      BTRUE |
       BFALSE;
-      
-    intBinVal = 
+
+    intBinVal =
       lexeme_d[
-        no_node_d[ch_p(esT('0'))] >> no_node_d[ch_p(esT('b'))] >> 
+        no_node_d[ch_p(esT('0'))] >> no_node_d[ch_p(esT('b'))] >>
         leaf_node_d[
           +chset_p(esT("01"))
         ]
       ];
 
-    intOctVal = 
+    intOctVal =
       lexeme_d[
-        no_node_d[ch_p(esT('0'))] >> no_node_d[ch_p(esT('o'))] >> 
+        no_node_d[ch_p(esT('0'))] >> no_node_d[ch_p(esT('o'))] >>
         leaf_node_d[
           +chset_p(esT("0-7"))
         ]
       ];
 
-    intHexVal = 
+    intHexVal =
       lexeme_d[
-        no_node_d[ch_p(esT('0'))] >> no_node_d[ch_p(esT('x'))] >> 
+        no_node_d[ch_p(esT('0'))] >> no_node_d[ch_p(esT('x'))] >>
         leaf_node_d[
           +xdigit_p
         ]
       ];
 
-    intVal  = 
+    intVal  =
       intBinVal |
       intOctVal |
       intHexVal |
       int_p;
-    
+
     floatVal = longest_d[
       strict_real_p |
       strict_ureal_p
       ];
 
     charVal= lexeme_d[leaf_node_d[
-      !ch_p(esT('B')) >> SNGLQUOTE >> 
-        (c_escape_uint8_p - SNGLQUOTE) >> 
+      !ch_p(esT('B')) >> SNGLQUOTE >>
+        (c_escape_uint8_p - SNGLQUOTE) >>
       GRAMMAR_EXPECT(SNGLQUOTE)
       ]];
-    
+
     strVal = lexeme_d[leaf_node_d[
-      !(ch_p(esT('I'))|ch_p(esT('B'))) >> DBLQUOTE >> 
-        *( 
-          c_escape_uint8_p - 
-          DBLQUOTE 
-          ) >> 
+      !(ch_p(esT('I'))|ch_p(esT('B'))) >> DBLQUOTE >>
+        *(
+          c_escape_uint8_p -
+          DBLQUOTE
+          ) >>
       GRAMMAR_EXPECT(DBLQUOTE)
       ]];
-  
+
     // enumerations values access support
     //
-    enumVal = 
+    enumVal =
       (ident-reservedWords) >> root_node_d[OPENUMACC] >>
         ident;
-    
-    enumValLbl = 
+
+    enumValLbl =
       (ident-reservedWords) >> root_node_d[OPENUMACC] >>
         ident >> no_node_d[OPENUMACC] >> no_node_d[LABEL];
     //
     // enumerations support end
-  
+
     numericVal =
       charVal |
-      floatVal |      
+      floatVal |
       intVal;
 
     simpleVal =
@@ -322,15 +322,15 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
       nullVal |
       boolVal |
       numericVal;
-      
-    arrayVal =  
-      root_node_d[LSBRACKET] >> 
+
+    arrayVal =
+      root_node_d[LSBRACKET] >>
         infix_node_d[
           !list_p(expr, COMMA)
-        ] >> 
+        ] >>
       no_node_d[GRAMMAR_EXPECT(RSBRACKET)];
 
-    rangeRightVal = 
+    rangeRightVal =
       root_node_d[OPRANGE] >>
       expr;
 
@@ -343,24 +343,24 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
       root_node_d[OPRANGE] >>
       expr;
 
-    rangeVal = 
+    rangeVal =
       no_node_d[LSBRACKET] >>
         ( rangeLeftRightVal |
           rangeLeftVal |
           rangeRightVal ) >>
       no_node_d[GRAMMAR_EXPECT(RSBRACKET)];
-    
+
     value =
       rangeVal |
       arrayVal |
       simpleVal;
 
     // lhs|rhs = (lrhs) (AKA left|right-hand-side rule)
-    idxAcc = root_node_d[LSBRACKET] >> 
-      expr >> 
+    idxAcc = root_node_d[LSBRACKET] >>
+      expr >>
       no_node_d[GRAMMAR_EXPECT(RSBRACKET)];
-        
-    fieldOrMemberVarAcc = root_node_d[OPFLDACC] >> 
+
+    fieldOrMemberVarAcc = root_node_d[OPFLDACC] >>
       ident >> !idxAcc;
 
     propAcc = root_node_d[OPPROPACC] >>
@@ -368,16 +368,16 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
 
     attrAcc = root_node_d[OPATTRACC] >>
       ident >> !idxAcc;
-      
-    objMethodCall = 
-      root_node_d[OPMTDACC] >> 
+
+    objMethodCall =
+      root_node_d[OPMTDACC] >>
       exprFuncCall;
 
-    varSvcCall = 
-      root_node_d[OPVSVCACC] >> 
+    varSvcCall =
+      root_node_d[OPVSVCACC] >>
       exprFuncCall;
 
-    lrhs = 
+    lrhs =
       (
         ( exprCall |
           ident
@@ -409,59 +409,59 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
       ASNXOR |
       ASNLSH |
       ASNRSH
-    ];  
-    
-    opIncDec = OPINC | OPDEC; 
+    ];
+
+    opIncDec = OPINC | OPDEC;
 
     opConditional = QUESTION;
-    
-    opLogical = 
-      OPLOG_OR | 
-      OPLOG_AND;
-    
-    opBitwise = 
-      OPBW_AND | 
-      OPBW_OR | 
-      OPBW_XOR;    
 
-    opEqNeq = 
+    opLogical =
+      OPLOG_OR |
+      OPLOG_AND;
+
+    opBitwise =
+      OPBW_AND |
+      OPBW_OR |
+      OPBW_XOR;
+
+    opEqNeq =
       OPEQ |
       OPNEQ |
       OPIN;
-      
-    opCmp =  longest_d[ 
+
+    opCmp =  longest_d[
       OPLE |
       OPGR |
       OPLEEQ |
       OPGREQ
       ];
-      
-    opSh  = 
+
+    opSh  =
       OPLSH |
       OPRSH;
-      
-    opAddSub =   
+
+    opAddSub =
       PLUS |
-      MINUS;  
-      
-    opMulDiv = 
+      MINUS;
+
+    opMulDiv =
       OPMUL |
       OPDIV |
-      OPMOD;  
-      
+      OPMOD;
+
     opUnary =
       OPNOT |
       MINUS |
-      OPBW_NOT;     
-      
+      OPBW_NOT;
+
     // identifier
     ident = lexeme_d[leaf_node_d[
       (alpha_p | UNDERSCORE) >> *(alnum_p | UNDERSCORE)
       ]];
-      
+
     // expressions
     //
-    expr = exprLogical >> 
+    expr = exprLogical >>
       !(
         root_node_d[opConditional] >>
           exprLogical >>
@@ -494,9 +494,9 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
 
     exprWildcard = root_node_d[OPMUL];
 
-    exprFuncCall = 
-      ident >> root_node_d[ LRBRACKET ] >> 
-        infix_node_d[ 
+    exprFuncCall =
+      ident >> root_node_d[ LRBRACKET ] >>
+        infix_node_d[
           !list_p(
             (
               expr |
@@ -504,16 +504,16 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
             ),
             COMMA
           )
-        ] >> 
+        ] >>
       no_node_d[ RRBRACKET ];
-      
+
     exprObjCtrCall = root_node_d[NEWOBJ] >> exprFuncCall;
-    exprStaticOrBaseCall = 
+    exprStaticOrBaseCall =
       ident >>
-      root_node_d[OPSCOPEACC] >> 
+      root_node_d[OPSCOPEACC] >>
       exprFuncCall;
 
-    exprCall = 
+    exprCall =
       exprStaticOrBaseCall |
       exprFuncCall;
 
@@ -526,35 +526,35 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
         expr >>
         GRAMMAR_EXPECT(RRBRACKET)
       ];
-    
+
     exprAssign = lrhs >> root_node_d[opAssign] >> expr;
-     
+
     // special assign initializer expression, which is used in var decls only
     exprInitAsn =
       ident >> root_node_d[ASN] >> expr;
 
     // statements
     //
-    stmtAssign = 
-      exprAssign >> 
+    stmtAssign =
+      exprAssign >>
         root_node_d[GRAMMAR_EXPECT(SEMICOLON)];
-    
+
     stmtConstDecl =
-      root_node_d[CONSTANT] >> 
-        (GRAMMAR_EXPECT(ident) >> no_node_d[ASN] >> GRAMMAR_EXPECT(value)) >> 
+      root_node_d[CONSTANT] >>
+        (GRAMMAR_EXPECT(ident) >> no_node_d[ASN] >> GRAMMAR_EXPECT(value)) >>
           no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
-      
-    stmtVarDecl =  
-      root_node_d[VARIABLE] >> 
+
+    stmtVarDecl =
+      root_node_d[VARIABLE] >>
         infix_node_d[
           list_p( (exprInitAsn | GRAMMAR_EXPECT(ident)), COMMA)
         ] >> no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
 
-    stmtEnumItemDecl = 
+    stmtEnumItemDecl =
       ident >>
         root_node_d[ASN] >>
       expr >>
-      !(no_node_d[COMMA] >> strVal) >> 
+      !(no_node_d[COMMA] >> strVal) >>
         no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
 
     stmtEnumDecl =
@@ -562,30 +562,30 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
         GRAMMAR_EXPECT(ident) >>
         !stmtAttributeList >>
       no_node_d[LCBRACKET] >>
-        *stmtEnumItemDecl >>        
+        *stmtEnumItemDecl >>
       no_node_d[GRAMMAR_EXPECT(RCBRACKET)];
-      
+
     stmtFuncDecl =
-      root_node_d[FUNCTION] >> 
-        GRAMMAR_EXPECT(ident) >> 
-      no_node_d[LRBRACKET] >> 
-        infix_node_d[ !list_p(ident, COMMA) ] >> 
+      root_node_d[FUNCTION] >>
+        GRAMMAR_EXPECT(ident) >>
+      no_node_d[LRBRACKET] >>
+        infix_node_d[ !list_p(ident, COMMA) ] >>
       no_node_d[GRAMMAR_EXPECT(RRBRACKET)] >>
       !stmtAttributeList >>
       *stmtVarDecl >>
       stmtBlock;
 
-    stmtObjCtorDecl = 
-      root_node_d[CTOR] >> 
-      no_node_d[LRBRACKET] >> 
-        infix_node_d[ !list_p(ident, COMMA) ] >> 
-      no_node_d[GRAMMAR_EXPECT(RRBRACKET)] >> 
+    stmtObjCtorDecl =
+      root_node_d[CTOR] >>
+      no_node_d[LRBRACKET] >>
+        infix_node_d[ !list_p(ident, COMMA) ] >>
+      no_node_d[GRAMMAR_EXPECT(RRBRACKET)] >>
       !stmtAttributeList >>
       *stmtVarDecl >>
       stmtBlock;
 
-    stmtObjDtorDecl = 
-      root_node_d[DTOR] >> 
+    stmtObjDtorDecl =
+      root_node_d[DTOR] >>
       no_node_d[LRBRACKET] >>
       no_node_d[GRAMMAR_EXPECT(RRBRACKET)] >>
       !stmtAttributeList >>
@@ -596,29 +596,29 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
       root_node_d[RETURN] >>
         !expr >>
           no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
-        
-    stmtAttributeDecl = 
-      root_node_d[OPATTRACC] >> GRAMMAR_EXPECT(ident) >> 
+
+    stmtAttributeDecl =
+      root_node_d[OPATTRACC] >> GRAMMAR_EXPECT(ident) >>
         !(no_node_d[ASN] >> (value|ident)) >>
         no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
-        
-    stmtAttributeList = 
+
+    stmtAttributeList =
       +stmtAttributeDecl;
-      
-    stmtObjPlainFldDecl = 
+
+    stmtObjPlainFldDecl =
       (ident-reservedWords) >> ident;
 
-    stmtObjArrayFldDecl = 
+    stmtObjArrayFldDecl =
       (ident-reservedWords) >> ident >> no_node_d[LSBRACKET] >>
         expr >> no_node_d[GRAMMAR_EXPECT(RSBRACKET)];
 
     // complex conditional field grammar begin
-    stmtObjFldElse = root_node_d[ ELSE ] >> 
+    stmtObjFldElse = root_node_d[ ELSE ] >>
       (stmtObjFldDecl | stmtObjDeclBlock);
-    
-    stmtObjFldIfDecl = root_node_d[ IF ] >> 
-      inner_node_d[ LRBRACKET >> expr >> GRAMMAR_EXPECT(RRBRACKET) ] >> 
-        (stmtObjFldDecl | stmtObjDeclBlock) >> 
+
+    stmtObjFldIfDecl = root_node_d[ IF ] >>
+      inner_node_d[ LRBRACKET >> expr >> GRAMMAR_EXPECT(RRBRACKET) ] >>
+        (stmtObjFldDecl | stmtObjDeclBlock) >>
         !stmtObjFldElse;
     // complex conditional field grammar end
 
@@ -633,23 +633,23 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
 
       ) | stmtObjFldIfDecl;
 
-    stmtObjMemberVarDecl =  
-      root_node_d[VARIABLE] >> 
+    stmtObjMemberVarDecl =
+      root_node_d[VARIABLE] >>
         infix_node_d[
           list_p(ident, COMMA)
         ] >> no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
 
-    exprObjPropertyReaderDecl = 
+    exprObjPropertyReaderDecl =
       root_node_d[READER] >> no_node_d[COLON] >>
       *stmtVarDecl >>
       stmtBlock;
-      
-    exprObjPropertyWriterDecl = 
+
+    exprObjPropertyWriterDecl =
       root_node_d[WRITER] >> no_node_d[COLON] >>
-      *stmtVarDecl >>     
+      *stmtVarDecl >>
       stmtBlock;
 
-    stmtObjPropertyDecl = 
+    stmtObjPropertyDecl =
       root_node_d[PROPERTY] >> ident >> no_node_d[SEMICOLON] >>
         !stmtAttributeList >>
         (exprObjPropertyReaderDecl || exprObjPropertyWriterDecl);
@@ -658,30 +658,30 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
       stmtFuncDecl |
       stmtObjDtorDecl |
       stmtObjCtorDecl;
-      
+
     stmtObjDeclBlock = inner_node_d[
-      LCBRACKET >> 
+      LCBRACKET >>
         *stmtObjMemberVarDecl >>
-        *stmtObjFldDecl >>        
+        *stmtObjFldDecl >>
         *stmtObjMethodDecl >>
         *stmtObjPropertyDecl >>
       GRAMMAR_EXPECT(RCBRACKET)
       ];
-    
-    stmtObjDecl = 
-      root_node_d[OBJECT] >> ident >> 
+
+    stmtObjDecl =
+      root_node_d[OBJECT] >> ident >>
         !(discard_node_d[EXTENDS] >> GRAMMAR_EXPECT(ident)) >>
         !stmtAttributeList >>
           stmtObjDeclBlock;
-      
-    stmtCall = exprCall >> root_node_d[SEMICOLON];  
-    
+
+    stmtCall = exprCall >> root_node_d[SEMICOLON];
+
     stmtElse = root_node_d[ ELSE ] >> stmt;
-    
-    stmtIf = root_node_d[ IF ] >> 
-      inner_node_d[ LRBRACKET >> expr >> GRAMMAR_EXPECT(RRBRACKET) ] >> 
-        stmt >> !stmtElse;  
-  
+
+    stmtIf = root_node_d[ IF ] >>
+      inner_node_d[ LRBRACKET >> expr >> GRAMMAR_EXPECT(RRBRACKET) ] >>
+        stmt >> !stmtElse;
+
     exprCase = value | lrhs;
 
     stmtExprCaseBlock = root_node_d[ GRAMMAR_EXPECT( COLON ) ] >>
@@ -699,22 +699,22 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
       no_node_d[ LCBRACKET ] >>
       +stmtCase >> !stmtDefault >>
       no_node_d[ GRAMMAR_EXPECT(RCBRACKET) ];
-        
+
     exprForInit = root_node_d[ LRBRACKET ] >>
       (stmtAssign | no_node_d[ GRAMMAR_EXPECT(SEMICOLON) ]);
-    
-    exprForCheck = (expr >> root_node_d[ GRAMMAR_EXPECT(SEMICOLON) ]) | 
+
+    exprForCheck = (expr >> root_node_d[ GRAMMAR_EXPECT(SEMICOLON) ]) |
       root_node_d[ GRAMMAR_EXPECT(SEMICOLON) ];
-    
-    exprForCnt = !(exprAssign|exprIncDec|exprIncDecPfx) >> 
+
+    exprForCnt = !(exprAssign|exprIncDec|exprIncDecPfx) >>
       root_node_d[ GRAMMAR_EXPECT(RRBRACKET) ];
-    
-    stmtFor = root_node_d[ FOR ] >> 
+
+    stmtFor = root_node_d[ FOR ] >>
       exprForInit >>
-      exprForCheck >> 
-      exprForCnt >> 
+      exprForCheck >>
+      exprForCnt >>
       stmt;
-    
+
     exprForEachCheck = no_node_d[LRBRACKET] >>
         ident >> root_node_d[GRAMMAR_EXPECT(OPIN)] >> expr >>
       no_node_d[GRAMMAR_EXPECT(RRBRACKET)];
@@ -722,53 +722,53 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
     stmtForEach = root_node_d[ FOREACH ] >>
       exprForEachCheck >>
       stmt;
-      
-    exprWhileCheck = root_node_d[WHILE] >> 
+
+    exprWhileCheck = root_node_d[WHILE] >>
       no_node_d[LRBRACKET] >>
         expr >>
       no_node_d[GRAMMAR_EXPECT(RRBRACKET)];
-      
+
     stmtWhile = exprWhileCheck >> stmt;
 
     stmtDoWhile = root_node_d[DO] >>
       stmt >>
       exprWhileCheck >> no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
-      
-    stmtBreak = root_node_d[BREAK] >> no_node_d[GRAMMAR_EXPECT(SEMICOLON)]; 
 
-    stmtContinue = root_node_d[CONTINUE] >> no_node_d[GRAMMAR_EXPECT(SEMICOLON)]; 
-    
+    stmtBreak = root_node_d[BREAK] >> no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
+
+    stmtContinue = root_node_d[CONTINUE] >> no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
+
     stmtLabel = root_node_d[LABEL] >> ident >> no_node_d[GRAMMAR_EXPECT(COLON)];
-    
+
     stmtGoto = root_node_d[GOTO] >> ident >> no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
-    
+
     // try-catch blocks
     stmtTry = root_node_d[TRYEX] >> stmtBlock;
     stmtCatch = root_node_d[CATCHEX] >> stmtBlock;
-    stmtTryCatch = 
+    stmtTryCatch =
       stmtTry >> stmtCatch;
-    
+
     // as a statement, prefix and postfis incdecs are the same
-    stmtIncDec = 
+    stmtIncDec =
       (exprIncDec |
-      exprIncDecPfx) >> 
+      exprIncDecPfx) >>
         root_node_d[SEMICOLON];
-        
+
     stmtLrhs = lrhs >> root_node_d[SEMICOLON];
-        
-    stmtNoop = root_node_d[SEMICOLON];    
+
+    stmtNoop = root_node_d[SEMICOLON];
 
     stmtThrow = root_node_d[THROWEX] >>
       expr >> no_node_d[SEMICOLON];
 
-    stmtRethrow = root_node_d[RETHROWEX] >> 
+    stmtRethrow = root_node_d[RETHROWEX] >>
       no_node_d[SEMICOLON];
 
     stmtRequire = root_node_d[PREPROC] >>
-      no_node_d[REQUIRE] >> 
-      no_node_d[LRBRACKET] >> 
+      no_node_d[REQUIRE] >>
+      no_node_d[LRBRACKET] >>
         strVal >>
-      no_node_d[RRBRACKET] >> 
+      no_node_d[RRBRACKET] >>
       no_node_d[GRAMMAR_EXPECT(SEMICOLON)];
 
     stmtLink = root_node_d[PREPROC] >>
@@ -785,7 +785,7 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
 
     // top-level grammar
     //
-    stmtList = 
+    stmtList =
       *( stmtExternDecl |
          stmtConstDecl |
          stmtVarDecl |
@@ -793,9 +793,9 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
          stmtObjDecl |
          stmtFuncDecl |
          stmt );
-      
-    stmtBlock = root_node_d[LCBRACKET] >> 
-      *stmt >> 
+
+    stmtBlock = root_node_d[LCBRACKET] >>
+      *stmt >>
       no_node_d[GRAMMAR_EXPECT(RCBRACKET)];
 
     stmt =
@@ -821,18 +821,18 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
       stmtCall |
       stmtLrhs |
       stmtNoop; // noop statement
-    
+
     // Main entry points
     script = GRAMMAR_PARSER_ASSERT_GUARD(
       stmtList
       ) >> end_p;
-    
+
 #   ifdef BOOST_SPIRIT_DEBUG
 #     define GRAMMAR_RULE(r)  BOOST_SPIRIT_DEBUG_RULE(r);
 #     include "EsScriptCompilerRuleNames.hxx"
       // root rules
       BOOST_SPIRIT_DEBUG_RULE(script);
-#   endif 
+#   endif
 GRAMMAR_PARSER_IMPL_END
 
 // skip parser
@@ -853,7 +853,7 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Skip )
 
 # ifdef BOOST_SPIRIT_DEBUG
     BOOST_SPIRIT_DEBUG_RULE(skip);
-# endif         
+# endif
 GRAMMAR_PARSER_IMPL_END
 
 // Custom parser(s), based on Grammar parser
@@ -868,7 +868,8 @@ struct EsScriptCompilerExprParser : public EsScriptCompilerGrammar<CtxT>
   struct definition
   {
     typedef EsScriptCompilerExprParser<CtxT> SelfT;
-    typedef EsScriptCompilerGrammar<CtxT>::definition< ScannerT > BaseDefinitionT;
+    typedef EsScriptCompilerGrammar<CtxT> ScriptCompilerGrammarT;
+    typedef typename ScriptCompilerGrammarT::template definition< ScannerT > BaseDefinitionT;
     BaseDefinitionT m_basedef;
 
     definition(const SelfT& self) : m_basedef(self) {}
@@ -879,22 +880,22 @@ struct EsScriptCompilerExprParser : public EsScriptCompilerGrammar<CtxT>
 
 // Customized Parser context impl
 PARSER_CONTEXT_CUSTOM_IMPL_BEGIN(
-  EsScriptCompiler, 
-  typedef EsScriptCompilerExprParser<EsScriptCompiler> ExprGrammarT; 
-  ExprGrammarT m_grammar_expr; 
+  EsScriptCompiler,
+  typedef EsScriptCompilerExprParser<EsScriptCompiler> ExprGrammarT;
+  ExprGrammarT m_grammar_expr;
 )
 , m_grammar_expr(*this)
   PARSER_CONTEXT_IMPL_INIT_BEGIN
 
     if( fromString == inputType )
       EsEventDispatcher::eventPost(
-        ES_EVTC_SCRIPT, 
+        ES_EVTC_SCRIPT,
         static_cast<ulong>(EsScript::evtCompilerInfo)
       );
     else
       EsEventDispatcher::eventPost(
-        ES_EVTC_SCRIPT, 
-        static_cast<ulong>(EsScript::evtCompilerInfo), 
+        ES_EVTC_SCRIPT,
+        static_cast<ulong>(EsScript::evtCompilerInfo),
         input
       );
 
@@ -1548,7 +1549,7 @@ protected:
 
     if( fileCompiler.doParse() )
       fileCompiler.compileTo(script);
-    else 
+    else
       fileCompiler.errorHandle(
         fileCompiler.m_parseInfo.stop,
         EsScriptCompiler::Error_Parser,
@@ -2046,12 +2047,12 @@ protected:
       );
     }
     else if( activeMethod->isObjectMethod() )
-    { 
+    {
       EsScriptObjectIntf* activeBranch = activeMethod->immediateMetaclassGet();
       ES_ASSERT(activeBranch);
-      
+
       // lookup object fields
-      EsScriptObjectIntf::Ptr fld;      
+      EsScriptObjectIntf::Ptr fld;
       while( !fld && activeBranch )
       {
         EsScriptObjectFieldFastFinder finder(
@@ -2272,7 +2273,7 @@ protected:
     );
   }
   //---------------------------------------------------------------------------
-  
+
   void compileFieldOrMemberVarAcc(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
     ES_ASSERT((*cit).value.id().to_long() == fieldOrMemberVarAccID);
@@ -2288,19 +2289,19 @@ protected:
       debugInfoCreateAt(cit)
     ).nameSet(
       name
-    ).memberRefTypeSet( 
+    ).memberRefTypeSet(
       EsMemberRefType::mrFieldOrVar
     );
 
     // handle possible index access instruction
     if( child != (*cit).children.end() )
       compileIdxAcc(
-        child, 
+        child,
         script
       );
   }
   //---------------------------------------------------------------------------
-  
+
   void compilePropAcc(ParseTreeConstIteratorT cit, EsScriptMachine& script, bool thisAcc)
   {
     ES_ASSERT((*cit).value.id().to_long() == propAccID);
@@ -2322,12 +2323,12 @@ protected:
     // handle possible index access instruction
     if( child != (*cit).children.end() )
       compileIdxAcc(
-        child, 
+        child,
         script
       );
   }
   //---------------------------------------------------------------------------
-  
+
   void compileAttrAcc(ParseTreeConstIteratorT cit, EsScriptMachine& script, bool thisAcc)
   {
     ES_ASSERT(attrAccID == (*cit).value.id().to_long());
@@ -2352,7 +2353,7 @@ protected:
     // handle possible index access instruction
     if( child != (*cit).children.end() )
       compileIdxAcc(
-        child, 
+        child,
         script
       );
   }
@@ -2386,7 +2387,7 @@ protected:
     );
   }
   //---------------------------------------------------------------------------
-  
+
   void compileIncDec(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
     ES_ASSERT((*cit).value.id().to_long() == stmtIncDecID);
@@ -2403,7 +2404,7 @@ protected:
     );
   }
   //---------------------------------------------------------------------------
-  
+
   void compileStmtIf(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
     ES_ASSERT(stmtIfID == (*cit).value.id().to_long());
@@ -2706,7 +2707,7 @@ protected:
           EsScriptDebugInfoIntf::Ptr dbg = code[idx].debugInfoGet();
           if(!dbg)
             continue;
-          
+
           line = dbg->lineGet()-1;
 
           if(!dbgStart)
@@ -2795,7 +2796,7 @@ protected:
       ESSCRIPT_COMPILER_TRACE2(esT("ObjectScope(compiler, fld='%s')"), m_metaclass->typeNameGet())
     }
 
-    ~ObjectScope() 
+    ~ObjectScope()
     {
       ESSCRIPT_COMPILER_TRACE2(esT("~ObjectScope() '%s'"), m_metaclass->typeNameGet())
       m_compiler.m_objectScope = m_prev;
@@ -2805,7 +2806,7 @@ protected:
     {
       return m_metaclass;
     }
-    
+
     EsScriptObjectIntf::Ptr topMetaclassGet() const
     {
       const ObjectScope* top = this;
@@ -2815,7 +2816,7 @@ protected:
         top = prev;
         prev = prev->m_prev;
       }
-      
+
       ES_ASSERT(top);
       return top->metaclassGet();
     }
@@ -2840,13 +2841,13 @@ protected:
   class BreakContinueGuard
   {
   public:
-    enum Guard { 
+    enum Guard {
       breakGuard,
-      continueGuard 
+      continueGuard
     };
 
   public:
-    BreakContinueGuard(EsScriptCompiler& compiler, Guard guard, EsScriptCodeSection::Ptr code) : 
+    BreakContinueGuard(EsScriptCompiler& compiler, Guard guard, EsScriptCodeSection::Ptr code) :
     m_compiler(compiler),
     m_guard(guard),
     m_prev((breakGuard == m_guard) ? m_compiler.m_breakGuard : m_compiler.m_continueGuard),
@@ -2854,12 +2855,12 @@ protected:
     m_fixup(0)
     {
       m_instrPositions.reserve(16);
-      if(breakGuard == m_guard) 
+      if(breakGuard == m_guard)
         m_compiler.m_breakGuard = this;
       else
         m_compiler.m_continueGuard = this;
     }
-  
+
     ~BreakContinueGuard()
     {
       // apply instruction fixups
@@ -2876,29 +2877,29 @@ protected:
           m_fixup
         );
       }
-      
-      if(breakGuard == m_guard) 
+
+      if(breakGuard == m_guard)
         m_compiler.m_breakGuard = m_prev;
       else
         m_compiler.m_continueGuard = m_prev;
     }
-    
+
     void instructionAddPos(size_t pos)
     {
       m_instrPositions.push_back(pos);
     }
-    
+
     void setFixup(size_t fixup)
     {
       m_fixup = fixup;
     }
-  
+
   private:
     // prohibited functionality
     BreakContinueGuard() ES_REMOVEDECL;
     BreakContinueGuard(const BreakContinueGuard&) ES_REMOVEDECL;
     BreakContinueGuard& operator =(const BreakContinueGuard&) ES_REMOVEDECL;
-  
+
   protected:
     EsScriptCompiler& m_compiler;
     Guard m_guard;
@@ -2914,14 +2915,14 @@ protected:
   class LabelGuard
   {
   public:
-    LabelGuard(EsScriptCompiler& compiler, EsScriptCodeSection::Ptr code) : 
+    LabelGuard(EsScriptCompiler& compiler, EsScriptCodeSection::Ptr code) :
     m_compiler(compiler),
     m_code(code),
     m_prev(m_compiler.m_labelGuard)
     {
       m_compiler.m_labelGuard = this;
-    } 
-  
+    }
+
     ~LabelGuard()
     {
       for(Gotos::const_iterator cit = m_gotos.begin(); cit != m_gotos.end(); ++cit)
@@ -2945,10 +2946,10 @@ protected:
         //  EsScriptException::Throw( EsString::format(esT("goto target '%s' is not declared"), name.c_str()),
         //  EsScriptDebugInfo::create( );
       }
-      
+
       m_compiler.m_labelGuard = m_prev;
     }
-    
+
     void addLabel(const EsString& name)
     {
       if( m_labels.end() != m_labels.find(name) )
@@ -2958,10 +2959,10 @@ protected:
             name
           )
         );
-      
+
       m_labels[name] = m_code->instructionEndPosGet();
     }
-    
+
     void addGoto(const EsString& name, EsString::const_pointer pos)
     {
       size_t gotoPos;
@@ -2978,18 +2979,18 @@ protected:
         )
       );
     }
-    
+
   private:
     // prohibited functionality
     LabelGuard() ES_REMOVEDECL;
     LabelGuard(const LabelGuard&) ES_REMOVEDECL;
     LabelGuard& operator =(const LabelGuard&) ES_REMOVEDECL;
-    
+
   protected:
     typedef std::map<EsString, size_t> Map;
     typedef std::pair<EsString, size_t> Goto;
     typedef std::list<Goto> Gotos;
-    
+
     EsScriptCompiler& m_compiler;
     EsScriptCodeSection::Ptr m_code;
     Map m_labels;
@@ -3187,7 +3188,7 @@ protected:
       size_t checkPos;
       code->instructionAdd(
         checkPos,
-        iJumpFalse, 
+        iJumpFalse,
         debugInfoCreateAt(child)
       );
 
@@ -3202,7 +3203,7 @@ protected:
     // finally, compile _for_ counter expression
     size_t forCounterStartPos = code->instructionEndPosGet(); //< remember for counter jump pos
     compileForCountExpr(
-      cntExpr, 
+      cntExpr,
       script
     );
 
@@ -3240,8 +3241,8 @@ protected:
 
   void compileExprForEachCheck(
     ParseTreeConstIteratorT cit,
-    const EsScriptCodeSection::Ptr& code, 
-    size_t& loopStartPos, 
+    const EsScriptCodeSection::Ptr& code,
+    size_t& loopStartPos,
     size_t& loopCheckPos,
     EsScriptMachine& script)
   {
@@ -3254,7 +3255,7 @@ protected:
 
     // foreach subject expression compile
     compileExpr(
-      child, 
+      child,
       script
     );
 
@@ -3273,13 +3274,13 @@ protected:
 
     code->instructionAdd(
       loopCheckPos,
-      iJumpFalse, 
+      iJumpFalse,
       debugInfoCreateAt(child)
     );
 
     // the loop iterator variable assignment
     code->instructionAdd(
-      iAutoItemLoad, 
+      iAutoItemLoad,
       debugInfoCreateAt(child)
     );
 
@@ -3288,7 +3289,7 @@ protected:
       debugInfoCreateAt(child)
     ).nameSet(
       varname
-    ); 
+    );
   }
   //---------------------------------------------------------------------------
 
@@ -3652,7 +3653,7 @@ protected:
         false
       );
       ES_ASSERT(attrs);
-      
+
       compileAttributes(
         child++,
         script,
@@ -3685,7 +3686,7 @@ protected:
     EsString baseObj;
     if(identID == (*child).value.id().to_long())
       baseObj = compileIdent(child++);
-    
+
     // declare new object and enter its scope
     ObjectScope scope(
       *this,
@@ -3693,7 +3694,7 @@ protected:
       obj,
       baseObj
     );
-    
+
     // optionally compile attributes
     if(
       child != (*cit).children.end() &&
@@ -3705,7 +3706,7 @@ protected:
         false
       );
       ES_ASSERT(attrs);
-      
+
       compileAttributes(
         child++,
         script,
@@ -3792,11 +3793,11 @@ protected:
         0
       );
     }
-    
+
     return conditional.m_fieldMetaclass;
   }
   //---------------------------------------------------------------------------
-  
+
   EsScriptObjectIntf::Ptr compileStmtObjFldDecl(ParseTreeConstIteratorT cit, EsScriptMachine& script, EsString* fldName = 0)
   {
     long id = (*cit).value.id().to_long();
@@ -3813,15 +3814,15 @@ protected:
       const EsString& fieldType = compileIdent(child++);
       // compile field name
       const EsString& fieldName = compileIdent(child++);
-      if( fldName ) 
+      if( fldName )
         *fldName = fieldName;
-        
+
       if( stmtObjPlainFldDeclID == id )
         // add field to metaclass currently being compiled
         return script.metaclassFieldDeclare(m_objectScope->metaclassGet(), fieldType, fieldName);
       else // compile array field
       {
-        EsScriptMachine::CompoundFieldCreationResult arrayFldResult = 
+        EsScriptMachine::CompoundFieldCreationResult arrayFldResult =
           script.metaclassArrayFieldDeclare(m_objectScope->metaclassGet(), fieldType, fieldName);
         // compile array field size expression
         compileFldExpr(child, script, arrayFldResult.m_fieldMetaclass, arrayFldResult.m_fieldExpr);
@@ -3836,7 +3837,7 @@ protected:
     ES_ASSERT(stmtObjMemberVarDeclID == (*cit).value.id().to_long());
     ES_ASSERT(m_objectScope);
 
-    // compile member variables 
+    // compile member variables
     for(ParseTreeConstIteratorT child = (*cit).children.begin(); child != (*cit).children.end(); ++child)
     {
       long id = (*child).value.id().to_long();
@@ -3850,20 +3851,20 @@ protected:
     }
   }
   //---------------------------------------------------------------------------
-  
+
   EsString compileExprObjPropertyReaderDecl(const EsString& name, ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
     ES_ASSERT(exprObjPropertyReaderDeclID == (*cit).value.id().to_long());
     ES_ASSERT(m_objectScope);
-    ParseTreeConstIteratorT child = (*cit).children.begin();    
-    
+    ParseTreeConstIteratorT child = (*cit).children.begin();
+
     // declare property reader as current object method
     EsScriptObjectIntf::Ptr metaclass = currentMetaclassGet();
     ES_ASSERT( metaclass );
     EsString readerName = name+esT("_read");
     EsScriptCodeSection::Ptr reader = script.methodDeclare(readerName, EsString::nullArray(), metaclass);
     compileMethodDecl(child, script, reader, metaclass);
-    
+
     return readerName;
   }
   //---------------------------------------------------------------------------
@@ -3894,21 +3895,21 @@ protected:
     ES_ASSERT(m_objectScope);
 
     ParseTreeConstIteratorT child = (*cit).children.begin();
-    
+
     // property name
     const EsString& name = compileIdent(child++);
-    
+
     EsAttributesIntf::Ptr attrs;
 
     id = (*child).value.id().to_long();
     if( isAttrListOrAttrDecl(id) )
-    { 
+    {
       attrs = EsAttributes::create(
         name,
         false
       );
       ES_ASSERT(attrs);
-      
+
       compileAttributes(
         child++,
         script,
@@ -3934,10 +3935,10 @@ protected:
           child,
           script
         );
-        
+
       ++child;
     }
-  
+
     EsScriptObjectIntf::Ptr metaclass = currentMetaclassGet();
     ES_ASSERT( metaclass );
     metaclass->propertyDeclare(
@@ -3948,7 +3949,7 @@ protected:
     );
   }
   //---------------------------------------------------------------------------
-    
+
   void compileStmtObjAttrDecls(EsScriptObjectIntf::Ptr obj, ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
     long id = (*cit).value.id().to_long();
@@ -4001,14 +4002,14 @@ protected:
     EsString fldName;
     EsScriptObjectIntf::Ptr field = compileStmtObjFldDecl(child++, script, &fldName);
     ES_ASSERT(field);
-    
+
     // compile field attributes
     EsAttributesIntf::Ptr attrs = EsAttributes::create(
       fldName,
       false
     );
     ES_ASSERT(attrs);
-    
+
     compileAttributes(
       child,
       script,
@@ -4353,18 +4354,18 @@ protected:
       ++paramsCount;
 
       EsMethodInfoKeyT key(
-        paramsCount, 
+        paramsCount,
         name
       );
-      
+
       if( !EsVar::classInfoGetStatic().hasClassMethod(key) )
-        EsScriptException::Throw( 
+        EsScriptException::Throw(
           EsString::format(
-            script.loc(), 
+            script.loc(),
             esT("'%s' taking %d parameters is not a valid variant service"),
             name,
             paramsCount
-          ), 
+          ),
           debugInfoCreateAt(cit)
         );
     }
@@ -4383,7 +4384,7 @@ protected:
     );
   }
   //---------------------------------------------------------------------------
-  
+
   void compileStaticOrBaseCall(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
     ES_ASSERT(m_codeScope);
@@ -4500,11 +4501,11 @@ protected:
         // Lookup global namespace, throw an exception on error
         method = script.globalMethodGet(methodKey);
     }
-      
+
     // compile parameter expressions
     while(child != (*cit).children.end())
       compileExpr(
-        child++, 
+        child++,
         script
       );
 
@@ -4514,8 +4515,8 @@ protected:
     };
 
     if( !targetNamespace.empty() )
-      qname.push_back( 
-        targetNamespace 
+      qname.push_back(
+        targetNamespace
       );
 
     // finally, issue call instruction, specifying call parameters
@@ -4529,7 +4530,7 @@ protected:
     );
   }
   //---------------------------------------------------------------------------
-  
+
   void compileFunctionOrMethodCall(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
     bool found = false;
@@ -4579,7 +4580,7 @@ protected:
         }
       }
     }
-    
+
     if( !found )
     {
       // lookup global methods
@@ -4621,7 +4622,7 @@ protected:
     // compile parameters expressions
     while(child != (*cit).children.end())
       compileExpr(
-        child++, 
+        child++,
         script
       );
 
@@ -4689,7 +4690,7 @@ protected:
     ).operatorIdSet(
       opid
     );
-    
+
     // finally, modify logcheck instruction at instrPos, if needed
     if( opLogicalID == id )
       code->instructionModifyAt(
@@ -5595,10 +5596,10 @@ enum SourceInputType {
 #endif
 
 static bool doCompile(
-  const EsString& src, 
+  const EsString& src,
   EsScriptMachine& machine,
   const EsAssocContainerIntf::Ptr& modulesInfo,
-  SourceInputType inputType, 
+  SourceInputType inputType,
   const EsBreakIntf::Ptr& brk
 )
 {
@@ -5639,7 +5640,7 @@ static bool doCompile(
 
 bool EsScriptUtilities::compileFromString(
   const EsString& src,
-  EsScriptMachine& machine, 
+  EsScriptMachine& machine,
   const EsAssocContainerIntf::Ptr& modulesInfo,
   const EsBreakIntf::Ptr& brk
 )
@@ -5656,7 +5657,7 @@ bool EsScriptUtilities::compileFromString(
 
 bool EsScriptUtilities::compileFromFile(
   const EsString& src,
-  EsScriptMachine& machine, 
+  EsScriptMachine& machine,
   const EsAssocContainerIntf::Ptr& modulesInfo,
   const EsBreakIntf::Ptr& brk
 )
@@ -5691,18 +5692,18 @@ bool EsScriptUtilities::compileFromScriptlet(EsScriptlet& src, const EsBreakIntf
     if( compiler.doParse() )
     {
       compiler.compileToScriptlet(
-        src.machineGet(), 
-        src.infoGet(), 
+        src.machineGet(),
+        src.infoGet(),
         src.parameterNamesGet()
       );
-      
+
       return true;
     }
     else
     {
       return compiler.errorHandle(
-        compiler.m_parseInfo.stop, 
-        EsScriptCompiler::Error_Parser 
+        compiler.m_parseInfo.stop,
+        EsScriptCompiler::Error_Parser
       );
     }
   }
@@ -5853,7 +5854,7 @@ bool EsScriptParser::parse(const EsString& in)
       falseStop = m_stop;
 
       fullyParsed = compiler.doParse(
-        0, 
+        0,
         m_stop
       );
 
@@ -5864,14 +5865,14 @@ bool EsScriptParser::parse(const EsString& in)
 
     m_isParsed = fullyParsed ||
       !compiler.m_parseInfo.trees.empty();
-      
+
     rootsInit(
       inStart,
       compiler.m_parseInfo.trees
     );
 
     if(
-      needPartialParse && 
+      needPartialParse &&
       compiler.doParse_expr(
         falseStop
       )

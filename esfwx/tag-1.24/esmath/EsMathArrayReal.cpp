@@ -602,11 +602,7 @@ void EsMathArrayReal::clear()
 
 EsBaseIntfPtr EsMathArrayReal::clone() const
 {
-#ifdef ES_MODERN_CPP
-	std::unique_ptr<EsMathArrayReal> p = std::make_unique<EsMathArrayReal>(*this);
-#else
-	std::auto_ptr<EsMathArrayReal> p( new EsMathArrayReal(*this) );
-#endif
+	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal(*this) );
 
 	ES_ASSERT(p.get());
 	p->m_dynamic = true;
@@ -617,11 +613,7 @@ EsBaseIntfPtr EsMathArrayReal::clone() const
 
 EsBaseIntfPtr EsMathArrayReal::baseIntfPtrCreate(cr_EsVariant src, EsMathArrayReal** outp)
 {
-#ifdef ES_MODERN_CPP
-	std::unique_ptr<EsMathArrayReal> p = std::make_unique<EsMathArrayReal>();
-#else
 	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
-#endif
 
  	ES_ASSERT(p.get());
 	p->m_dynamic = true;
@@ -656,11 +648,7 @@ EsBaseIntfPtr EsMathArrayReal::NEW(cr_EsVariant src)
 
 EsBaseIntfPtr EsMathArrayReal::newFromU8buffer(const EsBinBuffer& src)
 {
-#ifdef ES_MODERN_CPP
-	std::unique_ptr<EsMathArrayReal> p = std::make_unique<EsMathArrayReal>();
-#else
 	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
-#endif
 
 	ES_ASSERT(p.get());
 	p->m_dynamic = true;
@@ -672,11 +660,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromU8buffer(const EsBinBuffer& src)
 
 EsBaseIntfPtr EsMathArrayReal::newFromI8buffer(const EsBinBuffer& src)
 {
-#ifdef ES_MODERN_CPP
-	std::unique_ptr<EsMathArrayReal> p = std::make_unique<EsMathArrayReal>();
-#else
 	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
-#endif
 
 	ES_ASSERT(p.get());
 	p->m_dynamic = true;
@@ -688,11 +672,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromI8buffer(const EsBinBuffer& src)
 
 EsBaseIntfPtr EsMathArrayReal::newFromU16buffer(const EsBinBuffer& src)
 {
-#ifdef ES_MODERN_CPP
-	std::unique_ptr<EsMathArrayReal> p = std::make_unique<EsMathArrayReal>();
-#else
 	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
-#endif
 
 	ES_ASSERT(p.get());
 	p->m_dynamic = true;
@@ -704,11 +684,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromU16buffer(const EsBinBuffer& src)
 
 EsBaseIntfPtr EsMathArrayReal::newFromI16buffer(const EsBinBuffer& src)
 {
-#ifdef ES_MODERN_CPP
-	std::unique_ptr<EsMathArrayReal> p = std::make_unique<EsMathArrayReal>();
-#else
 	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
-#endif
 
 	ES_ASSERT(p.get());
 	p->m_dynamic = true;
@@ -720,11 +696,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromI16buffer(const EsBinBuffer& src)
 
 EsBaseIntfPtr EsMathArrayReal::newFromU32buffer(const EsBinBuffer& src)
 {
-#ifdef ES_MODERN_CPP
-	std::unique_ptr<EsMathArrayReal> p = std::make_unique<EsMathArrayReal>();
-#else
 	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
-#endif
 
 	ES_ASSERT(p.get());
 	p->m_dynamic = true;
@@ -736,11 +708,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromU32buffer(const EsBinBuffer& src)
 
 EsBaseIntfPtr EsMathArrayReal::newFromI32buffer(const EsBinBuffer& src)
 {
-#ifdef ES_MODERN_CPP
-	std::unique_ptr<EsMathArrayReal> p = std::make_unique<EsMathArrayReal>();
-#else
 	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
-#endif
 
 	ES_ASSERT(p.get());
 	p->m_dynamic = true;
@@ -752,11 +720,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromI32buffer(const EsBinBuffer& src)
 
 EsBaseIntfPtr EsMathArrayReal::newFromFloatBuffer(const EsBinBuffer& src)
 {
-#ifdef ES_MODERN_CPP
-	std::unique_ptr<EsMathArrayReal> p = std::make_unique<EsMathArrayReal>();
-#else
 	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
-#endif
 
 	ES_ASSERT(p.get());
 	p->m_dynamic = true;
@@ -768,11 +732,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromFloatBuffer(const EsBinBuffer& src)
 
 EsBaseIntfPtr EsMathArrayReal::newFromDoubleBuffer(const EsBinBuffer& src)
 {
-#ifdef ES_MODERN_CPP
-	std::unique_ptr<EsMathArrayReal> p = std::make_unique<EsMathArrayReal>();
-#else
 	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
-#endif
 
 	ES_ASSERT(p.get());
 	p->m_dynamic = true;
@@ -787,7 +747,7 @@ const double* EsMathArrayReal::dataGet() const
 	if( !get_empty() )
 		return ((const alglib::real_1d_array*)m_pimpl)->getcontent();
 
-	return 0;
+	return nullptr;
 }
 //---------------------------------------------------------------------------
 
@@ -796,7 +756,7 @@ double* EsMathArrayReal::dataAccess()
 	if( !get_empty() )
 		return ((alglib::real_1d_array*)m_pimpl)->getcontent();
 
-	return 0;
+	return nullptr;
 }
 //---------------------------------------------------------------------------
 
@@ -821,7 +781,7 @@ void EsMathArrayReal::copy(const EsMathArrayReal& src)
 	if( &src != this )
 	{
 		alglibCastFromArray(*this).setcontent( src.get_count(),
-			alglibCastFromArray(src).getcontent() );
+		alglibCastFromArray(src).getcontent() );
 
 		m_needRecalc = src.m_needRecalc;
 		m_minIdx = src.m_minIdx;

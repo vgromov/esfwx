@@ -56,7 +56,7 @@
 /// Cross-framework includes
 ///
 #include <esfwxe/type.h>
-#include <esfwxe/CommIntf.h>
+#include <esfwxe/commintf.h>
 
 #ifdef ES_COMM_USE_RPC
 # include <esfwxe/remoteProcCall.h>
@@ -110,7 +110,7 @@ class EsRpcMaster;
 #include <escomm/EsChannelIoSocketServer.h>
 #include <escomm/EsChannelIoBluetoothClient.h>
 #include <escomm/EsChannelIoBluetoothLE.h>
-#include <escomm/EsRPCServices.h>
+#include <escomm/EsRpcServices.h>
 #include <escomm/EsProtocolMonitorUdp.h>
 #include <escomm/EsNetAddressPool.h>
 

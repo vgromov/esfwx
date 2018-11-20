@@ -10,6 +10,9 @@
 #if ES_OS != ES_OS_ANDROID
 # include <term.h>
 #endif
+#if (ES_OS == ES_OS_LINUX) || (ES_OS == ES_OS_UNIX)
+# include <fcntl.h>
+#endif
 
 // internal consts
 enum {
@@ -188,52 +191,75 @@ EsString EsChannelIoUart::decodeLineError(esU32 err)
 {
   EsString result;
 
-#if ES_OS != ES_OS_MAC
+#ifdef CE_MODE
   if( err & CE_MODE )
     result += _("The requested mode is not supported, or the file handle is invalid.");
+#endif // CE_MODE
+
+#ifdef CE_BREAK
   if( err & CE_BREAK )
   {
     if( !result.empty() )
-        result += esT('\n');
-      result += _("The hardware detected a break condition.");
+      result += esT('\n');
+
+    result += _("The hardware detected a break condition.");
   }
+#endif // CE_BREAK
+
+#ifdef CE_FRAME
   if( err & CE_FRAME )
   {
     if( !result.empty() )
       result += esT('\n');
+
     result += _("The hardware detected a framing error.");
   }
+#endif // CE_FRAME
+
+#ifdef CE_IOE
   if( err & CE_IOE )
   {
     if( !result.empty() )
       result += esT('\n');
     result += _("An I/O error occurred during communications with the device.");
   }
+#endif // CE_IOE
+
+#ifdef CE_OVERRUN
   if( err & CE_OVERRUN )
   {
     if( !result.empty() )
       result += esT('\n');
     result += _("A character-buffer overrun has occurred. The next character is lost.");
   }
+#endif // CE_OVERRUN
+
+#ifdef CE_RXOVER
   if( err & CE_RXOVER )
   {
     if( !result.empty() )
       result += esT('\n');
     result += _("An input buffer overflow has occurred. There is either no room in the input buffer, or a character was received after the end-of-file (EOF) character.");
   }
+#endif // CE_RXOVER
+
+#ifdef CE_RXPARITY
   if( err & CE_RXPARITY )
   {
     if( !result.empty() )
       result += esT('\n');
     result += _("The hardware detected a parity error.");
   }
+#endif // CE_RXPARITY
+
+#ifdef CE_TXFULL
   if( err & CE_TXFULL )
   {
     if( !result.empty() )
       result += esT('\n');
     result += _("The application tried to transmit a character, but the output buffer was full.");
   }
-#endif
+#endif // CE_TXFULL
 
   return result;
 }
