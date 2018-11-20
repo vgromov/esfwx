@@ -1,6 +1,8 @@
 #ifndef _es_core_types_h_
 #define _es_core_types_h_
 
+#ifdef __cplusplus
+
 /// basic type defines for ekosf core library
 /// especially, for reflection types short-cuts
 ///
@@ -17,6 +19,8 @@ typedef const double&					cr_double;
 typedef const bool&						cr_bool;
 typedef unsigned char         byte;
 typedef const byte&           cr_byte;
+
+#endif // __cplusplus
 
 #define ES_MAKE_ULLONG(low, high)	((ullong)(ulong)(low) + ((ullong)(ulong)(high) << 32))
 
