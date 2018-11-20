@@ -59,14 +59,17 @@ MACRO(SPECIFY_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar)
     set(PrecompiledBinary "$(IntDir)/${PrecompiledBasename}.pch")
     set(Sources ${${SourcesVar}})
     set_source_files_properties(${PrecompiledSource} PROPERTIES 
-						COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
-            OBJECT_OUTPUTS "${PrecompiledBinary}")
+      COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
+      OBJECT_OUTPUTS "${PrecompiledBinary}")
     set_source_files_properties(${Sources}
-            PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledHeader}\" /FI\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
-            OBJECT_DEPENDS "${PrecompiledBinary}")  
+      PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledHeader}\" /FI\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
+      OBJECT_DEPENDS "${PrecompiledBinary}")  
     # Add precompiled header to SourcesVar
     list(APPEND ${SourcesVar} ${PrecompiledSource})
-  endif(MSVC)
+  else()
+    # Just append source to SourcesVar, if do not know how to precompile
+    list(APPEND ${SourcesVar} ${PrecompiledSource})
+  endif()
 ENDMACRO(SPECIFY_PRECOMPILED_HEADER)
 
 # header specification macro
