@@ -15,14 +15,14 @@
 //---------------------------------------------------------------------------
 
 // reserve defVarCollectionSize for empty collection
-#define defVarCollectionSize 16
+enum { defVarCollectionSize = 16 };
 
 #ifndef UNICODE
-const int sc_ES_CHAR_MIN = std::numeric_limits<signed char>::min(); // cover both signed and unsigned char, -127 ..
-const int sc_ES_CHAR_MAX = std::numeric_limits<unsigned char>::max(); // cover both signed and unsigned char, .. 255
+static const int sc_ES_CHAR_MIN = std::numeric_limits<signed char>::min(); // cover both signed and unsigned char, -127 ..
+static const int sc_ES_CHAR_MAX = std::numeric_limits<unsigned char>::max(); // cover both signed and unsigned char, .. 255
 #else
-const int sc_ES_CHAR_MIN = std::numeric_limits<short>::min(); // cover both signed and unsigned
-const int sc_ES_CHAR_MAX = std::numeric_limits<unsigned short>::max();
+static const int sc_ES_CHAR_MIN = std::numeric_limits<short>::min(); // cover both signed and unsigned
+static const int sc_ES_CHAR_MAX = std::numeric_limits<unsigned short>::max();
 #endif
 //--------------------------------------------------------------------------------
 
@@ -684,7 +684,7 @@ EsString::value_type EsVariant::asChar(const std::locale& loc/* = EsLocale::loca
 	case VAR_DOUBLE:
 		{
 			double val = m_value.m_double;
-			if( val < double(sc_ES_CHAR_MIN) || val > double(sc_ES_CHAR_MAX) ) // cover both signed and unsigned
+			if( val < static_cast<double>(sc_ES_CHAR_MIN) || val > static_cast<double>(sc_ES_CHAR_MAX) ) // cover both signed and unsigned
 			{
 				EsString str = EsString::fromDouble(val, loc);
 				EsException::Throw(
