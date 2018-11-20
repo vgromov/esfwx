@@ -34,7 +34,7 @@ protected:
   /// Internal types
   typedef std::shared_ptr<EsVariant> ValPtr;
   typedef std::shared_ptr<EsStringIndexedMap> AttrsPtr;
-  typedef std::multimap<ullong, EsStreamBlock::Ptr> BlocksT;
+  typedef std::multimap<EsString::HashT, EsStreamBlock::Ptr> BlocksT;
   typedef std::pair<BlocksT::iterator, BlocksT::iterator> BlocksRangeT;
 
 protected:
@@ -292,7 +292,7 @@ protected:
   void internalChildAddBefore(EsStreamBlock* subj, const EsStreamBlock::Ptr& child, ullong key);
 
   /// Return the first child iterator by specified key, and id
-  BlocksT::iterator childItGet(ullong key, ulong id);
+  BlocksT::iterator childItGet(EsString::HashT key, ulong id);
 
   /// Check ID validity, throw, if ID is not valid
   void idValidityCheck() const;
