@@ -1084,7 +1084,7 @@ long long EsVariant::asLLong(const std::locale& loc /*= EsLocale::locale()*/) co
 		return m_value.m_llong;
 	case VAR_UINT:
 	case VAR_UINT64:
-		if( m_value.m_ullong > std::numeric_limits<long long>::max() ) // unsigned integer bigger than maximum long
+		if( m_value.m_ullong > static_cast<ullong>(std::numeric_limits<llong>::max()) ) // unsigned integer bigger than maximum long
 		{
 			EsString str = EsString::fromUInt64(m_value.m_ullong, 10, loc);
 			EsException::Throw(
@@ -1098,7 +1098,7 @@ long long EsVariant::asLLong(const std::locale& loc /*= EsLocale::locale()*/) co
 	case VAR_DOUBLE:
 		{
 			double val = EsUtilities::round0(m_value.m_double);
-			if( val < (double)std::numeric_limits<long long>::min() || val > (double)std::numeric_limits<long long>::max() )
+			if( val < static_cast<double>(std::numeric_limits<long long>::min()) || val > static_cast<double>(std::numeric_limits<long long>::max()) )
 			{
 				EsException::Throw(
           esT("Could not convert '%.0f' to 64 bit signed integer"),
