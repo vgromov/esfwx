@@ -22,6 +22,8 @@
 #   include "EsUtilities.mac.cxx"
 # elif ES_OS == ES_OS_ANDROID
 #   include "EsUtilities.android.cxx"
+# elif ES_OS == ES_OS_LINUX
+#  include "EsUtilities.linux.cxx"
 # endif
 # include "EsUtilities.posix.cxx"
 #endif
@@ -481,7 +483,6 @@ bool EsUtilities::areEqualFloats(float _1, float _2, size_t maxUlps) ES_NOTHROW
 	return EsFlt(_1).AlmostEquals(EsFlt(_2), maxUlps);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 EsUtilities::SystickPeriodChanger::SystickPeriodChanger(ulong ms) :
@@ -498,7 +499,6 @@ EsUtilities::SystickPeriodChanger::~SystickPeriodChanger()
   systickRestore( m_ms ); //< Restore previous period
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 namespace EsReflection

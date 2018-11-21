@@ -10,7 +10,7 @@
 #if defined(ES_COMM_USE_CHANNEL_UART) || defined(ES_COMM_USE_CHANNEL_EKONNECT)
 
 // rough max estimate of ms per 1.5 bytes at specified baud
-ulong EsChannelIoUart::getMaxByteTmo(esU32 baud, esU32 bits, bool parity, esU32 stop)
+ulong EsChannelIoUart::getMaxByteTmo(ulong baud, ulong bits, bool parity, ulong stop)
 {
 	ulong result = (1500 * (bits + stop + 1 + (parity ? 0 : 1))) / baud;
 	return result ? result : 1;
@@ -52,7 +52,7 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsChannelIoUart, _i("UART direct connection channe
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoUart, EsChannelIoIntf, txTimeEstimateGet, ulong_CallConst_ulong, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoUart, EsChannelIoIntf, reset, void_Call, _i("Reset channel IO buffers"))
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoUart, EsChannelIoIntf, errorGet, long_CallConst, _i("Get channel-specific error code"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoUart, EsChannelIoIntf, errorStringGet, EsString_CallConst, _i("Get channel-specific error string"))	
+	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoUart, EsChannelIoIntf, errorStringGet, EsString_CallConst, _i("Get channel-specific error string"))
 	// EsRateCtlIntf
 	//
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoUart, EsRateCtlIntf, isRateSupported, bool_CallConst_ulong, _i("Return true if requested channel rate is supported"))
@@ -146,16 +146,16 @@ long EsChannelIoUart::get_txBuffLen() const
 }
 
 // autoreset on RX timeout
-bool EsChannelIoUart::get_resetOnRxTmo() const 
-{ 
-	EsMutexLocker lock(m_mx); 
-	return m_resetOnRxTmo; 
+bool EsChannelIoUart::get_resetOnRxTmo() const
+{
+	EsMutexLocker lock(m_mx);
+	return m_resetOnRxTmo;
 }
 
-void EsChannelIoUart::set_resetOnRxTmo(const bool& val) 
-{ 
-	EsMutexLocker lock(m_mx); 
-	m_resetOnRxTmo = val; 
+void EsChannelIoUart::set_resetOnRxTmo(const bool& val)
+{
+	EsMutexLocker lock(m_mx);
+	m_resetOnRxTmo = val;
 }
 
 void EsChannelIoUart::set_breaker(const EsBaseIntfPtr& breaker)
@@ -258,11 +258,11 @@ ES_IMPL_INTF_METHOD(esU32, EsChannelIoUart::bytesGet)(esU8* data, esU32 len, esU
 	return internalGetBytes(data, len, tmo);
 }
 
-ES_IMPL_INTF_METHOD(esU32, EsChannelIoUart::bytesPut)(cr_EsBinBuffer data, ulong tmo)
+ES_IMPL_INTF_METHOD(ulong, EsChannelIoUart::bytesPut)(cr_EsBinBuffer data, ulong tmo)
 {
 	if( !data.empty() )
 		return bytesPut(&data[0], data.size(), tmo);
-	
+
 	return 0;
 }
 
@@ -274,7 +274,7 @@ ES_IMPL_INTF_METHOD(EsBinBuffer, EsChannelIoUart::bytesGet)(ulong len, ulong tmo
 		len = bytesGet(&result[0], len, tmo);
 		result.resize(len);
 	}
-	
+
 	return result;
 }
 
@@ -291,13 +291,13 @@ ES_IMPL_INTF_METHOD(void, EsChannelIoUart::reset)()
 
 ES_IMPL_INTF_METHOD(long, EsChannelIoUart::errorGet)() const
 {
-	EsMutexLocker lock(m_mx);	
+	EsMutexLocker lock(m_mx);
 	return m_lineError;
 }
 
 ES_IMPL_INTF_METHOD(EsString, EsChannelIoUart::errorStringGet)() const
 {
-	EsMutexLocker lock(m_mx);	
+	EsMutexLocker lock(m_mx);
 	return decodeLineError(m_lineError);
 }
 
@@ -331,15 +331,15 @@ ES_IMPL_INTF_METHOD(bool, EsChannelIoUart::rateSet)(ulong rate)
 		bool needReopen = 0 != m_com;
 		if( needReopen )
 			internalClose();
-			
+
 		result = internalSetBaud(rate, false);
-		
+
 		if( needReopen )
 			internalOpen();
 	}
 	else
 		result = true;
-		
+
 	return result;
 }
 
@@ -387,7 +387,7 @@ EsVariant EsChannelIoUart::enumerate(const EsVariant& includeBusyPorts, const Es
   return result;
 }
 
-// convert EsChannelIoUart to comm channel interface 
+// convert EsChannelIoUart to comm channel interface
 //
 esBL EsChannelIoUart::cLock(EseChannelIo* p, esU32 tmo)
 {
@@ -400,7 +400,7 @@ esBL EsChannelIoUart::cLock(EseChannelIo* p, esU32 tmo)
 	}
 	catch(...)
 	{}
-	
+
 	return FALSE;
 }
 
@@ -431,7 +431,7 @@ esBL EsChannelIoUart::cConnect(EseChannelIo* p)
 	}
 	catch(...)
 	{}
-	
+
 	return FALSE;
 }
 
@@ -444,31 +444,31 @@ void EsChannelIoUart::cDisconnect(EseChannelIo* p)
 	}
 	catch(...)
 	{}
-}	
+}
 
 esU32 EsChannelIoUart::cPutBytes(EseChannelIo* p, const esU8* data, esU32 count)
 {
-	EsChannelIoUart* chnl = (EsChannelIoUart*)p->m_bus;	
+	EsChannelIoUart* chnl = (EsChannelIoUart*)p->m_bus;
 	try
 	{
 		return chnl->internalPutBytes(data, count, 1000);
 	}
 	catch(...)
 	{}
-	
+
 	return 0;
 }
 
 esU32 EsChannelIoUart::cGetBytes(EseChannelIo* p, esU8* data, esU32 count, esU32 timeout)
 {
-	EsChannelIoUart* chnl = (EsChannelIoUart*)p->m_bus;	
+	EsChannelIoUart* chnl = (EsChannelIoUart*)p->m_bus;
 	try
 	{
 		return chnl->internalGetBytes(data, count, timeout);
 	}
 	catch(...)
 	{}
-	
+
 	return 0;
 }
 
@@ -492,7 +492,7 @@ esBL EsChannelIoUart::cIsRateSupported(EseChannelIo* p, esU32 rate)
 	}
 	catch(...)
 	{}
-	
+
 	return FALSE;
 }
 
@@ -505,7 +505,7 @@ esU32 EsChannelIoUart::cGetRate(EseChannelIo* p)
 	}
 	catch(...)
 	{}
-	
+
 	return 0;
 }
 
@@ -518,22 +518,22 @@ esBL EsChannelIoUart::cSetRate(EseChannelIo* p, esU32 rate)
 	}
 	catch(...)
 	{}
-	
+
 	return FALSE;
-}	
+}
 
 esU32 EsChannelIoUart::cSendEstimateGet(EseChannelIo* p, esU32 len)
 {
 	EsChannelIoUart* chnl = (EsChannelIoUart*)p->m_bus;
 	try
 	{
-		return (len * 1500 * (chnl->m_bits + 
-			((0 == chnl->m_stopBits) ? 1 : 2) + 
+		return (len * 1500 * (chnl->m_bits +
+			((0 == chnl->m_stopBits) ? 1 : 2) +
 			((0 == chnl->m_parity) ? 0 : 1) + 1)) / chnl->m_baud;
 	}
 	catch(...)
 	{}
-	
+
 	return 0;
 }
 
@@ -550,12 +550,12 @@ esBL EsChannelIoUart::cWaitTxEmpty(EseChannelIo* p)
 			EsThread::sleep(4);
 			breaking = chnl->internalIsBreaking();
 		}
-		
+
 		return !breaking;
 	}
 	catch(...)
 	{}
-	
+
 	return FALSE;
 }
 
@@ -568,10 +568,10 @@ int EsChannelIoUart::cGetError(EseChannelIo* p)
 	}
 	catch(...)
 	{}
-	
+
 	return 0;
-}	
-	
+}
+
 // initialize C EseChannelIo from existing EsChannelIoIntf
 ES_IMPL_INTF_METHOD(void, EsChannelIoUart::commChannelInit)(EseChannelIo* chnl)
 {
@@ -655,8 +655,8 @@ EsUartInfo::Ptr EsUartEnumerator::uartInfoFindByFriendlyName(const EsString& val
 # if ES_OS == ES_OS_MAC || \
      ES_OS == ES_OS_IOS
 #   include "EsChannelIoUart.mac.cxx"
-# elif ES_OS == ES_OS_ANDROID
-#   include "EsChannelIoUart.android.cxx"
+# elif (ES_OS == ES_OS_LINUX) || (ES_OS == ES_OS_ANDROID)
+#   include "EsChannelIoUart.linux.cxx"
 # endif
 #else
 # error UART is not implemented on this platform!

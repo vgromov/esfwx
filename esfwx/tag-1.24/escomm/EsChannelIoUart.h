@@ -169,43 +169,43 @@ public:
   //
 
   // Channel unique idGet string
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, idGet);
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, idGet) ES_OVERRIDE;
 
   // Monitor interface access
-  ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, monitorGet)() const;
-  ES_DECL_INTF_METHOD(void, monitorSet)(const EsBaseIntf::Ptr& monitor);
+  ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, monitorGet)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(void, monitorSet)(const EsBaseIntf::Ptr& monitor) ES_OVERRIDE;
 
   // State manipulation
-  ES_DECL_REFLECTED_INTF_METHOD0(bool, open);
-  ES_DECL_REFLECTED_INTF_METHOD0(void, close);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isOpen);
+  ES_DECL_REFLECTED_INTF_METHOD0(bool, open) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD0(void, close) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isOpen) ES_OVERRIDE;
 
   // IO breaker access
-  ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, breakerGet)() const;
-  ES_DECL_INTF_METHOD(void, breakerSet)(const EsBaseIntf::Ptr& breaker);
+  ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, breakerGet)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(void, breakerSet)(const EsBaseIntf::Ptr& breaker) ES_OVERRIDE;
 
   // Byte io
-  ES_DECL_INTF_METHOD(esU32, bytesPut)(const esU8* data, esU32 len, esU32 tmo);
-  ES_DECL_INTF_METHOD(esU32, bytesGet)(esU8* data, esU32 len, esU32 tmo);
-  ES_DECL_REFLECTED_INTF_METHOD2(ulong, bytesPut, cr_EsBinBuffer, ulong);
-  ES_DECL_REFLECTED_INTF_METHOD2(EsBinBuffer, bytesGet, ulong, ulong);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, txTimeEstimateGet, ulong);
+  ES_DECL_INTF_METHOD(esU32, bytesPut)(const esU8* data, esU32 len, esU32 tmo) ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(esU32, bytesGet)(esU8* data, esU32 len, esU32 tmo) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD2(ulong, bytesPut, cr_EsBinBuffer, ulong) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD2(EsBinBuffer, bytesGet, ulong, ulong) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, txTimeEstimateGet, ulong) ES_OVERRIDE;
 
   // UART reset & error info access
-  ES_DECL_REFLECTED_INTF_METHOD0(void, reset);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(long, errorGet);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, errorStringGet);
+  ES_DECL_REFLECTED_INTF_METHOD0(void, reset) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(long, errorGet) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, errorStringGet) ES_OVERRIDE;
 
   // Initialize C EseChannelIo from existing EsChannelIoIntf
-  ES_DECL_INTF_METHOD(void, commChannelInit)(EseChannelIo* chnl);
+  ES_DECL_INTF_METHOD(void, commChannelInit)(EseChannelIo* chnl) ES_OVERRIDE;
 
   // EsRateCtlIntf interface
   //
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, isRateSupported, ulong);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsVariant, supportedRatesGet);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, defaultRateGet);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, rateGet);
-  ES_DECL_REFLECTED_INTF_METHOD1(bool, rateSet, ulong);
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, isRateSupported, ulong) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsVariant, supportedRatesGet) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, defaultRateGet) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, rateGet) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(bool, rateSet, ulong) ES_OVERRIDE;
 
   // The rest of services (non-interfaced)
   //
@@ -323,7 +323,7 @@ protected:
 // Implement time estimate as namespaced code, for compatibility with EsChannelIoEkonnect
 namespace EsChannelIoUart
 {
-  ESCOMM_FUNC( ulong) getMaxByteTmo(ulong, ulong, bool, ulong);
+  ESCOMM_FUNC( ulong, getMaxByteTmo(ulong, ulong, bool, ulong) );
 }
 #endif // ES_COMM_USE_CHANNEL_UART
 

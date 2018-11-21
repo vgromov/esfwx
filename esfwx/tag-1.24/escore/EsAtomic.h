@@ -12,7 +12,7 @@ public:
 #elif ES_OS == ES_OS_MAC
   typedef volatile int32_t int_t;
 #else
-	typedef volatile int int_t;
+	typedef int int_t;
 #endif
 
 public:

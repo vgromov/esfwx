@@ -30,7 +30,7 @@ static ES_CTSTR c_reUncRootAndVol		= esT("^((?:") ES_UNC_ROOT esT(")")
 static ES_CTSTR c_reGenericRootOrVol= esT("^(/|") ES_RE_SIMPLE_VOLUME esT(")");
 // path tokenization pattern
 static ES_CTSTR c_rePathTokenizer		= esT("([^\\\\/]+)");
-// env var match: 
+// env var match:
 static ES_CTSTR c_reEvnVar					= esT("\\$([_a-zA-Z][_0-9a-zA-Z]*)");
 // invalid path chars
 #define ES_PATH_INVALID_CHARS					esT("\\/:*?\"|<>")
@@ -410,7 +410,7 @@ void EsPath::checkPathStringValidity(const EsString& str, const EsString& contex
 {
 	if( EsString::npos != str.find_first_of(ES_PATH_INVALID_CHARS) )
 		EsException::Throw(
-      esT("%s '%s' contains invalid symbols"), 
+      esT("%s '%s' contains invalid symbols"),
       context,
       str
     );
@@ -1020,6 +1020,8 @@ void EsPath::pathCreate(const EsString& path, const EsString& basePath)
 # include "EsPath.ios.cxx"
 #elif ES_OS == ES_OS_ANDROID
 # include "EsPath.android.cxx"
+#elif ES_OS == ES_OS_LINUX
+# include "EsPath.linux.cxx"
 #endif
 
 #if defined(ES_POSIX_COMPAT)

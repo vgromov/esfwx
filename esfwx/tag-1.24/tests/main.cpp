@@ -43,7 +43,7 @@ static EsString binRootGet()
   return fpath;
 }
 
-/*
+
 // test includes
 #include "testEsOsInfo.cc"
 #include "testEsRegEx.cc"
@@ -69,7 +69,6 @@ static EsString binRootGet()
 #include "testEsStreamBinary.cc"
 #include "testEsSyncObjects.cc"
 #include "testEsThread.cc"
-*/
 
 // Uncomment to repeat each script profiling test ES_SCRIPT_REPEAT_CNT times
 //
@@ -88,14 +87,14 @@ static EsString binRootGet()
 //#define ES_SCRIPT_PROFILE_OBJ_COLLECTION_INIT
 //#define ES_SCRIPT_PROFILE_OBJ_COLLECTION_INIT_WITH_MIDDLE_FLD_ASSIGN
 //#define ES_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT
-#define ES_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT_WITH_THIS_FLD_ASSIGN
+//#define ES_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT_WITH_THIS_FLD_ASSIGN
 //#define ES_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT_WITH_BASE_FLD_ASSIGN
 //#define ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT
 //#define ES_SCRIPT_PROFILE_DERIVED_OBJ_ARRAY_INIT
 //#define ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT_IDX_ITERATION_FLD_ASN
 //#define ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT_IDX_ITERATION_CACHED_CNT_AND_FLD_ASN
 //#define ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT_FOREACH_ITERATION_CACHED_CNT_AND_FLD_ASN
-#include "testEsScriptProfile.cc"
+//#include "testEsScriptProfile.cc"
 
 #ifdef ES_COMM_USE_UART
 # include "testUart.cc"
@@ -153,7 +152,7 @@ int main(int argc, char **argv)
   // socket initializer will initialize BT as well, if it's enabled
   EsSockets::initialize();
 #endif
-    
+
 #ifdef ES_USE_CPPTEST
     Test::TextOutput output( Test::TextOutput::Verbose );
     result = g_allTests.run( output ) ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -164,7 +163,7 @@ int main(int argc, char **argv)
   }
   catch( EsException& ex )
   {
-    PRINTF( 
+    PRINTF(
       EsString::toUtf8(
         ex.messageGet()
       ).c_str()

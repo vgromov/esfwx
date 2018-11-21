@@ -10,22 +10,19 @@
 # if (ES_OS == ES_OS_WINDOWS) || (ES_OS == ES_OS_LINUX)
 #	  define ES_USE_WCHAR
     typedef wchar_t							ES_CHAR;
-#	  define ES_STRINGIZE(x)			ES_CONCAT(L, ES_STRINGIZE_HELPER(x))
-#	  define esT(x)								ES_CONCAT(L, x)
+#   define ES_CHAR_IS_WCHAR_T
   // else use compiler-specific system widechar type, for compatibility with
   // rtl's UnicodeString
 # elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 #	  define ES_USE_WCHAR
 #   if defined(WIDECHAR_IS_WCHAR)
       typedef wchar_t						 ES_CHAR;
-#	    define ES_STRINGIZE(x)		 ES_CONCAT(L, ES_STRINGIZE_HELPER(x))
-#	    define esT(x)							 ES_CONCAT(L, x)
+#     define ES_CHAR_IS_WCHAR_T
 #   else
 #     define ES_WCHAR_IS_NOT_WCHAR_T
 #     define ES_CHAR             char16_t
 #     define ES_WCHAR            char16_t
-#	    define ES_STRINGIZE(x)		 ES_CONCAT(u, ES_STRINGIZE_HELPER(x))
-#	    define esT(x)							 ES_CONCAT(u, x)
+#     define ES_CHAR_SIZE        2
 #   endif
 # endif
 #endif
@@ -34,8 +31,7 @@
 #if !defined(ES_USE_WCHAR)
   typedef char					 				ES_CHAR;
   typedef unsigned char         ES_UCHAR;
-#	define esT(x)									x
-#	define ES_STRINGIZE(x)				ES_STRINGIZE_HELPER(x)
+# define ES_CHAR_SIZE           1
 #endif
 
 // Define char sequence const pointer type
@@ -45,7 +41,7 @@
 //
 #if !defined(ES_WCHAR)
 # define ES_WCHAR               wchar_t
-  // Getting to know the default OS wchar_t size
+// Getting to know the default OS wchar_t size
 # if ES_OS == ES_OS_WINDOWS
 #   define ES_WCHAR_SIZE        2
 # elif defined(__SIZE_OF_WCHAR_T__)
@@ -56,10 +52,30 @@
 #   define ES_WCHAR_SIZE        4
 # elif ES_OS == ES_OS_ANDROID
 #   define ES_WCHAR_SIZE        4
+# elif ES_OS == ES_OS_LINUX
+#   define ES_WCHAR_SIZE        4
 # endif
 #else
-  // We're using non standard wide char type
-#   define ES_WCHAR_SIZE        2
+// We're using non standard wide char type
+# define ES_WCHAR_SIZE          2
+#endif
+
+#if defined(ES_UNICODE)
+# if (1 == ES_CHAR_SIZE)
+#   define ES_STRINGIZE(x)			ES_CONCAT(u8, ES_STRINGIZE_HELPER(x))
+#   define esT(x)								ES_CONCAT(u8, x)
+# elif (2 == ES_CHAR_SIZE)
+#   define ES_STRINGIZE(x)			ES_CONCAT(u, ES_STRINGIZE_HELPER(x))
+#   define esT(x)								ES_CONCAT(u, x)
+# elif (4 == ES_CHAR_SIZE)
+#   define ES_STRINGIZE(x)			ES_CONCAT(U, ES_STRINGIZE_HELPER(x))
+#   define esT(x)								ES_CONCAT(U, x)
+# else
+#   error ES_CHAR_SIZE is not defined!
+# endif
+#else
+# define ES_STRINGIZE(x)			  ES_STRINGIZE_HELPER(x)
+# define esT(x)								  x
 #endif
 
 #ifndef ES_WCHAR_SIZE

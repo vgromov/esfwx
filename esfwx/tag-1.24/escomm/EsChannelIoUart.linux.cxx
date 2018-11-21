@@ -41,7 +41,7 @@ protected:
       fval.close();
 
       if( number )
-        return EsString::toUlong(sval, radix);
+        return EsString::toULong(sval, radix);
       else
         return sval;
     }
@@ -67,7 +67,7 @@ protected:
       if( m_re.get_matches() )
       {
         EsAssocContainerIntf::Ptr node = EsAssocContainer::create();
-        node->newValueSet( esT("name"), name );
+        node->newValueSet( esVT("name"), name );
 
         // Store new node under path to sys bus usb device
         m_usbs->newValueSet(
@@ -214,39 +214,40 @@ void EsUartEnumerator::enumerate(bool busyPortsInclude /*= true*/)
     EsUartInfo::Ptr info( new EsUartInfo );
     info->m_strDevPath = EsString::format(
       esT("/dev/bus/usb/%0.3d/%0.3d"),
-      node->valueGet(esT("busnum")).asULong(),
-      node->valueGet(esT("devnum")).asULong()
+      node->valueGet(esVT("busnum")).asULong(),
+      node->valueGet(esVT("devnum")).asULong()
     );
 
-    if( node->keyExists("product") )
+    if( node->keyExists(esVT("product")) )
       info->m_strName = EsString::format(
         esT("%s (%s)"),
-        node->valueGet(esT("product")).asString().c_str(),
-        node->valueGet(esT("name")).asString().c_str()
+        node->valueGet(esVT("product")).asString(),
+        node->valueGet(esVT("name")).asString()
       );
     else
-      info->m_strName = node->valueGet(esT("name")).asString();
+      info->m_strName = node->valueGet(esVT("name")).asString();
 
-    if( node->keyExists("product") &&
-        node->keyExists("manufacturer")
+    if(
+      node->keyExists(esVT("product")) &&
+      node->keyExists(esVT("manufacturer"))
     )
       info->m_strFriendlyName = EsString::format(
         esT("%s %s (%s)"),
-        node->valueGet(esT("manufacturer")).asString().c_str(),
-        node->valueGet(esT("product")).asString().c_str(),
-        node->valueGet(esT("name")).asString().c_str()
+        node->valueGet(esVT("manufacturer")).asString(),
+        node->valueGet(esVT("product")).asString(),
+        node->valueGet(esVT("name")).asString()
       );
     else
       info->m_strFriendlyName = info->m_strName;
 
     info->m_strInstPath = EsString::format(
       esT("USB\\VID_%0.4hX&PID_%0.4hX"),
-      node->valueGet(esT("idVendor")).asULong(),
-      node->valueGet(esT("idProduct")).asULong()
+      node->valueGet(esVT("idVendor")).asULong(),
+      node->valueGet(esVT("idProduct")).asULong()
     );
 
-    if( node->keyExists(esT("serial")) )
-      info->m_strInstPath += esT("\\") + node->valueGet(esT("serial")).asString();
+    if( node->keyExists(esVT("serial")) )
+      info->m_strInstPath += esT("\\") + node->valueGet(esVT("serial")).asString();
 
     info->m_isModem = false;
     info->m_isUSBdevice = true;

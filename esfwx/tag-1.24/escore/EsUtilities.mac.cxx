@@ -184,7 +184,6 @@ void EsUtilities::urlOpen(const EsString& url)
 #endif
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 ulong EsUtilities::SystickPeriodChanger::systickSet(ulong ES_UNUSED(period))

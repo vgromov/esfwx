@@ -12,10 +12,12 @@ class ESCORE_CLASS ES_INTF_IMPL1(EsTimeSpan, EsReflectedClassIntf)
 
 private:
 	// internal initializer
-	static EsBaseIntfPtr create(const esDT& dt);
+	static EsBaseIntfPtr create(esDT dt);
 
 public:
-	EsTimeSpan(const esDT& dt = 0);
+  EsTimeSpan();
+  EsTimeSpan(const EsTimeSpan& other);
+	explicit EsTimeSpan(esDT dt);
   EsTimeSpan(const EsVariant& src);
 
 	ES_DECL_REFLECTED_CLASS_BASE(EsTimeSpan)
@@ -80,7 +82,7 @@ public:
 
 	// operators
 	operator esDT () const;
-	EsTimeSpan& operator= (const esDT& src);
+	EsTimeSpan& operator= (esDT src);
 	bool operator== (const EsTimeSpan& other) const;
 	bool operator< (const EsTimeSpan& other) const;
 	bool operator<= (const EsTimeSpan& other) const { return operator<(other) || operator==(other); }
@@ -95,7 +97,7 @@ public:
 
 	// variant conversion helpers for Reflection
 	static esDT fromVariant(const EsVariant& var);
-	static EsVariant toVariant(const esDT& dt);
+	static EsVariant toVariant(esDT dt);
 
 protected:
 	void checkComposed() const;
@@ -129,10 +131,12 @@ class ESCORE_CLASS ES_INTF_IMPL1(EsDateTime, EsReflectedClassIntf)
 
 private:
 	// internal initializer
-	static EsBaseIntfPtr create(const esDT& dt);
+	static EsBaseIntfPtr create(esDT dt);
 
 public:
-	EsDateTime(const esDT& dt = 0);
+  EsDateTime();
+  EsDateTime(const EsDateTime& other);
+	explicit EsDateTime(esDT dt);
   EsDateTime(const EsVariant& src);
 
 	/// Validity check
@@ -149,10 +153,10 @@ public:
 	/// @param [in]		ulong millisecond
 	///
 	void compose(long year, ulong month, ulong dayOfMonth, ulong hour, ulong minute, ulong second, ulong millisecond);
-		
+
 	ES_DECL_REFLECTED_CLASS_BASE(EsDateTime)
 	ES_DECL_ATTR_HANDLING_STD
-	
+
 	/// Date/time string formatting services
 	///
 	/// Standard "asString" service, return date time string in ISO 8601 format
@@ -237,7 +241,7 @@ public:
 
 	// Reflected operators
 	//
-	ES_DECL_REFLECTED_CONST_METHOD1(EsVariant, compare, cr_EsVariant); 
+	ES_DECL_REFLECTED_CONST_METHOD1(EsVariant, compare, cr_EsVariant);
 	ES_DECL_REFLECTED_CONST_METHOD1(EsVariant, add, cr_EsVariant);
 	ES_DECL_REFLECTED_CONST_METHOD1(EsVariant, subtract, cr_EsVariant);
 
@@ -278,7 +282,7 @@ public:
 
 	/// operators
 	operator esDT () const;
-	EsDateTime& operator= (const esDT& src);
+	EsDateTime& operator= (esDT src);
 	bool operator== (const EsDateTime& other) const;
 	bool operator< (const EsDateTime& other) const;
 	bool operator<= (const EsDateTime& other) const { return operator<(other) || operator==(other); }
@@ -297,7 +301,7 @@ public:
 
 	// Variant conversion helpers for Reflection
 	static esDT fromVariant(const EsVariant& var);
-	static EsVariant toVariant(const esDT& dt);
+	static EsVariant toVariant(esDT dt);
 
   // Empty date time value
   static const EsDateTime& null();
@@ -332,4 +336,3 @@ ESCORE_FUNC( EsTimeSpan, operator- (const EsDateTime& _1, const EsDateTime& _2) 
 ESCORE_FUNC( EsDateTime, operator- (const EsDateTime& _1, llong _2) );
 
 #endif // _es_date_time_h_
- 

@@ -5,7 +5,7 @@ project(escore)
 set(component_DESCRIPTION_STRING "ESFWX Core Library")
 set(component_INTERNAL_NAME "escore")
 set(component_ORIGINAL_NAME "escore.dll")
-set(component_BUILD_NUM 1)    
+set(component_BUILD_NUM 1)
 
 # component version file generation
 #
@@ -13,7 +13,7 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/build.h.in"
   "${PROJECT_SOURCE_DIR}/build.h"
   )
-    
+
 # optional resource version file generation
 #
 configure_file (
@@ -21,21 +21,21 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/res/version.rc"
   )
 
-# documentation generator file  
+# documentation generator file
 #
 configure_file (
   "${PROJECT_SOURCE_DIR}/Doxyfile.in"
   "${PROJECT_SOURCE_DIR}/Doxyfile"
   )
-  
-include_directories(${escore_CONFIG_DIR})  
-  
+
+include_directories(${escore_CONFIG_DIR})
+
 set(escore_common_SRCS
       ${escore_CONFIG_DIR}/EsCoreConfig.h
       build.h
       EsCoreDefs.h
       EsCoreTypes.h
-      EsCoreEndiannessDefs.h            
+      EsCoreEndiannessDefs.h
       escore.h
       EsCoreRtlDefs.h
       EsCoreRtl.cpp
@@ -43,9 +43,9 @@ set(escore_common_SRCS
       )
 source_group(common FILES ${escore_common_SRCS})
 
-set(escore_utility_SRCS 
+set(escore_utility_SRCS
 			EsAssocContainer.cpp
-			EsAssocContainer.h  
+			EsAssocContainer.h
 			EsBinBuffer.cpp
 			EsBinBuffer.h
 			EsCompositeFile.cpp
@@ -57,9 +57,9 @@ set(escore_utility_SRCS
 			EsDynamicLibrary.cpp
 			EsDynamicLibrary.h
 			EsEnumeration.cpp
-			EsEnumeration.h                     
+			EsEnumeration.h
 			EsExceptions.cpp
-			EsExceptions.h                      
+			EsExceptions.h
 			EsHash.cpp
 			EsHash.h
 			EsVariant.cpp
@@ -67,9 +67,9 @@ set(escore_utility_SRCS
 			EsVariantType.cpp
 			EsVariantType.h
 			EsScriptDebugInfo.cpp
-			EsScriptDebugInfo.h                     
+			EsScriptDebugInfo.h
 			EsRange.cpp
-			EsRange.h                       
+			EsRange.h
 			EsUtilities.cpp
 			EsUtilities.h
 			EsProgressMonitor.cpp
@@ -85,7 +85,7 @@ set(escore_utility_SRCS
       EsZip.cpp
       EsZip.h
       EsVector.h
-      EsGrammarDefs.h                     
+      EsGrammarDefs.h
       EsNearestGreater2n.h
       )
 source_group(utility FILES ${escore_utility_SRCS})
@@ -112,7 +112,7 @@ set(escore_event_SRCS
 			)
 source_group(event FILES ${escore_event_SRCS})
 
-set(escore_file_SRCS    
+set(escore_file_SRCS
 			EsFile.cpp
 			EsFile.h
 			EsPath.cpp
@@ -159,7 +159,7 @@ set(escore_interfaces_SRCS
 			EsLogIntf.h
 			)
 source_group(interfaces FILES ${escore_interfaces_SRCS})
-                        
+
 set(escore_reflection_SRCS
 			EsReflection.cpp
 			EsReflection.hxx
@@ -185,9 +185,9 @@ set(escore_reflection_SRCS
       EsStdNames.cpp
       EsStdNames.h
 			)
-source_group(reflection FILES ${escore_reflection_SRCS})        
-                    
-set(escore_streams_SRCS 
+source_group(reflection FILES ${escore_reflection_SRCS})
+
+set(escore_streams_SRCS
 			EsStream.cpp
 			EsStream.h
       EsStreamBlock.cpp
@@ -197,17 +197,17 @@ set(escore_streams_SRCS
       EsStreamXml.cpp
       EsStreamXml.h
       )
-source_group(streams FILES ${escore_streams_SRCS})                      
+source_group(streams FILES ${escore_streams_SRCS})
 
-set(escore_locale_SRCS  
+set(escore_locale_SRCS
 			locale/escore.pot
 			locale/escore.ru_RU.po
       locale/escore.de_DE.po
 			)
 source_group(locale FILES ${escore_locale_SRCS})
 I18N_ADD("escore" escore_locale_SRCS "${binaryRoot}")
-                        
-set(escore_SRCS         
+
+set(escore_SRCS
 			${escore_common_SRCS}
 			${escore_utility_SRCS}
 			${escore_crypto_SRCS}
@@ -219,17 +219,17 @@ set(escore_SRCS
 			${escore_streams_SRCS}
 			${escore_event_SRCS}
 			${escore_locale_SRCS}
-			)                       
-                
+			)
+
 if(WIN32)
     set(escore_RES ${escore_RES} res/version.rc)
-endif(WIN32)                        
+endif(WIN32)
 source_group(res FILES ${escore_RES})
 
 # targets
 set(staticMarker "")
 if( NOT BUILD_SHARED_LIBS )
-    set(staticMarker "_s")
+  set(staticMarker "_s")
 endif()
 set(targetName "escoreLib${staticMarker}")
 set(${targetName} escore_${binarySuffix}${compilerVersion}${staticMarker} CACHE STRING "" FORCE)
@@ -238,17 +238,24 @@ SPECIFY_PRECOMPILED_HEADER("escorepch.h" "EsCoreMain.cpp" escore_SRCS)
 SPECIFY_HEADER_FILES(escore_SRCS headerExtensions)
 SPECIFY_HEADER_FILES(escore_c_shared_SRCS headerExtensions)
 
-add_library(${${targetName}} 
-			${escore_SRCS} 
-			${escore_RES}
-			)
-target_link_libraries( ${${targetName}} )
+add_library(${${targetName}}
+  ${escore_SRCS}
+  ${escore_RES}
+)
+
+if(WIN32)
+  target_link_libraries( ${${targetName}} )
+elseif(UNIX)
+  target_link_libraries( ${${targetName}} dl pthread )
+endif()
 
 # customize target properties
 #
 # export preprocessor defines for dll
 if( BUILD_SHARED_LIBS )
-    set_target_properties(${${targetName}} PROPERTIES 
-                        COMPILE_DEFINITIONS "${dynamicLinkPreprocessorDefines}"
-                        DEFINE_SYMBOL ESCORE_EXPORTS)
-endif()                     
+  set_target_properties(${${targetName}}
+    PROPERTIES
+      COMPILE_DEFINITIONS "${dynamicLinkPreprocessorDefines}"
+      DEFINE_SYMBOL ESCORE_EXPORTS
+  )
+endif()

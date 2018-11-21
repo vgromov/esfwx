@@ -110,4 +110,6 @@ long EsOsInfo::compare(ulong major, ulong minor, ulong spMajor, ulong spMinor)
 # include "EsOsInfo.ios.cxx"
 #elif ES_OS == ES_OS_ANDROID
 # include "EsOsInfo.android.cxx"
+#elif ES_OS == ES_OS_LINUX
+# include "EsOsInfo.linux.cxx"
 #endif

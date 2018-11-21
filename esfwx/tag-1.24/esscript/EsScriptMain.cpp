@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "EsScriptlet.h"
-#include "EsScript.h"
 #include "EsScriptCompiler.h"
 
 // non-exported reflected services headers
@@ -216,7 +215,7 @@ EsStringArray EsScript::get_linkPaths() const
 void EsScript::set_linkPaths(const EsStringArray& paths)
 {
 	linkPathsSet(
-    paths, 
+    paths,
     false
   );
 }
@@ -335,7 +334,7 @@ void EsScript::linkPathsSet(const EsStringArray& paths, bool doThrow /*= true*/)
 {
 	m_linkPaths.clear();
 	for(size_t idx = 0; idx < paths.size(); ++idx)
-		linkPathAdd( 
+		linkPathAdd(
       paths[idx],
       doThrow
     );
@@ -365,8 +364,8 @@ bool EsScript::compileText( const EsString& src, const EsBreakIntf::Ptr& brk )
 	m_compiled = false;
 	return (m_compiled =
     EsScriptUtilities::compileFromString(
-      src, 
-      m_machine, 
+      src,
+      m_machine,
       m_machine.m_filesInfo,
       brk
     )
@@ -491,7 +490,7 @@ bool EsScript::compileFile( const EsString& file, const EsBreakIntf::Ptr& brk )
 {
 	m_compiled = false;
 	const EsString& srcFile = absoluteFileNameGet(
-    file, 
+    file,
     m_includes
   );
 
@@ -505,7 +504,7 @@ bool EsScript::compileFile( const EsString& file, const EsBreakIntf::Ptr& brk )
     );
 
   m_compiled = EsScriptUtilities::compileFromFile(
-    file, 
+    file,
     m_machine,
     m_machine.m_filesInfo,
     brk
@@ -525,11 +524,11 @@ EsBinBuffer EsScript::compiledBinaryGet(bool retainDebug) const
 {
 	EsBinBuffer buff;
 	EsScriptCompiledBinaryWriter writer(
-    m_machine, 
-    retainDebug, 
+    m_machine,
+    retainDebug,
     buff
   );
-	
+
   return buff;
 }
 //---------------------------------------------------------------------------
@@ -537,7 +536,7 @@ EsBinBuffer EsScript::compiledBinaryGet(bool retainDebug) const
 void EsScript::compiledBinarySet(const EsBinBuffer& buff, bool retainDebug)
 {
   m_compiled = false;
-  
+
   EsScriptCompiledBinaryReader reader(
     m_machine,
     retainDebug,
@@ -572,7 +571,7 @@ EsBinBuffer EsScript::compiledBinaryLoad(const EsString& fileName, bool retainDe
 		EsScriptException::Throw( f.get_recentErrorString() );
 
 	compiledBinarySet(
-    compiled, 
+    compiled,
     retainDebug
   );
 
@@ -672,7 +671,7 @@ EsScriptletIntfPtrArray EsScript::scriptletsLoad(const EsString& file, const EsS
 			re.matchGet(start, len, 0);
 
 			// move to the next portion
-			contents = contents.substr(start, len); 
+			contents = contents.substr(start, len);
 			re.set_offset(start+len);
 		}
 

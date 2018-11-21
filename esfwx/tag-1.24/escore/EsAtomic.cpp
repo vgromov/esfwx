@@ -17,5 +17,7 @@
 # include "EsAtomic.android.cxx"
 #elif ES_OS == ES_OS_MAC
 # include "EsAtomic.mac.cxx"
+#else
+# include "EsAtomic.default.cxx"
 #endif
 

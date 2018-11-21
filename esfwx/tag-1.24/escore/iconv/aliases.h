@@ -39,12 +39,10 @@ struct alias { int name; unsigned int encoding_index; };
 #define MAX_HASH_VALUE 935
 /* maximum key range = 929, duplicates = 0 */
 
-#ifdef __GNUC__
-__inline
-#else
 #ifdef __cplusplus
 inline
-#endif
+#else
+__inline
 #endif
 static unsigned int
 aliases_hash (register const char *str, register unsigned int len)
@@ -1690,14 +1688,13 @@ static const struct alias aliases[] =
     {(int)(long)&((struct stringpool_t *)0)->stringpool_str935, ei_big5hkscs2004}
   };
 
-#ifdef __GNUC__
+#ifdef __cplusplus
+inline
+#else
 __inline
-#if defined __GNUC_STDC_INLINE__ || defined __GNUC_GNU_INLINE__
-__attribute__ ((__gnu_inline__))
-#endif
 #endif
 const struct alias *
-aliases_lookup (register const char *str, register unsigned int len)
+aliases_lookup(register const char *str, register unsigned int len)
 {
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
     {

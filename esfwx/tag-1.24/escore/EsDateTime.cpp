@@ -60,7 +60,33 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsTimeSpan, NO_CLASS_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
-EsTimeSpan::EsTimeSpan(const esDT& dt /*= 0*/) :
+EsTimeSpan::EsTimeSpan() :
+m_flags(EsInternal::flagNativeChanged),
+m_dt(0),
+m_days(0),
+m_hours(0),
+m_mins(0),
+m_secs(0),
+m_msecs(0)
+{
+  ES_REFLECTED_PROPERTIES_RESET;
+	m_flags |= EsInternal::flagInitialized;
+}
+//---------------------------------------------------------------------------
+
+EsTimeSpan::EsTimeSpan(const EsTimeSpan& other) :
+m_flags(other.m_flags),
+m_dt(other.m_dt),
+m_days(other.m_days),
+m_hours(other.m_hours),
+m_mins(other.m_mins),
+m_secs(other.m_secs),
+m_msecs(other.m_msecs)
+{
+}
+//---------------------------------------------------------------------------
+
+EsTimeSpan::EsTimeSpan(esDT dt) :
 m_flags(EsInternal::flagNativeChanged),
 m_dt(dt),
 m_days(0),
@@ -71,6 +97,8 @@ m_msecs(0)
 {
 	if( dt == 0 )
 		ES_REFLECTED_PROPERTIES_RESET;
+
+ 	m_flags |= EsInternal::flagInitialized;
 }
 //---------------------------------------------------------------------------
 
@@ -87,11 +115,13 @@ m_msecs(0)
 
 	if( m_dt == 0 )
 		ES_REFLECTED_PROPERTIES_RESET;
+
+ 	m_flags |= EsInternal::flagInitialized;
 }
 //---------------------------------------------------------------------------
 
 // internal initializer
-EsBaseIntfPtr EsTimeSpan::create(const esDT& dt)
+EsBaseIntfPtr EsTimeSpan::create(esDT dt)
 {
 	std::unique_ptr<EsTimeSpan> p( new EsTimeSpan(dt) );
 	ES_ASSERT(p.get());
@@ -496,7 +526,7 @@ esDT EsTimeSpan::fromVariant(const EsVariant& var)
 }
 //---------------------------------------------------------------------------
 
-EsVariant EsTimeSpan::toVariant(const esDT& dt)
+EsVariant EsTimeSpan::toVariant(esDT dt)
 {
 	return EsTimeSpan::create(dt);
 }
@@ -582,7 +612,7 @@ EsTimeSpan::operator esDT () const
 }
 //---------------------------------------------------------------------------
 
-EsTimeSpan& EsTimeSpan::operator= (const esDT& src)
+EsTimeSpan& EsTimeSpan::operator= (esDT src)
 {
 	if( m_dt != src )
 	{
@@ -611,7 +641,7 @@ EsTimeSpan operator+ (const EsTimeSpan& _1, const EsTimeSpan& _2)
 {
 	_1.checkComposed();
 	_2.checkComposed();
-	return EsTimeSpan(_1.m_dt+_2.m_dt);
+	return EsTimeSpan( _1.m_dt+_2.m_dt );
 }
 //---------------------------------------------------------------------------
 
@@ -698,7 +728,31 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsDateTime, NO_CLASS_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
-EsDateTime::EsDateTime(const esDT& dt /*= 0*/) :
+EsDateTime::EsDateTime() :
+m_flags(EsInternal::flagNativeChanged),
+m_dt(0)
+{
+  ES_REFLECTED_PROPERTIES_RESET;
+	m_flags |= EsInternal::flagInitialized;
+}
+//---------------------------------------------------------------------------
+
+EsDateTime::EsDateTime(const EsDateTime& other) :
+m_flags(other.m_flags),
+m_dt(other.m_dt),
+m_year(other.m_year),
+m_dayOfYear(other.m_dayOfYear),
+m_month(other.m_month),
+m_dayOfMonth(other.m_dayOfMonth),
+m_hour(other.m_hour),
+m_min(other.m_min),
+m_sec(other.m_sec),
+m_msec(other.m_msec)
+{
+}
+//---------------------------------------------------------------------------
+
+EsDateTime::EsDateTime(esDT dt) :
 m_flags(EsInternal::flagNativeChanged),
 m_dt(dt)
 {
@@ -736,7 +790,7 @@ const EsDateTime& EsDateTime::null()
 }
 //---------------------------------------------------------------------------
 
-EsBaseIntfPtr EsDateTime::create(const esDT& dt)
+EsBaseIntfPtr EsDateTime::create(esDT dt)
 {
 	std::unique_ptr<EsDateTime> p( new EsDateTime(dt) );
 	ES_ASSERT(p.get());
@@ -863,7 +917,7 @@ esDT EsDateTime::fromVariant(const EsVariant& var)
 }
 //---------------------------------------------------------------------------
 
-EsVariant EsDateTime::toVariant(const esDT& dt)
+EsVariant EsDateTime::toVariant(esDT dt)
 {
 	return EsDateTime::create(dt);
 }
@@ -1183,7 +1237,7 @@ void EsDateTime::streamRead(cr_EsBaseIntfPtr p)
 }
 //---------------------------------------------------------------------------
 
-EsDateTime& EsDateTime::operator= (const esDT& src)
+EsDateTime& EsDateTime::operator= (esDT src)
 {
 	if(m_dt != src)
 	{
