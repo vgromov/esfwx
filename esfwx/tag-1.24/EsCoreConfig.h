@@ -8,9 +8,6 @@
 /// Use our own std::locale facet implementations, with locale cultural data embedded directly into our core code
 #define ES_USE_EMBEDDED_LOCALE_IMPL 1
 
-/// unicode build. main string class uses wchar_t under WIN platforms
-#define ES_UNICODE
-
 /// use localization engine, based on gettext
 #define ES_I18N
 //# define ES_I18N_RARE_LANGS

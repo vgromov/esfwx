@@ -7,9 +7,6 @@
 /// the project search paths.
 ///
 
-/// unicode build. main string class uses wchar_t under WIN platforms
-#define ES_UNICODE
-
 /// Use localization engine, based on gettext
 #define ES_I18N
 #define ES_I18N_RARE_LANGS

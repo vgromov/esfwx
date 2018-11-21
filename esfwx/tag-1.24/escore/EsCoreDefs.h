@@ -243,18 +243,13 @@
 #	define ES_ABSTRACT
 #endif
 
-// unicode build define
-//
-#if defined(ES_UNICODE)
-# ifndef _UNICODE
-#		define _UNICODE
-# endif
-#	ifndef UNICODE
-#		define UNICODE
-#	endif
-#else
-#	undef _UNICODE
-#	undef UNICODE
+/// Always use unicode build
+///
+#ifndef _UNICODE
+#	define _UNICODE
+#endif
+#ifndef UNICODE
+#	define UNICODE
 #endif
 
 /// Standard C includes,
