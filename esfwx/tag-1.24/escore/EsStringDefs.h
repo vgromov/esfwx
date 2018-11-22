@@ -50,6 +50,7 @@
 # define ES_WCHAR               wchar_t
 # define ES_STRINGIZE		        ES_STRINGIZE_HELPER
 # define esT(x)                 x
+# define ES_USE_NARROW_CHAR_RTL
 #elif (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND)
 # if defined(WIDECHAR_IS_WCHAR)
     typedef wchar_t						  ES_CHAR;
@@ -74,8 +75,8 @@
 # define ES_WCHAR               wchar_t
 # define ES_STRINGIZE           ES_STRINGIZEW
 # define esT                    esTW
-#else ///< In all other cases we will use 32 bit chars
-  typedef char32_t						  ES_CHAR;
+#else ///< In all other cases we will use char32_t for ES_CHAR and do narrow conversions for RTL and OS calls
+  typedef char32_t  				    ES_CHAR;
 # define ES_CHAR_SIZE           4
 # define ES_WCHAR               wchar_t
 # define ES_STRINGIZE           ES_STRINGIZE32
@@ -112,7 +113,7 @@
 # define esTranslationGet(x)		EsStringI18n::translate( x )
 #	define _(x)										EsStringI18n::translate( esT(x) ).c_str()
 #else
-#define esTranslationGet(x)			x
+# define esTranslationGet(x)		x
 #	define _(x)										esT(x)
 #endif
 
@@ -127,67 +128,64 @@
 // CRT string utilities generalization
 //
 #if !defined(ES_USE_NARROW_ES_CHAR)
-# if !defined(ES_WCHAR_IS_NOT_WCHAR_T)
-#   define esCout                 std::wcout
-#   define esCin                  std::wcin
-#   define esCerr                 std::wcerr
-#   define esClog                 std::wclog
-#   define esPrintf               wprintf
-#   define esStrlen					      wcslen
-#   define esStrcmp					      wcscmp
+# if defined(ES_CHAR_IS_WCHAR_T)
+#   define esCout               std::wcout
+#   define esCin                std::wcin
+#   define esCerr               std::wcerr
+#   define esClog               std::wclog
+#   define esPrintf             wprintf
+#   define esStrlen					    wcslen
+#   define esStrcmp					    wcscmp
 #   if (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS) || (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND)
-#     define esStricmp			      _wcsicmp
+#     define esStricmp			    _wcsicmp
 #   else
-#     define esStricmp            wcscasecmp
+#     define esStricmp          wcscasecmp
 #   endif
-#   define esStrncmp				      wcsncmp
-#   define esStrchr					      wcsrchr
-#   define esStrstr					      wcsstr
-#   define esStrftime				      wcsftime
+#   define esStrncmp				    wcsncmp
+#   define esStrchr					    wcsrchr
+#   define esStrstr					    wcsstr
+#   define esStrftime				    wcsftime
 #   if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-#    define esVscprintf_l	        _vscwprintf_l
-#    define esVsprintf_l		      _vswprintf_l
-#    define esVscprinf			      _vscwprintf
-#    define esVsnprintf		        _vsnwprintf
+#    define esVscprintf_l	      _vscwprintf_l
+#    define esVsprintf_l		    _vswprintf_l
+#    define esVscprinf			    _vscwprintf
+#    define esVsnprintf		      _vsnwprintf
 #   else
-#    define esVsnprintf		        vsnwprintf
+#    define esVsnprintf		      vsnwprintf
 #   endif
-# else // ES_WCHAR_IS_NOT_WCHAR_T
-  // We use not wchar_t for our wide strings, but char16_t instead
-  // so ensure we use borland runtime, and re-route to it
-#   if ES_COMPILER_VENDOR != ES_COMPILER_VENDOR_BORLAND
-#     error Non standard wide string functions are for Borland|Embarcadero runtime only!
-#   endif
-//  All non-standard functions are defined in EsCoreRtl module
-#   define esPrintf         es_printf
-#   define esStrlen				  es_strlen
-#   define esStrcmp				  es_strcmp
-#   define esStricmp			  es_stricmp
-#	  define esStrncmp			  es_strncmp
-#   define esStrchr					es_strchr
-#   define esStrstr					es_strstr
-#   define esStrftime			  es_strftime
-# endif // ES_WCHAR_IS_NOT_WCHAR_T
-#else //< ES_USE_NARROW_ES_CHAR
-# define esCout           std::cout
-# define esCin            std::cin
-# define esCerr           std::cerr
-# define esClog           std::clog
-# define esPrintf         printf
-#	define esStrlen					strlen
-# define esStrcmp					strcmp
-# define esStricmp				stricmp
-#	define esStrncmp        strncmp
-# define esStrchr					strchr
-# define esStrstr					strstr
-# define esStrftime				strftime
+# else
+// We use not wchar_t for EsString, but char16_t or char32_t instead
+// All non-standard functions are defined in EsCoreRtl module
+//
+#   define esPrintf             es_printf
+#   define esStrlen				      es_strlen
+#   define esStrcmp				      es_strcmp
+#   define esStricmp			      es_stricmp
+#	  define esStrncmp			      es_strncmp
+#   define esStrchr					    es_strchr
+#   define esStrstr					    es_strstr
+#   define esStrftime			      es_strftime
+# endif
+#else
+# define esCout                 std::cout
+# define esCin                  std::cin
+# define esCerr                 std::cerr
+# define esClog                 std::clog
+# define esPrintf               printf
+#	define esStrlen					      strlen
+# define esStrcmp					      strcmp
+# define esStricmp				      stricmp
+#	define esStrncmp              strncmp
+# define esStrchr					      strchr
+# define esStrstr					      strstr
+# define esStrftime				      strftime
 #	if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-#		define esVscprintf_l	_vscprintf_l
-#		define esVsprintf_l		_vsnprintf_l
-#		define esVscprinf			_vscprintf
-# 	define esVsnprintf		_vsnprintf
+#		define esVscprintf_l	      _vscprintf_l
+#		define esVsprintf_l		      _vsnprintf_l
+#		define esVscprinf			      _vscprintf
+# 	define esVsnprintf		      _vsnprintf
 #	else
-# 	define esVsnprintf		vsnprintf
+# 	define esVsnprintf		      vsnprintf
 #	endif
 #endif
 

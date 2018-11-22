@@ -213,7 +213,7 @@ switch(ptype)
           prop->chartype == ucp_Lt) == negated;
 
   case PT_GC:
-  return (pdata == es_ucp_gentype()[prop->chartype]) == negated;
+  return (pdata == PRIV(ucp_gentype)()[prop->chartype]) == negated;
 
   case PT_PC:
   return (pdata == prop->chartype) == negated;
@@ -224,8 +224,8 @@ switch(ptype)
   /* These are specials */
 
   case PT_ALNUM:
-  return (es_ucp_gentype()[prop->chartype] == ucp_L ||
-          es_ucp_gentype()[prop->chartype] == ucp_N) == negated;
+  return (PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+          PRIV(ucp_gentype)()[prop->chartype] == ucp_N) == negated;
 
   /* Perl space used to exclude VT, but from Perl 5.18 it is included, which
   means that Perl space and POSIX space are now identical. PCRE was changed
@@ -240,17 +240,17 @@ switch(ptype)
     return negated;
 
     default:
-    return (es_ucp_gentype()[prop->chartype] == ucp_Z) == negated;
+    return (PRIV(ucp_gentype)()[prop->chartype] == ucp_Z) == negated;
     }
   break;  /* Control never reaches here */
 
   case PT_WORD:
-  return (es_ucp_gentype()[prop->chartype] == ucp_L ||
-          es_ucp_gentype()[prop->chartype] == ucp_N ||
+  return (PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+          PRIV(ucp_gentype)()[prop->chartype] == ucp_N ||
           c == CHAR_UNDERSCORE) == negated;
 
   case PT_CLIST:
-  p = es_ucd_caseless_sets() + prop->caseset;
+  p = PRIV(ucd_caseless_sets)() + prop->caseset;
   for (;;)
     {
     if (c < *p) return !negated;
@@ -432,7 +432,7 @@ switch(c)
 
   /* Convert only if we have enough space. */
 
-  clist_src = es_ucd_caseless_sets() + code[1];
+  clist_src = PRIV(ucd_caseless_sets)() + code[1];
   clist_dest = list + 2;
   code += 2;
 
@@ -554,7 +554,7 @@ for(;;)
 
   if (c == OP_CALLOUT)
     {
-    code += es_OP_lengths()[c];
+    code += PRIV(OP_lengths)()[c];
     continue;
     }
 
@@ -603,7 +603,7 @@ for(;;)
       return !entered_a_group;
       }
 
-    code += es_OP_lengths()[c];
+    code += PRIV(OP_lengths)()[c];
     continue;
 
     case OP_ONCE:
@@ -611,7 +611,7 @@ for(;;)
     case OP_BRA:
     case OP_CBRA:
     next_code = code + GET(code, 1);
-    code += es_OP_lengths()[c];
+    code += PRIV(OP_lengths)()[c];
 
     /* Check each branch. We have to recurse a level for all but the last
     branch. */
@@ -642,7 +642,7 @@ for(;;)
     if (!compare_opcodes(next_code, utf, cb, base_list, base_end, rec_limit))
       return FALSE;
 
-    code += es_OP_lengths()[c];
+    code += PRIV(OP_lengths)()[c];
     continue;
 
     default:
@@ -1223,7 +1223,7 @@ for (;;)
 
   /* Add in the fixed length from the table */
 
-  code += es_OP_lengths()[c];
+  code += PRIV(OP_lengths)()[c];
 
   /* In UTF-8 and UTF-16 modes, opcodes that are followed by a character may be
   followed by a multi-byte character. The length in the table is a minimum, so

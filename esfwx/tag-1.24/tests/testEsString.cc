@@ -7,12 +7,12 @@ TEST(EsStringTest, Basics) {
 
 	EXPECT_TRUE( s2 != s1 );
 	EXPECT_TRUE( s2 > s1 );
-	
+
 	s1 += s2;
 	EXPECT_TRUE( s1 == esT("1234124") );
 
 	// check 0-termination
-	s1 = EsString::format(esT("Formatted string %s"), s1.c_str());
+	s1 = EsString::format(esT("Formatted string %s"), s1);
 	EXPECT_TRUE( s1 == esT("Formatted string 1234124") );
 	s1 += s2;
 	EXPECT_TRUE( s1 == esT("Formatted string 1234124124") );

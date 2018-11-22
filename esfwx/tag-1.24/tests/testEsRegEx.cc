@@ -28,10 +28,10 @@ TEST(EsRegExTest, MatchI18N) {
 
 TEST(EsRegExTest, StrFormat) {
 
-  const EsString& str1 = EsString::format(esT("Test: '%s'"), esT("string to inject"));
+  const EsString& str1 = EsString::format(esT("Test: '%s'"), esVT("string to inject"));
   ASSERT_TRUE( esT("Test: 'string to inject'") == str1 );
 
-  const EsString& str2 = EsString::format(esT("%d Test: '%s'"), 4, esT("string to inject"));
+  const EsString& str2 = EsString::format(esT("%d Test: '%s'"), 4, esVT("string to inject"));
 
   ASSERT_TRUE( esT("4 Test: 'string to inject'") == str2 );
 }

@@ -342,7 +342,7 @@ while (TRUE)
     case OP_NOTPOSPLUSI:
     case OP_NOTPOSQUERYI:
     case OP_NOTPOSUPTOI:
-    cc +=es_OP_lengths()[*cc];
+    cc += PRIV(OP_lengths)()[*cc];
 #ifdef SUPPORT_UNICODE
     if (utf && HAS_EXTRALEN(cc[-1])) cc += GET_EXTRALEN(cc[-1]);
 #endif
@@ -361,7 +361,7 @@ while (TRUE)
     case OP_TYPEPOSPLUS:
     case OP_TYPEPOSQUERY:
     case OP_TYPEPOSUPTO:
-    cc +=es_OP_lengths()[*cc];
+    cc += PRIV(OP_lengths)()[*cc];
 #ifdef SUPPORT_UNICODE
     if (cc[-1] == OP_PROP || cc[-1] == OP_NOTPROP) cc += 2;
 #endif
@@ -377,7 +377,7 @@ while (TRUE)
     case OP_PRUNE_ARG:
     case OP_SKIP_ARG:
     case OP_THEN_ARG:
-    cc +=es_OP_lengths()[*cc] + cc[1];
+    cc += PRIV(OP_lengths)()[*cc] + cc[1];
     break;
 
     case OP_CALLOUT:
@@ -389,7 +389,7 @@ while (TRUE)
     cb.callout_string = NULL;
     rc = callback(&cb, callout_data);
     if (rc != 0) return rc;
-    cc +=es_OP_lengths()[*cc];
+    cc += PRIV(OP_lengths)()[*cc];
     break;
 
     case OP_CALLOUT_STR:
@@ -406,7 +406,7 @@ while (TRUE)
     break;
 
     default:
-    cc +=es_OP_lengths()[*cc];
+    cc += PRIV(OP_lengths)()[*cc];
     break;
     }
   }

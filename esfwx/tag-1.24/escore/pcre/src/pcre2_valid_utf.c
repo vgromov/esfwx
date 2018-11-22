@@ -157,7 +157,7 @@ for (p = string; length > 0; p++)
     return PCRE2_ERROR_UTF8_ERR21;
     }
 
-  ab = PRIV(utf8_table4)[c & 0x3f];     /* Number of additional bytes (1-5) */
+  ab = PRIV(utf8_table4)()[c & 0x3f];     /* Number of additional bytes (1-5) */
   if (length < ab)                      /* Missing bytes */
     {
     *erroroffset = (int)(p - string);

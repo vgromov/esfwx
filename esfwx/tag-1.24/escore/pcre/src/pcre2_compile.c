@@ -1927,17 +1927,17 @@ else goto ERROR_RETURN;
 /* Search for a recognized property name using binary chop. */
 
 bot = 0;
-es_utt(&top);
+PRIV(utt)(&top);
 
 while (bot < top)
   {
   int r;
   i = (bot + top) >> 1;
-  r = PRIV(strcmp_c8)(name, es_utt_names() + es_utt(nullptr)[i].name_offset);
+  r = PRIV(strcmp_c8)(name, PRIV(utt_names)() + PRIV(utt)(nullptr)[i].name_offset);
   if (r == 0)
     {
-    *ptypeptr = es_utt(nullptr)[i].type;
-    *pdataptr = es_utt(nullptr)[i].value;
+    *ptypeptr = PRIV(utt)(nullptr)[i].type;
+    *pdataptr = PRIV(utt)(nullptr)[i].value;
     return TRUE;
     }
   if (r > 0) bot = i + 1; else top = i;
@@ -3602,11 +3602,11 @@ while (ptr < ptrend)
         PCRE2_SPTR startptr = ptr;
 
         delimiter = 0;
-        for (i = 0; es_callout_start_delims()[i] != 0; i++)
+        for (i = 0; PRIV(callout_start_delims)()[i] != 0; i++)
           {
-          if (*ptr == es_callout_start_delims()[i])
+          if (*ptr == PRIV(callout_start_delims)()[i])
             {
-            delimiter = es_callout_end_delims()[i];
+            delimiter = PRIV(callout_end_delims)()[i];
             break;
             }
           }
@@ -4147,7 +4147,7 @@ for (;;)
     case OP_ASSERTBACK_NOT:
     if (!skipassert) return code;
     do code += GET(code, 1); while (*code == OP_ALT);
-    code += es_OP_lengths()[*code];
+    code += PRIV(OP_lengths)()[*code];
     break;
 
     case OP_WORD_BOUNDARY:
@@ -4162,7 +4162,7 @@ for (;;)
     case OP_DNRREF:
     case OP_FALSE:
     case OP_TRUE:
-    code += es_OP_lengths()[*code];
+    code += PRIV(OP_lengths)()[*code];
     break;
 
     case OP_CALLOUT_STR:
@@ -4296,7 +4296,7 @@ if ((options & PCRE2_CASELESS) != 0)
       /* Handle a single character that has more than one other case. */
 
       if (rc > 0) n8 += add_list_to_class_internal(classbits, uchardptr, options, cb,
-        es_ucd_caseless_sets() + rc, oc);
+        PRIV(ucd_caseless_sets)() + rc, oc);
 
       /* Do nothing if the other case range is within the original range. */
 
@@ -5185,22 +5185,22 @@ for (;; pptr++)
 
           case ESC_h:
           (void)add_list_to_class(classbits, &class_uchardata,
-            options & ~PCRE2_CASELESS, cb, es_hspace_list(), NOTACHAR);
+            options & ~PCRE2_CASELESS, cb, PRIV(hspace_list)(), NOTACHAR);
           break;
 
           case ESC_H:
           (void)add_not_list_to_class(classbits, &class_uchardata,
-            options & ~PCRE2_CASELESS, cb, es_hspace_list());
+            options & ~PCRE2_CASELESS, cb, PRIV(hspace_list)());
           break;
 
           case ESC_v:
           (void)add_list_to_class(classbits, &class_uchardata,
-            options & ~PCRE2_CASELESS, cb, es_vspace_list(), NOTACHAR);
+            options & ~PCRE2_CASELESS, cb, PRIV(vspace_list)(), NOTACHAR);
           break;
 
           case ESC_V:
           (void)add_not_list_to_class(classbits, &class_uchardata,
-            options & ~PCRE2_CASELESS, cb, es_vspace_list());
+            options & ~PCRE2_CASELESS, cb, PRIV(vspace_list)());
           break;
 
           case ESC_p:
@@ -6060,7 +6060,7 @@ for (;; pptr++)
     PUT(code, 1 + LINK_SIZE, pptr[2]);   /* Length of next pattern item */
     code[1 + 2*LINK_SIZE] = pptr[3];
     pptr += 3;
-    code += es_OP_lengths()[OP_CALLOUT];
+    code += PRIV(OP_lengths)()[OP_CALLOUT];
     break;
 
 
@@ -6820,7 +6820,7 @@ for (;; pptr++)
       switch(*tempcode)
         {
         case OP_TYPEEXACT:
-        tempcode += es_OP_lengths()[*tempcode] +
+        tempcode += PRIV(OP_lengths)()[*tempcode] +
           ((tempcode[1 + IMM2_SIZE] == OP_PROP
           || tempcode[1 + IMM2_SIZE] == OP_NOTPROP)? 2 : 0);
         break;
@@ -6835,7 +6835,7 @@ for (;; pptr++)
         case OP_EXACTI:
         case OP_NOTEXACT:
         case OP_NOTEXACTI:
-        tempcode += es_OP_lengths()[*tempcode];
+        tempcode += PRIV(OP_lengths)()[*tempcode];
 #ifdef SUPPORT_UNICODE
         if (utf && HAS_EXTRALEN(tempcode[-1]))
           tempcode += GET_EXTRALEN(tempcode[-1]);
@@ -7534,7 +7534,7 @@ is_anchored(PCRE2_SPTR code, unsigned int bracket_map, compile_block *cb,
 {
 do {
    PCRE2_SPTR scode = first_significant_code(
-     code + es_OP_lengths()[*code], FALSE);
+     code + PRIV(OP_lengths)()[*code], FALSE);
    int op = *scode;
 
    /* Non-capturing brackets */
@@ -7638,7 +7638,7 @@ is_startline(PCRE2_SPTR code, unsigned int bracket_map, compile_block *cb,
 {
 do {
    PCRE2_SPTR scode = first_significant_code(
-     code + es_OP_lengths()[*code], FALSE);
+     code + PRIV(OP_lengths)()[*code], FALSE);
    int op = *scode;
 
    /* If we are at the start of a conditional assertion group, *both* the
@@ -7650,7 +7650,7 @@ do {
      {
      scode += 1 + LINK_SIZE;
 
-     if (*scode == OP_CALLOUT) scode += es_OP_lengths()[OP_CALLOUT];
+     if (*scode == OP_CALLOUT) scode += PRIV(OP_lengths)()[OP_CALLOUT];
        else if (*scode == OP_CALLOUT_STR) scode += GET(scode, 1 + 2*LINK_SIZE);
 
      switch (*scode)
@@ -7811,7 +7811,7 @@ for (;;)
 
     /* Add in the fixed length from the table */
 
-    code += es_OP_lengths()[c];
+    code += PRIV(OP_lengths)()[c];
 
     /* In UTF-8 and UTF-16 modes, opcodes that are followed by a character may
     be followed by a multi-unit character. The length in the table is a
@@ -8837,7 +8837,7 @@ if ((options & ~PUBLIC_COMPILE_OPTIONS) != 0)
 /* A NULL compile context means "use a default context" */
 
 if (ccontext == NULL)
-  ccontext = (pcre2_compile_context*)es_default_compile_context();
+  ccontext = (pcre2_compile_context*)PRIV(default_compile_context)();
 //  ccontext = (pcre2_compile_context *)(&PRIV(default_compile_context));
 
 /* A zero-terminated pattern is indicated by the special length value

@@ -268,7 +268,7 @@ for (;;)
     case OP_DOLLM:
     case OP_NOT_WORD_BOUNDARY:
     case OP_WORD_BOUNDARY:
-    cc += es_OP_lengths()[*cc];
+    cc += PRIV(OP_lengths)()[*cc];
     break;
 
     case OP_CALLOUT_STR:
@@ -281,7 +281,7 @@ for (;;)
     case OP_BRAMINZERO:
     case OP_BRAPOSZERO:
     case OP_SKIPZERO:
-    cc += es_OP_lengths()[*cc];
+    cc += PRIV(OP_lengths)()[*cc];
     do cc += GET(cc, 1); while (*cc == OP_ALT);
     cc += 1 + LINK_SIZE;
     break;
@@ -392,7 +392,7 @@ for (;;)
     case OP_TYPEPOSSTAR:
     case OP_TYPEPOSQUERY:
     if (cc[1] == OP_PROP || cc[1] == OP_NOTPROP) cc += 2;
-    cc += es_OP_lengths()[op];
+    cc += PRIV(OP_lengths)()[op];
     break;
 
     case OP_TYPEUPTO:
@@ -400,7 +400,7 @@ for (;;)
     case OP_TYPEPOSUPTO:
     if (cc[1 + IMM2_SIZE] == OP_PROP
       || cc[1 + IMM2_SIZE] == OP_NOTPROP) cc += 2;
-    cc += es_OP_lengths()[op];
+    cc += PRIV(OP_lengths)()[op];
     break;
 
     /* Check a class for variable quantification */
@@ -414,9 +414,9 @@ for (;;)
     if (op == OP_XCLASS)
       cc += GET(cc, 1);
     else
-      cc += es_OP_lengths()[OP_CLASS];
+      cc += PRIV(OP_lengths)()[OP_CLASS];
 #else
-    cc += es_OP_lengths()[OP_CLASS];
+    cc += PRIV(OP_lengths)()[OP_CLASS];
 #endif
 
     switch (*cc)
@@ -706,7 +706,7 @@ for (;;)
     case OP_NOTPOSQUERY:
     case OP_NOTPOSQUERYI:
 
-    cc += es_OP_lengths()[op];
+    cc += PRIV(OP_lengths)()[op];
 #ifdef SUPPORT_UNICODE
     if (utf && HAS_EXTRALEN(cc[-1])) cc += GET_EXTRALEN(cc[-1]);
 #endif
@@ -718,7 +718,7 @@ for (;;)
     case OP_PRUNE_ARG:
     case OP_SKIP_ARG:
     case OP_THEN_ARG:
-    cc += es_OP_lengths()[op] + cc[1];
+    cc += PRIV(OP_lengths)()[op] + cc[1];
     break;
 
     /* The remaining opcodes are just skipped over. */
@@ -730,7 +730,7 @@ for (;;)
     case OP_SET_SOM:
     case OP_SKIP:
     case OP_THEN:
-    cc += es_OP_lengths()[op];
+    cc += PRIV(OP_lengths)()[op];
     break;
 
     /* This should not occur: we list all opcodes explicitly so that when
@@ -1034,7 +1034,7 @@ do
       case OP_PROP:
       if (tcode[1] != PT_CLIST) return SSB_FAIL;
         {
-        const uint32_t *p = es_ucd_caseless_sets() + tcode[2];
+        const uint32_t *p = PRIV(ucd_caseless_sets)() + tcode[2];
         while ((c = *p++) < NOTACHAR)
           {
 #if defined SUPPORT_UNICODE && PCRE2_CODE_UNIT_WIDTH == 8
@@ -1104,7 +1104,7 @@ do
       /* Skip over callout */
 
       case OP_CALLOUT:
-      tcode += es_OP_lengths()[OP_CALLOUT];
+      tcode += PRIV(OP_lengths)()[OP_CALLOUT];
       break;
 
       case OP_CALLOUT_STR:

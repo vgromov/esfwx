@@ -89,15 +89,17 @@ PRIV(ord2utf)(uint32_t cvalue, PCRE2_UCHAR *buffer)
 
 #if PCRE2_CODE_UNIT_WIDTH == 8
 int i, j;
-for (i = 0; i < PRIV(utf8_table1_size); i++)
-  if ((int)cvalue <= PRIV(utf8_table1)[i]) break;
+size_t ts;
+PRIV(utf8_table1)(&ts);
+for (i = 0; i < ts; i++)
+  if ((int)cvalue <= PRIV(utf8_table1)(nullptr)[i]) break;
 buffer += i;
 for (j = i; j > 0; j--)
  {
  *buffer-- = 0x80 | (cvalue & 0x3f);
  cvalue >>= 6;
  }
-*buffer = PRIV(utf8_table2)[i] | cvalue;
+*buffer = PRIV(utf8_table2)()[i] | cvalue;
 return i + 1;
 
 /* Convert to UTF-16 */

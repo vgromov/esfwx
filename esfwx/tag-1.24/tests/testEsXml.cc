@@ -52,7 +52,7 @@ TEST_F(EsStreamXmlTest0, ContextsWrite) {
 	// values - only context
 	EXPECT_NO_THROW(streamw->contextOpenCreate(esT("ctx1")));
 	EXPECT_NO_THROW(streamw->valueWrite(esT("value_float"), 123.13));
-	EXPECT_NO_THROW(streamw->valueWrite(esT("value_str"), esT("Some string")));
+	EXPECT_NO_THROW(streamw->valueWrite(esT("value_str"), esVT("Some string")));
 	EXPECT_NO_THROW(streamw->valueWrite(esT("value_int"), 1356));
 	EXPECT_NO_THROW(streamw->contextCurrentClose());
 	// write some value at root context
@@ -63,7 +63,7 @@ TEST_F(EsStreamXmlTest0, ContextsWrite) {
 #endif
 	// mixed value-object context
 	EXPECT_NO_THROW(streamw->contextOpenCreate(esT("ctx2")));
-	EXPECT_NO_THROW(streamw->valueWrite(esT("value_str"), esT("Some other string")));
+	EXPECT_NO_THROW(streamw->valueWrite(esT("value_str"), esVT("Some other string")));
 	EXPECT_NO_THROW(streamw->valueWrite(esT("value_int"), 9998));
 
   EsChannelIoIntf::Ptr ch;
@@ -72,7 +72,7 @@ TEST_F(EsStreamXmlTest0, ContextsWrite) {
 	EXPECT_NO_THROW(streamw->objectWrite(ch));
 
 	EXPECT_NO_THROW(streamw->valueWrite(esT("value_float"), 99.9876));
-	EXPECT_NO_THROW(streamw->valueWrite(esT("val_str"), esT("Русская строка, тест")));
+	EXPECT_NO_THROW(streamw->valueWrite(esT("val_str"), esVT("Русская строка, тест")));
 	EXPECT_NO_THROW(streamw->contextCurrentClose());
 }
 //---------------------------------------------------------------------------

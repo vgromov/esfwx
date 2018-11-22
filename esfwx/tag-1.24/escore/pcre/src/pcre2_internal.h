@@ -1783,13 +1783,13 @@ typedef struct {
 /* UCD access macros */
 
 #define UCD_BLOCK_SIZE 128
-#define GET_UCD(ch) (es_ucd_records() + \
-        es_ucd_stage2()[es_ucd_stage1()[(int)(ch) / UCD_BLOCK_SIZE] * \
+#define GET_UCD(ch) (PRIV(ucd_records)() + \
+        PRIV(ucd_stage2)()[PRIV(ucd_stage1)()[(int)(ch) / UCD_BLOCK_SIZE] * \
         UCD_BLOCK_SIZE + (int)(ch) % UCD_BLOCK_SIZE])
 
 #define UCD_CHARTYPE(ch)    GET_UCD(ch)->chartype
 #define UCD_SCRIPT(ch)      GET_UCD(ch)->script
-#define UCD_CATEGORY(ch)    es_ucp_gentype()[UCD_CHARTYPE(ch)]
+#define UCD_CATEGORY(ch)    PRIV(ucp_gentype)()[UCD_CHARTYPE(ch)]
 #define UCD_GRAPHBREAK(ch)  GET_UCD(ch)->gbprop
 #define UCD_CASESET(ch)     GET_UCD(ch)->caseset
 #define UCD_OTHERCASE(ch)   ((uint32_t)((int)ch + (int)(GET_UCD(ch)->other_case)))
@@ -1831,14 +1831,14 @@ tables are needed only when compiling the 8-bit library. */
 
 #if PCRE2_CODE_UNIT_WIDTH == 8
 //extern const int              PRIV(utf8_table1)[];
-const int*                             es_utf8_table1(size_t* sze);
+const int*                      PRIV(utf8_table1)(size_t* size);
 //extern const int              PRIV(utf8_table1_size);
 //extern const int              PRIV(utf8_table2)[];
-const int*                             es_utf8_table2(void);
+const int*                      PRIV(utf8_table2)(void);
 //extern const int              PRIV(utf8_table3)[];
-const int*                             es_utf8_table3(void);
+const int*                      PRIV(utf8_table3)(void);
 //extern const uint8_t          PRIV(utf8_table4)[];
-const uint8_t*                         es_utf8_table4(void);
+const uint8_t*                  PRIV(utf8_table4)(void);
 
 #endif
 
@@ -1863,42 +1863,42 @@ const uint8_t*                         es_utf8_table4(void);
 #define _pcre2_utt_size                PCRE2_SUFFIX(_pcre2_utt_size_)
 
 //extern const uint8_t                   PRIV(OP_lengths)[];
-const uint8_t*                         es_OP_lengths(void);
+const uint8_t*                         PRIV(OP_lengths)(void);
 //extern const uint32_t                  PRIV(callout_start_delims)[];
-extern const uint32_t*                 es_callout_start_delims();
+extern const uint32_t*                 PRIV(callout_start_delims)();
 //extern const uint32_t                  PRIV(callout_end_delims)[];
-extern const uint32_t*                 es_callout_end_delims();
+extern const uint32_t*                 PRIV(callout_end_delims)();
 //extern const pcre2_compile_context     PRIV(default_compile_context);
-const pcre2_compile_context*           es_default_compile_context(void);
+const pcre2_compile_context*           PRIV(default_compile_context)(void);
 //extern const pcre2_match_context       PRIV(default_match_context);
-const pcre2_match_context*             es_default_match_context(void);
+const pcre2_match_context*             PRIV(default_match_context)(void);
 //extern const uint8_t                   PRIV(default_tables)[];
-const uint8_t*                         es_default_tables(void);
+const uint8_t*                         PRIV(default_tables)(void);
 //extern const uint32_t                  PRIV(hspace_list)[];
-const uint32_t*                        es_hspace_list(void);
+const uint32_t*                        PRIV(hspace_list)(void);
 //extern const uint32_t                  PRIV(vspace_list)[];
-const uint32_t*                        es_vspace_list(void);
+const uint32_t*                        PRIV(vspace_list)(void);
 //extern const uint32_t                  PRIV(ucd_caseless_sets)[];
-const uint32_t*                        es_ucd_caseless_sets(void);
+const uint32_t*                        PRIV(ucd_caseless_sets)(void);
 //extern const ucd_record                PRIV(ucd_records)[];
-const ucd_record*                      es_ucd_records(void);
+const ucd_record*                      PRIV(ucd_records)(void);
 //extern const uint8_t                   PRIV(ucd_stage1)[];
-const uint8_t*                         es_ucd_stage1(void);
+const uint8_t*                         PRIV(ucd_stage1)(void);
 //extern const uint16_t                  PRIV(ucd_stage2)[];
-const uint16_t*                        es_ucd_stage2(void);
+const uint16_t*                        PRIV(ucd_stage2)(void);
 //extern const uint32_t                  PRIV(ucp_gbtable)[];
-const uint32_t*                        es_ucp_gbtable(void);
+const uint32_t*                        PRIV(ucp_gbtable)(void);
 //extern const uint32_t                  PRIV(ucp_gentype)[];
-const uint32_t*                        es_ucp_gentype(void);
+const uint32_t*                        PRIV(ucp_gentype)(void);
 #ifdef SUPPORT_JIT
 //extern const int                       PRIV(ucp_typerange)[];
-const int*                             es_ucp_typerange(void);
+const int*                             PRIV(ucp_typerange)(void);
 #endif
 extern const char                     *PRIV(unicode_version);
 //extern const ucp_type_table            PRIV(utt)[];
-const ucp_type_table*                  es_utt(size_t* sze);
+const ucp_type_table*                  PRIV(utt)(size_t* sze);
 //extern const char                      PRIV(utt_names)[];
-const char*                            es_utt_names(void);
+const char*                            PRIV(utt_names)(void);
 
 /* Mode-dependent macros and hidden and private structures are defined in a
 separate file so that pcre2test can include them at all supported widths. When

@@ -202,7 +202,7 @@ if (caseless)
       ur = GET_UCD(d);
       if (c != d && c != (uint32_t)((int)d + ur->other_case))
         {
-        const uint32_t *pp = es_ucd_caseless_sets() + ur->caseset;
+        const uint32_t *pp = PRIV(ucd_caseless_sets)() + ur->caseset;
         for (;;)
           {
           if (c < *pp) return -1;  /* No match */
@@ -491,7 +491,7 @@ data and the last captured value. */
 do
   {
   if (cbegroup) mb->match_function_type |= MATCH_CBEGROUP;
-  rrc = match(eptr, callpat + es_OP_lengths()[*callpat], mstart, offset_top,
+  rrc = match(eptr, callpat + PRIV(OP_lengths)()[*callpat], mstart, offset_top,
     mb, eptrb, rdepth + 1);
   memcpy(mb->ovector, new_recursive->ovec_save,
       mb->offset_end * sizeof(PCRE2_SIZE));
@@ -805,7 +805,7 @@ for (;;)
     case OP_MARK:
     mb->nomatch_mark = ecode + 2;
     mb->mark = NULL;    /* In case previously set by assertion */
-    RMATCH(eptr, ecode + es_OP_lengths()[*ecode] + ecode[1], offset_top, mb,
+    RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode] + ecode[1], offset_top, mb,
       eptrb, RM55);
     if ((rrc == MATCH_MATCH || rrc == MATCH_ACCEPT) &&
          mb->mark == NULL) mb->mark = ecode + 2;
@@ -829,13 +829,13 @@ for (;;)
     RRETURN(MATCH_NOMATCH);
 
     case OP_COMMIT:
-    RMATCH(eptr, ecode + es_OP_lengths()[*ecode], offset_top, mb,
+    RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode], offset_top, mb,
       eptrb, RM52);
     if (rrc != MATCH_NOMATCH) RRETURN(rrc);
     RRETURN(MATCH_COMMIT);
 
     case OP_PRUNE:
-    RMATCH(eptr, ecode + es_OP_lengths()[*ecode], offset_top, mb,
+    RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode], offset_top, mb,
       eptrb, RM51);
     if (rrc != MATCH_NOMATCH) RRETURN(rrc);
     RRETURN(MATCH_PRUNE);
@@ -843,7 +843,7 @@ for (;;)
     case OP_PRUNE_ARG:
     mb->nomatch_mark = ecode + 2;
     mb->mark = NULL;    /* In case previously set by assertion */
-    RMATCH(eptr, ecode + es_OP_lengths()[*ecode] + ecode[1], offset_top, mb,
+    RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode] + ecode[1], offset_top, mb,
       eptrb, RM56);
     if ((rrc == MATCH_MATCH || rrc == MATCH_ACCEPT) &&
          mb->mark == NULL) mb->mark = ecode + 2;
@@ -851,7 +851,7 @@ for (;;)
     RRETURN(MATCH_PRUNE);
 
     case OP_SKIP:
-    RMATCH(eptr, ecode + es_OP_lengths()[*ecode], offset_top, mb,
+    RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode], offset_top, mb,
       eptrb, RM53);
     if (rrc != MATCH_NOMATCH) RRETURN(rrc);
     mb->start_match_ptr = eptr;   /* Pass back current position */
@@ -869,10 +869,10 @@ for (;;)
     mb->skip_arg_count++;
     if (mb->skip_arg_count <= mb->ignore_skip_arg)
       {
-      ecode += es_OP_lengths()[*ecode] + ecode[1];
+      ecode += PRIV(OP_lengths)()[*ecode] + ecode[1];
       break;
       }
-    RMATCH(eptr, ecode + es_OP_lengths()[*ecode] + ecode[1], offset_top, mb,
+    RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode] + ecode[1], offset_top, mb,
       eptrb, RM57);
     if (rrc != MATCH_NOMATCH) RRETURN(rrc);
 
@@ -889,7 +889,7 @@ for (;;)
     match pointer to do this. */
 
     case OP_THEN:
-    RMATCH(eptr, ecode + es_OP_lengths()[*ecode], offset_top, mb,
+    RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode], offset_top, mb,
       eptrb, RM54);
     if (rrc != MATCH_NOMATCH) RRETURN(rrc);
     mb->start_match_ptr = ecode;
@@ -898,7 +898,7 @@ for (;;)
     case OP_THEN_ARG:
     mb->nomatch_mark = ecode + 2;
     mb->mark = NULL;    /* In case previously set by assertion */
-    RMATCH(eptr, ecode + es_OP_lengths()[*ecode] + ecode[1], offset_top,
+    RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode] + ecode[1], offset_top,
       mb, eptrb, RM58);
     if ((rrc == MATCH_MATCH || rrc == MATCH_ACCEPT) &&
          mb->mark == NULL) mb->mark = ecode + 2;
@@ -1020,7 +1020,7 @@ for (;;)
       for (;;)
         {
         if (op >= OP_SBRA) mb->match_function_type |= MATCH_CBEGROUP;
-        RMATCH(eptr, ecode + es_OP_lengths()[*ecode], offset_top, mb,
+        RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode], offset_top, mb,
           eptrb, RM1);
         if (rrc == MATCH_ONCE) break;  /* Backing up through an atomic group */
 
@@ -1102,7 +1102,7 @@ for (;;)
 
       else if (!mb->hasthen && ecode[GET(ecode, 1)] != OP_ALT)
         {
-        ecode += es_OP_lengths()[*ecode];
+        ecode += PRIV(OP_lengths)()[*ecode];
         goto TAIL_RECURSE;
         }
 
@@ -1110,7 +1110,7 @@ for (;;)
 
       save_mark = mb->mark;
       save_capture_last = mb->capture_last;
-      RMATCH(eptr, ecode + es_OP_lengths()[*ecode], offset_top, mb, eptrb,
+      RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode], offset_top, mb, eptrb,
         RM2);
 
       /* See comment in the code for capturing groups above about handling
@@ -1185,7 +1185,7 @@ for (;;)
       {
       mb->ovector[mb->offset_end - number] = eptr - mb->start_subject;
       if (op >= OP_SBRA) mb->match_function_type |= MATCH_CBEGROUP;
-      RMATCH(eptr, ecode + es_OP_lengths()[*ecode], offset_top, mb,
+      RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode], offset_top, mb,
         eptrb, RM63);
       if (rrc == MATCH_KETRPOS)
         {
@@ -1251,7 +1251,7 @@ for (;;)
     for (;;)
       {
       if (op >= OP_SBRA) mb->match_function_type |= MATCH_CBEGROUP;
-      RMATCH(eptr, ecode + es_OP_lengths()[*ecode], offset_top, mb,
+      RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode], offset_top, mb,
         eptrb, RM48);
       if (rrc == MATCH_KETRPOS)
         {
@@ -1316,7 +1316,7 @@ for (;;)
     if (*ecode == OP_CALLOUT || *ecode == OP_CALLOUT_STR)
       {
       unsigned int callout_length = (*ecode == OP_CALLOUT)
-          ? es_OP_lengths()[OP_CALLOUT] : GET(ecode, 1 + 2*LINK_SIZE);
+          ? PRIV(OP_lengths)()[OP_CALLOUT] : GET(ecode, 1 + 2*LINK_SIZE);
 
       if (mb->callout != NULL)
         {
@@ -1439,7 +1439,7 @@ for (;;)
         if (*ecode == OP_BRAZERO) ecode++;
         ecode += GET(ecode, 1);
         while (*ecode == OP_ALT) ecode += GET(ecode, 1);
-        ecode += 1 + LINK_SIZE - es_OP_lengths()[condcode];
+        ecode += 1 + LINK_SIZE - PRIV(OP_lengths)()[condcode];
         }
 
       /* PCRE doesn't allow the effect of (*THEN) to escape beyond an
@@ -1455,7 +1455,7 @@ for (;;)
 
     /* Choose branch according to the condition */
 
-    ecode += condition? es_OP_lengths()[condcode] : codelink;
+    ecode += condition? PRIV(OP_lengths)()[condcode] : codelink;
 
     /* We are now at the branch that is to be obeyed. As there is only one, we
     can use tail recursion to avoid using another stack frame, except when
@@ -1742,7 +1742,7 @@ for (;;)
     case OP_CALLOUT_STR:
       {
       unsigned int callout_length = (*ecode == OP_CALLOUT)
-          ? es_OP_lengths()[OP_CALLOUT] : GET(ecode, 1 + 2*LINK_SIZE);
+          ? PRIV(OP_lengths)()[OP_CALLOUT] : GET(ecode, 1 + 2*LINK_SIZE);
 
       if (mb->callout != NULL)
         {
@@ -1883,7 +1883,7 @@ for (;;)
       do
         {
         if (cbegroup) mb->match_function_type |= MATCH_CBEGROUP;
-        RMATCH(eptr, callpat + es_OP_lengths()[*callpat], offset_top,
+        RMATCH(eptr, callpat + PRIV(OP_lengths)()[*callpat], offset_top,
           mb, eptrb, RM6);
         memcpy(mb->ovector, new_recursive.ovec_save,
             mb->offset_end * sizeof(PCRE2_SIZE));
@@ -2652,7 +2652,7 @@ for (;;)
         break;
 
         case PT_GC:
-        if ((ecode[2] != es_ucp_gentype()[prop->chartype]) == (op == OP_PROP))
+        if ((ecode[2] != PRIV(ucp_gentype)()[prop->chartype]) == (op == OP_PROP))
           RRETURN(MATCH_NOMATCH);
         break;
 
@@ -2669,8 +2669,8 @@ for (;;)
         /* These are specials */
 
         case PT_ALNUM:
-        if ((es_ucp_gentype()[prop->chartype] == ucp_L ||
-             es_ucp_gentype()[prop->chartype] == ucp_N) == (op == OP_NOTPROP))
+        if ((PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+             PRIV(ucp_gentype)()[prop->chartype] == ucp_N) == (op == OP_NOTPROP))
           RRETURN(MATCH_NOMATCH);
         break;
 
@@ -2688,21 +2688,21 @@ for (;;)
           break;
 
           default:
-          if ((es_ucp_gentype()[prop->chartype] == ucp_Z) ==
+          if ((PRIV(ucp_gentype)()[prop->chartype] == ucp_Z) ==
             (op == OP_NOTPROP)) RRETURN(MATCH_NOMATCH);
           break;
           }
         break;
 
         case PT_WORD:
-        if ((es_ucp_gentype()[prop->chartype] == ucp_L ||
-             es_ucp_gentype()[prop->chartype] == ucp_N ||
+        if ((PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+             PRIV(ucp_gentype)()[prop->chartype] == ucp_N ||
              c == CHAR_UNDERSCORE) == (op == OP_NOTPROP))
           RRETURN(MATCH_NOMATCH);
         break;
 
         case PT_CLIST:
-        cp = es_ucd_caseless_sets() + ecode[2];
+        cp = PRIV(ucd_caseless_sets)() + ecode[2];
         for (;;)
           {
           if (c < *cp)
@@ -2748,7 +2748,7 @@ for (;;)
         int len = 1;
         if (!utf) c = *eptr; else { GETCHARLEN(c, eptr, len); }
         rgb = UCD_GRAPHBREAK(c);
-        if ((es_ucp_gbtable()[lgb] & (1 << rgb)) == 0) break;
+        if ((PRIV(ucp_gbtable)()[lgb] & (1 << rgb)) == 0) break;
         lgb = rgb;
         eptr += len;
         }
@@ -4398,7 +4398,7 @@ for (;;)
               RRETURN(MATCH_NOMATCH);
               }
             GETCHARINCTEST(c, eptr);
-            cp = es_ucd_caseless_sets() + prop_value;
+            cp = PRIV(ucd_caseless_sets)() + prop_value;
             for (;;)
               {
               if (c < *cp)
@@ -4454,7 +4454,7 @@ for (;;)
               int len = 1;
               if (!utf) c = *eptr; else { GETCHARLEN(c, eptr, len); }
               rgb = UCD_GRAPHBREAK(c);
-              if ((es_ucp_gbtable()[lgb] & (1 << rgb)) == 0) break;
+              if ((PRIV(ucp_gbtable)()[lgb] & (1 << rgb)) == 0) break;
               lgb = rgb;
               eptr += len;
               }
@@ -5154,7 +5154,7 @@ for (;;)
               RRETURN(MATCH_NOMATCH);
               }
             GETCHARINCTEST(c, eptr);
-            cp = es_ucd_caseless_sets() + prop_value;
+            cp = PRIV(ucd_caseless_sets)() + prop_value;
             for (;;)
               {
               if (c < *cp)
@@ -5215,7 +5215,7 @@ for (;;)
               int len = 1;
               if (!utf) c = *eptr; else { GETCHARLEN(c, eptr, len); }
               rgb = UCD_GRAPHBREAK(c);
-              if ((es_ucp_gbtable()[lgb] & (1 << rgb)) == 0) break;
+              if ((PRIV(ucp_gbtable)()[lgb] & (1 << rgb)) == 0) break;
               lgb = rgb;
               eptr += len;
               }
@@ -5661,7 +5661,7 @@ for (;;)
               break;
               }
             GETCHARLENTEST(c, eptr, len);
-            cp = es_ucd_caseless_sets() + prop_value;
+            cp = PRIV(ucd_caseless_sets)() + prop_value;
             for (;;)
               {
               if (c < *cp)
@@ -5735,7 +5735,7 @@ for (;;)
               int len = 1;
               if (!utf) c = *eptr; else { GETCHARLEN(c, eptr, len); }
               rgb = UCD_GRAPHBREAK(c);
-              if ((es_ucp_gbtable()[lgb] & (1 << rgb)) == 0) break;
+              if ((PRIV(ucp_gbtable)()[lgb] & (1 << rgb)) == 0) break;
               lgb = rgb;
               eptr += len;
               }
@@ -5783,7 +5783,7 @@ for (;;)
               GETCHAR(c, fptr);
               }
             lgb = UCD_GRAPHBREAK(c);
-            if ((es_ucp_gbtable()[lgb] & (1 << rgb)) == 0) break;
+            if ((PRIV(ucp_gbtable)()[lgb] & (1 << rgb)) == 0) break;
             eptr = fptr;
             rgb = lgb;
             }
@@ -6843,7 +6843,7 @@ for(;;)
         while (start_match < end_subject && UCHAR21TEST(start_match) != first_cu)
           start_match++;
 #else
-        start_match = memchr(start_match, first_cu, end_subject - start_match);
+        start_match = (PCRE2_SPTR8)memchr(start_match, first_cu, end_subject - start_match);
         if (start_match == NULL) start_match = end_subject;
 #endif
         }

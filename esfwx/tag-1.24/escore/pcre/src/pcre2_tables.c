@@ -128,46 +128,46 @@ handling wide characters. */
 /* These are the breakpoints for different numbers of bytes in a UTF-8
 character. */
 
-const int* es_utf8_table1(size_t* sze)
+const int* PRIV(utf8_table1)(size_t* sze)
 {
-  static const int PRIV(utf8_table1)[] =
+  static const int sc_utf8_table1[] =
     { 0x7f, 0x7ff, 0xffff, 0x1fffff, 0x3ffffff, 0x7fffffff};
-  static const int PRIV(utf8_table1_size) = sizeof(PRIV(utf8_table1)) / sizeof(int);
+  static const int sc_utf8_table1_size = sizeof(sc_utf8_table1) / sizeof(int);
 
   if( sze )
-    *sze = PRIV(utf8_table1_size);
+    *sze = sc_utf8_table1_size;
 
-  return PRIV(utf8_table1);
+  return sc_utf8_table1;
 }
 
 /* These are the indicator bits and the mask for the data bits to set in the
 first byte of a character, indexed by the number of additional bytes. */
-const int* es_utf8_table(void)
+const int* PRIV(utf8_table)(void)
 {
-  static const int PRIV(utf8_table2)[] = { 0,    0xc0, 0xe0, 0xf0, 0xf8, 0xfc};
+  static const int sc_utf8_table2[] = { 0,    0xc0, 0xe0, 0xf0, 0xf8, 0xfc};
 
-  return PRIV(utf8_table2);
+  return sc_utf8_table2;
 }
 
-const int* es_utf8_table3(void)
+const int* PRIV(utf8_table3)(void)
 {
-  static const int PRIV(utf8_table3)[] = { 0xff, 0x1f, 0x0f, 0x07, 0x03, 0x01};
+  static const int sc_utf8_table3[] = { 0xff, 0x1f, 0x0f, 0x07, 0x03, 0x01};
 
-  return PRIV(utf8_table3);
+  return sc_utf8_table3;
 }
 
 /* Table of the number of extra bytes, indexed by the first byte masked with
 0x3f. The highest number for a valid UTF-8 first byte is in fact 0x3d. */
 
-const uint8_t* es_utf8_table4(void)
+const uint8_t* PRIV(utf8_table4)(void)
 {
-  static const uint8_t PRIV(utf8_table4)[] = {
+  static const uint8_t sc_utf8_table4[] = {
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
     3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,5 };
 
-  return PRIV(utf8_table4);
+  return sc_utf8_table4;
 }
 
 #endif /* UTF-8 support needed */
@@ -176,9 +176,9 @@ const uint8_t* es_utf8_table4(void)
 #ifdef SUPPORT_UNICODE
 
 /* Table to translate from particular type value to the general value. */
-const uint32_t* es_ucp_gentype(void)
+const uint32_t* PRIV(ucp_gentype)(void)
 {
-static const uint32_t PRIV(ucp_gentype)[] = {
+static const uint32_t sc_ucp_gentype[] = {
   ucp_C, ucp_C, ucp_C, ucp_C, ucp_C,  /* Cc, Cf, Cn, Co, Cs */
   ucp_L, ucp_L, ucp_L, ucp_L, ucp_L,  /* Ll, Lu, Lm, Lo, Lt */
   ucp_M, ucp_M, ucp_M,                /* Mc, Me, Mn */
@@ -189,7 +189,7 @@ static const uint32_t PRIV(ucp_gentype)[] = {
   ucp_Z, ucp_Z, ucp_Z                 /* Zl, Zp, Zs */
 };
 
-  return PRIV(ucp_gentype);
+  return sc_ucp_gentype;
 }
 
 /* This table encodes the rules for finding the end of an extended grapheme
@@ -225,9 +225,9 @@ are implementing).
 
 7. Otherwise, break everywhere.
 */
-const uint32_t* es_ucp_gbtable(void)
+const uint32_t* PRIV(ucp_gbtable)(void)
 {
-static const uint32_t PRIV(ucp_gbtable)[] = {
+static const uint32_t sc_ucp_gbtable[] = {
    (1<<ucp_gbLF),                                           /*  0 CR */
    0,                                                       /*  1 LF */
    0,                                                       /*  2 Control */
@@ -253,15 +253,15 @@ static const uint32_t PRIV(ucp_gbtable)[] = {
    (1<<ucp_gbExtend)|(1<<ucp_gbSpacingMark)                 /* 12 Other */
 };
 
-  return PRIV(ucp_gbtable);
+  return sc_ucp_gbtable;
 }
 
 #ifdef SUPPORT_JIT
 /* This table reverses PRIV(ucp_gentype). We can save the cost
 of a memory load. */
-const int* es_ucp_typerange(void)
+const int* PRIV(ucp_typerange)(void)
 {
-static const int PRIV(ucp_typerange)[] = {
+static const int sc_ucp_typerange[] = {
   ucp_Cc, ucp_Cs,
   ucp_Ll, ucp_Lu,
   ucp_Mc, ucp_Mn,
@@ -271,7 +271,7 @@ static const int PRIV(ucp_typerange)[] = {
   ucp_Zl, ucp_Zs,
 };
 
-  return PRIV(ucp_typerange);
+  return sc_ucp_typerange;
 }
 #endif /* SUPPORT_JIT */
 
@@ -468,9 +468,9 @@ strings to make sure that UTF-8 support works on EBCDIC platforms. */
 #define STRING_Zp0 STR_Z STR_p "\0"
 #define STRING_Zs0 STR_Z STR_s "\0"
 
-const char* es_utt_names(void)
+const char* PRIV(utt_names)(void)
 {
-static const char PRIV(utt_names)[] =
+static const char sc_utt_names[] =
   STRING_Ahom0
   STRING_Anatolian_Hieroglyphs0
   STRING_Any0
@@ -647,12 +647,12 @@ static const char PRIV(utt_names)[] =
   STRING_Zp0
   STRING_Zs0;
 
-  return PRIV(utt_names);
+  return sc_utt_names;
 }
 
-const ucp_type_table* es_utt(size_t* sze)
+const ucp_type_table* PRIV(utt)(size_t* sze)
 {
-static const ucp_type_table PRIV(utt)[] = {
+static const ucp_type_table sc_utt[] = {
   {   0, PT_SC, ucp_Ahom },
   {   5, PT_SC, ucp_Anatolian_Hieroglyphs },
   {  27, PT_ANY, 0 },
@@ -830,12 +830,12 @@ static const ucp_type_table PRIV(utt)[] = {
   { 1351, PT_PC, ucp_Zs }
 };
 
-  static const size_t utt_sze = sizeof(PRIV(utt)) / sizeof(ucp_type_table);
+  static const size_t sc_utt_sze = sizeof(sc_utt) / sizeof(ucp_type_table);
 
   if( sze )
-    *sze = utt_sze;
+    *sze = sc_utt_sze;
 
-  return PRIV(utt);
+  return sc_utt;
 }
 
 #endif /* SUPPORT_UNICODE */

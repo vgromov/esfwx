@@ -153,7 +153,7 @@ while ((t = *data++) != XCL_END)
       break;
 
       case PT_GC:
-      if ((data[1] == es_ucp_gentype()[prop->chartype]) == isprop)
+      if ((data[1] == PRIV(ucp_gentype)()[prop->chartype]) == isprop)
         return !negated;
       break;
 
@@ -166,8 +166,8 @@ while ((t = *data++) != XCL_END)
       break;
 
       case PT_ALNUM:
-      if ((es_ucp_gentype()[prop->chartype] == ucp_L ||
-           es_ucp_gentype()[prop->chartype] == ucp_N) == isprop)
+      if ((PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+           PRIV(ucp_gentype)()[prop->chartype] == ucp_N) == isprop)
         return !negated;
       break;
 
@@ -185,15 +185,15 @@ while ((t = *data++) != XCL_END)
         break;
 
         default:
-        if ((es_ucp_gentype()[prop->chartype] == ucp_Z) == isprop)
+        if ((PRIV(ucp_gentype)()[prop->chartype] == ucp_Z) == isprop)
           return !negated;
         break;
         }
       break;
 
       case PT_WORD:
-      if ((es_ucp_gentype()[prop->chartype] == ucp_L ||
-           es_ucp_gentype()[prop->chartype] == ucp_N || c == CHAR_UNDERSCORE)
+      if ((PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+           PRIV(ucp_gentype)()[prop->chartype] == ucp_N || c == CHAR_UNDERSCORE)
              == isprop)
         return !negated;
       break;
@@ -225,8 +225,8 @@ while ((t = *data++) != XCL_END)
       */
 
       case PT_PXGRAPH:
-      if ((es_ucp_gentype()[prop->chartype] != ucp_Z &&
-            (es_ucp_gentype()[prop->chartype] != ucp_C ||
+      if ((PRIV(ucp_gentype)()[prop->chartype] != ucp_Z &&
+            (PRIV(ucp_gentype)()[prop->chartype] != ucp_C ||
               (prop->chartype == ucp_Cf &&
                 c != 0x061c && c != 0x180e && (c < 0x2066 || c > 0x2069))
          )) == isprop)
@@ -239,7 +239,7 @@ while ((t = *data++) != XCL_END)
       case PT_PXPRINT:
       if ((prop->chartype != ucp_Zl &&
            prop->chartype != ucp_Zp &&
-            (es_ucp_gentype()[prop->chartype] != ucp_C ||
+            (PRIV(ucp_gentype)()[prop->chartype] != ucp_C ||
               (prop->chartype == ucp_Cf &&
                 c != 0x061c && (c < 0x2066 || c > 0x2069))
          )) == isprop)
@@ -251,8 +251,8 @@ while ((t = *data++) != XCL_END)
       compatibility (these are $+<=>^`|~). */
 
       case PT_PXPUNCT:
-      if ((es_ucp_gentype()[prop->chartype] == ucp_P ||
-            (c < 128 && es_ucp_gentype()[prop->chartype] == ucp_S)) == isprop)
+      if ((PRIV(ucp_gentype)()[prop->chartype] == ucp_P ||
+            (c < 128 && PRIV(ucp_gentype)()[prop->chartype] == ucp_S)) == isprop)
         return !negated;
       break;
 

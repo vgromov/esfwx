@@ -283,7 +283,7 @@ UTF support is omitted, we don't even define them. */
 /* Returns with the additional number of characters if IS_MULTICHAR(c) is TRUE.
 Otherwise it has an undefined behaviour. */
 
-#define GET_EXTRALEN(c) (PRIV(utf8_table4)[(c) & 0x3fu])
+#define GET_EXTRALEN(c) (PRIV(utf8_table4)()[(c) & 0x3fu])
 
 /* Returns TRUE, if the given value is not the first code unit of a UTF
 sequence. */

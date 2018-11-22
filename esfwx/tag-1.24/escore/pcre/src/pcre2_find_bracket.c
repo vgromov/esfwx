@@ -93,7 +93,7 @@ for (;;)
   else if (c == OP_REVERSE)
     {
     if (number < 0) return (PCRE2_UCHAR *)code;
-    code += es_OP_lengths()[c];
+    code += PRIV(OP_lengths)()[c];
     }
 
   /* Handle capturing bracket */
@@ -103,7 +103,7 @@ for (;;)
     {
     int n = (int)GET2(code, 1+LINK_SIZE);
     if (n == number) return (PCRE2_UCHAR *)code;
-    code += es_OP_lengths()[c];
+    code += PRIV(OP_lengths)()[c];
     }
 
   /* Otherwise, we can get the item's length from the table, except that for
@@ -145,7 +145,7 @@ for (;;)
 
     /* Add in the fixed length from the table */
 
-    code += es_OP_lengths()[c];
+    code += PRIV(OP_lengths)()[c];
 
   /* In UTF-8 and UTF-16 modes, opcodes that are followed by a character may be
   followed by a multi-byte character. The length in the table is a minimum, so

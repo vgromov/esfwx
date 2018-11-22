@@ -1032,7 +1032,7 @@ for (;;)
           break;
 
           case PT_GC:
-          OK = es_ucp_gentype()[prop->chartype] == code[2];
+          OK = PRIV(ucp_gentype)()[prop->chartype] == code[2];
           break;
 
           case PT_PC:
@@ -1046,8 +1046,8 @@ for (;;)
           /* These are specials for combination cases. */
 
           case PT_ALNUM:
-          OK = es_ucp_gentype()[prop->chartype] == ucp_L ||
-               es_ucp_gentype()[prop->chartype] == ucp_N;
+          OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+               PRIV(ucp_gentype)()[prop->chartype] == ucp_N;
           break;
 
           /* Perl space used to exclude VT, but from Perl 5.18 it is included,
@@ -1064,19 +1064,19 @@ for (;;)
             break;
 
             default:
-            OK = es_ucp_gentype()[prop->chartype] == ucp_Z;
+            OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_Z;
             break;
             }
           break;
 
           case PT_WORD:
-          OK = es_ucp_gentype()[prop->chartype] == ucp_L ||
-               es_ucp_gentype()[prop->chartype] == ucp_N ||
+          OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+               PRIV(ucp_gentype)()[prop->chartype] == ucp_N ||
                c == CHAR_UNDERSCORE;
           break;
 
           case PT_CLIST:
-          cp = es_ucd_caseless_sets() + code[2];
+          cp = PRIV(ucd_caseless_sets)() + code[2];
           for (;;)
             {
             if (c < *cp) { OK = FALSE; break; }
@@ -1290,7 +1290,7 @@ for (;;)
           break;
 
           case PT_GC:
-          OK = es_ucp_gentype()[prop->chartype] == code[3];
+          OK = PRIV(ucp_gentype)()[prop->chartype] == code[3];
           break;
 
           case PT_PC:
@@ -1304,8 +1304,8 @@ for (;;)
           /* These are specials for combination cases. */
 
           case PT_ALNUM:
-          OK = es_ucp_gentype()[prop->chartype] == ucp_L ||
-               es_ucp_gentype()[prop->chartype] == ucp_N;
+          OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+               PRIV(ucp_gentype)()[prop->chartype] == ucp_N;
           break;
 
           /* Perl space used to exclude VT, but from Perl 5.18 it is included,
@@ -1322,19 +1322,19 @@ for (;;)
             break;
 
             default:
-            OK = es_ucp_gentype()[prop->chartype] == ucp_Z;
+            OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_Z;
             break;
             }
           break;
 
           case PT_WORD:
-          OK = es_ucp_gentype()[prop->chartype] == ucp_L ||
-               es_ucp_gentype()[prop->chartype] == ucp_N ||
+          OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+               PRIV(ucp_gentype)()[prop->chartype] == ucp_N ||
                c == CHAR_UNDERSCORE;
           break;
 
           case PT_CLIST:
-          cp = es_ucd_caseless_sets() + code[3];
+          cp = PRIV(ucd_caseless_sets)() + code[3];
           for (;;)
             {
             if (c < *cp) { OK = FALSE; break; }
@@ -1390,7 +1390,7 @@ for (;;)
           dlen = 1;
           if (!utf) d = *nptr; else { GETCHARLEN(d, nptr, dlen); }
           rgb = UCD_GRAPHBREAK(d);
-          if ((es_ucp_gbtable()[lgb] & (1u << rgb)) == 0) break;
+          if ((PRIV(ucp_gbtable)()[lgb] & (1u << rgb)) == 0) break;
           ncount++;
           lgb = rgb;
           nptr += dlen;
@@ -1542,7 +1542,7 @@ for (;;)
           break;
 
           case PT_GC:
-          OK = es_ucp_gentype()[prop->chartype] == code[3];
+          OK = PRIV(ucp_gentype)()[prop->chartype] == code[3];
           break;
 
           case PT_PC:
@@ -1556,8 +1556,8 @@ for (;;)
           /* These are specials for combination cases. */
 
           case PT_ALNUM:
-          OK = es_ucp_gentype()[prop->chartype] == ucp_L ||
-               es_ucp_gentype()[prop->chartype] == ucp_N;
+          OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+               PRIV(ucp_gentype)()[prop->chartype] == ucp_N;
           break;
 
           /* Perl space used to exclude VT, but from Perl 5.18 it is included,
@@ -1574,19 +1574,19 @@ for (;;)
             break;
 
             default:
-            OK = es_ucp_gentype()[prop->chartype] == ucp_Z;
+            OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_Z;
             break;
             }
           break;
 
           case PT_WORD:
-          OK = es_ucp_gentype()[prop->chartype] == ucp_L ||
-               es_ucp_gentype()[prop->chartype] == ucp_N ||
+          OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+               PRIV(ucp_gentype)()[prop->chartype] == ucp_N ||
                c == CHAR_UNDERSCORE;
           break;
 
           case PT_CLIST:
-          cp = es_ucd_caseless_sets() + code[3];
+          cp = PRIV(ucd_caseless_sets)() + code[3];
           for (;;)
             {
             if (c < *cp) { OK = FALSE; break; }
@@ -1652,7 +1652,7 @@ for (;;)
           dlen = 1;
           if (!utf) d = *nptr; else { GETCHARLEN(d, nptr, dlen); }
           rgb = UCD_GRAPHBREAK(d);
-          if ((es_ucp_gbtable()[lgb] & (1u << rgb)) == 0) break;
+          if ((PRIV(ucp_gbtable)()[lgb] & (1u << rgb)) == 0) break;
           ncount++;
           lgb = rgb;
           nptr += dlen;
@@ -1819,7 +1819,7 @@ for (;;)
           break;
 
           case PT_GC:
-          OK = es_ucp_gentype()[prop->chartype] == code[1 + IMM2_SIZE + 2];
+          OK = PRIV(ucp_gentype)()[prop->chartype] == code[1 + IMM2_SIZE + 2];
           break;
 
           case PT_PC:
@@ -1833,8 +1833,8 @@ for (;;)
           /* These are specials for combination cases. */
 
           case PT_ALNUM:
-          OK = es_ucp_gentype()[prop->chartype] == ucp_L ||
-               es_ucp_gentype()[prop->chartype] == ucp_N;
+          OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+               PRIV(ucp_gentype)()[prop->chartype] == ucp_N;
           break;
 
           /* Perl space used to exclude VT, but from Perl 5.18 it is included,
@@ -1851,19 +1851,19 @@ for (;;)
             break;
 
             default:
-            OK = es_ucp_gentype()[prop->chartype] == ucp_Z;
+            OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_Z;
             break;
             }
           break;
 
           case PT_WORD:
-          OK = es_ucp_gentype()[prop->chartype] == ucp_L ||
-               es_ucp_gentype()[prop->chartype] == ucp_N ||
+          OK = PRIV(ucp_gentype)()[prop->chartype] == ucp_L ||
+               PRIV(ucp_gentype)()[prop->chartype] == ucp_N ||
                c == CHAR_UNDERSCORE;
           break;
 
           case PT_CLIST:
-          cp = es_ucd_caseless_sets() + code[1 + IMM2_SIZE + 2];
+          cp = PRIV(ucd_caseless_sets)() + code[1 + IMM2_SIZE + 2];
           for (;;)
             {
             if (c < *cp) { OK = FALSE; break; }
@@ -1923,7 +1923,7 @@ for (;;)
           dlen = 1;
           if (!utf) d = *nptr; else { GETCHARLEN(d, nptr, dlen); }
           rgb = UCD_GRAPHBREAK(d);
-          if ((es_ucp_gbtable()[lgb] & (1u << rgb)) == 0) break;
+          if ((PRIV(ucp_gbtable)()[lgb] & (1u << rgb)) == 0) break;
           ncount++;
           lgb = rgb;
           nptr += dlen;
@@ -2113,7 +2113,7 @@ for (;;)
           dlen = 1;
           if (!utf) d = *nptr; else { GETCHARLEN(d, nptr, dlen); }
           rgb = UCD_GRAPHBREAK(d);
-          if ((es_ucp_gbtable()[lgb] & (1u << rgb)) == 0) break;
+          if ((PRIV(ucp_gbtable)()[lgb] & (1u << rgb)) == 0) break;
           ncount++;
           lgb = rgb;
           nptr += dlen;
@@ -2619,7 +2619,7 @@ for (;;)
             || code[LINK_SIZE + 1] == OP_CALLOUT_STR)
           {
           PCRE2_SIZE callout_length = (code[LINK_SIZE + 1] == OP_CALLOUT)?
-            (PCRE2_SIZE)es_OP_lengths()[OP_CALLOUT] :
+            (PCRE2_SIZE)PRIV(OP_lengths)()[OP_CALLOUT] :
             (PCRE2_SIZE)GET(code, 2 + 3*LINK_SIZE);
 
           rrc = 0;
@@ -2990,7 +2990,7 @@ for (;;)
       case OP_CALLOUT_STR:
         {
         unsigned int callout_length = (*code == OP_CALLOUT)
-            ? es_OP_lengths()[OP_CALLOUT] : GET(code, 1 + 2*LINK_SIZE);
+            ? PRIV(OP_lengths)()[OP_CALLOUT] : GET(code, 1 + 2*LINK_SIZE);
         rrc = 0;
 
         if (mb->callout != NULL)

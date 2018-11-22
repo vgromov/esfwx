@@ -677,7 +677,7 @@ do
             if (utf)
               {
               uint32_t type = UCD_CHARTYPE(ch);
-              if (es_ucp_gentype()[type] == ucp_L &&
+              if (PRIV(ucp_gentype)()[type] == ucp_L &&
                   type != ((forcecase > 0)? ucp_Lu : ucp_Ll))
                 ch = UCD_OTHERCASE(ch);
               }
@@ -779,7 +779,7 @@ do
         if (utf)
           {
           uint32_t type = UCD_CHARTYPE(ch);
-          if (es_ucp_gentype()[type] == ucp_L &&
+          if (PRIV(ucp_gentype)()[type] == ucp_L &&
               type != ((forcecase > 0)? ucp_Lu : ucp_Ll))
             ch = UCD_OTHERCASE(ch);
           }
