@@ -126,7 +126,7 @@ static size_t strlength_wide(const ES_WCHAR* s)
 	return static_cast<size_t>(end - s);
 }
 
-#ifdef ES_USE_WCHAR
+#if !defined(ES_USE_NARROW_ES_CHAR)
 // Convert string to wide string, assuming all symbols are ASCII
 static void widen_ascii(ES_WCHAR* dest, const char* source)
 {
@@ -934,12 +934,10 @@ template <typename T> void convert_utf_endian_swap(T* result, const T* data, siz
   for (size_t i = 0; i < length; ++i) result[i] = endian_swap(data[i]);
 }
 
-#ifdef ES_USE_WCHAR
 void convert_wchar_endian_swap(ES_WCHAR* result, const ES_WCHAR* data, size_t length)
 {
   for (size_t i = 0; i < length; ++i) result[i] = static_cast<ES_WCHAR>(endian_swap(static_cast<wchar_selector<sizeof(ES_WCHAR)>::type>(data[i])));
 }
-#endif
 
 enum chartype_t
 {
@@ -1128,7 +1126,7 @@ bool get_mutable_buffer(EsString::pointer& out_buffer, size_t& out_length, const
   return true;
 }
 
-#ifdef ES_USE_WCHAR
+#if !defined(ES_USE_NARROW_ES_CHAR)
 bool need_endian_swap_utf(EsXmlEncoding le, EsXmlEncoding re)
 {
   return (le == xmlEncodingUtf16_be && re == xmlEncodingUtf16_le) || (le == xmlEncodingUtf16_le && re == xmlEncodingUtf16_be) ||
@@ -1675,7 +1673,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
         ++stre;
       }
 
-    #ifdef ES_USE_WCHAR
+    #if !defined(ES_USE_NARROW_ES_CHAR)
       s = reinterpret_cast<EsString::pointer>(wchar_writer::any(reinterpret_cast<wchar_writer::value_type>(s), ucsc));
     #else
       s = reinterpret_cast<EsString::pointer>(utf8_writer::any(reinterpret_cast<uint8_t*>(s), ucsc));
@@ -2643,7 +2641,7 @@ struct EsXmlParser
     return s;
   }
 
-#ifdef ES_USE_WCHAR
+#if !defined(ES_USE_NARROW_ES_CHAR)
   static EsString::pointer parse_skip_bom(EsString::pointer s)
   {
     unsigned int bom = 0xfeff;
@@ -2726,7 +2724,7 @@ struct EsXmlParser
 // Output facilities
 EsXmlEncoding get_write_native_encoding()
 {
-#ifdef ES_USE_WCHAR
+#if !defined(ES_USE_NARROW_ES_CHAR)
   return get_wchar_encoding();
 #else
   return xmlEncodingUtf8;
@@ -2751,7 +2749,7 @@ EsXmlEncoding get_write_encoding(EsXmlEncoding encoding)
   return xmlEncodingUtf8;
 }
 
-#ifdef ES_USE_WCHAR
+#if !defined(ES_USE_NARROW_ES_CHAR)
 size_t get_valid_length(EsString::const_pointer data, size_t length)
 {
   ES_ASSERT(length > 0);
@@ -3494,7 +3492,7 @@ unsigned long long get_value_ullong(EsString::const_pointer value, unsigned long
 // set value with conversion functions
 bool set_value_buffer(EsString::pointer& dest, uintptr_t& header, uintptr_t header_mask, char (&buf)[128])
 {
-#ifdef ES_USE_WCHAR
+#ifdef ES_CHAR_IS_WCHAR_T
   EsString::value_type wbuf[128];
   widen_ascii(wbuf, buf);
 
@@ -5294,7 +5292,7 @@ void EsXmlDocument::destroy()
 EsXmlParseResult EsXmlDocument::load(const EsString& contents, unsigned int options)
 {
 	// Force native encoding (skip autodetection)
-#ifdef ES_USE_WCHAR
+#if !defined(ES_USE_NARROW_ES_CHAR)
 	EsXmlEncoding encoding = xmlEncodingWchar;
 #else
 	EsXmlEncoding encoding = xmlEncodingUtf8;
@@ -5331,7 +5329,7 @@ void EsXmlDocument::save(EsXmlWriterIntf& writer, const EsString& indent, unsign
 	if ((flags & xmlFormatWriteBom) && encoding != xmlEncodingLatin1)
   {
     // BOM always represents the codepoint U+FEFF, so just write it in native encoding
-  #ifdef ES_USE_WCHAR
+  #if !defined(ES_USE_NARROW_ES_CHAR)
     unsigned int bom = 0xfeff;
     buffered_writer.write(static_cast<ES_WCHAR>(bom));
   #else

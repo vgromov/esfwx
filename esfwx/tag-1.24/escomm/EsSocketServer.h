@@ -37,8 +37,8 @@ protected:
 		virtual ~Listener();
 
 	protected:
-		virtual long worker();
-		virtual void onExitWorker();
+		virtual long worker() ES_OVERRIDE;
+		virtual void onExitWorker() ES_OVERRIDE;
 
     void connectionListen();
     void connectionlessListen();
@@ -89,8 +89,8 @@ protected:
     bool auxDataWait(ulong ms);
 
 	protected:
-		virtual long worker();
-		virtual void onExitWorker();
+		virtual long worker() ES_OVERRIDE;
+		virtual void onExitWorker() ES_OVERRIDE;
 
     bool response(EsBinBuffer& out, bool isAux);
 
@@ -168,10 +168,10 @@ public:
   using EsSocket::sendTo;
 
   /// Send data to all active clients
-  virtual ulong send(const esU8* data, ulong len, ulong tmo, bool doThrow);
+  virtual ulong send(const esU8* data, ulong len, ulong tmo, bool doThrow) ES_OVERRIDE;
 
   /// Send data to particular client
-  virtual ulong sendTo(const EsSocketAddr& addr, const esU8* data, ulong len, ulong tmo, bool doThrow);
+  virtual ulong sendTo(const EsSocketAddr& addr, const esU8* data, ulong len, ulong tmo, bool doThrow) ES_OVERRIDE;
 
 protected:
   /// Internal services
@@ -240,16 +240,16 @@ protected:
     Server(EsReflection::EsSocketServer& owner);
 
   protected:
-    virtual bool canAddClient(const EsSocketAddr& addr) const;
-    virtual void onClientCannotBeAdded(const EsSocketAddr& addr) const;
-    virtual void onClientAdding(const EsSocketAddr& addr);
-    virtual void onClientAdded(const EsSocketAddr& addr);
-    virtual void onClientRemoving(const EsSocketAddr& addr);
-    virtual void onClientRemoved(const EsSocketAddr& addr);
-    virtual void onClientDisconnected(const EsSocketAddr& addr);
-    virtual void onClientClosing(const EsSocketAddr& addr, bool noFarewell, EsSocket::Impl& io);
-    virtual void onClientClosed(const EsSocketAddr& addr);
-    virtual void onClientDataReceived(const EsSocketAddr& addr, EsBinBuffer::const_pointer data, ulong len, EsBinBuffer& out);
+    virtual bool canAddClient(const EsSocketAddr& addr) const ES_OVERRIDE;
+    virtual void onClientCannotBeAdded(const EsSocketAddr& addr) const ES_OVERRIDE;
+    virtual void onClientAdding(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientAdded(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientRemoving(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientRemoved(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientDisconnected(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientClosing(const EsSocketAddr& addr, bool noFarewell, EsSocket::Impl& io) ES_OVERRIDE;
+    virtual void onClientClosed(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientDataReceived(const EsSocketAddr& addr, EsBinBuffer::const_pointer data, ulong len, EsBinBuffer& out) ES_OVERRIDE;
 
   protected:
     EsReflection::EsSocketServer& m_owner;

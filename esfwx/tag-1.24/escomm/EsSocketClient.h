@@ -13,9 +13,9 @@ public:
 protected:
   /// EsSocket services implementation
   ///
-  virtual bool checkActive() const;
-  virtual bool doOpen(bool doThrow);
-  virtual void doClose(bool graceful, bool doThrow);
+  virtual bool checkActive() const ES_OVERRIDE;
+  virtual bool doOpen(bool doThrow) ES_OVERRIDE;
+  virtual void doClose(bool graceful, bool doThrow) ES_OVERRIDE;
 
   /// Overridable callbacks
   virtual void onSendFarewell(EsSocket::Impl& io) = 0;
@@ -43,8 +43,8 @@ protected:
 
   protected:
     /// Overridable callbacks implementation
-    virtual void onSendFarewell(EsSocket::Impl& io);
-    virtual void onServerFarewellReceived(EsBinBuffer::const_pointer data, ulong len);
+    virtual void onSendFarewell(EsSocket::Impl& io) ES_OVERRIDE;
+    virtual void onServerFarewellReceived(EsBinBuffer::const_pointer data, ulong len) ES_OVERRIDE;
 
   protected:
     EsReflection::EsSocketClient& m_owner;

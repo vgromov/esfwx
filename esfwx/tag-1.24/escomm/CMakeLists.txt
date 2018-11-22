@@ -52,7 +52,6 @@ source_group(common	FILES ${escomm_common_SRCS})
 
 set(escomm_FTDI_SRCS
 						EsFtdiDriver.cpp
-						EsFtdiDriver.hxx
 						EsFtdiDriver.h
 						EsFtdiDevice.cpp
 						EsFtdiDevice.h

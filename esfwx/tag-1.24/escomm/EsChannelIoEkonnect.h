@@ -87,45 +87,45 @@ public:
 	// EsChannelIoIntf interface
 	//
 	// channel unique idGet string
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, idGet);
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, idGet) ES_OVERRIDE;
 	// monitor interface access
-	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, monitorGet)() const;
-	ES_DECL_INTF_METHOD(void, monitorSet)(const EsBaseIntf::Ptr& monitor);	
+	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, monitorGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, monitorSet)(const EsBaseIntf::Ptr& monitor) ES_OVERRIDE;
 	// state manipulation
-	ES_DECL_REFLECTED_INTF_METHOD0(bool, open);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, close);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isOpen);
+	ES_DECL_REFLECTED_INTF_METHOD0(bool, open) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, close) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isOpen) ES_OVERRIDE;
 	// io breaker access
-	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, breakerGet)() const;
-	ES_DECL_INTF_METHOD(void, breakerSet)(const EsBaseIntf::Ptr& breaker);
+	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, breakerGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, breakerSet)(const EsBaseIntf::Ptr& breaker) ES_OVERRIDE;
 	// byte io
-	ES_DECL_INTF_METHOD(esU32, bytesPut)(const esU8* data, esU32 len, esU32 tmo);
-	ES_DECL_INTF_METHOD(esU32, bytesGet)(esU8* data, esU32 len, esU32 tmo);
-	ES_DECL_REFLECTED_INTF_METHOD2(ulong, bytesPut, cr_EsBinBuffer, ulong);
-	ES_DECL_REFLECTED_INTF_METHOD2(EsBinBuffer, bytesGet, ulong, ulong);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, txTimeEstimateGet, ulong);
+	ES_DECL_INTF_METHOD(esU32, bytesPut)(const esU8* data, esU32 len, esU32 tmo) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(esU32, bytesGet)(esU8* data, esU32 len, esU32 tmo) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(ulong, bytesPut, cr_EsBinBuffer, ulong) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(EsBinBuffer, bytesGet, ulong, ulong) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, txTimeEstimateGet, ulong) ES_OVERRIDE;
 	// port reset & error info access
-	ES_DECL_REFLECTED_INTF_METHOD0(void, reset);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(long, errorGet);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, errorStringGet);
+	ES_DECL_REFLECTED_INTF_METHOD0(void, reset) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(long, errorGet) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, errorStringGet) ES_OVERRIDE;
 	// initialize C EseChannelIo from existing EsChannelIoIntf
-	ES_DECL_INTF_METHOD(void, commChannelInit)(EseChannelIo* chnl);
+	ES_DECL_INTF_METHOD(void, commChannelInit)(EseChannelIo* chnl) ES_OVERRIDE;
 	// EsPowerCtlIntf interface
 	// 
 	// remove|set device power
-	ES_DECL_REFLECTED_INTF_METHOD1(void, devicePowerSet, bool);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, devicePowerGet);
+	ES_DECL_REFLECTED_INTF_METHOD1(void, devicePowerSet, bool) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, devicePowerGet) ES_OVERRIDE;
 	// set|reset device programming mode pin
-	ES_DECL_REFLECTED_INTF_METHOD1(void, deviceProgrammingModeSet, bool);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, deviceProgrammingModeGet);
+	ES_DECL_REFLECTED_INTF_METHOD1(void, deviceProgrammingModeSet, bool) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, deviceProgrammingModeGet) ES_OVERRIDE;
 
 	// EsRateCtlIntf interface
 	// 
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, isRateSupported, ulong);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsVariant, supportedRatesGet);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, defaultRateGet);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, rateGet);
-	ES_DECL_REFLECTED_INTF_METHOD1(bool, rateSet, ulong);
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, isRateSupported, ulong) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsVariant, supportedRatesGet) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, defaultRateGet) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, rateGet) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD1(bool, rateSet, ulong) ES_OVERRIDE;
 
 	// The rest of services (non-interfaced)
 	//

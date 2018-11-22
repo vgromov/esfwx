@@ -156,82 +156,82 @@ public:
 	// EsRpcMasterIntf implementation
 	//
 	// unique id string
-	ES_DECL_INTF_METHOD(EsString, idGet)() const;
+	ES_DECL_INTF_METHOD(EsString, idGet)() const ES_OVERRIDE;
 	// lock|unlock
-	ES_DECL_REFLECTED_INTF_METHOD0(bool, tryLock);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, lock);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, unlock);
+	ES_DECL_REFLECTED_INTF_METHOD0(bool, tryLock) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, lock) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, unlock) ES_OVERRIDE;
 	// protocol stuff
-	ES_DECL_INTF_METHOD(void, clientAddrSet)(ulong);
-	ES_DECL_INTF_METHOD(ulong, clientAddrGet)() const;	
-	ES_DECL_INTF_METHOD(void, packetTimeoutSet)(ulong);
-	ES_DECL_INTF_METHOD(ulong, packetTimeoutGet)() const;	
-	ES_DECL_INTF_METHOD(void, channelSet)(const EsChannelIoIntf::Ptr&);
-	ES_DECL_INTF_METHOD(EsChannelIoIntf::Ptr, channelGet)() const;
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, currentRateGet);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, hasChannel);	
+	ES_DECL_INTF_METHOD(void, clientAddrSet)(ulong) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(ulong, clientAddrGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, packetTimeoutSet)(ulong) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(ulong, packetTimeoutGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, channelSet)(const EsChannelIoIntf::Ptr&) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(EsChannelIoIntf::Ptr, channelGet)() const ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, currentRateGet) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, hasChannel) ES_OVERRIDE;
 	// state menipulation
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isActive);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, activate);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, deactivate);
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isActive) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, activate) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, deactivate) ES_OVERRIDE;
 	// monitor interface access
-	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, monitorGet)() const;
-	ES_DECL_INTF_METHOD(void, monitorSet)(const EsBaseIntf::Ptr& monitor);
+	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, monitorGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, monitorSet)(const EsBaseIntf::Ptr& monitor) ES_OVERRIDE;
 	// standard RPC wrappers
-	ES_DECL_REFLECTED_INTF_METHOD0(bool, ping);
-	ES_DECL_REFLECTED_INTF_METHOD1(bool, changeAddr, ulong);
-	ES_DECL_REFLECTED_INTF_METHOD2(bool, rateSet, ulong, bool);
-	ES_DECL_REFLECTED_INTF_METHOD0(EsVariant, getImplementedRPCs);
-	ES_DECL_REFLECTED_INTF_METHOD0(ulong, getHealthInfo);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, queueHealthCheck);
-	ES_DECL_INTF_METHOD(esDT, getDateTime)();				// do not reflect datetime interface methods, as it creates reflection naming clash,
-	ES_DECL_INTF_METHOD(bool, setDateTime)(esDT);	// because esDT_Call in this case is both signature and auto-reflcted method name defined in RPC_REFLECTION_BEGIN section
-	ES_DECL_REFLECTED_INTF_METHOD0(void, factoryReset);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, shutdown);
-	ES_DECL_REFLECTED_INTF_METHOD1(void, queueBootloader, ulong);
+	ES_DECL_REFLECTED_INTF_METHOD0(bool, ping) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD1(bool, changeAddr, ulong) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(bool, rateSet, ulong, bool) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(EsVariant, getImplementedRPCs) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(ulong, getHealthInfo) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, queueHealthCheck) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(esDT, getDateTime)() ES_OVERRIDE;				//< do not reflect datetime interface methods, as it creates reflection naming clash,
+	ES_DECL_INTF_METHOD(bool, setDateTime)(esDT) ES_OVERRIDE;	  //< because esDT_Call in this case is both signature and auto-reflcted method name defined in RPC_REFLECTION_BEGIN section
+	ES_DECL_REFLECTED_INTF_METHOD0(void, factoryReset) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, shutdown) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD1(void, queueBootloader, ulong) ES_OVERRIDE;
 
 	// advanced communication services
 	//
 	// ping with optional channel settings tune-up (advanced ping)
 	//
-	ES_DECL_REFLECTED_INTF_METHOD0(bool, pingEx);
+	ES_DECL_REFLECTED_INTF_METHOD0(bool, pingEx) ES_OVERRIDE;
 
 	// Auto-generate C++ wrapper prototypes & reflect methods at the same time
 	// NB! only up to 5 parameters RPC calls get reflected, due to rpcId extra parameter
 	//
 #define RPC_REFLECTION_BEGIN
 #define	RPC_DEF_HANDLER0(ReturnType) \
-	ES_DECL_REFLECTED_INTF_METHOD1( To_TS_TYPE(ReturnType), GEN_SIG0(ReturnType, Call), esU16);
+	ES_DECL_REFLECTED_INTF_METHOD1( To_TS_TYPE(ReturnType), GEN_SIG0(ReturnType, Call), esU16) ES_OVERRIDE;
 #define RPC_DEF_HANDLER1(ReturnType, Param0Type) \
-	ES_DECL_REFLECTED_INTF_METHOD2( To_TS_TYPE(ReturnType), GEN_SIG1(ReturnType, Call, Param0Type), esU16, Param0Type);
+	ES_DECL_REFLECTED_INTF_METHOD2( To_TS_TYPE(ReturnType), GEN_SIG1(ReturnType, Call, Param0Type), esU16, Param0Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER2(ReturnType, Param0Type, Param1Type) \
-	ES_DECL_REFLECTED_INTF_METHOD3( To_TS_TYPE(ReturnType), GEN_SIG2(ReturnType, Call, Param0Type, Param1Type), esU16, Param0Type, Param1Type);
+	ES_DECL_REFLECTED_INTF_METHOD3( To_TS_TYPE(ReturnType), GEN_SIG2(ReturnType, Call, Param0Type, Param1Type), esU16, Param0Type, Param1Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER3(ReturnType, Param0Type, Param1Type, Param2Type) \
-	ES_DECL_REFLECTED_INTF_METHOD4( To_TS_TYPE(ReturnType), GEN_SIG3(ReturnType, Call, Param0Type, Param1Type, Param2Type), esU16, Param0Type, Param1Type, Param2Type);
+	ES_DECL_REFLECTED_INTF_METHOD4( To_TS_TYPE(ReturnType), GEN_SIG3(ReturnType, Call, Param0Type, Param1Type, Param2Type), esU16, Param0Type, Param1Type, Param2Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER4(ReturnType, Param0Type, Param1Type, Param2Type, Param3Type) \
-	ES_DECL_REFLECTED_INTF_METHOD5( To_TS_TYPE(ReturnType), GEN_SIG4(ReturnType, Call, Param0Type, Param1Type, Param2Type, Param3Type), esU16, Param0Type, Param1Type, Param2Type, Param3Type);
+	ES_DECL_REFLECTED_INTF_METHOD5( To_TS_TYPE(ReturnType), GEN_SIG4(ReturnType, Call, Param0Type, Param1Type, Param2Type, Param3Type), esU16, Param0Type, Param1Type, Param2Type, Param3Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER5(ReturnType, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type) \
-	ES_DECL_REFLECTED_INTF_METHOD6( To_TS_TYPE(ReturnType), GEN_SIG5(ReturnType, Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type), esU16, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type);
+	ES_DECL_REFLECTED_INTF_METHOD6( To_TS_TYPE(ReturnType), GEN_SIG5(ReturnType, Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type), esU16, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER6(ReturnType, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type) \
-	ES_DECL_INTF_METHOD(To_TS_TYPE(ReturnType), GEN_SIG6(ReturnType, Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type))(esU16 rpcId, Param0Type p0, Param1Type p1, Param2Type p2, Param3Type p3, Param4Type p4, Param5Type p5);
+	ES_DECL_INTF_METHOD(To_TS_TYPE(ReturnType), GEN_SIG6(ReturnType, Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type))(esU16 rpcId, Param0Type p0, Param1Type p1, Param2Type p2, Param3Type p3, Param4Type p4, Param5Type p5) ES_OVERRIDE;
 #define RPC_DEF_HANDLER7(ReturnType, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type) \
-	ES_DECL_INTF_METHOD(To_TS_TYPE(ReturnType), GEN_SIG7(ReturnType, Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type))(esU16 rpcId, Param0Type p0, Param1Type p1, Param2Type p2, Param3Type p3, Param4Type p4, Param5Type p5, Param6Type p6);
+	ES_DECL_INTF_METHOD(To_TS_TYPE(ReturnType), GEN_SIG7(ReturnType, Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type))(esU16 rpcId, Param0Type p0, Param1Type p1, Param2Type p2, Param3Type p3, Param4Type p4, Param5Type p5, Param6Type p6) ES_OVERRIDE;
 #define	RPC_DEF_HANDLER0_NORETURN() \
-	ES_DECL_REFLECTED_INTF_METHOD1(void, VOID_Call, esU16);
+	ES_DECL_REFLECTED_INTF_METHOD1(void, VOID_Call, esU16) ES_OVERRIDE;
 #define RPC_DEF_HANDLER1_NORETURN(Param0Type) \
-	ES_DECL_REFLECTED_INTF_METHOD2(void, GEN_SIG0(VOID_Call, Param0Type), esU16, Param0Type);
+	ES_DECL_REFLECTED_INTF_METHOD2(void, GEN_SIG0(VOID_Call, Param0Type), esU16, Param0Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER2_NORETURN(Param0Type, Param1Type) \
-	ES_DECL_REFLECTED_INTF_METHOD3(void, GEN_SIG1(VOID_Call, Param0Type, Param1Type), esU16, Param0Type, Param1Type);
+	ES_DECL_REFLECTED_INTF_METHOD3(void, GEN_SIG1(VOID_Call, Param0Type, Param1Type), esU16, Param0Type, Param1Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER3_NORETURN(Param0Type, Param1Type, Param2Type) \
-	ES_DECL_REFLECTED_INTF_METHOD4(void, GEN_SIG2(VOID_Call, Param0Type, Param1Type, Param2Type), esU16, Param0Type, Param1Type, Param2Type);
+	ES_DECL_REFLECTED_INTF_METHOD4(void, GEN_SIG2(VOID_Call, Param0Type, Param1Type, Param2Type), esU16, Param0Type, Param1Type, Param2Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER4_NORETURN(Param0Type, Param1Type, Param2Type, Param3Type) \
-	ES_DECL_REFLECTED_INTF_METHOD5(void, GEN_SIG3(VOID_Call, Param0Type, Param1Type, Param2Type, Param3Type), esU16, Param0Type, Param1Type, Param2Type, Param3Type);
+	ES_DECL_REFLECTED_INTF_METHOD5(void, GEN_SIG3(VOID_Call, Param0Type, Param1Type, Param2Type, Param3Type), esU16, Param0Type, Param1Type, Param2Type, Param3Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER5_NORETURN(Param0Type, Param1Type, Param2Type, Param3Type, Param4Type) \
-	ES_DECL_REFLECTED_INTF_METHOD6(void, GEN_SIG4(VOID_Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type), esU16, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type);
+	ES_DECL_REFLECTED_INTF_METHOD6(void, GEN_SIG4(VOID_Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type), esU16, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER6_NORETURN(Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type) \
-	ES_DECL_INTF_METHOD(void, GEN_SIG5(VOID_Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type))(esU16, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type);
+	ES_DECL_INTF_METHOD(void, GEN_SIG5(VOID_Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type))(esU16, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type) ES_OVERRIDE;
 #define RPC_DEF_HANDLER7_NORETURN(Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type) \
-	ES_DECL_INTF_METHOD(void, GEN_SIG6(VOID_Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type))(esU16, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type);
+	ES_DECL_INTF_METHOD(void, GEN_SIG6(VOID_Call, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type))(esU16, Param0Type, Param1Type, Param2Type, Param3Type, Param4Type, Param5Type, Param6Type) ES_OVERRIDE;
 #define RPC_REFLECTION_END
 #include <esfwxe/rpcMap/rpcReflection.cc>
 

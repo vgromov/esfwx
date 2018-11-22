@@ -25,7 +25,7 @@ const EsWideString32& nullWideString32() ES_NOTHROW
 }
 //---------------------------------------------------------------------------
 
-#if defined(ES_USE_WCHAR)
+#if !defined(ES_USE_NARROW_ES_CHAR)
 const EsByteString& nullByteString() ES_NOTHROW
 {
   static const EsByteString sc_nullByteString;

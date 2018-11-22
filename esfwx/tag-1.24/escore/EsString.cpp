@@ -66,28 +66,26 @@ const EsString::Array& EsString::nullArray() ES_NOTHROW
 const EsByteString& EsString::defEncoding() ES_NOTHROW
 {
   static const EsByteString sc_defEncoding =
-#if defined(ES_UNICODE)
-#  if defined(ES_USE_WCHAR)
-#   if 2 == ES_WCHAR_SIZE
-#     if ES_ENDIAN == ES_LITTLE_ENDIAN
-        "UTF-16LE";
-#     elif ES_ENDIAN == ES_BIG_ENDIAN
-        "UTF-16BE";
-#     else
-#       error Unsupported OS 16-bit wide string endianness detected.
-#     endif
-#   elif 4 == ES_WCHAR_SIZE
-#     if ES_ENDIAN == ES_LITTLE_ENDIAN
-        "UTF-32LE";
-#     elif ES_ENDIAN == ES_BIG_ENDIAN
-        "UTF-32BE";
-#     else
-#       error Unsupported OS 32-bit wide string endianness detected.
-#     endif
+#if !defined(ES_USE_NARROW_ES_CHAR)
+# if 1 == ES_CHAR_SIZE
+    "UTF-8"
+# elif 2 == ES_CHAR_SIZE
+#   if ES_ENDIAN == ES_LITTLE_ENDIAN
+      "UTF-16LE";
+#   elif ES_ENDIAN == ES_BIG_ENDIAN
+      "UTF-16BE";
+#   else
+#     error Unsupported OS 16-bit wide string endianness detected.
 #   endif
-#  else
-    "UTF-8";
-#  endif
+# elif 4 == ES_CHAR_SIZE
+#   if ES_ENDIAN == ES_LITTLE_ENDIAN
+      "UTF-32LE";
+#   elif ES_ENDIAN == ES_BIG_ENDIAN
+      "UTF-32BE";
+#   else
+#     error Unsupported OS 32-bit wide string endianness detected.
+#   endif
+# endif
 #else
   "CP1251";
 #endif
@@ -1843,7 +1841,7 @@ EsString EsString::fromAscii(const EsByteString& src)
 }
 //---------------------------------------------------------------------------
 
-#if defined(ES_USE_WCHAR)
+#if !defined(ES_USE_NARROW_ES_CHAR)
 static EsStringConverter::Ptr strToUtf8convGet()
 {
   static EsStringConverter::Ptr s_conv = EsStringConverter::convGet(
@@ -1859,7 +1857,7 @@ static EsStringConverter::Ptr strToUtf8convGet()
 // utf-8 representation
 EsByteString EsString::toUtf8(const EsString& src)
 {
-#if defined(ES_USE_WCHAR)
+#if !defined(ES_USE_NARROW_ES_CHAR)
   return strToUtf8convGet()->wToC(src);
 #else
   // we are UTF-8 byte string by design
@@ -1868,7 +1866,7 @@ EsByteString EsString::toUtf8(const EsString& src)
 }
 //---------------------------------------------------------------------------
 
-#if defined(ES_USE_WCHAR)
+#if !defined(ES_USE_NARROW_ES_CHAR)
 static EsStringConverter::Ptr utf8toStrConvGet()
 {
   static EsStringConverter::Ptr s_conv = EsStringConverter::convGet(
@@ -1883,7 +1881,7 @@ static EsStringConverter::Ptr utf8toStrConvGet()
 
 EsString EsString::fromUtf8(const EsByteString& src)
 {
-#if defined(ES_USE_WCHAR)
+#if !defined(ES_USE_NARROW_ES_CHAR)
   return utf8toStrConvGet()->cToW(src);
 #else
   // we are UTF-8 byte string by design
@@ -1906,7 +1904,7 @@ static EsStringConverter::Ptr strToCp1251convGet()
 // CP1251 representation
 EsByteString EsString::toCp1251(const EsString& src)
 {
-#if defined(ES_USE_WCHAR)
+#if !defined(ES_USE_NARROW_ES_CHAR)
   return strToCp1251convGet()->wToC(src);
 #else
   return strToCp1251convGet()->cToC(src);
@@ -1927,7 +1925,7 @@ static EsStringConverter::Ptr cp1251toStrConvGet()
 
 EsString EsString::fromCp1251(const EsByteString& src)
 {
-#if defined(ES_USE_WCHAR)
+#if !defined(ES_USE_NARROW_ES_CHAR)
   return cp1251toStrConvGet()->cToW(src);
 #else
   return cp1251toStrConvGet()->cToC(src);

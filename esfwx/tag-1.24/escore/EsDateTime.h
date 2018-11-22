@@ -17,7 +17,7 @@ private:
 public:
   EsTimeSpan();
   EsTimeSpan(const EsTimeSpan& other);
-	explicit EsTimeSpan(esDT dt);
+	EsTimeSpan(esDT dt);
   EsTimeSpan(const EsVariant& src);
 
 	ES_DECL_REFLECTED_CLASS_BASE(EsTimeSpan)
@@ -136,7 +136,7 @@ private:
 public:
   EsDateTime();
   EsDateTime(const EsDateTime& other);
-	explicit EsDateTime(esDT dt);
+	EsDateTime(esDT dt);
   EsDateTime(const EsVariant& src);
 
 	/// Validity check

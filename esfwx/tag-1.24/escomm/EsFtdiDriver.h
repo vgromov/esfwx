@@ -88,7 +88,7 @@ public:
 	#define FTDI_DRIVER_DEV_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) = 0;
 	#define FTDI_DRIVER_DEV_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) = 0;
 	#define FTDI_DRIVER_DEV_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) = 0;
-	#include "EsFtdiDriver.hxx"
+	#include "EsFtdiDriver.win.hxx"
 
 ES_DECL_INTF_END
 //---------------------------------------------------------------------------
@@ -514,7 +514,7 @@ public:
 	#define FTDI_DRIVER_DEV_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6) FT_STATUS ft## Name(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) { EsCriticalSectionLocker lock(m_cs); return internal## Name(p1, p2, p3, p4, p5, p6); }
 	#define FTDI_DRIVER_DEV_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7) FT_STATUS ft## Name(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) { EsCriticalSectionLocker lock(m_cs); return internal## Name(p1, p2, p3, p4, p5, p6, p7); }
 	#define FTDI_DRIVER_DEV_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8)  FT_STATUS ft## Name(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) { EsCriticalSectionLocker lock(m_cs); return internal## Name(p1, p2, p3, p4, p5, p6, p7, p8); }
-	#include "EsFtdiDriver.hxx"
+	#include "EsFtdiDriver.win.hxx"
 
 	/// Static services
 	///
@@ -612,7 +612,7 @@ protected:
 	#define FTDI_DRIVER_DEV_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6) FT_STATUS internal## Name(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) { if( !internalCheckLoaded() ) return EsFtdiDeviceIntf::FT_OTHER_ERROR; return m_pfn## Name(p1, p2, p3, p4, p5, p6); }
 	#define FTDI_DRIVER_DEV_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7) FT_STATUS internal## Name(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) { if( !internalCheckLoaded() ) return EsFtdiDeviceIntf::FT_OTHER_ERROR; return m_pfn## Name(p1, p2, p3, p4, p5, p6, p7); }
 	#define FTDI_DRIVER_DEV_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8)  FT_STATUS internal## Name(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) { if( !internalCheckLoaded() ) return EsFtdiDeviceIntf::FT_OTHER_ERROR; return m_pfn## Name(p1, p2, p3, p4, p5, p6, p7, p8); }
-	#include "EsFtdiDriver.hxx"
+	#include "EsFtdiDriver.win.hxx"
 	
 protected:
 	// FTDI driver library
@@ -648,7 +648,7 @@ public:
 	#define FTDI_DRIVER_DEV_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6) typedef FT_STATUS (__stdcall* Name ##_T)(Param1, Param2, Param3, Param4, Param5, Param6); Name ##_T m_pfn## Name;
 	#define FTDI_DRIVER_DEV_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7) typedef FT_STATUS (__stdcall* Name ##_T)(Param1, Param2, Param3, Param4, Param5, Param6, Param7); Name ##_T m_pfn## Name;
 	#define FTDI_DRIVER_DEV_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8) typedef FT_STATUS (__stdcall* Name ##_T)(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8); Name ##_T m_pfn## Name;
-	#include "EsFtdiDriver.hxx"
+	#include "EsFtdiDriver.win.hxx"
 
 private:
   friend class EsFtdiDevice;

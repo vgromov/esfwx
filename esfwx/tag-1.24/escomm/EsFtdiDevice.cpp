@@ -369,7 +369,7 @@ bool EsFtdiDevice::mpsseSynch()
 
 bool EsFtdiDevice::mpsseClockSet(esU32 clock)
 {
-	DWORD bytesWritten = 0;
+	esU32 bytesWritten = 0;
 	esU8 valH, valL;
 	esU32 val;
 
@@ -401,7 +401,8 @@ bool EsFtdiDevice::mpsseClockSet(esU32 clock)
         (unsigned)val
       );
 
-      if( !ftWrite(
+      if( 
+        !ftWrite(
           &val,
           1,
           &bytesWritten
@@ -420,7 +421,8 @@ bool EsFtdiDevice::mpsseClockSet(esU32 clock)
         (unsigned)val
       );
 
-      if( !ftWrite(
+      if( 
+        !ftWrite(
           &val,
           1,
           &bytesWritten

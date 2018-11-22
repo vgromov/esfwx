@@ -15,15 +15,15 @@ protected:
 
   protected:
     // Base class overrides
-    virtual void onClientCannotBeAdded(const EsSocketAddr& addr) const;
-    virtual void onClientAdding(const EsSocketAddr& addr);
-    virtual void onClientAdded(const EsSocketAddr& addr);
-    virtual void onClientRemoving(const EsSocketAddr& addr);
-    virtual void onClientRemoved(const EsSocketAddr& addr);
-    virtual void onClientDisconnected(const EsSocketAddr& addr);
-    virtual void onClientClosing(const EsSocketAddr& addr, bool noFarewell, EsSocket::Impl& io);
-    virtual void onClientClosed(const EsSocketAddr& addr);
-    virtual void onClientDataReceived(const EsSocketAddr& addr, EsBinBuffer::const_pointer data, ulong len, EsBinBuffer& response);
+    virtual void onClientCannotBeAdded(const EsSocketAddr& addr) const ES_OVERRIDE;
+    virtual void onClientAdding(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientAdded(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientRemoving(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientRemoved(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientDisconnected(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientClosing(const EsSocketAddr& addr, bool noFarewell, EsSocket::Impl& io) ES_OVERRIDE;
+    virtual void onClientClosed(const EsSocketAddr& addr) ES_OVERRIDE;
+    virtual void onClientDataReceived(const EsSocketAddr& addr, EsBinBuffer::const_pointer data, ulong len, EsBinBuffer& response) ES_OVERRIDE;
 
   protected:
     EsChannelIoSocketServer& m_owner;
@@ -55,29 +55,29 @@ public:
 	// EsChannelIoIntf interface
 	//
 	// channel unique idGet string
-	ES_DECL_INTF_METHOD(EsString, idGet)() const;
+	ES_DECL_INTF_METHOD(EsString, idGet)() const ES_OVERRIDE;
 	// monitor interface access
-	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, monitorGet)() const;
-	ES_DECL_INTF_METHOD(void, monitorSet)(const EsBaseIntf::Ptr& monitor);	
+	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, monitorGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, monitorSet)(const EsBaseIntf::Ptr& monitor) ES_OVERRIDE;
 	// state manipulation
-	ES_DECL_REFLECTED_INTF_METHOD0(bool, open);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, close);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isOpen);
+	ES_DECL_REFLECTED_INTF_METHOD0(bool, open) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, close) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isOpen) ES_OVERRIDE;
 	// io breaker access
-	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, breakerGet)() const;
-	ES_DECL_INTF_METHOD(void, breakerSet)(const EsBaseIntf::Ptr& breaker);
+	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, breakerGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, breakerSet)(const EsBaseIntf::Ptr& breaker) ES_OVERRIDE;
 	// byte io
-	ES_DECL_INTF_METHOD(esU32, bytesPut)(const esU8* data, esU32 len, esU32 tmo);
-	ES_DECL_INTF_METHOD(esU32, bytesGet)(esU8* data, esU32 len, esU32 tmo);
-	ES_DECL_REFLECTED_INTF_METHOD2(ulong, bytesPut, cr_EsBinBuffer, ulong);
-	ES_DECL_REFLECTED_INTF_METHOD2(EsBinBuffer, bytesGet, ulong, ulong);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, txTimeEstimateGet, ulong);
+	ES_DECL_INTF_METHOD(esU32, bytesPut)(const esU8* data, esU32 len, esU32 tmo) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(esU32, bytesGet)(esU8* data, esU32 len, esU32 tmo) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(ulong, bytesPut, cr_EsBinBuffer, ulong) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(EsBinBuffer, bytesGet, ulong, ulong) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, txTimeEstimateGet, ulong) ES_OVERRIDE;
 	// port reset & error info access
-	ES_DECL_REFLECTED_INTF_METHOD0(void, reset);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(long, errorGet);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, errorStringGet);	
+	ES_DECL_REFLECTED_INTF_METHOD0(void, reset) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(long, errorGet) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, errorStringGet) ES_OVERRIDE;
 	// initialize C EseChannelIo from existing EsChannelIoIntf
-	ES_DECL_INTF_METHOD(void, commChannelInit)(EseChannelIo* chnl);
+	ES_DECL_INTF_METHOD(void, commChannelInit)(EseChannelIo* chnl) ES_OVERRIDE;
 
 protected:
 	// internal services

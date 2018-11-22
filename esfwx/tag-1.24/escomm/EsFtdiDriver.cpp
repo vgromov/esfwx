@@ -202,7 +202,7 @@ bool EsFtdiDriver::internalLoad()
       m_pfn## Name = reinterpret_cast<Name ##_T>(m_drv->procAddrGet(esT("FT_") esT(#Name)));
     #define FTDI_DRIVER_DEV_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8)  \
       m_pfn## Name = reinterpret_cast<Name ##_T>(m_drv->procAddrGet(esT("FT_") esT(#Name)));
-    #include "EsFtdiDriver.hxx"
+    #include "EsFtdiDriver.win.hxx"
     }
   }
 

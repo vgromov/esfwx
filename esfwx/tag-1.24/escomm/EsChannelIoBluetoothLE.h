@@ -39,35 +39,35 @@ public:
 	///
 
 	/// Channel unique idGet string
-	ES_DECL_INTF_METHOD(EsString, idGet)() const;
+	ES_DECL_INTF_METHOD(EsString, idGet)() const ES_OVERRIDE;
 
 	/// Monitor interface access
-	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, monitorGet)() const;
-	ES_DECL_INTF_METHOD(void, monitorSet)(const EsBaseIntf::Ptr& monitor);
+	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, monitorGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, monitorSet)(const EsBaseIntf::Ptr& monitor) ES_OVERRIDE;
 
 	/// State manipulation
-	ES_DECL_REFLECTED_INTF_METHOD0(bool, open);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, close);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isOpen);
+	ES_DECL_REFLECTED_INTF_METHOD0(bool, open) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, close) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isOpen) ES_OVERRIDE;
 
 	/// IO breaker access
-	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, breakerGet)() const;
-	ES_DECL_INTF_METHOD(void, breakerSet)(const EsBaseIntf::Ptr& breaker);
+	ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, breakerGet)() const ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, breakerSet)(const EsBaseIntf::Ptr& breaker) ES_OVERRIDE;
 
 	/// Byte IO
-	ES_DECL_INTF_METHOD(esU32, bytesPut)(const esU8* data, esU32 len, esU32 tmo);
-	ES_DECL_INTF_METHOD(esU32, bytesGet)(esU8* data, esU32 len, esU32 tmo);
-	ES_DECL_REFLECTED_INTF_METHOD2(ulong, bytesPut, cr_EsBinBuffer, ulong);
-	ES_DECL_REFLECTED_INTF_METHOD2(EsBinBuffer, bytesGet, ulong, ulong);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, txTimeEstimateGet, ulong);
+	ES_DECL_INTF_METHOD(esU32, bytesPut)(const esU8* data, esU32 len, esU32 tmo) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(esU32, bytesGet)(esU8* data, esU32 len, esU32 tmo) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(ulong, bytesPut, cr_EsBinBuffer, ulong) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(EsBinBuffer, bytesGet, ulong, ulong) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, txTimeEstimateGet, ulong) ES_OVERRIDE;
 
 	/// Port reset & error info access
-	ES_DECL_REFLECTED_INTF_METHOD0(void, reset);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(long, errorGet);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, errorStringGet);
+	ES_DECL_REFLECTED_INTF_METHOD0(void, reset) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(long, errorGet) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, errorStringGet) ES_OVERRIDE;
 
 	/// Initialize C EseChannelIo from existing EsChannelIoIntf
-	ES_DECL_INTF_METHOD(void, commChannelInit)(EseChannelIo* chnl);
+	ES_DECL_INTF_METHOD(void, commChannelInit)(EseChannelIo* chnl) ES_OVERRIDE;
 
   /// Return byte stream IO service GUID
   static const GUID& byteSvcUUID();

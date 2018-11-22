@@ -209,7 +209,9 @@ void EsChannelIoUart::resetError()
 {
   if( 0 != m_com )
   {
-    ClearCommError(m_com, &m_lineError, 0);
+    DWORD err = m_lineError;
+    ClearCommError(m_com, &err, nullptr);
+
     m_sysError = m_lineError = 0;
   }
 }
@@ -337,12 +339,15 @@ esU32 EsChannelIoUart::internalPutBytes(const esU8* data, esU32 len, esU32 tmo)
           !internalIsBreaking() &&
           pos < end )
     {
-      esU32 result = 0;
+      DWORD result = 0;
       // EsThread::Yield();
-      if( !WriteFile(m_com, data, len, &result, 0) )
+      if( !WriteFile(m_com, data, len, &result, nullptr) )
         m_sysError = EsUtilities::osErrorCodeGet();
 
-      ClearCommError(m_com, &m_lineError, 0);
+      DWORD err = m_lineError;
+      ClearCommError(m_com, &err, nullptr);
+      m_lineError = err;
+
       // send "bytes sent" event
       if( result )
           ES_DUAL_CALL2_NR(m_monitor, EsChannelIoMonitorIntf, channelBytesSent, internalIdGet(), EsBinBuffer(data, data+result));
@@ -383,10 +388,10 @@ esU32 EsChannelIoUart::internalGetBytes(esU8* data, esU32 len, esU32 tmo)
       if( toRead )
       {
         localTmo = (tmo > spentTmo) ? tmo-spentTmo : 0; // reset local timeout
-        esU32 result = 0;
+        DWORD result = 0;
         m_sysError = 0;
 
-        if( !ReadFile(m_com, pos, toRead, &result, 0) )
+        if( !ReadFile(m_com, pos, toRead, &result, nullptr) )
           m_sysError = EsUtilities::osErrorCodeGet();
 
         // send "bytes received" event
@@ -428,8 +433,10 @@ esU32 EsChannelIoUart::queryUnreadBytes()
   COMSTAT stat;
   memset(&stat, 0, sizeof(COMSTAT));
 
-  if( !ClearCommError(m_com, &m_lineError, &stat) )
+  DWORD err = m_lineError;
+  if( !ClearCommError(m_com, &err, &stat) )
     m_sysError = EsUtilities::osErrorCodeGet();
+  m_lineError = err;
 
   return stat.cbInQue;
 }
@@ -440,8 +447,10 @@ esU32 EsChannelIoUart::queryUnsentBytes()
   COMSTAT stat;
   memset(&stat, 0, sizeof(COMSTAT));
 
-  if( !ClearCommError(m_com, &m_lineError, &stat) )
+  DWORD err = m_lineError;
+  if( !ClearCommError(m_com, &err, &stat) )
     m_sysError = EsUtilities::osErrorCodeGet();
+  m_lineError = err;
 
   return stat.cbOutQue;
 }
@@ -522,7 +531,7 @@ void EsUartEnumerator::enumerate(bool busyPortsInclude /*= true*/)
     return;
 
   //First need to convert the name "Ports" to a GUID using SetupDiClassGuidsFromName
-  esU32 dwGuids = 0;
+  DWORD dwGuids = 0;
   setupDiClassGuidsFromName(esT("Ports"), 0, 0, &dwGuids);
   if(dwGuids == 0)
     EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
@@ -560,11 +569,19 @@ void EsUartEnumerator::enumerate(bool busyPortsInclude /*= true*/)
       {
         //Read in the name of the port
         EsString portName(256, 0);
-        esU32 dwSize = portName.size()*EsString::value_size;
-        esU32 dwType = 0;
-        if( RegQueryValueEx(hDeviceKey, esT("PortName"), NULL, &dwType,
-          reinterpret_cast<LPBYTE>(&portName[0]), &dwSize) == ERROR_SUCCESS &&
-            dwType == REG_SZ)
+        DWORD dwSize = portName.size()*EsString::value_size;
+        DWORD dwType = 0;
+        if( 
+          RegQueryValueEx(
+            hDeviceKey, 
+            esT("PortName"), 
+            NULL, 
+            &dwType,
+            reinterpret_cast<LPBYTE>(&portName[0]), 
+            &dwSize
+          ) == ERROR_SUCCESS &&
+          dwType == REG_SZ
+        )
         {
           //If it looks like "COMX" then
           //add it to the array which will be returned
@@ -586,10 +603,20 @@ void EsUartEnumerator::enumerate(bool busyPortsInclude /*= true*/)
       if( !info->isEmpty() )
       {
         EsString portName(256, 0);
-        esU32 dwSize = portName.size()*sizeof(EsString::value_type);
-        esU32 dwType = 0;
-        if(setupDiGetDeviceRegistryProperty(hDevInfoSet, &devInfo, SPDRP_DEVICEDESC, &dwType,
-          reinterpret_cast<PBYTE>(&portName[0]), dwSize, &dwSize) && dwType == REG_SZ)
+        DWORD dwSize = portName.size()*sizeof(EsString::value_type);
+        DWORD dwType = 0;
+        if(
+          setupDiGetDeviceRegistryProperty(
+            hDevInfoSet, 
+            &devInfo, 
+            SPDRP_DEVICEDESC, 
+            &dwType,
+            reinterpret_cast<PBYTE>(&portName[0]), 
+            dwSize, 
+            &dwSize
+          ) && 
+          dwType == REG_SZ
+        )
         {
           info->m_strFriendlyName = EsString::format( 
             esT("%s (%s)"), 
@@ -598,8 +625,16 @@ void EsUartEnumerator::enumerate(bool busyPortsInclude /*= true*/)
           );
         }
 
-        if( setupDiGetDeviceInstanceId &&
-            setupDiGetDeviceInstanceId(hDevInfoSet, &devInfo, &portName[0], portName.size(), &dwSize) )
+        if( 
+          setupDiGetDeviceInstanceId &&
+          setupDiGetDeviceInstanceId(
+            hDevInfoSet, 
+            &devInfo, 
+            &portName[0], 
+            portName.size(), 
+            &dwSize
+          ) 
+        )
         {
           portName.resize(dwSize);
           info->m_strInstPath = portName;

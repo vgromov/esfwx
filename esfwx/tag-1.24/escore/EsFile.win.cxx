@@ -145,8 +145,16 @@ ullong EsFile::read(void* dest, ullong toRead)
 	checkFileIsOpen();
 	m_eof = false;
 
-	esU32 read = 0;
-	if( !::ReadFile(m_file, dest, static_cast<esU32>(toRead), &read, 0) )
+	DWORD read = 0;
+	if( 
+    !::ReadFile(
+       m_file, 
+      dest, 
+      static_cast<esU32>(toRead), 
+      &read, 
+      nullptr
+    ) 
+  )
 		m_lastError = EsUtilities::osErrorCodeGet();
 	else if( read < toRead )
 		m_eof = true;
@@ -159,8 +167,16 @@ ullong EsFile::write(const void* src, ullong toWrite)
 	checkFileIsOpen();
 	m_eof = false;
 
-	esU32 written;
-	if( !::WriteFile(m_file, src, static_cast<esU32>(toWrite), &written, 0) )
+	DWORD written;
+	if( 
+    !::WriteFile(
+      m_file, 
+      src, 
+      static_cast<esU32>(toWrite), 
+      &written, 
+      nullptr
+    ) 
+  )
 		m_lastError = EsUtilities::osErrorCodeGet();
 
 	return static_cast<ullong>(written);

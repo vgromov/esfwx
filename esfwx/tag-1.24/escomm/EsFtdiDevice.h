@@ -24,26 +24,26 @@ public:
   ///
 
   /// Object validity check
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isValid) { return m_owner && m_owner->isOk(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isValid) ES_OVERRIDE { return m_owner && m_owner->isOk(); }
 
   /// Return recent driver call status
-  ES_DECL_INTF_METHOD(FT_STATUS, statusGet)() const { return m_stat; }
+  ES_DECL_INTF_METHOD(FT_STATUS, statusGet)() const ES_OVERRIDE { return m_stat; }
 
   /// Bound device info access
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(esU32, flagsGet) { return m_node.flagsGet(); }
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(esU32, typeGet) { return m_node.typeGet(); }
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(esU32, idGet) { return m_node.idGet(); }
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(esU32, locIdGet) { return m_node.locIdGet(); }
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, serialNumberStrGet) { return m_node.serialNumberStrGet(); }
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, descriptionStrGet) { return m_node.descriptionStrGet(); }
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isOpen) { return m_node.isOpen(); }
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isHiSpeed) { return m_node.isHiSpeed(); }
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isMpsseSupported) { return m_node.mpsseSupported(); }
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(esU32, mpsseChannelsCntGet) { return m_node.mpsseChannelsCntGet(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(esU32, flagsGet) ES_OVERRIDE { return m_node.flagsGet(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(esU32, typeGet) ES_OVERRIDE { return m_node.typeGet(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(esU32, idGet) ES_OVERRIDE { return m_node.idGet(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(esU32, locIdGet) ES_OVERRIDE { return m_node.locIdGet(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, serialNumberStrGet) ES_OVERRIDE { return m_node.serialNumberStrGet(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, descriptionStrGet) ES_OVERRIDE { return m_node.descriptionStrGet(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isOpen) ES_OVERRIDE { return m_node.isOpen(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isHiSpeed) ES_OVERRIDE { return m_node.isHiSpeed(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isMpsseSupported) ES_OVERRIDE { return m_node.mpsseSupported(); }
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(esU32, mpsseChannelsCntGet) ES_OVERRIDE { return m_node.mpsseChannelsCntGet(); }
 
   /// Open or close Device
-  ES_DECL_REFLECTED_INTF_METHOD0(bool, open);
-  ES_DECL_REFLECTED_INTF_METHOD0(void, close);
+  ES_DECL_REFLECTED_INTF_METHOD0(bool, open) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD0(void, close) ES_OVERRIDE;
 
   /// Selected FTDI device services for reflected usage
   ///
@@ -90,15 +90,15 @@ public:
 	#define FTDI_DRIVER_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6)
 	#define FTDI_DRIVER_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7)
 	#define FTDI_DRIVER_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8)
-	#define FTDI_DRIVER_DEV_ENTRY1(Name, Param1) ES_DECL_INTF_METHOD(bool, ft## Name)() { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node) ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY2(Name, Param1, Param2) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2) { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY3(Name, Param1, Param2, Param3) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3) { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY4(Name, Param1, Param2, Param3, Param4) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4) { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY5(Name, Param1, Param2, Param3, Param4, Param5) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5) { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6, p7 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6, p7, p8 ); return m_owner->statusCheck( m_stat ); }
-	#include "EsFtdiDriver.hxx"
+	#define FTDI_DRIVER_DEV_ENTRY1(Name, Param1) ES_DECL_INTF_METHOD(bool, ft## Name)() ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node) ); return m_owner->statusCheck( m_stat ); }
+	#define FTDI_DRIVER_DEV_ENTRY2(Name, Param1, Param2) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2 ); return m_owner->statusCheck( m_stat ); }
+	#define FTDI_DRIVER_DEV_ENTRY3(Name, Param1, Param2, Param3) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3 ); return m_owner->statusCheck( m_stat ); }
+	#define FTDI_DRIVER_DEV_ENTRY4(Name, Param1, Param2, Param3, Param4) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4 ); return m_owner->statusCheck( m_stat ); }
+	#define FTDI_DRIVER_DEV_ENTRY5(Name, Param1, Param2, Param3, Param4, Param5) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5 ); return m_owner->statusCheck( m_stat ); }
+	#define FTDI_DRIVER_DEV_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6 ); return m_owner->statusCheck( m_stat ); }
+	#define FTDI_DRIVER_DEV_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6, p7 ); return m_owner->statusCheck( m_stat ); }
+	#define FTDI_DRIVER_DEV_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6, p7, p8 ); return m_owner->statusCheck( m_stat ); }
+	#include "EsFtdiDriver.win.hxx"
 
   // Reflected device properties
   ES_DECL_PROPERTY_RO(isOpen, bool)

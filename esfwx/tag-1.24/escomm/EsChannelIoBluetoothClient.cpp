@@ -284,7 +284,7 @@ ES_IMPL_INTF_METHOD(esU32, EsChannelIoBluetoothClient::bytesGet)(esU8* data, esU
 	return internalGetBytes(data, len, tmo);
 }
 
-ES_IMPL_INTF_METHOD(esU32, EsChannelIoBluetoothClient::bytesPut)(cr_EsBinBuffer data, ulong tmo)
+ES_IMPL_INTF_METHOD(ulong, EsChannelIoBluetoothClient::bytesPut)(cr_EsBinBuffer data, ulong tmo)
 {
 	if( !data.empty() )
 		return bytesPut(&data[0], data.size(), tmo);

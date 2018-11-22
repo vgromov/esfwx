@@ -158,13 +158,13 @@ m_type(VAR_BYTE)
 EsVariant::EsVariant(EsString::value_type c, AcceptCharType) ES_NOTHROW :
 m_type(VAR_CHAR)
 {
-#if defined(ES_USE_WCHAR)
-# if 2 == ES_WCHAR_SIZE
+#if !defined(ES_USE_NARROW_ES_CHAR)
+# if 2 == ES_CHAR_SIZE
 		m_value.m_ullong = static_cast<unsigned long long>( static_cast<unsigned short>(c) );
-# elif 4 == ES_WCHAR_SIZE
+# elif 4 == ES_CHAR_SIZE
     m_value.m_ullong = static_cast<unsigned long long>( static_cast<unsigned long>(c) );
 # else
-#   error Unsupported|unknown ES_WCHAR_SIZE!
+#   error Unsupported|unknown ES_CHAR_SIZE!
 # endif
 #else
 		m_value.m_ullong = static_cast<unsigned long long>( static_cast<unsigned char>(c) );
@@ -749,7 +749,7 @@ esU8 EsVariant::asByte(const std::locale& loc /*= EsLocale::locale()*/) const
 	switch( m_type )
 	{
 	case VAR_CHAR:
-#if defined(ES_UNICODE) && defined(ES_USE_WCHAR)
+#if !defined(ES_USE_NARROW_ES_CHAR)
 		{
 			EsString::value_type c = (EsString::value_type)m_value.m_ullong;
 			if( c > 255 )

@@ -6,7 +6,7 @@
 // thread id type
 //
 #if ES_OS == ES_OS_WINDOWS
-	typedef esU32 EsThreadId;
+	typedef DWORD EsThreadId;
 #	define EsThreadIdNone ((EsThreadId)-1)
 # define ES_INFINITE 		INFINITE
 #elif defined(ES_POSIX_COMPAT)
