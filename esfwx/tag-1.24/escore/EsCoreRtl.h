@@ -57,19 +57,18 @@ ESCORE_FUNC( double, es_logN(double n, double d) );
 
 #endif
 
-#if (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND) && \
-    defined(ES_WCHAR_IS_NOT_WCHAR_T)
+#if !defined(ES_USE_NARROW_ES_CHAR) && !defined(ES_CHAR_IS_WCHAR_T)
 
 #ifdef __cplusplus
   extern "C" {
 #endif
 
 ESCORE_FUNC( size_t, es_strlen(ES_CTSTR s) );
-ESCORE_FUNC( int, es_strcmp(ES_CTSTR s1, ES_CTSTR s2)       );
-ESCORE_FUNC( int, es_stricmp(ES_CTSTR s1, ES_CTSTR s2)      );
+ESCORE_FUNC( int, es_strcmp(ES_CTSTR s1, ES_CTSTR s2) );
+ESCORE_FUNC( int, es_stricmp(ES_CTSTR s1, ES_CTSTR s2) );
 ESCORE_FUNC( int, es_strncmp(ES_CTSTR s1, ES_CTSTR s2, size_t n) );
-ESCORE_FUNC( ES_CTSTR, es_strchr(ES_CTSTR s, ES_CHAR c)     );
-ESCORE_FUNC( ES_CTSTR, es_strstr(ES_CTSTR s1, ES_CTSTR s2)  );
+ESCORE_FUNC( ES_CTSTR, es_strchr(ES_CTSTR s, ES_CHAR c) );
+ESCORE_FUNC( ES_CTSTR, es_strstr(ES_CTSTR s1, ES_CTSTR s2) );
 ESCORE_FUNC( size_t, es_strftime(ES_CHAR* buff, size_t nsize, ES_CTSTR format, const struct tm *timeptr) );
 
 #ifdef __cplusplus

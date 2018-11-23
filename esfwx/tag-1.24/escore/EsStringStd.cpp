@@ -11,19 +11,23 @@
 #endif
 //---------------------------------------------------------------------------
 
+#if (defined(ES_USE_NARROW_ES_CHAR) || defined(ES_CHAR_IS_WCHAR_T)) || (4 == ES_CHAR_SIZE)
 const EsWideString16& nullWideString16() ES_NOTHROW
 {
   static const EsWideString16 sc_nullWideString16;
   return sc_nullWideString16;
 }
 //---------------------------------------------------------------------------
+#endif
 
+#if (defined(ES_USE_NARROW_ES_CHAR) || defined(ES_CHAR_IS_WCHAR_T)) || (2 == ES_CHAR_SIZE)
 const EsWideString32& nullWideString32() ES_NOTHROW
 {
   static const EsWideString32 sc_nullWideString32;
   return sc_nullWideString32;
 }
 //---------------------------------------------------------------------------
+#endif
 
 #if !defined(ES_USE_NARROW_ES_CHAR)
 const EsByteString& nullByteString() ES_NOTHROW
@@ -31,8 +35,10 @@ const EsByteString& nullByteString() ES_NOTHROW
   static const EsByteString sc_nullByteString;
   return sc_nullByteString;
 }
-#else
-const EsByteString& nullWideString() ES_NOTHROW
+#endif
+
+#if !defined(ES_CHAR_IS_WCHAR_T)
+const EsWideString& nullWideString() ES_NOTHROW
 {
   static const EsWideString sc_nullWideString;
   return sc_nullWideString;
@@ -56,10 +62,10 @@ void esBtoupper(char* str, size_t cnt) ES_NOTHROW
 
   while( cnt-- )
   {
-    *str = std::toupper( *str 
+    *str = std::toupper( *str
 #if ES_COMPILER_VENDOR_MS == ES_COMPILER_VENDOR
       , EsLocale::locale()
-#endif    
+#endif
     );
     ++str;
   }
@@ -73,10 +79,10 @@ void esBtoupper(EsByteString& bstr) ES_NOTHROW
 
   size_t cnt = bstr.size();
   for(size_t idx = 0; idx < cnt; ++idx )
-    bstr[idx] = std::toupper( bstr[idx] 
+    bstr[idx] = std::toupper( bstr[idx]
 #if ES_COMPILER_VENDOR_MS == ES_COMPILER_VENDOR
       , EsLocale::locale()
-#endif    
+#endif
     );
 }
 //---------------------------------------------------------------------------

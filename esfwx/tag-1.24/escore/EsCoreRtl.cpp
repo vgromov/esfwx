@@ -217,11 +217,11 @@ double es_logN(double n, double d)
 
 #if !defined(ES_USE_NARROW_ES_CHAR) && !defined(ES_CHAR_IS_WCHAR_T)
 
+ES_COMPILE_TIME_ASSERT(sizeof(ES_CHAR) <= sizeof(ES_UCHAR), es_uchar_SizeCheck);
+
 #ifdef __cplusplus
   extern "C" {
 #endif
-
-ES_COMPILE_TIME_ASSERT(sizeof(ES_CHAR) <= sizeof(ES_UCHAR), es_uchar_SizeCheck);
 
 size_t es_strlen(ES_CTSTR s)
 {

@@ -37,7 +37,7 @@
 #	pragma warning(disable: 4702) // unreachable code
 #	pragma warning(disable: 4996) // this function or variable may be unsafe
 #elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_INTEL
-#	pragma warning(disable: 177) // function was declared but never referenced 
+#	pragma warning(disable: 177) // function was declared but never referenced
 #	pragma warning(disable: 279) // controlling expression is constant
 #	pragma warning(disable: 1478 1786) // function was declared "deprecated"
 #	pragma warning(disable: 1684) // conversion from pointer to same-sized integral type
@@ -128,7 +128,7 @@ static size_t strlength_wide(const ES_WCHAR* s)
 
 #if !defined(ES_USE_NARROW_ES_CHAR)
 // Convert string to wide string, assuming all symbols are ASCII
-static void widen_ascii(ES_WCHAR* dest, const char* source)
+static void widen_ascii(EsString::value_type* dest, const char* source)
 {
 	for (const char* i = source; *i; ++i) *dest++ = *i;
 	*dest = 0;
@@ -302,7 +302,7 @@ struct EsXmlAllocator
 	{
 		// allocate memory for string and header block
 		size_t size = sizeof(EsXmlMemoryStringHeader) + length * sizeof(EsString::value_type);
-			
+
 		// round size up to pointer alignment boundary
 		size_t full_size = (size + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1);
 
@@ -516,7 +516,7 @@ EsXmlNodeStruct* append_node(EsXmlNodeStruct* node, EsXmlAllocator& alloc, EsXml
   child->parent = node;
 
   EsXmlNodeStruct* first_child = node->first_child;
-    
+
   if (first_child)
   {
     EsXmlNodeStruct* last_child = first_child->prev_sibling_c;
@@ -530,7 +530,7 @@ EsXmlNodeStruct* append_node(EsXmlNodeStruct* node, EsXmlAllocator& alloc, EsXml
     node->first_child = child;
     child->prev_sibling_c = child;
   }
-    
+
   return child;
 }
 
@@ -554,7 +554,7 @@ EsXmlAttributeStruct* append_attribute_ll(EsXmlNodeStruct* node, EsXmlAllocator&
     node->first_attribute = a;
     a->prev_attribute_c = a;
   }
-    
+
   return a;
 }
 
@@ -923,9 +923,10 @@ template <typename Traits, typename opt_swap = opt_false> struct utf_decoder
     return decode_utf32_block(data, size, result);
   }
 
-  static inline typename Traits::value_type decode_wchar_block(const ES_WCHAR* data, size_t size, typename Traits::value_type result)
+  template < typename wcT >
+  static inline typename Traits::value_type decode_wchar_block(const wcT* data, size_t size, typename Traits::value_type result)
   {
-    return decode_wchar_block_impl(reinterpret_cast<const wchar_selector<sizeof(ES_WCHAR)>::type*>(data), size, result);
+    return decode_wchar_block_impl(reinterpret_cast<const typename wchar_selector<sizeof(wcT)>::type* >(data), size, result);
   }
 };
 
@@ -934,9 +935,9 @@ template <typename T> void convert_utf_endian_swap(T* result, const T* data, siz
   for (size_t i = 0; i < length; ++i) result[i] = endian_swap(data[i]);
 }
 
-void convert_wchar_endian_swap(ES_WCHAR* result, const ES_WCHAR* data, size_t length)
+template <typename wcT> void convert_wchar_endian_swap(wcT* result, const wcT* data, size_t length)
 {
-  for (size_t i = 0; i < length; ++i) result[i] = static_cast<ES_WCHAR>(endian_swap(static_cast<wchar_selector<sizeof(ES_WCHAR)>::type>(data[i])));
+  for (size_t i = 0; i < length; ++i) result[i] = static_cast<wcT>(endian_swap(static_cast< typename wchar_selector<sizeof(wcT)>::type >(data[i])));
 }
 
 enum chartype_t
@@ -1142,7 +1143,7 @@ bool convert_buffer_endian_swap(EsString::pointer& out_buffer, size_t& out_lengt
   {
     EsString::pointer buffer = const_cast<EsString::pointer>(data);
 
-    convert_wchar_endian_swap(buffer, data, length);
+    convert_wchar_endian_swap<EsString::value_type>(buffer, data, length);
 
     out_buffer = buffer;
     out_length = length;
@@ -1152,7 +1153,7 @@ bool convert_buffer_endian_swap(EsString::pointer& out_buffer, size_t& out_lengt
     EsString::pointer buffer = static_cast<EsString::pointer>(EsXmlMemory::allocate((length + 1) * sizeof(EsString::value_type)));
     if (!buffer) return false;
 
-    convert_wchar_endian_swap(buffer, data, length);
+    convert_wchar_endian_swap<EsString::value_type>(buffer, data, length);
     buffer[length] = 0;
 
     out_buffer = buffer;
@@ -1540,7 +1541,7 @@ bool strcpy_insitu(EsString::pointer& dest, uintptr_t& header, uintptr_t header_
     EsXmlAllocator* alloc = reinterpret_cast<EsXmlMemoryPage*>(header & xml_memory_page_pointer_mask)->allocator;
 
     if (header & header_mask) alloc->deallocate_string(dest);
-    
+
     // mark the string as not allocated
     dest = 0;
     header &= ~header_mask;
@@ -1551,7 +1552,7 @@ bool strcpy_insitu(EsString::pointer& dest, uintptr_t& header, uintptr_t header_
   {
     // we can reuse old buffer, so just copy the new data (including zero terminator)
     memcpy(dest, source, (source_length + 1) * sizeof(EsString::value_type));
-    
+
     return true;
   }
   else
@@ -1567,7 +1568,7 @@ bool strcpy_insitu(EsString::pointer& dest, uintptr_t& header, uintptr_t header_
 
     // deallocate old buffer (*after* the above to protect against overlapping memory and/or allocation failures)
     if (header & header_mask) alloc->deallocate_string(dest);
-    
+
     // the string is now allocated, so set the flag
     dest = buf;
     header |= header_mask;
@@ -1580,11 +1581,11 @@ struct gap
 {
   EsString::pointer end;
   size_t size;
-    
+
   gap(): end(0), size(0)
   {
   }
-    
+
   // Push new gap, move s count bytes further (skipping the gap).
   // Collapse previous gap.
   void push(EsString::pointer& s, size_t count)
@@ -1595,14 +1596,14 @@ struct gap
       ES_ASSERT(s >= end);
       memmove(end - size, end, reinterpret_cast<char*>(s) - reinterpret_cast<char*>(end));
     }
-      
+
     s += count; // end of current gap
-      
+
     // "merge" two gaps
     end = s;
     size += count;
   }
-    
+
   // Collapse all gaps, return past-the-end pointer
   EsString::pointer flush(EsString::pointer s)
   {
@@ -1649,7 +1650,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
 
           ch = *++stre;
         }
-        
+
         ++stre;
       }
       else	// &#... (dec code)
@@ -1669,7 +1670,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
 
           ch = *++stre;
         }
-        
+
         ++stre;
       }
 
@@ -1678,7 +1679,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
     #else
       s = reinterpret_cast<EsString::pointer>(utf8_writer::any(reinterpret_cast<uint8_t*>(s), ucsc));
     #endif
-        
+
       g.push(s, stre - s);
       return stre;
     }
@@ -1693,7 +1694,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
         {
           *s++ = '&';
           ++stre;
-            
+
           g.push(s, stre - s);
           return stre;
         }
@@ -1718,7 +1719,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
       {
         *s++ = '>';
         ++stre;
-        
+
         g.push(s, stre - s);
         return stre;
       }
@@ -1731,7 +1732,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
       {
         *s++ = '<';
         ++stre;
-          
+
         g.push(s, stre - s);
         return stre;
       }
@@ -1744,7 +1745,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
       {
         *s++ = '"';
         ++stre;
-        
+
         g.push(s, stre - s);
         return stre;
       }
@@ -1754,7 +1755,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
     default:
       break;
   }
-  
+
   return stre;
 }
 
@@ -1764,21 +1765,21 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
 EsString::pointer strconv_comment(EsString::pointer s, EsString::value_type endch)
 {
   gap g;
-  
+
   while (true)
   {
     while (!PUGI__IS_CHARTYPE(*s, ct_parse_comment)) ++s;
-  
+
     if (*s == '\r') // Either a single 0x0d or 0x0d 0x0a pair
     {
       *s++ = '\n'; // replace first one with 0x0a
-      
+
       if (*s == '\n') g.push(s, 1);
     }
     else if (s[0] == '-' && s[1] == '-' && ENDSWITH(s[2], '>')) // comment ends here
     {
       *g.flush(s) = 0;
-      
+
       return s + (s[2] == '>' ? 3 : 2);
     }
     else if (*s == 0)
@@ -1792,21 +1793,21 @@ EsString::pointer strconv_comment(EsString::pointer s, EsString::value_type endc
 EsString::pointer strconv_cdata(EsString::pointer s, EsString::value_type endch)
 {
   gap g;
-    
+
   while (true)
   {
     while (!PUGI__IS_CHARTYPE(*s, ct_parse_cdata)) ++s;
-    
+
     if (*s == '\r') // Either a single 0x0d or 0x0d 0x0a pair
     {
       *s++ = '\n'; // replace first one with 0x0a
-      
+
       if (*s == '\n') g.push(s, 1);
     }
     else if (s[0] == ']' && s[1] == ']' && ENDSWITH(s[2], '>')) // CDATA ends here
     {
       *g.flush(s) = 0;
-      
+
       return s + 1;
     }
     else if (*s == 0)
@@ -1818,7 +1819,7 @@ EsString::pointer strconv_cdata(EsString::pointer s, EsString::value_type endch)
 }
 
 typedef EsString::pointer (*strconv_pcdata_t)(EsString::pointer);
-  
+
 template <typename opt_trim, typename opt_eol, typename opt_escape> struct strconv_pcdata_impl
 {
   static EsString::pointer parse(EsString::pointer s)
@@ -1830,7 +1831,7 @@ template <typename opt_trim, typename opt_eol, typename opt_escape> struct strco
     while (true)
     {
       while (!PUGI__IS_CHARTYPE(*s, ct_parse_pcdata)) ++s;
-        
+
       if (*s == '<') // PCDATA ends here
       {
         EsString::pointer end = g.flush(s);
@@ -1840,13 +1841,13 @@ template <typename opt_trim, typename opt_eol, typename opt_escape> struct strco
             --end;
 
         *end = 0;
-        
+
         return s + 1;
       }
       else if (opt_eol::value && *s == '\r') // Either a single 0x0d or 0x0d 0x0a pair
       {
         *s++ = '\n'; // replace first one with 0x0a
-        
+
         if (*s == '\n') g.push(s, 1);
       }
       else if (opt_escape::value && *s == '&')
@@ -1900,35 +1901,35 @@ template <typename opt_escape> struct strconv_attribute_impl
     if (PUGI__IS_CHARTYPE(*s, ct_space))
     {
       EsString::pointer str = s;
-      
+
       do ++str;
       while (PUGI__IS_CHARTYPE(*str, ct_space));
-      
+
       g.push(s, str - s);
     }
 
     while (true)
     {
       while (!PUGI__IS_CHARTYPE(*s, ct_parse_attr_ws | ct_space)) ++s;
-      
+
       if (*s == end_quote)
       {
         EsString::pointer str = g.flush(s);
-        
+
         do *str-- = 0;
         while (PUGI__IS_CHARTYPE(*str, ct_space));
-      
+
         return s + 1;
       }
       else if (PUGI__IS_CHARTYPE(*s, ct_space))
       {
         *s++ = ' ';
-  
+
         if (PUGI__IS_CHARTYPE(*s, ct_space))
         {
           EsString::pointer str = s + 1;
           while (PUGI__IS_CHARTYPE(*str, ct_space)) ++str;
-          
+
           g.push(s, str - s);
         }
       }
@@ -1951,11 +1952,11 @@ template <typename opt_escape> struct strconv_attribute_impl
     while (true)
     {
       while (!PUGI__IS_CHARTYPE(*s, ct_parse_attr_ws)) ++s;
-      
+
       if (*s == end_quote)
       {
         *g.flush(s) = 0;
-      
+
         return s + 1;
       }
       else if (PUGI__IS_CHARTYPE(*s, ct_space))
@@ -1963,7 +1964,7 @@ template <typename opt_escape> struct strconv_attribute_impl
         if (*s == '\r')
         {
           *s++ = ' ';
-      
+
           if (*s == '\n') g.push(s, 1);
         }
         else *s++ = ' ';
@@ -1987,17 +1988,17 @@ template <typename opt_escape> struct strconv_attribute_impl
     while (true)
     {
       while (!PUGI__IS_CHARTYPE(*s, ct_parse_attr)) ++s;
-      
+
       if (*s == end_quote)
       {
         *g.flush(s) = 0;
-      
+
         return s + 1;
       }
       else if (*s == '\r')
       {
         *s++ = '\n';
-        
+
         if (*s == '\n') g.push(s, 1);
       }
       else if (opt_escape::value && *s == '&')
@@ -2019,11 +2020,11 @@ template <typename opt_escape> struct strconv_attribute_impl
     while (true)
     {
       while (!PUGI__IS_CHARTYPE(*s, ct_parse_attr)) ++s;
-      
+
       if (*s == end_quote)
       {
         *g.flush(s) = 0;
-      
+
         return s + 1;
       }
       else if (opt_escape::value && *s == '&')
@@ -2042,7 +2043,7 @@ template <typename opt_escape> struct strconv_attribute_impl
 strconv_attribute_t get_strconv_attribute(unsigned int optmask)
 {
   ES_COMPILE_TIME_ASSERT(xmlParseEscapes == 0x10 && xmlParseNormalizeEol == 0x20 && xmlParseWconvAttribute == 0x40 && xmlParseWnormAttribute == 0x80, xmlParseFlagsCheck);
-  
+
   switch ((optmask >> 4) & 15) // get bitmask for flags (wconv wnorm eol escapes)
   {
   case 0:  return strconv_attribute_impl<opt_false>::parse_simple;
@@ -2079,7 +2080,7 @@ struct EsXmlParser
   EsXmlAllocator alloc;
   EsString::pointer error_offset;
   EsXmlParseStatus error_status;
-  
+
   // Parser utilities.
   #define PUGI__SKIPWS()			{ while (PUGI__IS_CHARTYPE(*s, ct_space)) ++s; }
   #define PUGI__OPTSET(OPT)			( optmsk & (OPT) )
@@ -2090,7 +2091,7 @@ struct EsXmlParser
   #define PUGI__ENDSEG()			{ ch = *s; *s = 0; ++s; }
   #define PUGI__THROW_ERROR(err, m)	return error_offset = m, error_status = err, static_cast<EsString::pointer>(0)
   #define PUGI__CHECK_ERROR(err, m)	{ if (*s == 0) PUGI__THROW_ERROR(err, m); }
-  
+
   EsXmlParser(const EsXmlAllocator& alloc_): alloc(alloc_), error_offset(0), error_status(xmlParseStatusOk)
   {
   }
@@ -2413,7 +2414,7 @@ struct EsXmlParser
   {
     strconv_attribute_t strconv_attribute = get_strconv_attribute(optmsk);
     strconv_pcdata_t strconv_pcdata = get_strconv_pcdata(optmsk);
-    
+
 		EsString::value_type ch = 0;
     EsXmlNodeStruct* cursor = root;
     EsString::pointer mark = s;
@@ -2444,7 +2445,7 @@ struct EsXmlParser
             while (true)
             {
               PUGI__SKIPWS(); // Eat any whitespace.
-          
+
               if (PUGI__IS_CHARTYPE(*s, ct_start_symbol)) // <... #...
               {
                 EsXmlAttributeStruct* a = append_attribute_ll(cursor, alloc); // Make space for this attribute.
@@ -2466,7 +2467,7 @@ struct EsXmlParser
                   ch = *s;
                   ++s;
                 }
-                
+
                 if (ch == '=') // '<... #=...'
                 {
                   PUGI__SKIPWS(); // Eat any whitespace.
@@ -2478,7 +2479,7 @@ struct EsXmlParser
                     a->value = s; // Save the offset.
 
                     s = strconv_attribute(s, ch);
-                  
+
                     if (!s) PUGI__THROW_ERROR(xmlParseStatusBadAttribute, a->value);
 
                     // After this line the loop continues from the start;
@@ -2493,7 +2494,7 @@ struct EsXmlParser
               else if (*s == '/')
               {
                 ++s;
-                
+
                 if (*s == '>')
                 {
                   PUGI__POPNODE();
@@ -2534,7 +2535,7 @@ struct EsXmlParser
           {
             // we stepped over null terminator, backtrack & handle closing tag
             --s;
-            
+
             if (endch != '>') PUGI__THROW_ERROR(xmlParseStatusBadStartElement, s);
           }
           else PUGI__THROW_ERROR(xmlParseStatusBadStartElement, s);
@@ -2545,7 +2546,7 @@ struct EsXmlParser
 
           EsString::pointer name = cursor->name;
           if (!name) PUGI__THROW_ERROR(xmlParseStatusEndElementMismatch, s);
-          
+
           while (PUGI__IS_CHARTYPE(*s, ct_symbol))
           {
             if (*s++ != *name++) PUGI__THROW_ERROR(xmlParseStatusEndElementMismatch, s);
@@ -2556,7 +2557,7 @@ struct EsXmlParser
             if (*s == 0 && name[0] == endch && name[1] == 0) PUGI__THROW_ERROR(xmlParseStatusBadEndElement, s);
             else PUGI__THROW_ERROR(xmlParseStatusEndElementMismatch, s);
           }
-            
+
           PUGI__POPNODE(); // Pop.
 
           PUGI__SKIPWS();
@@ -2610,23 +2611,23 @@ struct EsXmlParser
 
 				if (!PUGI__OPTSET(xmlParseTrimPcdata))
           s = mark;
-            
+
         if (cursor->parent || PUGI__OPTSET(xmlParseFragment))
         {
           PUGI__PUSHNODE(xmlNodePcdata); // Append a new node on the tree.
           cursor->value = s; // Save the offset.
 
           s = strconv_pcdata(s);
-              
+
           PUGI__POPNODE(); // Pop since this is a standalone.
-          
+
           if (!*s) break;
         }
         else
         {
           PUGI__SCANFOR(*s == '<'); // '...<'
           if (!*s) break;
-          
+
           ++s;
         }
 
@@ -2685,7 +2686,7 @@ struct EsXmlParser
     // save last character and make buffer zero-terminated (speeds up parsing)
     EsString::value_type endch = buffer[length - 1];
     buffer[length - 1] = 0;
-    
+
     // skip BOM to make sure it does not end up as part of parse output
     EsString::pointer buffer_data = parse_skip_bom(buffer);
 
@@ -2754,7 +2755,7 @@ size_t get_valid_length(EsString::const_pointer data, size_t length)
 {
   ES_ASSERT(length > 0);
 
-  // discard last character if it's the lead of a surrogate pair 
+  // discard last character if it's the lead of a surrogate pair
   return (sizeof(ES_WCHAR) == 2 && static_cast<unsigned int>(static_cast<uint16_t>(data[length - 1]) - 0xD800) < 0x400) ? length - 1 : length;
 }
 
@@ -2772,7 +2773,7 @@ size_t convert_buffer_output(EsString::pointer r_char, uint8_t* r_u8, uint16_t* 
   if (encoding == xmlEncodingUtf8)
   {
     uint8_t* dest = r_u8;
-    uint8_t* end = utf_decoder<utf8_writer>::decode_wchar_block(data, length, dest);
+    uint8_t* end = utf_decoder<utf8_writer>::decode_wchar_block<EsString::value_type>(data, length, dest);
 
     return static_cast<size_t>(end - dest);
   }
@@ -2783,7 +2784,7 @@ size_t convert_buffer_output(EsString::pointer r_char, uint8_t* r_u8, uint16_t* 
     uint16_t* dest = r_u16;
 
     // convert to native utf16
-    uint16_t* end = utf_decoder<utf16_writer>::decode_wchar_block(data, length, dest);
+    uint16_t* end = utf_decoder<utf16_writer>::decode_wchar_block<EsString::value_type>(data, length, dest);
 
     // swap if necessary
     EsXmlEncoding native_encoding = ES_XMLUTF16_ENDIAN;
@@ -3068,10 +3069,10 @@ void text_output_escaped(EsXmlBufferedWriter& writer, EsString::const_pointer s,
   while (*s)
   {
     EsString::const_pointer prev = s;
-    
+
     // While *s is a usual symbol
     while (!PUGI__IS_CHARTYPEX(*s, type)) ++s;
-  
+
     writer.write(prev, static_cast<size_t>(s - prev));
 
     switch (*s)
@@ -3165,7 +3166,7 @@ void node_output(EsXmlBufferedWriter& writer, const EsXmlNode& node, EsString::c
       node_output(writer, n, indent, flags, depth);
     break;
   }
-    
+
   case xmlNodeElement:
   {
     EsString::const_pointer name = node.nameGet()[0] ? node.nameGet() : default_name;
@@ -3209,13 +3210,13 @@ void node_output(EsXmlBufferedWriter& writer, const EsXmlNode& node, EsString::c
     else
     {
       writer.write('>', '\n');
-      
+
       for (EsXmlNode n = node.firstChildGet(); n; n = n.nextSiblingGet())
         node_output(writer, n, indent, flags, depth + 1);
 
       if ((flags & xmlFormatIndent) != 0 && (flags & xmlFormatRaw) == 0)
         for (unsigned int i = 0; i < depth; ++i) writer.write(indent);
-      
+
       writer.write('<', '/');
       writer.write(name);
       writer.write('>', '\n');
@@ -3223,7 +3224,7 @@ void node_output(EsXmlBufferedWriter& writer, const EsXmlNode& node, EsString::c
 
     break;
   }
-  
+
   case xmlNodePcdata:
     text_output(writer, node.valueGet(), ctx_special_pcdata, flags);
     if ((flags & xmlFormatRaw) == 0) writer.write('\n');
@@ -3492,7 +3493,7 @@ unsigned long long get_value_ullong(EsString::const_pointer value, unsigned long
 // set value with conversion functions
 bool set_value_buffer(EsString::pointer& dest, uintptr_t& header, uintptr_t header_mask, char (&buf)[128])
 {
-#ifdef ES_CHAR_IS_WCHAR_T
+#if !defined(ES_USE_NARROW_ES_CHAR)
   EsString::value_type wbuf[128];
   widen_ascii(wbuf, buf);
 
@@ -3560,7 +3561,7 @@ EsXmlParseResult load_buffer_impl(EsXmlDocumentStruct* doc, EsXmlNodeStruct* roo
   size_t length = 0;
 
   if (!convert_buffer(buffer, length, buffer_encoding, contents, size, is_mutable)) return make_parse_result(xmlParseStatusOutOfMemory);
-  
+
   // delete original buffer if we performed a conversion
   if (own && buffer != contents && contents) EsXmlMemory::deallocate(contents);
 
@@ -3875,10 +3876,10 @@ EsXmlAttribute& EsXmlAttribute::operator=(unsigned long long rhs)
 bool EsXmlAttribute::nameSet(EsString::const_pointer rhs)
 {
   if (!_attr) return false;
-  
+
   return strcpy_insitu(_attr->name, _attr->header, xml_memory_page_name_allocated_mask, rhs);
 }
-  
+
 bool EsXmlAttribute::valueSet(EsString::const_pointer rhs)
 {
   if (!_attr) return false;
@@ -4066,14 +4067,14 @@ EsXmlAttribute EsXmlNode::attributeGet(EsString::const_pointer name_) const
   for (EsXmlAttributeStruct* i = _root->first_attribute; i; i = i->next_attribute)
 		if (i->name && strequal(name_, i->name))
       return EsXmlAttribute(i);
-  
+
   return EsXmlAttribute();
 }
 
 EsXmlNode EsXmlNode::nextSiblingGet(EsString::const_pointer name_) const
 {
   if (!_root) return EsXmlNode();
-  
+
   for (EsXmlNodeStruct* i = _root->next_sibling; i; i = i->next_sibling)
     if (i->name && strequal(name_, i->name)) return EsXmlNode(i);
 
@@ -4083,7 +4084,7 @@ EsXmlNode EsXmlNode::nextSiblingGet(EsString::const_pointer name_) const
 EsXmlNode EsXmlNode::nextSiblingGet() const
 {
   if (!_root) return EsXmlNode();
-  
+
   if (_root->next_sibling) return EsXmlNode(_root->next_sibling);
   else return EsXmlNode();
 }
@@ -4091,7 +4092,7 @@ EsXmlNode EsXmlNode::nextSiblingGet() const
 EsXmlNode EsXmlNode::previousSiblingGet(EsString::const_pointer name_) const
 {
   if (!_root) return EsXmlNode();
-  
+
   for (EsXmlNodeStruct* i = _root->prev_sibling_c; i->next_sibling; i = i->prev_sibling_c)
     if (i->name && strequal(name_, i->name)) return EsXmlNode(i);
 
@@ -4101,7 +4102,7 @@ EsXmlNode EsXmlNode::previousSiblingGet(EsString::const_pointer name_) const
 EsXmlNode EsXmlNode::previousSiblingGet() const
 {
   if (!_root) return EsXmlNode();
-  
+
   if (_root->prev_sibling_c->next_sibling) return EsXmlNode(_root->prev_sibling_c);
   else return EsXmlNode();
 }
@@ -4128,7 +4129,7 @@ EsXmlText EsXmlNode::textGet() const
 EsString::const_pointer EsXmlNode::childValueGet() const
 {
   if (!_root) return esT("");
-  
+
   for (EsXmlNodeStruct* i = _root->first_child; i; i = i->next_sibling)
     if (i->value && is_text_node(i))
       return i->value;
@@ -4174,7 +4175,7 @@ bool EsXmlNode::nameSet(EsString::const_pointer rhs)
     return false;
   }
 }
-  
+
 bool EsXmlNode::valueSet(EsString::const_pointer rhs)
 {
   switch (typeGet())
@@ -4194,22 +4195,22 @@ bool EsXmlNode::valueSet(EsString::const_pointer rhs)
 EsXmlAttribute EsXmlNode::attributeAppend(EsString::const_pointer name_)
 {
   if (typeGet() != xmlNodeElement && typeGet() != xmlNodeDocDecl) return EsXmlAttribute();
-  
+
   EsXmlAttribute a(append_attribute_ll(_root, get_allocator(_root)));
   a.nameSet(name_);
-  
+
   return a;
 }
 
 EsXmlAttribute EsXmlNode::attributePrepend(EsString::const_pointer name_)
 {
   if (typeGet() != xmlNodeElement && typeGet() != xmlNodeDocDecl) return EsXmlAttribute();
-  
+
   EsXmlAttribute a(allocate_attribute(get_allocator(_root)));
   if (!a) return EsXmlAttribute();
 
   a.nameSet(name_);
-  
+
   EsXmlAttributeStruct* head = _root->first_attribute;
 
   if (head)
@@ -4219,17 +4220,17 @@ EsXmlAttribute EsXmlNode::attributePrepend(EsString::const_pointer name_)
   }
   else
     a._attr->prev_attribute_c = a._attr;
-  
+
   a._attr->next_attribute = head;
   _root->first_attribute = a._attr;
-      
+
   return a;
 }
 
 EsXmlAttribute EsXmlNode::attributeInsertBefore(EsString::const_pointer name_, const EsXmlAttribute& attr)
 {
   if ((typeGet() != xmlNodeElement && typeGet() != xmlNodeDocDecl) || attr.empty()) return EsXmlAttribute();
-  
+
   // check that attribute belongs to *this
   EsXmlAttributeStruct* cur = attr._attr;
 
@@ -4246,18 +4247,18 @@ EsXmlAttribute EsXmlNode::attributeInsertBefore(EsString::const_pointer name_, c
     attr._attr->prev_attribute_c->next_attribute = a._attr;
   else
     _root->first_attribute = a._attr;
-  
+
   a._attr->prev_attribute_c = attr._attr->prev_attribute_c;
   a._attr->next_attribute = attr._attr;
   attr._attr->prev_attribute_c = a._attr;
-      
+
   return a;
 }
 
 EsXmlAttribute EsXmlNode::attributeInsertAfter(EsString::const_pointer name_, const EsXmlAttribute& attr)
 {
   if ((typeGet() != xmlNodeElement && typeGet() != xmlNodeDocDecl) || attr.empty()) return EsXmlAttribute();
-  
+
   // check that attribute belongs to *this
   EsXmlAttributeStruct* cur = attr._attr;
 
@@ -4274,7 +4275,7 @@ EsXmlAttribute EsXmlNode::attributeInsertAfter(EsString::const_pointer name_, co
     attr._attr->next_attribute->prev_attribute_c = a._attr;
   else
     _root->first_attribute->prev_attribute_c = a._attr;
-  
+
   a._attr->next_attribute = attr._attr->next_attribute;
   a._attr->prev_attribute_c = attr._attr;
   attr._attr->next_attribute = a._attr;
@@ -4325,7 +4326,7 @@ EsXmlAttribute EsXmlNode::attributeCopyInsertBefore(const EsXmlAttribute& proto,
 EsXmlNode EsXmlNode::childAppend(EsXmlNodeType type_)
 {
   if (!allow_insert_child(this->typeGet(), type_)) return EsXmlNode();
-  
+
   EsXmlNode n(append_node(_root, get_allocator(_root), type_));
 
   if (type_ == xmlNodeDocDecl) n.nameSet(esT("xml"));
@@ -4336,7 +4337,7 @@ EsXmlNode EsXmlNode::childAppend(EsXmlNodeType type_)
 EsXmlNode EsXmlNode::childPrepend(EsXmlNodeType type_)
 {
   if (!allow_insert_child(this->typeGet(), type_)) return EsXmlNode();
-  
+
   EsXmlNode n(allocate_node(get_allocator(_root), type_));
   if (!n) return EsXmlNode();
 
@@ -4351,10 +4352,10 @@ EsXmlNode EsXmlNode::childPrepend(EsXmlNodeType type_)
   }
   else
     n._root->prev_sibling_c = n._root;
-  
+
   n._root->next_sibling = head;
   _root->first_child = n._root;
-      
+
   if (type_ == xmlNodeDocDecl) n.nameSet(esT("xml"));
 
   return n;
@@ -4369,12 +4370,12 @@ EsXmlNode EsXmlNode::childInsertBefore(EsXmlNodeType type_, const EsXmlNode& nod
   if (!n) return EsXmlNode();
 
   n._root->parent = _root;
-  
+
   if (node._root->prev_sibling_c->next_sibling)
     node._root->prev_sibling_c->next_sibling = n._root;
   else
     _root->first_child = n._root;
-  
+
   n._root->prev_sibling_c = node._root->prev_sibling_c;
   n._root->next_sibling = node._root;
   node._root->prev_sibling_c = n._root;
@@ -4398,7 +4399,7 @@ EsXmlNode EsXmlNode::childInsertAfter(EsXmlNodeType type_, const EsXmlNode& node
     node._root->next_sibling->prev_sibling_c = n._root;
   else
     _root->first_child->prev_sibling_c = n._root;
-  
+
   n._root->next_sibling = node._root->next_sibling;
   n._root->prev_sibling_c = node._root;
   node._root->next_sibling = n._root;
@@ -4498,7 +4499,7 @@ bool EsXmlNode::attributeRemove(const EsXmlAttribute& a)
 
   if (a._attr->next_attribute) a._attr->next_attribute->prev_attribute_c = a._attr->prev_attribute_c;
   else if (_root->first_attribute) _root->first_attribute->prev_attribute_c = a._attr->prev_attribute_c;
-  
+
   if (a._attr->prev_attribute_c->next_attribute) a._attr->prev_attribute_c->next_attribute = a._attr->next_attribute;
   else _root->first_attribute = a._attr->next_attribute;
 
@@ -4518,10 +4519,10 @@ bool EsXmlNode::childRemove(const EsXmlNode& n)
 
   if (n._root->next_sibling) n._root->next_sibling->prev_sibling_c = n._root->prev_sibling_c;
   else if (_root->first_child) _root->first_child->prev_sibling_c = n._root->prev_sibling_c;
-  
+
   if (n._root->prev_sibling_c->next_sibling) n._root->prev_sibling_c->next_sibling = n._root->next_sibling;
   else _root->first_child = n._root->next_sibling;
-  
+
   destroy_node(n._root, get_allocator(_root));
 
   return true;
@@ -4535,7 +4536,7 @@ EsXmlParseResult EsXmlNode::bufferAppend(const void* contents, size_t size, unsi
   // get document node
   EsXmlDocumentStruct* doc = static_cast<EsXmlDocumentStruct*>(rootGet()._root);
   ES_ASSERT(doc);
-  
+
   // get extra buffer element (we'll store the document fragment buffer there so that we can deallocate it later)
   EsXmlMemoryPage* page = 0;
   EsXmlExtraBuffer* extra = static_cast<EsXmlExtraBuffer*>(doc->allocate_memory(sizeof(EsXmlExtraBuffer), page));
@@ -4565,7 +4566,7 @@ EsXmlParseResult EsXmlNode::bufferAppend(const void* contents, size_t size, unsi
 EsXmlNode EsXmlNode::childFindByAttribute(EsString::const_pointer name_, EsString::const_pointer attr_name, EsString::const_pointer attr_value) const
 {
   if (!_root) return EsXmlNode();
-  
+
   for (EsXmlNodeStruct* i = _root->first_child; i; i = i->next_sibling)
 		if (i->name && strequal(name_, i->name))
     {
@@ -4580,7 +4581,7 @@ EsXmlNode EsXmlNode::childFindByAttribute(EsString::const_pointer name_, EsStrin
 EsXmlNode EsXmlNode::childFindByAttribute(EsString::const_pointer attr_name, EsString::const_pointer attr_value) const
 {
   if (!_root) return EsXmlNode();
-  
+
   for (EsXmlNodeStruct* i = _root->first_child; i; i = i->next_sibling)
     for (EsXmlAttributeStruct* a = i->first_attribute; a; a = a->next_attribute)
 			if (a->name && strequal(attr_name, a->name) && strequal(attr_value, a->value ? a->value : esT("")))
@@ -4592,13 +4593,13 @@ EsXmlNode EsXmlNode::childFindByAttribute(EsString::const_pointer attr_name, EsS
 EsString EsXmlNode::pathGet(EsString::value_type delimiter) const
 {
   EsXmlNode cursor = *this; // Make a copy.
-  
+
   EsString result = cursor.nameGet();
 
   while (cursor.parentGet())
   {
     cursor = cursor.parentGet();
-    
+
     EsString temp = cursor.nameGet();
     temp += delimiter;
     temp += result;
@@ -4658,22 +4659,22 @@ EsXmlNode EsXmlNode::firstElementGetByPath(EsString::const_pointer path_, EsStri
 bool EsXmlNode::traverse(EsXmlTreeWalker& walker)
 {
   walker._depth = -1;
-  
+
   EsXmlNode arg_begin = *this;
   if (!walker.begin(arg_begin)) return false;
 
   EsXmlNode cur = firstChildGet();
-      
+
   if (cur)
   {
     ++walker._depth;
 
-    do 
+    do
     {
       EsXmlNode arg_for_each = cur;
       if (!walker.for_each(arg_for_each))
         return false;
-          
+
       if (cur.firstChildGet())
       {
         ++walker._depth;
@@ -4689,7 +4690,7 @@ bool EsXmlNode::traverse(EsXmlTreeWalker& walker)
           --walker._depth;
           cur = cur.parentGet();
         }
-          
+
         if (cur != *this)
           cur = cur.nextSiblingGet();
       }
@@ -5314,7 +5315,7 @@ EsXmlParseResult EsXmlDocument::loadBufferInplace(void* contents, size_t size, u
 
   return load_buffer_impl(static_cast<EsXmlDocumentStruct*>(_root), _root, contents, size, options, encoding, true, false, &_buffer);
 }
-  
+
 EsXmlParseResult EsXmlDocument::loadBufferInplaceOwn(void* contents, size_t size, unsigned int options, EsXmlEncoding encoding)
 {
   reset();
@@ -5469,7 +5470,7 @@ template <typename I> I unique(I begin, I end)
   if (begin == end) return begin;
 
   // last written element
-  I write = begin++; 
+  I write = begin++;
 
   // merge unique elements
   while (begin != end)
@@ -5634,7 +5635,7 @@ template <typename I, typename Pred> void sort(I begin, I end, const Pred& pred)
 
 // Allocator used for AST and evaluation stacks
 struct xpath_memory_block
-{	
+{
   xpath_memory_block* next;
 
   char data[
@@ -5662,7 +5663,7 @@ public:
     error_handler = 0;
   #endif
   }
-  
+
   void* allocate_nothrow(size_t size)
   {
     const size_t block_capacity = sizeof(_root->data);
@@ -5683,12 +5684,12 @@ public:
 
       xpath_memory_block* block = static_cast<xpath_memory_block*>(EsXmlMemory::allocate(block_size));
       if (!block) return 0;
-      
+
       block->next = _root;
-      
+
       _root = block;
       _root_size = size;
-      
+
       return block->data;
     }
   }
@@ -5933,7 +5934,7 @@ public:
   {
 		return strlength(_buffer);
   }
-  
+
   EsString::pointer data(xpath_allocator* alloc)
   {
     // make private heap copy
@@ -6014,14 +6015,14 @@ EsXmlXpathString string_value(const EsXmlXpathNode& na, xpath_allocator* alloc)
     case xmlNodeComment:
     case xmlNodeProcInstr:
       return xpath_string_const(n.valueGet());
-    
+
 		case xmlNodeDocument:
     case xmlNodeElement:
     {
       EsXmlXpathString result;
 
       EsXmlNode cur = n.firstChildGet();
-      
+
       while (cur && cur != n)
       {
         if (cur.typeGet() == xmlNodePcdata || cur.typeGet() == xmlNodeCdata)
@@ -6039,10 +6040,10 @@ EsXmlXpathString string_value(const EsXmlXpathNode& na, xpath_allocator* alloc)
           if (cur != n) cur = cur.nextSiblingGet();
         }
       }
-      
+
       return result;
     }
-    
+
     default:
       return EsXmlXpathString();
     }
@@ -6052,13 +6053,13 @@ EsXmlXpathString string_value(const EsXmlXpathNode& na, xpath_allocator* alloc)
 unsigned int node_height(EsXmlNode n)
 {
   unsigned int result = 0;
-  
+
   while (n)
   {
     ++result;
     n = n.parentGet();
   }
-  
+
   return result;
 }
 
@@ -6067,10 +6068,10 @@ bool node_is_before(EsXmlNode ln, unsigned int lh, EsXmlNode rn, unsigned int rh
   // normalize heights
   for (unsigned int i = rh; i < lh; i++) ln = ln.parentGet();
   for (unsigned int j = lh; j < rh; j++) rn = rn.parentGet();
-  
+
   // one node is the ancestor of the other
   if (ln == rn) return lh < rh;
-  
+
   // find common ancestor
   while (ln.parentGet() != rn.parentGet())
   {
@@ -6085,7 +6086,7 @@ bool node_is_before(EsXmlNode ln, unsigned int lh, EsXmlNode rn, unsigned int rh
   for (; ln; ln = ln.nextSiblingGet())
     if (ln == rn)
       return true;
-      
+
   return false;
 }
 
@@ -6142,10 +6143,10 @@ struct document_order_comparator
 				for (EsXmlAttribute a = lhs.attributeGet(); a; a = a.nextAttributeGet())
 					if (a == rhs.attributeGet())
             return true;
-        
+
         return false;
       }
-      
+
       // compare attribute parents
       ln = lhs.parentGet();
       rn = rhs.parentGet();
@@ -6154,22 +6155,22 @@ struct document_order_comparator
     {
       // attributes go after the parent element
 			if (lhs.parentGet() == rhs.nodeGet()) return false;
-      
+
       ln = lhs.parentGet();
     }
 		else if (rhs.attributeGet())
     {
       // attributes go after the parent element
       if (rhs.parentGet() == lhs.nodeGet()) return true;
-      
+
       rn = rhs.parentGet();
     }
 
     if (ln == rn) return false;
-    
+
     unsigned int lh = node_height(ln);
     unsigned int rh = node_height(rn);
-    
+
     return node_is_before(ln, lh, rn, rh);
   }
 };
@@ -6467,39 +6468,39 @@ struct namespace_uri_predicate
 EsString::const_pointer namespace_uri(const EsXmlNode& node)
 {
   namespace_uri_predicate pred = node.nameGet();
-  
+
   EsXmlNode p = node;
-  
+
   while (p)
   {
     EsXmlAttribute a = p.attributeFind(pred);
-    
+
     if (a) return a.valueGet();
-    
+
     p = p.parentGet();
   }
-  
+
   return esT("");
 }
 
 EsString::const_pointer namespace_uri(const EsXmlAttribute& attr, const EsXmlNode& parent)
 {
   namespace_uri_predicate pred = attr.nameGet();
-  
+
   // Default namespace does not apply to attributes
   if (!pred.prefix) return esT("");
-  
+
   EsXmlNode p = parent;
-  
+
   while (p)
   {
 		EsXmlAttribute a = p.attributeFind(pred);
-    
+
     if (a) return a.valueGet();
-    
+
     p = p.parentGet();
   }
-  
+
   return esT("");
 }
 
@@ -6721,9 +6722,9 @@ EsXmlXpathNodeSet::type_t xpath_sort(EsXmlXpathNode* begin, EsXmlXpathNode* end,
 
     type = EsXmlXpathNodeSet::type_sorted;
   }
-  
+
   if (type != order) EsXml::reverse(begin, end);
-    
+
   return order;
 }
 
@@ -6846,7 +6847,7 @@ public:
   {
     if (_type == EsXmlXpathNodeSet::type_unsorted)
       EsXml::sort(_begin, _end, duplicate_comparator());
-  
+
     _end = EsXml::unique(_begin, _end);
   }
 
@@ -6932,12 +6933,12 @@ public:
   {
     next();
   }
-  
+
   EsString::const_pointer state() const
   {
     return _cur;
   }
-  
+
   void next()
   {
     EsString::const_pointer cur = _cur;
@@ -6952,7 +6953,7 @@ public:
     case 0:
       _cur_lexeme = lex_eof;
       break;
-    
+
     case '>':
       if (*(cur+1) == '=')
       {
@@ -6996,7 +6997,7 @@ public:
       _cur_lexeme = lex_equal;
 
       break;
-    
+
     case '+':
       cur += 1;
       _cur_lexeme = lex_plus;
@@ -7020,7 +7021,7 @@ public:
       _cur_lexeme = lex_union;
 
       break;
-    
+
     case '$':
       cur += 1;
 
@@ -7038,7 +7039,7 @@ public:
         }
 
         _cur_lexeme_contents.end = cur;
-      
+
         _cur_lexeme = lex_var_ref;
       }
       else
@@ -7059,7 +7060,7 @@ public:
       _cur_lexeme = lex_close_brace;
 
       break;
-    
+
     case '[':
       cur += 1;
       _cur_lexeme = lex_open_square_brace;
@@ -7090,7 +7091,7 @@ public:
         _cur_lexeme = lex_slash;
       }
       break;
-  
+
     case '.':
       if (*(cur+1) == '.')
       {
@@ -7106,7 +7107,7 @@ public:
         while (PUGI__IS_CHARTYPEX(*cur, ctx_digit)) cur++;
 
         _cur_lexeme_contents.end = cur;
-        
+
         _cur_lexeme = lex_number;
       }
       else
@@ -7132,7 +7133,7 @@ public:
       _cur_lexeme_contents.begin = cur;
       while (*cur && *cur != terminator) cur++;
       _cur_lexeme_contents.end = cur;
-      
+
       if (!*cur)
         _cur_lexeme = lex_none;
       else
@@ -7162,7 +7163,7 @@ public:
         _cur_lexeme_contents.begin = cur;
 
         while (PUGI__IS_CHARTYPEX(*cur, ctx_digit)) cur++;
-      
+
         if (*cur == '.')
         {
           cur++;
@@ -7195,7 +7196,7 @@ public:
         }
 
         _cur_lexeme_contents.end = cur;
-      
+
         _cur_lexeme = lex_string;
       }
       else
@@ -7324,7 +7325,7 @@ template <axis_t N> struct axis_to_type
 };
 
 template <axis_t N> const axis_t axis_to_type<N>::axis = N;
-  
+
 class xpath_ast_node
 {
 private:
@@ -7521,14 +7522,14 @@ private:
 
     size_t i = 1;
     size_t size = ns.size() - first;
-      
+
     EsXmlXpathNode* last = ns.begin() + first;
-      
+
     // remove_if... or well, sort of
     for (EsXmlXpathNode* it = last; it != ns.end(); ++it, ++i)
     {
       xpath_context c(*it, i, size);
-    
+
       if (expr->rettype() == xpathTypeNumber)
       {
         if (expr->eval_number(c, stack) == i)
@@ -7537,14 +7538,14 @@ private:
       else if (expr->eval_boolean(c, stack))
         *last++ = *it;
     }
-    
+
     ns.truncate(last);
   }
 
   void apply_predicates(xpath_node_set_raw& ns, size_t first, const xpath_stack& stack)
   {
     if (ns.size() == first) return;
-    
+
     for (xpath_ast_node* pred = _right; pred; pred = pred->_next)
     {
       apply_predicate(ns, first, pred->_left, stack);
@@ -7560,28 +7561,28 @@ private:
     // There are no attribute nodes corresponding to attributes that declare namespaces
     // That is, "xmlns:..." or "xmlns"
     if (starts_with(name, esT("xmlns")) && (name[5] == 0 || name[5] == ':')) return;
-    
+
     switch (_test)
     {
     case nodetest_name:
       if (strequal(name, _data.nodetest)) ns.push_back(EsXmlXpathNode(a, parent), alloc);
       break;
-      
+
     case nodetest_type_node:
     case nodetest_all:
       ns.push_back(EsXmlXpathNode(a, parent), alloc);
       break;
-      
+
     case nodetest_all_in_namespace:
       if (starts_with(name, _data.nodetest))
         ns.push_back(EsXmlXpathNode(a, parent), alloc);
       break;
-    
+
     default:
       ;
     }
   }
-  
+
   void step_push(xpath_node_set_raw& ns, const EsXmlNode& n, xpath_allocator* alloc)
   {
     if (!n) return;
@@ -7591,36 +7592,36 @@ private:
     case nodetest_name:
       if (n.typeGet() == xmlNodeElement && strequal(n.nameGet(), _data.nodetest)) ns.push_back(n, alloc);
       break;
-      
+
     case nodetest_type_node:
       ns.push_back(n, alloc);
       break;
-      
+
     case nodetest_type_comment:
 			if (n.typeGet() == xmlNodeComment)
         ns.push_back(n, alloc);
       break;
-      
+
     case nodetest_type_text:
 			if (n.typeGet() == xmlNodePcdata || n.typeGet() == xmlNodeCdata)
         ns.push_back(n, alloc);
       break;
-      
+
     case nodetest_type_pi:
       if (n.typeGet() == xmlNodeProcInstr)
         ns.push_back(n, alloc);
       break;
-                
+
     case nodetest_pi:
       if (n.typeGet() == xmlNodeProcInstr && strequal(n.nameGet(), _data.nodetest))
         ns.push_back(n, alloc);
       break;
-      
+
     case nodetest_all:
       if (n.typeGet() == xmlNodeElement)
         ns.push_back(n, alloc);
       break;
-      
+
     case nodetest_all_in_namespace:
       if (n.typeGet() == xmlNodeElement && starts_with(n.nameGet(), _data.nodetest))
         ns.push_back(n, alloc);
@@ -7628,7 +7629,7 @@ private:
 
     default:
       ES_ASSERT(!"Unknown axis");
-    } 
+    }
   }
 
   template <class T> void step_fill(xpath_node_set_raw& ns, const EsXmlNode& n, xpath_allocator* alloc, T)
@@ -7641,30 +7642,30 @@ private:
     {
       for (EsXmlAttribute a = n.firstAttributeGet(); a; a = a.nextAttributeGet())
         step_push(ns, a, n, alloc);
-      
+
       break;
     }
-    
+
     case axis_child:
     {
       for (EsXmlNode c = n.firstChildGet(); c; c = c.nextSiblingGet())
         step_push(ns, c, alloc);
-        
+
       break;
     }
-    
+
     case axis_descendant:
     case axis_descendant_or_self:
     {
       if (axis == axis_descendant_or_self)
         step_push(ns, n, alloc);
-        
+
       EsXmlNode cur = n.firstChildGet();
-      
+
       while (cur && cur != n)
       {
         step_push(ns, cur, alloc);
-        
+
         if (cur.firstChildGet())
           cur = cur.firstChildGet();
         else if (cur.nextSiblingGet())
@@ -7673,30 +7674,30 @@ private:
         {
           while (!cur.nextSiblingGet() && cur != n)
             cur = cur.parentGet();
-        
+
           if (cur != n) cur = cur.nextSiblingGet();
         }
       }
-      
+
       break;
     }
-    
+
     case axis_following_sibling:
     {
       for (EsXmlNode c = n.nextSiblingGet(); c; c = c.nextSiblingGet())
         step_push(ns, c, alloc);
-      
+
       break;
     }
-    
+
     case axis_preceding_sibling:
     {
       for (EsXmlNode c = n.previousSiblingGet(); c; c = c.previousSiblingGet())
         step_push(ns, c, alloc);
-      
+
       break;
     }
-    
+
     case axis_following:
     {
       EsXmlNode cur = n;
@@ -7745,7 +7746,7 @@ private:
             cur = cur.previousSiblingGet();
           else
           {
-            do 
+            do
             {
               cur = cur.parentGet();
               if (!cur) break;
@@ -7763,7 +7764,7 @@ private:
 
       break;
     }
-    
+
     case axis_ancestor:
     case axis_ancestor_or_self:
     {
@@ -7771,14 +7772,14 @@ private:
         step_push(ns, n, alloc);
 
       EsXmlNode cur = n.parentGet();
-      
+
       while (cur)
       {
         step_push(ns, cur, alloc);
-        
+
         cur = cur.parentGet();
       }
-      
+
       break;
     }
 
@@ -7795,12 +7796,12 @@ private:
 
       break;
     }
-      
+
     default:
       ES_ASSERT(!"Unimplemented axis");
     }
   }
-  
+
   template <class T> void step_fill(xpath_node_set_raw& ns, const EsXmlAttribute& a, const EsXmlNode& p, xpath_allocator* alloc, T v)
   {
     const axis_t axis = T::axis;
@@ -7814,14 +7815,14 @@ private:
         step_push(ns, a, p, alloc);
 
       EsXmlNode cur = p;
-      
+
       while (cur)
       {
         step_push(ns, cur, alloc);
-        
+
         cur = cur.parentGet();
       }
-      
+
       break;
     }
 
@@ -7837,7 +7838,7 @@ private:
     case axis_following:
     {
       EsXmlNode cur = p;
-      
+
       for (;;)
       {
         if (cur.firstChildGet())
@@ -7848,7 +7849,7 @@ private:
         {
           while (cur && !cur.nextSiblingGet()) cur = cur.parentGet();
 					cur = cur.nextSiblingGet();
-          
+
           if (!cur) break;
         }
 
@@ -7871,12 +7872,12 @@ private:
       step_fill(ns, p, alloc, v);
       break;
     }
-    
+
     default:
       ES_ASSERT(!"Unimplemented axis");
     }
   }
-  
+
   template <class T> xpath_node_set_raw step_do(const xpath_context& c, const xpath_stack& stack, T v)
   {
     const axis_t axis = T::axis;
@@ -7898,12 +7899,12 @@ private:
 
         // in general, all axes generate elements in a particular order, but there is no order guarantee if axis is applied to two nodes
         if (axis != axis_self && size != 0) ns.set_type(EsXmlXpathNodeSet::type_unsorted);
-        
+
 				if (it->nodeGet())
 					step_fill(ns, it->nodeGet(), stack.result, v);
         else if (attributes)
           step_fill(ns, it->attributeGet(), it->parentGet(), stack.result, v);
-          
+
         apply_predicates(ns, size, stack);
       }
     }
@@ -7913,7 +7914,7 @@ private:
         step_fill(ns, c.n.nodeGet(), stack.result, v);
       else if (attributes)
         step_fill(ns, c.n.attributeGet(), c.n.parentGet(), stack.result, v);
-      
+
       apply_predicates(ns, 0, stack);
     }
 
@@ -7924,7 +7925,7 @@ private:
 
     return ns;
   }
-  
+
 public:
   xpath_ast_node(ast_type_t type, EsXmlXpathValueType rettype_, EsString::const_pointer value):
     _type(static_cast<char>(type)), _rettype(static_cast<char>(rettype_)), _axis(0), _test(0), _left(0), _right(0), _next(0)
@@ -7939,14 +7940,14 @@ public:
     ES_ASSERT(type == ast_number_constant);
     _data.number = value;
   }
-  
+
   xpath_ast_node(ast_type_t type, EsXmlXpathValueType rettype_, EsXmlXpathVariable* value):
     _type(static_cast<char>(type)), _rettype(static_cast<char>(rettype_)), _axis(0), _test(0), _left(0), _right(0), _next(0)
   {
     ES_ASSERT(type == ast_variable);
     _data.variable = value;
   }
-  
+
   xpath_ast_node(ast_type_t type, EsXmlXpathValueType rettype_, xpath_ast_node* left = 0, xpath_ast_node* right = 0):
     _type(static_cast<char>(type)), _rettype(static_cast<char>(rettype_)), _axis(0), _test(0), _left(left), _right(right), _next(0)
   {
@@ -7974,10 +7975,10 @@ public:
     {
     case ast_op_or:
       return _left->eval_boolean(c, stack) || _right->eval_boolean(c, stack);
-      
+
     case ast_op_and:
       return _left->eval_boolean(c, stack) && _right->eval_boolean(c, stack);
-      
+
     case ast_op_equal:
       return compare_eq(_left, _right, c, stack, EsXml::equal_to());
 
@@ -8018,43 +8019,43 @@ public:
 
     case ast_func_boolean:
       return _left->eval_boolean(c, stack);
-      
+
     case ast_func_not:
       return !_left->eval_boolean(c, stack);
-      
+
     case ast_func_true:
       return true;
-      
+
     case ast_func_false:
       return false;
 
     case ast_func_lang:
     {
 			if (c.n.attributeGet()) return false;
-      
+
       xpath_allocator_capture cr(stack.result);
 
       EsXmlXpathString lang = _left->eval_string(c, stack);
-      
+
 			for (EsXmlNode n = c.n.nodeGet(); n; n = n.parentGet())
       {
 				EsXmlAttribute a = n.attributeGet(esT("xml:lang"));
-        
+
         if (a)
         {
           EsString::const_pointer value = a.valueGet();
-          
+
           // strnicmp / strncasecmp is not portable
           for (EsString::const_pointer lit = lang.c_str(); *lit; ++lit)
           {
             if (tolower_ascii(*lit) != tolower_ascii(*value)) return false;
             ++value;
           }
-          
+
           return *value == 0 || *value == '-';
         }
       }
-      
+
       return false;
     }
 
@@ -8074,14 +8075,14 @@ public:
       {
       case xpathTypeNumber:
         return convert_number_to_boolean(eval_number(c, stack));
-        
+
       case xpathTypeString:
       {
         xpath_allocator_capture cr(stack.result);
 
         return !eval_string(c, stack).empty();
       }
-        
+
       case xpathTypeNodeSet:
       {
         xpath_allocator_capture cr(stack.result);
@@ -8103,7 +8104,7 @@ public:
     {
     case ast_op_add:
       return _left->eval_number(c, stack) + _right->eval_number(c, stack);
-      
+
     case ast_op_subtract:
       return _left->eval_number(c, stack) - _right->eval_number(c, stack);
 
@@ -8124,7 +8125,7 @@ public:
 
     case ast_func_last:
       return static_cast<double>(c.size);
-    
+
     case ast_func_position:
       return static_cast<double>(c.position);
 
@@ -8134,28 +8135,28 @@ public:
 
       return static_cast<double>(_left->eval_node_set(c, stack).size());
     }
-    
+
     case ast_func_string_length_0:
     {
       xpath_allocator_capture cr(stack.result);
 
       return static_cast<double>(string_value(c.n, stack.result).length());
     }
-    
+
     case ast_func_string_length_1:
     {
       xpath_allocator_capture cr(stack.result);
 
       return static_cast<double>(_left->eval_string(c, stack).length());
     }
-    
+
     case ast_func_number_0:
     {
       xpath_allocator_capture cr(stack.result);
 
       return convert_string_to_number(string_value(c.n, stack.result).c_str());
     }
-    
+
     case ast_func_number_1:
       return _left->eval_number(c, stack);
 
@@ -8164,36 +8165,36 @@ public:
       xpath_allocator_capture cr(stack.result);
 
       double r = 0;
-      
+
       xpath_node_set_raw ns = _left->eval_node_set(c, stack);
-      
+
       for (const EsXmlXpathNode* it = ns.begin(); it != ns.end(); ++it)
       {
         xpath_allocator_capture cri(stack.result);
 
         r += convert_string_to_number(string_value(*it, stack.result).c_str());
       }
-    
+
       return r;
     }
 
     case ast_func_floor:
     {
       double r = _left->eval_number(c, stack);
-      
+
       return r == r ? floor(r) : r;
     }
 
     case ast_func_ceiling:
     {
       double r = _left->eval_number(c, stack);
-      
+
       return r == r ? ceil(r) : r;
     }
 
     case ast_func_round:
       return round_nearest_nzero(_left->eval_number(c, stack));
-    
+
     case ast_variable:
     {
       ES_ASSERT(_rettype == _data.variable->typeGet());
@@ -8210,30 +8211,30 @@ public:
       {
       case xpathTypeBoolean:
         return eval_boolean(c, stack) ? 1 : 0;
-        
+
       case xpathTypeString:
       {
         xpath_allocator_capture cr(stack.result);
 
         return convert_string_to_number(eval_string(c, stack).c_str());
       }
-        
+
       case xpathTypeNodeSet:
       {
         xpath_allocator_capture cr(stack.result);
 
         return convert_string_to_number(eval_string(c, stack).c_str());
       }
-        
+
       default:
         ES_ASSERT(!"Wrong expression for return type number");
         return 0;
       }
-      
+
     }
     }
   }
-  
+
   EsXmlXpathString eval_string_concat(const xpath_context& c, const xpath_stack& stack)
   {
     ES_ASSERT(_type == ast_func_concat);
@@ -8289,11 +8290,11 @@ public:
     {
     case ast_string_constant:
       return xpath_string_const(_data.string);
-    
+
     case ast_func_local_name_0:
     {
       EsXmlXpathNode na = c.n;
-      
+
       return xpath_string_const(local_name(na));
     }
 
@@ -8303,14 +8304,14 @@ public:
 
       xpath_node_set_raw ns = _left->eval_node_set(c, stack);
       EsXmlXpathNode na = ns.first();
-      
+
       return xpath_string_const(local_name(na));
     }
 
     case ast_func_name_0:
     {
       EsXmlXpathNode na = c.n;
-      
+
       return xpath_string_const(qualified_name(na));
     }
 
@@ -8320,14 +8321,14 @@ public:
 
       xpath_node_set_raw ns = _left->eval_node_set(c, stack);
       EsXmlXpathNode na = ns.first();
-      
+
       return xpath_string_const(qualified_name(na));
     }
 
     case ast_func_namespace_uri_0:
     {
       EsXmlXpathNode na = c.n;
-      
+
       return xpath_string_const(namespace_uri(na));
     }
 
@@ -8337,7 +8338,7 @@ public:
 
       xpath_node_set_raw ns = _left->eval_node_set(c, stack);
       EsXmlXpathNode na = ns.first();
-      
+
       return xpath_string_const(namespace_uri(na));
     }
 
@@ -8360,10 +8361,10 @@ public:
       EsXmlXpathString p = _right->eval_string(c, swapped_stack);
 
       EsString::const_pointer pos = find_substring(s.c_str(), p.c_str());
-      
+
       return pos ? EsXmlXpathString(s.c_str(), pos, stack.result) : EsXmlXpathString();
     }
-    
+
     case ast_func_substring_after:
     {
       xpath_allocator_capture cr(stack.temp);
@@ -8372,7 +8373,7 @@ public:
 
       EsXmlXpathString s = _left->eval_string(c, swapped_stack);
       EsXmlXpathString p = _right->eval_string(c, swapped_stack);
-      
+
       EsString::const_pointer pos = find_substring(s.c_str(), p.c_str());
       if (!pos) return EsXmlXpathString();
 
@@ -8391,18 +8392,18 @@ public:
       size_t s_length = s.length();
 
       double first = round_nearest(_right->eval_number(c, stack));
-      
+
       if (esIsNan(first)) return EsXmlXpathString(); // NaN
       else if (first >= s_length + 1) return EsXmlXpathString();
-      
+
       size_t pos = first < 1 ? 1 : static_cast<size_t>(first);
       ES_ASSERT(1 <= pos && pos <= s_length + 1);
 
       EsString::const_pointer rbegin = s.c_str() + (pos - 1);
-      
+
       return s.uses_heap() ? EsXmlXpathString(rbegin, stack.result) : xpath_string_const(rbegin);
     }
-    
+
     case ast_func_substring_3:
     {
       xpath_allocator_capture cr(stack.temp);
@@ -8414,12 +8415,12 @@ public:
 
       double first = round_nearest(_right->eval_number(c, stack));
       double last = first + round_nearest(_right->_next->eval_number(c, stack));
-      
+
       if (esIsNan(first) || esIsNan(last)) return EsXmlXpathString();
       else if (first >= s_length + 1) return EsXmlXpathString();
       else if (first >= last) return EsXmlXpathString();
       else if (last < 1) return EsXmlXpathString();
-      
+
       size_t pos = first < 1 ? 1 : static_cast<size_t>(first);
       size_t end = last >= s_length + 1 ? s_length + 1 : static_cast<size_t>(last);
 
@@ -8444,7 +8445,7 @@ public:
       EsXmlXpathString s = _left->eval_string(c, stack);
 
       normalize_space(s.data(stack.result));
-    
+
       return s;
     }
 
@@ -8479,10 +8480,10 @@ public:
       {
       case xpathTypeBoolean:
         return xpath_string_const(eval_boolean(c, stack) ? esT("true") : esT("false"));
-        
+
       case xpathTypeNumber:
         return convert_number_to_string(eval_number(c, stack), stack.result);
-        
+
       case xpathTypeNodeSet:
       {
         xpath_allocator_capture cr(stack.temp);
@@ -8492,7 +8493,7 @@ public:
         xpath_node_set_raw ns = eval_node_set(c, swapped_stack);
         return ns.empty() ? EsXmlXpathString() : string_value(ns.first(), stack.result);
       }
-      
+
       default:
         ES_ASSERT(!"Wrong expression for return type string");
         return EsXmlXpathString();
@@ -8513,13 +8514,13 @@ public:
 
       xpath_node_set_raw ls = _left->eval_node_set(c, swapped_stack);
       xpath_node_set_raw rs = _right->eval_node_set(c, stack);
-      
+
       // we can optimize merging two sorted sets, but this is a very rare operation, so don't bother
       rs.set_type(EsXmlXpathNodeSet::type_unsorted);
 
       rs.append(ls.begin(), ls.end(), stack.result);
       rs.remove_duplicates();
-      
+
       return rs;
     }
 
@@ -8532,20 +8533,20 @@ public:
       if (_type == ast_filter) set.sort_do();
 
       apply_predicate(set, 0, _right, stack);
-    
+
       return set;
     }
-    
+
     case ast_func_id:
       return xpath_node_set_raw();
-    
+
     case ast_step:
     {
       switch (_axis)
       {
       case axis_ancestor:
         return step_do(c, stack, axis_to_type<axis_ancestor>());
-        
+
       case axis_ancestor_or_self:
         return step_do(c, stack, axis_to_type<axis_ancestor_or_self>());
 
@@ -8554,7 +8555,7 @@ public:
 
       case axis_child:
         return step_do(c, stack, axis_to_type<axis_child>());
-      
+
       case axis_descendant:
         return step_do(c, stack, axis_to_type<axis_descendant>());
 
@@ -8563,23 +8564,23 @@ public:
 
       case axis_following:
         return step_do(c, stack, axis_to_type<axis_following>());
-      
+
       case axis_following_sibling:
         return step_do(c, stack, axis_to_type<axis_following_sibling>());
-      
+
       case axis_namespace:
         // namespaced axis is not supported
         return xpath_node_set_raw();
-      
+
       case axis_parent:
         return step_do(c, stack, axis_to_type<axis_parent>());
-      
+
       case axis_preceding:
         return step_do(c, stack, axis_to_type<axis_preceding>());
 
       case axis_preceding_sibling:
         return step_do(c, stack, axis_to_type<axis_preceding_sibling>());
-      
+
       case axis_self:
         return step_do(c, stack, axis_to_type<axis_self>());
 
@@ -8627,7 +8628,7 @@ public:
       return xpath_node_set_raw();
     }
   }
-  
+
   bool is_posinv()
   {
     switch (_type)
@@ -8651,10 +8652,10 @@ public:
 
     default:
       if (_left && !_left->is_posinv()) return false;
-      
+
       for (xpath_ast_node* n = _right; n; n = n->_next)
         if (!n->is_posinv()) return false;
-        
+
       return true;
     }
   }
@@ -8733,9 +8734,9 @@ struct xpath_parser
     case 'b':
       if (name == esT("boolean") && argc == 1)
         return new (alloc_node()) xpath_ast_node(ast_func_boolean, xpathTypeBoolean, args[0]);
-        
+
       break;
-    
+
     case 'c':
       if (name == esT("count") && argc == 1)
       {
@@ -8748,23 +8749,23 @@ struct xpath_parser
         return new (alloc_node()) xpath_ast_node(ast_func_concat, xpathTypeString, args[0], args[1]);
       else if (name == esT("ceiling") && argc == 1)
         return new (alloc_node()) xpath_ast_node(ast_func_ceiling, xpathTypeNumber, args[0]);
-        
+
       break;
-    
+
     case 'f':
       if (name == esT("false") && argc == 0)
         return new (alloc_node()) xpath_ast_node(ast_func_false, xpathTypeBoolean);
       else if (name == esT("floor") && argc == 1)
         return new (alloc_node()) xpath_ast_node(ast_func_floor, xpathTypeNumber, args[0]);
-        
+
       break;
-    
+
     case 'i':
       if (name == esT("id") && argc == 1)
         return new (alloc_node()) xpath_ast_node(ast_func_id, xpathTypeNodeSet, args[0]);
-        
+
       break;
-    
+
     case 'l':
       if (name == esT("last") && argc == 0)
         return new (alloc_node()) xpath_ast_node(ast_func_last, xpathTypeNumber);
@@ -8772,9 +8773,9 @@ struct xpath_parser
         return new (alloc_node()) xpath_ast_node(ast_func_lang, xpathTypeBoolean, args[0]);
       else if (name == esT("local-name") && argc <= 1)
         return parse_function_helper(ast_func_local_name_0, ast_func_local_name_1, argc, args);
-    
+
       break;
-    
+
     case 'n':
       if (name == esT("name") && argc <= 1)
         return parse_function_helper(ast_func_name_0, ast_func_name_1, argc, args);
@@ -8786,21 +8787,21 @@ struct xpath_parser
         return new (alloc_node()) xpath_ast_node(ast_func_not, xpathTypeBoolean, args[0]);
       else if (name == esT("number") && argc <= 1)
         return new (alloc_node()) xpath_ast_node(argc == 0 ? ast_func_number_0 : ast_func_number_1, xpathTypeNumber, args[0]);
-    
+
       break;
-    
+
     case 'p':
       if (name == esT("position") && argc == 0)
         return new (alloc_node()) xpath_ast_node(ast_func_position, xpathTypeNumber);
-      
+
       break;
-    
+
     case 'r':
       if (name == esT("round") && argc == 1)
         return new (alloc_node()) xpath_ast_node(ast_func_round, xpathTypeNumber, args[0]);
 
       break;
-    
+
     case 's':
       if (name == esT("string") && argc <= 1)
         return new (alloc_node()) xpath_ast_node(argc == 0 ? ast_func_string_0 : ast_func_string_1, xpathTypeString, args[0]);
@@ -8821,13 +8822,13 @@ struct xpath_parser
       }
 
       break;
-    
+
     case 't':
       if (name == esT("translate") && argc == 3)
         return new (alloc_node()) xpath_ast_node(ast_func_translate, xpathTypeString, args[0], args[1]);
       else if (name == esT("true") && argc == 0)
         return new (alloc_node()) xpath_ast_node(ast_func_true, xpathTypeBoolean);
-        
+
       break;
 
     default:
@@ -8852,37 +8853,37 @@ struct xpath_parser
         return axis_ancestor_or_self;
       else if (name == esT("attribute"))
         return axis_attribute;
-      
+
       break;
-    
+
     case 'c':
       if (name == esT("child"))
         return axis_child;
-      
+
       break;
-    
+
     case 'd':
       if (name == esT("descendant"))
         return axis_descendant;
       else if (name == esT("descendant-or-self"))
         return axis_descendant_or_self;
-      
+
       break;
-    
+
     case 'f':
       if (name == esT("following"))
         return axis_following;
       else if (name == esT("following-sibling"))
         return axis_following_sibling;
-      
+
       break;
-    
+
     case 'n':
       if (name == esT("namespace"))
         return axis_namespace;
-      
+
       break;
-    
+
     case 'p':
       if (name == esT("parent"))
         return axis_parent;
@@ -8890,13 +8891,13 @@ struct xpath_parser
         return axis_preceding;
       else if (name == esT("preceding-sibling"))
         return axis_preceding_sibling;
-      
+
       break;
-    
+
     case 's':
       if (name == esT("self"))
         return axis_self;
-      
+
       break;
 
     default:
@@ -8934,7 +8935,7 @@ struct xpath_parser
         return nodetest_type_text;
 
       break;
-    
+
     default:
       break;
     }
@@ -9005,12 +9006,12 @@ struct xpath_parser
     {
       xpath_ast_node* args[2] = {0};
       size_t argc = 0;
-      
+
       xpath_lexer_string function = _lexer.contents();
       _lexer.next();
-      
+
       xpath_ast_node* last_arg = 0;
-      
+
       if (_lexer.current() != lex_open_brace)
 				throw_error(esT("Unrecognized function call"));
 			_lexer.next();
@@ -9023,16 +9024,16 @@ struct xpath_parser
 				if (_lexer.current() != lex_comma)
 					throw_error(esT("No comma between function arguments"));
 				_lexer.next();
-        
+
         xpath_ast_node* n = parse_expression();
-        
+
         if (argc < 2) args[argc] = n;
         else last_arg->set_next(n);
 
         argc++;
         last_arg = n;
       }
-      
+
       _lexer.next();
 
       return parse_function(function, argc, args);
@@ -9044,7 +9045,7 @@ struct xpath_parser
       return 0;
     }
   }
-  
+
   // FilterExpr ::= PrimaryExpr | FilterExpr Predicate
   // Predicate ::= '[' PredicateExpr ']'
   // PredicateExpr ::= Expr
@@ -9066,13 +9067,13 @@ struct xpath_parser
 
 			if (_lexer.current() != lex_close_square_brace)
         throw_error(esT("Unmatched square brace"));
-    
+
       _lexer.next();
     }
-    
+
     return n;
   }
-  
+
   // Step ::= AxisSpecifier NodeTest Predicate* | AbbreviatedStep
   // AxisSpecifier ::= AxisName '::' | '@'?
   // NodeTest ::= NameTest | NodeType '(' ')' | 'processing-instruction' '(' Literal ')'
@@ -9090,25 +9091,25 @@ struct xpath_parser
     {
       axis = axis_attribute;
       axis_specified = true;
-      
+
       _lexer.next();
     }
     else if (_lexer.current() == lex_dot)
     {
       _lexer.next();
-      
+
       return new (alloc_node()) xpath_ast_node(ast_step, set, axis_self, nodetest_type_node, 0);
     }
     else if (_lexer.current() == lex_double_dot)
     {
       _lexer.next();
-      
+
       return new (alloc_node()) xpath_ast_node(ast_step, set, axis_parent, nodetest_type_node, 0);
     }
-  
+
     nodetest_t nt_type = nodetest_none;
     xpath_lexer_string nt_name;
-    
+
     if (_lexer.current() == lex_string)
     {
       // node name test
@@ -9141,14 +9142,14 @@ struct xpath_parser
         }
         else throw_error(esT("Unrecognized node test"));
       }
-      
+
       if (nt_type == nodetest_none)
       {
         // node type test or processing-instruction
         if (_lexer.current() == lex_open_brace)
         {
           _lexer.next();
-          
+
           if (_lexer.current() == lex_close_brace)
           {
             _lexer.next();
@@ -9156,7 +9157,7 @@ struct xpath_parser
             nt_type = parse_node_test_type(nt_name);
 
             if (nt_type == nodetest_none) throw_error(esT("Unrecognized node type"));
-            
+
             nt_name = xpath_lexer_string();
           }
           else if (nt_name == esT("processing-instruction"))
@@ -9167,7 +9168,7 @@ struct xpath_parser
             nt_type = nodetest_pi;
             nt_name = _lexer.contents();
             _lexer.next();
-            
+
             if (_lexer.current() != lex_close_brace)
               throw_error(esT("Unmatched brace near processing-instruction()"));
             _lexer.next();
@@ -9182,7 +9183,7 @@ struct xpath_parser
           if (nt_name.end - nt_name.begin > 2 && nt_name.end[-2] == ':' && nt_name.end[-1] == '*') // NCName:*
           {
             nt_name.end--; // erase *
-            
+
             nt_type = nodetest_all_in_namespace;
           }
           else nt_type = nodetest_name;
@@ -9195,37 +9196,37 @@ struct xpath_parser
       _lexer.next();
     }
     else throw_error(esT("Unrecognized node test"));
-    
+
     xpath_ast_node* n = new (alloc_node()) xpath_ast_node(ast_step, set, axis, nt_type, alloc_string(nt_name));
-    
+
     xpath_ast_node* last = 0;
-    
+
     while (_lexer.current() == lex_open_square_brace)
     {
       _lexer.next();
-      
+
       xpath_ast_node* expr = parse_expression();
 
       xpath_ast_node* pred = new (alloc_node()) xpath_ast_node(ast_predicate, xpathTypeNodeSet, expr);
-      
+
       if (_lexer.current() != lex_close_square_brace)
         throw_error(esT("Unmatched square brace"));
       _lexer.next();
-      
+
       if (last) last->set_next(pred);
       else n->set_right(pred);
-      
+
       last = pred;
     }
-    
+
     return n;
   }
-  
+
   // RelativeLocationPath ::= Step | RelativeLocationPath '/' Step | RelativeLocationPath '//' Step
   xpath_ast_node* parse_relative_location_path(xpath_ast_node* set)
   {
     xpath_ast_node* n = parse_step(set);
-    
+
     while (_lexer.current() == lex_slash || _lexer.current() == lex_double_slash)
     {
       lexeme_t l = _lexer.current();
@@ -9233,13 +9234,13 @@ struct xpath_parser
 
       if (l == lex_double_slash)
         n = new (alloc_node()) xpath_ast_node(ast_step, n, axis_descendant_or_self, nodetest_type_node, 0);
-      
+
       n = parse_step(n);
     }
-    
+
     return n;
   }
-  
+
   // LocationPath ::= RelativeLocationPath | AbsoluteLocationPath
   // AbsoluteLocationPath ::= '/' RelativeLocationPath? | '//' RelativeLocationPath
   xpath_ast_node* parse_location_path()
@@ -9247,7 +9248,7 @@ struct xpath_parser
     if (_lexer.current() == lex_slash)
     {
       _lexer.next();
-      
+
       xpath_ast_node* n = new (alloc_node()) xpath_ast_node(ast_step_root, xpathTypeNodeSet);
 
       // relative location path can start from axis_attribute, dot, double_dot, multiply and string lexemes; any other lexeme means standalone root path
@@ -9261,17 +9262,17 @@ struct xpath_parser
     else if (_lexer.current() == lex_double_slash)
     {
       _lexer.next();
-      
+
       xpath_ast_node* n = new (alloc_node()) xpath_ast_node(ast_step_root, xpathTypeNodeSet);
       n = new (alloc_node()) xpath_ast_node(ast_step, n, axis_descendant_or_self, nodetest_type_node, 0);
-      
+
       return parse_relative_location_path(n);
     }
 
     // else clause moved outside of if because of bogus warning 'control may reach end of non-void function being inlined' in gcc 4.0.1
     return parse_relative_location_path(0);
   }
-  
+
   // PathExpr ::= LocationPath
   //				| FilterExpr
   //				| FilterExpr '/' RelativeLocationPath
@@ -9287,7 +9288,7 @@ struct xpath_parser
     // '(' in case of it being an expression, string literal, number constant or
     // function call.
 
-    if (_lexer.current() == lex_var_ref || _lexer.current() == lex_open_brace || 
+    if (_lexer.current() == lex_var_ref || _lexer.current() == lex_open_brace ||
       _lexer.current() == lex_quoted_string || _lexer.current() == lex_number ||
       _lexer.current() == lex_string)
     {
@@ -9295,22 +9296,22 @@ struct xpath_parser
       {
         // This is either a function call, or not - if not, we shall proceed with location path
         EsString::const_pointer state = _lexer.state();
-        
+
         while (PUGI__IS_CHARTYPE(*state, ct_space)) ++state;
-        
+
         if (*state != '(') return parse_location_path();
 
         // This looks like a function call; however this still can be a node-test. Check it.
         if (parse_node_test_type(_lexer.contents()) != nodetest_none) return parse_location_path();
       }
-      
+
       xpath_ast_node* n = parse_filter_expression();
 
       if (_lexer.current() == lex_slash || _lexer.current() == lex_double_slash)
       {
         lexeme_t l = _lexer.current();
         _lexer.next();
-        
+
         if (l == lex_double_slash)
         {
           if (n->rettype() != xpathTypeNodeSet) throw_error(esT("Step has to be applied to node set"));
@@ -9463,13 +9464,13 @@ struct xpath_parser
   xpath_ast_node* parse()
   {
     xpath_ast_node* result = parse_expression();
-    
+
     if (_lexer.current() != lex_eof)
     {
       // there are still unparsed tokens left, error
 			throw_error(esT("Incorrect query"));
     }
-    
+
     return result;
   }
 
@@ -9493,7 +9494,7 @@ struct xpath_query_impl
   static void destroy(void* ptr)
   {
     if (!ptr) return;
-    
+
     // free all allocated pages
     static_cast<xpath_query_impl*>(ptr)->alloc.release();
 
@@ -9534,11 +9535,11 @@ void EsXmlXpathException::Throw(const EsXmlXpathParseResult& result)
 EsXmlXpathNode::EsXmlXpathNode()
 {
 }
-  
+
 EsXmlXpathNode::EsXmlXpathNode(const EsXmlNode& node_): _node(node_)
 {
 }
-  
+
 EsXmlXpathNode::EsXmlXpathNode(const EsXmlAttribute& attribute_, const EsXmlNode& parent_): _node(attribute_ ? parent_ : EsXmlNode()), _attribute(attribute_)
 {
 }
@@ -9547,7 +9548,7 @@ EsXmlNode EsXmlXpathNode::nodeGet() const
 {
   return _attribute ? EsXmlNode() : _node;
 }
-  
+
 EsXmlAttribute EsXmlXpathNode::attributeGet() const
 {
   return _attribute;
@@ -9622,7 +9623,7 @@ void EsXmlXpathNodeSet::_assign(const_iterator begin_, const_iterator end_)
     }
 
     memcpy(storage, begin_, size_ * sizeof(EsXmlXpathNode));
-    
+
     // deallocate old buffer
     if (_begin != &_storage) EsXmlMemory::deallocate(_begin);
 
@@ -9645,7 +9646,7 @@ EsXmlXpathNodeSet::~EsXmlXpathNodeSet()
 {
   if (_begin != &_storage) EsXmlMemory::deallocate(_begin);
 }
-  
+
 EsXmlXpathNodeSet::EsXmlXpathNodeSet(const EsXmlXpathNodeSet& ns): _type(ns._type), _begin(&_storage), _end(&_storage)
 {
   _assign(ns._begin, ns._end);
@@ -9654,7 +9655,7 @@ EsXmlXpathNodeSet::EsXmlXpathNodeSet(const EsXmlXpathNodeSet& ns): _type(ns._typ
 EsXmlXpathNodeSet& EsXmlXpathNodeSet::operator=(const EsXmlXpathNodeSet& ns)
 {
   if (this == &ns) return *this;
-  
+
   _type = ns._type;
   _assign(ns._begin, ns._end);
 
@@ -9665,17 +9666,17 @@ EsXmlXpathNodeSet::type_t EsXmlXpathNodeSet::typeGet() const
 {
   return _type;
 }
-  
+
 size_t EsXmlXpathNodeSet::size() const
 {
   return _end - _begin;
 }
-  
+
 bool EsXmlXpathNodeSet::empty() const
 {
   return _begin == _end;
 }
-  
+
 const EsXmlXpathNode& EsXmlXpathNodeSet::operator[](size_t index) const
 {
   ES_ASSERT(index < size());
@@ -9686,7 +9687,7 @@ EsXmlXpathNodeSet::const_iterator EsXmlXpathNodeSet::begin() const
 {
   return _begin;
 }
-  
+
 EsXmlXpathNodeSet::const_iterator EsXmlXpathNodeSet::end() const
 {
   return _end;
@@ -9943,7 +9944,7 @@ EsXmlXpathValueType EsXmlXpathQuery::returnTypeGet() const
 bool EsXmlXpathQuery::asBool(const EsXmlXpathNode& n) const
 {
   if (!_impl) return false;
-  
+
   xpath_context c(n, 1, 1);
   xpath_stack_data sd;
 
@@ -9953,7 +9954,7 @@ bool EsXmlXpathQuery::asBool(const EsXmlXpathNode& n) const
 double EsXmlXpathQuery::asNumber(const EsXmlXpathNode& n) const
 {
   if (!_impl) return gen_nan();
-  
+
   xpath_context c(n, 1, 1);
   xpath_stack_data sd;
 
@@ -9974,7 +9975,7 @@ size_t EsXmlXpathQuery::asString(EsString::pointer buffer, size_t capacity, cons
 	EsXmlXpathString r = evaluate_string_impl(static_cast<xpath_query_impl*>(_impl), n, sd);
 
   size_t full_size = r.length() + 1;
-  
+
   if (capacity > 0)
   {
     size_t size = (full_size < capacity) ? full_size : capacity;
@@ -9983,7 +9984,7 @@ size_t EsXmlXpathQuery::asString(EsString::pointer buffer, size_t capacity, cons
     memcpy(buffer, r.c_str(), (size - 1) * sizeof(EsString::value_type));
     buffer[size - 1] = 0;
   }
-  
+
   return full_size;
 }
 
@@ -10000,7 +10001,7 @@ EsXmlXpathNodeSet EsXmlXpathQuery::asNodeSet(const EsXmlXpathNode& n) const
 
     EsXmlXpathException::Throw(res);
   }
-  
+
   xpath_context c(n, 1, 1);
   xpath_stack_data sd;
 
