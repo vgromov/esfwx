@@ -59,16 +59,24 @@ inline const StrT& nullStringT() ES_NOTHROW { return StrT::null(); }
 
 /// Specializations for known types
 ///
-template <>
-inline const EsByteString& nullStringT<EsByteString>() ES_NOTHROW { return nullByteString(); }
+#if !defined(ES_CHAR_IS_WCHAR_T)
+  template <>
+  inline const EsWideString& nullStringT<EsWideString>() ES_NOTHROW { return nullWideString(); }
+#endif
 
-template <>
-inline const EsWideString& nullStringT<EsWideString>() ES_NOTHROW { return nullWideString(); }
+#if !defined(ES_USE_NARROW_ES_CHAR)
+  template <>
+  inline const EsByteString& nullStringT<EsByteString>() ES_NOTHROW { return nullByteString(); }
+#endif
 
-template <>
-inline const EsWideString16& nullStringT<EsWideString16>() ES_NOTHROW { return nullWideString16(); }
+#if (2 != ES_CHAR_SIZE) || defined(ES_CHAR_IS_WCHAR_T)
+  template <>
+  inline const EsWideString16& nullStringT<EsWideString16>() ES_NOTHROW { return nullWideString16(); }
+#endif
 
-template <>
-inline const EsWideString32& nullStringT<EsWideString32>() ES_NOTHROW { return nullWideString32(); }
+#if (4 != ES_CHAR_SIZE) || defined(ES_CHAR_IS_WCHAR_T)
+  template <>
+  inline const EsWideString32& nullStringT<EsWideString32>() ES_NOTHROW { return nullWideString32(); }
+#endif
 
 #endif // _es_string_std_h_
