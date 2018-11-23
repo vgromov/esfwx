@@ -4,7 +4,6 @@
 typedef std::basic_string<ES_CHAR>            EsBasicStringT;
 
 #if defined(ES_CHAR_IS_WCHAR_T)
-  class EsString;
 # define EsWideString                         EsString
 # define nullWideString                       EsString::null
 #else
@@ -19,16 +18,13 @@ typedef std::basic_string<ES_CHAR>            EsBasicStringT;
     typedef std::basic_string<char16_t>       EsWideString16;
     typedef std::basic_string<char32_t>       EsWideString32;
 # elif 2 == ES_CHAR_SIZE
-    class EsString;
 #   define EsWideString16                     EsString
     typedef std::basic_string<char32_t>       EsWideString32;
 # elif 4 == ES_CHAR_SIZE
-    class EsString;
     typedef std::basic_string<char16_t>       EsWideString16;
 #   define EsWideString32                     EsString
 # endif
 #else
-  class EsString;
 # define EsByteString                         EsString
 # define nullByteString                       EsString::null
   typedef std::basic_string<char16_t>         EsWideString16;

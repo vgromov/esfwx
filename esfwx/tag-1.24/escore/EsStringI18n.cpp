@@ -165,10 +165,10 @@ void GettextMoParser::charsetExtract()
 //---------------------------------------------------------------------------
 
 void GettextMoParser::stringsExtract(
-  const char* str, 
+  const char* str,
   size_t strLen,
-	EsStringConverter& conv, 
-  EsString& main, 
+	EsStringConverter& conv,
+  EsString& main,
   EsString::Array& plurals
 )
 {
@@ -180,7 +180,7 @@ void GettextMoParser::stringsExtract(
 	{
 		main =
 #if !defined(ES_USE_NARROW_ES_CHAR)
-    conv.cToW(
+    conv.cToW_T<EsString>(
 #else
     conv.cToC(
 #endif
@@ -194,17 +194,17 @@ void GettextMoParser::stringsExtract(
 
 			plurals.push_back(
 #if !defined(ES_USE_NARROW_ES_CHAR)
-        conv.cToW(
+        conv.cToW_T<EsString>(
 #else
         conv.cToC(
 #endif
 				  src.substr(
             offs,
-					  (pos0 == EsByteString::npos) ? 
-              EsByteString::npos : 
+					  (pos0 == EsByteString::npos) ?
+              EsByteString::npos :
               pos0 - offs
-          ) 
-        ) 
+          )
+        )
       );
 
 		} while( pos0 != EsByteString::npos );
@@ -212,11 +212,11 @@ void GettextMoParser::stringsExtract(
 	else
 		main =
 #if !defined(ES_USE_NARROW_ES_CHAR)
-      conv.cToW(
+      conv.cToW_T<EsString>(
 #else
       conv.cToC(
 #endif
-      src 
+      src
     );
 }
 //---------------------------------------------------------------------------

@@ -1858,7 +1858,7 @@ static EsStringConverter::Ptr strToUtf8convGet()
 EsByteString EsString::toUtf8(const EsString& src)
 {
 #if !defined(ES_USE_NARROW_ES_CHAR)
-  return strToUtf8convGet()->wToC(src);
+  return strToUtf8convGet()->W_TtoC<EsString>(src);
 #else
   // we are UTF-8 byte string by design
   return src;
@@ -1882,7 +1882,7 @@ static EsStringConverter::Ptr utf8toStrConvGet()
 EsString EsString::fromUtf8(const EsByteString& src)
 {
 #if !defined(ES_USE_NARROW_ES_CHAR)
-  return utf8toStrConvGet()->cToW(src);
+  return utf8toStrConvGet()->cToW_T<EsString>(src);
 #else
   // we are UTF-8 byte string by design
   return src;
@@ -1905,7 +1905,7 @@ static EsStringConverter::Ptr strToCp1251convGet()
 EsByteString EsString::toCp1251(const EsString& src)
 {
 #if !defined(ES_USE_NARROW_ES_CHAR)
-  return strToCp1251convGet()->wToC(src);
+  return strToCp1251convGet()->W_TtoC<EsString>(src);
 #else
   return strToCp1251convGet()->cToC(src);
 #endif
@@ -1926,7 +1926,7 @@ static EsStringConverter::Ptr cp1251toStrConvGet()
 EsString EsString::fromCp1251(const EsByteString& src)
 {
 #if !defined(ES_USE_NARROW_ES_CHAR)
-  return cp1251toStrConvGet()->cToW(src);
+  return cp1251toStrConvGet()->cToW_T<EsString>(src);
 #else
   return cp1251toStrConvGet()->cToC(src);
 #endif
