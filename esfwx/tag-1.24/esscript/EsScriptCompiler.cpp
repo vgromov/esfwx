@@ -64,10 +64,67 @@
 #include <boost/spirit/include/classic_escape_char.hpp>
 #include <boost/spirit/include/classic_symbols.hpp>
 #include <boost/spirit/include/classic_chset.hpp>
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+// Handle non-standard char types cases
+#if !defined(ES_USE_NARROW_ES_CHAR) && !defined(ES_CHAR_IS_WCHAR_T)
+namespace boost { namespace spirit {
+
+BOOST_SPIRIT_CLASSIC_NAMESPACE_BEGIN
+
+  inline chset<EsString::value_type>
+  chset_p(EsString::value_type const* init)
+  { return chset<EsString::value_type>(init); }
+
+  inline chset<EsString::value_type>
+  chset_p(EsString::value_type ch)
+  { return chset<EsString::value_type>(ch); }
+
+  struct eschar_as_parser
+  {
+      typedef chlit<EsString::value_type> type;
+      static type convert(EsString::value_type ch)
+      {
+          return type(ch);
+      }
+  };
+
+  struct esstring_as_parser
+  {
+      typedef strlit<EsString::value_type const*> type;
+      static type convert(EsString::value_type const* str)
+      {
+          return type(str);
+      }
+  };
+
+  template<>
+  struct as_parser<EsString::value_type> : eschar_as_parser {};
+
+  template<>
+  struct as_parser<EsString::value_type*> : esstring_as_parser {};
+
+  template<>
+  struct as_parser<EsString::value_type const*> : esstring_as_parser {};
+
+  template<int N>
+  struct as_parser<EsString::value_type[N]> : esstring_as_parser {};
+
+  template<int N>
+  struct as_parser<EsString::value_type const[N]> : esstring_as_parser {};
+
+BOOST_SPIRIT_CLASSIC_NAMESPACE_END
+
+}} // namespace BOOST_SPIRIT_CLASSIC_NS
+
+#endif
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 using namespace boost::spirit::classic;
 //---------------------------------------------------------------------------
-//--------------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 // context prerequisites
 enum { EsScriptCompiler_errCntMax = 255 };
