@@ -21,7 +21,7 @@ if(MSVC)
     set(compilerVersion "120")
   elseif(1900 EQUAL ${MSVC_VERSION})
     set(compilerVersion "140")
-  elseif( (1910 LESS_EQUAL ${MSVC_VERSION}) AND (1920 GREATER ${MSVC_VERSION}) ) 
+  elseif( (1910 LESS_EQUAL ${MSVC_VERSION}) AND (1920 GREATER ${MSVC_VERSION}) )
     set(compilerVersion "141")
   elseif(1920 LESS_EQUAL ${MSVC_VERSION})
     set(compilerVersion "150")
@@ -41,14 +41,22 @@ message(STATUS "COMPILER_VERSION => ${COMPILER_VERSION}")
 # header extensions
 set(headerExtensions .h .hpp .hxx .ipp .xpm .cxx .hmxz .def .inc .cc .pot .ru_RU.po .en_EN.po)
 
+# Use UTF-8 source charset, to augment proper string literal encoding in GCC environment
+if(${CMAKE_COMPILER_IS_GNUCXX})
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finput-charset=UTF-8")
+  message(STATUS "GCC CMAKE_CXX_FLAGS => ${CMAKE_CXX_FLAGS}")
+endif()
+
 # modern CPP requirement macro
 MACRO(ES_REQUIRE_MODERNCPP)
   if (CMAKE_VERSION VERSION_LESS "3.1")
     if(${CMAKE_COMPILER_IS_GNUCXX})
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+      message(STATUS "ES_REQUIRE_MODERNCPP GCC CMAKE_CXX_FLAGS => ${CMAKE_CXX_FLAGS}")
     endif()
   else()
-    set(CMAKE_CXX_STANDARD 14 CACHE STRING "")
+    set(CMAKE_CXX_STANDARD 14)
+    message(STATUS "ES_REQUIRE_MODERNCPP CMAKE_CXX_STANDARD => ${CMAKE_CXX_STANDARD}")
   endif()
 ENDMACRO(ES_REQUIRE_MODERNCPP)
 
@@ -58,12 +66,12 @@ MACRO(SPECIFY_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar)
     get_filename_component(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
     set(PrecompiledBinary "$(IntDir)/${PrecompiledBasename}.pch")
     set(Sources ${${SourcesVar}})
-    set_source_files_properties(${PrecompiledSource} PROPERTIES 
+    set_source_files_properties(${PrecompiledSource} PROPERTIES
       COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
       OBJECT_OUTPUTS "${PrecompiledBinary}")
     set_source_files_properties(${Sources}
       PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledHeader}\" /FI\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
-      OBJECT_DEPENDS "${PrecompiledBinary}")  
+      OBJECT_DEPENDS "${PrecompiledBinary}")
     # Add precompiled header to SourcesVar
     list(APPEND ${SourcesVar} ${PrecompiledSource})
   else()
@@ -90,11 +98,11 @@ ENDMACRO(SPECIFY_HEADER_FILES)
 MACRO(PLUGIN_TARGET_FINALIZE PluginTargetVar)
 	# export preprocessor defines for dll
 	if( NOT BUILD_SHARED_LIBS )
-		message(FATAL_ERROR 
+		message(FATAL_ERROR
       "${${PluginTargetVar}} must be build with BUILD_SHARED_LIBS flag set ON"
     )
 	endif()
-	set_target_properties(${${PluginTargetVar}} PROPERTIES 
+	set_target_properties(${${PluginTargetVar}} PROPERTIES
 						COMPILE_DEFINITIONS "${dynamicLinkPreprocessorDefines}"
 						ENABLE_EXPORTS OFF
 						FOLDER plugins
@@ -105,7 +113,7 @@ MACRO(PLUGIN_TARGET_FINALIZE PluginTargetVar)
 	foreach(t ${CMAKE_CONFIGURATION_TYPES})
 		set(outputDir ${binaryRoot}/${t}/plugins)
 		string(TOUPPER ${t} t)
-		set_target_properties(${${PluginTargetVar}} PROPERTIES 
+		set_target_properties(${${PluginTargetVar}} PROPERTIES
 							LIBRARY_OUTPUT_DIRECTORY_${t} ${outputDir}
 							)
 	endforeach()
@@ -116,7 +124,7 @@ MACRO(I18N_ADD i18nComponent i18nFiles i18nBinaryRoot)
 	# copy from cache
 	set(tmpLanguages ${i18nLanguages})
 	set(tmpComponents ${i18nComponents})
-	# find if we already registered component 
+	# find if we already registered component
 	list(FIND tmpComponents "${i18nComponent}" tmp)
 	if( -1 EQUAL ${tmp} )
 		list(APPEND tmpComponents "${i18nComponent}")
@@ -128,8 +136,8 @@ MACRO(I18N_ADD i18nComponent i18nFiles i18nBinaryRoot)
 	foreach(f ${${i18nFiles}})
 		set(lang "")
 		if("${f}" MATCHES "${poPattern}")
-			string(REGEX REPLACE 
-							"${poPattern}" "\\1" 
+			string(REGEX REPLACE
+							"${poPattern}" "\\1"
 							lang "${f}")
 			if( lang )
 				list(FIND tmpLanguages ${lang} tmp)
@@ -138,7 +146,7 @@ MACRO(I18N_ADD i18nComponent i18nFiles i18nBinaryRoot)
 				endif()
 				list(FIND "${i18nComponent}${lang}" "${PROJECT_SOURCE_DIR}/${f}" tmp)
 				if( -1 EQUAL tmp )
-					set(tmp "${${i18nComponent}${lang}}" "${PROJECT_SOURCE_DIR}/${f}") 
+					set(tmp "${${i18nComponent}${lang}}" "${PROJECT_SOURCE_DIR}/${f}")
 					set("${i18nComponent}${lang}" ${tmp} CACHE INTERNAL "" FORCE)
 				endif()
 			endif()
@@ -191,7 +199,7 @@ MACRO(USE_HELP_AND_MANUAL)
 			)
 	endif()
 	if( NOT helpAndManualCompiler )
-		message(FATAL_ERROR 
+		message(FATAL_ERROR
       "Help and manual compiler is not found"
     )
 	endif()
@@ -207,8 +215,8 @@ add_custom_command(OUTPUT ${helpFileOut}
 					)
 add_custom_target(${pluginModuleName}_help ALL
 						DEPENDS ${helpFileOut}
-					)	
-set_target_properties(${pluginModuleName}_help PROPERTIES 
+					)
+set_target_properties(${pluginModuleName}_help PROPERTIES
 					FOLDER plugins
 					)
 ENDMACRO(PLUGIN_HELP_TARGET_ADD)
@@ -229,8 +237,8 @@ foreach(pk ${pluginNamesAndKeys})
 					)
 	add_custom_target(${scriptletSrcBaseName}_essle ALL
 						DEPENDS ${scriptletOut}
-					)	
-	set_target_properties(${scriptletSrcBaseName}_essle PROPERTIES 
+					)
+	set_target_properties(${scriptletSrcBaseName}_essle PROPERTIES
 					FOLDER plugins
 					)
 endforeach()
