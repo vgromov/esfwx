@@ -18,19 +18,24 @@ TEST(EsStringTest, Basics) {
 	EXPECT_TRUE( s1 == esT("Formatted string 1234124124") );
 }
 
-TEST(EsStringTest, Encoding) {
+TEST(EsStringTest, Encoding16) {
 
-	EsString src = esT("тестовая строка по-русски");
+	EsWideString16 src = esT16("тестовая строка по-русски");
 	EsStringConverter::Ptr cnv16to8 = EsStringConverter::convGet("UTF-8", "UTF-16");
 	EsStringConverter::Ptr cnv8to16 = EsStringConverter::convGet("UTF-16", "UTF-8");
 
-	EsByteString bs = cnv16to8->wToC(src);
-	EsString dest = cnv8to16->cToW(bs);
+	const EsByteString& bs = cnv16to8->w16toC(src);
+	const EsWideString16& dest = cnv8to16->cToW16(bs);
 	ASSERT_TRUE(src.size() == dest.size());
 	ASSERT_TRUE(src == dest);
+}
 
-	bs = EsString::toUtf8(src);
-	dest = EsString::fromUtf8(bs);
+TEST(EsStringTest, EncodingStr) {
+
+	EsString src = esT("тестовая строка по-русски");
+
+	const EsByteString& bs = EsString::toUtf8(src);
+	const EsString& dest = EsString::fromUtf8(bs);
 	ASSERT_TRUE(src.size() == dest.size());
 	ASSERT_TRUE(src == dest);
 }
@@ -57,10 +62,6 @@ TEST(EsStringTest, CulturalFormatting) {
   str += esT("890");
 
   ASSERT_TRUE(str1 == str);
-
-  // TODO: money fromatting
-//  str = EsString::format();
-//  str1 = EsString::format();
 }
 
 TEST(EsStringTest, CulturalFormattingExtra) {
@@ -127,20 +128,20 @@ TEST(EsStringTest, CulturalFormattingMoney) {
   str += esT("345");
   str += esT(",67 ");
 
-  std::wstringstream oss;
+  std::stringstream oss;
   oss.imbue(loc);
 
   oss << std::put_money(1234567.46);
-  EsString str1 = oss.str();
+  EsString str1 = EsString::fromUtf8(oss.str());
 
   ASSERT_TRUE(str1 == str);
 
   str += EsLocale::moneySymbolGet(loc);
 
-  oss.str(EsString::null());
+  oss.str(nullByteString());
 
   oss << std::showbase << std::put_money(1234567.46);
-  str1 = oss.str();
+  str1 = EsString::fromUtf8(oss.str());
 
   ASSERT_TRUE(str1 == str);
 }
