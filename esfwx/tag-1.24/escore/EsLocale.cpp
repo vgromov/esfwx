@@ -8,10 +8,10 @@
 #endif
 //---------------------------------------------------------------------------
 
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND && \
-  defined(ES_WCHAR_IS_NOT_WCHAR_T) && \
-  !defined(ES_USE_CUSTOM_CLASSIC_LOCALE)
-# define ES_USE_CUSTOM_CLASSIC_LOCALE
+#if !defined(ES_USE_NARROW_ES_CHAR) && !defined(ES_CHAR_IS_WCHAR_T)
+# if !defined(ES_USE_CUSTOM_CLASSIC_LOCALE)
+#   define ES_USE_CUSTOM_CLASSIC_LOCALE
+# endif
 #endif
 
 //---------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 // Regular expressions test
 //
 EsString::const_pointer c_testI18nStr =
-esT("Проверка 1234 работы с юникодом 223344 rtrty");
+esT("РџСЂРѕРІРµСЂРєР° 1234 СЂР°Р±РѕС‚С‹ СЃ СЋРЅРёРєРѕРґРѕРј 223344 rtrty");
 
 TEST(EsRegExTest, MatchI18N) {
 

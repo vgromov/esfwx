@@ -3,7 +3,7 @@
 #include <escore/EsCryptoDesLegacy.h>
 
 TEST(EsUtilitiesTest, ByteInversion) {
-	
+
 	esU16 u16i = EsUtilities::inverse2(0x0123);
 	ASSERT_TRUE(0x2301 == u16i);
 
@@ -15,8 +15,8 @@ TEST(EsUtilitiesTest, ByteInversion) {
 }
 
 TEST(EsUtilitiesTest, Zip) {
-	
-	const EsString& src = esT("Some string \n предназначенная \tдля compression test");
+
+	const EsString& src = esT("Some string \n РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅР°СЏ \tРґР»СЏ compression test");
 	EsBinBuffer in(src.size()*EsString::value_size);
 	memcpy(&in[0], (const esU8*)src.data(), in.size());
 
@@ -36,7 +36,7 @@ TEST(EsUtilitiesTest, Zip) {
 TEST(EsUtilitiesTest, DesLegacy) {
 
 	const EsString& key = esT("Des codec key must be at least 64 bytes long, of which only first 64 bytes is used");
-	const EsString& src = esT("Some string \n предназначенная \tдля codec test");
+	const EsString& src = esT("Some string \n РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅР°СЏ \tРґР»СЏ codec test");
 	EsBinBuffer in(src.size()*EsString::value_size);
 	memcpy(&in[0], (const esU8*)src.data(), in.size());
 
@@ -57,14 +57,14 @@ TEST(EsUtilitiesTest, DesLegacy) {
 TEST(EsUtilitiesTest, Codec) {
 
 	const EsString& key = esT("Des codec key must be at least 64 bytes long, of which only first 64 bytes is used");
-	const EsString& src = esT("Some string \n предназначенная \tдля codec test");	
+	const EsString& src = esT("Some string \n РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅР°СЏ \tРґР»СЏ codec test");
 
 	EsBinBuffer in(src.size()*EsString::value_size);
 	memcpy(&in[0], (const esU8*)src.data(), in.size());
 	const EsBinBuffer& oute = EsUtilities::bToE(in, key);
 	const EsBinBuffer& outb = EsUtilities::eToB(oute, key);
 	ASSERT_TRUE( outb == in );
-	
+
 	EsString srcd(outb.size()/EsString::value_size, 0);
 	memcpy((esU8*)srcd.data(), &outb[0], outb.size());
 	ASSERT_TRUE(src == srcd);
