@@ -39,32 +39,32 @@ a totally empty module because some compilers barf at that.
 Instead, just supply small dummy tables. */
 
 #ifndef SUPPORT_UNICODE
-const ucd_record* es_ucd_records(void)
+const ucd_record* PRIV(ucd_records)(void)
 {
-  static const ucd_record PRIV(ucd_records)[] = {{0,0,0,0,0 }};
+  static const ucd_record sc_ucd_records[] = {{0,0,0,0,0 }};
 
-  return PRIV(ucd_records);
+  return sc_ucd_records;
 }
 
-const uint8_t* es_ucd_stage1(void)
+const uint8_t* PRIV(ucd_stage1)(void)
 {
-  static const uint8_t PRIV(ucd_stage1)[] = {0};
+  static const uint8_t sc_ucd_stage1[] = {0};
 
-  return PRIV(ucd_stage1);
+  return sc_ucd_stage1;
 }
 
-const uint16_t* es_ucd_stage2(void)
+const uint16_t* PRIV(ucd_stage2)(void)
 {
-  static const uint16_t PRIV(ucd_stage2)[] = {0};
+  static const uint16_t sc_ucd_stage2[] = {0};
 
-  return PRIV(ucd_stage2);
+  return sc_ucd_stage2;
 }
 
-const uint32_t* es_ucd_caseless_sets(void)
+const uint32_t* PRIV(ucd_caseless_sets)(void)
 {
-  static const uint32_t PRIV(ucd_caseless_sets)[] = {0};
+  static const uint32_t sc_ucd_caseless_sets[] = {0};
 
-  return PRIV(ucd_caseless_sets);
+  return sc_ucd_caseless_sets;
 }
 #else
 
@@ -83,9 +83,9 @@ pcre_int32 property_4;
 } ucd_record;
 */
 
-const uint32_t* es_ucd_caseless_sets(void)
+const uint32_t* PRIV(ucd_caseless_sets)(void)
 {
-  static const uint32_t PRIV(ucd_caseless_sets)[] = {
+  static const uint32_t sc_ucd_caseless_sets[] = {
     NOTACHAR,
     0x0053,   0x0073,   0x017f,   NOTACHAR,
     0x01c4,   0x01c5,   0x01c6,   NOTACHAR,
@@ -108,16 +108,16 @@ const uint32_t* es_ucd_caseless_sets(void)
     0x00c5,   0x00e5,   0x212b,   NOTACHAR,
   };
 
-  return PRIV(ucd_caseless_sets);
+  return sc_ucd_caseless_sets;
 }
 
 /* When #included in pcre2test, we don't need this large table. */
 
 #ifndef PCRE2_PCRE2TEST
 
-const ucd_record* es_ucd_records(void)
+const ucd_record* PRIV(ucd_records)(void)
 {
-static const ucd_record PRIV(ucd_records)[] = { /* 5952 bytes, record size 8 */
+static const ucd_record sc_ucd_records[] = { /* 5952 bytes, record size 8 */
   {     9,      0,      2,      0,      0, }, /*   0 */
   {     9,      0,      1,      0,      0, }, /*   1 */
   {     9,      0,      0,      0,      0, }, /*   2 */
@@ -864,12 +864,12 @@ static const ucd_record PRIV(ucd_records)[] = { /* 5952 bytes, record size 8 */
   {    26,     26,     12,      0,      0, }, /* 743 */
 };
 
-  return PRIV(ucd_records);
+  return sc_ucd_records;
 }
 
-const uint8_t* es_ucd_stage1(void)
+const uint8_t* PRIV(ucd_stage1)(void)
 {
-static const uint8_t PRIV(ucd_stage1)[] = { /* 8704 bytes */
+static const uint8_t sc_ucd_stage1[] = { /* 8704 bytes */
   0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, /* U+0000 */
  16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, /* U+0800 */
  32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 41, 41, 42, 43, 44, 45, /* U+1000 */
@@ -1416,12 +1416,12 @@ static const uint8_t PRIV(ucd_stage1)[] = { /* 8704 bytes */
 123,123,123,123,123,123,123,123,123,123,123,123,123,123,123,235, /* U+10F800 */
 };
 
-  return PRIV(ucd_stage1);
+  return sc_ucd_stage1;
 }
 
-const uint16_t* es_ucd_stage2(void)
+const uint16_t* PRIV(ucd_stage2)(void)
 {
-static const uint16_t PRIV(ucd_stage2)[] = { /* 60416 bytes, block = 128 */
+static const uint16_t sc_ucd_stage2[] = { /* 60416 bytes, block = 128 */
 /* block 0 */
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  2,  0,  0,
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -3784,7 +3784,7 @@ static const uint16_t PRIV(ucd_stage2)[] = { /* 60416 bytes, block = 128 */
 
 };
 
-  return PRIV(ucd_stage2);
+  return sc_ucd_stage2;
 }
 
 #if UCD_BLOCK_SIZE != 128

@@ -64,52 +64,52 @@ This is mode-dependent, so is skipped when this file is included by pcre2test. *
 //#ifndef PCRE2_PCRE2TEST
 //const uint8_t PRIV(OP_lengths)[] = { OP_LENGTHS };
 //#endif
-const uint8_t* es_OP_lengths(void)
+const uint8_t* PRIV(OP_lengths)(void)
 {
-  static const uint8_t PRIV(OP_lengths)[] = { OP_LENGTHS };
+  static const uint8_t sc_OP_lengths[] = { OP_LENGTHS };
 
-  return PRIV(OP_lengths);
+  return sc_OP_lengths;
 }
 
 /* Tables of horizontal and vertical whitespace characters, suitable for
 adding to classes. */
 
-const uint32_t* es_hspace_list(void)
+const uint32_t* PRIV(hspace_list)(void)
 {
-  static const uint32_t PRIV(hspace_list)[] = { HSPACE_LIST };
+  static const uint32_t sc_hspace_list[] = { HSPACE_LIST };
 
-  return PRIV(hspace_list);
+  return sc_hspace_list;
 }
 
-const uint32_t* es_vspace_list(void)
+const uint32_t* PRIV(vspace_list)(void)
 {
-  static const uint32_t PRIV(vspace_list)[] = { VSPACE_LIST };
+  static const uint32_t sc_vspace_list[] = { VSPACE_LIST };
 
-  return PRIV(vspace_list);
+  return sc_vspace_list;
 }
 
 /* These tables are the pairs of delimiters that are valid for callout string
 arguments. For each starting delimiter there must be a matching ending
 delimiter, which in fact is different only for bracket-like delimiters. */
 
-const uint32_t* es_callout_start_delims(void)
+const uint32_t* PRIV(callout_start_delims)(void)
 {
-  static const uint32_t PRIV(callout_start_delims)[] = {
+  static const uint32_t sc_callout_start_delims[] = {
     CHAR_GRAVE_ACCENT, CHAR_APOSTROPHE, CHAR_QUOTATION_MARK,
     CHAR_CIRCUMFLEX_ACCENT, CHAR_PERCENT_SIGN, CHAR_NUMBER_SIGN,
     CHAR_DOLLAR_SIGN, CHAR_LEFT_CURLY_BRACKET, 0 };
 
-  return PRIV(callout_start_delims);
+  return sc_callout_start_delims;
 }
 
-const uint32_t* es_callout_end_delims(void)
+const uint32_t* PRIV(callout_end_delims)(void)
 {
-  static const uint32_t PRIV(callout_end_delims)[] = {
+  static const uint32_t sc_callout_end_delims[] = {
     CHAR_GRAVE_ACCENT, CHAR_APOSTROPHE, CHAR_QUOTATION_MARK,
     CHAR_CIRCUMFLEX_ACCENT, CHAR_PERCENT_SIGN, CHAR_NUMBER_SIGN,
     CHAR_DOLLAR_SIGN, CHAR_RIGHT_CURLY_BRACKET, 0 };
 
-  return PRIV(callout_end_delims);
+  return sc_callout_end_delims;
 }
 
 /*************************************************
@@ -142,7 +142,7 @@ const int* PRIV(utf8_table1)(size_t* sze)
 
 /* These are the indicator bits and the mask for the data bits to set in the
 first byte of a character, indexed by the number of additional bytes. */
-const int* PRIV(utf8_table)(void)
+const int* PRIV(utf8_table2)(void)
 {
   static const int sc_utf8_table2[] = { 0,    0xc0, 0xe0, 0xf0, 0xf8, 0xfc};
 

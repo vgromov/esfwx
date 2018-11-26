@@ -136,9 +136,9 @@ return gcontext;
 
 /* A default compile context is set up to save having to initialize at run time
 when no context is supplied to the compile function. */
-const pcre2_compile_context* es_default_compile_context(void)
+const pcre2_compile_context* PRIV(default_compile_context)(void)
 {
-  static const pcre2_compile_context PRIV(default_compile_context) = {
+  static const pcre2_compile_context sc_default_compile_context = {
     { default_malloc, default_free, NULL },    /* Default memory handling */
     NULL,                                      /* Stack guard */
     NULL,                                      /* Stack guard data */
@@ -148,7 +148,7 @@ const pcre2_compile_context* es_default_compile_context(void)
     (uint16_t)NEWLINE_DEFAULT,             /* Newline convention */
     PARENS_NEST_LIMIT };                       /* As it says */
 
-  return &PRIV(default_compile_context);
+  return &sc_default_compile_context;
 }
 
 /* The create function copies the default into the new memory, but must
@@ -161,7 +161,7 @@ pcre2_compile_context_create(pcre2_general_context *gcontext)
     sizeof(pcre2_real_compile_context), (pcre2_memctl *)gcontext);
   if (ccontext == NULL) return NULL;
 //  *ccontext = PRIV(default_compile_context);
-  *ccontext = *es_default_compile_context();
+  *ccontext = *PRIV(default_compile_context)();
   if (gcontext != NULL)
     *((pcre2_memctl *)ccontext) = *((pcre2_memctl *)gcontext);
   return ccontext;

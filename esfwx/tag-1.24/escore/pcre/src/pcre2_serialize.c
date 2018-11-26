@@ -89,7 +89,7 @@ pcre2_serialized_data *data;
 
 const pcre2_memctl *memctl = (gcontext != NULL) ?
   &gcontext->memctl :
-  &es_default_compile_context()->memctl;
+  &PRIV(default_compile_context)()->memctl;
 //  &PRIV(default_compile_context).memctl;
 
 if (codes == NULL || serialized_bytes == NULL || serialized_size == NULL)
@@ -156,7 +156,7 @@ pcre2_serialize_decode(pcre2_code **codes, int32_t number_of_codes,
 const pcre2_serialized_data *data = (const pcre2_serialized_data *)bytes;
 const pcre2_memctl *memctl = (gcontext != NULL) ?
   &gcontext->memctl :
-  &es_default_compile_context()->memctl;
+  &PRIV(default_compile_context)()->memctl;
 //  &PRIV(default_compile_context).memctl;
 
 const uint8_t *src_bytes;
