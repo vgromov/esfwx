@@ -11,7 +11,7 @@ set(framework		 "ECO-E Framework" CACHE INTERNAL "")
 set(frameworkCopyright	 "Copyright 2009-2018" CACHE INTERNAL "")
 set(framework_VER_MAJOR	 1 CACHE INTERNAL "")
 set(framework_VER_MINOR	 24 CACHE INTERNAL "")
-set(framework_BUILD_NUM	 0 CACHE INTERNAL "")	
+set(framework_BUILD_NUM	 0 CACHE INTERNAL "")
 
 # framework version file generation
 #
@@ -20,20 +20,29 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/version.h"
   )
 
-  # build framework components in standalone mode
-  # otherwise, host project defines which components to build
- if( ${ESFWX_STANDALONE_BUILD} )
+# build framework components in standalone mode
+# otherwise, host project defines which components to build
+if( ESFWX_STANDALONE_BUILD )
   set(BUILD_SHARED_LIBS 0 CACHE BOOL "Build shared framework libraries (Default - 0 i.e. static)")
- 
- include(esframework-macros.cmake)
- ES_REQUIRE_MODERNCPP()
+
+  include(esframework-macros.cmake)
+  ES_REQUIRE_MODERNCPP()
+
+  if(WIN32)
+    # use UNICODE under MSWINDOWS
+    add_definitions(-DUNICODE -D_UNICODE)
+  endif()
 
 	if(MSVC)
-		# use UNICODE under MSVC
-		add_definitions(-DUNICODE -D_UNICODE)
-		# suppress msvc security warnings
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS")
-	endif()
+    # suppress msvc security warnings, assign explicit compiler version for wxWidgets
+    set(CMAKE_CXX_FLAGS
+      "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS -DwxMSVC_VERSION=${COMPILER_VERSION}"
+    )
+  endif()
+
+  # set-up runtime library linkage
+  ES_RUNTIME_LINKING_SETUP()
+
 	# global directories
 	get_filename_component(root ${PROJECT_BINARY_DIR}/bin REALPATH)
 	set(binaryRoot ${root} CACHE PATH "Build binary root" FORCE)
@@ -52,24 +61,24 @@ configure_file (
 	# for each subproject, add project current source and build dirs to the include directories
 	set(CMAKE_INCLUDE_CURRENT_DIR ON)
 	# reset i18n aggregation variables
-	I18N_RESET() 
+	I18N_RESET()
 	# localization integration variables
 	set(i18nLanguages "" CACHE INTERNAL "" FORCE)
 	set(i18nComponents "" CACHE INTERNAL "" FORCE)
-	set(poPattern ".+[.]([a-z][a-z]_[A-Z][A-Z])[.]po" CACHE INTERNAL "" FORCE)	
-	
+	set(poPattern ".+[.]([a-z][a-z]_[A-Z][A-Z])[.]po" CACHE INTERNAL "" FORCE)
+
 	include_directories(	${PROJECT_SOURCE_DIR}
-												${PROJECT_SOURCE_DIR}/compatibility-headers						
+												${PROJECT_SOURCE_DIR}/compatibility-headers
 												${PROJECT_SOURCE_DIR}/external
 												)
-	
+
 	# framework components
 	#
 	add_subdirectory(escore)
 	add_subdirectory(esmath)
 	add_subdirectory(escomm)
 	add_subdirectory(esscript)
-	
+
 	# tests
 	#
 	add_subdirectory(tests)

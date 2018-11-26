@@ -75,12 +75,18 @@
 # define ES_WCHAR               wchar_t
 # define ES_STRINGIZE           ES_STRINGIZEW
 # define esT                    esTW
-#else ///< In all other cases we will use char32_t for ES_CHAR and do narrow conversions for RTL and OS calls
-  typedef char32_t  				    ES_CHAR;
+#else
+  typedef wchar_t  				      ES_CHAR;
+# define ES_CHAR_IS_WCHAR_T
+# define ES_CHAR_SIZE           ES_WCHAR_T_SIZE
+# define ES_WCHAR               wchar_t
+# define ES_STRINGIZE           ES_STRINGIZEW
+# define esT                    esTW
+/*  typedef char32_t  				    ES_CHAR;
 # define ES_CHAR_SIZE           4
 # define ES_WCHAR               wchar_t
 # define ES_STRINGIZE           ES_STRINGIZE32
-# define esT                    esT32
+# define esT                    esT32*/
 #endif
 
 /// Char sequence const pointer type
@@ -139,7 +145,13 @@
 #   if (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS) || (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND)
 #     define esStricmp			    _wcsicmp
 #   else
-#     define esStricmp          wcscasecmp
+#     if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC
+#       if ES_OS_WINDOWS == ES_OS
+#         define esStricmp      _wcsicmp
+#       else
+#         define esStricmp      wcscasecmp
+#       endif
+#     endif
 #   endif
 #   define esStrncmp				    wcsncmp
 #   define esStrchr					    wcsrchr

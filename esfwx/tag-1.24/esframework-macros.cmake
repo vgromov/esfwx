@@ -38,19 +38,23 @@ endif()
 set(COMPILER_VERSION ${compilerVersion} CACHE STRING "")
 message(STATUS "COMPILER_VERSION => ${COMPILER_VERSION}")
 
+# set-up project-wide runtime linking type variable
+set(ES_RUNTIME "static" CACHE STIRNG "")
+message(STATUS "ES_RUNTIME => ${ES_RUNTIME}")
+
 # header extensions
 set(headerExtensions .h .hpp .hxx .ipp .xpm .cxx .hmxz .def .inc .cc .pot .ru_RU.po .en_EN.po)
 
 # Use UTF-8 source charset, to augment proper string literal encoding in GCC environment
-if(${CMAKE_COMPILER_IS_GNUCXX})
+if(CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finput-charset=UTF-8")
   message(STATUS "GCC CMAKE_CXX_FLAGS => ${CMAKE_CXX_FLAGS}")
 endif()
 
 # modern CPP requirement macro
 MACRO(ES_REQUIRE_MODERNCPP)
-  if (CMAKE_VERSION VERSION_LESS "3.1")
-    if(${CMAKE_COMPILER_IS_GNUCXX})
+  if(CMAKE_VERSION VERSION_LESS "3.1")
+    if( CMAKE_COMPILER_IS_GNUCXX )
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
       message(STATUS "ES_REQUIRE_MODERNCPP GCC CMAKE_CXX_FLAGS => ${CMAKE_CXX_FLAGS}")
     endif()
@@ -244,12 +248,26 @@ foreach(pk ${pluginNamesAndKeys})
 endforeach()
 ENDMACRO(SCRIPTLET_ENCRYPTION_TARGET_ADD)
 
-MACRO(MSVC_RUNTIME_SETUP)
-  if(MSVC)
-    # Default to statically-linked runtime.
-    if("${MSVC_RUNTIME}" STREQUAL "")
-      set(MSVC_RUNTIME "static")
+MACRO(ES_RUNTIME_LINKING_SETUP)
+  message(STATUS
+    "ES_RUNTIME_LINKING_SETUP: Setting up C++ Runtime Linking"
+  )
+
+  if(BUILD_SHARED_LIBS)
+    set(ES_RUNTIME "dynamic")
+    message(STATUS
+      "Forcing ES_RUNTIME to " ${ES_RUNTIME} " for BUILD_SHARED_LIBS==1"
+    )
+  else()
+    if("${ES_RUNTIME}" STREQUAL "")
+      set(ES_RUNTIME "static")
+      message(STATUS
+        "Defaulting ES_RUNTIME to " ${ES_RUNTIME}
+      )
     endif()
+  endif()
+
+  if(MSVC)
     # Set compiler options.
     set(variables
       CMAKE_C_FLAGS_DEBUG
@@ -261,7 +279,8 @@ MACRO(MSVC_RUNTIME_SETUP)
       CMAKE_CXX_FLAGS_RELEASE
       CMAKE_CXX_FLAGS_RELWITHDEBINFO
     )
-    if(${MSVC_RUNTIME} STREQUAL "static")
+
+    if(${ES_RUNTIME} STREQUAL "static")
       message(STATUS
         "MSVC -> Forcing use of statically-linked runtime."
       )
@@ -280,5 +299,18 @@ MACRO(MSVC_RUNTIME_SETUP)
         endif()
       endforeach()
     endif()
+  elseif(CMAKE_COMPILER_IS_GNUCXX)
+#    if(MINGW)
+#      set(CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_CXX_STANDARD_LIBRARIES} -lmingwex")
+#      message(STATUS
+#        "GNUCXX MINGW -> Adding mingwex library to CMAKE_CXX_STANDARD_LIBRARIES:" ${CMAKE_CXX_STANDARD_LIBRARIES}
+#      )
+#    endif()
+    if(${ES_RUNTIME} STREQUAL "static")
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++")
+    endif()
+    message(STATUS
+      "GNUCXX -> Linking against libstdc++ runtime:" ${CMAKE_CXX_FLAGS}
+    )
   endif()
 ENDMACRO()
