@@ -806,12 +806,9 @@ EsString EsString::formatV(const std::locale& loc, EsString::const_pointer fmt, 
         if( val.isPointer() )
         {
           void* p = val.asPointer();
-          if( sizeof(void*) == sizeof(ulong) )
-            oss << (ulong)p;
-          else if( sizeof(void*) == sizeof(ullong) )
-            oss << (ullong)p;
-          else
-            EsException::Throw(_("Unsupported pointer size"));
+          uintptr_t up = reinterpret_cast<uintptr_t>(p);
+
+          oss << up;
         }
         else
           printUint(oss, fldMod, val);
