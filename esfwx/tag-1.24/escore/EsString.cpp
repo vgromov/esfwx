@@ -67,9 +67,7 @@ const EsByteString& EsString::defEncoding() ES_NOTHROW
 {
   static const EsByteString sc_defEncoding =
 #if !defined(ES_USE_NARROW_ES_CHAR)
-# if 1 == ES_CHAR_SIZE
-    "UTF-8"
-# elif 2 == ES_CHAR_SIZE
+# if 2 == ES_CHAR_SIZE
 #   if ES_ENDIAN == ES_LITTLE_ENDIAN
       "UTF-16LE";
 #   elif ES_ENDIAN == ES_BIG_ENDIAN
@@ -87,7 +85,7 @@ const EsByteString& EsString::defEncoding() ES_NOTHROW
 #   endif
 # endif
 #else
-  "CP1251";
+  "UTF-8";
 #endif
 
   return sc_defEncoding;

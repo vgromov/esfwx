@@ -220,8 +220,7 @@ const ctype<ES_CHAR>::char_type* ctype<ES_CHAR>::do_narrow
 //---------------------------------------------------------------------------
 
 // numpunct<ES_CHAR> facet specialization implementation
-#if ES_OS == ES_OS_ANDROID || \
-    ES_OS == ES_OS_IOS
+#if ES_COMPILER_VENDOR_GNUC == ES_COMPILER_VENDOR
 
 template<>
 numpunct<ES_CHAR>::~numpunct()
@@ -271,7 +270,42 @@ void numpunct<ES_CHAR>::_M_initialize_numpunct(__c_locale __cloc)
     ((char_type*)_M_data->_M_atoms_in)[idx] = __num_base::_S_atoms_in[idx];
 }
 //---------------------------------------------------------------------------
-#endif // ES_OS == ES_OS_ANDROID || ES_OS == ES_OS_IOS
+//---------------------------------------------------------------------------
+
+template<>
+moneypunct<ES_CHAR>::~moneypunct()
+{
+  delete _M_data;
+}
+//---------------------------------------------------------------------------
+
+template<>
+void moneypunct<ES_CHAR>::_M_initialize_moneypunct(__c_locale __cloc, char const* __name)
+{
+  // "C" locale
+  if (!_M_data)
+  	_M_data = new __moneypunct_cache<ES_CHAR, false>;
+
+  _M_data->_M_decimal_point = esT('.');
+  _M_data->_M_thousands_sep = esT(',');
+  _M_data->_M_grouping = "";
+  _M_data->_M_grouping_size = 0;
+  _M_data->_M_curr_symbol = esT("");
+  _M_data->_M_curr_symbol_size = 0;
+  _M_data->_M_positive_sign = esT("");
+  _M_data->_M_positive_sign_size = 0;
+  _M_data->_M_negative_sign = esT("");
+  _M_data->_M_negative_sign_size = 0;
+  _M_data->_M_frac_digits = 0;
+  _M_data->_M_pos_format = money_base::_S_default_pattern;
+  _M_data->_M_neg_format = money_base::_S_default_pattern;
+
+  for (size_t __i = 0; __i < money_base::_S_end; ++__i)
+	  _M_data->_M_atoms[__i] = static_cast<wchar_t>(money_base::_S_atoms[__i]);
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+#endif // ES_COMPILER_VENDOR_GNUC == ES_COMPILER_VENDOR
 
 template<>
 ES_CHAR numpunct<ES_CHAR>::do_decimal_point() const
