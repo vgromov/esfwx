@@ -244,7 +244,11 @@ add_library(${${targetName}}
 )
 
 if(WIN32)
-  target_link_libraries( ${${targetName}} )
+  if(CMAKE_COMPILER_IS_GNUCXX)
+    target_link_libraries( ${${targetName}} version )
+  else()
+    target_link_libraries( ${${targetName}} )
+  endif()
 elseif(UNIX)
   target_link_libraries( ${${targetName}} dl pthread )
 endif()

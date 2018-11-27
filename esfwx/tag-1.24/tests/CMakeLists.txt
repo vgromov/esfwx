@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.10)
 project(esfwx-tests)
 
-include_directories( 
+include_directories(
 		gtest-1.7.0
 		gtest-1.7.0/include
 		)
@@ -20,7 +20,7 @@ endif()
 set(targetName tests_${binarySuffix}${compilerVersion}${staticMarker})
 SPECIFY_HEADER_FILES(tests_SRCS headerExtensions)
 
-add_executable(${targetName} 
+add_executable(${targetName}
 		${tests_SRCS}
 		)
 target_link_libraries(${targetName}
@@ -33,14 +33,14 @@ target_link_libraries(${targetName}
 set(targetProperties
 		_VARIADIC_MAX=10
 		)
-		
+
 if( BUILD_SHARED_LIBS )
 set(targetProperties
-		${targetProperties} 
+		${targetProperties}
 		${dynamicLinkPreprocessorDefinesExe}
 		)
 endif()
-		
-set_target_properties(${targetName} PROPERTIES 
+
+set_target_properties(${targetName} PROPERTIES
 		COMPILE_DEFINITIONS "${targetProperties}"
 		)

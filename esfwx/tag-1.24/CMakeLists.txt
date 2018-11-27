@@ -1,5 +1,5 @@
 # top-level cmakefile for ekosfera framework
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.11)
 project(framework)
 
 set(ESFWX_STANDALONE_BUILD 0 CACHE BOOL "Build framework components as part of some project (Default - 0), or as stand-alone (1)")

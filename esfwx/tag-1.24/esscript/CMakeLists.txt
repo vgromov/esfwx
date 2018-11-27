@@ -28,6 +28,9 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/Doxyfile"
   )
   
+# Explicitly use new XXX_ROOT policy
+cmake_policy(SET CMP0074 NEW)  
+  
 # boost dependencies
 find_package(Boost 1.54 REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS} ${esscript_CONFIG_DIR})

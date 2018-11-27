@@ -300,12 +300,6 @@ MACRO(ES_RUNTIME_LINKING_SETUP)
       endforeach()
     endif()
   elseif(CMAKE_COMPILER_IS_GNUCXX)
-#    if(MINGW)
-#      set(CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_CXX_STANDARD_LIBRARIES} -lmingwex")
-#      message(STATUS
-#        "GNUCXX MINGW -> Adding mingwex library to CMAKE_CXX_STANDARD_LIBRARIES:" ${CMAKE_CXX_STANDARD_LIBRARIES}
-#      )
-#    endif()
     if(${ES_RUNTIME} STREQUAL "static")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++")
     endif()
