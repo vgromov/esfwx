@@ -93,7 +93,6 @@ void EsScriptContext::unlink() ES_NOTHROW
   }
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 // EsScriptMachine maintenance thread implementation
 //

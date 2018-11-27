@@ -1354,6 +1354,7 @@ EsString EsDateTime::asString(const std::locale& loc, const EsString& fmt) const
 		return EsString::null();
 
 	std::vector<EsString::value_type> buff(fmt.size()+128);
+
 	if( strftime(loc, &buff[0], buff.size(), fmt.c_str()) )
 		return EsString(&buff[0]);
 
@@ -1928,7 +1929,8 @@ static EsString _LC_longDateTimeFmt(
 
 size_t EsDateTime::strftime(const std::locale& loc, EsString::value_type* str, size_t maxsize, EsString::const_pointer fmt) const
 {
-	checkDecomposed();
+  checkComposed();
+  checkDecomposed();
 
   size_t num = 0;
   long len;
@@ -2160,8 +2162,8 @@ size_t EsDateTime::strftime(const std::locale& loc, EsString::value_type* str, s
     case esT('U'):  //< Week of year - starting Sunday
       tmpStr = EsString::format(
         esT('-') == modifier ?
-          esT("%d") :
-          esT("%02d"),
+          esT("%u") :
+          esT("%02u"),
         weeknumberCalc(
           *this,
           7
@@ -2172,8 +2174,8 @@ size_t EsDateTime::strftime(const std::locale& loc, EsString::value_type* str, s
     case esT('W'):  //< Week of year - starting Monday
       tmpStr = EsString::format(
         esT('-') == modifier ?
-          esT("%d") :
-          esT("%02d"),
+          esT("%u") :
+          esT("%02u"),
         weeknumberCalc(
           *this,
           1
