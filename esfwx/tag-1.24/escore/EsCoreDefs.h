@@ -448,6 +448,11 @@ inline void ES_DELETE(T*& ptr)
 #    define ES_DEBUG_TRACE(...)	    OutputDebugString(EsString::format(__VA_ARGS__).c_str())
 #    define ES_DEBUG_TRACE_RAW(...) do{ char _tmpdbg[256]; snprintf(_tmpdbg, 255, __VA_ARGS__); _tmpdbg[255] = 0; OutputDebugStringA(_tmpdbg); } while(0)
 #    define USE_MEMLEAK_DETECTION   0
+# elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC && ES_OS != ES_OS_WINDOWS
+#    define ES_DEBUG_TRACE_INIT     ((void)0)
+#    define ES_DEBUG_TRACE(...)	    wprintf(EsString::format(__VA_ARGS__).c_str())
+#    define ES_DEBUG_TRACE_RAW(...) do{ char _tmpdbg[256]; snprintf(_tmpdbg, 255, __VA_ARGS__); _tmpdbg[255] = 0; printf(_tmpdbg); } while(0)
+#    define USE_MEMLEAK_DETECTION   0
 # else
 #   define ES_DEBUG_TRACE_INIT      ((void)0)
 #   define ES_DEBUG_TRACE(...)      ((void)0)

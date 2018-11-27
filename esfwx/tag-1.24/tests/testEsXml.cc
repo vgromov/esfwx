@@ -46,9 +46,8 @@ TEST_F(EsStreamXmlTest0, ContextsWrite) {
 	ASSERT_TRUE( streamw );
 
 	// context tests
-#if ES_OS != ES_OS_MAC
 	EXPECT_THROW(streamw->contextOpenCreate(esT("ROOT")), EsException);
-#endif
+
 	// values - only context
 	EXPECT_NO_THROW(streamw->contextOpenCreate(esT("ctx1")));
 	EXPECT_NO_THROW(streamw->valueWrite(esT("value_float"), 123.13));
@@ -58,9 +57,8 @@ TEST_F(EsStreamXmlTest0, ContextsWrite) {
 	// write some value at root context
 	EXPECT_NO_THROW(streamw->valueWrite(esT("value_float"), 13.138903));
 	// try to read write-only stream
-#if ES_OS != ES_OS_MAC
 	EXPECT_THROW(streamw->valueRead(esT("value_float")), EsException);
-#endif
+
 	// mixed value-object context
 	EXPECT_NO_THROW(streamw->contextOpenCreate(esT("ctx2")));
 	EXPECT_NO_THROW(streamw->valueWrite(esT("value_str"), esVT("Some other string")));

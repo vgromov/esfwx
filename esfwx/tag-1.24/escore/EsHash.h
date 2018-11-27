@@ -90,7 +90,7 @@ struct fnv1a_impl< T, argT, 1 >
 {
   static inline T calculate(argT b, T hash) ES_NOTHROW
   {
-    return ( static_cast<T>(static_cast<esU8>(b))  ^ hash ) * FNV_Traits<T>::c_prime;
+    return ( static_cast<T>(static_cast<esU8>(b)) ^ hash ) * FNV_Traits<T>::c_prime;
   }
 };
 //---------------------------------------------------------------------------

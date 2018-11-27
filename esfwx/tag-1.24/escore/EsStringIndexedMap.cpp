@@ -16,8 +16,8 @@ EsStringAssocContainerNodeT::EsStringAssocContainerNodeT(const EsString& name, s
 m_name(name),
 m_idx(idx),
 m_payload(payload)
-{ 
-	m_name.hashGet(); 
+{
+	m_name.hashGet();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -39,7 +39,7 @@ EsStringIndexedMap::EsStringIndexedMap(const EsStringIndexedMap& src, EsStringIn
 {
   if( ContainerUsesInterlock == interlocked )
     m_cs.reset( new EsCriticalSection );
-  
+
   copyFrom(src);
 }
 
@@ -158,18 +158,15 @@ size_t EsStringIndexedMap::internalFind(const EsString& name) const ES_NOTHROW
 
 size_t EsStringIndexedMap::internalFind(const EsByteString& name, size_t len) const ES_NOTHROW
 {
-  EsString::HashT hash = FNV_Traits<esU64>::c_init;
+  // NB! We do not support any UNICODE encodings in name here, so any call to find on non-single byte string
+  // would not find anything
+  //
+  const EsString& namestr = EsString::fromAscii(
+    name.c_str(),
+    len
+  );
 
-  size_t cnt = len ?
-    esMin(len, name.size()) :
-    name.size();
-
-  EsByteString::const_pointer cp = name.c_str();
-
-	for(size_t idx = 0; idx < cnt; ++idx)
-		hash = fnv1a<esU64>(static_cast<esU16>(cp[idx]), hash);
-
-	const EsStringAssocMapT::const_iterator& cit = m_m.find( hash );
+	const EsStringAssocMapT::const_iterator& cit = m_m.find( namestr.hashGet() );
 
 	if( cit != m_m.end() )
 		return (*cit).second->m_idx;
@@ -369,9 +366,9 @@ bool EsStringIndexedMap::operator==(const EsStringIndexedMap& src) const ES_NOTH
 		return true;
 	else if(m_v.size() == src.m_v.size())
 		return std::equal(
-      m_v.begin(), 
-      m_v.end(), 
-      src.m_v.begin(), 
+      m_v.begin(),
+      m_v.end(),
+      src.m_v.begin(),
       EsStringAssocContainerNodePtrEqual
     );
 

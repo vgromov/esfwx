@@ -21,17 +21,17 @@
 
 #define PCRE2_STATIC              1
 
-#ifdef ES_USE_WCHAR
-# if 2 == ES_WCHAR_SIZE
+#if defined(ES_USE_NARROW_ES_CHAR)
+# define SUPPORT_PCRE2_8          1
+# define PCRE2_CODE_UNIT_WIDTH    8
+#else
+# if 2 == ES_CHAR_SIZE
 #   define SUPPORT_PCRE2_16       1
 #   define PCRE2_CODE_UNIT_WIDTH  16
-# elif 4 == ES_WCHAR_SIZE
+# elif 4 == ES_CHAR_SIZE
 #   define SUPPORT_PCRE2_32       1
 #   define PCRE2_CODE_UNIT_WIDTH  32
 # endif
-# else
-#   define SUPPORT_PCRE2_8        1
-#   define PCRE2_CODE_UNIT_WIDTH  8
 #endif
 //#undef PCRE2_DEBUG
 
