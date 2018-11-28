@@ -907,6 +907,7 @@ protected:
   std::money_base::pattern m_negpatt;
 };
 //---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 class EsNumPut : public std::num_put<EsString::value_type>
 {
@@ -917,6 +918,7 @@ protected:
   const EsLocInfoNode& m_node;
 };
 //---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 class EsNumGet : public std::num_get<EsString::value_type>
 {
@@ -926,6 +928,29 @@ public:
 protected:
   const EsLocInfoNode& m_node;
 };
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+class EsMoneyPut : public std::money_put<EsString::value_type>
+{
+public:
+  EsMoneyPut(const EsLocInfoNode& node) : m_node(node) {}
+
+protected:
+  const EsLocInfoNode& m_node;
+};
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+class EsMoneyGet : public std::money_get<EsString::value_type>
+{
+public:
+  EsMoneyGet(const EsLocInfoNode& node) : m_node(node) {}
+
+protected:
+  const EsLocInfoNode& m_node;
+};
+//---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
 #endif // 0 != ES_USE_EMBEDDED_LOCALE_IMPL
@@ -997,12 +1022,18 @@ EsLocaleInfoMap::LocalePtr EsLocaleInfoMap::localeCreate(const EsLocInfoNode& no
         std::locale(
           std::locale(
             std::locale(
-              EsLocale::locale(),  //< Use our global locale as a base template
-              new EsCtype(node)
+              std::locale(
+                std::locale(
+                  EsLocale::locale(),  //< Use our global locale as a base template
+                  new EsCtype(node)
+                ),
+                new EsMoneypunct(node)
+              ),
+              new EsNumpunct(node)
             ),
-            new EsMoneypunct(node)
+            new EsMoneyPut(node)
           ),
-          new EsNumpunct(node)
+          new EsMoneyGet(node)
         ),
         new EsNumPut(node)
       ),
