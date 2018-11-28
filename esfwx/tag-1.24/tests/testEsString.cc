@@ -123,27 +123,28 @@ TEST(EsStringTest, CulturalFormattingMoney) {
 
   EsString::value_type sep = EsLocale::moneyThousandSeparatorGet(loc);
 
-  EsString str = esT("12");
+  EsString str = esT("1");
   str += sep;
-  str += esT("345");
-  str += esT(",67 ");
+  str += esT("234");
+  str += sep;
+  str += esT("567,46 ");
 
-  std::stringstream oss;
+  std::basic_stringstream<EsString::value_type> oss;
   oss.imbue(loc);
 
   oss << std::put_money(1234567.46);
-  EsString str1 = EsString::fromUtf8(oss.str());
+  EsString str1 = oss.str();
 
-  ASSERT_TRUE(str1 == str);
+  EXPECT_TRUE(str1 == str);
 
   str += EsLocale::moneySymbolGet(loc);
 
-  oss.str(nullByteString());
+  oss.str(EsString::null());
 
   oss << std::showbase << std::put_money(1234567.46);
-  str1 = EsString::fromUtf8(oss.str());
+  str1 = oss.str();
 
-  ASSERT_TRUE(str1 == str);
+  EXPECT_TRUE(str1 == str);
 }
 
 TEST(EsTokenizerTest, All) {

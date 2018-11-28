@@ -865,7 +865,21 @@ void EsDateTime::checkDecomposed(bool doThrow /*= true*/) const
 {
 	if( m_flags & (EsInternal::flagNativeChanged|EsInternal::flagDayOfYearInvalid) )
 	{
-		dtDecomposeDateTime(&m_dt, (int*)&m_year, (int*)&m_dayOfYear, (int*)&m_month, (int*)&m_dayOfMonth, (int*)&m_hour, (int*)&m_min, (int*)&m_sec, (int*)&m_msec);
+	  // Zero all outbound members, in case their platform size > sizeof(int) and therefore, not all their conents would be
+	  // properly assigned inside dtDecomposeDateTime calculator
+	  //
+	  m_year = m_dayOfYear = m_month = m_dayOfMonth = m_hour = m_min = m_sec = m_msec = 0;
+		dtDecomposeDateTime(
+		  &m_dt,
+		  (int*)&m_year,
+		  (int*)&m_dayOfYear,
+		  (int*)&m_month,
+		  (int*)&m_dayOfMonth,
+		  (int*)&m_hour,
+		  (int*)&m_min,
+		  (int*)&m_sec,
+		  (int*)&m_msec
+    );
 		if( !dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, m_min, m_sec, m_msec) )
     {
       if( doThrow )
