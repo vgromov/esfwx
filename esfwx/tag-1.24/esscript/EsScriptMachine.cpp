@@ -46,16 +46,8 @@ void EsScriptContext::switchTo(EsScriptMachine* other) ES_NOTHROW
     m_machine = other;
 
   // Update all links as well
-#ifdef ES_MODERN_CPP
   for( auto &v: m_links )
   {
-
-#else
-  for( std::set<EsScriptContext*>::const_iterator cit = m_links.begin(); cit != m_links.end(); ++cit )
-  {
-    EsScriptContext* v = (*cit);
-
-#endif
     v->switchTo(other);
   }
 }
@@ -129,9 +121,6 @@ long EsScriptMachine::GarbageCollector::worker()
 EsScriptMachine::EsScriptMachine(const EsScript& owner) :
 m_owner(owner),
 m_loc( EsLocale::locale() ),
-m_ctxScriptThis(
-  EsScriptContext::create(this)
-),
 m_gc(*this),
 m_dbg(nullptr),
 m_externs(false),
@@ -145,6 +134,8 @@ m_destroying(false)
 {
 	ESSCRIPT_MACHINE_TRACE1( esT("Script machine ctor entered") )
   m_filesInfo = EsAssocContainer::create();
+
+  m_ctxScriptThis = EsScriptContext::create(this);
 
 	reset();
 }

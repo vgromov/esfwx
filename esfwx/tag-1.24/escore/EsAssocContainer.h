@@ -99,31 +99,31 @@ public:
 
 	/// EsAssocContainerIntf reflection
 	///
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isEmpty);
-	ES_DECL_REFLECTED_INTF_METHOD0(void, clear);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsVariant, allKeysGet);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsVariant, allValuesGet);
-	ES_DECL_REFLECTED_INTF_METHOD2(void, keyChange, cr_EsVariant, cr_EsVariant);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(cr_EsVariant, valueGet, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD2(cr_EsVariant, valueGetDef, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, indexGet, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD2(void, valueSet, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD2(void, newValueSet, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, keyExists, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD1(void, valueDelete, cr_EsVariant);
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isEmpty) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD0(void, clear) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsVariant, allKeysGet) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsVariant, allValuesGet) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(void, keyChange, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(cr_EsVariant, valueGet, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD2(cr_EsVariant, valueGetDef, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, indexGet, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(void, valueSet, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(void, newValueSet, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, keyExists, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD1(void, valueDelete, cr_EsVariant) ES_OVERRIDE;
 
 	/// Indexed access api
 	///
-	ES_DECL_REFLECTED_INTF_METHOD0(void, itemsClear);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, countGet);
-	ES_DECL_REFLECTED_INTF_METHOD1(void, itemDelete, cr_EsVariant);
+	ES_DECL_REFLECTED_INTF_METHOD0(void, itemsClear) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, countGet) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD1(void, itemDelete, cr_EsVariant) ES_OVERRIDE;
 
 	/// itemGet returns key-value pair passed as VAR_VARIANT_COLLECTION
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, itemGet, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_METHOD2(void, itemSet, cr_EsVariant, cr_EsVariant);
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, itemGet, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_METHOD2(void, itemSet, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
 
 	/// itemAppend here expects key-value pair passed as VAR_VARIANT_COLLECTION in single argument
-	ES_DECL_REFLECTED_INTF_METHOD1(void, itemAppend, cr_EsVariant);
+	ES_DECL_REFLECTED_INTF_METHOD1(void, itemAppend, cr_EsVariant) ES_OVERRIDE;
 
 	/// Ctors
 	ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
@@ -133,7 +133,7 @@ public:
   ES_DECL_REFLECTED_CONST_METHOD0(EsBaseIntfPtr, clone);
 
 protected:
-	typedef std::map<EsVariant, size_t> Mapped;
+	typedef std::map<EsVariant, ulong> Mapped;
 	// helper services
 	Mapped::iterator checkKeyExistsAndNodeGet(const EsVariant& key, bool doThrow);
 	Mapped::const_iterator checkKeyExistsAndNodeGet(const EsVariant& key, bool doThrow) const;
@@ -144,8 +144,8 @@ protected:
 	virtual void valCheck(const EsVariant& key, const EsVariant& val) const;
 	virtual void doClear();
 	void indexCheck(ulong idx) const;
-	void internalDelete(Mapped::iterator it, size_t idx);
-	
+	void internalDelete(Mapped::iterator it, ulong idx);
+
 protected:
 	// NB! owner instance is not owned :) by this smartptr
 	// to prevent instance deadlock
