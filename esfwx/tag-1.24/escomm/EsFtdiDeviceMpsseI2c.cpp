@@ -1197,7 +1197,7 @@ esU32 EsFtdiDeviceMpsseI2c::write(esU16 devAddr, const EsBinBuffer& src, esU32 o
   return write(
     devAddr,
     src.data(),
-    src.size(),
+    static_cast<esU32>(src.size()),
     opts
   );
 }

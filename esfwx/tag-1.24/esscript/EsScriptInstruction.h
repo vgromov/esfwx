@@ -235,7 +235,7 @@ public:
     return m_argscnt;
   }
 
-  inline size_t tryCatchIdxGet() const ES_NOTHROW
+  inline ulong tryCatchIdxGet() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload0);
     return m_tryCatchIdx;
@@ -392,7 +392,7 @@ public:
     return *this;
   }
 
-  inline EsScriptInstruction& tryCatchIdxSet(size_t idx) ES_NOTHROW
+  inline EsScriptInstruction& tryCatchIdxSet(ulong idx) ES_NOTHROW
   {
     m_tryCatchIdx = idx;
     m_payloadMask |= Payload0;
@@ -480,7 +480,7 @@ protected:
     EsScriptOperatorIds m_opId;
     EsJumpOpcode m_jmpId;
     long m_argscnt;
-    size_t m_tryCatchIdx;
+    ulong m_tryCatchIdx;
     esU32 m_raw0;
   };
 

@@ -385,7 +385,7 @@ void EsProgressMonitorTask::onChildStateChanged(int newState)
 		if( statePulsing == m_state )
 		{
 			bool anyPulsing = false;
-			for(size_t idx = 0; idx < m_children.countGet() && !anyPulsing; ++idx)
+			for(ulong idx = 0; idx < m_children.countGet() && !anyPulsing; ++idx)
 			{
 				EsProgressMonitorTask* task =
 					reinterpret_cast<EsProgressMonitorTask*>( m_children.valueGet(idx).asPointer() );
@@ -402,7 +402,7 @@ void EsProgressMonitorTask::onChildStateChanged(int newState)
 		{
 			// should we change ourselves to complete state?
 			bool allComplete = true;
-			for(size_t idx = 0; idx < m_children.countGet() && allComplete; ++idx)
+			for(ulong idx = 0; idx < m_children.countGet() && allComplete; ++idx)
 			{
 				EsProgressMonitorTask* task =
 					reinterpret_cast<EsProgressMonitorTask*>( m_children.valueGet(idx).asPointer() );
@@ -630,9 +630,9 @@ EsVariant EsProgressMonitorTask::completionGet() const
 	{
 		if( !m_children.isEmpty() )
 		{
-			size_t cnt = m_children.countGet();
+			ulong cnt = m_children.countGet();
 			double total = 0;
-			for(size_t idx = 0; idx < cnt; ++idx)
+			for(ulong idx = 0; idx < cnt; ++idx)
 			{
 				EsProgressMonitorTask* task = reinterpret_cast<EsProgressMonitorTask*>(
 					m_children.valueGet(idx).asPointer());
@@ -680,7 +680,7 @@ void EsProgressMonitorTask::internalMonitorSet(const EsProgressMonitorIntf::Ptr&
     m_monitor = mon;
 	}
 
-	for( size_t idx = 0; idx < m_children.countGet(); ++idx )
+	for( ulong idx = 0; idx < m_children.countGet(); ++idx )
 	{
 		EsProgressMonitorTask* child = reinterpret_cast<EsProgressMonitorTask*>(
 			m_children.valueGet(idx).asPointer());
@@ -703,7 +703,7 @@ void EsProgressMonitorTask::internalChildAdd(const EsProgressMonitorTaskIntf::Pt
 
 void EsProgressMonitorTask::internalChildRemove(const EsString& childId)
 {
-	size_t idx = m_children.itemFind(childId);
+	ulong idx = m_children.itemFind(childId);
   if(idx != EsStringIndexedMap::npos)
     m_children.itemDelete(idx);
 }
@@ -981,7 +981,7 @@ void EsProgressMonitor::internalChildAdd(const EsProgressMonitorIntf::Ptr& thisM
 
 void EsProgressMonitor::internalChildRemove(const EsString& childPath)
 {
-	size_t idx = m_tasks.itemFind(childPath);
+	ulong idx = m_tasks.itemFind(childPath);
   if(idx != EsStringIndexedMap::npos)
   {
     m_tasks.itemDelete(idx);

@@ -62,12 +62,6 @@ Each substring ends with \0 to insert a null character. This includes the final
 substring, so that the whole string ends with \0\0, which can be detected when
 counting through. */
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 static const unsigned char compile_error_texts[] =
   "no error\0"
   "\\ at end of pattern\0"
@@ -327,11 +321,5 @@ for (i = 0; *message != 0; i++)
 buffer[i] = 0;
 return (int)i;
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_error.c */

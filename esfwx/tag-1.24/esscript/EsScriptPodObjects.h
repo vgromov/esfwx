@@ -74,7 +74,7 @@ protected: \
 		ES_ASSERT(result); \
 		ESSCRIPT_OBJECT_TRACE2(esT("New instance of '%s' object type created"), m_typeName.c_str()) \
 		return result; } \
-	ES_DECL_INTF_METHOD(void, internalUpdateLayout)(size_t offs) ES_OVERRIDE { \
+	ES_DECL_INTF_METHOD(void, internalUpdateLayout)(ulong offs) ES_OVERRIDE { \
 		internalOffsetSet(offs); } \
 	ES_DECL_INTF_METHOD(bool, internalBinBufferSet)(EsBinBuffer::const_pointer& pos, EsBinBuffer::const_pointer end) ES_OVERRIDE; \
 	virtual void validate(const EsVariant& val) const ES_OVERRIDE; \

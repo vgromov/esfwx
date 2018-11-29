@@ -51,12 +51,6 @@ defined. */
 #include "pcre2_internal.h"
 #endif /* PCRE2_PCRE2TEST */
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* Table of sizes for the fixed-length opcodes. It's defined in a macro so that
 the definition is next to the definition of the opcodes in pcre2_internal.h.
 This is mode-dependent, so is skipped when this file is included by pcre2test. */
@@ -650,7 +644,7 @@ static const char sc_utt_names[] =
   return sc_utt_names;
 }
 
-const ucp_type_table* PRIV(utt)(size_t* sze)
+const ucp_type_table* PRIV(utt)(uint32_t* sze)
 {
 static const ucp_type_table sc_utt[] = {
   {   0, PT_SC, ucp_Ahom },
@@ -830,7 +824,7 @@ static const ucp_type_table sc_utt[] = {
   { 1351, PT_PC, ucp_Zs }
 };
 
-  static const size_t sc_utt_sze = sizeof(sc_utt) / sizeof(ucp_type_table);
+  static const uint32_t sc_utt_sze = sizeof(sc_utt) / sizeof(ucp_type_table);
 
   if( sze )
     *sze = sc_utt_sze;
@@ -839,11 +833,5 @@ static const ucp_type_table sc_utt[] = {
 }
 
 #endif /* SUPPORT_UNICODE */
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_tables.c */

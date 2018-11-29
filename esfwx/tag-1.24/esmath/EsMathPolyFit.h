@@ -20,11 +20,11 @@ public:
   /// @param power [in] requested polynom power
   /// @param constraints [in, optional] Optional fitting constraints
   ///
-  void build(const EsMathArrayReal& x, const EsMathArrayReal& y, size_t power,
+  void build(const EsMathArrayReal& x, const EsMathArrayReal& y, ulong power,
 		const EsMathFitConstraints& constraints = EsMathFitConstraints());
 
 	/// Same as above, but x points are taken from y's indeces
-	void build(const EsMathArrayReal& y, size_t power,
+	void build(const EsMathArrayReal& y, ulong power,
 		const EsMathFitConstraints& constraints = EsMathFitConstraints());
 
 	/// X Definition range access

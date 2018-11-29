@@ -43,8 +43,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdlib.h>
 
-/* Allow for C++ users */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -139,9 +137,5 @@ PCRE2POSIX_EXP_DECL int regexec(const regex_t *, const char *, size_t,
                      regmatch_t *, int);
 PCRE2POSIX_EXP_DECL size_t regerror(int, const regex_t *, char *, size_t);
 PCRE2POSIX_EXP_DECL void regfree(regex_t *);
-
-#ifdef __cplusplus
-}   /* extern "C" */
-#endif
 
 /* End of pcre2posix.h */

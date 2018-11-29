@@ -18,7 +18,7 @@ public:
 	virtual ~EsRegExImplStd()
 	{}
 
-	virtual inline bool compile(const EsString& pattern, ulong flags)
+	virtual inline bool compile(const EsString& pattern, ulong flags) ES_OVERRIDE
 	{
 		try
 		{
@@ -67,9 +67,9 @@ public:
     }
   }
 
-	virtual inline bool matchGet(size_t& start, size_t& len, size_t subExprIdx) const
+	virtual inline bool matchGet(ulong& start, ulong& len, ulong subExprIdx) const ES_OVERRIDE
 	{
-    if( m_matched && subExprIdx < m_matches.size() )
+    if( m_matched && subExprIdx < static_cast<ulong>(m_matches.size()) )
     {
       len = m_matches.length(subExprIdx);
       start = m_matches.position(subExprIdx);
@@ -80,7 +80,7 @@ public:
     return false;
 	}
 
-	virtual inline size_t matchCountGet() const
+	virtual inline ulong matchCountGet() const ES_OVERRIDE
 	{
     if( m_matched )
       return m_matches.size();
@@ -88,12 +88,12 @@ public:
 		return 0;
 	}
 
-	virtual inline bool isOk() const
+	virtual inline bool isOk() const ES_OVERRIDE
 	{
 		return m_compiled;
 	}
 
-	virtual inline bool matches(const EsString& text, size_t offs, ulong flags) const
+	virtual inline bool matches(const EsString& text, ulong offs, ulong flags) const ES_OVERRIDE
 	{
     ES_ASSERT(m_compiled);
 
@@ -108,7 +108,7 @@ public:
 		return m_matched;
 	}
 
-	virtual inline EsString replace(const EsString& text, size_t offs, const EsString& replacement, ulong flags) const
+	virtual inline EsString replace(const EsString& text, ulong offs, const EsString& replacement, ulong flags) const ES_OVERRIDE
 	{
     ES_ASSERT(m_compiled);
 

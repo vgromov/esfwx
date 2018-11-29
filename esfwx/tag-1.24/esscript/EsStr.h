@@ -9,7 +9,7 @@ ES_DECL_ENUMERATION_BEGIN(EsStrFlag)
 	ES_DECL_ENUMERATION_ITEM(NoCEscape,				  EsString::StrNoCEscape)
 	ES_DECL_ENUMERATION_ITEM(XML,							  EsString::StrXML)
 	ES_DECL_ENUMERATION_ITEM(KeepSideBlanks,	  EsString::StrKeepSideBlanks)
-	ES_DECL_ENUMERATION_ITEM(I18n,						  EsString::StrI18n)
+	ES_DECL_ENUMERATION_ITEM(EscapeNonAscii,	  EsString::StrEscapeNonAscii)
 ES_DECL_ENUMERATION_END
 
 // String encodings

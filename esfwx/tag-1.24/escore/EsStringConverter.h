@@ -13,7 +13,7 @@ public:
   // hconv_t preallocated placeholder
   struct HConvHolder
   {
-    void* data[28];
+    void* data[64]; //< 64 is big enough to hold internal iconv struct for any known architecture
     mbstate_t dummy2;
   };
 
@@ -131,7 +131,7 @@ public:
 protected:
   // Internal services
   //
-  size_t bomSizeGet() ES_NOTHROW;
+  ulong bomSizeGet() ES_NOTHROW;
   size_t convert(HConvHolder& locH, const char** inbuf, size_t* inbytesleft, char** outbuf, size_t* outbytesleft) ES_NOTHROW;
   BuffT convert(const BuffT& in);
   void checkError() const;
@@ -144,15 +144,15 @@ protected:
   static void w16ToBuff(const EsWideString16& dest, BuffT& src, bool inverse);
   static void w32ToBuff(const EsWideString32& dest, BuffT& src, bool inverse);
 
-  static inline size_t pureCodeEndGet(const EsByteString& code) ES_NOTHROW;
+  static inline ulong pureCodeEndGet(const EsByteString& code) ES_NOTHROW;
 
   /// Return minimum char size for specified encoding
-  static size_t charSizeGetFromCode(const EsByteString& code) ES_NOTHROW;
+  static ulong charSizeGetFromCode(const EsByteString& code) ES_NOTHROW;
 
   /// Return endianness from enconding name, in sence of ES_ENDIAN values
   /// ES_ENDIAN_UNDEFINED is returned for single-byte codings
   ///
-  static int endiannessGetFromCode(const EsByteString& code) ES_NOTHROW;
+  static ulong endiannessGetFromCode(const EsByteString& code) ES_NOTHROW;
 
   // Internal Templated services
   //
@@ -226,7 +226,7 @@ protected:
 
 private:
   HConvHolder m_hConv;
-  size_t m_bomSize;
+  ulong m_bomSize;
   EsByteString m_toCode;
   EsByteString m_fromCode;
 

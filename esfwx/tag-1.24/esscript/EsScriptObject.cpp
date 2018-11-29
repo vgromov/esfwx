@@ -31,7 +31,7 @@ public:
 	{
 		ES_ASSERT(obj);
 		const EsStringIndexedMap& sm = obj->thisFieldsMapGet();
-		size_t idx = sm.itemFind(m_name);
+		ulong idx = sm.itemFind(m_name);
 		if(EsStringIndexedMap::npos != idx)
 		{
 			m_result = sm.valueGet(idx);
@@ -284,7 +284,7 @@ public:
 		EsStringIndexedMap::Ptr props = obj->thisPropertiesMapGet();
 		if(props)
 		{
-			size_t idx = props->itemFind(m_name);
+			ulong idx = props->itemFind(m_name);
 			if( EsStringIndexedMap::npos != idx )
 			{
 				m_result = props->valueGet(idx).asExistingObject();
@@ -445,7 +445,7 @@ EsScriptObject::~EsScriptObject()
 	// unparent and cleanup own fields
 	if( !m_fieldsMap.isEmpty() )
 	{
-		size_t idx = m_fieldsMap.countGet()-1;
+		ulong idx = m_fieldsMap.countGet()-1;
 		do
 		{
 			// todo: free data buffer chunk??
@@ -596,7 +596,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::thisFieldAttributesAssign)(const EsAtt
 {
 	ES_ASSERT(attrs);
 	const EsString& fname = attrs->ownerNameGet();
-	size_t idx = m_fieldsMap.itemFind(fname);
+	ulong idx = m_fieldsMap.itemFind(fname);
 	if( EsStringIndexedMap::npos != idx )
 	{
 		EsVariant fnode = m_fieldsMap.valueGet(idx);
@@ -874,7 +874,7 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::internalClone)(
 
 	result->setParent(parent);
 	// 2) create all nested fields, setting new copy of ourselves as its parent
-	for(size_t idx = 0; idx < m_fieldsMap.countGet(); ++idx )
+	for(ulong idx = 0; idx < m_fieldsMap.countGet(); ++idx )
 	{
 		const EsVariant& fnode = m_fieldsMap.valueGet(idx);
 		const EsScriptObjectIntf::Ptr& fld = fnodeFieldGet(fnode);
@@ -1075,7 +1075,7 @@ void EsScriptObject::useContextOf(const EsBaseIntf::Ptr& other)
 // update object memory layout. fields and ancestor offsets and|or sizes get updated
 // as a result of this process
 //
-ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateFieldsLayout)(size_t offs)
+ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateFieldsLayout)(ulong offs)
 {
 	ESSCRIPT_OBJECT_TRACE4(
     esT("internalUpdateFieldsLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"),
@@ -1088,12 +1088,12 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateFieldsLayout)(size_t off
 
 	if(
     (m_flags & ofNeedUpdateLayout) ||
-		m_offs != (long)offs
+		m_offs != static_cast<long>(offs)
   )
 	{
-		size_t localSize = m_ancestor ? m_ancestor->sizeGet() : 0;
+		ulong localSize = m_ancestor ? m_ancestor->sizeGet() : 0;
 		// set offset of the own fields
-		for(size_t idx = 0; idx < m_fieldsMap.countGet(); ++idx)
+		for(ulong idx = 0; idx < m_fieldsMap.countGet(); ++idx)
 		{
 			const EsScriptObjectIntf::Ptr& field = fnodeFieldGet(m_fieldsMap.valueGet(idx));
 			ES_ASSERT(field);
@@ -1111,8 +1111,13 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateFieldsLayout)(size_t off
 		// check if we're not exceeding fixed size value
 		if( m_attrsClass && m_attrsClass->attributeExists( fixedSizeAttr() ) )
 		{
-			size_t fixedSize = m_attrsClass->attributeGet( fixedSizeAttr() ).asULong();
-			EsNumericCheck::checkRangeUInteger(1, fixedSize, localSize, esT("Calculated object size"));
+			ulong fixedSize = m_attrsClass->attributeGet( fixedSizeAttr() ).asULong();
+			EsNumericCheck::checkRangeUInteger(
+        1, 
+        fixedSize, 
+        localSize, 
+        esT("Calculated object size")
+      );
 		}
 
 		m_size = localSize;
@@ -1121,7 +1126,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateFieldsLayout)(size_t off
 }
 //---------------------------------------------------------------------------
 
-ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateLayout)(size_t offs)
+ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateLayout)(ulong offs)
 {
 	ES_ASSERT( !isMetaclass() );
 
@@ -1136,7 +1141,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateLayout)(size_t offs)
 
 	if(
     (m_flags & ofNeedUpdateLayout) ||
-    (static_cast<size_t>(m_offs) != offs)
+    (static_cast<ulong>(m_offs) != offs)
   )
 	{
 		// get the most basic ancestor
@@ -2161,7 +2166,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::validate)(const EsVariant& val) const
 	}
 }
 
-ES_IMPL_INTF_METHOD(size_t, EsScriptObject::sizeGet)() const ES_NOTHROW
+ES_IMPL_INTF_METHOD(ulong, EsScriptObject::sizeGet)() const ES_NOTHROW
 {
 	if( m_attrsClass && m_attrsClass->attributeExists( fixedSizeAttr() ) )
 		return m_attrsClass->attributeGet( fixedSizeAttr() ).asULong();
@@ -2209,7 +2214,7 @@ ES_IMPL_INTF_METHOD(EsStringArray, EsScriptObject::thisScriptedPropertiesNamesGe
 	EsStringArray result;
 	result.reserve( m_propsMap->countGet() );
 		
-	for(size_t idx = 0; idx < m_propsMap->countGet(); ++idx)
+	for(ulong idx = 0; idx < m_propsMap->countGet(); ++idx)
 	{
 		EsScriptObjectPropertyInfoIntf::Ptr propInfo = m_propsMap->valueGet(idx).asExistingObject();
 		if( persistentOnly && !propInfo->isPersistent() )
@@ -2531,7 +2536,7 @@ const EsVariant& EsScriptObjectFieldFastFinder::resultGet() ES_NOTHROW
 bool EsScriptObjectFieldFastFinder::objectProcess() ES_NOTHROW
 {
 	const EsStringIndexedMap& sm = m_obj->thisFieldsMapGet();
-	size_t idx = sm.itemFind(m_name);
+	ulong idx = sm.itemFind(m_name);
 	if( EsStringIndexedMap::npos != idx )
 	{
 		m_result = sm.valueGet(idx);

@@ -45,12 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 *          Default malloc/free functions         *
 *************************************************/
@@ -410,11 +404,5 @@ mcontext->stack_memctl.memory_data = mydata;
 #endif
 return 0;
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_context.c */

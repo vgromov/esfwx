@@ -54,15 +54,26 @@ EsByteReadStatus EsCommUtils::specificByteReceive(const EsChannelIoIntf::Ptr& ch
 }
 //---------------------------------------------------------------------------
 
-bool EsCommUtils::binaryPatternReceive(const EsChannelIoIntf::Ptr& chnl, const esU8* pattern, size_t patternLen,
+bool EsCommUtils::binaryPatternReceive(const EsChannelIoIntf::Ptr& chnl, const esU8* pattern, ulong patternLen,
   ulong charRetries /*= 1*/, ulong tmo /*= 1*/)
 {
 	ES_ASSERT(pattern);
 	const esU8* pos = pattern;
 	const esU8* end = pattern+patternLen;
-	bool ok = EsByteReadStatus::Success == specificByteReceive(chnl, *pos++, patternLen, tmo);
-	while(pos < end && ok)
-		ok = EsByteReadStatus::Success == specificByteReceive(chnl, *pos++, 1, tmo);
+	bool ok = EsByteReadStatus::Success == specificByteReceive(
+    chnl, 
+    *pos++, 
+    patternLen, 
+    tmo
+  );
+	
+  while(pos < end && ok)
+		ok = EsByteReadStatus::Success == specificByteReceive(
+      chnl, 
+      *pos++, 
+      1, 
+      tmo
+    );
 
 	return ok;
 }
@@ -71,7 +82,13 @@ bool EsCommUtils::binaryPatternReceive(const EsChannelIoIntf::Ptr& chnl, const e
 bool EsCommUtils::binaryPatternReceive(const EsChannelIoIntf::Ptr& chnl, const EsBinBuffer& pattern,
   ulong charRetries /*= 1*/, ulong tmo /*= 1*/)
 {
-	return binaryPatternReceive(chnl, &pattern[0], pattern.size(), charRetries, tmo);
+	return binaryPatternReceive(
+    chnl, 
+    &pattern[0], 
+    static_cast<ulong>(pattern.size()), 
+    charRetries, 
+    tmo
+  );
 }
 //---------------------------------------------------------------------------
 

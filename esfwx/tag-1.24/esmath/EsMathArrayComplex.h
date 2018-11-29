@@ -17,7 +17,7 @@ public:
   /// Non-reflected services
   ///
 
-	EsMathArrayComplex(size_t size = 0);
+	EsMathArrayComplex(ulong size = 0);
 	EsMathArrayComplex(const EsMathArrayComplex& src);
 
 	virtual ~EsMathArrayComplex();
@@ -29,7 +29,7 @@ public:
 	/// direct data access
 	const EsMath::Complex* dataGet() const;
 	EsMath::Complex* dataAccess();
-	void dataSet(size_t size, const EsMath::Complex* data);
+	void dataSet(ulong size, const EsMath::Complex* data);
 
 	/// assignment operator
 	EsMathArrayComplex& operator=(const EsMathArrayComplex& src);

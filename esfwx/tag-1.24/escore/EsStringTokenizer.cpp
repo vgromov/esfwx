@@ -48,12 +48,12 @@ bool EsStringTokenizer::get_moreTokens() const
 
 ulong EsStringTokenizer::get_tokensCount() const
 {
-	return m_tokens.size();
+	return static_cast<ulong>(m_tokens.size());
 }
 
 ulong EsStringTokenizer::get_remainingTokens() const
 {
-	return m_tokens.size()-m_cnt;
+	return static_cast<ulong>(m_tokens.size()-m_cnt);
 }
 
 bool EsStringTokenizer::get_skipMultipleSeparators() const
@@ -156,16 +156,22 @@ void EsStringTokenizer::tokenize()
 	if( !m_str.empty() )
 	{
 		if( m_seps.empty() ) // assign entire string as token, if 'seperators' is empty
-			m_tokens[0] = m_str.size();
+			m_tokens[0] = static_cast<ulong>(m_str.size());
 		else
 		{
 			// iterate string to find tokens and remember their positions & lengths in map
 			size_t tokStart = 0;
-			size_t tokEnd = EsString::npos;
+      size_t tokEnd = EsString::npos;
 			do
 			{
 				tokEnd = m_str.find_first_of(m_seps, tokStart);
-				m_tokens[tokStart] = (EsString::npos == tokEnd) ? m_str.size() : tokEnd-tokStart;
+				m_tokens[
+          static_cast<ulong>(tokStart)
+        ] = static_cast<ulong>(
+          (EsString::npos == tokEnd) ? 
+            m_str.size() : 
+            tokEnd-tokStart
+        );
 
 				// skip to the next non-separator
 				if( EsString::npos != tokEnd )

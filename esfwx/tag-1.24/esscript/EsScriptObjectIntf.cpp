@@ -37,7 +37,7 @@ void EsScriptObjectTraverserBase::onEnumerateFields(const EsScriptObjectIntf* ob
 		return;
 
 	const EsStringIndexedMap& sm = obj->thisFieldsMapGet();
-	for(size_t idx = 0; idx < sm.countGet() && m_continue; ++idx)
+	for(ulong idx = 0; idx < sm.countGet() && m_continue; ++idx)
 	{
 		EsScriptObjectIntf::Ptr fp = EsScriptObject::fnodeFieldGet(sm.valueGet(idx));
 		if( fp->isIf() )

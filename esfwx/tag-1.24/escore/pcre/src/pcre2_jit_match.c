@@ -175,7 +175,7 @@ if (rc > (int)oveccount)
 match_data->code = re;
 match_data->subject = subject;
 match_data->rc = rc;
-match_data->startchar = arguments.startchar_ptr - subject;
+match_data->startchar = (PCRE2_SIZE)(arguments.startchar_ptr - subject);
 match_data->leftchar = 0;
 match_data->rightchar = 0;
 match_data->mark = arguments.mark_ptr;

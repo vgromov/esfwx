@@ -375,7 +375,7 @@ void EsCryptoDesLegacy::process(EsBinBuffer& dest, const EsBinBuffer& src, bool 
   esU32 orgLen = 0;
 	if(encode)
 	{
-		orgLen = src.size();
+		orgLen = static_cast<esU32>(src.size());
     // limit maximum processing block with maximal number of bytes esU32 may address
     ES_ASSERT(orgLen <= static_cast<esU32>(0xFFFFFFFF));
 		tmp.assign(

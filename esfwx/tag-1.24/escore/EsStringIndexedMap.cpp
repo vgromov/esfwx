@@ -12,7 +12,7 @@
 //---------------------------------------------------------------------------
 
 EsStringIndexedMap::
-EsStringAssocContainerNodeT::EsStringAssocContainerNodeT(const EsString& name, size_t idx, const EsVariant& payload/* = EsVariant::s_null*/) ES_NOTHROW :
+EsStringAssocContainerNodeT::EsStringAssocContainerNodeT(const EsString& name, ulong idx, const EsVariant& payload/* = EsVariant::s_null*/) ES_NOTHROW :
 m_name(name),
 m_idx(idx),
 m_payload(payload)
@@ -61,9 +61,9 @@ EsStringIndexedMap::~EsStringIndexedMap() ES_NOTHROW
 
 // internal helpers
 //
-size_t EsStringIndexedMap::internalInsert(const EsString& name, const EsVariant& payload, bool doThrow)
+ulong EsStringIndexedMap::internalInsert(const EsString& name, const EsVariant& payload, bool doThrow)
 {
-	size_t newIdx = m_v.size();
+	ulong newIdx = static_cast<ulong>(m_v.size());
 	EsStringAssocContainerNodePtrT pnode(
     new EsStringAssocContainerNodeT(
       name,
@@ -140,13 +140,13 @@ bool EsStringIndexedMap::isEmpty() const ES_NOTHROW
 	return m_v.empty();
 }
 
-size_t EsStringIndexedMap::countGet() const ES_NOTHROW
+ulong EsStringIndexedMap::countGet() const ES_NOTHROW
 {
   EsCriticalSectionPtrLocker lock(m_cs);
-	return m_v.size();
+	return static_cast<ulong>(m_v.size());
 }
 
-size_t EsStringIndexedMap::internalFind(const EsString& name) const ES_NOTHROW
+ulong EsStringIndexedMap::internalFind(const EsString& name) const ES_NOTHROW
 {
 	const EsStringAssocMapT::const_iterator& cit = m_m.find( name.hashGet() );
 
@@ -156,7 +156,7 @@ size_t EsStringIndexedMap::internalFind(const EsString& name) const ES_NOTHROW
 	return npos;
 }
 
-size_t EsStringIndexedMap::internalFind(const EsByteString& name, size_t len) const ES_NOTHROW
+ulong EsStringIndexedMap::internalFind(const EsByteString& name, ulong len) const ES_NOTHROW
 {
   // NB! We do not support any UNICODE encodings in name here, so any call to find on non-single byte string
   // would not find anything
@@ -174,14 +174,14 @@ size_t EsStringIndexedMap::internalFind(const EsByteString& name, size_t len) co
 	return npos;
 }
 
-size_t EsStringIndexedMap::itemFind(const EsString& name) const ES_NOTHROW
+ulong EsStringIndexedMap::itemFind(const EsString& name) const ES_NOTHROW
 {
   EsCriticalSectionPtrLocker lock(m_cs);
 	return internalFind(name);
 }
 
 // The same as above, but for byte strings
-size_t EsStringIndexedMap::itemFind(const EsByteString& name, size_t len) const ES_NOTHROW
+ulong EsStringIndexedMap::itemFind(const EsByteString& name, ulong len) const ES_NOTHROW
 {
   EsCriticalSectionPtrLocker lock(m_cs);
 	return internalFind(name, len);
@@ -189,14 +189,19 @@ size_t EsStringIndexedMap::itemFind(const EsByteString& name, size_t len) const 
 
 // insert named item with payload, return new item index, or
 // generate 'item already exists' exception
-size_t EsStringIndexedMap::itemAdd(const EsString& name, const EsVariant& payload /*= EsVariant::s_null*/, bool strict /*= true*/)
+ulong EsStringIndexedMap::itemAdd(const EsString& name, const EsVariant& payload /*= EsVariant::s_null*/, bool strict /*= true*/)
 {
   EsCriticalSectionPtrLocker lock(m_cs);
-	size_t result = internalInsert(name, payload, strict);
+	ulong result = internalInsert(name, payload, strict);
   if( EsStringIndexedMap::npos == result ) //< Item already exists in non-strict mode
   {
     result = internalFind(name);
-    EsNumericCheck::checkRangeUInteger(0, m_v.size(), result);
+    EsNumericCheck::checkRangeUInteger(
+      0, 
+      static_cast<ulong>(m_v.size()), 
+      static_cast<ulong>(result)
+    );
+
     m_v[result]->m_payload = payload;
   }
 
@@ -204,20 +209,24 @@ size_t EsStringIndexedMap::itemAdd(const EsString& name, const EsVariant& payloa
 }
 
 // item deletion by name|index. NB! deletion performance is poor
-void EsStringIndexedMap::internalDelete(size_t idx)
+void EsStringIndexedMap::internalDelete(ulong idx)
 {
 	EsStringAssocContainerNodePtrT node = m_v[idx];
 	m_v.erase(m_v.begin()+idx);
 	m_m.erase(node->m_name.hashGet());
 	// update all node indexes after the erased one
-	for(size_t _idx = idx; _idx < m_v.size(); ++_idx )
+	for(ulong _idx = idx; _idx < m_v.size(); ++_idx )
 		m_v[_idx]->m_idx = _idx;
 }
 
-void EsStringIndexedMap::itemDelete(size_t idx)
+void EsStringIndexedMap::itemDelete(ulong idx)
 {
   EsCriticalSectionPtrLocker lock(m_cs);
-	EsNumericCheck::checkRangeUInteger(0, m_v.size(), idx);
+	EsNumericCheck::checkRangeUInteger(
+    0, 
+    static_cast<ulong>(m_v.size()), 
+    static_cast<ulong>(idx)
+  );
 	internalDelete(idx);
 }
 
@@ -239,7 +248,7 @@ void EsStringIndexedMap::throwItemDoesNotExist(const EsString& name) const
 void EsStringIndexedMap::itemDelete(const EsString& name, bool doThrow /*= false*/)
 {
   EsCriticalSectionPtrLocker lock(m_cs);
-	size_t idx = internalFind(name);
+	ulong idx = internalFind(name);
 	if(npos != idx )
 		internalDelete(idx);
 	else if( doThrow )
@@ -273,17 +282,21 @@ bool EsStringIndexedMap::itemExists(const EsString& name) const ES_NOTHROW
 	return itemFind(name) != npos;
 }
 
-bool EsStringIndexedMap::itemExists(const EsByteString& name, size_t len) const ES_NOTHROW
+bool EsStringIndexedMap::itemExists(const EsByteString& name, ulong len) const ES_NOTHROW
 {
 	return itemFind(name, len) != npos;
 }
 
 // operators
 //
-const EsString& EsStringIndexedMap::nameGet(size_t idx) const
+const EsString& EsStringIndexedMap::nameGet(ulong idx) const
 {
   EsCriticalSectionPtrLocker lock(m_cs);
-	EsNumericCheck::checkRangeUInteger(0, m_v.size(), idx);
+	EsNumericCheck::checkRangeUInteger(
+    0, 
+    static_cast<ulong>(m_v.size()), 
+    static_cast<ulong>(idx)
+  );
 	return m_v[idx]->m_name;
 }
 
@@ -325,17 +338,25 @@ void EsStringIndexedMap::valueSet(const EsString& name, const EsVariant& val)
 }
 
 // indexed payload access
-const EsVariant& EsStringIndexedMap::valueGet(size_t idx) const
+const EsVariant& EsStringIndexedMap::valueGet(ulong idx) const
 {
   EsCriticalSectionPtrLocker lock(m_cs);
-	EsNumericCheck::checkRangeUInteger(0, m_v.size(), idx);
+	EsNumericCheck::checkRangeUInteger(
+    0, 
+    static_cast<ulong>(m_v.size()), 
+    static_cast<ulong>(idx)
+  );
 	return m_v[idx]->m_payload;
 }
 
-void EsStringIndexedMap::valueSet(size_t idx, const EsVariant& val)
+void EsStringIndexedMap::valueSet(ulong idx, const EsVariant& val)
 {
   EsCriticalSectionPtrLocker lock(m_cs);
-	EsNumericCheck::checkRangeUInteger(0, m_v.size(), idx);
+	EsNumericCheck::checkRangeUInteger(
+    0, 
+    static_cast<ulong>(m_v.size()), 
+    static_cast<ulong>(idx)
+  );
 	m_v[idx]->m_payload = val;
 }
 

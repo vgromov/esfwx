@@ -35,7 +35,7 @@ ES_DECL_CLASS_INFO_END
 ///
 
 /// math-specific array of complex values
-EsMathArrayComplex::EsMathArrayComplex(size_t size /*= 0*/) :
+EsMathArrayComplex::EsMathArrayComplex(ulong size /*= 0*/) :
 m_pimpl(0)
 {
   m_pimpl = new alglib::complex_1d_array;
@@ -96,10 +96,13 @@ EsMath::Complex* EsMathArrayComplex::dataAccess()
 }
 //---------------------------------------------------------------------------
 
-void EsMathArrayComplex::dataSet(size_t size, const EsMath::Complex* data)
+void EsMathArrayComplex::dataSet(ulong size, const EsMath::Complex* data)
 {
 	ES_ASSERT(m_pimpl);
-	alglibCastFromArray(*this).setcontent( size, (const alglib::complex*)data );
+	alglibCastFromArray(*this).setcontent( 
+    size, 
+    (const alglib::complex*)data 
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -176,7 +179,7 @@ void EsMathArrayComplex::set_count(const ulong& size)
 ulong EsMathArrayComplex::countGet() const
 {
 	ES_ASSERT(m_pimpl);
-	return ((const alglib::complex_1d_array*)m_pimpl)->length();
+	return static_cast<ulong>(((const alglib::complex_1d_array*)m_pimpl)->length());
 }
 //---------------------------------------------------------------------------
 
@@ -194,7 +197,7 @@ void EsMathArrayComplex::countSet(ulong newSize)
 void EsMathArrayComplex::fill(double re, double im)
 {
 	EsMath::Complex* pc = dataAccess();
-	for(size_t idx = 0; idx < countGet(); ++idx)
+	for(ulong idx = 0; idx < countGet(); ++idx)
 	{
 		pc->m_re = re; pc->m_im = im;
 		++pc;

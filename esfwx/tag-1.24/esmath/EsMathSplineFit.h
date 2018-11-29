@@ -22,11 +22,11 @@ public:
   ///                         must be equal or greater, than 4
   /// @param constraints [in] optional set of fitting constraints
   ///
-	void build(const EsMathArrayReal& x, const EsMathArrayReal& y, size_t basisFunctionsCnt,
+	void build(const EsMathArrayReal& x, const EsMathArrayReal& y, ulong basisFunctionsCnt,
 		const EsMathFitConstraints& constraints = EsMathFitConstraints());
 
 	/// Same as above, but x is taken from y's indices
-	void build(const EsMathArrayReal& y, size_t basisFunctionsCnt,
+	void build(const EsMathArrayReal& y, ulong basisFunctionsCnt,
 		const EsMathFitConstraints& constraints = EsMathFitConstraints());
 
 	/// Build spline fit object, using specified x, y data, required power,
@@ -38,11 +38,11 @@ public:
   /// @param rho [in]         Penalty coefficient, may vary from -8 to 8, if below this range,
   ///                         no penalty is invoked, say, -15 will not linearize at all
   ///
-	void build(const EsMathArrayReal& x, const EsMathArrayReal& y, size_t basisFunctionsCnt,
+	void build(const EsMathArrayReal& x, const EsMathArrayReal& y, ulong basisFunctionsCnt,
 		double rho);
 
 	/// Same as above, but x is taken from y's indices
-	void build(const EsMathArrayReal& y, size_t basisFunctionsCnt,
+	void build(const EsMathArrayReal& y, ulong basisFunctionsCnt,
 		double rho);
 
 

@@ -30,9 +30,21 @@ TEST(EsStringTest, Encoding16) {
 	ASSERT_TRUE(src == dest);
 }
 
+TEST(EsStringTest, Encoding32) {
+
+  EsWideString32 src = esT32("тестовая строка по-русски");
+  EsStringConverter::Ptr cnv32to8 = EsStringConverter::convGet("UTF-8", "UTF-32");
+  EsStringConverter::Ptr cnv8to32 = EsStringConverter::convGet("UTF-32", "UTF-8");
+
+  const EsByteString& bs = cnv32to8->w32toC(src);
+  const EsWideString32& dest = cnv8to32->cToW32(bs);
+  ASSERT_TRUE(src.size() == dest.size());
+  ASSERT_TRUE(src == dest);
+}
+
 TEST(EsStringTest, EncodingStr) {
 
-	EsString src = esT("тестовая строка по-русски");
+	EsString src = esTU("тестовая строка по-русски");
 
 	const EsByteString& bs = EsString::toUtf8(src);
 	const EsString& dest = EsString::fromUtf8(bs);
@@ -73,7 +85,7 @@ TEST(EsStringTest, CulturalFormattingExtra) {
   ASSERT_TRUE(esT(',') == sep);
 
   sep = EsLocale::thousandSeparatorGet(loc);
-  ASSERT_TRUE(esT('\x00A0') == sep);
+  ASSERT_TRUE(u'\x00A0' == sep);
 
   sep = EsLocale::listSeparatorGet(loc);
   ASSERT_TRUE(esT(';') == sep);
@@ -82,10 +94,10 @@ TEST(EsStringTest, CulturalFormattingExtra) {
   ASSERT_TRUE(esT(',') == sep);
 
   sep = EsLocale::moneyThousandSeparatorGet(loc);
-  ASSERT_TRUE(esT('\x00A0') == sep);
+  ASSERT_TRUE(u'\x00A0' == sep);
 
   EsString str = EsLocale::moneySymbolGet(loc);
-  ASSERT_TRUE(esT("₽") == str);
+  ASSERT_TRUE(u'\x20BD' == str);
 
   /// Date-Time cultural-aware formatting
   ///
@@ -111,10 +123,10 @@ TEST(EsStringTest, CulturalFormattingExtra) {
   ASSERT_TRUE(esT("d MMMM yyyy 'г.' H:mm:ss") == str);
 
   str = EsLocale::timeAmGet(loc);
-  ASSERT_TRUE(esT("ДП") == str);
+  ASSERT_TRUE(esTU("ДП") == str);
 
   str = EsLocale::timePmGet(loc);
-  ASSERT_TRUE(esT("ПП") == str);
+  ASSERT_TRUE(esTU("ПП") == str);
 }
 
 TEST(EsStringTest, CulturalFormattingMoney) {
@@ -123,11 +135,9 @@ TEST(EsStringTest, CulturalFormattingMoney) {
 
   EsString::value_type sep = EsLocale::moneyThousandSeparatorGet(loc);
 
-  EsString str = esT("1");
+  EsString str = esT("12");
   str += sep;
-  str += esT("234");
-  str += sep;
-  str += esT("567,46 ");
+  str += esT("345,67 ");
 
   std::basic_stringstream<EsString::value_type> oss;
   oss.imbue(loc);

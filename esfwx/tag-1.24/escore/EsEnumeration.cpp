@@ -13,8 +13,8 @@
 
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsEnumeration, NO_CLASS_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsEnumeration, EsEnumerationIntf, itemAdd, void_Call_cr_EsString_cr_EsVariant_cr_EsString, esT("Append item to enumeration"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsEnumeration, EsEnumerationIntf, countGet, long_CallConst, esT("Return enumeration items count"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsEnumeration, EsEnumerationIntf, itemGet, EsVariant_CallConst_long, esT("Return enumeration items value by its index"))
+	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsEnumeration, EsEnumerationIntf, countGet, ulong_CallConst, esT("Return enumeration items count"))
+	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsEnumeration, EsEnumerationIntf, itemGet, EsVariant_CallConst_ulong, esT("Return enumeration items value by its index"))
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsEnumeration, EsEnumerationIntf, valueGet, EsVariant_CallConst_cr_EsString, esT("Return enumeration value by its symbolic name"))
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsEnumeration, EsEnumerationIntf, valueExists, bool_CallConst_cr_EsVariant, esT("Return true if enumeration contains value"))
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsEnumeration, EsEnumerationIntf, valueIndexGet, ulong_CallConst_cr_EsVariant, esT("Return enumeration index of the value"))
@@ -129,12 +129,12 @@ void EsEnumeration::itemAdd(const EsString& symbol, const EsVariant& val,	const 
 	
 // reflected services
 //
-long EsEnumeration::countGet() const ES_NOTHROW
+ulong EsEnumeration::countGet() const ES_NOTHROW
 {
 	return m_contents.countGet();
 }
 
-EsVariant EsEnumeration::itemGet(long idx) const
+EsVariant EsEnumeration::itemGet(ulong idx) const
 {
 	return m_contents.valueGet(idx)[0];
 }
@@ -145,7 +145,7 @@ EsVariant EsEnumeration::valueGet(cr_EsString symbol) const
 	return m_contents.valueGet(symbol)[0];
 }
 
-EsString EsEnumeration::labelGet(size_t idx) const
+EsString EsEnumeration::labelGet(ulong idx) const
 {
 	const EsVariant& label = m_contents.valueGet(idx)[1];
 	
@@ -184,7 +184,7 @@ EsString EsEnumeration::valueSymbolGet(cr_EsVariant val) const
 
 bool EsEnumeration::valueExists(cr_EsVariant val) const ES_NOTHROW
 {
-	for(size_t idx = 0; idx < m_contents.countGet(); ++idx)
+	for(ulong idx = 0; idx < m_contents.countGet(); ++idx)
 	{
 		const EsVariant& itemVal = m_contents.valueGet(idx);
 		ES_ASSERT(!itemVal.isEmpty());
@@ -197,11 +197,11 @@ bool EsEnumeration::valueExists(cr_EsVariant val) const ES_NOTHROW
 
 ulong EsEnumeration::valueIndexGet(cr_EsVariant val) const
 {
-	for(size_t idx = 0; idx < m_contents.countGet(); ++idx)
+	for(ulong idx = 0; idx < m_contents.countGet(); ++idx)
 	{
 		const EsVariant& itemVal = m_contents.valueGet(idx);
 		if( val == itemVal.itemGet(0) )
-			return idx;
+			return static_cast<ulong>(idx);
 	}
 
 	EsException::Throw(
@@ -217,7 +217,7 @@ ES_IMPL_INTF_METHOD(EsStringArray, EsEnumeration::labelsGet)() const ES_NOTHROW
 {
 	EsStringArray result;
 	result.reserve(m_contents.countGet());
-	for(size_t idx = 0; idx < m_contents.countGet(); ++idx )
+	for(ulong idx = 0; idx < m_contents.countGet(); ++idx )
 		result.push_back( labelGet(idx) );
 
 	return result;
@@ -226,7 +226,7 @@ ES_IMPL_INTF_METHOD(EsStringArray, EsEnumeration::labelsGet)() const ES_NOTHROW
 ES_IMPL_INTF_METHOD(EsVariant, EsEnumeration::valuesGet)() const ES_NOTHROW
 {
 	EsVariant result(EsVariant::VAR_VARIANT_COLLECTION);
-	for(size_t idx = 0; idx < m_contents.countGet(); ++idx )
+	for(ulong idx = 0; idx < m_contents.countGet(); ++idx )
 	{
 		const EsVariant& itemVal = m_contents.valueGet(idx);
 		result.addToVariantCollection( itemVal.itemGet(0) );

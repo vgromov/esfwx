@@ -261,7 +261,7 @@ void EsStreamXml::nodeParse(const EsXmlNode& node)
       name
     );
 
-  EsStreamBlock* block = 0;
+  EsStreamBlock* block = nullptr;
   if( EsStreamBlock::Item == id ) //< Create indexed block
   {
     const EsXmlAttribute& aidx = node.attributeGet(
@@ -302,9 +302,8 @@ void EsStreamXml::nodeParse(const EsXmlNode& node)
 
     if( aname )
     {
-      name = EsString::fromString(
-        aname.valueGet(),
-        EsString::StrXML
+      name = EsString::fromString(//toString(
+        aname.valueGet()
       );
     }
     else if( EsStreamBlock::Object == id )
@@ -355,7 +354,7 @@ void EsStreamXml::nodeParse(const EsXmlNode& node)
   }
 
   // Legacy XML field structure fixup
-  EsStreamBlock* oblockFixup = 0;
+  EsStreamBlock* oblockFixup = nullptr;
 
   // Optional Payload|Type
   if( block->supportsTypes() )
@@ -402,10 +401,11 @@ void EsStreamXml::nodeParse(const EsXmlNode& node)
       // Assign POD value as Block payload
       if( type <= EsVariant::VAR_STRING )
       {
-        EsVariant var = EsString::fromString(
-          node.childValueGet(),
-          EsString::StrXML
+        const EsString& valstr = EsString::fromString(//toString(
+          node.childValueGet()
         );
+
+        EsVariant var = valstr;
 
         // Explicitly convert string variant to type, skip string type of course
         switch( type )
@@ -474,12 +474,13 @@ void EsStreamXml::nodeParse(const EsXmlNode& node)
 
     if( albl )
     {
+      const EsString& valstr = EsString::fromString(//toString(
+        albl.valueGet()
+      );
+
       block->attributeAdd(
         EsStreamBlock::label(),
-        EsString::fromString(
-          albl.valueGet(),
-          EsString::StrXML
-        )
+        valstr
       );
     }
   }
@@ -537,10 +538,14 @@ void EsStreamXml::blockToXml(EsXmlNode& node) const
     );
     ES_ASSERT(attr);
 
+    const EsString& valstr = m_block->attributeGet(
+      EsStreamBlock::index()
+    ).asString(
+      EsString::StrNoFlags
+    );
+
     attr.valueSet(
-      m_block->attributeGet(
-        EsStreamBlock::index()
-      ).asString().c_str()
+      valstr.c_str()
     );
   }
   else if( !m_block->isObject() && !m_block->nameIsEmpty() )
@@ -584,10 +589,14 @@ void EsStreamXml::blockToXml(EsXmlNode& node) const
     );
     ES_ASSERT(attr);
 
+    const EsString& valstr = m_block->attributeGet(
+      EsStreamBlock::label()
+    ).asString(
+      EsString::StrNoFlags
+    );
+
     attr.valueSet(
-      m_block->attributeGet(
-        EsStreamBlock::label()
-      ).asString(EsString::StrXML).c_str()
+      valstr.c_str()
     );
   }
 
@@ -630,8 +639,12 @@ void EsStreamXml::blockToXml(EsXmlNode& node) const
         EsXmlNode pcdata = nchild.childAppend( xmlNodePcdata );
         ES_ASSERT( pcdata );
 
+        const EsString& valstr = m_block->payloadGet().asString(
+          EsString::StrNoFlags
+        );
+
         pcdata.valueSet(
-          m_block->payloadGet().asString( EsString::StrXML ).c_str()
+          valstr.c_str()
         );
       }
 

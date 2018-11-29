@@ -51,12 +51,6 @@ with the library. In this case, PCRE2_PCRE2TEST is defined. */
 #include "pcre2_internal.h"
 #endif /* PCRE2_PCRE2TEST */
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef SUPPORT_UNICODE
 /*************************************************
 *  Dummy function when Unicode is not supported  *
@@ -345,21 +339,21 @@ for (p = string; length > 0; p++)
     /* High surrogate. Must be a followed by a low surrogate. */
     if (length == 0)
       {
-      *erroroffset = p - string;
+      *erroroffset = (PCRE2_SIZE)(p - string);
       return PCRE2_ERROR_UTF16_ERR1;
       }
     p++;
     length--;
     if ((*p & 0xfc00) != 0xdc00)
       {
-      *erroroffset = p - string;
+      *erroroffset = (PCRE2_SIZE)(p - string);
       return PCRE2_ERROR_UTF16_ERR2;
       }
     }
   else
     {
     /* Isolated low surrogate. Always an error. */
-    *erroroffset = p - string;
+    *erroroffset = (PCRE2_SIZE)(p - string);
     return PCRE2_ERROR_UTF16_ERR3;
     }
   }
@@ -399,11 +393,5 @@ return 0;
 #endif  /* CODE_UNIT_WIDTH */
 }
 #endif  /* SUPPORT_UNICODE */
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_valid_utf.c */

@@ -114,12 +114,6 @@ them will be able to (i.e. assume a 64-bit world). */
 #define META_DATA(x)   (x & 0x0000ffffu)
 #define META_DIFF(x,y) ((x-y)>>16)
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* Function definitions to allow mutual recursion */
 
 #ifdef SUPPORT_UNICODE
@@ -2175,7 +2169,7 @@ manage_callouts(PCRE2_SPTR ptr, uint32_t **pcalloutptr, uint32_t options,
 {
 uint32_t *previous_callout = *pcalloutptr;
 
-if (previous_callout != NULL) previous_callout[2] = ptr - cb->start_pattern -
+if (previous_callout != NULL) previous_callout[2] = static_cast<PCRE2_SIZE>(ptr - cb->start_pattern) -
   (PCRE2_SIZE)previous_callout[1];
 
 if ((options & PCRE2_AUTO_CALLOUT) == 0) previous_callout = NULL; else
@@ -3674,7 +3668,7 @@ while (ptr < ptrend)
       /* Remember the offset to the next item in the pattern, and set a default
       length. This should get updated after the next item is read. */
 
-      previous_callout[1] = ptr - cb->start_pattern;
+      previous_callout[1] = static_cast<uint32_t>(ptr - cb->start_pattern);
       previous_callout[2] = 0;
       break;                  /* End callout */
 
@@ -4598,7 +4592,7 @@ have duplicate names. Give an internal error. */
 if (i >= cb->names_found)
   {
   *errorcodeptr = ERR53;
-  cb->erroroffset = name - cb->start_pattern;
+  cb->erroroffset = static_cast<uint32_t>(name - cb->start_pattern);
   return FALSE;
   }
 
@@ -5323,7 +5317,7 @@ for (;; pptr++)
         xclass = TRUE;
         if (lengthptr != NULL)
           {
-          *lengthptr += class_uchardata - class_uchardata_base;
+          *lengthptr += static_cast<uint32_t>(class_uchardata - class_uchardata_base);
           class_uchardata = class_uchardata_base;
           }
         }
@@ -7395,7 +7389,7 @@ for (;;)
     {
     if (lengthptr == NULL)
       {
-      PCRE2_SIZE branch_length = code - last_branch;
+      PCRE2_SIZE branch_length = static_cast<uint32_t>(code - last_branch);
       do
         {
         PCRE2_SIZE prev_length = GET(last_branch, 1);
@@ -9293,7 +9287,7 @@ re->blocksize, and if valgrind support is configured, mark the extra allocated
 memory as unaddressable, so that any out-of-bound reads can be detected. */
 
 *code++ = OP_END;
-usedlength = code - codestart;
+usedlength = static_cast<uint32_t>(code - codestart);
 if (usedlength > length) errorcode = ERR23; else
   {
   re->blocksize -= CU2BYTES(length - usedlength);
@@ -9511,7 +9505,7 @@ HAD_CB_ERROR:
 ptr = pattern + cb.erroroffset;
 
 HAD_EARLY_ERROR:
-*erroroffset = ptr - pattern;
+*erroroffset = static_cast<uint32_t>(ptr - pattern);
 
 HAD_ERROR:
 *errorptr = errorcode;
@@ -9519,11 +9513,5 @@ pcre2_code_free(re);
 re = NULL;
 goto EXIT;
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_compile.c */

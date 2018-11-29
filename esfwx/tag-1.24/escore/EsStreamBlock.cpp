@@ -154,12 +154,12 @@ ulong EsStreamBlock::idByNameGet(const EsString& name)
 {
   const EsStringIndexedMap& names = idNamesLookupGet();
 
-  size_t idx = names.itemFind(name);
+  ulong idx = names.itemFind(name);
   if( EsStringIndexedMap::npos == idx )
     return None;
 
   ES_ASSERT(idx < _IdsCnt_);
-  return idx;
+  return static_cast<ulong>(idx);
 }
 //---------------------------------------------------------------------------
 
@@ -622,8 +622,9 @@ EsStreamBlock* EsStreamBlock::childAddBefore(EsStreamBlock* subj, const EsString
 
 EsStreamBlock* EsStreamBlock::itemAdd()
 {
-  ulong idx = m_children.size();
-  return itemAdd(idx);
+  return itemAdd(
+    static_cast<ulong>(m_children.size())
+  );
 }
 //---------------------------------------------------------------------------
 

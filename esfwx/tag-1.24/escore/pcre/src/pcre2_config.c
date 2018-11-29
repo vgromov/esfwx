@@ -56,12 +56,6 @@ convenient for user programs that want to test their values. */
 #define STRING(a)  # a
 #define XSTRING(s) STRING(s)
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 * Return info about what features are configured *
 *************************************************/
@@ -219,11 +213,5 @@ switch (what)
 
 return 0;
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_config.c */

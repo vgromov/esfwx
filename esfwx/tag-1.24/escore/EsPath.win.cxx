@@ -23,7 +23,10 @@ EsString EsPath::cwdGet()
 	EsString result;
 
 	result.resize(MAX_PATH);
-	esU32 cnt = ::GetCurrentDirectory(result.size()-1, const_cast<EsString::pointer>(result.c_str()));
+	esU32 cnt = ::GetCurrentDirectory(
+    static_cast<DWORD>(result.size()-1), 
+    const_cast<EsString::pointer>(result.c_str())
+  );
 	if( 0 < cnt )
 		result.resize(cnt);
 	else
@@ -147,7 +150,10 @@ EsStringArray EsPath::stdDriveNamesGet()
   if( 0 < result )
   {
     std::vector<TCHAR> buff(result);
-    result = GetLogicalDriveStrings(buff.size(), &buff[0]);
+    result = GetLogicalDriveStrings(
+      static_cast<DWORD>(buff.size()), 
+      &buff[0]
+    );
 
     if( 0 < result )
     {

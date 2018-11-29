@@ -45,12 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 *        Return info about compiled pattern      *
 *************************************************/
@@ -411,11 +405,5 @@ while (TRUE)
     }
   }
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_pattern_info.c */

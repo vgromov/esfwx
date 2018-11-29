@@ -117,7 +117,9 @@ static void internal_encode(EncObjT& enc, EsBinBuffer& dest, const EsBinBuffer& 
     return;
   }
 
-  ulong sze = src.size() + sizeof(ulong);
+  ulong sze = static_cast<ulong>(
+    src.size() + sizeof(ulong)
+  );
   sze = (
     (sze / EncObjT::BLOCKSIZE)
     + (
@@ -133,7 +135,7 @@ static void internal_encode(EncObjT& enc, EsBinBuffer& dest, const EsBinBuffer& 
   );
 
   EsBinBuffer::pointer pos = dest.data();
-  sze = src.size(); //< Prepend with original length
+  sze = static_cast<ulong>(src.size());   //< Prepend with original length
   memcpy(
     pos,
     &sze,

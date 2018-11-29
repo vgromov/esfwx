@@ -60,6 +60,8 @@ size_t wcrtomb(char* s, wchar_t wc, mbstate_t* st)
 
 #pragma warning(pop)
 
+ES_COMPILE_TIME_ASSERT(sizeof(EsStringConverter::HConvHolder)-sizeof(mbstate_t) >= sizeof(conv_struct), sizeOfHConvHolder);
+
 // Static linking under BCC - use dependencies ordering for modules
 // and static objects initialization
 //
@@ -89,13 +91,13 @@ EsStringConverter::Ptr EsStringConverter::convGet(const EsByteString& to, const 
 
   const EsStringIndexedMap& encodings = supportedEncodingsGet();
 
-  size_t pcEnd = pureCodeEndGet(to);
-  size_t idxTo = encodings.itemFind( to, pcEnd );
+  ulong pcEnd = pureCodeEndGet(to);
+  ulong idxTo = encodings.itemFind( to, pcEnd );
 
   if( EsStringIndexedMap::npos != idxTo )
   {
     pcEnd = pureCodeEndGet(from);
-    size_t idxFrom = encodings.itemFind( from, pcEnd );
+    ulong idxFrom = encodings.itemFind( from, pcEnd );
 
     if( EsStringIndexedMap::npos != idxFrom )
     {
@@ -165,7 +167,7 @@ ulong EsStringConverter::fromIdGet() const ES_NOTHROW
 
 // internal services
 //
-size_t EsStringConverter::bomSizeGet() ES_NOTHROW
+ulong EsStringConverter::bomSizeGet() ES_NOTHROW
 {
   // Most (but not all) iconv implementations automatically insert a BOM
   // at the beginning of text converted to UTF-8, UTF-16 and UTF-32, but
@@ -191,7 +193,7 @@ size_t EsStringConverter::bomSizeGet() ES_NOTHROW
   size_t size = 0;
   for (src = buff; src < dst; ++src)
   {
-    if (*src)
+    if(*src)
       ++size;
   }
 
@@ -204,12 +206,11 @@ size_t EsStringConverter::bomSizeGet() ES_NOTHROW
     );
   }
 
-  return size;
+  return static_cast<ulong>(size);
 }
 //---------------------------------------------------------------------------
 
-size_t EsStringConverter::convert(HConvHolder& locH, const char** inbuf,
-  size_t* inbytesleft, char** outbuf, size_t* outbytesleft) ES_NOTHROW
+size_t EsStringConverter::convert(HConvHolder& locH, const char** inbuf, size_t* inbytesleft, char** outbuf, size_t* outbytesleft) ES_NOTHROW
 {
   // If this encoding has a forced BOM (i.e. it's UTF-16 or UTF-32 without
   // a specified byte order), skip over it
@@ -220,14 +221,23 @@ size_t EsStringConverter::convert(HConvHolder& locH, const char** inbuf,
     // convert at least one extra character
     char bom[8];
     char *dst = bom;
-    size_t dstSize = esMin(static_cast<size_t>(8), m_bomSize + *outbytesleft);
+    size_t dstSize = esMin(
+      static_cast<size_t>(8), 
+      static_cast<size_t>(m_bomSize + *outbytesleft)
+    );
     const char *src = *inbuf;
     size_t srcSize = *inbytesleft;
 
     es_iconv(&locH, &src, &srcSize, &dst, &dstSize);
   }
 
-  return es_iconv(&locH, inbuf, inbytesleft, outbuf, outbytesleft);
+  return es_iconv(
+    &locH, 
+    inbuf, 
+    inbytesleft, 
+    outbuf, 
+    outbytesleft
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -369,15 +379,15 @@ EsByteString EsStringConverter::cToC(const EsByteString& src)
 }
 //---------------------------------------------------------------------------
 
-size_t EsStringConverter::pureCodeEndGet(const EsByteString& code) ES_NOTHROW
+ulong EsStringConverter::pureCodeEndGet(const EsByteString& code) ES_NOTHROW
 {
   // extract pure code, to exclude anything, but code
   // there may also be addendum //TRANSLIT//IGNORE
   EsByteString::size_type pos = code.find("//");
 
   return (EsByteString::npos == pos) ?
-    static_cast<size_t>(code.size()) :
-    static_cast<size_t>(pos);
+    static_cast<ulong>(code.size()) :
+    static_cast<ulong>(pos);
 }
 
 //---------------------------------------------------------------------------
@@ -484,7 +494,7 @@ const EsStringIndexedMap& EsStringConverter::supportedEncodingsGet() ES_NOTHROW
 }
 //---------------------------------------------------------------------------
 
-size_t EsStringConverter::charSizeGetFromCode(const EsByteString& code) ES_NOTHROW
+ulong EsStringConverter::charSizeGetFromCode(const EsByteString& code) ES_NOTHROW
 {
   // get encoding index from code
   EsByteString::const_pointer codePtr = code.c_str();
@@ -531,9 +541,9 @@ size_t EsStringConverter::charSizeGetFromCode(const EsByteString& code) ES_NOTHR
 
 // Return endianness from enconding name, in sence of ES_ENDIAN values
 // ES_ENDIAN_UNDEFINED is returned for single-byte codings
-int EsStringConverter::endiannessGetFromCode(const EsByteString& code) ES_NOTHROW
+ulong EsStringConverter::endiannessGetFromCode(const EsByteString& code) ES_NOTHROW
 {
-  size_t pureCodeEnd = pureCodeEndGet(code);
+  ulong pureCodeEnd = pureCodeEndGet(code);
   EsByteString::const_pointer cp = code.c_str();
 
   // Get encoding index from code

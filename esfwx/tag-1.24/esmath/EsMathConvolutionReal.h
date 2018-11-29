@@ -29,7 +29,7 @@ public:
 
   EsMathConvolutionReal();
 	EsMathConvolutionReal(const EsMathArrayReal& filter, ulong flags);
-	EsMathConvolutionReal(size_t filterSize, EsMathArrayReal::const_pointer filter, ulong flags);
+	EsMathConvolutionReal(ulong filterSize, EsMathArrayReal::const_pointer filter, ulong flags);
 
 	/// validity check
 	bool isOk() const { return !m_filter.get_empty(); }
@@ -37,7 +37,7 @@ public:
 	/// filter access
 	///
 	void filterSet(const EsMathArrayReal& filter, ulong flags = 0);
-	void filterSet(size_t filterSize, EsMathArrayReal::const_pointer filter, ulong flags = 0);
+	void filterSet(ulong filterSize, EsMathArrayReal::const_pointer filter, ulong flags = 0);
 	const EsMathArrayReal& filterGet() const { return m_filter; }
 
 	/// Linear 1-dimentional convolution

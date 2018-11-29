@@ -50,12 +50,6 @@ repeats into possessive repeats where possible. */
 #include "pcre2_internal.h"
 
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 *        Tables for auto-possessification        *
 *************************************************/
@@ -1296,11 +1290,5 @@ for (;;)
 #endif  /* SUPPORT_WIDE_CHARS */
   }
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_auto_possess.c */

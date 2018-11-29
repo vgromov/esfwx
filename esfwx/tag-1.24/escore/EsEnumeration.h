@@ -6,8 +6,8 @@ ES_DECL_INTF_BEGIN2( CBDD7DC0, F0A0473C, 86947623, B263AB77, EsEnumerationIntf, 
 	// items insertion
 	ES_DECL_INTF_METHOD(void, itemAdd)(const EsString& symbol, const EsVariant& val, const EsString& label) = 0;
 	// enumeration may represent itself as an idexed object, as values collection
-	ES_DECL_INTF_METHOD(long, countGet)() const ES_NOTHROW = 0;
-	ES_DECL_INTF_METHOD(EsVariant, itemGet)(long) const = 0;
+	ES_DECL_INTF_METHOD(ulong, countGet)() const ES_NOTHROW = 0;
+	ES_DECL_INTF_METHOD(EsVariant, itemGet)(ulong) const = 0;
 	// emuneration-specific methods
 	ES_DECL_INTF_METHOD(bool, valueExists)(cr_EsVariant) const ES_NOTHROW = 0;
 	ES_DECL_INTF_METHOD(EsVariant, valueGet)(cr_EsString) const = 0;
@@ -40,37 +40,37 @@ public:
 	ES_DECL_REFLECTED_CLASS_BASE( EsEnumeration )
 
 	// EsReflectedClassIntf attribute handling specifics
-	ES_DECL_INTF_METHOD(void, attributesAssign)(const EsAttributesIntf::Ptr& attrs) ES_NOTHROW;
-	ES_DECL_INTF_METHOD(void, attributeAdd)(const EsString& name, const EsVariant& val = EsVariant::null());
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, hasAttribute, cr_EsString) ES_NOTHROW;
-	ES_DECL_INTF_METHOD(EsString::Array, attributeNamesGet)() const ES_NOTHROW;
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, attributeGet, cr_EsString) ES_NOTHROW;
+	ES_DECL_INTF_METHOD(void, attributesAssign)(const EsAttributesIntf::Ptr& attrs) ES_NOTHROW ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, attributeAdd)(const EsString& name, const EsVariant& val = EsVariant::null()) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, hasAttribute, cr_EsString) ES_NOTHROW ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(EsString::Array, attributeNamesGet)() const ES_NOTHROW ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, attributeGet, cr_EsString) ES_NOTHROW ES_OVERRIDE;
 	
 	// reflected EsEnumerationIntf services
 	//
 	// items insertion
-	ES_DECL_REFLECTED_INTF_METHOD3(void, itemAdd, cr_EsString, cr_EsVariant, cr_EsString);
+	ES_DECL_REFLECTED_INTF_METHOD3(void, itemAdd, cr_EsString, cr_EsVariant, cr_EsString) ES_OVERRIDE;
 	// enumeration may represent itself as an idexed object, as values collection
-	ES_DECL_REFLECTED_INTF_CONST_METHOD0(long, countGet) ES_NOTHROW;
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, itemGet, long);
+	ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, countGet) ES_NOTHROW ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, itemGet, ulong) ES_OVERRIDE;
 	// emuneration-specific methods
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, valueExists, cr_EsVariant) ES_NOTHROW;
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, valueGet, cr_EsString);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsString, valueLabelGet, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, valueIndexGet, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsString, valueSymbolGet, cr_EsVariant);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsString, symbolLabelGet, cr_EsString);
-	ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, hasSymbol, cr_EsString) ES_NOTHROW;
-	ES_DECL_INTF_METHOD(EsStringArray, symbolNamesGet)() const ES_NOTHROW { return m_contents.namesGet(); }
-	ES_DECL_INTF_METHOD(EsStringArray, labelsGet)() const ES_NOTHROW;
-	ES_DECL_INTF_METHOD(EsVariant, valuesGet)() const ES_NOTHROW;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, valueExists, cr_EsVariant) ES_NOTHROW ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, valueGet, cr_EsString) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsString, valueLabelGet, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, valueIndexGet, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsString, valueSymbolGet, cr_EsVariant) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsString, symbolLabelGet, cr_EsString) ES_OVERRIDE;
+	ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, hasSymbol, cr_EsString) ES_NOTHROW ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(EsStringArray, symbolNamesGet)() const ES_NOTHROW ES_OVERRIDE { return m_contents.namesGet(); }
+	ES_DECL_INTF_METHOD(EsStringArray, labelsGet)() const ES_NOTHROW ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(EsVariant, valuesGet)() const ES_NOTHROW ES_OVERRIDE;
 	// reflected properties
 	ES_DECL_PROPERTY_RO(symbols, EsStringArray)
 	ES_DECL_PROPERTY_RO(values, EsVariant)
 	ES_DECL_PROPERTY_RO(labels, EsStringArray)
 
 protected:
-	EsString labelGet(size_t idx) const;
+	EsString labelGet(ulong idx) const;
 
 protected:
 	// data members
@@ -89,7 +89,7 @@ protected: \
 	EnumerationName(const EsString& enumTypeName) : EsEnumeration(enumTypeName, EsEnumeration::enumerationNonDynamic) { itemsInit(); } \
 public: \
 	ES_DECL_REFLECTED_CLASS(EnumerationName, EsEnumeration) \
-	virtual EsString typeNameGet() const ES_NOTHROW { return m_contents.nameGet(); } \
+	virtual EsString typeNameGet() const ES_NOTHROW ES_OVERRIDE { return m_contents.nameGet(); } \
 	static EsEnumerationIntf::Ptr instanceGet() ES_NOTHROW; \
 	ES_DECL_REFLECTED_CLASS_METHOD0(EsVariant, instance) ES_NOTHROW; \
 private: \

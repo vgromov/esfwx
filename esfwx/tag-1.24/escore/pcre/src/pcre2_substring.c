@@ -45,12 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 *   Copy named captured string to given buffer   *
 *************************************************/
@@ -542,11 +536,5 @@ pcre2_substring_number_from_name(const pcre2_code *code,
 {
 return pcre2_substring_nametable_scan(code, stringname, NULL, NULL);
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_substring.c */

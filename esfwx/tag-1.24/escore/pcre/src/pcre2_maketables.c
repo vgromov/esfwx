@@ -51,12 +51,6 @@ compilation of dftables.c, in which case the macro DFTABLES is defined. */
 #  include "pcre2_internal.h"
 #endif
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 *           Create PCRE2 character tables        *
 *************************************************/
@@ -157,11 +151,5 @@ for (i = 0; i < 256; i++)
 
 return yield;
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_maketables.c */

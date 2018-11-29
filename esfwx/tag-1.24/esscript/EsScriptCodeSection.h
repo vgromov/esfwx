@@ -11,10 +11,10 @@ class EsScriptTryCatchBlock
 public:
 	EsScriptTryCatchBlock(
     EsScriptCodeSection* cs = nullptr,
-    size_t tryStart = 0,
-    size_t tryEnd = 0,
-    size_t catchStart = 0,
-    size_t catchEnd = 0
+    ulong tryStart = 0,
+    ulong tryEnd = 0,
+    ulong catchStart = 0,
+    ulong catchEnd = 0
   ) ES_NOTHROW;
 
 	EsScriptTryCatchBlock(const EsScriptTryCatchBlock& other) ES_NOTHROW;
@@ -32,21 +32,21 @@ public:
 
   bool isEmpty() const ES_NOTHROW { return m_tryInstructionsStart == m_tryInstructionsEnd; }
 
-	size_t tryStart() const ES_NOTHROW { return m_tryInstructionsStart; }
+  ulong tryStart() const ES_NOTHROW { return m_tryInstructionsStart; }
 
-	size_t tryEnd() const ES_NOTHROW { return m_tryInstructionsEnd; }
+  ulong tryEnd() const ES_NOTHROW { return m_tryInstructionsEnd; }
 
-	size_t catchStart() const ES_NOTHROW { return m_catchInstructionsStart; }
+  ulong catchStart() const ES_NOTHROW { return m_catchInstructionsStart; }
 
-	size_t catchEnd() const ES_NOTHROW { return m_catchInstructionsEnd; }
+  ulong catchEnd() const ES_NOTHROW { return m_catchInstructionsEnd; }
 
 protected:
 	EsScriptCodeSection* m_owner;
 	// try-catch instruction indexes (into owner code section's code)
-	size_t m_tryInstructionsStart;
-	size_t m_tryInstructionsEnd;
-	size_t m_catchInstructionsStart;
-	size_t m_catchInstructionsEnd;
+  ulong m_tryInstructionsStart;
+  ulong m_tryInstructionsEnd;
+  ulong m_catchInstructionsStart;
+  ulong m_catchInstructionsEnd;
 	// try block selected (compile-time only)
 	bool m_tryActive;
 
@@ -132,7 +132,7 @@ public:
 
   inline EsScriptInstruction& instructionAdd(EsScriptInstructionOpcode opcode, const EsScriptDebugInfoIntf::Ptr& debugInfo = EsScriptDebugInfoIntf::Ptr())
   {
-    size_t dummy;
+    ulong dummy;
     return instructionAdd(
       dummy, 
       opcode, 
@@ -140,8 +140,8 @@ public:
     );
   }
 
-  EsScriptInstruction& instructionAdd(size_t& pos,	EsScriptInstructionOpcode opcode,	const EsScriptDebugInfoIntf::Ptr& debugInfo);
-  EsScriptInstruction& instructionModifyAt(size_t instrPos);
+  EsScriptInstruction& instructionAdd(ulong& pos,	EsScriptInstructionOpcode opcode,	const EsScriptDebugInfoIntf::Ptr& debugInfo);
+  EsScriptInstruction& instructionModifyAt(ulong instrPos);
 
 	inline EsScriptInstructions::const_iterator instructionStartGet() const ES_NOTHROW
   {
@@ -155,14 +155,14 @@ public:
     return m_code->end();
   }
 
-	inline size_t instructionStartPosGet() const ES_NOTHROW
+	inline ulong instructionStartPosGet() const ES_NOTHROW
 	{
 		return 0;
 	}
 
-	inline size_t instructionEndPosGet() const ES_NOTHROW
+	inline ulong instructionEndPosGet() const ES_NOTHROW
 	{
-		return m_code->size();
+		return static_cast<ulong>(m_code->size());
 	}
 
 	// var && param declaration && lookup
@@ -177,7 +177,7 @@ public:
 	}
 
 	// indexed parameter access
-	void parameterSet(size_t idx, const EsVariant& val);
+	void parameterSet(ulong idx, const EsVariant& val);
 
 	// all-at-once parameters assignment
 	void parametersSet(const EsVariant& params);
@@ -263,11 +263,11 @@ public:
 	inline const EsScriptTryCatchBlocks& tryCatchBlocksAccess() const ES_NOTHROW { return m_tryCatchBlocks; }
 
 	// create new try-catch block, return its index in try-catch blocks collection
-	size_t tryCatchBlockCreate(size_t tryStart = 0, size_t tryEnd = 0, size_t catchStart = 0, size_t catchEnd = 0);
+	ulong tryCatchBlockCreate(ulong tryStart = 0, ulong tryEnd = 0, ulong catchStart = 0, ulong catchEnd = 0);
 
 	// select and execute try-catch block at specified index
 	EsScriptInstructionOpcode tryCatchBlockExecute(
-    size_t tryCatchBlockIdx,
+    ulong tryCatchBlockIdx,
     EsScriptThreadContext& script,
 		EsScriptInstructions::const_iterator& instr
   );
@@ -320,7 +320,7 @@ protected:
 	EsScriptValAccessorIntf::Ptr m_return;
 	// try-catch blocks && stuff
 	EsScriptTryCatchBlocks m_tryCatchBlocks;
-	std::vector<int> m_tryCatchStack;
+	std::vector<ulong> m_tryCatchStack;
 	// is this code section a template
 	bool m_template;
 

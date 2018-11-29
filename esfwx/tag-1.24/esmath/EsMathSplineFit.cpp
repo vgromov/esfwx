@@ -159,7 +159,7 @@ void EsMathSplineFit::resetFittingErrors()
 //---------------------------------------------------------------------------
 
 void EsMathSplineFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y,
-	size_t basisFunctionsCnt, const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
+	ulong basisFunctionsCnt, const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
 {
 	reset();
 	ES_ASSERT(m_solver);
@@ -168,7 +168,12 @@ void EsMathSplineFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y,
 		EsMathException::Throw(esT("x and y data arrays must be equally sized"));
 	if(x.countGet() < 2)
 		EsMathException::Throw(esT("Data array size is too small, must be at least 2"));
-	EsNumericCheck::checkRangeInteger(4, x.countGet()+2, basisFunctionsCnt, esT("Basis functions count"));
+	EsNumericCheck::checkRangeInteger(
+    4, 
+    x.countGet()+2, 
+    basisFunctionsCnt, 
+    esT("Basis functions count")
+  );
 
 	m_xmin = x.get_min();
 	m_xmax = x.get_max();
@@ -180,18 +185,22 @@ void EsMathSplineFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y,
 //---------------------------------------------------------------------------
 
 // x taken from y's indeces
-void EsMathSplineFit::build(const EsMathArrayReal& y, size_t basisFunctionsCnt,
-					 const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
+void EsMathSplineFit::build(const EsMathArrayReal& y, ulong basisFunctionsCnt, const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
 {
 	EsMathArrayReal x( y.countGet() );
-	for(size_t idx = 0; idx < x.countGet(); ++idx)
+	for(ulong idx = 0; idx < x.countGet(); ++idx)
 		x.itemSet(idx, idx);
-	build(x, y, basisFunctionsCnt, constraints);
+	
+  build(
+    x, 
+    y, 
+    basisFunctionsCnt, 
+    constraints
+  );
 }
 //---------------------------------------------------------------------------
 
-void EsMathSplineFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y,
-	size_t basisFunctionsCnt, double rho)
+void EsMathSplineFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y,	ulong basisFunctionsCnt, double rho)
 {
 	reset();
 	ES_ASSERT(m_solver);
@@ -200,25 +209,46 @@ void EsMathSplineFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y,
 		EsMathException::Throw(esT("x and y data arrays must be equally sized"));
 	if(x.countGet() < 2)
 		EsMathException::Throw(esT("Data array size is too small, must be at least 2"));
-	EsNumericCheck::checkRangeInteger(4, x.countGet()+2, basisFunctionsCnt, esT("Basis functions count"));
+	
+  EsNumericCheck::checkRangeInteger(
+    4, 
+    x.countGet()+2, 
+    basisFunctionsCnt, 
+    esT("Basis functions count")
+  );
 
 	m_xmin = x.get_min();
 	m_xmax = x.get_max();
 	ES_ASSERT(m_xmin != m_xmax);
-	m_solver->build(x, y, basisFunctionsCnt, rho);
-	m_solver->fittingReportGet(m_rmsError, m_avgError, m_avgRelativeError, m_maxError);
+	m_solver->build(
+    x, 
+    y, 
+    basisFunctionsCnt, 
+    rho
+  );
+	m_solver->fittingReportGet(
+    m_rmsError, 
+    m_avgError, 
+    m_avgRelativeError, 
+    m_maxError
+  );
 	m_info = alglibInfoToFitInfo(m_solver->fittingInfoGet());
 }
 //---------------------------------------------------------------------------
 
 // x taken from y's indeces
-void EsMathSplineFit::build(const EsMathArrayReal& y, size_t basisFunctionsCnt,
-					 double rho)
+void EsMathSplineFit::build(const EsMathArrayReal& y, ulong basisFunctionsCnt, double rho)
 {
 	EsMathArrayReal x( y.countGet() );
-	for(size_t idx = 0; idx < x.countGet(); ++idx)
+	for(ulong idx = 0; idx < x.countGet(); ++idx)
 		x.itemSet(idx, idx);
-	build(x, y, basisFunctionsCnt, rho);
+	
+  build(
+    x, 
+    y, 
+    basisFunctionsCnt, 
+    rho
+  );
 }
 //---------------------------------------------------------------------------
 

@@ -28,26 +28,27 @@ public:
   ///
   enum {
     /// Element byte count
-    value_size = sizeof(EsString::value_type),
+    value_size                = sizeof(EsString::value_type),
 
     /// Comparison results
-    cmpLess = -1,
-    cmpEqual = 0,
-    cmpGreater = 1,
+    cmpLess                   = -1,
+    cmpEqual                  = 0,
+    cmpGreater                = 1,
 
     /// Wrapping
-    minimumLineWidth = 20,    // Minimum line width for word wrapping. A word 20 characters wide is "internationalization"
-    defaultLineWidth = 100,   // Default line width for word wrapping.
+    minimumLineWidth          = 20,     ///< Minimum line width for word wrapping. A word 20 characters wide is "internationalization"
+    defaultLineWidth          = 100,    ///< Default line width for word wrapping.
 
     /// String conversion masks
-    StrQuote = 0x01,
-    StrNoCEscape = 0x02,
-    StrXML = 0x04,
-    StrKeepSideBlanks = 0x08,
-    StrI18n = 0x10,
+    StrNoFlags                = 0,      ///< Special 'no flags' value for convenience
+    StrQuote                  = 0x01,   ///< Enclose | disenclose string in | from quotes
+    StrNoCEscape              = 0x02,   ///< Do not include C escape symbols in string, pass them to output as-is
+    StrXML                    = 0x04,   ///< Process input string and escape XML-aware stuff
+    StrKeepSideBlanks         = 0x08,   ///< Do not trim side blank chars from string in fromString processor
+    StrEscapeNonAscii         = 0x10,   ///< Do not escape non-ascii characters
 
     /// Byte encodings
-    ASCII = 1,
+    ASCII                     = 1,
     CP1251,
     UTF8,
   };
@@ -86,7 +87,17 @@ public:
   template<typename IteratorT>
   EsString(IteratorT beg, IteratorT end) ES_NOTHROW : m_str(beg, end), m_hashInvalid(true) {}
   EsString(const EsBasicStringT& src) ES_NOTHROW : m_str(src.c_str()), m_hashInvalid(true) {}
-  EsString(EsByteString::const_pointer src) ES_NOTHROW : m_hashInvalid(true) { m_str = fromAscii(src); }
+  EsString(EsByteString::const_pointer src, bool unicode = false) : m_hashInvalid(true) { m_str = (unicode ? fromUtf8(src) : fromAscii(src)); }
+
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (4 == ES_CHAR_SIZE)
+  EsString(EsWideString16::const_pointer src, size_t len = EsString::npos, const EsByteString& conv = nullByteString());
+  EsString(const EsWideString16& src, const EsByteString& conv = nullByteString());
+#endif
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (2 == ES_CHAR_SIZE)
+  EsString(EsWideString32::const_pointer src, size_t len = EsString::npos, const EsByteString& conv = nullByteString());
+  EsString(const EsWideString32& src, const EsByteString& conv = nullByteString());
+#endif
+
   ~EsString() ES_NOTHROW;
 
   /// String hash value access with on-demand hash recalculation
@@ -141,6 +152,14 @@ public:
   long compare( EsString::const_pointer src, bool ignoreCase = false, const std::locale& loc = EsLocale::locale() ) const;
   long compare( const EsBasicStringT& src, bool ignoreCase = false, const std::locale& loc = EsLocale::locale() ) const;
   long compare( const EsString& src, bool ignoreCase = false, const std::locale& loc = EsLocale::locale() ) const;
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (4 == ES_CHAR_SIZE)
+  long compare(EsWideString16::const_pointer src, bool ignoreCase = false, const std::locale& loc = EsLocale::locale()) const;
+  long compare(const EsWideString16& src, bool ignoreCase = false, const std::locale& loc = EsLocale::locale()) const;
+#endif
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (4 == ES_CHAR_SIZE)
+  long compare(EsWideString32::const_pointer src, bool ignoreCase = false, const std::locale& loc = EsLocale::locale()) const;
+  long compare(const EsWideString32& src, bool ignoreCase = false, const std::locale& loc = EsLocale::locale()) const;
+#endif
 
   // Iterative access
   inline EsString::const_iterator begin() const ES_NOTHROW { return m_str.begin(); }
@@ -275,45 +294,45 @@ public:
                            const EsString& leftEnclosure = EsString::null(),
                            const EsString& rightEnclosure = EsString::null() ) ES_NOTHROW;
   
-  // string-to-string conversion
-  static EsString toString(const EsString& src, int masks = 0);
-  static EsString fromString(const EsString& src, int masks = 0, const std::locale& loc = EsLocale::locale());
+  /// String-to-string conversion
+  static EsString toString(const EsString& src, ulong flags = 0);
+  static EsString fromString(const EsString& src, ulong flags = 0, const std::locale& loc = EsLocale::locale());
   
   /// Some preconfigured string conversions
   ///
   /// 
   static inline EsString toXMLString(const EsString& str)
   {
-    return toString(str, (StrXML|StrNoCEscape|StrI18n));
+    return toString(str, (StrXML|StrNoCEscape));
   }
 
   static inline EsString fromXMLString(const EsString& str, const std::locale& loc = EsLocale::locale())
   {
-    return fromString(str, (StrXML|StrNoCEscape|StrI18n), loc);
+    return fromString(str, (StrXML|StrNoCEscape), loc);
   }
 
   /// Add C-like escapes to the string where necessary
   static inline EsString toEscapedString(const EsString& str)
   {
-    return toString(str, StrI18n);
+    return toString(str);
   }
   
   /// Acts as toEscapedString function plus "quotes" the result string.
   static inline EsString toQuotedEscapedString(const EsString& str)
   {
-    return toString(str, StrQuote|StrI18n);
+    return toString(str, StrQuote);
   }
 
   /// Acts as toEscapedString function plus converts XML service symbols (<, >, &, ') to escape sequences.
   static inline EsString toEscapedXmlString(const EsString& str)
   {
-    return toString(str, StrXML|StrI18n);
+    return toString(str, StrXML);
   }
 
   /// Acts as toEscapedXmlString function plus converts XML service symbols (<, >, &, ') to escape sequences + quotes resulting string.
   static inline EsString toQuotedEscapedXmlString(const EsString& str)
   {
-    return toString(str, StrQuote|StrXML|StrI18n);
+    return toString(str, StrQuote|StrXML);
   }
 
   /// Convert any character to an string that is printable, possibly a
@@ -491,6 +510,12 @@ protected:
 /// Comparison and equality | inequality operators
 inline bool operator == (const EsString& _1, const EsString& _2) ES_NOTHROW { return EsString::cmpEqual == _1.compare(_2); }
 inline bool operator == (EsString::const_pointer _1, const EsString& _2) ES_NOTHROW { ES_ASSERT(_1); return EsString::cmpEqual == _2.compare(_1); }
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (2 == ES_CHAR_SIZE)
+inline bool operator == (EsWideString32::const_pointer _1, const EsString& _2) ES_NOTHROW { ES_ASSERT(_1); return EsString::cmpEqual == _2.compare(_1); }
+#endif
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (4 == ES_CHAR_SIZE)
+inline bool operator == (EsWideString16::const_pointer _1, const EsString& _2) ES_NOTHROW { ES_ASSERT(_1); return EsString::cmpEqual == _2.compare(_1); }
+#endif
 inline bool operator != (const EsString& _1, const EsString& _2) ES_NOTHROW { return EsString::cmpEqual != _1.compare(_2); }
 inline bool operator != (EsString::const_pointer _1, const EsString& _2) ES_NOTHROW { return !operator==(_1, _2); }
 inline bool operator < (const EsString& _1, const EsString& _2) ES_NOTHROW { return EsString::cmpLess == _1.compare(_2); }
@@ -501,6 +526,12 @@ inline bool operator >= ( const EsString& _1, const EsString& _2 ) ES_NOTHROW { 
 /// 'Math' operators
 inline EsString operator + (EsString::value_type _1, const EsString& _2) { EsString tmp(_1); tmp += _2; return tmp; }
 inline EsString operator + (EsString::const_pointer _1, const EsString& _2) { EsString tmp(_1); tmp += _2; return tmp; }
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (2 == ES_CHAR_SIZE)
+inline EsString operator + (EsWideString32::const_pointer _1, const EsString& _2) { EsString tmp(_1); tmp += _2; return tmp; }
+#endif
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (4 == ES_CHAR_SIZE)
+inline EsString operator + (EsWideString16::const_pointer _1, const EsString& _2) { EsString tmp(_1); tmp += _2; return tmp; }
+#endif
 inline EsString::Array operator + (const EsString::Array& _1, const EsString& _2) { EsString::Array tmp(_1); tmp.push_back(_2); return tmp; }
 inline EsString::Array operator + (const EsString::Array& _1, const EsString::Array& _2) { EsString::Array tmp(_1); tmp.insert(tmp.end(), _2.begin(), _2.end()); return tmp; }
 

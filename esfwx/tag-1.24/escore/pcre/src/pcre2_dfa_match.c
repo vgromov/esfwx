@@ -103,12 +103,6 @@ never stored, so we push them well clear of the normal opcodes. */
 #define OP_HSPACE_EXTRA     360
 #define OP_VSPACE_EXTRA     380
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* This table identifies those opcodes that are followed immediately by a
 character that is to be tested in some way. This makes it possible to
 centralize the loading of these characters. In the case of Type * etc, the
@@ -3630,11 +3624,5 @@ for (;;)
 
 return PCRE2_ERROR_NOMATCH;
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_dfa_match.c */

@@ -18,10 +18,10 @@ ES_DECL_INTF_END
 class ESCORE_CLASS ES_INTF_IMPL1(EsScriptDebugInfo,	EsScriptDebugInfoIntf)
 
 protected:
-	EsScriptDebugInfo(size_t line, size_t col, const EsString& file) ES_NOTHROW;
+	EsScriptDebugInfo(ulong line, ulong col, const EsString& file) ES_NOTHROW;
 
 public:
-	static EsScriptDebugInfoIntf::Ptr create(size_t line, size_t col, const EsString& file) ES_NOTHROW;
+	static EsScriptDebugInfoIntf::Ptr create(ulong line, ulong col, const EsString& file) ES_NOTHROW;
 	static EsScriptDebugInfoIntf::Ptr create(const EsString& input, EsString::const_pointer pos, const EsString& file = EsString::null()) ES_NOTHROW;
 
 	/// EsBaseIntf

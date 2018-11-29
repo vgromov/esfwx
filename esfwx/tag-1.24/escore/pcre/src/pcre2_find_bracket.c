@@ -52,12 +52,6 @@ matching length. */
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 *    Scan compiled regex for specific bracket    *
 *************************************************/
@@ -219,11 +213,5 @@ for (;;)
     }
   }
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_find_bracket.c */

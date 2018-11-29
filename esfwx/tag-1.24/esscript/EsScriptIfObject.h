@@ -17,7 +17,7 @@ protected:
 	ES_DECL_INTF_METHOD(void, internalInvalidateLayout)(bool propagate) ES_OVERRIDE;
 	// update object memory layout. fields and ancestor offsets and|or sizes get updated
 	// as a result of this process
-	ES_DECL_INTF_METHOD(void, internalUpdateLayout)(size_t offs) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, internalUpdateLayout)(ulong offs) ES_OVERRIDE;
 	// for IF fields only. in instance mode empty pointer is returned
 	// for inactive condition, in metaclass mode all conditions are accessible
 	ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, conditionalBranchGet)(int condition) const ES_OVERRIDE;

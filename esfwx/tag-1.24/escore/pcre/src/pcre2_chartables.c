@@ -20,12 +20,6 @@ be supplied to the linker. */
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 const uint8_t* es_default_tables(void)
 {
 static const uint8_t PRIV(default_tables)[] = {
@@ -200,11 +194,5 @@ print, punct, and cntrl. Other classes are built from combinations. */
 
   return PRIV(default_tables);
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_chartables.c */

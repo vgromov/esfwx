@@ -92,7 +92,7 @@ bool EsAssocContainer::get_empty() const
 
 ulong EsAssocContainer::get_count() const
 {
-	return m_indexed.size();
+	return static_cast<ulong>(m_indexed.size());
 }
 //---------------------------------------------------------------------------
 
@@ -356,7 +356,7 @@ void EsAssocContainer::itemDelete(const EsVariant& idx)
 
 ulong EsAssocContainer::countGet() const
 {
-	return m_indexed.size();
+	return static_cast<ulong>(m_indexed.size());
 }
 //---------------------------------------------------------------------------
 

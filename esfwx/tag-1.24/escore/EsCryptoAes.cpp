@@ -86,7 +86,10 @@ void EsCryptoAes::encode(EsBinBuffer& dest, const EsBinBuffer& src) const
     return;
   }
 
-  ulong sze = src.size() + sizeof(ulong);
+  ulong sze = static_cast<ulong>(
+    src.size() + sizeof(ulong)
+  );
+
   sze = (
     (sze / CryptoPP::AESEncryption::BLOCKSIZE)
     + (
@@ -102,7 +105,7 @@ void EsCryptoAes::encode(EsBinBuffer& dest, const EsBinBuffer& src) const
   );
 
   EsBinBuffer::pointer pos = dest.data();
-  sze = src.size(); //< Prepend with original length
+  sze = static_cast<ulong>(src.size()); //< Prepend with original length
   memcpy(
     pos,
     &sze,

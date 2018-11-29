@@ -7,7 +7,7 @@ ES_DECL_INTF_BEGIN2(36900B67, 337F4DF5, 86257376, 454CB972, EsScriptletIntf, EsB
 	ES_DECL_INTF_METHOD(bool, isOrphan)() const = 0;
 	ES_DECL_INTF_METHOD(bool, isCompiled)() const = 0;
 	ES_DECL_INTF_METHOD(const EsString&, nameGet)() const = 0;
-	ES_DECL_INTF_METHOD(size_t, parametersCountGet)() const = 0;
+	ES_DECL_INTF_METHOD(ulong, parametersCountGet)() const = 0;
 	ES_DECL_INTF_METHOD(const EsString::Array&, parameterNamesGet)() const = 0;
 	ES_DECL_INTF_METHOD(const EsMethodInfoKeyT&, infoGet)() const = 0;
 	ES_DECL_INTF_METHOD(EsScriptMachine&, machineGet)() = 0;
@@ -45,7 +45,7 @@ public:
 	ES_DECL_INTF_METHOD(bool, isOrphan)() const ES_OVERRIDE { return m_orphan; }
 	ES_DECL_INTF_METHOD(bool, isCompiled)() const ES_OVERRIDE;
 	ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_OVERRIDE { return m_info.nameGet(); }
-	ES_DECL_INTF_METHOD(size_t, parametersCountGet)() const ES_OVERRIDE { return m_info.parametersCountGet(); }
+	ES_DECL_INTF_METHOD(ulong, parametersCountGet)() const ES_OVERRIDE { return static_cast<ulong>(m_info.parametersCountGet()); }
 	ES_DECL_INTF_METHOD(const EsString::Array&, parameterNamesGet)() const ES_OVERRIDE { return m_params; }
 	ES_DECL_INTF_METHOD(const EsMethodInfoKeyT&, infoGet)() const ES_OVERRIDE { return m_info; }
 	ES_DECL_INTF_METHOD(EsScriptMachine&, machineGet)() ES_OVERRIDE { return m_owner; }

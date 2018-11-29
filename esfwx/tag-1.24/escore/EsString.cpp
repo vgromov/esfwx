@@ -92,6 +92,95 @@ const EsByteString& EsString::defEncoding() ES_NOTHROW
 }
 //---------------------------------------------------------------------------
 
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (4 == ES_CHAR_SIZE)
+EsString::EsString(EsWideString16::const_pointer src, size_t len /*= EsString::npos*/, const EsByteString& conv /*= nullByteString()*/) :
+m_hashInvalid(true)
+{
+  EsStringConverter::Ptr theConv = EsStringConverter::convGet(
+    EsString::defEncoding(),
+    conv.empty() ? EsByteString(
+# if ES_ENDIAN == ES_LITTLE_ENDIAN
+      "UTF-16LE"
+# elif ES_ENDIAN == ES_BIG_ENDIAN
+      "UTF-16BE"
+# endif    
+    ) : conv
+  );
+  ES_ASSERT(theConv);
+
+  const EsWideString16& tmp = (len != npos) ?
+    EsWideString16(src, len) :
+    EsWideString16(src);
+
+  m_str = theConv->inW_TtoOut_W_T<EsWideString16, EsString>(tmp);
+}
+//---------------------------------------------------------------------------
+
+EsString::EsString(const EsWideString16& src, const EsByteString& conv /*= nullByteString()*/) :
+m_hashInvalid(true)
+{
+  EsStringConverter::Ptr theConv = EsStringConverter::convGet(
+    EsString::defEncoding(),
+    conv.empty() ? EsByteString(
+# if ES_ENDIAN == ES_LITTLE_ENDIAN
+      "UTF-16LE"
+# elif ES_ENDIAN == ES_BIG_ENDIAN
+      "UTF-16BE"
+# endif        
+    ) : conv
+  );
+  ES_ASSERT(theConv);
+
+  m_str = theConv->inW_TtoOut_W_T<EsWideString16, EsString>(src);
+}
+//---------------------------------------------------------------------------
+
+#endif
+
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (2 == ES_CHAR_SIZE)
+EsString::EsString(EsWideString32::const_pointer src, size_t len /*= EsString::npos*/, const EsByteString& conv /*= nullByteString()*/) :
+m_hashInvalid(true)
+{
+  EsStringConverter::Ptr theConv = EsStringConverter::convGet(
+    EsString::defEncoding(),
+    conv.empty() ? EsByteString(
+# if ES_ENDIAN == ES_LITTLE_ENDIAN
+      "UTF-32LE"
+# elif ES_ENDIAN == ES_BIG_ENDIAN
+      "UTF-32BE"
+# endif  
+    ) : conv
+  );
+  ES_ASSERT(theConv);
+
+  const EsWideString32& tmp = (len != npos) ?
+    EsWideString32(src, len) :
+    EsWideString32(src);
+
+  m_str = theConv->inW_TtoOut_W_T<EsWideString32, EsString>(tmp);
+}
+//---------------------------------------------------------------------------
+
+EsString::EsString(const EsWideString32& src, const EsByteString& conv /*= nullByteString()*/) :
+m_hashInvalid(true)
+{
+  EsStringConverter::Ptr theConv = EsStringConverter::convGet(
+    EsString::defEncoding(),
+    conv.empty() ? EsByteString(
+# if ES_ENDIAN == ES_LITTLE_ENDIAN
+      "UTF-32LE"
+# elif ES_ENDIAN == ES_BIG_ENDIAN
+      "UTF-32BE"
+# endif    
+    ) : conv
+  );
+  ES_ASSERT(theConv);
+
+  m_str = theConv->inW_TtoOut_W_T<EsWideString32, EsString>(src);
+}
+//---------------------------------------------------------------------------
+#endif
+
 EsString::~EsString() ES_NOTHROW
 {}
 //---------------------------------------------------------------------------
@@ -291,6 +380,54 @@ long EsString::compare( const EsString& src, bool ignoreCase /*= false*/,
   return EsString::scompare(*this, src, ignoreCase, loc);
 }
 //---------------------------------------------------------------------------
+
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (4 == ES_CHAR_SIZE)
+long EsString::compare(EsWideString16::const_pointer src, bool ignoreCase /*= false*/, const std::locale& loc /*= EsLocale::locale()*/) const
+{
+  return EsString::scompare(
+    *this,
+    EsString(src),
+    ignoreCase,
+    loc
+  );
+}
+//---------------------------------------------------------------------------
+
+long EsString::compare(const EsWideString16& src, bool ignoreCase /*= false*/, const std::locale& loc /*= EsLocale::locale()*/) const
+{
+  return EsString::scompare(
+    *this,
+    EsString(src),
+    ignoreCase,
+    loc
+  );
+}
+//---------------------------------------------------------------------------
+#endif
+
+#if (defined(ES_CHAR_IS_WCHAR_T) || defined(ES_USE_NARROW_ES_CHAR)) || (4 == ES_CHAR_SIZE)
+long EsString::compare(EsWideString32::const_pointer src, bool ignoreCase /*= false*/, const std::locale& loc /*= EsLocale::locale()*/) const
+{
+  return EsString::scompare(
+    *this,
+    EsString(src),
+    ignoreCase,
+    loc
+  );
+}
+//---------------------------------------------------------------------------
+
+long EsString::compare(const EsWideString32& src, bool ignoreCase /*= false*/, const std::locale& loc /*= EsLocale::locale()*/) const
+{
+  return EsString::scompare(
+    *this,
+    EsString(src),
+    ignoreCase,
+    loc
+  );
+}
+//---------------------------------------------------------------------------
+#endif
 
 // try to automatically find radix. radix 16 is specified by 0x 0X string prefix
 // radix 8 - by 0 prefix. all other cases are considered radix 10
@@ -649,7 +786,7 @@ EsString EsString::formatV(const std::locale& loc, EsString::const_pointer fmt, 
   while( re.get_matches() )
   {
     // optional width and precision placeholders for * case
-    size_t matchStart, matchLen;
+    ulong matchStart, matchLen;
     // format the entire field, append formatted string to result and skip further
     EsString::const_pointer tmpPos = pos;
     if(
@@ -818,8 +955,10 @@ EsString EsString::formatV(const std::locale& loc, EsString::const_pointer fmt, 
 
       result += oss.str();
     }
-    else if( re.matchGet(matchStart, matchLen, fmtPercent) &&
-             matchLen )
+    else if( 
+      re.matchGet(matchStart, matchLen, fmtPercent) &&
+      matchLen 
+    )
     {
       // append string prefix to the result
       if( pos < beg+matchStart )
@@ -832,7 +971,9 @@ EsString EsString::formatV(const std::locale& loc, EsString::const_pointer fmt, 
       pos += matchLen;
     }
 
-    re.set_offset( pos-beg );
+    re.set_offset( 
+      static_cast<ulong>(pos-beg)
+    );
   }
   // add the rest of the unmatched string to the result and return
   if( pos < end )
@@ -1271,10 +1412,10 @@ static EsString::value_type xmlEscapeToChar(EsString::const_iterator pos,
 }
 //---------------------------------------------------------------------------
 
-EsString EsString::toString(const EsString& src, int masks)
+EsString EsString::toString(const EsString& src, ulong flags)
 {
   EsString result;
-  if( (masks & StrQuote) != 0 )
+  if( (flags & StrQuote) != 0 )
   {
     result += esT('\"');
     result.reserve(src.size() + 2);
@@ -1285,7 +1426,7 @@ EsString EsString::toString(const EsString& src, int masks)
   EsString::const_iterator it = src.begin();
   EsString::const_iterator itEnd = src.end();
 
-  if( (masks & (StrKeepSideBlanks | StrNoCEscape)) == 0 )
+  if( (flags & (StrKeepSideBlanks | StrNoCEscape)) == 0 )
   {
     for( ; it < itEnd && (*it == esT('\x20')); ++it )            // handle leading blanks
       result.append(esT("\\x20"), 4);
@@ -1299,9 +1440,9 @@ EsString EsString::toString(const EsString& src, int masks)
     switch ( c )
     {
     case esT('<'):
-      if ( (masks & StrXML) != 0 )
+      if ( (flags & StrXML) != 0 )
       {
-        if ( (masks & StrNoCEscape) != 0 )
+        if ( (flags & StrNoCEscape) != 0 )
           result.append(esT("&lt;"), 4);
         else
           appendHexEscape(result, c);
@@ -1310,9 +1451,9 @@ EsString EsString::toString(const EsString& src, int masks)
         result += c;
       break;
     case esT('>'):
-      if( (masks & StrXML) != 0 )
+      if( (flags & StrXML) != 0 )
       {
-        if ( (masks & StrNoCEscape) != 0 )
+        if ( (flags & StrNoCEscape) != 0 )
           result.append(esT("&gt;"), 4);
         else
           appendHexEscape(result, c);
@@ -1321,9 +1462,9 @@ EsString EsString::toString(const EsString& src, int masks)
         result += c;
       break;
     case esT('&'):
-      if( (masks & StrXML) != 0 )
+      if( (flags & StrXML) != 0 )
       {
-        if ( (masks & StrNoCEscape) != 0 )
+        if ( (flags & StrNoCEscape) != 0 )
           result.append(esT("&amp;"), 5);
         else
           appendHexEscape(result, c);
@@ -1332,78 +1473,83 @@ EsString EsString::toString(const EsString& src, int masks)
         result += c;
       break;
     case esT('"'):
-      if( (masks & StrXML) != 0 )
+      if( (flags & StrXML) != 0 )
       {
-        if ( (masks & StrNoCEscape) != 0 )
+        if ( (flags & StrNoCEscape) != 0 )
           result.append(esT("&quot;"), 6);
         else
           appendHexEscape(result, c);
       }
-      else if( (masks & StrNoCEscape) == 0 )
+      else if( (flags & StrNoCEscape) == 0 )
         appendEscape(result, c);
       else
         result += c;
       break;
     case esT('\\'):
-      if( (masks & StrNoCEscape) != 0 )
+      if( (flags & StrNoCEscape) != 0 )
         result += c;
       else
         appendEscape(result, c);
       break;
     default:
-      if( (static_cast<EsString::value_type>(c) < 0x20 // We know what we do, do not use is** function here!
-#ifndef ES_UNICODE
-        || ((masks & StrI18n) == 0 && static_cast<long>(c) >= 0x7Fu)
-#endif
-        ) )
+      if( 
+        (c < 0x20) ||                     // We know what we do, do not use is** function here!
+        (((flags & StrEscapeNonAscii) != 0) && (c > 0x7Fu))
+      )
       {
-#ifdef ES_UNICODE
-        checkCharRange(c);
-#endif
-
-        if( (masks & StrXML) != 0 )
+        if( (flags & StrXML) != 0 )
         {
-          if( (masks & StrNoCEscape) != 0 )
-            result.append( format(esT("&#%u;"), static_cast<unsigned long>(
-              static_cast<long>(c) )) );
-          else
-            appendHexEscape(result, c);
-        }
-        else if( (masks & StrNoCEscape) == 0 )
-        {
-          // try to add known C escape sequences as text rather than hex
-          if( 0x0A == c )
-            appendEscape(result, esT('n'));
-          else if( 0x0D == c )
-            appendEscape(result, esT('r'));
-          else if( 0x09 == c )
-            appendEscape(result, esT('t'));
+          if( (flags & StrNoCEscape) != 0 )
+            result.append( 
+              format(esT("&#%u;"), 
+                static_cast<unsigned long>(
+                  static_cast<long>(c) 
+                )
+              ) 
+            );
           else
             appendHexEscape(result, c);
         }
         else
-          result += c;
+        {
+          if((flags & StrNoCEscape) == 0)
+          {
+            // try to add known C escape sequences as text rather than hex
+            if(0x0A == c)
+              appendEscape(result, esT('n'));
+            else if(0x0D == c)
+              appendEscape(result, esT('r'));
+            else if(0x09 == c)
+              appendEscape(result, esT('t'));
+            else if(((flags & StrEscapeNonAscii) != 0) && (c > 0x7Fu))
+              appendHexEscape(result, c);
+            else
+              result += c;
+          }
+          else 
+            result += c;
+        }
       }
       else
         result += c;
     }
   }
 
-  if ( (masks & (StrKeepSideBlanks | StrNoCEscape)) == 0 ) // Take care of trailing blanks
+  if ( (flags & (StrKeepSideBlanks | StrNoCEscape)) == 0 ) // Take care of trailing blanks
   {
     ES_ASSERT(it == itEnd); // oh sure
     for ( itEnd = src.end(); it < itEnd; ++it )
       result.append(esT("\\x20"), 4);
   }
 
-  if ( (masks & StrQuote) != 0 )
+  if ( (flags & StrQuote) != 0 )
     result += esT('\"');
 
   return result;
 }
 //---------------------------------------------------------------------------
 
-EsString EsString::fromString(const EsString& src, int masks, const std::locale& loc /*= EsLocale::locale()*/)
+EsString EsString::fromString(const EsString& src, ulong flags, const std::locale& loc /*= EsLocale::locale()*/)
 {
   EsString result;
   size_t size = src.size();
@@ -1412,7 +1558,7 @@ EsString EsString::fromString(const EsString& src, int masks, const std::locale&
   {
     EsString::const_iterator pos = src.begin();
     EsString::const_iterator end = src.end();
-    if( (masks & StrQuote) != 0 && size >= 2 )
+    if( (flags & StrQuote) != 0 && size >= 2 )
     {
       EsString::value_type first = *pos;
       EsString::value_type last = *(end-1);
@@ -1429,9 +1575,9 @@ EsString EsString::fromString(const EsString& src, int masks, const std::locale&
     while( pos < end )
     {
       EsString::value_type c = *pos;
-      if ( c == esT('\\') && (masks & StrNoCEscape) == 0 )
+      if ( c == esT('\\') && (flags & StrNoCEscape) == 0 )
         result += escapeToChar(pos, end, pos, loc);
-      else if ( c == esT('&') && (masks & StrXML) != 0 )
+      else if ( c == esT('&') && (flags & StrXML) != 0 )
         result += xmlEscapeToChar(pos, end, pos, loc);
       else
       {

@@ -38,7 +38,7 @@ void constraintsFromVariant(EsMathFitConstraints& csx, const EsVariant& src)
 
     if( item.isCollection() )
     {
-      for(int idx = 0; idx < src.countGet(); ++idx)
+      for(ulong idx = 0; idx < src.countGet(); ++idx)
       {
         const EsVariant& constraintItem = src.itemGet(idx);
 

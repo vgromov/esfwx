@@ -10,7 +10,7 @@ class ESCORE_CLASS ES_INTF_IMPL1(EsCRC8, EsReflectedClassIntf)
 public:
 	// constructors
 	EsCRC8(const EsBinBuffer& buff, esU8 initialSum = 0xFF);
-	EsCRC8(const esU8* buff = nullptr, size_t len = 0, esU8 initialSum = 0xFF);
+	EsCRC8(const esU8* buff = nullptr, ulong len = 0, esU8 initialSum = 0xFF);
 
 	ES_DECL_REFLECTED_CLASS_BASE( EsCRC8 )
 	ES_DECL_ATTR_HANDLING_STD
@@ -28,7 +28,7 @@ public:
   ES_DECL_REFLECTED_METHOD1(void, reset, esU8);
 
   /// Append buffer to internal crc accumulator
-	void update(const esU8* buff, size_t len);
+	void update(const esU8* buff, ulong len);
   ES_DECL_REFLECTED_METHOD1(void, update, cr_EsBinBuffer);
   ES_DECL_REFLECTED_METHOD3(void, update, cr_EsBinBuffer, ulong, ulong);
 
@@ -52,7 +52,7 @@ class ESCORE_CLASS ES_INTF_IMPL1(EsChecksum16, EsReflectedClassIntf)
 public:
 	// ctors
 	EsChecksum16(const EsBinBuffer& buff, esU16 initialSum = 0);
-	EsChecksum16(const esU8* buff = nullptr, size_t len = 0, esU16 initialSum = 0);
+	EsChecksum16(const esU8* buff = nullptr, ulong len = 0, esU16 initialSum = 0);
 
 	ES_DECL_REFLECTED_CLASS_BASE( EsChecksum16 )
 	ES_DECL_ATTR_HANDLING_STD
@@ -67,7 +67,7 @@ public:
   ES_DECL_REFLECTED_METHOD1(void, reset, esU16);
 
   /// Append buffer to the checksum calculations
-	void update(const esU8* buff, size_t len);
+	void update(const esU8* buff, ulong len);
 	ES_DECL_REFLECTED_METHOD1(void, update, cr_EsBinBuffer);
 	ES_DECL_REFLECTED_METHOD3(void, update, cr_EsBinBuffer, ulong, ulong);
 
@@ -92,7 +92,7 @@ class ESCORE_CLASS ES_INTF_IMPL1(EsCRC16_CCIITT, EsReflectedClassIntf)
 public:
 	// ctors
 	EsCRC16_CCIITT(const EsBinBuffer& buff, esU16 initialSum = 0xFFFF);
-	EsCRC16_CCIITT(const esU8* buff = nullptr, size_t len = 0, esU16 initialSum = 0xFFFF);
+	EsCRC16_CCIITT(const esU8* buff = nullptr, ulong len = 0, esU16 initialSum = 0xFFFF);
 
 	ES_DECL_REFLECTED_CLASS_BASE( EsCRC16_CCIITT )
 	ES_DECL_ATTR_HANDLING_STD
@@ -110,7 +110,7 @@ public:
   ES_DECL_REFLECTED_METHOD1(void, reset, esU16);
   
   /// Append buffer to the checksum calculations
-	void update(const esU8* buff, size_t len);
+	void update(const esU8* buff, ulong len);
   ES_DECL_REFLECTED_METHOD1(void, update, cr_EsBinBuffer);
   ES_DECL_REFLECTED_METHOD3(void, update, cr_EsBinBuffer, ulong, ulong);
 
@@ -132,7 +132,7 @@ class ESCORE_CLASS ES_INTF_IMPL1(EsCRC32_IEEE802_3, EsReflectedClassIntf)
 public:
 	// ctors
 	EsCRC32_IEEE802_3( const EsBinBuffer& buff, esU32 initialSum = 0xFFFFFFFF );
-	EsCRC32_IEEE802_3( const esU8* buff = nullptr, size_t len = 0, esU32 initialSum = 0xFFFFFFFF );
+	EsCRC32_IEEE802_3( const esU8* buff = nullptr, ulong len = 0, esU32 initialSum = 0xFFFFFFFF );
 
 	ES_DECL_REFLECTED_CLASS_BASE( EsCRC32_IEEE802_3 )
 	ES_DECL_ATTR_HANDLING_STD
@@ -150,7 +150,7 @@ public:
   ES_DECL_REFLECTED_METHOD1(void, reset, esU32);
 
   /// Append buffer to crc sum calculation
-	void update( const esU8* buff, size_t len );
+	void update( const esU8* buff, ulong len );
   ES_DECL_REFLECTED_METHOD1(void, update, cr_EsBinBuffer);
   ES_DECL_REFLECTED_METHOD3(void, update, cr_EsBinBuffer, ulong, ulong);
 

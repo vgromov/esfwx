@@ -402,18 +402,26 @@ bool EsVariant::isIndexed() const
 	return false;
 }
 
-int EsVariant::countGet() const
+ulong EsVariant::countGet() const
 {
 	switch( m_type )
 	{
 	case VAR_BIN_BUFFER:
-		return doInterpretAsBinBuffer().size();
+		return static_cast<ulong>(
+      doInterpretAsBinBuffer().size()
+    );
 	case VAR_STRING:
-		return doInterpretAsString().size();
+		return static_cast<ulong>(
+      doInterpretAsString().size()
+    );
 	case VAR_STRING_COLLECTION:
-		return doInterpretAsStringCollection().size();
+		return static_cast<ulong>(
+      doInterpretAsStringCollection().size()
+    );
 	case VAR_VARIANT_COLLECTION:
-		return doInterpretAsVariantCollection().size();
+		return static_cast<ulong>(
+      doInterpretAsVariantCollection().size()
+    );
 	case VAR_OBJECT:
 		{
 			EsReflectedClassIntf::Ptr obj = asExistingObject();
@@ -427,7 +435,7 @@ int EsVariant::countGet() const
 	return 0; // we are never here
 }
 
-void EsVariant::countSet(int newCount)
+void EsVariant::countSet(ulong newCount)
 {
 	switch( m_type )
 	{
@@ -1687,12 +1695,17 @@ EsVariant EsVariant::pow(const EsVariant& val, const std::locale& loc /*= EsLoca
 	return esPow(asDouble(loc), val.asDouble(loc));
 }
 
-void EsVariant::indexAdjust(int& index, unsigned count)
+void EsVariant::indexAdjust(long& index, ulong count)
 {
-	ES_ASSERT((int)count >= 0); // check if we are not too big (16-bit architecture possibility)
-	int signedCount = static_cast<int>(count);
-	EsNumericCheck::checkRangeInteger(-signedCount, signedCount-1, index);
-	if( index < 0 )
+	ES_ASSERT(static_cast<long>(count) >= 0); // Check if count is not too big to be converted to signed counterpart
+	long signedCount = static_cast<long>(count);
+	EsNumericCheck::checkRangeInteger(
+    -signedCount, 
+    signedCount-1, 
+    index
+  );
+	
+  if( index < 0 )
 		index += signedCount;
 }
 
@@ -1707,35 +1720,61 @@ EsVariant EsVariant::itemGet(const EsVariant& idx) const
 	}
 	else
 	{
-		int index = idx.asInt();
+		long index = idx.asLong();
 		switch( m_type )
 		{
 		case VAR_BIN_BUFFER:
 			{
 				const EsBinBuffer& v = doInterpretAsBinBuffer();
-				indexAdjust(index, v.size());
-				result.doAssignToEmpty(v[index]);
+				indexAdjust(
+          index, 
+          static_cast<ulong>(v.size())
+        );
+				result.doAssignToEmpty(
+          v[index]
+        );
 				break;
 			}
 		case VAR_STRING:
 			{
 				const EsString& v = doInterpretAsString();
-				indexAdjust(index, v.size());
-				result.doAssignToEmpty( static_cast<EsString::value_type>(v[index]) );
+				indexAdjust(
+          index, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				result.doAssignToEmpty( 
+          static_cast<EsString::value_type>(v[index]) 
+        );
 				break;
 			}
 		case VAR_STRING_COLLECTION:
 			{
 				const EsString::Array& v = doInterpretAsStringCollection();
-				indexAdjust(index, v.size());
-				result.doAssignToEmpty(v[index]);
+				indexAdjust(
+          index, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				result.doAssignToEmpty(
+          v[index]
+        );
 				break;
 			}
 		case VAR_VARIANT_COLLECTION:
 			{
 				const EsVariant::Array& v = doInterpretAsVariantCollection();
-				indexAdjust(index, v.size());
-				result.doAssignToEmpty(v[index]);
+				indexAdjust(
+          index, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				result.doAssignToEmpty(
+          v[index]
+        );
 				break;
 			}
 		default:
@@ -1756,35 +1795,59 @@ void EsVariant::itemSet(const EsVariant& index, const EsVariant& value, const st
 	}
 	else
 	{
-		int intIndex = index.asInt();
+		long intIndex = index.asLong();
 		switch( m_type )
 		{
 		case VAR_BIN_BUFFER:
 			{
 				EsBinBuffer& v = doInterpretAsBinBuffer();
-				indexAdjust(intIndex, v.size());
-				v[intIndex] = value.asByte(loc);
+				indexAdjust(
+          intIndex, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				
+        v[intIndex] = value.asByte(loc);
 			}
 			break;
 		case VAR_STRING:
 			{
 				EsString& v = doInterpretAsString();
-				indexAdjust(intIndex, v.size());
-				v[intIndex] = value.asChar(loc);
+				indexAdjust(
+          intIndex, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				
+        v[intIndex] = value.asChar(loc);
 			}
 			break;
 		case VAR_STRING_COLLECTION:
 			{
 				EsString::Array& v = doInterpretAsStringCollection();
-				indexAdjust(intIndex, v.size());
-				v[intIndex] = value.asString(loc);
+				indexAdjust(
+          intIndex, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				
+        v[intIndex] = value.asString(loc);
 			}
 			break;
 		case VAR_VARIANT_COLLECTION:
 			{
 				EsVariant::Array& v = doInterpretAsVariantCollection();
-				indexAdjust(intIndex, v.size());
-				v[intIndex] = value;
+				indexAdjust(
+          intIndex, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				
+        v[intIndex] = value;
 			}
 			break;
 		default:
@@ -1804,35 +1867,67 @@ void EsVariant::itemDelete(const EsVariant& index)
 	}
 	else
 	{
-		int intIndex = index.asInt();
+		long intIndex = index.asLong();
 		switch( m_type )
 		{
 		case VAR_BIN_BUFFER:
 			{
 				EsBinBuffer& v = doInterpretAsBinBuffer();
-				indexAdjust(intIndex, v.size());
-				v.erase( v.begin()+intIndex );
+				indexAdjust(
+          intIndex, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				
+        v.erase( 
+          v.begin()+intIndex 
+        );
 			}
 			break;
 		case VAR_STRING:
 			{
 				EsString& v = doInterpretAsString();
-				indexAdjust(intIndex, v.size());
-				v.erase( v.begin()+intIndex );
+				indexAdjust(
+          intIndex, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				
+        v.erase( 
+          v.begin()+intIndex 
+        );
 			}
 			break;
 		case VAR_STRING_COLLECTION:
 			{
 				EsString::Array& v = doInterpretAsStringCollection();
-				indexAdjust(intIndex, v.size());
-				v.erase( v.begin()+intIndex );
+				indexAdjust(
+          intIndex, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				
+        v.erase( 
+          v.begin()+intIndex 
+        );
 			}
 			break;
 		case VAR_VARIANT_COLLECTION:
 			{
 				EsVariant::Array& v = doInterpretAsVariantCollection();
-				indexAdjust(intIndex, v.size());
-				v.erase( v.begin()+intIndex );
+				indexAdjust(
+          intIndex, 
+          static_cast<ulong>(
+            v.size()
+          )
+        );
+				
+        v.erase( 
+          v.begin()+intIndex 
+        );
 			}
 			break;
 		default:
@@ -1842,9 +1937,10 @@ void EsVariant::itemDelete(const EsVariant& index)
 	}
 }
 
-int EsVariant::sliceAdjust(int& from, int& to, unsigned count)
+long EsVariant::sliceAdjust(long& from, long& to, ulong count)
 {
-	int length = static_cast<int>(count);
+  ES_ASSERT(static_cast<long>(count) >= 0); // Check if unsigned count not too big to be convertible to signed
+	long length = static_cast<long>(count);
 
 	if( from < 0 )
 		from += length;
@@ -1866,10 +1962,11 @@ int EsVariant::sliceAdjust(int& from, int& to, unsigned count)
 		to = from;
 		return 0;
 	}
+
 	return size;
 }
 
-EsVariant EsVariant::sliceGet(int from, int to) const
+EsVariant EsVariant::sliceGet(long from, long to) const
 {
 	EsVariant result;
 	switch( m_type )
@@ -1877,32 +1974,74 @@ EsVariant EsVariant::sliceGet(int from, int to) const
 	case VAR_BIN_BUFFER:
 		{
 			const EsBinBuffer& v = doInterpretAsBinBuffer();
-			int size = sliceAdjust(from, to, v.size());
+			long size = sliceAdjust(
+        from, 
+        to, 
+        static_cast<ulong>(v.size())
+      );
 			EsBinBuffer::const_iterator start = v.begin()+from;
-			result.doAssignEsBinBufferToEmpty( EsBinBuffer(start, start+size) );
+			result.doAssignEsBinBufferToEmpty( 
+        EsBinBuffer(
+          start, 
+          start+size
+        ) 
+      );
 			break;
 		}
 	case VAR_STRING:
 		{
 			const EsString& s = doInterpretAsString();
-			int size = sliceAdjust(from, to, s.size());
-			result.doAssignToEmpty( s.substr(from, size) );
+			long size = sliceAdjust(
+        from, 
+        to, 
+        static_cast<ulong>(s.size())
+      );
+			result.doAssignToEmpty( 
+        s.substr(
+          from, 
+          size
+        ) 
+      );
 			break;
 		}
 	case VAR_STRING_COLLECTION:
 		{
 			const EsString::Array& a = doInterpretAsStringCollection();
-			int size = sliceAdjust(from, to, a.size());
-			EsString::Array::const_iterator start = a.begin() + from;
-			result.doAssignToEmpty( EsString::Array(start, start + size) );
+			long size = sliceAdjust(
+        from, 
+        to, 
+        static_cast<ulong>(
+          a.size()
+        )
+      );
+			
+      EsString::Array::const_iterator start = a.begin() + from;
+			result.doAssignToEmpty( 
+        EsString::Array(
+          start, 
+          start + size
+        ) 
+      );
 			break;
 		}
 	case VAR_VARIANT_COLLECTION:
 		{
 			const EsVariant::Array& v = doInterpretAsVariantCollection();
-			int size = sliceAdjust(from, to, v.size());
-			EsVariant::Array::const_iterator start = v.begin() + from;
-			result.doAssignToEmpty( EsVariant::Array(start, start + size) );
+      long size = sliceAdjust(
+        from, 
+        to, 
+        static_cast<ulong>(
+          v.size()
+        )
+      );
+			
+      EsVariant::Array::const_iterator start = v.begin() + from;
+			result.doAssignToEmpty( 
+        EsVariant::Array(
+          start, 
+          start + size
+        ) 
+      );
 			break;
 		}
 	default:
@@ -3178,16 +3317,25 @@ EsVariant EsVariant::findLastOf(const EsVariant& var) const
 //---------------------------------------------------------------------------
 
 template <typename ContainerT>
-static void rangeAssign( ContainerT& dest, const ContainerT& src, ulong offs, ulong cnt )
+static void rangeAssign( ContainerT& dest, const ContainerT& src, long offs, ulong cnt )
 {
   if( !cnt )
-    cnt = src.size();
+    cnt = static_cast<ulong>(src.size());
   else
-    cnt = esMin(cnt, static_cast<ulong>(src.size()));
+    cnt = esMin(
+      cnt, 
+      static_cast<ulong>(src.size())
+    );
 
-  int from = offs;
-  int to = offs+cnt;
-  int size = EsVariant::sliceAdjust(from, to, dest.size());
+  long from = offs;
+  long to = offs+cnt;
+  long size = EsVariant::sliceAdjust(
+    from, 
+    to, 
+    static_cast<ulong>(
+      dest.size()
+    )
+  );
 
   typename ContainerT::const_iterator csrc = src.begin();
   for(typename ContainerT::iterator idest = dest.begin()+from; idest != dest.begin()+from+size; ++idest)
@@ -3195,7 +3343,7 @@ static void rangeAssign( ContainerT& dest, const ContainerT& src, ulong offs, ul
 }
 //---------------------------------------------------------------------------
 
-void EsVariant::replace(const EsVariant& var, ulong offs, ulong cnt /*= 0*/)
+void EsVariant::replace(const EsVariant& var, long offs, ulong cnt /*= 0*/)
 {
   switch(m_type)
   {
@@ -3204,7 +3352,12 @@ void EsVariant::replace(const EsVariant& var, ulong offs, ulong cnt /*= 0*/)
       EsString& s = doInterpretAsString();
       const EsString& r = var.doInterpretAsString();
 
-      rangeAssign(s, r, offs, cnt);
+      rangeAssign(
+        s, 
+        r, 
+        offs, 
+        cnt
+      );
     }
     break;
   case EsVariant::VAR_BIN_BUFFER:
@@ -3212,7 +3365,12 @@ void EsVariant::replace(const EsVariant& var, ulong offs, ulong cnt /*= 0*/)
       EsBinBuffer& s = doInterpretAsBinBuffer();
       const EsBinBuffer& r = var.doInterpretAsBinBuffer();
 
-      rangeAssign(s, r, offs, cnt);
+      rangeAssign(
+        s, 
+        r, 
+        offs, 
+        cnt
+      );
     }
     break;
   case EsVariant::VAR_STRING_COLLECTION:
@@ -3220,7 +3378,12 @@ void EsVariant::replace(const EsVariant& var, ulong offs, ulong cnt /*= 0*/)
       EsStringArray& s = doInterpretAsStringCollection();
       const EsStringArray& r = var.doInterpretAsStringCollection();
 
-      rangeAssign(s, r, offs, cnt);
+      rangeAssign(
+        s, 
+        r, 
+        offs, 
+        cnt
+      );
     }
     break;
   case EsVariant::VAR_VARIANT_COLLECTION:
@@ -3228,7 +3391,12 @@ void EsVariant::replace(const EsVariant& var, ulong offs, ulong cnt /*= 0*/)
       EsVariantArray& s = doInterpretAsVariantCollection();
       const EsVariantArray& r = var.doInterpretAsVariantCollection();
 
-      rangeAssign(s, r, offs, cnt);
+      rangeAssign(
+        s, 
+        r, 
+        offs, 
+        cnt
+      );
     }
     break;
   default:

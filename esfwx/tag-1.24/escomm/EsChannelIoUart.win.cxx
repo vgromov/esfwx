@@ -360,7 +360,7 @@ esU32 EsChannelIoUart::internalPutBytes(const esU8* data, esU32 len, esU32 tmo)
       internalLineBreak();
   }
 
-  return pos-data;
+  return static_cast<esU32>(pos-data);
 }
 //---------------------------------------------------------------------------
 
@@ -424,7 +424,7 @@ esU32 EsChannelIoUart::internalGetBytes(esU8* data, esU32 len, esU32 tmo)
     }
   }
 
-  return pos-data;
+  return static_cast<esU32>(pos-data);
 }
 //---------------------------------------------------------------------------
 
@@ -569,7 +569,7 @@ void EsUartEnumerator::enumerate(bool busyPortsInclude /*= true*/)
       {
         //Read in the name of the port
         EsString portName(256, 0);
-        DWORD dwSize = portName.size()*EsString::value_size;
+        DWORD dwSize = static_cast<DWORD>(portName.size()*EsString::value_size);
         DWORD dwType = 0;
         if( 
           RegQueryValueEx(
@@ -603,7 +603,7 @@ void EsUartEnumerator::enumerate(bool busyPortsInclude /*= true*/)
       if( !info->isEmpty() )
       {
         EsString portName(256, 0);
-        DWORD dwSize = portName.size()*sizeof(EsString::value_type);
+        DWORD dwSize = static_cast<DWORD>(portName.size()*sizeof(EsString::value_type));
         DWORD dwType = 0;
         if(
           setupDiGetDeviceRegistryProperty(
@@ -631,7 +631,7 @@ void EsUartEnumerator::enumerate(bool busyPortsInclude /*= true*/)
             hDevInfoSet, 
             &devInfo, 
             &portName[0], 
-            portName.size(), 
+            static_cast<esU32>(portName.size()),
             &dwSize
           ) 
         )

@@ -50,6 +50,7 @@
 # define ES_WCHAR               wchar_t
 # define ES_STRINGIZE		        ES_STRINGIZE_HELPER
 # define esT(x)                 x
+# define esTU                   esT8
 # define ES_USE_NARROW_CHAR_RTL
 #elif (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND)
 # if defined(WIDECHAR_IS_WCHAR)
@@ -57,36 +58,23 @@
 #   define ES_CHAR_SIZE         ES_WCHAR_T_SIZE
 #   define ES_CHAR_IS_WCHAR_T
 #   define ES_WCHAR             wchar_t
-#   define ES_STRINGIZE         ES_STRINGIZEW
-#   define esT                  esTW
 # else
 #   define ES_CHAR              char16_t
 #   define ES_CHAR_SIZE         2
 #   define ES_WCHAR             char16_t
 #   define ES_WCHAR_SIZE        2
 #   define ES_WCHAR_IS_NOT_WCHAR_T
-#   define ES_STRINGIZE         ES_STRINGIZE16
-#   define esT                  esT16
 # endif
 #elif (ES_OS == ES_OS_WINDOWS)
   typedef wchar_t						    ES_CHAR;
-# define ES_CHAR_SIZE           ES_WCHAR_SIZE
+# define ES_CHAR_SIZE           ES_WCHAR_T_SIZE
 # define ES_CHAR_IS_WCHAR_T
 # define ES_WCHAR               wchar_t
-# define ES_STRINGIZE           ES_STRINGIZEW
-# define esT                    esTW
 #else
   typedef wchar_t  				      ES_CHAR;
 # define ES_CHAR_IS_WCHAR_T
 # define ES_CHAR_SIZE           ES_WCHAR_T_SIZE
 # define ES_WCHAR               wchar_t
-# define ES_STRINGIZE           ES_STRINGIZEW
-# define esT                    esTW
-/*  typedef char32_t  				    ES_CHAR;
-# define ES_CHAR_SIZE           4
-# define ES_WCHAR               wchar_t
-# define ES_STRINGIZE           ES_STRINGIZE32
-# define esT                    esT32*/
 #endif
 
 /// Char sequence const pointer type
@@ -95,6 +83,27 @@
 /// Post-define WCHAR_SIZE
 #if !defined(ES_WCHAR_IS_NOT_WCHAR_T)
 # define ES_WCHAR_SIZE          ES_WCHAR_T_SIZE
+#endif
+
+/// Define default string literal macros for wide ES_CHAR cases
+#if defined(ES_CHAR_IS_WCHAR_T)
+# define ES_STRINGIZE           ES_STRINGIZEW
+# define esT                    esTW
+# if 2 == ES_CHAR_SIZE
+#   define esTU                 esT16
+# elif 4 == ES_CHAR_SIZE
+#   define esTU                 esT32
+#endif
+#else
+# if 2 == ES_CHAR_SIZE
+#   define ES_STRINGIZE         ES_STRINGIZE16
+#   define esT                  esT16
+#   define esTU                 esT16
+# elif 4 == ES_CHAR_SIZE
+#   define ES_STRINGIZE         ES_STRINGIZE32
+#   define esT                  esT32
+#   define esTU                 esT32
+# endif
 #endif
 
 /// Define ES_UCHAR and ES_UWCHAR types

@@ -426,10 +426,10 @@ bool EsPath::isRelativeRoot(size_t checkPos, const EsString& path)
 }
 //---------------------------------------------------------------------------
 
-size_t EsPath::rootAndVolumeInit(const EsString& path)
+ulong EsPath::rootAndVolumeInit(const EsString& path)
 {
-	size_t result = 0;
-	size_t start = 0, len = 0;
+	ulong result = 0;
+	ulong start = 0, len = 0;
 
 	EsRegEx re(
     c_reUncRootAndVol,
@@ -442,7 +442,11 @@ size_t EsPath::rootAndVolumeInit(const EsString& path)
 	if( re.get_matches() )
 	{
 		// find out where our entire match ends
-		re.matchGet(start, result, 0);
+		re.matchGet(
+      start, 
+      result, 
+      0
+    );
 		ES_ASSERT(0 == start);
 		ES_ASSERT(result);
 		// we're matched UNC path
@@ -562,7 +566,7 @@ void EsPath::pathParse(const EsString& path, bool hasFileName)
       re.set_text(tmp);
     }
 
-    size_t pathOffs = rootAndVolumeInit(tmp);
+    ulong pathOffs = rootAndVolumeInit(tmp);
     re.set_offset(pathOffs);
 
     // todo: check the rest of path string for invalid separators (i.e. several consequtive in a row)
@@ -577,7 +581,7 @@ void EsPath::pathParse(const EsString& path, bool hasFileName)
 
 		while( re.get_matches() )
 		{
-			size_t start, len;
+			ulong start, len;
 			if( re.matchGet(start, len, 1) && len )
 			{
 				EsString::const_iterator startIt = tmp.begin()+start;
@@ -589,8 +593,8 @@ void EsPath::pathParse(const EsString& path, bool hasFileName)
 
 		if( !pathParts.empty() )
 		{
-			size_t idx = 0;
-			size_t end = pathParts.size();
+			ulong idx = 0;
+      ulong end = static_cast<ulong>(pathParts.size());
 
 			if( hasFileName )
 				--end;
@@ -673,11 +677,11 @@ void EsPath::expandVars(EsString& str, const EsStringIndexedMap& vars)
 
 	while( re.get_matches() )
 	{
-		size_t start, len;
+		ulong start, len;
 		if(	re.matchGet(start, len, 1) && len )
 		{
 			const EsString& varName = str.substr(start, len);
-			size_t idx = vars.itemFind(varName);
+			ulong idx = vars.itemFind(varName);
 			if( EsStringIndexedMap::npos != idx )
 			{
 				const EsString& val = vars.valueGet(idx).asEscapedString();

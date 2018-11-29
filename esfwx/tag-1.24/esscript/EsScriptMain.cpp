@@ -164,7 +164,7 @@ EsVariant EsScript::enumEval(const EsVariant& enumValExpr)
   const EsString& enumSym = re.matchGet(2);
   ES_ASSERT(!enumSym.empty());
 
-  size_t start, len;
+  ulong start, len;
   if( re.matchGet(start, len, 3) ) //< Return label expression
     return m_machine.enumValueLabelGet(
       enumName,
@@ -593,7 +593,7 @@ ES_IMPL_INTF_METHOD(EsScriptletIntf::Ptr, EsScript::scriptletCreate)(const EsStr
 	EsScriptletIntf::Ptr scl( new EsScriptlet(m_machine, name, src, args) );
 	ES_ASSERT(scl);
 
-	if( static_cast<size_t>(-1) == m_scriptlets.itemFind(scl->nameGet()) )
+	if( EsStringIndexedMap::npos == m_scriptlets.itemFind(scl->nameGet()) )
 	{
 		m_scriptlets.itemAdd(scl->nameGet(), scl);
 		return scl;
@@ -612,8 +612,8 @@ EsBaseIntfPtr EsScript::scriptletCreateReflected(cr_EsString name, cr_EsString s
 EsScriptletIntf::Ptr EsScript::scriptletGet(const EsString& name, size_t paramCount) const
 {
 	const EsString& trueName = EsScriptlet::nameFormat(name, paramCount);
-	size_t idx = m_scriptlets.itemFind(trueName);
-	if( static_cast<size_t>(-1) != idx )
+	ulong idx = m_scriptlets.itemFind(trueName);
+  if(EsStringIndexedMap::npos != idx)
 	{
 		EsScriptletIntf::Ptr scl = m_scriptlets.valueGet(idx).asExistingObject();
 		ES_ASSERT(scl);

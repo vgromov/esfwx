@@ -17,7 +17,7 @@ public:
   /// Non-reflected services
   ///
 
-  EsMathArrayReal(size_t size = 0, const double* data = 0);
+  EsMathArrayReal(ulong size = 0, const double* data = 0);
 	EsMathArrayReal(const EsMathArrayReal& src);
 
 	virtual ~EsMathArrayReal();
@@ -25,7 +25,7 @@ public:
 	/// Direct data access
 	const double* dataGet() const;
 	double* dataAccess();
-	void dataSet(size_t size, const double* data);
+	void dataSet(ulong size, const double* data);
 
 	/// Assignment operator
 	EsMathArrayReal& operator=(const EsMathArrayReal& src);
@@ -196,8 +196,8 @@ protected:
 	// "black box" storage implementation
 	void* m_pimpl;
 	mutable bool m_needRecalc;
-	mutable size_t m_minIdx;
-	mutable size_t m_maxIdx;
+	mutable ulong m_minIdx;
+	mutable ulong m_maxIdx;
   mutable double m_total;
 
   friend class EsMathConvolutionReal;

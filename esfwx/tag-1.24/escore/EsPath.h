@@ -187,7 +187,7 @@ protected:
 	// Match and initialize root and volume fields, returned is offset from the
 	// start of the path, where this service finished its job. 0 is returned if no root
 	// and|or volume was matched
-	size_t rootAndVolumeInit(const EsString& path);
+	ulong rootAndVolumeInit(const EsString& path);
 	void fileNameExtParse(const EsString& fileNameExt);
 	void pathParse(const EsString& path, bool hasFileName);
 

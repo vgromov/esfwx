@@ -12,7 +12,7 @@
 #endif
 //---------------------------------------------------------------------------
 
-EsScriptParser::Node::Node(const EsScriptParser& parser, ulong id, ulong start, ulong end, const EsScriptParser::Node* parent /*= nullptr*/, size_t expectedChildrenCnt /*= 0*/) :
+EsScriptParser::Node::Node(const EsScriptParser& parser, long id, ulong start, ulong end, const EsScriptParser::Node* parent /*= nullptr*/, ulong expectedChildrenCnt /*= 0*/) :
   m_parser(&parser),
   m_parent(parent),
   m_id(id),
@@ -42,7 +42,7 @@ void EsScriptParser::Node::rangeCheckToInclude(ulong start, ulong end) ES_NOTHRO
 }
 //--------------------------------------------------------------------------------
 
-EsScriptParser::Node::PtrT EsScriptParser::Node::childAdd(ulong id, ulong start, ulong end, size_t expectedChildrenCnt)
+EsScriptParser::Node::PtrT EsScriptParser::Node::childAdd(long id, ulong start, ulong end, ulong expectedChildrenCnt)
 {
   PtrT node(
     new Node(
@@ -74,7 +74,7 @@ bool EsScriptParser::Node::isIdOneOf(const EsScriptParser::IdsT& ids) const ES_N
 }
 //--------------------------------------------------------------------------------
 
-const EsScriptParser::Node* EsScriptParser::Node::firstChildGetById(int id, bool doNested /*= true*/) const ES_NOTHROW
+const EsScriptParser::Node* EsScriptParser::Node::firstChildGetById(long id, bool doNested /*= true*/) const ES_NOTHROW
 {
   if(!haveChildren())
     return nullptr;
@@ -156,7 +156,7 @@ const EsScriptParser::Node* EsScriptParser::Node::deepestNodeFindByPos(ulong pos
   if(m_start > pos || m_end < pos)
     return nullptr;
 
-  for(size_t idx = 0; idx < m_children.size(); ++idx)
+  for(ulong idx = 0; idx < static_cast<ulong>(m_children.size()); ++idx)
   {
     const Node& node = childGet(idx);
     const Node* found = node.deepestNodeFindByPos(pos);

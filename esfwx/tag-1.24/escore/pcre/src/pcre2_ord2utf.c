@@ -49,12 +49,6 @@ into a UTF string. The behaviour is different for each code unit width. */
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* If SUPPORT_UNICODE is not defined, this function will never be called.
 Supply a dummy function because some compilers do not like empty source
 modules. */
@@ -123,11 +117,5 @@ return 1;
 #endif
 }
 #endif  /* SUPPORT_UNICODE */
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre_ord2utf.c */

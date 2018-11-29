@@ -24,7 +24,7 @@ ES_DECL_EXPORTED_REFLECTED_SERVICES_BEGIN(EsCommUtils, ESCOMM_CLASS)
   /// @param tmo is timeout in ms, used for single char read attempt.
   /// @return true if specified pattern was read, false otherwise
   ///
-  static bool binaryPatternReceive(const EsChannelIoIntf::Ptr& chnl, const esU8* pattern, size_t patternLen, ulong charRetries = 1, ulong tmo = 1);
+  static bool binaryPatternReceive(const EsChannelIoIntf::Ptr& chnl, const esU8* pattern, ulong patternLen, ulong charRetries = 1, ulong tmo = 1);
 
   /// Try to read specific byte pattern from channel. charRetries have the same meaning as above.
   /// @param charRetries charRetries=0 is considered infinite.

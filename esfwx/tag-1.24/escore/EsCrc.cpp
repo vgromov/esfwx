@@ -48,7 +48,7 @@ m_sum(initialSum)
 }
 //---------------------------------------------------------------------------
 
-EsCRC8::EsCRC8(const esU8* buff/* = nullptr*/, size_t len/* = 0*/, esU8 initialSum /*= 0xFF*/) :
+EsCRC8::EsCRC8(const esU8* buff/* = nullptr*/, ulong len/* = 0*/, esU8 initialSum /*= 0xFF*/) :
 m_init(initialSum), 
 m_sum(initialSum)
 {
@@ -115,7 +115,7 @@ void EsCRC8::reset(esU8 init)
 }
 //---------------------------------------------------------------------------
 
-void EsCRC8::update(const esU8* buff, size_t len)
+void EsCRC8::update(const esU8* buff, ulong len)
 {
   if(nullptr == buff || 0 == len)
     return;
@@ -133,7 +133,9 @@ void EsCRC8::update(const EsBinBuffer& buff)
   if(!buff.empty())
     update(
       buff.data(), 
-      buff.size()
+      static_cast<ulong>(
+        buff.size()
+      )
     );
 }
 //---------------------------------------------------------------------------
@@ -146,8 +148,23 @@ void EsCRC8::update(const EsBinBuffer& buff, ulong from, ulong to)
   if(from >= to)
     EsException::Throw(esT("EsCRC8::update range is invalid"));
 
-  EsNumericCheck::checkRangeUInteger(0, buff.size()-1, from, esT("EsCRC8::update: from"));
-  EsNumericCheck::checkRangeUInteger(from, buff.size(), to, esT("EsCRC8::update: to"));
+  EsNumericCheck::checkRangeUInteger(
+    0, 
+    static_cast<ulong>(
+      buff.size()-1
+    ),
+    from, 
+    esT("EsCRC8::update: from")
+  );
+  
+  EsNumericCheck::checkRangeUInteger(
+    from, 
+    static_cast<ulong>(
+      buff.size()
+    ),
+    to, 
+    esT("EsCRC8::update: to")
+  );
 
   update(
     buff.data()+from,
@@ -200,7 +217,7 @@ m_leftover(false)
 }
 //---------------------------------------------------------------------------
 
-EsChecksum16::EsChecksum16(const esU8* buff /*= nullptr*/, size_t len /*= 0*/, esU16 initialSum /*= 0*/) :
+EsChecksum16::EsChecksum16(const esU8* buff /*= nullptr*/, ulong len /*= 0*/, esU16 initialSum /*= 0*/) :
 m_sum(initialSum),
 m_init(initialSum),
 m_checksum(0),
@@ -277,7 +294,7 @@ void EsChecksum16::reset(esU16 initial)
 //---------------------------------------------------------------------------
 
 // append buffer to the calculations
-void EsChecksum16::update(const esU8* buff, size_t len)
+void EsChecksum16::update(const esU8* buff, ulong len)
 {
 	if( nullptr == buff || 0 == len )
 		return;
@@ -314,7 +331,9 @@ void EsChecksum16::update(cr_EsBinBuffer bb)
 	if( !bb.empty() )
 		update(
       bb.data(), 
-      bb.size()
+      static_cast<ulong>(
+        bb.size()
+      )
     );
 }
 //---------------------------------------------------------------------------
@@ -327,8 +346,23 @@ void EsChecksum16::update(cr_EsBinBuffer bb, ulong from, ulong to)
 	if( from >= to )
 		EsException::Throw(esT("EsChecksum16::update range is invalid"));
 
-	EsNumericCheck::checkRangeUInteger(0, bb.size()-1, from, esT("EsChecksum16::update: from"));
-	EsNumericCheck::checkRangeUInteger(from, bb.size(), to, esT("EsChecksum16::update: to"));
+	EsNumericCheck::checkRangeUInteger(
+    0, 
+    static_cast<ulong>(
+      bb.size()-1
+    ),
+    from, 
+    esT("EsChecksum16::update: from")
+  );
+	
+  EsNumericCheck::checkRangeUInteger(
+    from, 
+    static_cast<ulong>(
+      bb.size()
+    ),
+    to, 
+    esT("EsChecksum16::update: to")
+  );
 
   update(
     bb.data()+from, 
@@ -354,7 +388,9 @@ void EsChecksum16::set_buffer( const EsBinBuffer& bb )
 	reset();
   update(
     bb.data(), 
-    bb.size()
+    static_cast<ulong>(
+      bb.size()
+    )
   );
 }
 //---------------------------------------------------------------------------
@@ -388,7 +424,7 @@ m_sum(initialSum)
 }
 //---------------------------------------------------------------------------
 
-EsCRC16_CCIITT::EsCRC16_CCIITT(const esU8* buff /*= nullptr*/, size_t len /*= 0*/, esU16 initialSum /*= 0xFFFF*/) :
+EsCRC16_CCIITT::EsCRC16_CCIITT(const esU8* buff /*= nullptr*/, ulong len /*= 0*/, esU16 initialSum /*= 0xFFFF*/) :
 m_init(initialSum),
 m_sum(initialSum)
 {
@@ -439,12 +475,16 @@ EsBaseIntfPtr EsCRC16_CCIITT::NEW(cr_EsBinBuffer buff, esU16 initialSum, ulong f
 }
 //---------------------------------------------------------------------------
 
-void EsCRC16_CCIITT::update(const esU8* buff, size_t len)
+void EsCRC16_CCIITT::update(const esU8* buff, ulong len)
 {
   if(nullptr == buff || 0 == len)
     return;
 
-	m_sum = _c_crc_impl_::crc16ccitt(m_sum, buff, len);
+	m_sum = _c_crc_impl_::crc16ccitt(
+    m_sum, 
+    buff, 
+    len
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -455,7 +495,9 @@ void EsCRC16_CCIITT::update(const EsBinBuffer& buff)
 
   update(
     buff.data(),
-    buff.size()
+    static_cast<ulong>(
+      buff.size()
+    )
   );
 }
 //---------------------------------------------------------------------------
@@ -468,8 +510,23 @@ void EsCRC16_CCIITT::update(const EsBinBuffer& buff, ulong from, ulong to)
   if(from >= to)
     EsException::Throw(esT("EsCRC16_CCIITT::update range is invalid"));
 
-  EsNumericCheck::checkRangeUInteger(0, buff.size()-1, from, esT("EsCRC16_CCIITT::update: from"));
-  EsNumericCheck::checkRangeUInteger(from, buff.size(), to, esT("EsCRC16_CCIITT::update: to"));
+  EsNumericCheck::checkRangeUInteger(
+    0, 
+    static_cast<ulong>(
+      buff.size()-1
+    ),
+    from, 
+    esT("EsCRC16_CCIITT::update: from")
+  );
+  
+  EsNumericCheck::checkRangeUInteger(
+    from, 
+    static_cast<ulong>(
+      buff.size()
+    ),
+    to, 
+    esT("EsCRC16_CCIITT::update: to")
+  );
 
   update(
     buff.data()+from,
@@ -533,7 +590,7 @@ m_sum(initialSum)
 }
 //---------------------------------------------------------------------------
 
-EsCRC32_IEEE802_3::EsCRC32_IEEE802_3( const esU8* buff /*= nullptr*/, size_t len /*= 0*/, esU32 initialSum /*= 0xFFFFFFFF*/ ) :
+EsCRC32_IEEE802_3::EsCRC32_IEEE802_3( const esU8* buff /*= nullptr*/, ulong len /*= 0*/, esU32 initialSum /*= 0xFFFFFFFF*/ ) :
 m_init(initialSum),
 m_sum(initialSum)
 {
@@ -599,7 +656,7 @@ void EsCRC32_IEEE802_3::reset(esU32 initialSum)
 }
 //---------------------------------------------------------------------------
 
-void EsCRC32_IEEE802_3::update( const esU8* buff, size_t len )
+void EsCRC32_IEEE802_3::update( const esU8* buff, ulong len )
 {
   if(nullptr == buff || 0 == len)
     return;
@@ -619,7 +676,9 @@ void EsCRC32_IEEE802_3::update(const EsBinBuffer& buff)
 
   update(
     buff.data(),
-    buff.size()
+    static_cast<ulong>(
+      buff.size()
+    )
   );
 }
 //---------------------------------------------------------------------------
@@ -632,8 +691,23 @@ void EsCRC32_IEEE802_3::update(const EsBinBuffer& buff, ulong from, ulong to)
   if(from >= to)
     EsException::Throw(esT("EsCRC32_IEEE802_3::update range is invalid"));
 
-  EsNumericCheck::checkRangeUInteger(0, buff.size()-1, from, esT("EsCRC32_IEEE802_3::update: from"));
-  EsNumericCheck::checkRangeUInteger(from, buff.size(), to, esT("EsCRC32_IEEE802_3::update: to"));
+  EsNumericCheck::checkRangeUInteger(
+    0, 
+    static_cast<ulong>(
+      buff.size()-1
+    ),
+    from, 
+    esT("EsCRC32_IEEE802_3::update: from")
+  );
+  
+  EsNumericCheck::checkRangeUInteger(
+    from, 
+    static_cast<ulong>(
+      buff.size()
+    ),
+    to, 
+    esT("EsCRC32_IEEE802_3::update: to")
+  );
 
   update(
     buff.data()+from,

@@ -2260,7 +2260,10 @@ size_t EsDateTime::strftime(const std::locale& loc, EsString::value_type* str, s
       break;
     }
 
-    len = esStrlen(putstr);
+    len = static_cast<long>(
+      esStrlen(putstr)
+    );
+
     if(num + len >= maxsize)
       return 0;
 

@@ -88,12 +88,6 @@ uint8_t, UCHAR_MAX, etc are defined. */
 #include <stdlib.h>
 #include <stdint.h>
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* The following option bits can be passed to pcre2_compile(), pcre2_match(),
 or pcre2_dfa_match(). PCRE2_NO_UTF_CHECK affects only the function to which it
 is passed. Put these bits at the most significant end of the options word so
@@ -324,8 +318,8 @@ including pattern offsets for errors and subject offsets after a match. We
 define special values to indicate zero-terminated strings and unset offsets in
 the offset vector (ovector). */
 
-#define PCRE2_SIZE            size_t
-#define PCRE2_SIZE_MAX        SIZE_MAX
+#define PCRE2_SIZE            uint32_t
+#define PCRE2_SIZE_MAX        UINT32_MAX
 #define PCRE2_ZERO_TERMINATED (~(PCRE2_SIZE)0)
 #define PCRE2_UNSET           (~(PCRE2_SIZE)0)
 
@@ -761,10 +755,6 @@ PCRE2_SUFFIX a no-op. Otherwise, generate an error. */
 #error PCRE2_CODE_UNIT_WIDTH must be 0, 8, 16, or 32.
 #endif
 #endif  /* PCRE2_CODE_UNIT_WIDTH is defined */
-
-#ifdef __cplusplus
-}  /* extern "C" */
-#endif
 
 #endif  /* PCRE2_H_IDEMPOTENT_GUARD */
 

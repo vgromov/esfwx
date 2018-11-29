@@ -1384,7 +1384,7 @@ bool EsStream::itemsReadBegin(EsVariant& var, ulong& cnt, bool& doAppend)
 		m_block = items;
 
 		// return count of item nodes
-		cnt = items->childrenCountGet();
+		cnt = static_cast<ulong>(items->childrenCountGet());
 
     if( var.isCollection() )
     {

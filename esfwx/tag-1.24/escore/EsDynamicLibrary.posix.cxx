@@ -17,7 +17,7 @@ void EsDynamicLibrary::unload()
 		dlclose(m_handle);
 		m_handle = 0;
 
-    size_t idx = libsGet().itemFind(m_path);
+    ulong idx = libsGet().itemFind(m_path);
     if( EsStringIndexedMap::npos != idx )
       libsGet().itemDelete(idx);
 	}

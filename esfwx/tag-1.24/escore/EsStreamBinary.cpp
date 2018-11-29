@@ -272,7 +272,11 @@ void EsStreamBinary::parse(const EsBinBuffer& bb)
   );
 
   ulong pos = 0;
-  blockParse(data, pos, data.size());
+  blockParse(
+    data, 
+    pos, 
+    static_cast<ulong>(data.size())
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -374,8 +378,12 @@ static void dataSpaceCheck(ulong pos, ulong end, ulong requestedLen)
 template <typename IntT>
 static IntT numericRead(const EsBinBuffer& data, ulong& pos, ulong end)
 {
-  size_t sze = sizeof(IntT);
-  dataSpaceCheck(pos, end, sze);
+  ulong sze = sizeof(IntT);
+  dataSpaceCheck(
+    pos, 
+    end, 
+    sze
+  );
 
   IntT result = 0;
   memcpy(
@@ -615,7 +623,7 @@ static inline void ensureDataHaveEnoughSpace(EsBinBuffer& data, ulong pos, ulong
 template <typename IntT>
 static void numericWrite(EsBinBuffer& data, ulong& pos, IntT val)
 {
-  size_t sze = sizeof(IntT);
+  ulong sze = sizeof(IntT);
   ensureDataHaveEnoughSpace(
     data,
     pos,
@@ -638,7 +646,7 @@ static void stringWrite(EsBinBuffer& data, ulong& pos, const EsString& str)
   {
     const EsByteString& bs = EsString::toUtf8( str );
 
-    size_t sze = bs.size();
+    ulong sze = static_cast<ulong>(bs.size());
 
     // Write string length first
     numericWrite<esU32>(
@@ -675,7 +683,7 @@ static void bufferWrite(EsBinBuffer& data, ulong& pos, const EsBinBuffer& bb)
 {
   if( !bb.empty() )
   {
-    size_t sze = bb.size();
+    ulong sze = static_cast<ulong>(bb.size());
 
     // Write buffer length first
     numericWrite<esU32>(
@@ -759,9 +767,9 @@ void EsStreamBinary::mainHeaderPrepend(EsBinBuffer& bb) const
 {
   EsStreamBinaryHeader hdr;
   hdr.m_magicId = sc_bsMagic;
-  hdr.m_len = bb.size();
-  hdr.m_flags = m_flags & (static_cast<ulong>(EsStreamFlag::Compressed)|
-                           static_cast<ulong>(EsStreamFlag::Encrypted)
+  hdr.m_len = static_cast<ulong>(bb.size());
+  hdr.m_flags = m_flags & (as_<ulong>(EsStreamFlag::Compressed)|
+                           as_<ulong>(EsStreamFlag::Encrypted)
                           );
 
   EsCRC32_IEEE802_3 crc(
@@ -817,7 +825,7 @@ void EsStreamBinary::blockToBuffer(EsBinBuffer& data, ulong& pos) const
   if( m_block->haveAttributes() )
   {
     const EsStringIndexedMap& attrs = m_block->attributesGet();
-    ulong attrCnt = attrs.countGet();
+    ulong attrCnt = static_cast<ulong>(attrs.countGet());
 
     ES_ASSERT(attrCnt);
 

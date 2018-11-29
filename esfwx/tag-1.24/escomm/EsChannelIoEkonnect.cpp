@@ -724,7 +724,7 @@ esU32 EsChannelIoEkonnect::internalPutBytes(const esU8* data, esU32 len, esU32 t
 			internalLineBreak();
 	}
 
-	return pos-data;
+	return static_cast<esU32>(pos-data);
 }
 //---------------------------------------------------------------------------
 
@@ -824,7 +824,7 @@ esU32 EsChannelIoEkonnect::internalGetBytes(esU8* data, esU32 len, esU32 tmo /*=
 		}
 	}
 
-	return pos-data;
+	return static_cast<esU32>(pos-data);
 }
 //---------------------------------------------------------------------------
 
@@ -844,7 +844,7 @@ ES_IMPL_INTF_METHOD(ulong, EsChannelIoEkonnect::bytesPut)(const EsBinBuffer& dat
 	if( !data.empty() )
 		return bytesPut(
       &data[0],
-      data.size(),
+      static_cast<esU32>(data.size()),
       tmo
     );
 

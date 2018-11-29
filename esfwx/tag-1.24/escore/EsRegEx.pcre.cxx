@@ -5,6 +5,7 @@
 #ifdef META_ESCAPE //< Defined in wingdi.h
 # undef META_ESCAPE
 #endif
+
 #define PCRE2_EXP_DEFN
 #include "pcre/src/config.h"
 #include "pcre/src/pcre2.h"
@@ -99,7 +100,7 @@ public:
     pcre2_get_error_message(
       errorCode,
       msg,
-      msgLen
+      static_cast<PCRE2_SIZE>(msgLen)
     );
   }
 
@@ -123,7 +124,7 @@ public:
     );
   }
 
-	virtual inline bool compile(const EsString& pattern, ulong flags)
+	virtual inline bool compile(const EsString& pattern, ulong flags) ES_OVERRIDE
 	{
     int errorCode = 0;
     PCRE2_SIZE errorOffs = 0;
@@ -132,7 +133,7 @@ public:
         reinterpret_cast<PCRE2_SPTR>(
           pattern.data()
         ),
-        pattern.size(),
+        static_cast<PCRE2_SIZE>(pattern.size()),
         flagsToCompileOptions(flags),
         &errorCode,
         &errorOffs,
@@ -180,7 +181,7 @@ public:
       int errorCode = pcre2_match(
         m_reCode,
         reinterpret_cast<PCRE2_SPTR>(m_beg),
-        m_end-m_beg,
+        static_cast<PCRE2_SIZE>(m_end-m_beg),
         0,
         flagsToMatchOptions(flags),
         m_reMatch,
@@ -213,7 +214,7 @@ public:
     }
   }
 
-	virtual inline bool matchGet(size_t& start, size_t& len, size_t subExprIdx) const
+	virtual inline bool matchGet(ulong& start, ulong& len, ulong subExprIdx) const ES_OVERRIDE
 	{
     if( m_matched && subExprIdx < m_matchGroupCount+1 )
     {
@@ -233,7 +234,7 @@ public:
     return false;
 	}
 
-	virtual inline size_t matchCountGet() const
+	virtual inline ulong matchCountGet() const ES_OVERRIDE
 	{
     if( m_matched )
       return m_matchGroupCount+1;
@@ -241,12 +242,12 @@ public:
 		return 0;
 	}
 
-	virtual inline bool isOk() const
+	virtual inline bool isOk() const ES_OVERRIDE
 	{
 		return m_compiled;
 	}
 
-	virtual inline bool matches(const EsString& text, size_t offs, ulong flags) const
+	virtual inline bool matches(const EsString& text, ulong offs, ulong flags) const ES_OVERRIDE
 	{
     ES_ASSERT(m_compiled);
 
@@ -267,7 +268,7 @@ public:
 		return m_matched;
 	}
 
-	virtual inline EsString replace(const EsString& text, size_t offs, const EsString& replacement, ulong flags) const
+	virtual inline EsString replace(const EsString& text, ulong offs, const EsString& replacement, ulong flags) const ES_OVERRIDE
 	{
 //    ES_DEBUG_TRACE(
 //      esT("EsRegEx.pcre.replace(text='%s', offs=%d, replacement='%s', flags=%d)"),
@@ -311,7 +312,7 @@ public:
       int errorCode = pcre2_substitute(
         m_reCode,
         reinterpret_cast<PCRE2_SPTR>(m_beg),
-        m_end-m_beg,
+        static_cast<PCRE2_SIZE>(m_end-m_beg),
         0,
         flagsToReplaceOptions(flags),
         m_reMatch,
@@ -319,7 +320,7 @@ public:
         reinterpret_cast<PCRE2_SPTR>(
           replacement.data()
         ),
-        replacement.size(),
+        static_cast<PCRE2_SIZE>(replacement.size()),
         nullptr,
         &outlen
       );
@@ -358,7 +359,7 @@ public:
       errorCode = pcre2_substitute(
         m_reCode,
         reinterpret_cast<PCRE2_SPTR>(m_beg),
-        m_end-m_beg,
+        static_cast<PCRE2_SIZE>(m_end-m_beg),
         0,
         flagsToReplaceOptions(flags),
         m_reMatch,
@@ -366,7 +367,9 @@ public:
         reinterpret_cast<PCRE2_SPTR>(
           replacement.c_str()
         ),
-        replacement.size(),
+        static_cast<PCRE2_SIZE>(
+          replacement.size()
+        ),
         reinterpret_cast<PCRE2_UCHAR*>(
           result.data()
         ),

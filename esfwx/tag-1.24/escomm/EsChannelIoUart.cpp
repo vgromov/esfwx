@@ -261,7 +261,11 @@ ES_IMPL_INTF_METHOD(esU32, EsChannelIoUart::bytesGet)(esU8* data, esU32 len, esU
 ES_IMPL_INTF_METHOD(ulong, EsChannelIoUart::bytesPut)(cr_EsBinBuffer data, ulong tmo)
 {
 	if( !data.empty() )
-		return bytesPut(&data[0], data.size(), tmo);
+		return bytesPut(
+      &data[0], 
+      static_cast<esU32>(data.size()), 
+      tmo
+    );
 
 	return 0;
 }

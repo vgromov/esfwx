@@ -113,7 +113,7 @@ struct ContextName : public ContextName ## Base { \
   bool doParse(ulong offs = 0, ulong len = 0) { \
     ES_ASSERT(offs < m_input.size()); \
     ES_ASSERT(offs+len <= m_input.size()); \
-    if(!len) len = m_input.size()-offs; \
+    if(!len) len = static_cast<ulong>(m_input.size())-offs; \
     EsString::const_pointer start = m_input.c_str()+offs; \
     m_parseInfo = ast_parse<NodeDataFactoryT, EsString::const_pointer, GrammarT, SkipGrammarT>( \
       start, start+len, m_grammar, m_skipGrammar );
@@ -123,7 +123,7 @@ struct ContextName : public ContextName ## Base { \
   bool doParse_##Name(ulong offs = 0, ulong len = 0) { \
     ES_ASSERT(offs < m_input.size()); \
     ES_ASSERT(offs+len <= m_input.size()); \
-    if(!len) len = m_input.size()-offs; \
+    if(!len) len = static_cast<ulong>(m_input.size())-offs; \
     EsString::const_pointer start = m_input.c_str()+offs; \
     m_parseInfo = ast_parse<NodeDataFactoryT, EsString::const_pointer, GrammarT, SkipGrammarT>( \
       start, start+len, m_grammar_##Name, m_skipGrammar );

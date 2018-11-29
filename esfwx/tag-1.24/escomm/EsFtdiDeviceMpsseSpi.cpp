@@ -1215,7 +1215,7 @@ esU32 EsFtdiDeviceMpsseSpi::write(const EsBinBuffer& src, esU32 opts)
 
   return write(
     src.data(),
-    src.size(),
+    static_cast<esU32>(src.size()),
     opts
   );
 }
@@ -1292,7 +1292,7 @@ EsBinBuffer EsFtdiDeviceMpsseSpi::readWrite(const EsBinBuffer& src, esU32 opts)
   esU32 rcnt = readWrite(
     src.data(),
     ret.data(),
-    src.size(),
+    static_cast<esU32>(src.size()),
     opts
   );
 

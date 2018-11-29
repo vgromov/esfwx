@@ -13,7 +13,7 @@
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN(EsScriptArrayObject, EsScriptObject, NO_CLASS_DESCR)
 	// reflected services
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsScriptArrayObject, countGet, int_CallConst, NO_METHOD_DESCR)
+	ES_DECL_REFLECTED_METHOD_INFO_STD(EsScriptArrayObject, countGet, ulong_CallConst, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_METHOD_INFO_STD(EsScriptArrayObject, itemGet, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_METHOD_INFO_STD(EsScriptArrayObject, itemSet, void_Call_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
@@ -100,23 +100,23 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::binBufferSet)(const EsBinBuffer& 
     );
 }
 
-int EsScriptArrayObject::countGet() const
+ulong EsScriptArrayObject::countGet() const
 {
-	return m_arr.size();
+	return static_cast<ulong>(m_arr.size());
 }
 
 EsVariant EsScriptArrayObject::itemGet(const EsVariant& idx) const
 {
-	int size = countGet();
-	int index = idx.asInt();
+	ulong size = countGet();
+	long index = idx.asLong();
 	EsVariant::indexAdjust(index, size);
 	return m_arr[index];
 }
 
 void EsScriptArrayObject::itemSet(const EsVariant& idx, const EsVariant& item)
 {
-	int size = countGet();
-	int index = idx.asInt();
+	ulong size = countGet();
+	long index = idx.asLong();
 	EsVariant::indexAdjust(index, size);
 	EsReflectedClassIntf::Ptr obj = m_arr[index];
 	ES_ASSERT(obj);
@@ -148,14 +148,14 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::setParent)(EsScriptObjectIntf* pa
 		initializeUpdateSubscription();
 }
 
-size_t EsScriptArrayObject::internalCountGet()
+ulong EsScriptArrayObject::internalCountGet()
 {
 	if( isMetaclass() )
 		return 0;
 
 	// execute in expressions mode, unless we're in direct assignment mode
 	if( m_directBinBufferAssignment )
-		return m_arr.capacity();
+		return static_cast<ulong>(m_arr.capacity());
 	else
 	{
 		EsScriptValAccessorIntf::Ptr result = m_ctx->vm()->exec(
@@ -198,7 +198,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::initializeUpdateSubscription)()
 	}
 }
 
-EsScriptObjectIntf::Ptr EsScriptArrayObject::internalGetItem(size_t idx)
+EsScriptObjectIntf::Ptr EsScriptArrayObject::internalGetItem(ulong idx)
 {
 	ES_ASSERT(idx < m_arr.size());
 	return m_arr[idx];
@@ -234,14 +234,14 @@ ES_IMPL_INTF_METHOD(bool, EsScriptArrayObject::internalBinBufferSet)(EsBinBuffer
 	return true;
 }
 
-ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::internalUpdateLayout)(size_t offs)
+ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::internalUpdateLayout)(ulong offs)
 {
 	ES_ASSERT(!isMetaclass());
 
 	ESSCRIPT_OBJECT_TRACE4(esT("internalUpdateLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"), 
 		typeNameGet().c_str(), offs, (m_flags & ofNeedUpdateLayout) ? esT("set") : esT("not set"))
 	
-	size_t localSize = 0;
+	ulong localSize = 0;
 	size_t cnt = m_arr.size();
 	size_t newCnt = cnt;
 

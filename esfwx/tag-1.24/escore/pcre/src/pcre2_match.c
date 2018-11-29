@@ -49,12 +49,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* Masks for identifying the public options that are permitted at match time.
 */
 
@@ -243,7 +237,7 @@ else
     }
   }
 
-*lengthptr = eptr - eptr_start;
+*lengthptr = (PCRE2_SIZE)(eptr - eptr_start);
 return 0;  /* Match */
 }
 
@@ -1015,7 +1009,7 @@ for (;;)
       save_capture_last = mb->capture_last;
       save_mark = mb->mark;
 
-      mb->ovector[mb->offset_end - number] = eptr - mb->start_subject;
+      mb->ovector[mb->offset_end - number] = (PCRE2_SIZE)(eptr - mb->start_subject);
 
       for (;;)
         {
@@ -1183,7 +1177,7 @@ for (;;)
 
     for (;;)
       {
-      mb->ovector[mb->offset_end - number] = eptr - mb->start_subject;
+      mb->ovector[mb->offset_end - number] = (PCRE2_SIZE)(eptr - mb->start_subject);
       if (op >= OP_SBRA) mb->match_function_type |= MATCH_CBEGROUP;
       RMATCH(eptr, ecode + PRIV(OP_lengths)()[*ecode], offset_top, mb,
         eptrb, RM63);
@@ -1498,7 +1492,7 @@ for (;;)
       {
       mb->ovector[offset] =
         mb->ovector[mb->offset_end - number];
-      mb->ovector[offset+1] = eptr - mb->start_subject;
+      mb->ovector[offset+1] = (PCRE2_SIZE)(eptr - mb->start_subject);
 
       /* If this group is at or above the current highwater mark, ensure that
       any groups between the current high water mark and this group are marked
@@ -2063,7 +2057,7 @@ for (;;)
         /* Now make the extraction */
 
         mb->ovector[offset] = mb->ovector[mb->offset_end - number];
-        mb->ovector[offset+1] = eptr - mb->start_subject;
+        mb->ovector[offset+1] = (PCRE2_SIZE)(eptr - mb->start_subject);
         if (offset_top <= offset) offset_top = offset + 2;
         }
       }
@@ -6584,11 +6578,15 @@ if (utf && (options & PCRE2_NO_UTF_CHECK) == 0)
   /* Validate the relevant portion of the subject. After an error, adjust the
   offset to be an absolute offset in the whole string. */
 
-  match_data->rc = PRIV(valid_utf)(check_subject,
-    length - (check_subject - subject), &(match_data->startchar));
+  match_data->rc = PRIV(valid_utf)(
+    check_subject,
+    length - (PCRE2_SIZE)(check_subject - subject),
+    &(match_data->startchar)
+  );
+
   if (match_data->rc != 0)
     {
-    match_data->startchar += check_subject - subject;
+    match_data->startchar += (PCRE2_SIZE)(check_subject - subject);
     return match_data->rc;
     }
   }
@@ -7192,18 +7190,24 @@ if (rc == MATCH_MATCH || rc == MATCH_ACCEPT)
 
   if (match_data->oveccount < 1) rc = 0; else
     {
-    match_data->ovector[0] = mb->start_match_ptr - mb->start_subject;
-    match_data->ovector[1] = mb->end_match_ptr - mb->start_subject;
+    match_data->ovector[0] = (PCRE2_SIZE)(mb->start_match_ptr - mb->start_subject);
+    match_data->ovector[1] = (PCRE2_SIZE)(mb->end_match_ptr - mb->start_subject);
     }
 
   /* Set the remaining returned values */
 
-  match_data->startchar = start_match - subject;
-  match_data->leftchar = mb->start_used_ptr - subject;
-  match_data->rightchar = ((mb->last_used_ptr > mb->end_match_ptr)?
-    mb->last_used_ptr : mb->end_match_ptr) - subject;
+  match_data->startchar = (PCRE2_SIZE)(start_match - subject);
+  match_data->leftchar = (PCRE2_SIZE)(mb->start_used_ptr - subject);
+  match_data->rightchar = (PCRE2_SIZE)(
+    ( 
+      (mb->last_used_ptr > mb->end_match_ptr) ?
+        mb->last_used_ptr : 
+        mb->end_match_ptr
+    ) - subject
+  );
+
   return match_data->rc;
-  }
+}
 
 /* Control gets here if there has been a partial match, an error, or if the
 overall match attempt has failed at all permitted starting positions. Any mark
@@ -7222,12 +7226,12 @@ else if (match_partial != NULL)
   {
   if (match_data->oveccount > 0)
     {
-    match_data->ovector[0] = match_partial - subject;
-    match_data->ovector[1] = end_subject - subject;
+    match_data->ovector[0] = (PCRE2_SIZE)(match_partial - subject);
+    match_data->ovector[1] = (PCRE2_SIZE)(end_subject - subject);
     }
-  match_data->startchar = match_partial - subject;
-  match_data->leftchar = start_partial - subject;
-  match_data->rightchar = end_subject - subject;
+  match_data->startchar = (PCRE2_SIZE)(match_partial - subject);
+  match_data->leftchar = (PCRE2_SIZE)(start_partial - subject);
+  match_data->rightchar = (PCRE2_SIZE)(end_subject - subject);
   match_data->rc = PCRE2_ERROR_PARTIAL;
   }
 
@@ -7241,11 +7245,5 @@ if (using_temporary_offsets)
   mb->memctl.free(mb->ovector, mb->memctl.memory_data);
 return match_data->rc;
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_match.c */

@@ -58,7 +58,7 @@ EsBinBuffer::size_type EsBinBuffer::size() const ES_NOTHROW
 EsBinBuffer::operator esBA () const
 {
 	esBA ba;
-	ba.size = m_bb.size();
+	ba.size = static_cast<esU32>(m_bb.size());
 	ba.data = const_cast<esU8*>(m_bb.empty() ? 0 : &m_bb[0]);
 
 	return ba;

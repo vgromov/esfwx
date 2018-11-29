@@ -186,7 +186,7 @@ EsString EsScriptMachine::traceVariant(const EsVariant& v)
   else if(v.isCollection())
   {
     EsString str;
-    for(int idx = 0; idx < v.countGet(); ++idx)
+    for(ulong idx = 0; idx < v.countGet(); ++idx)
 			str += EsString::format(
         esT("[%d]='%s';"),
         idx,
@@ -738,7 +738,7 @@ void EsScriptMachine::linkAdd(const EsString& link)
 
 		bool loaded = false;
 
-		for(size_t idx = 0; idx < loadedList.countGet(); ++idx)
+		for(ulong idx = 0; idx < loadedList.countGet(); ++idx)
 		{
 			const EsString& loadedFname = loadedList.nameGet(idx);
 			if( EsString::cmpEqual == EsString::scompare(fullFname, loadedFname, true, m_loc) )
@@ -861,8 +861,8 @@ EsMethodInfoKeyT EsScriptMachine::methodKeyCreate(const EsScriptCodeSection::Ptr
 
 EsEnumerationIntf::Ptr EsScriptMachine::enumFind(const EsString& name, bool doThrow /*= false*/) const
 {
-  size_t idx = m_enumsMap.itemFind(name);
-  if(static_cast<size_t>(-1) != idx)
+  ulong idx = m_enumsMap.itemFind(name);
+  if(EsStringIndexedMap::npos != idx)
     return m_enumsMap.valueGet(idx).asExistingObject();
   else
   {
@@ -988,8 +988,8 @@ EsVariant EsScriptMachine::enumValueLabelGet(const EsString& name, const EsStrin
 
 EsScriptObjectIntf::Ptr EsScriptMachine::metaclassFind(const EsString &name, bool doThrow /*= false*/) const
 {
-  size_t idx = m_metaclassesMap.itemFind(name);
-  if(static_cast<size_t>(-1) != idx)
+  ulong idx = m_metaclassesMap.itemFind(name);
+  if(EsStringIndexedMap::npos != idx)
     return m_metaclassesMap.valueGet(idx).asExistingObject();
 
   if(doThrow)
@@ -1061,8 +1061,8 @@ EsScriptObjectIntf::Ptr EsScriptMachine::metaclassDeclare(const EsString &name, 
     );
 
   // check for existing metaclasses
-  size_t idx = m_metaclassesMap.itemFind(name);
-  if(static_cast<size_t>(-1) != idx)
+  ulong idx = m_metaclassesMap.itemFind(name);
+  if(EsStringIndexedMap::npos != idx)
     EsScriptException::ThrowMetaclassAlreadyExists(
       name,
       currentDebugInfoGet()

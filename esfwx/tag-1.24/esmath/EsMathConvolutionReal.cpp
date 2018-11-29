@@ -48,12 +48,15 @@ m_filter(filter)
 {
 }
 
-EsMathConvolutionReal::EsMathConvolutionReal(size_t filterSize, EsMathArrayReal::const_pointer filter, ulong flags) :
+EsMathConvolutionReal::EsMathConvolutionReal(ulong filterSize, EsMathArrayReal::const_pointer filter, ulong flags) :
 m_flags(flags),
 m_substL(0),
 m_substR(0)
 {
-	m_filter.dataSet(filterSize, filter);
+	m_filter.dataSet(
+    filterSize, 
+    filter
+  );
 }
 
 /// filter access
@@ -66,10 +69,14 @@ void EsMathConvolutionReal::filterSet(const EsMathArrayReal& filter, ulong flags
 	m_flags |= (flags & static_cast<ulong>(EsMathConvolutionFlag::FilterMask));
 }
 
-void EsMathConvolutionReal::filterSet(size_t filterSize, EsMathArrayReal::const_pointer filter, ulong flags /*= 0*/)
+void EsMathConvolutionReal::filterSet(ulong filterSize, EsMathArrayReal::const_pointer filter, ulong flags /*= 0*/)
 {
-	m_filter.dataSet(filterSize, filter);
-	// NB! change only filter-related flags
+	m_filter.dataSet(
+    filterSize, 
+    filter
+  );
+	
+  // NB! change only filter-related flags
 	m_flags &= ~static_cast<ulong>(EsMathConvolutionFlag::FilterMask);
 	m_flags |= (flags & static_cast<ulong>(EsMathConvolutionFlag::FilterMask));
 }
@@ -84,7 +91,7 @@ void EsMathConvolutionReal::process(const EsMathArrayReal& sig, EsMathArrayReal&
 	ES_ASSERT(!m_filter.get_empty());
 	ES_ASSERT(sig.countGet()/2 > m_filter.countGet());
 
-	size_t fCnt = 0;
+	ulong fCnt = 0;
 	if( m_flags & static_cast<ulong>(EsMathConvolutionFlag::FilterIsSymmetrical) )
 		fCnt = m_filter.countGet()/2;
 	else
@@ -100,7 +107,7 @@ void EsMathConvolutionReal::process(const EsMathArrayReal& sig, EsMathArrayReal&
 			// in case of stable signal, calculate lsubstVal and rsubstVal as average per
 			// lCnt and rCnt signal points
 			lsubstVal = 0;
-			for(size_t idx = 0; idx < fCnt; ++idx)
+			for(ulong idx = 0; idx < fCnt; ++idx)
 				lsubstVal += sig.itemGet(idx);
 			lsubstVal /= (double)fCnt;
 		}
@@ -108,14 +115,14 @@ void EsMathConvolutionReal::process(const EsMathArrayReal& sig, EsMathArrayReal&
 		if( !(m_flags & static_cast<ulong>(EsMathConvolutionFlag::UseFixedRsubst)) )
 		{
 			rsubstVal = 0;
-			for(size_t idx = sig.countGet()-fCnt; idx < sig.countGet(); ++idx)
+			for(ulong idx = sig.countGet()-fCnt; idx < sig.countGet(); ++idx)
 				rsubstVal += sig.itemGet(idx);
 			rsubstVal /= (double)fCnt;
     }
 	}
 
-	size_t start = 0;
-	size_t end = sig.countGet();
+	ulong start = 0;
+	ulong end = sig.countGet();
 	if( m_flags & static_cast<ulong>(EsMathConvolutionFlag::SignalIsStable) )
 	{
 		out.countSet( sig.countGet() );
@@ -127,14 +134,14 @@ void EsMathConvolutionReal::process(const EsMathArrayReal& sig, EsMathArrayReal&
 		end = sig.countGet()-fCnt;
 	}
 
-	size_t idx = 0;
-	for( size_t sidx = start; sidx < end; ++sidx )
+	ulong idx = 0;
+	for( ulong sidx = start; sidx < end; ++sidx )
 	{
 		double acc = 0;
-		for( size_t fidx = 0; fidx < m_filter.countGet(); ++fidx )
+		for( ulong fidx = 0; fidx < m_filter.countGet(); ++fidx )
 		{
 			double sv;
-			size_t ssidx = sidx+fidx;
+			ulong ssidx = sidx+fidx;
 			if( ssidx < fCnt )
 				sv = lsubstVal;
 			else

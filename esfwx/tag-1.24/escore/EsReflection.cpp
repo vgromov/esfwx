@@ -98,7 +98,7 @@ bool EsAttributes::attributeExists(const EsString& name) const ES_NOTHROW
 
 const EsVariant& EsAttributes::attributeGetDef(const EsString& name, const EsVariant& def) const ES_NOTHROW
 {
-	size_t idx = m_contents.itemFind(name);
+	ulong idx = m_contents.itemFind(name);
 	if( EsStringIndexedMap::npos != idx )
 		return m_contents.valueGet(idx);
 	else
@@ -1452,7 +1452,7 @@ EsString::Array EsClassInfo::classNamesGet() ES_NOTHROW
 const EsClassInfo* EsClassInfo::classInfoGet(const EsString& name, bool Throw/* = false*/ )
 {
 	const EsClassInfo* result = 0;
-	size_t idx = classes().itemFind(name);
+	ulong idx = classes().itemFind(name);
 	if( EsStringIndexedMap::npos != idx )
 	{
 		result = (const EsClassInfo*)classes().valueGet(idx).asPointer();

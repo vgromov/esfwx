@@ -69,7 +69,7 @@ EsScriptOpIds::EsScriptOpIds()
 
 EsScriptOperatorIds EsScriptOpIds::getId(const EsString& op) const ES_NOTHROW
 {
-	size_t idx = m_idsMap.itemFind(op);
+	ulong idx = m_idsMap.itemFind(op);
 	if( EsStringIndexedMap::npos == idx )
     return opidInvalid;
 

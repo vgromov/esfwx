@@ -67,7 +67,7 @@ bool EsMathDelayLine::isSaturated() const
 ulong EsMathDelayLine::itemCountGet() const
 {
   EsCriticalSectionLocker lock(m_cs);
-  return m_buff.size();
+  return static_cast<ulong>(m_buff.size());
 }
 //---------------------------------------------------------------------------
 
@@ -115,7 +115,7 @@ void EsMathDelayLine::itemAppend(double val)
 
 double EsMathDelayLine::internalValueGet() const
 {
-  ulong n = m_buff.size();
+  ulong n = static_cast<ulong>(m_buff.size());
   if( 0 == n )
     n = 1;
 
@@ -256,7 +256,7 @@ bool EsMathDelayLineEx::isSaturated() const
 ulong EsMathDelayLineEx::itemCountGet() const
 {
   EsCriticalSectionLocker lock(m_cs);
-  return m_buff.size();
+  return static_cast<ulong>(m_buff.size());
 }
 //---------------------------------------------------------------------------
 
@@ -327,7 +327,7 @@ void EsMathDelayLineEx::itemAppend(double val)
 
 double EsMathDelayLineEx::internalValueGet() const
 {
-  ulong n = m_buff.size();
+  ulong n = static_cast<ulong>(m_buff.size());
   if( 0 == n )
     n = 1;
 

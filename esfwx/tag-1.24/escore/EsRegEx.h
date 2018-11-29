@@ -57,13 +57,13 @@ public:
 		/// Get the start position and the length of the match of the expression (if subExprIdx is 0)
 		/// or a bracketed subexpression (index different from 0).
     ///
-		virtual bool matchGet(size_t& start, size_t& len, size_t subExprIdx) const = 0;
+		virtual bool matchGet(ulong& start, ulong& len, ulong subExprIdx) const = 0;
 
 		/// Returns the size of the array of matches, i.e.
 		/// the number of bracketed subexpressions plus one for the expression itself, or 0 on error.
 		/// May only be called after successful call to compile(), and only if ES_RE_NOSUB was _not_ used.
     ///
-		virtual size_t matchCountGet() const = 0;
+		virtual ulong matchCountGet() const = 0;
 
 		/// Return true if this is a valid compiled regular expression, false otherwise.
 		virtual bool isOk() const = 0;
@@ -71,10 +71,10 @@ public:
 		/// Matches the precompiled regular expression against the string text, returns true if matches and false otherwise.
 		/// offs argument should be set to non-zero, to skip portion of the string before match
     ///
-		virtual bool matches(const EsString &text, size_t offs, ulong flags) const = 0;
+		virtual bool matches(const EsString &text, ulong offs, ulong flags) const = 0;
 
 		/// Replaces the current regular expression in the string 'text', with the text in replacement
-		virtual EsString replace(const EsString& text, size_t offs, const EsString& replacement, ulong flags) const = 0;
+		virtual EsString replace(const EsString& text, ulong offs, const EsString& replacement, ulong flags) const = 0;
 	};
 
 public:
@@ -88,7 +88,7 @@ public:
 
 	// direct (non-reflected) usage stuff
 	bool isOk() const { return m_compiled; }
-	bool matchGet(size_t& start, size_t& len, ulong subExprIdx) const;
+	bool matchGet(ulong& start, ulong& len, ulong subExprIdx) const;
 
 	// reflected services
 	//
@@ -127,7 +127,7 @@ protected:
 	bool m_compiled;
 	EsString m_patt;
 	mutable EsString m_text;
-	size_t m_offs;
+	ulong m_offs;
 
 private:
 	// prohibited functionality

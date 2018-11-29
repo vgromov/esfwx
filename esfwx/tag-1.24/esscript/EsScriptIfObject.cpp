@@ -64,7 +64,7 @@ protected:
 	
 	void invalidateFieldOffsets()
 	{
-		for(size_t idx = 0; idx < m_fieldsMap.countGet(); ++idx)
+		for(ulong idx = 0; idx < m_fieldsMap.countGet(); ++idx)
 		{
 			EsScriptObjectIntf::Ptr fld = fnodeFieldGet(m_fieldsMap.valueGet(idx));
 			ES_ASSERT(fld);
@@ -256,7 +256,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptIfObject::internalInvalidateLayout)(bool propa
 	EsScriptObject::internalInvalidateLayout(propagate);
 }
 
-ES_IMPL_INTF_METHOD(void, EsScriptIfObject::internalUpdateLayout)(size_t offs)
+ES_IMPL_INTF_METHOD(void, EsScriptIfObject::internalUpdateLayout)(ulong offs)
 {
 	ES_ASSERT(!isMetaclass());
 
@@ -278,7 +278,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptIfObject::internalUpdateLayout)(size_t offs)
 		// invalidate field offsets for branch that's being made active,
 		// or if our own offset is changing
 		if( prevExprValue != m_exprValue ||
-				static_cast<size_t>(m_offs) != offs )
+				static_cast<ulong>(m_offs) != offs )
 		{
 			EsScriptIfBranchObject* obj =
 				reinterpret_cast<EsScriptIfBranchObject*>(

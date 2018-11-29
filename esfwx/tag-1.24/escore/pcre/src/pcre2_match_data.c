@@ -45,12 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 *  Create a match data block given ovector size  *
 *************************************************/
@@ -147,11 +141,5 @@ pcre2_get_startchar(pcre2_match_data *match_data)
 {
 return match_data->startchar;
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_match_data.c */

@@ -294,7 +294,7 @@ GRAMMAR_PARSER_IMPL_BEGIN( EsScriptCompiler, Grammar )
 
     // init reserved words symbol table
     const EsStringIndexedMap& rw = EsScript::reservedWordsGet();
-    for(size_t idx = 0; idx < rw.countGet(); ++idx )
+    for(ulong idx = 0; idx < rw.countGet(); ++idx )
       reservedWords.add( rw.nameGet(idx).c_str() );
 
     // values
@@ -1280,7 +1280,7 @@ protected:
   // Statement compiler entry point
   void compileStmt(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     if(scriptID == id) //< An empty script
       return;
 
@@ -1452,7 +1452,7 @@ protected:
     EsScriptCodeSection::Ptr code = m_codeScope->sectionGet();
 
     // later we need to update this instruction's parameter with real try-catch block index
-    size_t tryCatchEnterPos;
+    ulong tryCatchEnterPos;
     code->instructionAdd(
       tryCatchEnterPos,
       iEnterTryCatch,
@@ -1460,7 +1460,7 @@ protected:
         (*cit).value.begin()
       )
     );
-    size_t tryCatchIdx = code->tryCatchBlockCreate();
+    ulong tryCatchIdx = code->tryCatchBlockCreate();
 
     code->instructionModifyAt(
       tryCatchEnterPos
@@ -1633,7 +1633,7 @@ protected:
 
   void compileConstDecl(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtConstDeclID == id);
     ES_ASSERT((*cit).children.size() == 2);
 
@@ -1658,7 +1658,7 @@ protected:
     // compile variablesAccess
     for(ParseTreeConstIteratorT child = (*cit).children.begin(); child != (*cit).children.end(); ++child)
     {
-      long id = (*child).value.id().to_long();
+      long id = static_cast<long>((*child).value.id().to_long());
       ES_ASSERT(identID == id || exprInitAsnID == id);
       if( identID == id ) // just declaration
       {
@@ -1746,7 +1746,7 @@ protected:
 
   void compileStmtFunctionAttrDecls(EsScriptCodeSection::Ptr function, ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT( isAttrListOrAttrDecl(id) );
 
     if(stmtAttributeListID == id)
@@ -1790,7 +1790,7 @@ protected:
     );
 
     // compile optional attribute(s)
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     if( isAttrListOrAttrDecl(id) )
     {
       compileStmtFunctionAttrDecls(
@@ -1842,7 +1842,7 @@ protected:
 
   void compileStmtFuncDecl(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(id == stmtFuncDeclID || id == stmtObjCtorDeclID || id == stmtObjDtorDeclID);
     ES_ASSERT((*cit).children.size() > 0);
 
@@ -1947,7 +1947,7 @@ protected:
     compileLrhs(cit, script);
 
     // if the last lrhs child is object|variant service call - add iRetCleanup, otherwise - complain on senseless instruction
-    long id = (*cit).children.back().value.id().to_long();
+    long id = static_cast<long>((*cit).children.back().value.id().to_long());
     EsScriptDebugInfoIntf::Ptr dbg = debugInfoCreateAt(cit);
 
     if( objMethodCallID != id && varSvcCallID != id )
@@ -1969,12 +1969,12 @@ protected:
 
   void compileOpAssign(ParseTreeConstIteratorT cit, EsScriptMachine& script, bool asStmt = false )
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     if( asStmt && id == stmtAssignID )
     {
       ES_ASSERT((*cit).children.size() == 1);
       cit = (*cit).children.begin();
-      id = (*cit).value.id().to_long();
+      id = static_cast<long>((*cit).value.id().to_long());
     }
 
     ES_ASSERT(id == opAssignID);
@@ -2007,7 +2007,7 @@ protected:
   // evaluate and push l|r-hs. lrhs kind is defined by the last part of lrhs compiled
   void compileLrhsNested(ParseTreeConstIteratorT cit, EsScriptMachine& script, size_t level)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
 
     if( identID == id )
       compileConstOrVarOrEnumAccOrClassAcc(
@@ -2418,7 +2418,7 @@ protected:
 
   void compileObjMethodCall(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
 
     ES_ASSERT(objMethodCallID == id);
     ES_ASSERT((*cit).children.size() == 1);
@@ -2479,7 +2479,7 @@ protected:
     );
 
     // issue iJumpFalse instruction, saving its positon
-    size_t jumpFalsePos;
+    ulong jumpFalsePos;
     code->instructionAdd(
       jumpFalsePos,
       iJumpFalse,
@@ -2493,7 +2493,7 @@ protected:
     );
 
     // add instruction to jump to the ending of entire if
-    size_t jumpOutOfIfPos;
+    ulong jumpOutOfIfPos;
     code->instructionAdd(
       jumpOutOfIfPos,
       iJump,
@@ -2536,7 +2536,7 @@ protected:
 
   void compileStmtSwitch(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtSwitchID == id);
     ES_ASSERT((*cit).children.size() > 1);
 
@@ -2576,7 +2576,7 @@ protected:
 
     // Compile cases|default statements
     m_switchScope->caseEntriesCntSet(
-      (*cit).children.size() - 1 //< Children count is cases+default+switch arg expr, so use size-1 here
+      static_cast<ulong>((*cit).children.size() - 1) //< Children count is cases+default+switch arg expr, so use size-1 here
     );
 
     while( child != (*cit).children.end() )
@@ -2593,7 +2593,7 @@ protected:
 
   void compileCaseOrDefault(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(id == stmtCaseID || id == stmtDefaultID);
 
     // Fixup previous entry's unconditional jump instruction
@@ -2608,12 +2608,12 @@ protected:
     if( stmtCaseID == id ) //< Case stmt compilation
     {
       // Issue compare instruction for each case condition list entry
-      std::vector<size_t> trueJumps;
+      std::vector<ulong> trueJumps;
       trueJumps.reserve(
         (*cit).children.size()
       );
 
-      id = (*child).value.id().to_long();
+      id = static_cast<long>((*child).value.id().to_long());
       while(id != stmtExprCaseBlockID)
       {
         dbg = debugInfoCreateAt(child);
@@ -2643,7 +2643,7 @@ protected:
         );
 
         // Issue iJumpTrue instruction, saving its positon for later fixup
-        size_t jmpPos;
+        ulong jmpPos;
         code->instructionAdd(
           jmpPos,
           iJumpTrue,
@@ -2651,7 +2651,7 @@ protected:
         );
         trueJumps.push_back( jmpPos );
 
-        id = (*child).value.id().to_long();
+        id = static_cast<long>((*child).value.id().to_long());
       }
 
       // Issue unconditional jump instruction to the beginning of the next case entry,
@@ -2686,7 +2686,7 @@ protected:
     }
     else //< Default stmt compilation
     {
-      id = (*child).value.id().to_long();
+      id = static_cast<long>((*child).value.id().to_long());
       ES_ASSERT(id == stmtExprCaseBlockID);
 
       compileStmt(
@@ -2704,7 +2704,7 @@ protected:
     if( !(*cit).children.empty() )
     {
       cit = (*cit).children.begin();
-      long id = (*cit).value.id().to_long();
+      long id = static_cast<long>((*cit).value.id().to_long());
       ES_ASSERT( opAssignID == id || exprIncDecID == id || exprIncDecPfxID == id );
 
       if(opAssignID == id)
@@ -2923,7 +2923,7 @@ protected:
       // apply instruction fixups
       while(!m_instrPositions.empty())
       {
-        size_t pos = m_instrPositions.back();
+        ulong pos = m_instrPositions.back();
         m_instrPositions.pop_back();
 
         m_code->instructionModifyAt(
@@ -2941,12 +2941,12 @@ protected:
         m_compiler.m_continueGuard = m_prev;
     }
 
-    void instructionAddPos(size_t pos)
+    void instructionAddPos(ulong pos)
     {
       m_instrPositions.push_back(pos);
     }
 
-    void setFixup(size_t fixup)
+    void setFixup(ulong fixup)
     {
       m_fixup = fixup;
     }
@@ -2962,8 +2962,8 @@ protected:
     Guard m_guard;
     BreakContinueGuard* m_prev;
     EsScriptCodeSection::Ptr m_code;
-    std::vector<size_t> m_instrPositions;
-    size_t m_fixup;
+    std::vector<ulong> m_instrPositions;
+    ulong m_fixup;
   };
   friend class BreakContinueGuard;
   //---------------------------------------------------------------------------
@@ -2985,7 +2985,7 @@ protected:
       for(Gotos::const_iterator cit = m_gotos.begin(); cit != m_gotos.end(); ++cit)
       {
         const EsString& name = (*cit).first;
-        size_t instrPos = (*cit).second;
+        ulong instrPos = (*cit).second;
 
         // lookup label
         auto lblIt = m_labels.find(name);
@@ -3022,7 +3022,7 @@ protected:
 
     void addGoto(const EsString& name, EsString::const_pointer pos)
     {
-      size_t gotoPos;
+      ulong gotoPos;
       m_code->instructionAdd(
         gotoPos,
         iJump,
@@ -3044,8 +3044,8 @@ protected:
     LabelGuard& operator =(const LabelGuard&) ES_REMOVEDECL;
 
   protected:
-    typedef std::map<EsString, size_t> Map;
-    typedef std::pair<EsString, size_t> Goto;
+    typedef std::map<EsString, ulong> Map;
+    typedef std::pair<EsString, ulong> Goto;
     typedef std::list<Goto> Gotos;
 
     EsScriptCompiler& m_compiler;
@@ -3118,18 +3118,18 @@ protected:
     inline void caseEntryCntInc() { ++m_caseEntryCnt; }
 
     // Access case entry counter
-    inline long caseEntryCntGet() const { return m_caseEntryCnt; }
+    inline ulong caseEntryCntGet() const { return m_caseEntryCnt; }
 
     // Assign case entries count
-    inline void caseEntriesCntSet(long cnt) { m_caseEntries = cnt; }
+    inline void caseEntriesCntSet(ulong cnt) { m_caseEntries = cnt; }
 
     void previousCaseEntryJumpHere()
     {
       if(0 == m_caseEntryCnt) //< Skip for the first entry
         return;
 
-      size_t prevCaseJumpOverPos = m_jumpovers[m_caseEntryCnt-1];
-      size_t here = m_code->instructionEndPosGet();
+      ulong prevCaseJumpOverPos = m_jumpovers[m_caseEntryCnt-1];
+      ulong here = m_code->instructionEndPosGet();
 
       m_code->instructionModifyAt(
         prevCaseJumpOverPos
@@ -3154,7 +3154,7 @@ protected:
         return;
       }
 
-      size_t pos;
+      ulong pos;
       m_code->instructionAdd(
         pos,
         iJump,
@@ -3174,7 +3174,7 @@ protected:
 
     void switchEndJumpAdd(const EsScriptDebugInfoIntf::Ptr& dbg)
     {
-      size_t pos;
+      ulong pos;
       m_code->instructionAdd(
         pos,
         iJump,
@@ -3201,13 +3201,13 @@ protected:
   protected:
     EsScriptCompiler& m_compiler;
     EsScriptCodeSection::Ptr m_code;
-    std::vector<size_t> m_jumpovers;
-    std::vector<size_t> m_endjumps;
+    std::vector<ulong> m_jumpovers;
+    std::vector<ulong> m_endjumps;
     SwitchScope* m_prev;
     EsString m_argname;
     ulong m_nesting;
-    long m_caseEntryCnt;
-    long m_caseEntries;
+    ulong m_caseEntryCnt;
+    ulong m_caseEntries;
   };
   friend class SwitchScope;
   //---------------------------------------------------------------------------
@@ -3235,14 +3235,14 @@ protected:
       );
     ++child;
     // save current instruction position as loop start position
-    size_t loopStartPos = code->instructionEndPosGet();
+    ulong loopStartPos = code->instructionEndPosGet();
     // compile check expression
-    int forCheckPos = -1;
+    ulong forCheckPos = static_cast<ulong>(-1);
     if(!(*child).children.empty())
     {
       compileExpr((*child).children.begin(), script);
       // issue loop check instruction, save position for later
-      size_t checkPos;
+      ulong checkPos;
       code->instructionAdd(
         checkPos,
         iJumpFalse,
@@ -3258,7 +3258,7 @@ protected:
     compileStmt(child, script);
 
     // finally, compile _for_ counter expression
-    size_t forCounterStartPos = code->instructionEndPosGet(); //< remember for counter jump pos
+    ulong forCounterStartPos = code->instructionEndPosGet(); //< remember for counter jump pos
     compileForCountExpr(
       cntExpr,
       script
@@ -3283,7 +3283,7 @@ protected:
     );
 
     // modify iJumpFalse to jump out of the _for_ loop
-    if( -1 < forCheckPos )
+    if( static_cast<ulong>(-1) != forCheckPos )
     {
       code->instructionModifyAt(
         forCheckPos
@@ -3299,8 +3299,8 @@ protected:
   void compileExprForEachCheck(
     ParseTreeConstIteratorT cit,
     const EsScriptCodeSection::Ptr& code,
-    size_t& loopStartPos,
-    size_t& loopCheckPos,
+    ulong& loopStartPos,
+    ulong& loopCheckPos,
     EsScriptMachine& script)
   {
     ES_ASSERT(exprForEachCheckID == (*cit).value.id().to_long());
@@ -3370,7 +3370,7 @@ protected:
       code
     );
 
-    size_t loopStartPos, loopCheckPos;
+    ulong loopStartPos, loopCheckPos;
     // compile foreach check with assign expression
     // compile foreach init
     ParseTreeConstIteratorT child = (*cit).children.begin();
@@ -3422,7 +3422,7 @@ protected:
 
   void compileStmtWhile(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtWhileID == id || stmtDoWhileID == id);
     ES_ASSERT((*cit).children.size()==2);
 
@@ -3442,10 +3442,10 @@ protected:
     );
 
     // save loop start point
-    size_t loopStart = code->instructionEndPosGet();
+    ulong loopStart = code->instructionEndPosGet();
     ParseTreeConstIteratorT child = (*cit).children.begin();
 
-    size_t whileCheckPos;
+    ulong whileCheckPos;
     if( stmtWhileID == id )
     {
       // compile check expression
@@ -3530,7 +3530,7 @@ protected:
   // compile break and continue
   void compileStmtBreakContinue(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtBreakID == id || stmtContinueID == id);
 
     ES_ASSERT(m_codeScope);
@@ -3540,7 +3540,7 @@ protected:
     {
       if (m_breakGuard)
       {
-        size_t pos;
+        ulong pos;
         code->instructionAdd(
           pos,
           iJump,
@@ -3557,7 +3557,7 @@ protected:
     }
     else if (m_continueGuard)
     {
-      size_t pos;
+      ulong pos;
       code->instructionAdd(
         pos,
         iJump,
@@ -3576,7 +3576,7 @@ protected:
 
   void compileStmtLabelGoto(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtLabelID == id || stmtGotoID == id);
     ES_ASSERT(nullptr != m_labelGuard);
     EsString name = compileIdent((*cit).children.begin());
@@ -3589,7 +3589,7 @@ protected:
 
   void compileAttribute(ParseTreeConstIteratorT cit, EsScriptMachine& script, const EsAttributesIntf::Ptr& attrs)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtAttributeDeclID == id);
     ES_ASSERT(0 < (*cit).children.size() && (*cit).children.size() <= 2 );
 
@@ -3613,7 +3613,7 @@ protected:
 
   void compileAttributesList(ParseTreeConstIteratorT cit, EsScriptMachine& script, const EsAttributesIntf::Ptr& attrs)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtAttributeListID == id);
 
     for( ParseTreeConstIteratorT attrIt = (*cit).children.begin(); attrIt != (*cit).children.end(); ++attrIt )
@@ -3629,7 +3629,7 @@ protected:
   {
     ES_ASSERT(attrs);
 
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT( isAttrListOrAttrDecl(id) );
 
     if( stmtAttributeListID == id )
@@ -3649,7 +3649,7 @@ protected:
 
   void compileStmtEnumItemDecl(const EsEnumerationIntf::Ptr& enu, ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtEnumItemDeclID == id);
 
     ParseTreeConstIteratorT child = (*cit).children.begin();
@@ -3689,7 +3689,7 @@ protected:
 
   void compileStmtEnumDecl(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtEnumDeclID == id);
 
     ParseTreeConstIteratorT child = (*cit).children.begin();
@@ -3702,7 +3702,7 @@ protected:
     // compile optional attribute(s)
     if(
       child != (*cit).children.end() &&
-      isAttrListOrAttrDecl( (*child).value.id().to_long() )
+      isAttrListOrAttrDecl( static_cast<long>((*child).value.id().to_long()) )
     )
     {
       EsAttributesIntf::Ptr attrs = EsAttributes::create(
@@ -3732,7 +3732,7 @@ protected:
 
   void compileStmtObjDecl(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT( stmtObjDeclID == id );
     ES_ASSERT( (*cit).children.size() > 0 );
 
@@ -3755,7 +3755,7 @@ protected:
     // optionally compile attributes
     if(
       child != (*cit).children.end() &&
-      isAttrListOrAttrDecl( (*child).value.id().to_long() )
+      isAttrListOrAttrDecl( static_cast<long>((*child).value.id().to_long()) )
     )
     {
       EsAttributesIntf::Ptr attrs = EsAttributes::create(
@@ -3857,7 +3857,7 @@ protected:
 
   EsScriptObjectIntf::Ptr compileStmtObjFldDecl(ParseTreeConstIteratorT cit, EsScriptMachine& script, EsString* fldName = 0)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtObjPlainFldDeclID == id || stmtObjArrayFldDeclID == id || stmtObjFldIfDeclID == id);
     ES_ASSERT((*cit).children.size() >= 2);
 
@@ -3897,7 +3897,7 @@ protected:
     // compile member variables
     for(ParseTreeConstIteratorT child = (*cit).children.begin(); child != (*cit).children.end(); ++child)
     {
-      long id = (*child).value.id().to_long();
+      long id = static_cast<long>((*child).value.id().to_long());
       ES_ASSERT(identID == id);
       // add variable to the current object's member symtable & create memslot for it
       script.metaclassMemberVarDeclare(
@@ -3947,7 +3947,7 @@ protected:
 
   void compileStmtObjPropDecl(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtObjPropertyDeclID == id);
     ES_ASSERT(m_objectScope);
 
@@ -3958,7 +3958,7 @@ protected:
 
     EsAttributesIntf::Ptr attrs;
 
-    id = (*child).value.id().to_long();
+    id = static_cast<long>((*child).value.id().to_long());
     if( isAttrListOrAttrDecl(id) )
     {
       attrs = EsAttributes::create(
@@ -3979,7 +3979,7 @@ protected:
     EsString writerName;
     while(child != (*cit).children.end())
     {
-      id = (*child).value.id().to_long();
+      id = static_cast<long>((*child).value.id().to_long());
       if( exprObjPropertyReaderDeclID == id )
         readerName = compileExprObjPropertyReaderDecl(
           name,
@@ -4009,7 +4009,7 @@ protected:
 
   void compileStmtObjAttrDecls(EsScriptObjectIntf::Ptr obj, ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT( isAttrListOrAttrDecl(id) );
 
     if(stmtAttributeListID == id)
@@ -4050,7 +4050,7 @@ protected:
 
   void compileStmtObjFldWithAttrsDecl(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(stmtObjFldDeclID == id);
     ES_ASSERT((*cit).children.size() == 2);
 
@@ -4082,7 +4082,7 @@ protected:
   //
   void compileExpr(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
 
     if( isBinOp(id) )
       compileExprBinaryOp(
@@ -4177,7 +4177,7 @@ protected:
 
   void compileLiteralArrayValLoadOrTemporaryCollection(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(arrayValID == id);
 
     if( isConstExpr( cit, script ) )
@@ -4212,7 +4212,7 @@ protected:
       ).immValTypeSet(
         EsIvalType::ivInplaceCollection
       ).immValArgsCntSet(
-        (*cit).children.size()
+        static_cast<ulong>((*cit).children.size())
       );
     }
   }
@@ -4237,7 +4237,7 @@ protected:
 
   void compileExprCall(ParseTreeConstIteratorT cit, EsScriptMachine& script, long explicitCallId = -1)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
 
     ES_ASSERT(id >= exprFuncCallID && id < exprCallID);
     ES_ASSERT((*cit).children.size() > 0);
@@ -4312,7 +4312,7 @@ protected:
     EsString objectName = compileIdent(child++);
 
     // get call parameters count
-    size_t paramsCount = (*cit).children.size()-1;
+    ulong paramsCount = static_cast<ulong>((*cit).children.size()-1);
 
     // compile parameter expressions
     while(child != (*cit).children.end())
@@ -4394,7 +4394,7 @@ protected:
     ParseTreeConstIteratorT child = (*cit).children.begin();
     const EsString& name = compileIdent(child++);
     // get call parameters count
-    size_t paramsCount = (*cit).children.size()-1;
+    ulong paramsCount = static_cast<ulong>((*cit).children.size()-1);
 
     // compile parameter expressions
     while(child != (*cit).children.end())
@@ -4470,7 +4470,7 @@ protected:
     );
 
     // get call parameters count
-    size_t paramsCount = (*cit).children.size()-1;
+    ulong paramsCount = static_cast<ulong>((*cit).children.size()-1);
     EsScriptInstructionOpcode opcode = iFuncCall;
     EsMethodInfoKeyT methodKey(paramsCount, name);
     EsScriptCodeSection::Ptr method;
@@ -4597,7 +4597,7 @@ protected:
     const EsString& name = compileIdent(child++);
 
     // get call parameters count
-    size_t paramsCount = (*cit).children.size()-1;
+    ulong paramsCount = static_cast<ulong>((*cit).children.size()-1);
 
     // create method search key
     EsMethodInfoKeyT methodKey(
@@ -4698,7 +4698,7 @@ protected:
   // binary operation expression compiler
   void compileExprBinaryOp(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     EsString op(
       (*cit).value.begin(),
       (*cit).value.end()
@@ -4717,8 +4717,8 @@ protected:
       script
     );
 
-    size_t instrPos = 0;
-    size_t jumpOffs = 0;
+    ulong instrPos = 0;
+    ulong jumpOffs = 0;
 
     ES_ASSERT(m_codeScope);
     EsScriptCodeSection::Ptr code = m_codeScope->sectionGet();
@@ -4762,7 +4762,7 @@ protected:
 
   void compileExprUnaryOp(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
 
     ES_ASSERT( isUnaryOp(id) );
 
@@ -4804,7 +4804,7 @@ protected:
 
   void compileExprIncDec(ParseTreeConstIteratorT cit, EsScriptMachine& script, bool asStmt = false)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT(id == exprIncDecID || id == exprIncDecPfxID);
 
     ParseTreeConstIteratorT incDec;
@@ -4859,7 +4859,7 @@ protected:
     compileExpr(child++, script);
 
     // issue iJumpFalse instruction, saving its positon
-    size_t jumpFalsePos;
+    ulong jumpFalsePos;
     code->instructionAdd(
       jumpFalsePos,
       iJumpFalse,
@@ -4873,7 +4873,7 @@ protected:
     );
 
     // add instruction to jump to the ending of entire if
-    size_t jumpOutOfIfPos;
+    ulong jumpOutOfIfPos;
     code->instructionAdd(
       jumpOutOfIfPos,
       iJump,
@@ -4961,7 +4961,7 @@ protected:
 
   EsVariant compileSimpleValue(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     EsString strVal(
       (*cit).value.begin(),
       (*cit).value.end()
@@ -5064,7 +5064,7 @@ protected:
   // compile array value
   EsVariant compileArrayValue(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT( arrayValID == id );
 
     EsVariant::Array result;
@@ -5087,7 +5087,7 @@ protected:
   // Compile range value
   EsVariant compileRangeValue(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT((*cit).children.size() > 0);
 
     ParseTreeConstIteratorT child = (*cit).children.begin();
@@ -5154,7 +5154,7 @@ protected:
   //
   bool isConstExpr(ParseTreeConstIteratorT cit, EsScriptMachine& script, bool isLrhsSubj = false)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
 
     // Literal values
     if( simpleValID < id && id < arrayValID )
@@ -5257,7 +5257,7 @@ protected:
   //
   EsVariant compileConstExprBinaryOp(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
 
     ES_ASSERT( isBinOp(id) );
     ES_ASSERT((*cit).children.size() == 2);
@@ -5297,7 +5297,7 @@ protected:
 
   EsVariant compileConstExprUnaryOp(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     if( opUnaryID == id )
     {
       EsScriptOperatorIds opid = EsScriptOpIds::instanceGet().getId(
@@ -5362,7 +5362,7 @@ protected:
 
   EsVariant compileConstExprCall(ParseTreeConstIteratorT cit, EsScriptMachine& script, const EsString& nameSpace)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     ES_ASSERT((*cit).children.size() > 0);
 
     if( exprStaticOrBaseCallID == id )
@@ -5454,7 +5454,7 @@ protected:
 
   EsVariant compileConstExprRhs(ParseTreeConstIteratorT cit, EsScriptMachine& script)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
 
     if( isFunctionOrMemberCall(id) )
       return compileConstExprCall(
@@ -5472,7 +5472,7 @@ protected:
       true
     );
 
-    id = (*cit).value.id().to_long();
+    id = static_cast<long>((*cit).value.id().to_long());
 
     if( varSvcCallID == id )
       return compileConstExprVsvcCall(
@@ -5565,7 +5565,7 @@ protected:
   //
   EsVariant compileConstExpr(ParseTreeConstIteratorT cit, EsScriptMachine& script, bool lhsConstExpr = false)
   {
-    long id = (*cit).value.id().to_long();
+    long id = static_cast<long>((*cit).value.id().to_long());
     if( isSimpleVal(id) )
       return compileSimpleValue(
         cit,
@@ -5788,10 +5788,10 @@ void EsScriptParser::Node::childrenNodesAdd(
   for(auto const& astChild : astChildren)
   {
     EsScriptParser::Node::PtrT childNode = node->childAdd(
-      astChild.value.id().to_long(),
-      astChild.value.begin()-inStart,
-      astChild.value.end()-inStart,
-      astChild.children.size()
+      static_cast<long>(astChild.value.id().to_long()),
+      static_cast<ulong>(astChild.value.begin()-inStart),
+      static_cast<ulong>(astChild.value.end()-inStart),
+      static_cast<ulong>(astChild.children.size())
     );
 
     if(!astChild.children.empty())
@@ -5814,11 +5814,11 @@ void EsScriptParser::rootInit(
   Node::PtrT rootNode(
     new Node(
       *this,
-      astRoot.value.id().to_long(),
-      astRoot.value.begin()-inStart,
-      astRoot.value.end()-inStart,
+      static_cast<long>(astRoot.value.id().to_long()),
+      static_cast<ulong>(astRoot.value.begin()-inStart),
+      static_cast<ulong>(astRoot.value.end()-inStart),
       nullptr,
-      astRoot.children.size()
+      static_cast<ulong>(astRoot.children.size())
     )
   );
   ES_ASSERT(rootNode);
@@ -5905,7 +5905,7 @@ bool EsScriptParser::parse(const EsString& in)
     bool needPartialParse = false;
 
     ulong falseStop = 0;
-    m_stop = compiler.m_parseInfo.stop - inStart;
+    m_stop = static_cast<ulong>(compiler.m_parseInfo.stop - inStart);
     if(!fullyParsed)
     {
       falseStop = m_stop;

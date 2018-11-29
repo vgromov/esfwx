@@ -80,7 +80,7 @@ m_file(0)
 }
 //---------------------------------------------------------------------------
 
-EsFile::EsFile(const EsString& fileName, size_t flags) :
+EsFile::EsFile(const EsString& fileName, ulong flags) :
 m_flags(flags),
 m_lastError(0),
 m_file(0)
@@ -278,7 +278,7 @@ long EsFile::int8Read()
     if( !str.empty() )
       return EsString::toLong(str);
   }
-  else if( 1 == read(&val, 1) )
+  else if(sizeof(int8_t) == read(&val, sizeof(int8_t)) )
     return val;
 
   return 0;
@@ -294,7 +294,7 @@ ulong EsFile::uint8Read()
     if( !str.empty() )
       return EsString::toULong(str);
   }
-  else if( 1 == read(&val, 1) )
+  else if(sizeof(uint8_t) == read(&val, sizeof(uint8_t)) )
     return val;
 
   return 0;
@@ -309,7 +309,7 @@ long EsFile::int16Read()
     if( !str.empty() )
       return EsString::toLong(str);
   }
-  else if( 2 == read(&val, 2) )
+  else if(sizeof(int16_t) == read(&val, sizeof(int16_t)) )
     return val;
 
   return 0;
@@ -324,7 +324,7 @@ ulong EsFile::uint16Read()
     if( !str.empty() )
       return EsString::toLong(str);
   }
-  else if( 2 == read(&val, 2) )
+  else if(sizeof(uint16_t) == read(&val, sizeof(uint16_t)) )
     return val;
 
   return 0;
@@ -339,7 +339,7 @@ long EsFile::int32Read()
     if( !str.empty() )
       return EsString::toLong(str);
   }
-  else if( 4 == read(&val, 4) )
+  else if(sizeof(int32_t) == read(&val, sizeof(int32_t)) )
     return val;
 
   return 0;
@@ -354,7 +354,7 @@ ulong EsFile::uint32Read()
     if( !str.empty() )
       return EsString::toULong(str);
   }
-  else if( 4 == read(&val, 4) )
+  else if(sizeof(uint32_t) == read(&val, sizeof(uint32_t)) )
     return val;
 
   return 0;
@@ -369,7 +369,7 @@ llong EsFile::int64Read()
     if( !str.empty() )
       return EsString::toInt64(str);
   }
-  else if( 8 == read(&val, 8) )
+  else if( sizeof(int64_t) == read(&val, sizeof(int64_t)) )
     return val;
 
   return 0;
@@ -384,7 +384,7 @@ ullong EsFile::uint64Read()
     if( !str.empty() )
       return EsString::toUInt64(str);
   }
-  else if( 8 == read(&val, 8) )
+  else if( sizeof(uint64_t) == read(&val, sizeof(uint64_t)) )
     return val;
 
   return 0;
@@ -397,7 +397,7 @@ EsString EsFile::stringRead()
   else
   {
     ulong len = 0;
-    if( 4 == read(&len, 4) )
+    if( sizeof(uint32_t) == read(&len, sizeof(uint32_t)) )
     {
       if( len )
       {
@@ -428,7 +428,7 @@ EsBinBuffer EsFile::binBufferRead()
   else
   {
     ulong len = 0;
-    if( 4 == read(&len, 4) )
+    if( sizeof(uint32_t) == read(&len, sizeof(uint32_t)) )
     {
       checkLengthOnRead(len);
       EsBinBuffer result;
@@ -452,7 +452,10 @@ ullong EsFile::int8Write(long val)
       return str.size();
   }
   else
-    return write(&val, 1);
+    return write(
+      &val, 
+      sizeof(int8_t)
+    );
 
   return 0;
 }
@@ -466,7 +469,10 @@ ullong EsFile::uint8Write(ulong val)
       return str.size();
   }
   else
-    return write(&val, 1);
+    return write(
+      &val, 
+      sizeof(uint8_t)
+    );
 
   return 0;
 }
@@ -480,7 +486,10 @@ ullong EsFile::int16Write(long val)
       return str.size();
   }
   else
-    return write(&val, 2);
+    return write(
+      &val, 
+      sizeof(int16_t)
+    );
 
   return 0;
 }
@@ -494,7 +503,10 @@ ullong EsFile::uint16Write(ulong val)
       return str.size();
   }
   else
-    return write(&val, 2);
+    return write(
+      &val, 
+      sizeof(uint16_t)
+    );
 
   return 0;
 }
@@ -508,7 +520,10 @@ ullong EsFile::int32Write(long val)
       return str.size();
   }
   else
-    return write(&val, 4);
+    return write(
+      &val, 
+      sizeof(int32_t)
+    );
 
   return 0;
 }
@@ -522,7 +537,10 @@ ullong EsFile::uint32Write(ulong val)
       return str.size();
   }
   else
-    return write(&val, 4);
+    return write(
+      &val, 
+      sizeof(uint32_t)
+    );
 
   return 0;
 }
@@ -536,7 +554,10 @@ ullong EsFile::int64Write(llong val)
       return str.size();
   }
   else
-    return write(&val, 8);
+    return write(
+      &val, 
+      sizeof(int64_t)
+    );
 
   return 0;
 }
@@ -550,7 +571,10 @@ ullong EsFile::uint64Write(ullong val)
       return str.size();
   }
   else
-    return write(&val, 8);
+    return write(
+      &val, 
+      sizeof(uint64_t)
+    );
 
   return 0;
 }
@@ -560,9 +584,12 @@ ullong EsFile::writeString(const EsString& str, bool prependLength /*= false*/)
   ullong written = 0;
   if( prependLength )
   {
-    ulong len = str.size();
-    written = write(&len, 4);
-    ES_ASSERT(4 == written);
+    uint32_t len = static_cast<uint32_t>(str.size());
+    written = write(
+      &len, 
+      sizeof(uint32_t)
+    );
+    ES_ASSERT(sizeof(uint32_t) == written);
   }
 
   if( !str.empty() )
@@ -594,7 +621,7 @@ ullong EsFile::binBufferWrite(cr_EsBinBuffer val)
   }
   else
   {
-    ulong len = val.size();
+    ulong len = static_cast<ulong>(val.size());
     if( 4 == write(&len, 4) )
     {
       if( !val.empty() )

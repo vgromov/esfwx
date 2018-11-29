@@ -841,7 +841,7 @@ EsVariant EsFtdiDevice::write(cr_EsVariant out)
           bb.data()
         )
       ),
-      bb.size(),
+      static_cast<esU32>(bb.size()),
       &written
     )
   )

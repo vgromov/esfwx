@@ -49,12 +49,6 @@ pcre2_def_match(). */
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 *       Match character against an XCLASS        *
 *************************************************/
@@ -272,11 +266,5 @@ while ((t = *data++) != XCL_END)
 
 return negated;   /* char did not match */
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_xclass.c */

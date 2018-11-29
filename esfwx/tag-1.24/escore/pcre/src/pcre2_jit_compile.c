@@ -44,12 +44,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifdef SUPPORT_JIT
 
 /* All-in-one: Since we use the JIT compiler only from here,
@@ -1217,7 +1211,7 @@ if (*next == OP_BRAZERO || *next == OP_BRAMINZERO)
 
       if (i == max)
         {
-        common->private_data_ptrs[max_end - common->start - LINK_SIZE] = next_end - max_end;
+        common->private_data_ptrs[max_end - common->start - LINK_SIZE] = (sljit_s32)(next_end - max_end);
         common->private_data_ptrs[max_end - common->start - LINK_SIZE + 1] = (type == OP_BRAZERO) ? OP_UPTO : OP_MINUPTO;
         /* +2 the original and the last. */
         common->private_data_ptrs[max_end - common->start - LINK_SIZE + 2] = max + 2;
@@ -1232,7 +1226,7 @@ if (*next == OP_BRAZERO || *next == OP_BRAMINZERO)
 
 if (min >= 3)
   {
-  common->private_data_ptrs[end - common->start - LINK_SIZE] = max_end - end;
+  common->private_data_ptrs[end - common->start - LINK_SIZE] = (sljit_s32)(max_end - end);
   common->private_data_ptrs[end - common->start - LINK_SIZE + 1] = OP_EXACT;
   common->private_data_ptrs[end - common->start - LINK_SIZE + 2] = min;
   return TRUE;
@@ -5608,7 +5602,7 @@ SLJIT_ASSERT(compares > 0);
 
 /* We are not necessary in utf mode even in 8 bit mode. */
 cc = ccbegin;
-read_char_range(common, min, max, (cc[-1] & XCL_NOT) != 0);
+read_char_range(common, (sljit_u32)min, (sljit_u32)max, (cc[-1] & XCL_NOT) != 0);
 
 if ((cc[-1] & XCL_HASPROP) == 0)
   {
@@ -7149,9 +7143,9 @@ if (arguments->callout == NULL)
 callout_block->version = 1;
 
 /* Offsets in subject. */
-callout_block->subject_length = arguments->end - arguments->begin;
-callout_block->start_match = (PCRE2_SPTR)callout_block->subject - arguments->begin;
-callout_block->current_position = (PCRE2_SPTR)callout_block->offset_vector - arguments->begin;
+callout_block->subject_length = (PCRE2_SIZE)(arguments->end - arguments->begin);
+callout_block->start_match = (PCRE2_SIZE)((PCRE2_SPTR)callout_block->subject - arguments->begin);
+callout_block->current_position = (PCRE2_SIZE)((PCRE2_SPTR)callout_block->offset_vector - arguments->begin);
 callout_block->subject = begin;
 
 /* Convert and copy the JIT offset vector to the ovector array. */
@@ -7159,8 +7153,8 @@ callout_block->capture_top = 0;
 callout_block->offset_vector = ovector;
 for (i = 2; i < oveccount; i += 2)
   {
-  ovector[i] = jit_ovector[i] - begin;
-  ovector[i + 1] = jit_ovector[i + 1] - begin;
+  ovector[i] = (PCRE2_SIZE)(jit_ovector[i] - begin);
+  ovector[i + 1] = (PCRE2_SIZE)(jit_ovector[i + 1] - begin);
   if (jit_ovector[i] >= begin)
     callout_block->capture_top = i;
   }
@@ -11503,11 +11497,5 @@ return 0;
 
 #include "pcre2_jit_match.c"
 #include "pcre2_jit_misc.c"
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_jit_compile.c */

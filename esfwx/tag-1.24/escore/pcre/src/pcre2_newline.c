@@ -54,12 +54,6 @@ http://unicode.org/unicode/reports/tr18/. */
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 *      Check for newline at given position       *
 *************************************************/
@@ -243,11 +237,5 @@ else switch(c)
   return FALSE;
   }
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_newline.c */

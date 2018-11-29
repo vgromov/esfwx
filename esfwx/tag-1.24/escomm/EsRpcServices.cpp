@@ -628,24 +628,44 @@ bool EsRpcMaster::pingEx()
 			const EsVariant& rates = rateCtl->supportedRatesGet();
 			long rate = rateCtl->defaultRateGet();
 			// find index of the default rate item in rates collection
-			int defIdx = 0;
+			ulong defIdx = 0;
 			EsBaseIntf::Ptr brk = m_chnl->breakerGet();
-			for(int idx = 0; idx < rates.countGet(); ++idx )
+			for(ulong idx = 0; idx < rates.countGet(); ++idx )
 				if( rates.itemGet(idx).asLong() == rate )
 				{
 					defIdx = idx;
 					break;
 				}
-				// ping from default and up
-				for( int idx = defIdx; idx < rates.countGet() && !result;	++idx )
+
+      // ping from default and up
+			for( ulong idx = defIdx; idx < rates.countGet() && !result;	++idx )
+			{
+				EsVariant breaking = false;
+				ES_DUAL_CALL0(breaking, brk, EsBreakIntf, isBreaking);
+				if( breaking.asBool() )
+				{
+					proceed = false;
+					break;
+				}
+				rate = rates.itemGet(idx).asLong();
+				deactivate();
+				rateCtl->rateSet(rate);
+				activate();
+
+				result = ping();
+			}
+
+			if( proceed )
+			{
+				// ping from pre-default and down
+				for( ulong idx = defIdx-1; idx >= 0 && !result;	--idx )
 				{
 					EsVariant breaking = false;
 					ES_DUAL_CALL0(breaking, brk, EsBreakIntf, isBreaking);
-					if( breaking.asBool() )
-					{
-						proceed = false;
+
+					if( breaking.asBool()	)
 						break;
-					}
+
 					rate = rates.itemGet(idx).asLong();
 					deactivate();
 					rateCtl->rateSet(rate);
@@ -653,33 +673,14 @@ bool EsRpcMaster::pingEx()
 
 					result = ping();
 				}
+			}
 
-				if( proceed )
-				{
-					// ping from pre-default and down
-					for( int idx = defIdx-1; idx >= 0 && !result;	--idx )
-					{
-						EsVariant breaking = false;
-						ES_DUAL_CALL0(breaking, brk, EsBreakIntf, isBreaking);
-
-						if( breaking.asBool()	)
-							break;
-
-						rate = rates.itemGet(idx).asLong();
-						deactivate();
-						rateCtl->rateSet(rate);
-						activate();
-
-						result = ping();
-					}
-				}
-
-				// if result is still false - restore saved rate
-				if( !result )
-				{
-					deactivate();
-					rateCtl->rateSet(savedRate);
-				}
+			// if result is still false - restore saved rate
+			if( !result )
+			{
+				deactivate();
+				rateCtl->rateSet(savedRate);
+			}
 		}
 		
 		// finally activate services again

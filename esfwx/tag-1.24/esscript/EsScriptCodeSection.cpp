@@ -32,10 +32,10 @@
 //
 EsScriptTryCatchBlock::EsScriptTryCatchBlock(
   EsScriptCodeSection* cs /*= nullptr*/,
-  size_t tryStart /*= 0*/,
-  size_t tryEnd /*= 0*/,
-  size_t catchStart /*= 0*/,
-  size_t catchEnd /*= 0*/
+  ulong tryStart /*= 0*/,
+  ulong tryEnd /*= 0*/,
+  ulong catchStart /*= 0*/,
+  ulong catchEnd /*= 0*/
 ) ES_NOTHROW :
 m_owner(cs),
 m_tryInstructionsStart(tryStart),
@@ -385,7 +385,7 @@ const EsScriptCodeSection::Ptr& EsScriptCodeSection::null()
 //---------------------------------------------------------------------------
 
 EsScriptInstruction& EsScriptCodeSection::instructionAdd(
-  size_t& pos,
+  ulong& pos,
   EsScriptInstructionOpcode opcode, 
 	const EsScriptDebugInfoIntf::Ptr& debugInfo /*=EsScriptDebugInfoIntf::Ptr()*/
 )
@@ -420,13 +420,13 @@ EsScriptInstruction& EsScriptCodeSection::instructionAdd(
     m_name.c_str()
   )
 
-	pos = m_code->size()-1;
+	pos = static_cast<ulong>(m_code->size()-1);
 
   return m_code->at(pos);
 }
 //---------------------------------------------------------------------------
 
-EsScriptInstruction& EsScriptCodeSection::instructionModifyAt(size_t instrPos)
+EsScriptInstruction& EsScriptCodeSection::instructionModifyAt(ulong instrPos)
 {
 	checkTemplateOperation();
 	ES_ASSERT(m_code);
@@ -490,10 +490,13 @@ void EsScriptCodeSection::paramDeclare(const EsString& name, const EsScriptDebug
 //---------------------------------------------------------------------------
 
 // indexed parameter access
-void EsScriptCodeSection::parameterSet(size_t idx, const EsVariant& val)
+void EsScriptCodeSection::parameterSet(ulong idx, const EsVariant& val)
 {
-	ES_ASSERT(idx < m_params->size());
-	m_vars.symbolValSet(m_params->at(idx), val);
+	ES_ASSERT(idx < static_cast<ulong>(m_params->size()));
+	m_vars.symbolValSet(
+    m_params->at(idx), 
+    val
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -503,7 +506,7 @@ void EsScriptCodeSection::parametersSet(const EsVariant& params)
 	if( params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION )
 	{
 		ES_ASSERT((size_t)params.countGet() == m_params->size());
-		for( int idx = 0; idx < params.countGet(); ++idx )
+		for( ulong idx = 0; idx < params.countGet(); ++idx )
 			parameterSet(idx, params.itemGet(idx));
 	}
 	else if( !params.isEmpty() )
@@ -549,12 +552,18 @@ EsScriptObjectIntf* EsScriptCodeSection::thisGet() const ES_NOTHROW
 //
 // create new try-catch block, return its index in try-catch blocks collection,
 // make new block the active one
-size_t EsScriptCodeSection::tryCatchBlockCreate(size_t tryStart /*= 0*/, size_t tryEnd /*= 0*/, size_t catchStart /*= 0*/, size_t catchEnd /*= 0*/)
+ulong EsScriptCodeSection::tryCatchBlockCreate(ulong tryStart /*= 0*/, ulong tryEnd /*= 0*/, ulong catchStart /*= 0*/, ulong catchEnd /*= 0*/)
 {
-	EsScriptTryCatchBlock block(this, tryStart, tryEnd, catchStart, catchEnd);
+	EsScriptTryCatchBlock block(
+    this, 
+    tryStart, 
+    tryEnd, 
+    catchStart, 
+    catchEnd
+  );
 
 	m_tryCatchBlocks.push_back(block);
-	size_t idx = m_tryCatchBlocks.size()-1;
+	ulong idx = static_cast<ulong>(m_tryCatchBlocks.size()-1);
 	m_tryCatchStack.push_back(idx);
 
 	ESSCRIPT_CODESECTION_TRACE2(esT("new tryCatchBlock created with index %d, made active"), idx)
@@ -565,7 +574,7 @@ size_t EsScriptCodeSection::tryCatchBlockCreate(size_t tryStart /*= 0*/, size_t 
 
 // select currently active try-catch block
 EsScriptInstructionOpcode EsScriptCodeSection::tryCatchBlockExecute(
-  size_t tryCatchBlockIdx,
+  ulong tryCatchBlockIdx,
   EsScriptThreadContext& ctx,
   EsScriptInstructions::const_iterator& instr
 )
@@ -574,14 +583,14 @@ EsScriptInstructionOpcode EsScriptCodeSection::tryCatchBlockExecute(
     0,
     m_tryCatchBlocks.empty() ?
       0 :
-      m_tryCatchBlocks.size()-1,
+      static_cast<ulong>(m_tryCatchBlocks.size()-1),
 		tryCatchBlockIdx,
     esT("tryCatch block index")
   );
 
 	if(
     m_tryCatchStack.empty() ||
-		static_cast<size_t>(m_tryCatchStack.back()) != tryCatchBlockIdx
+		m_tryCatchStack.back() != tryCatchBlockIdx
   )
 		m_tryCatchStack.push_back(tryCatchBlockIdx);
 

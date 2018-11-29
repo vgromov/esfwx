@@ -11,6 +11,14 @@
 #endif
 //---------------------------------------------------------------------------
 
+#ifdef _WIN64
+# if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
+  // Temporary disable conversion from 'alglib_impl::ae_int_t' to 'double', possible loss of data for x64 platform
+#   pragma warning(push)
+#   pragma warning(disable : 4244)
+# endif
+#endif
+
 #include "alglib/alglibinternal.cpp"
 #include "alglib/alglibmisc.cpp"
 #include "alglib/dataanalysis.cpp"
@@ -25,6 +33,11 @@
 #include "alglib/statistics.cpp"
 #include "alglib/ap.cpp"
 
+#ifdef _WIN64
+# if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
+#  pragma warning(pop)
+# endif
+#endif
 //---------------------------------------------------------------------------
 
 EsMathFitInfo alglibInfoToFitInfo(alglib::ae_int_t info)

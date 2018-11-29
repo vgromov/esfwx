@@ -16,7 +16,7 @@ class ESCORE_CLASS ES_INTF_IMPL1(EsFile, EsReflectedClassIntf)
 
 public:
   EsFile();
-	EsFile(const EsString& fileName, size_t flags);
+	EsFile(const EsString& fileName, ulong flags);
 	virtual ~EsFile();
 	
 	ES_DECL_REFLECTED_CLASS_BASE(EsFile)

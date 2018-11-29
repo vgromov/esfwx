@@ -131,15 +131,15 @@ public:
 	// return array of owned fields only
 	ES_DECL_INTF_METHOD(const	EsStringIndexedMap&, thisFieldsMapGet)() const ES_NOTHROW = 0;
 	// return name of the field by its index in internal collection
-	ES_DECL_INTF_METHOD(const EsString&, thisFieldNameGet)(size_t idx) const = 0;	
+	ES_DECL_INTF_METHOD(const EsString&, thisFieldNameGet)(ulong idx) const = 0;	
 	// access this field node by its index
-	ES_DECL_INTF_METHOD(const EsVariant&, thisFieldGet)(size_t idx) const = 0;
+	ES_DECL_INTF_METHOD(const EsVariant&, thisFieldGet)(ulong idx) const = 0;
 	// read-only access to object's flags
 	ES_DECL_INTF_METHOD(esU32, flagsGet)() const ES_NOTHROW = 0;
 	// update object memory layout. fields and ancestor offsets and|or sizes get updated
 	// as a result of this process
-	ES_DECL_INTF_METHOD(void, internalUpdateLayout)(size_t offs) = 0;
-	ES_DECL_INTF_METHOD(void, internalUpdateFieldsLayout)(size_t offs) = 0;
+	ES_DECL_INTF_METHOD(void, internalUpdateLayout)(ulong offs) = 0;
+	ES_DECL_INTF_METHOD(void, internalUpdateFieldsLayout)(ulong offs) = 0;
 	// internal data update helper
 	ES_DECL_INTF_METHOD(void, internalPublishDataChanged)(const EsScriptObjectIntf::WeakPtrList& subscribers) = 0;
 	// handle data change event notification from subscription publisher
@@ -207,7 +207,7 @@ public:
 	// return script object absolute offset in bytes from the start of data buffer
 	ES_DECL_INTF_METHOD(long, offsGet)() const ES_NOTHROW = 0;
 	// return script object size in bytes
-	ES_DECL_INTF_METHOD(size_t, sizeGet)() const ES_NOTHROW = 0;
+	ES_DECL_INTF_METHOD(ulong, sizeGet)() const ES_NOTHROW = 0;
 	// get object as binary buffer
 	ES_DECL_INTF_METHOD(EsBinBuffer, binBufferGet)() const ES_NOTHROW = 0;
 	// (try to) set existing object from binary buffer

@@ -179,7 +179,7 @@ void EsScriptSymbolTable::clone(const EsScriptSymbolTable& src, EsScriptObjectIn
 	m_checkTemplate = src.m_checkTemplate;
 	m_template = false;
 
-	for( size_t idx = 0; idx < src.m_contents.countGet(); ++idx )
+	for( ulong idx = 0; idx < src.m_contents.countGet(); ++idx )
 	{
 		const EsString& name = src.m_contents.nameGet(idx);
 		ulong flags = src.m_contents.valueGet(idx).doInterpretAsVariantCollection()[1].asULong();
@@ -206,7 +206,7 @@ EsStringArray EsScriptSymbolTable::allSymbolNamesGet(bool includeBuiltIns /*= tr
 {
 	EsStringArray a;
 	a.reserve( m_contents.countGet() );
-	for( size_t idx = 0; idx < m_contents.countGet(); ++idx )
+	for( ulong idx = 0; idx < m_contents.countGet(); ++idx )
 	{
 		ulong flags = m_contents.valueGet(idx).doInterpretAsVariantCollection()[1].asULong();
 		if( 
@@ -233,7 +233,7 @@ bool EsScriptSymbolTable::isSymbolBuiltIn(const EsString& name) const
 
 const EsString& EsScriptSymbolTable::findFirstSymbolWithVal(const EsVariant& val) const ES_NOTHROW
 {
-	for( size_t idx = 0; idx < m_contents.countGet(); ++idx )
+	for( ulong idx = 0; idx < m_contents.countGet(); ++idx )
 	{
 		const EsScriptValAccessorIntf::Ptr& acc = m_contents.valueGet(idx).doInterpretAsVariantCollection()[0].asExistingObject();
 		const EsVariant& other = acc->get();
@@ -335,7 +335,7 @@ ulong EsScriptSymbolTable::symbolFlagsGet(const EsString& name) const
 
 EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::symbolFind(const EsString& name, bool& found) const ES_NOTHROW
 {
-	size_t idx = m_contents.itemFind(name);
+	ulong idx = m_contents.itemFind(name);
 	found = (EsStringIndexedMap::npos != idx);
 
   if( found )

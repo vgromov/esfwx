@@ -114,7 +114,7 @@ EsVariant	EsRegEx::matchRangeGet(ulong subExprIdx) const
 {
 	if(m_compiled && !m_text.empty())
 	{
-		size_t start, len;
+		ulong start, len;
 		if( m_impl->matchGet(start, len, subExprIdx) )
 		{
 			EsVariant range(EsVariant::VAR_VARIANT_COLLECTION);
@@ -128,12 +128,16 @@ EsVariant	EsRegEx::matchRangeGet(ulong subExprIdx) const
 	return EsVariant::null();
 }
 
-bool EsRegEx::matchGet(size_t& start, size_t& len, ulong subExprIdx) const
+bool EsRegEx::matchGet(ulong& start, ulong& len, ulong subExprIdx) const
 {
 	bool result = false;
 	if(m_compiled && !m_text.empty())
 	{
-		result = m_impl->matchGet(start, len, subExprIdx);
+		result = m_impl->matchGet(
+      start, 
+      len, 
+      subExprIdx
+    );
 		if( result )
 			start += m_offs;
 	}
@@ -144,7 +148,7 @@ bool EsRegEx::matchGet(size_t& start, size_t& len, ulong subExprIdx) const
 // Returns the part of string corresponding to the match where index is interpreted as above. 
 EsString EsRegEx::matchGet(ulong subExprIdx) const
 {
-	size_t start, len;
+	ulong start, len;
 	if(matchGet(start, len, subExprIdx) && len)
 		return m_text.substr(start, len);
 
@@ -210,7 +214,12 @@ ulong EsRegEx::get_offset() const
 
 void EsRegEx::set_offset(cr_ulong val)
 {
-	EsNumericCheck::checkRangeUInteger(0, m_text.size(), val, esT("Text offset"));
+	EsNumericCheck::checkRangeUInteger(
+    0, 
+    static_cast<ulong>(m_text.size()), 
+    val, 
+    esT("Text offset")
+  );
 	m_offs = val;
 }
 

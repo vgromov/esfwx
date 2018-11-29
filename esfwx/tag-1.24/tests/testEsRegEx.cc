@@ -16,10 +16,10 @@ TEST(EsRegExTest, MatchI18N) {
 
   while( re.get_matches() )
   {
-    size_t cnt = re.get_matchCount();
+    ulong cnt = re.get_matchCount();
 
-    size_t start, len;
-    for(size_t idx = 0; idx < cnt; ++idx)
+    ulong start, len;
+    for(ulong idx = 0; idx < cnt; ++idx)
       re.matchGet(start, len, idx);
 
     re.set_offset(start+len);

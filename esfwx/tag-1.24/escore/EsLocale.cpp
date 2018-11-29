@@ -978,8 +978,8 @@ public:
   const std::locale& localeGet(const EsString& loc, bool fallbackToClassic);
 
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-  size_t localeNodePosFind(const EsString& loc) const;
-  size_t localeNodePosFind(const std::locale& loc) const;
+  ulong localeNodePosFind(const EsString& loc) const;
+  ulong localeNodePosFind(const std::locale& loc) const;
 #endif
 
 protected:
@@ -1090,14 +1090,14 @@ EsLocaleInfoMap::LocalePtr EsLocaleInfoMap::localeCreate(const EsString& loc, bo
 //---------------------------------------------------------------------------
 
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-size_t EsLocaleInfoMap::localeNodePosFind(const EsString& loc) const
+ulong EsLocaleInfoMap::localeNodePosFind(const EsString& loc) const
 {
   EsCriticalSectionLocker lock(m_cs);
 
   return m_map.itemFind(loc);
 }
 
-size_t EsLocaleInfoMap::localeNodePosFind(const std::locale& loc) const
+ulong EsLocaleInfoMap::localeNodePosFind(const std::locale& loc) const
 {
   EsCriticalSectionLocker lock(m_cs);
 
@@ -1119,7 +1119,7 @@ const std::locale& EsLocaleInfoMap::localeGet(const EsString& loc, bool fallback
 
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
 
-  size_t pos = localeNodePosFind(loc);
+  ulong pos = localeNodePosFind(loc);
 
   if( EsStringIndexedMap::npos == pos )
   {
@@ -1146,7 +1146,7 @@ const std::locale& EsLocaleInfoMap::localeGet(const EsString& loc, bool fallback
         // Create custom locale object, using found info node
         return *localeCreate(
           node,
-          pos
+          static_cast<ulong>(pos)
         ).get();
       }
 
@@ -1289,7 +1289,7 @@ EsString::value_type EsLocale::thousandSeparatorGet(const std::locale& loc)
 EsString::value_type EsLocale::listSeparatorGet(const std::locale& loc)
 {
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-  size_t pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
+  ulong pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
   if( EsStringIndexedMap::npos != pos )
   {
     const EsLocInfoNode& node = locInfoNodesGet()[pos];
@@ -1327,7 +1327,7 @@ EsString EsLocale::moneySymbolGet(const std::locale& loc)
 EsString::value_type EsLocale::timeSeparatorGet(const std::locale& loc)
 {
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-  size_t pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
+  ulong pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
   if( EsStringIndexedMap::npos != pos )
   {
     const EsLocInfoNode& node = locInfoNodesGet()[pos];
@@ -1344,7 +1344,7 @@ EsString::value_type EsLocale::timeSeparatorGet(const std::locale& loc)
 EsString::value_type EsLocale::dateSeparatorGet(const std::locale& loc)
 {
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-  size_t pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
+  ulong pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
   if( EsStringIndexedMap::npos != pos )
   {
     const EsLocInfoNode& node = locInfoNodesGet()[pos];
@@ -1361,7 +1361,7 @@ EsString::value_type EsLocale::dateSeparatorGet(const std::locale& loc)
 EsString EsLocale::timeAmGet(const std::locale& loc)
 {
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-  size_t pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
+  ulong pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
   if( EsStringIndexedMap::npos != pos )
   {
     const EsLocInfoNode& node = locInfoNodesGet()[pos];
@@ -1378,7 +1378,7 @@ EsString EsLocale::timeAmGet(const std::locale& loc)
 EsString EsLocale::timePmGet(const std::locale& loc)
 {
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-  size_t pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
+  ulong pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
   if( EsStringIndexedMap::npos != pos )
   {
     const EsLocInfoNode& node = locInfoNodesGet()[pos];
@@ -1395,7 +1395,7 @@ EsString EsLocale::timePmGet(const std::locale& loc)
 EsString EsLocale::timeFmtGet(const std::locale& loc)
 {
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-  size_t pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
+  ulong pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
   if( EsStringIndexedMap::npos != pos )
   {
     const EsLocInfoNode& node = locInfoNodesGet()[pos];
@@ -1412,7 +1412,7 @@ EsString EsLocale::timeFmtGet(const std::locale& loc)
 EsString EsLocale::dateFmtGet(const std::locale& loc)
 {
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-  size_t pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
+  ulong pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
   if( EsStringIndexedMap::npos != pos )
   {
     const EsLocInfoNode& node = locInfoNodesGet()[pos];
@@ -1429,7 +1429,7 @@ EsString EsLocale::dateFmtGet(const std::locale& loc)
 EsString EsLocale::timeFmtShortGet(const std::locale& loc)
 {
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-  size_t pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
+  ulong pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
   if( EsStringIndexedMap::npos != pos )
   {
     const EsLocInfoNode& node = locInfoNodesGet()[pos];
@@ -1446,7 +1446,7 @@ EsString EsLocale::timeFmtShortGet(const std::locale& loc)
 EsString EsLocale::dateFmtShortGet(const std::locale& loc)
 {
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL
-  size_t pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
+  ulong pos = EsLocaleInfoMap::instanceGet().localeNodePosFind(loc);
   if( EsStringIndexedMap::npos != pos )
   {
     const EsLocInfoNode& node = locInfoNodesGet()[pos];
@@ -1465,5 +1465,3 @@ EsString EsLocale::dateTimeFmtGet(const std::locale& loc)
   return dateFmtGet(loc) + esT(" ") + timeFmtGet(loc);
 }
 //---------------------------------------------------------------------------
-
-

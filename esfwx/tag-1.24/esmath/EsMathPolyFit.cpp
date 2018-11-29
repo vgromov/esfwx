@@ -153,7 +153,7 @@ void EsMathPolyFit::resetFittingErrors()
 }
 //---------------------------------------------------------------------------
 
-void EsMathPolyFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y, size_t power,
+void EsMathPolyFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y, ulong power,
 					 const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
 {
 	reset();
@@ -177,13 +177,19 @@ void EsMathPolyFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y, si
 //---------------------------------------------------------------------------
 
 // x taken from y's indeces
-void EsMathPolyFit::build(const EsMathArrayReal& y, size_t power,
+void EsMathPolyFit::build(const EsMathArrayReal& y, ulong power,
 					 const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
 {
 	EsMathArrayReal x( y.countGet() );
-	for(size_t idx = 0; idx < x.countGet(); ++idx)
+	for(ulong idx = 0; idx < x.countGet(); ++idx)
 		x.itemSet(idx, idx);
-	build(x, y, power, constraints);
+
+	build(
+    x, 
+    y, 
+    power, 
+    constraints
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -194,7 +200,7 @@ double EsMathPolyFit::calculate(double x) const
 
 	double result = m_poly.itemGet(0);
 	double xpow = x;
-	for( size_t idx = 1; idx < m_poly.countGet(); ++idx)
+	for( ulong idx = 1; idx < m_poly.countGet(); ++idx)
 	{
 		result += xpow*m_poly.itemGet(idx);
 		xpow *= x;

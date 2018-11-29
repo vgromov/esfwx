@@ -45,12 +45,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define PTR_STACK_SIZE 20
 
 #define SUBSTITUTE_OPTIONS \
@@ -558,7 +552,7 @@ do
             {
             PCRE2_SPTR mark_start = mark;
             while (*mark != 0) mark++;
-            fraglength = mark - mark_start;
+            fraglength = (PCRE2_SIZE)(mark - mark_start);
             CHECKMEMCPY(mark_start, fraglength);
             }
           }
@@ -860,11 +854,5 @@ PTREXIT:
 *blength = (PCRE2_SIZE)(ptr - replacement);
 goto EXIT;
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_substitute.c */

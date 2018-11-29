@@ -163,7 +163,7 @@ void EsMathSpline::build(const EsMathArrayReal& x, const EsMathArrayReal& y)
 void EsMathSpline::xFromYinit(const EsMathArrayReal& y, EsMathArrayReal& x)
 {
 	x.countSet( y.countGet() );
-	for(size_t idx = 0; idx < x.countGet(); ++idx)
+	for(ulong idx = 0; idx < x.countGet(); ++idx)
 		x.itemSet(idx, idx);
 }
 //---------------------------------------------------------------------------

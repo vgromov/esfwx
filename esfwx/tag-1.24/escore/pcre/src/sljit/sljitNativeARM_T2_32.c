@@ -1232,19 +1232,11 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_return(struct sljit_compiler *comp
 /*  Operators                                                            */
 /* --------------------------------------------------------------------- */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #if defined(__GNUC__)
 extern unsigned int __aeabi_uidivmod(unsigned int numerator, int unsigned denominator);
 extern int __aeabi_idivmod(int numerator, int denominator);
 #else
 #error "Software divmod functions are needed"
-#endif
-
-#ifdef __cplusplus
-}
 #endif
 
 SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compiler, sljit_s32 op)

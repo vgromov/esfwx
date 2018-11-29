@@ -49,12 +49,6 @@ a sequence of compiled codes. */
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* Magic number to provide a small check against being handed junk. */
 
 #define SERIALIZED_DATA_MAGIC 0x50523253u
@@ -110,7 +104,7 @@ for (i = 0; i < number_of_codes; i++)
     tables = re->tables;
   else if (tables != re->tables)
     return PCRE2_ERROR_MIXEDTABLES;
-  total_size += re->blocksize;
+  total_size += (PCRE2_SIZE)re->blocksize;
   }
 
 /* Initialize the byte stream. */
@@ -271,11 +265,5 @@ if (bytes != NULL)
   memctl->free(memctl, memctl->memory_data);
   }
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_serialize.c */

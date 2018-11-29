@@ -49,12 +49,6 @@ collecting data (e.g. minimum matching length). */
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* The maximum remembered capturing brackets minimum. */
 
 #define MAX_CACHE_BACKREF 128
@@ -1626,11 +1620,5 @@ if ((re->flags & PCRE2_MATCH_EMPTY) == 0 &&
 
 return 0;
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_study.c */

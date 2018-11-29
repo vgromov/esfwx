@@ -59,7 +59,7 @@ public:
   ES_DECL_INTF_METHOD(bool, isEmpty)() const { return m_pool.empty(); }
 
   /// Return count of free addresses in pool
-	ES_DECL_INTF_METHOD(ulong, availableAddressesCountGet)() const { return m_pool.size(); }
+	ES_DECL_INTF_METHOD(ulong, availableAddressesCountGet)() const { return static_cast<ulong>(m_pool.size()); }
 
 	/// Reflected properties
 	///

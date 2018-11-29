@@ -75,7 +75,7 @@ ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
 // real data array
-EsMathArrayReal::EsMathArrayReal(size_t size /*= 0*/, const double* data /*= 0*/) :
+EsMathArrayReal::EsMathArrayReal(ulong size /*= 0*/, const double* data /*= 0*/) :
 m_pimpl(0),
 m_needRecalc(true),
 m_minIdx(0),
@@ -203,7 +203,7 @@ bool fromBuffer(
   {
     if( 0 == (bb.size() % sizeof(directT)) )
     {
-      size_t cnt = bb.size() / sizeof(directT);
+      ulong cnt = static_cast<ulong>(bb.size() / sizeof(directT));
       a->countSet( cnt );
       const directT* dd = reinterpret_cast<const directT*>( &bb[0] );
 
@@ -219,7 +219,7 @@ bool fromBuffer(
 
       bool checkRange = !EsUtilities::areEqualFloats( rangeMin, rangeMax );
 
-      for(size_t idx = 0; idx < cnt; ++idx)
+      for(ulong idx = 0; idx < cnt; ++idx)
       {
         EsMathArrayReal::value_type val =
           static_cast<EsMathArrayReal::value_type>( dd[idx] );
@@ -380,13 +380,13 @@ EsString EsMathArrayReal::asString(const EsString& fmt, const EsString& sep) con
   if( !sep.empty() )
     sepstr = sep;
 
-  size_t cnt = countGet();
+  ulong cnt = countGet();
   const double* dd = dataGet();
 
   EsString result;
   result.reserve(cnt*6);
 
-  for(size_t idx = 0; idx < cnt; ++idx)
+  for(ulong idx = 0; idx < cnt; ++idx)
   {
     if( !result.empty() )
       result += sepstr;
@@ -444,10 +444,10 @@ void EsMathArrayReal::set_items(const EsVariant& src)
       if( src.isCollection() )
       {
         const EsVariant::Array& va = src.asVariantCollection();
-        size_t cnt = va.size();
+        ulong cnt = static_cast<ulong>(va.size());
         countSet( cnt );
 
-        for(size_t idx = 0; idx < cnt; ++idx)
+        for(ulong idx = 0; idx < cnt; ++idx)
           itemSet(idx, va[idx].asDouble());
         copied = true;
       }
@@ -503,7 +503,7 @@ void EsMathArrayReal::countSet(ulong newSize)
 ulong EsMathArrayReal::countGet() const
 {
 	ES_ASSERT(m_pimpl);
-	return ((const alglib::real_1d_array*)m_pimpl)->length();
+	return static_cast<ulong>(((const alglib::real_1d_array*)m_pimpl)->length());
 }
 //---------------------------------------------------------------------------
 
@@ -569,7 +569,7 @@ void EsMathArrayReal::minimaxRecalc()
 			double min = itemGet(0);
 			double max = min;
       m_total = min;
-			for(size_t idx = 1; idx < get_count(); ++idx)
+			for(ulong idx = 1; idx < get_count(); ++idx)
 			{
 				double x = itemGet(idx);
 				if( max < x )
@@ -760,7 +760,7 @@ double* EsMathArrayReal::dataAccess()
 }
 //---------------------------------------------------------------------------
 
-void EsMathArrayReal::dataSet(size_t size, const double* data)
+void EsMathArrayReal::dataSet(ulong size, const double* data)
 {
 	ES_ASSERT(m_pimpl);
 	((alglib::real_1d_array*)m_pimpl)->setcontent(size, data);

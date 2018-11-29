@@ -11,7 +11,7 @@
 #endif
 //---------------------------------------------------------------------------
 
-EsScriptDebugInfo::EsScriptDebugInfo(size_t line, size_t col, const EsString& file) ES_NOTHROW :
+EsScriptDebugInfo::EsScriptDebugInfo(ulong line, ulong col, const EsString& file) ES_NOTHROW :
 m_line(line),
 m_col(col),
 m_file(file)
@@ -19,15 +19,21 @@ m_file(file)
 }
 //---------------------------------------------------------------------------
 
-EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(size_t line, size_t col, const EsString& file) ES_NOTHROW
+EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(ulong line, ulong col, const EsString& file) ES_NOTHROW
 {
-	return EsScriptDebugInfoIntf::Ptr( new EsScriptDebugInfo(line, col, file) );
+	return EsScriptDebugInfoIntf::Ptr( 
+    new EsScriptDebugInfo(
+      line, 
+      col, 
+      file
+    ) 
+  );
 }
 //---------------------------------------------------------------------------
 
 EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(const EsString& input, EsString::const_pointer pos, const EsString& file /*= EsString::s_null*/) ES_NOTHROW
 {
-	size_t line = 1;
+	ulong line = 1;
 	EsString::const_pointer start = input.c_str();
 	EsString::const_pointer cur = start;
 	while( cur <= pos )
@@ -41,9 +47,15 @@ EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(const EsString& input, EsSt
 			start = cur;
 		}
 	}
-	size_t col = 1 + ( (pos > start) ? pos-start : 0);
+	ulong col = 1 + ( (pos > start) ? static_cast<ulong>(pos-start) : 0);
 
-	return EsScriptDebugInfoIntf::Ptr( new EsScriptDebugInfo(line, col, file) );
+	return EsScriptDebugInfoIntf::Ptr( 
+    new EsScriptDebugInfo(
+      line, 
+      col, 
+      file
+    ) 
+  );
 }
 //---------------------------------------------------------------------------
 

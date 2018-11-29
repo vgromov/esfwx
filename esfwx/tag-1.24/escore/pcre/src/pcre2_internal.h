@@ -178,12 +178,6 @@ option on the command line. */
 #define memset(s,c,n)    _memset(s,c,n)
 #else  /* VPCOMPAT */
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* To cope with SunOS4 and other systems that lack memmove() but have bcopy(),
 define a macro for memmove() if HAVE_MEMMOVE is false, provided that HAVE_BCOPY
 is set. Otherwise, include an emulating function for those systems that have
@@ -1831,7 +1825,7 @@ tables are needed only when compiling the 8-bit library. */
 
 #if PCRE2_CODE_UNIT_WIDTH == 8
 //extern const int              PRIV(utf8_table1)[];
-const int*                      PRIV(utf8_table1)(size_t* size);
+const int*                      PRIV(utf8_table1)(uint32_t* size);
 //extern const int              PRIV(utf8_table1_size);
 //extern const int              PRIV(utf8_table2)[];
 const int*                      PRIV(utf8_table2)(void);
@@ -1896,7 +1890,7 @@ const int*                             PRIV(ucp_typerange)(void);
 #endif
 extern const char                     *PRIV(unicode_version);
 //extern const ucp_type_table            PRIV(utt)[];
-const ucp_type_table*                  PRIV(utt)(size_t* sze);
+const ucp_type_table*                  PRIV(utt)(uint32_t* sze);
 //extern const char                      PRIV(utt_names)[];
 const char*                            PRIV(utt_names)(void);
 
@@ -1966,12 +1960,6 @@ extern BOOL         _pcre2_was_newline(PCRE2_SPTR, uint32_t, PCRE2_SPTR,
                       uint32_t *, BOOL);
 extern BOOL         _pcre2_xclass(uint32_t, PCRE2_SPTR, BOOL);
 #endif  /* PCRE2_CODE_UNIT_WIDTH */
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-} // extern "C"
-#endif
 
 /* End of pcre2_internal.h */
 

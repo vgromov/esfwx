@@ -143,17 +143,17 @@ protected:
 	// return only owned field count
 	ES_DECL_INTF_METHOD(bool, thisHasFields)() const ES_NOTHROW ES_OVERRIDE { return !m_fieldsMap.isEmpty(); }
 	// return name of the field by its index in internal collection
-	ES_DECL_INTF_METHOD(const EsString&, thisFieldNameGet)(size_t idx) const ES_OVERRIDE { return m_fieldsMap.nameGet(idx); }
+	ES_DECL_INTF_METHOD(const EsString&, thisFieldNameGet)(ulong idx) const ES_OVERRIDE { return m_fieldsMap.nameGet(idx); }
 	// return field node object by its index in fields collection
-	ES_DECL_INTF_METHOD(const EsVariant&, thisFieldGet)(size_t idx) const ES_OVERRIDE { return m_fieldsMap.valueGet(idx); }
+	ES_DECL_INTF_METHOD(const EsVariant&, thisFieldGet)(ulong idx) const ES_OVERRIDE { return m_fieldsMap.valueGet(idx); }
 	// return owned fields only
 	ES_DECL_INTF_METHOD(const	EsStringIndexedMap&, thisFieldsMapGet)() const ES_NOTHROW ES_OVERRIDE { return m_fieldsMap; }
 	// read-only access to object's flags
 	ES_DECL_INTF_METHOD(esU32, flagsGet)() const ES_NOTHROW ES_OVERRIDE { return m_flags; }
 	// update object memory layout. fields and ancestor offsets and|or sizes get updated
 	// as a result of this process
-	ES_DECL_INTF_METHOD(void, internalUpdateLayout)(size_t offs) ES_OVERRIDE;
-	ES_DECL_INTF_METHOD(void, internalUpdateFieldsLayout)(size_t offs) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, internalUpdateLayout)(ulong offs) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, internalUpdateFieldsLayout)(ulong offs) ES_OVERRIDE;
 	// internal write access to the object's offset value
 	ES_DECL_INTF_METHOD(void, internalOffsetSet)(long offs) ES_OVERRIDE;
 	// add object value update subscriber
@@ -218,7 +218,7 @@ public:
 	// return script object absolute offset in bytes from the start of data buffer
 	ES_DECL_INTF_METHOD(long, offsGet)() const ES_NOTHROW ES_OVERRIDE { return m_offs; }
 	// return script object size in bytes
-	ES_DECL_INTF_METHOD(size_t, sizeGet)() const ES_NOTHROW ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(ulong, sizeGet)() const ES_NOTHROW ES_OVERRIDE;
 	// get object as binary buffer
 	ES_DECL_INTF_METHOD(EsBinBuffer, binBufferGet)() const ES_NOTHROW ES_OVERRIDE;
 	// (try to) set existing object from binary buffer
@@ -353,7 +353,7 @@ protected:
 	esU32 m_flags;
 
 	// object size and absolute offset, in bytes
-	size_t m_size;
+	ulong m_size;
 	long m_offs;
 	
 	friend class EsScriptMachine;

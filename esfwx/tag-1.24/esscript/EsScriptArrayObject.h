@@ -19,7 +19,7 @@ protected:
 	ES_DECL_INTF_METHOD(bool, internalBinBufferSet)(EsBinBuffer::const_pointer& pos, EsBinBuffer::const_pointer end) ES_OVERRIDE;
 	// update object memory layout. fields and ancestor offsets and|or sizes get updated
 	// as a result of this process
-	ES_DECL_INTF_METHOD(void, internalUpdateLayout)(size_t offs) ES_OVERRIDE;
+	ES_DECL_INTF_METHOD(void, internalUpdateLayout)(ulong offs) ES_OVERRIDE;
 	// access field expression, valid for fields with expression only, namely, for arrays and conditional fields
 	ES_DECL_INTF_METHOD(EsScriptCodeSection::Ptr, thisFieldExprGet)() const ES_NOTHROW ES_OVERRIDE { return m_expr; }
 
@@ -30,15 +30,15 @@ public:
 
 	// Reflected services for indexed object
 	//
-	ES_DECL_REFLECTED_CONST_METHOD0(int, countGet);
+	ES_DECL_REFLECTED_CONST_METHOD0(ulong, countGet);
 	ES_DECL_REFLECTED_CONST_METHOD1(EsVariant, itemGet, cr_EsVariant);
 	ES_DECL_REFLECTED_METHOD2(void, itemSet, cr_EsVariant, cr_EsVariant);
 
 protected:
 	// internal service
 	void initializeUpdateSubscription();
-	size_t internalCountGet();
-	EsScriptObjectIntf::Ptr internalGetItem(size_t idx);
+	ulong internalCountGet();
+	EsScriptObjectIntf::Ptr internalGetItem(ulong idx);
 
 protected:
 	// data members

@@ -13,7 +13,7 @@ public:
 #include "EsScriptCompilerRuleNames.hxx"
     idsCount
   };
-  typedef std::set<int> IdsT;
+  typedef std::set<long> IdsT;
 
   class ESSCRIPT_CLASS Node
   {
@@ -21,7 +21,9 @@ public:
     typedef std::shared_ptr<Node> PtrT;
 
   protected:
-    Node(const EsScriptParser& parser, ulong id, ulong start, ulong end, const Node* parent = nullptr, size_t expectedChildrenCnt = 0);
+    Node(const EsScriptParser& parser, long id, ulong start, ulong end, const Node* parent = nullptr, ulong expectedChildrenCnt = 0);
+
+    EsScriptParser::Node::PtrT childAdd(long id, ulong start, ulong end, ulong expectedChildrenCnt);
 
   public:
     inline bool isOk() const ES_NOTHROW { return nullptr != m_parser && noneId != m_id; }
@@ -29,19 +31,19 @@ public:
 
     inline const EsScriptParser& parserGet() const ES_NOTHROW { return *m_parser; }
 
-    inline int idGet() const ES_NOTHROW { return m_id; }
+    inline long idGet() const ES_NOTHROW { return m_id; }
 
     inline const Node& parentGet() const ES_NOTHROW { return *m_parent; }
 
     inline bool haveChildren() const ES_NOTHROW { return !m_children.empty(); }
     inline size_t childrenCountGet() const ES_NOTHROW { return m_children.size(); }
-    inline const Node& childGet(size_t idx) const { return *m_children[idx].get(); }
+    inline const Node& childGet(ulong idx) const { return *m_children[idx].get(); }
 
     bool isIdOneOf(const EsScriptParser::IdsT& ids) const ES_NOTHROW;
 
     inline void rangeGet(ulong& start, ulong& end) const ES_NOTHROW { start = m_start; end = m_end; }
 
-    const Node* firstChildGetById(int id, bool doNested = true) const ES_NOTHROW;
+    const Node* firstChildGetById(long id, bool doNested = true) const ES_NOTHROW;
 
     EsString stringExtract(const EsString& in) const ES_NOTHROW;
     EsString stringValExtract(const EsString& str) const ES_NOTHROW;
@@ -62,7 +64,7 @@ public:
     std::vector<PtrT> m_children;
     const EsScriptParser* m_parser;
     const Node* m_parent;
-    int m_id;
+    long m_id;
     ulong m_start;
     ulong m_end;
 

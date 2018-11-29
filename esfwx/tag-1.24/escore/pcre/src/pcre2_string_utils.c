@@ -49,12 +49,6 @@ functions work only on 8-bit data. */
 
 #include "pcre2_internal.h"
 
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*************************************************
 *    Compare two zero-terminated PCRE2 strings   *
 *************************************************/
@@ -200,13 +194,7 @@ PRIV(strcpy_c8)(PCRE2_UCHAR *str1, const char *str2)
 PCRE2_UCHAR *t = str1;
 while (*str2 != 0) *t++ = *str2++;
 *t = 0;
-return t - str1;
+return (PCRE2_SIZE)(t - str1);
 }
-
-///* Allow for C++ users compiling this directly. */
-//
-#ifdef __cplusplus
-}
-#endif
 
 /* End of pcre2_string_utils.c */

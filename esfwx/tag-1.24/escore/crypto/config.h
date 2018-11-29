@@ -452,6 +452,11 @@ NAMESPACE_END
 # define CRYPTOPP_DISABLE_ASM
 #endif
 
+// Comment out to use asm code files
+#ifndef CRYPTOPP_DISABLE_ASM
+# define CRYPTOPP_DISABLE_ASM
+#endif
+
 // Sun Studio 12 provides GCC inline assembly, http://blogs.oracle.com/x86be/entry/gcc_style_asm_inlining_support
 // We can enable SSE2 for Sun Studio in the makefile with -D__SSE2__, but users may not compile with it.
 #if !defined(CRYPTOPP_DISABLE_ASM) && !defined(__SSE2__) && defined(__x86_64__) && (__SUNPRO_CC >= 0x5100)
