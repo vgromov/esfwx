@@ -21,7 +21,7 @@ ES_COMPILE_TIME_ASSERT(sizeof(ulong) >= sizeof(esI32), _EsScriptCompiledBinary_u
 // Binary block writer helper implementation
 //
 EsScriptCompiledBinaryWriter::
-EsScriptCompiledBinaryBlockWriter::EsScriptCompiledBinaryBlockWriter(EsScriptCompiledBinaryWriter& owner, int type) :
+EsScriptCompiledBinaryBlockWriter::EsScriptCompiledBinaryBlockWriter(EsScriptCompiledBinaryWriter& owner, long type) :
 m_owner(owner),
 m_prevBlock(owner.m_activeBlock),
 m_size(0)
@@ -112,7 +112,7 @@ void EsScriptCompiledBinaryWriter::stringWrite(const EsString& str)
 }
 //---------------------------------------------------------------------------
 
-void EsScriptCompiledBinaryWriter::stringArrayWrite(const EsStringArray& a, int customType /*= binaryTypeNone*/)
+void EsScriptCompiledBinaryWriter::stringArrayWrite(const EsStringArray& a, long customType /*= binaryTypeNone*/)
 {
 	EsScriptCompiledBinaryBlockWriter block(*this, (binaryTypeNone == customType) ? EsVariant::VAR_STRING_COLLECTION : customType);
 
@@ -511,7 +511,7 @@ void EsScriptCompiledBinaryWriter::codeSectionWrite(const EsScriptCodeSection::P
 }
 //---------------------------------------------------------------------------
 
-void EsScriptCompiledBinaryWriter::codeSectionsWrite(const EsScriptMethodMapPtr& methods, int codeSectionTag /*= binaryTypeCodeSections*/)
+void EsScriptCompiledBinaryWriter::codeSectionsWrite(const EsScriptMethodMapPtr& methods, long codeSectionTag /*= binaryTypeCodeSections*/)
 {
 	EsScriptCompiledBinaryBlockWriter block(*this, codeSectionTag);
 	esU32 cnt = 0;
@@ -937,7 +937,7 @@ EsStringArray EsScriptCompiledBinaryReader::internalStringArrayRead()
 }
 //---------------------------------------------------------------------------
 
-EsStringArray EsScriptCompiledBinaryReader::stringArrayRead(int expectedType /*= binaryTypeNone*/)
+EsStringArray EsScriptCompiledBinaryReader::stringArrayRead(long expectedType /*= binaryTypeNone*/)
 {
 	typeRead(expectedType);
 	return internalStringArrayRead();
@@ -1395,7 +1395,7 @@ void EsScriptCompiledBinaryReader::tryCatchBlockRead(const EsScriptCodeSection::
 	chunkRead(&tmp, sizeof(tmp));
 	// tryStart && end
 	esU32 tryStart, tryEnd, catchStart, catchEnd;
-	chunkRead(&tryStart, sizeof(tmp);
+	chunkRead(&tryStart, sizeof(tmp));
 	chunkRead(&tryEnd, sizeof(tmp));
 	// catchStart && end
 	chunkRead(&catchStart, sizeof(tmp));

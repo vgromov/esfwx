@@ -173,7 +173,7 @@ public:
 	// access count of input parameters
 	inline ulong inputParametersCntGet() const ES_NOTHROW
 	{
-		return static_cast<size_t>(m_params->size());
+		return static_cast<ulong>(m_params->size());
 	}
 
 	// indexed parameter access

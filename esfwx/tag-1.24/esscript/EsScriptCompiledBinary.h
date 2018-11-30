@@ -191,7 +191,7 @@ protected:
 	// internal services
 	void checkBufferHasEnoughSpace(ulong chunkSize) const;
 	void chunkRead(void* dest, ulong chunkSize);
-	int typeRead(long expectedType = binaryTypeNone);
+	long typeRead(long expectedType = binaryTypeNone);
 	EsString internalStringRead();
 	EsString stringRead();
 	EsStringArray internalStringArrayRead();
@@ -213,13 +213,13 @@ protected:
 	void tryCatchBlockRead(const EsScriptCodeSection::Ptr& cs);
 	void tryCatchBlocksRead();
 	void dependenciesRead(const EsScriptCodeSection::Ptr& cs);
-	void codeSectionRead(int codeSectionTag = binaryTypeCodeSection);
+	void codeSectionRead(long codeSectionTag = binaryTypeCodeSection);
 	void attributesAssignToObj(const EsAttributesIntf::Ptr& attrs, const EsScriptObjectIntf::Ptr& obj);
 	void branchFieldRead(const EsScriptObjectIntf::Ptr& ifBranch);
 	void fieldRead();
 	void fieldsRead();
 	void codeSectionAttributesAssign(const EsAttributesIntf::Ptr& attrs, const EsScriptCodeSection::Ptr& cs);
-	void codeSectionsRead(int tag = binaryTypeCodeSections);
+	void codeSectionsRead(long tag = binaryTypeCodeSections);
 	void memberVariablesRead();
 	void propertyRead();
 	void propertiesRead();
