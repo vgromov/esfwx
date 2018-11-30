@@ -75,6 +75,7 @@ ES_DECL_REFLECTED_SERVICES_BEGIN( EsStr )
 
 	/// Misc string utilities
 	ES_DECL_REFLECTED_CLASS_METHOD4(EsString, fromArray, cr_EsStringArray, cr_EsString, cr_EsString, cr_EsString);
+  ES_DECL_REFLECTED_CLASS_METHOD2(EsVariant, versionsCompare, cr_EsVariant, cr_EsVariant);
 
   /// String <--> Numeric conversion
   ///

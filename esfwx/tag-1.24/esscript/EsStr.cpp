@@ -47,6 +47,7 @@ ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsStr, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, hexToBin, EsVariant_ClassCall_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, compare, long_ClassCall_cr_EsString_cr_EsString, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromArray, EsString_ClassCall_cr_EsStringArray_cr_EsString_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, versionsCompare, EsVariant_ClassCall_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromLong, EsString_ClassCall_long_ulong, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toLong, long_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromULong, EsString_ClassCall_ulong_ulong, NO_METHOD_DESCR)
@@ -388,6 +389,15 @@ EsString EsStr::fromArray(cr_EsStringArray a, cr_EsString delimiter, cr_EsString
 	return EsString::fromStringArray(a, delimiter, leftEnclosure, rightEnclosure);
 }
 //---------------------------------------------------------------------------
+
+EsVariant EsStr::versionsCompare(cr_EsVariant _1, cr_EsVariant _2)
+{
+  return EsUtilities::versionStrCompare(
+    _1.asString(), 
+    _2.asString()
+  );
+}
+//--------------------------------------------------------------------------- 
 //---------------------------------------------------------------------------
 
 EsString EsStr::fromLong(long l, ulong radix)
