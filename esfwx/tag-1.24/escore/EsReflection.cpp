@@ -194,7 +194,7 @@ EsString EsMethodInfoKeyT::asString() const
 {
 	ES_ASSERT(isOk());
 	return EsString::format(
-    esT("%s|%d"), 
+    esT("%s|%d"),
     m_name,
     m_paramsCount
   );
@@ -240,18 +240,18 @@ void EsMethodInfo::SigStringsT::init()
 // Method info implementation
 //
 EsMethodInfo::EsMethodInfo(
-  EsClassInfo& owner, 
-  int sig, 
+  EsClassInfo& owner,
+  int sig,
   esU8 paramsCount,
-  const EsString& name, 
-  const EsString& descr, 
+  const EsString& name,
+  const EsString& descr,
   EsMemberCallT method
 ) ES_NOTHROW :
 m_owner(owner),
 m_name(name),
 m_attrs(
   EsAttributes::create(
-    name, 
+    name,
     false
   )
 ),
@@ -275,7 +275,7 @@ EsMethodInfo::EsMethodInfo(
   EsClassInfo& owner,
   int sig,
   esU8 paramsCount,
-  const EsString& name, 
+  const EsString& name,
   const EsString& descr,
   EsClassCallT classMethod,
   int ES_UNUSED(tagClassCallInfo)
@@ -398,9 +398,9 @@ void EsMethodInfo::checkParamsCount(const EsVariant& params) const
 {
 	if( m_paramsCount )
 	{
-		if( 
+		if(
       (1 < m_paramsCount && EsVariant::VAR_VARIANT_COLLECTION != params.typeGet()) ||
-			(1 == m_paramsCount && params.isEmpty()) 
+			(1 == m_paramsCount && params.isEmpty())
     )
 			EsException::Throw(
         esT("Parameter list expected in call to %s.%s of type %s"),
@@ -408,9 +408,9 @@ void EsMethodInfo::checkParamsCount(const EsVariant& params) const
         m_name,
         signatureStringGet()
       );
-		else if( 
+		else if(
       EsVariant::VAR_VARIANT_COLLECTION == params.typeGet() &&
-			m_paramsCount != params.countGet() 
+			m_paramsCount != params.countGet()
     )
 			EsException::Throw(
         esT("Wrong parameters count in call to %s.%s of type %s; expected %d, got %d"),
@@ -421,9 +421,9 @@ void EsMethodInfo::checkParamsCount(const EsVariant& params) const
         params.countGet()
       );
 	}
-	else if(	
+	else if(
     !params.isEmpty() &&
-		!(params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION && 0 == params.countGet()) 
+		!(params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION && 0 == params.countGet())
   )
 			EsException::Throw(
         esT("Method %s.%s of type %s does not expect parameters"),
@@ -460,12 +460,13 @@ EsVariant EsMethodInfo::call(EsBaseIntf* obj, const EsVariant& params) const
       m_name,
       signatureStringGet()
     );
-		
+
 	checkParamsCount(params);
-	
+
 	EsVariant result;
 
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
+#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS || \
+    ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC
 	// cast to properly aligned interface pointer, if it's reflected interface method.
 	if( !m_iid.empty() )
 	{
@@ -597,7 +598,7 @@ const EsMethodInfo* EsMethodInfo::infoFromFqNameGet(const EsString& fqName, bool
 struct PropertyInfoNameIs
 {
 	PropertyInfoNameIs(const EsString& name) : m_name(name) {}
-	inline bool operator() (const EsPropertyInfo* info) const 
+	inline bool operator() (const EsPropertyInfo* info) const
 	{ ES_ASSERT(info); return m_name == info->nameGet(); }
 
 	const EsString& m_name;
@@ -1169,28 +1170,28 @@ void EsClassInfo::resetAllProperties(EsBaseIntf* obj) const
 
 // return true if standard indexed services are found
 // countGet() and itemGet(index) and | or itemSet(index, value)
-// 
+//
 bool EsClassInfo::isIndexed() const ES_NOTHROW
 {
 	return hasMethod(
     EsMethodInfoKeyT(
-      0, 
+      0,
       EsStdNames::countGet()
     )
   ) &&
-	( 
+	(
     hasMethod(
       EsMethodInfoKeyT(
-        1, 
+        1,
         EsStdNames::itemGet()
       )
-    ) || 
+    ) ||
     hasMethod(
       EsMethodInfoKeyT(
-        2, 
+        2,
         EsStdNames::itemSet()
       )
-    ) 
+    )
   );
 }
 
@@ -1205,16 +1206,16 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
 {
 	const EsMethodInfo& info = methodInfoGet(
     EsMethodInfoKeyT(
-      1, 
+      1,
       name
     )
   );
-	
+
   EsVariant::Array params;
 	params.push_back(param1);
 
 	return info.call(
-    obj, 
+    obj,
     params
   );
 }
@@ -1229,7 +1230,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
   params.push_back(param2);
 
 	return info.call(
-    obj, 
+    obj,
     params
   );
 }
@@ -1245,7 +1246,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
   params.push_back(param3);
 
 	return info.call(
-    obj, 
+    obj,
     params
   );
 }
@@ -1262,7 +1263,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
 	params.push_back(param4);
 
 	return info.call(
-    obj, 
+    obj,
     params
   );
 }
@@ -1280,7 +1281,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
 	params.push_back(param5);
 
 	return info.call(
-    obj, 
+    obj,
     params
   );
 }
@@ -1299,30 +1300,30 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
 	params.push_back(param6);
 
 	return info.call(
-    obj, 
+    obj,
     params
   );
 }
 
 EsVariant EsClassInfo::callMethod(EsBaseIntf* obj, const EsString& name, const EsVariant& params) const
 {
-	int paramsCount = params.isEmpty() ? 
-    0 : 
+	int paramsCount = params.isEmpty() ?
+    0 :
     (
-      params.isVariantCollection() ? 
-        params.countGet() : 
+      params.isVariantCollection() ?
+        params.countGet() :
         1
     );
 
 	const EsMethodInfo& info = methodInfoGet(
     EsMethodInfoKeyT(
-      paramsCount, 
+      paramsCount,
       name
     )
   );
-	
+
   return info.call(
-    obj, 
+    obj,
     params
   );
 }
@@ -1414,22 +1415,22 @@ EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, 
 
 EsVariant EsClassInfo::classCallMethod(const EsString& name, const EsVariant& params) const
 {
-	int paramsCount = 
-    params.isEmpty() ? 
-      0 : 
+	int paramsCount =
+    params.isEmpty() ?
+      0 :
       (
-        params.isVariantCollection() ? 
-          params.countGet() : 
+        params.isVariantCollection() ?
+          params.countGet() :
           1
       );
 
 	const EsMethodInfo& info = classMethodInfoGet(
     EsMethodInfoKeyT(
-      paramsCount, 
+      paramsCount,
       name
     )
   );
-	
+
   return info.classCall(params);
 }
 

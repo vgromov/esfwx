@@ -13,7 +13,6 @@
 //---------------------------------------------------------------------------
 
 #include "EsScriptValAccessors.cxx"
-
 //---------------------------------------------------------------------------
 
 EsScriptThreadContext::EsScriptThreadContext(EsScriptMachine& owner, EsThreadId threadId) ES_NOTHROW :
@@ -886,7 +885,7 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
 {
   EsScriptInstructionOpcode opcode = instr.opcode();
 
-  int paramsCount = instr.argsCountGet();
+  ulong paramsCount = instr.argsCountGet();
   const EsString& name = instr.nameGet();
 
   EsString targetNamespace;
@@ -895,7 +894,7 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
 
   // check func parameters count
   ES_ASSERT(m_csScope);
-  ES_ASSERT(paramsCount <= static_cast<int>(m_csScope->stackSizeGet()));
+  ES_ASSERT(paramsCount <= m_csScope->stackSizeGet());
 
   EsVariant::Array params;
   params.reserve(paramsCount);
@@ -911,7 +910,7 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
     }
 
     // Extract parameters from the stack and prepare them to the form acceptable for C++ calls
-    for(int idx = 0; idx < paramsCount; ++idx)
+    for(ulong idx = 0; idx < paramsCount; ++idx)
       params.insert(
         params.begin(),
         m_csScope->stackPop()->get()
@@ -1504,7 +1503,6 @@ void EsScriptThreadContext::doIsOkLoad()
   m_csScope->stackPush(tmp);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 void EsScriptThreadContext::methodSetCurrent(const EsScriptCodeSection::Ptr& code)
@@ -1515,7 +1513,7 @@ void EsScriptThreadContext::methodSetCurrent(const EsScriptCodeSection::Ptr& cod
 
 	ESSCRIPT_MACHINE_TRACE3(
     esT("Method '%s', taking %d arguments, is set active"),
-		m_activeCode->nameGet().c_str(),
+		m_activeCode->nameGet(),
 		m_activeCode->inputParametersCntGet()
   )
 }
@@ -1609,7 +1607,7 @@ EsVariant EsScriptThreadContext::callGlobalMethod(const EsMethodInfoKeyT& key, c
 
 EsVariant EsScriptThreadContext::callGlobalMethod(const EsString& name, const EsVariant& params)
 {
-	int paramsCount = params.isEmpty() ?
+	ulong paramsCount = params.isEmpty() ?
     0 :
     (
       params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION ?
@@ -1637,7 +1635,7 @@ void EsScriptThreadContext::callExtMethod(
   const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/
 )
 {
-	int paramsCount = params.isEmpty() ?
+	ulong paramsCount = params.isEmpty() ?
     0 :
     (params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION ?
       params.countGet() :
@@ -1674,8 +1672,8 @@ void EsScriptThreadContext::callExtMethod(
 class EsScriptObjectCtrExecutor: public EsScriptObjectTopDownHierarchyTraverser
 {
 protected:
-  typedef std::pair<EsScriptObjectIntf*, EsScriptCodeSection::Ptr>Ctr;
-  typedef std::vector<Ctr>Ctrs;
+  typedef std::pair<EsScriptObjectIntf*, EsScriptCodeSection::Ptr> Ctr;
+  typedef std::vector<Ctr> Ctrs;
 
 public:
 	EsScriptObjectCtrExecutor(EsScriptObjectIntf* obj, const EsMethodInfoKeyT& ctrKey) ES_NOTHROW :
@@ -1748,7 +1746,7 @@ EsReflectedClassIntf::Ptr EsScriptThreadContext::objectCreateWithParameters(
   if(obj)
   {
     // find if we're calling non-default constructor method
-    int paramsCnt = 0;
+    ulong paramsCnt = 0;
     if(!params.isEmpty())
     {
       if(!params.isCollection())

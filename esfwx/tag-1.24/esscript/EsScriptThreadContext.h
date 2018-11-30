@@ -278,7 +278,7 @@ public:
 
   /// Scope data stack manipulation
   ///
-  inline size_t stackSizeGet() const ES_NOTHROW { return m_stack.size(); }
+  inline ulong stackSizeGet() const ES_NOTHROW { return static_cast<ulong>(m_stack.size()); }
   inline bool stackIsEmpty() const ES_NOTHROW { return m_stack.empty(); }
 
   inline void stackPush(const EsScriptValAccessorIntf::Ptr& acc) ES_NOTHROW { m_stack.push(acc); }
