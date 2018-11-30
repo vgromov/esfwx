@@ -4,6 +4,7 @@
 // Custom binary block types
 //
 enum EsScriptBynaryType {
+  binaryTypeNone                = -1,
 	binaryTypeLinks								= 1 << 8,
 	binaryTypeConst								= 2 << 8,
 	binaryTypeConsts							= 3 << 8,
@@ -35,6 +36,12 @@ enum EsScriptBynaryType {
 };
 //---------------------------------------------------------------------------
 
+enum EsScriptCompiledBinary
+{
+  typeFieldSize                 = 2
+};
+//---------------------------------------------------------------------------
+
 // ES compiled script binary writer
 //
 class EsScriptCompiledBinaryWriter
@@ -49,17 +56,17 @@ protected:
 	class EsScriptCompiledBinaryBlockWriter
 	{
 	protected:
-		EsScriptCompiledBinaryBlockWriter(EsScriptCompiledBinaryWriter& owner, int type);
+		EsScriptCompiledBinaryBlockWriter(EsScriptCompiledBinaryWriter& owner, long type);
 
 	public:
 		~EsScriptCompiledBinaryBlockWriter();
-	
+
 	protected:
 		EsScriptCompiledBinaryWriter& m_owner;
 		EsScriptCompiledBinaryBlockWriter* m_prevBlock;
 		// block starting position, block begins just after type id record
-		size_t m_start;
-		size_t m_size;
+		ulong m_start;
+		ulong m_size;
 
 	private:
 		EsScriptCompiledBinaryBlockWriter() ES_REMOVEDECL;
@@ -68,16 +75,16 @@ protected:
 		friend class EsScriptCompiledBinaryWriter;
 	};
 	friend class EsScriptCompiledBinaryBlockWriter;
-	
+
 public:
 	EsScriptCompiledBinaryWriter(const EsScriptMachine& machine, bool retainDebugInfo, EsBinBuffer& buff);
 
 protected:
 	// internal services
-	void checkReserveEnough(size_t requiredSpace);
-	void typeWrite(int type);
+	void checkReserveEnough(ulong requiredSpace);
+	void typeWrite(long type);
 	void stringWrite(const EsString& str);
-	void stringArrayWrite(const EsStringArray& a, int customType = -1);
+	void stringArrayWrite(const EsStringArray& a, long customType = binaryTypeNone);
 	void variantCollectionWrite(const EsVariant& c);
 	void objectWrite(const EsVariant& o);
 	void variantWrite(const EsVariant& var);
@@ -92,11 +99,11 @@ protected:
 	void instructionsWrite(const EsScriptInstructions& instructions);
 	void tryCatchBlockWrite(const EsScriptTryCatchBlock& tryCatch);
 	void tryCatchBlocksWrite(const EsScriptTryCatchBlocks& tryCatchBlocks);
-	void codeSectionWrite(const EsScriptCodeSection::Ptr& codeSection, int codeSectionTag = binaryTypeCodeSection);
+	void codeSectionWrite(const EsScriptCodeSection::Ptr& codeSection, long codeSectionTag = binaryTypeCodeSection);
 	void branchFieldWrite(const EsVariant& ifBranch);
 	void fieldWrite(const EsString& name, const EsVariant& fnode);
 	void fieldsWrite(const EsScriptObjectIntf::Ptr& metaclass);
-	void codeSectionsWrite(const EsScriptMethodMapPtr& codeSections, int codeSectionsTag = binaryTypeCodeSections );
+	void codeSectionsWrite(const EsScriptMethodMapPtr& codeSections, long codeSectionsTag = binaryTypeCodeSections );
 	void propertyWrite(const EsScriptObjectPropertyInfoIntf::Ptr& prop);
 	void propertiesWrite(const EsScriptObjectIntf::Ptr& metaclass);
 	void metaclassWrite(const EsScriptObjectIntf::Ptr& metaclass);
@@ -114,7 +121,7 @@ protected:
 	EsScriptCompiledBinaryBlockWriter* m_activeBlock;
 	bool m_debugInfoRetain;
 	EsBinBuffer& m_buff;
-	
+
 private:
 	// prohibited functionality
 	EsScriptCompiledBinaryWriter() ES_REMOVEDECL;
@@ -182,13 +189,13 @@ public:
 
 protected:
 	// internal services
-	void checkBufferHasEnoughSpace(size_t chunkSize) const;
-	void chunkRead(void* dest, size_t chunkSize);
-	int typeRead(int expectedType = -1);
+	void checkBufferHasEnoughSpace(ulong chunkSize) const;
+	void chunkRead(void* dest, ulong chunkSize);
+	int typeRead(long expectedType = binaryTypeNone);
 	EsString internalStringRead();
 	EsString stringRead();
 	EsStringArray internalStringArrayRead();
-	EsStringArray stringArrayRead(int customType = -1);
+	EsStringArray stringArrayRead(long customType = binaryTypeNone);
 	EsVariant internalVariantCollectionRead();
 	EsVariant variantCollectionRead();
 	EsVariant objectRead();
@@ -233,8 +240,8 @@ protected:
 
 	const EsBinBuffer& m_buff;
 	bool m_debugInfoRetain;
-	size_t m_pos;
-	size_t m_size;
+	ulong m_pos;
+	ulong m_size;
 	EsString m_compilerVersion;
 
 private:

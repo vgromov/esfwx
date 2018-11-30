@@ -176,6 +176,9 @@ protected:
     );
 
     script = EsScript::create();
+    ES_ASSERT(script);
+
+    script->vm().reset();
 
     static const GUID sc_key = {0xB7013BFB, 0xD65C, 0x5346, 0x93, 0xD0, 0x71, 0xF4, 0xF3, 0xC2, 0x8D, 0xD4};
 

@@ -68,13 +68,13 @@ public:
 		defInlineCalls = 8,
 		defDependencyCount = 8,
 	};
-	
+
 	typedef std::shared_ptr<EsScriptCodeSection> Ptr;
-	
+
 protected:
 	EsScriptCodeSection(const EsString& name);
 	EsScriptCodeSection(const EsString& name, EsScriptObjectIntf* metaclass);
-	
+
 	// accessible to EsScriptMachine friend
 	static EsScriptCodeSection::Ptr create(const EsString& name, const EsString::Array& params);
 
@@ -134,8 +134,8 @@ public:
   {
     ulong dummy;
     return instructionAdd(
-      dummy, 
-      opcode, 
+      dummy,
+      opcode,
       debugInfo
     );
   }
@@ -171,9 +171,9 @@ public:
 	void paramDeclare(const EsString& name, const EsScriptDebugInfoIntf::Ptr& dbg = nullptr);
 
 	// access count of input parameters
-	inline size_t inputParametersCntGet() const ES_NOTHROW
+	inline ulong inputParametersCntGet() const ES_NOTHROW
 	{
-		return m_params->size();
+		return static_cast<size_t>(m_params->size());
 	}
 
 	// indexed parameter access
@@ -307,7 +307,7 @@ protected:
 	// may contain this object field names on which this code section
 	// result is depending on
 	EsString::ArrayPtr m_thisFieldDependencies;
-	EsString::ArrayPtr m_thisMemberVarDependencies;	
+	EsString::ArrayPtr m_thisMemberVarDependencies;
 	// code section attributes (optional)
 	EsAttributesIntf::Ptr m_attrs;
   // variables local to this code section
@@ -328,10 +328,10 @@ private:
 	EsScriptCodeSection() ES_REMOVEDECL;
 	EsScriptCodeSection(const EsScriptCodeSection&) ES_REMOVEDECL;
 	const EsScriptCodeSection& operator=(const EsScriptCodeSection&) ES_REMOVEDECL;
-	
+
 	friend class EsScriptMachine;
 	friend class EsScriptObject;
-	friend class EsScriptArrayObject;	
+	friend class EsScriptArrayObject;
 	friend class EsScriptIfObject;
 	friend class EsScriptTryCatchBlock;
 };

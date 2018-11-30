@@ -300,7 +300,7 @@ m_this(This),
 m_thisFieldDependencies(src.m_thisFieldDependencies),
 m_thisMemberVarDependencies(src.m_thisMemberVarDependencies),
 m_attrs(src.m_attrs),
-m_vars(src.m_vars, 0),
+m_vars(src.m_vars, nullptr),
 m_params(src.m_params),
 m_code(src.m_code),
 m_tryCatchBlocks(src.m_tryCatchBlocks),
@@ -386,7 +386,7 @@ const EsScriptCodeSection::Ptr& EsScriptCodeSection::null()
 
 EsScriptInstruction& EsScriptCodeSection::instructionAdd(
   ulong& pos,
-  EsScriptInstructionOpcode opcode, 
+  EsScriptInstructionOpcode opcode,
 	const EsScriptDebugInfoIntf::Ptr& debugInfo /*=EsScriptDebugInfoIntf::Ptr()*/
 )
 {
@@ -416,7 +416,7 @@ EsScriptInstruction& EsScriptCodeSection::instructionAdd(
 
 	ESSCRIPT_CODESECTION_TRACE3(
     esT("instruction '%s' added to '%s'"),
-		EsScriptInstruction::getOpcodeString(instr.opcode()), 
+		EsScriptInstruction::getOpcodeString(instr.opcode()),
     m_name.c_str()
   )
 
@@ -494,7 +494,7 @@ void EsScriptCodeSection::parameterSet(ulong idx, const EsVariant& val)
 {
 	ES_ASSERT(idx < static_cast<ulong>(m_params->size()));
 	m_vars.symbolValSet(
-    m_params->at(idx), 
+    m_params->at(idx),
     val
   );
 }
@@ -505,7 +505,7 @@ void EsScriptCodeSection::parametersSet(const EsVariant& params)
 {
 	if( params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION )
 	{
-		ES_ASSERT((size_t)params.countGet() == m_params->size());
+		ES_ASSERT(static_cast<size_t>(params.countGet()) == m_params->size());
 		for( ulong idx = 0; idx < params.countGet(); ++idx )
 			parameterSet(idx, params.itemGet(idx));
 	}
@@ -555,10 +555,10 @@ EsScriptObjectIntf* EsScriptCodeSection::thisGet() const ES_NOTHROW
 ulong EsScriptCodeSection::tryCatchBlockCreate(ulong tryStart /*= 0*/, ulong tryEnd /*= 0*/, ulong catchStart /*= 0*/, ulong catchEnd /*= 0*/)
 {
 	EsScriptTryCatchBlock block(
-    this, 
-    tryStart, 
-    tryEnd, 
-    catchStart, 
+    this,
+    tryStart,
+    tryEnd,
+    catchStart,
     catchEnd
   );
 
