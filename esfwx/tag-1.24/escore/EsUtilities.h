@@ -386,6 +386,26 @@ ESCORE_FUNC( bool, areEqualFloats(double _1, double _2, size_t maxUlps = 1) ES_N
 
 /// Float internals-aware equality comparison
 ESCORE_FUNC( bool, areEqualFloats(float _1, float _2, size_t maxUlps = 1) ES_NOTHROW );
+//---------------------------------------------------------------------------
+
+/// Try to parse string argument as a vestion string 
+/// (AKA major[sep]minor<[sep]build><[sep]revision>),
+/// and return processed parts as variant collection
+/// If string is not recognizable as version string, return an empty variant
+/// 
+ESCORE_FUNC( EsVariant, versionStrParse(const EsString& str) );
+//---------------------------------------------------------------------------
+
+/// Version string (AKA major[sep]minor<[sep]build><[sep]revision>) comparison
+/// As of convention, return EsString::cmpLess, if _1 < _2 
+/// EsString::cmpEqual, if _1 == _2
+/// EsString::greater otherwise
+/// If either of string may not be recognized as a version string, throw an exception
+/// NB! By convention, non-existing version string members are considered 0, so, 
+/// if, say str1 is 1.2 and str2 is 1.2.0.0, they are considered equal.
+/// 
+ESCORE_FUNC( long, versionStrCompare(const EsString& _1, const EsString& _2) );
+//---------------------------------------------------------------------------
 
 /// Platform-specific stuff
 ///
@@ -519,7 +539,7 @@ private:
   EsScopedAction(const EsScopedAction&) ES_REMOVEDECL;
   EsScopedAction& operator=(const EsScopedAction&) ES_REMOVEDECL;
 };
-#endif
+#endif //< ES_MODERN_CPP
 
 } // namespace EsUtilities
 

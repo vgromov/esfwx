@@ -18,6 +18,9 @@ ES_COMPILE_TIME_ASSERT(sizeof(ulong) >= sizeof(esI32), _EsScriptCompiledBinary_u
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
+#define ES_MODERN_VER_START esT("1.23")
+//--------------------------------------------------------------------------- 
+
 // Binary block writer helper implementation
 //
 EsScriptCompiledBinaryWriter::
@@ -1109,7 +1112,13 @@ EsAttributesIntf::Ptr EsScriptCompiledBinaryReader::attributesRead()
 	if(tmp)
 	{
     esU8 interlocked = 0;
-    if( compilerVersionGet() >= esT( "1.23" ) ) //< Modern binary load
+
+    if( //< Modern attribute read
+      EsUtilities::versionStrCompare(
+        compilerVersionGet(),
+        ES_MODERN_VER_START 
+      ) != EsString::cmpLess
+    )
       chunkRead( &interlocked, sizeof(interlocked) );
 
 		result = EsAttributes::create(
@@ -1248,7 +1257,12 @@ void EsScriptCompiledBinaryReader::instructionRead(const EsScriptCodeSection::Pt
 	// instruction opcode
 	chunkRead(&tmp, sizeof(tmp));
 
-  if( compilerVersionGet() < esT("1.23") ) //< Legacy binary load
+  if( //< Legacy instruction read
+    EsUtilities::versionStrCompare(
+      compilerVersionGet(),
+      ES_MODERN_VER_START
+    ) == EsString::cmpLess
+  )
   {
     const EsVariant& payload = variantRead();
     EsScriptDebugInfoIntf::Ptr dbg = debugInfoRead();
@@ -1799,7 +1813,12 @@ void EsScriptCompiledBinaryReader::headerRead()
   // read compiler version
   m_compilerVersion = stringRead();
 
-  if(compilerVersionGet() >= esT("1.23")) //< Modern binary load
+  if( //< Modern binary load
+    EsUtilities::versionStrCompare(
+      compilerVersionGet(),
+      ES_MODERN_VER_START
+    ) != EsString::cmpLess 
+  )
   {
     typeRead(EsVariant::VAR_OBJECT);
     EsAssocContainerIntf::Ptr info = objectRead().asExistingObject();

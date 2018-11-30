@@ -176,6 +176,24 @@ TEST(EsTokenizerTest, All) {
 	EXPECT_FALSE( tok.get_moreTokens() );
 }
 
+TEST(EsStringTest, VersionStringsComparison) {
+
+  const EsString& v0 = esT("1.2.3.4 tttt");
+  const EsString& v1 = esT("1.2.0. fff");
+  const EsString& v2 = esT("1|2/34");
+  const EsString& v3 = esT("1.2.0.6");
+  const EsString& v4 = esT("1.3");
+  const EsString& v5 = esT("1.3.0.0");
+  const EsString& v6 = esT("JKJHKH");
+
+  EXPECT_TRUE(EsString::cmpGreater == EsUtilities::versionStrCompare(v0, v1));
+  EXPECT_TRUE(EsString::cmpGreater == EsUtilities::versionStrCompare(v2, v1));
+  EXPECT_TRUE(EsString::cmpLess == EsUtilities::versionStrCompare(v3, v2));
+  EXPECT_TRUE(EsString::cmpEqual == EsUtilities::versionStrCompare(v4, v5));
+  EXPECT_TRUE(EsString::cmpGreater == EsUtilities::versionStrCompare(v1, EsString::null()));
+  EXPECT_THROW(EsUtilities::versionStrCompare(v0, v6), EsException);
+}
+
 //TEST(EsStringI18nTest, All) {
 //
 //	EsStringI18n& i18n = EsStringI18n::instanceGet();

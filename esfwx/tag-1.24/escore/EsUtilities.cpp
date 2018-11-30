@@ -485,6 +485,120 @@ bool EsUtilities::areEqualFloats(float _1, float _2, size_t maxUlps) ES_NOTHROW
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
+EsVariant EsUtilities::versionStrParse(const EsString& str)
+{
+  if(str.empty())
+    return EsVariant::null();
+
+  EsRegEx re(
+    R"(([0-9]+)(?:[ .:;,|\-\\/]([0-9]+)(?:[ .:;,|\-\\/]([0-9]+)(?:[ .:;,|\-\\/]([0-9]+))?)?)?)"
+  );
+
+  re.set_text(str);
+  if(!re.get_matches())
+    return EsVariant::null();
+
+  EsVariantArray result;
+  ulong start, len, idx = 1;
+  while( re.matchGet(start, len, idx) && len )
+  { 
+    const EsString& valstr = str.substr(start, len);
+    ES_ASSERT(!valstr.empty());
+
+    result.push_back(
+      EsString::toULong(
+        valstr
+      )
+    );
+
+    ++idx;
+  }
+
+  return result;
+}
+//---------------------------------------------------------------------------
+
+long EsUtilities::versionStrCompare(const EsString& _1, const EsString& _2)
+{
+  if(_1.empty() && _2.empty()) //< Empty version strings are equal by convention
+    return EsString::cmpEqual;
+
+  const EsVariant& ver1 = versionStrParse(_1);
+  const EsVariant& ver2 = versionStrParse(_2);
+
+  if((ver1.isEmpty() && _1.empty()) && !ver2.isEmpty()) //< null version string is always less than non-null
+    return EsString::cmpLess;
+
+  if(!ver1.isEmpty() && (ver2.isEmpty() && _2.empty()) ) //< null version string is always less than non-null
+    return EsString::cmpGreater;
+
+  // Handle ill-formatted or unrecognizable version strings
+  if(ver1.isEmpty())
+    EsException::Throw(
+      esT("Could not recognize version string parameter 1: '%s'"),
+      _1
+    );
+
+  if(ver2.isEmpty())
+    EsException::Throw(
+      esT("Could not recognize version string parameter 2: '%s'"),
+      _2
+    );
+
+  // Compare version members left-to-right
+  ulong cnt1 = ver1.countGet();
+  ulong cnt2 = ver2.countGet();
+
+  ulong cnt = std::min(cnt1, cnt2);
+  ulong idx = 0;
+  while( idx < cnt )
+  {
+    ulong v1 = ver1[idx].asULong();
+    ulong v2 = ver2[idx].asULong();
+
+    if(v1 < v2)
+      return EsString::cmpLess;
+    else if(v1 > v2)
+      return EsString::cmpGreater;
+
+    ++idx;
+  }
+
+  // Check non-compared members
+  EsVariant ver;
+  if(cnt1 > cnt2)
+  {
+    ver = ver1;
+    cnt = cnt1;
+  }
+  else if(cnt1 < cnt2)
+  {
+    ver = ver2;
+    cnt = cnt2;
+  }
+
+  if(!ver.isEmpty())
+  {
+    while(idx < cnt)
+    {
+      ulong v = ver[idx].asULong();
+      if(v > 0)
+      {
+        if(cnt == cnt1)
+          return EsString::cmpGreater;
+        else
+          return EsString::cmpLess;
+      }
+
+      ++idx;
+    }
+  }
+
+  return EsString::cmpEqual;
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
 EsUtilities::SystickPeriodChanger::SystickPeriodChanger(ulong ms) :
 m_ms(0)
 {
