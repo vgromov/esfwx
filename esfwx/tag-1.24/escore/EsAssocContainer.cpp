@@ -212,7 +212,7 @@ void EsAssocContainer::keyChange(cr_EsVariant oldKey, cr_EsVariant newKey)
 	checkKeyDoesNotExist(newKey);
 	keyCheck(newKey);
 	Mapped::iterator oldIt = checkKeyExistsAndNodeGet(oldKey, true);
-	size_t idx = (*oldIt).second;
+	ulong idx = (*oldIt).second;
 	EsAssocContainerNode::Ptr node = m_indexed[idx];
 	m_mapped.erase(oldIt);
 	node->keySet(newKey);
@@ -279,7 +279,7 @@ void EsAssocContainer::newValueSet(cr_EsVariant key, cr_EsVariant val)
 	EsAssocContainerNode::Ptr node = EsAssocContainerNode::create(*this, key, val);
 	ES_ASSERT(node);
 	m_indexed.push_back(node);
-	m_mapped[key] = m_indexed.size()-1;
+	m_mapped[key] = static_cast<ulong>(m_indexed.size()-1);
 }
 //---------------------------------------------------------------------------
 
@@ -290,7 +290,7 @@ bool EsAssocContainer::keyExists(cr_EsVariant key) const
 }
 //---------------------------------------------------------------------------
 
-void EsAssocContainer::internalDelete(Mapped::iterator it, size_t idx)
+void EsAssocContainer::internalDelete(Mapped::iterator it, ulong idx)
 {
 	ES_ASSERT( m_mapped.end() != it );
 
@@ -316,7 +316,7 @@ void EsAssocContainer::valueDelete(cr_EsVariant key)
 	Mapped::iterator it = checkKeyExistsAndNodeGet(key, true);
 	ES_ASSERT( m_mapped.end() != it );
 
-	size_t idx = (*it).second;
+	ulong idx = (*it).second;
 	internalDelete(it, idx);
 }
 //---------------------------------------------------------------------------
