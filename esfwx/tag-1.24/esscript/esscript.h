@@ -54,6 +54,7 @@ class EsScript;
 #include <esscript/EsScriptDataStack.h>
 #include <esscript/EsScriptException.h>
 #include <esscript/EsScriptCodeSection.h>
+#include <esscript/EsScriptThreadContext.h>
 #include <esscript/EsScriptObjectDataBuffer.h>
 #include <esscript/EsScriptObjectPropertyInfo.h>
 #include <esscript/EsScriptObjectIntf.h>
