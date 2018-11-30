@@ -63,7 +63,7 @@ public:
 	m_name(name),
 	m_found(false)
 	{}
-	
+
 	virtual bool objectProcess(const EsScriptObjectIntf* obj) ES_NOTHROW
 	{
 		ES_ASSERT(obj);
@@ -171,12 +171,12 @@ public:
 		ES_ASSERT(obj);
 		const EsStringArray& names = obj->thisScriptedPropertiesNamesGet(m_persistentOnly);
 		m_names.insert(m_names.end(), names.begin(), names.end());
-				
+
 		return true;
 	}
 
 	const EsString::Array& resultGet() const ES_NOTHROW { return m_names; }
-	
+
 protected:
 	EsString::Array m_names;
 	bool m_persistentOnly;
@@ -219,7 +219,7 @@ public:
 
 		return m_keys;
 	}
-	
+
 protected:
 	EsMethodInfoKeysT m_keys;
 
@@ -277,7 +277,7 @@ public:
 	EsScriptObjectDownTopHierarchyTraverser(obj, false, true),
 	m_name(name)
 	{}
-	
+
 	virtual bool objectProcess(const EsScriptObjectIntf* obj) ES_NOTHROW
 	{
 		ES_ASSERT(obj);
@@ -291,16 +291,16 @@ public:
 				return false; // break traversal process
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	EsScriptObjectPropertyInfoIntf::Ptr resultGet() const ES_NOTHROW { return m_result; }
-	
+
 protected:
 	const EsString& m_name;
 	EsScriptObjectPropertyInfoIntf::Ptr m_result;
-	
+
 private:
 	EsScriptObjectPropertyFinder() ES_REMOVEDECL;
 	EsScriptObjectPropertyFinder(const EsScriptObjectPropertyFinder&) ES_REMOVEDECL;
@@ -333,7 +333,7 @@ ES_DECL_BASE_SCRIPT_CLASS_INFO_BEGIN(EsScriptObject, NO_CLASS_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptObject, EsScriptObjectIntf, isPOD, bool_CallConst, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptObject, EsScriptObjectIntf, isArray, bool_CallConst, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptObject, EsScriptObjectIntf, isIf, bool_CallConst, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptObject, EsScriptObjectIntf, isIfBranch, bool_CallConst, NO_METHOD_DESCR)	
+	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptObject, EsScriptObjectIntf, isIfBranch, bool_CallConst, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptObject, EsScriptObjectIntf, isConditional, bool_CallConst, NO_METHOD_DESCR)
 	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptObject, EsScriptObjectIntf, hasClassAttribute, bool_CallConst_cr_EsString, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptObject, EsScriptObjectIntf, classAttributeGet, EsVariant_CallConst_cr_EsString, NO_METHOD_DESCR)
@@ -363,7 +363,7 @@ EsScriptObject::EsScriptObject(
 	const EsScriptObjectIntf::Ptr& ancestor,
 	const EsScriptMethodMapPtr& methods,
 	const EsScriptContext::Ptr& ctx,
-	esU32 flags, 
+	esU32 flags,
   const EsScriptObjectDataBufferPtr& buff,
 	const EsAttributesIntf::Ptr& attrsClass
 ) :
@@ -418,7 +418,7 @@ void EsScriptObject::destroy() ES_NOTHROW
 			m_ctx->vm()->exec(
         dtor,
         EsVariant::null(),
-				EsScriptMachine::EvalMode::evalFunc,
+				EsScriptEvalMode::evalFunc,
         this
       );
 
@@ -516,8 +516,8 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::objectCreate)(
 	// clone member variables
 	if( m_memberVars )
     obj->m_memberVars = EsScriptSymbolTable::Ptr(
-      new EsScriptSymbolTable( 
-        *m_memberVars.get(), 
+      new EsScriptSymbolTable(
+        *m_memberVars.get(),
         obj
       )
     );
@@ -754,7 +754,7 @@ EsAttributesIntf::Ptr EsScriptObject::fnodeAttrsGet(const EsVariant& fnode)
 
 // add field object to the script object
 ES_IMPL_INTF_METHOD(void, EsScriptObject::fieldAdd)(
-  const EsString& name, 
+  const EsString& name,
   const EsScriptObjectIntf::Ptr& field,
 	const EsAttributesIntf::Ptr& attrs,
 	const EsScriptDebugInfoIntf::Ptr& dbg
@@ -791,7 +791,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::fieldAdd)(
     newFnode[1].doAssignOtherIntfPtrToEmptyWithoutInterlock( attrs );
 
 		m_fieldsMap.itemAdd(
-      name, 
+      name,
       newFnode
     );
 
@@ -852,8 +852,8 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::fieldConditionalAdd)(const EsScriptObj
 
 ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::internalClone)(
   EsScriptObjectIntf* parent,
-	const EsScriptObjectDataBufferPtr& buff, 
-  bool splitCtx 
+	const EsScriptObjectDataBufferPtr& buff,
+  bool splitCtx
 ) const
 {
 	ESSCRIPT_OBJECT_TRACE2(esT("%s::internalClone {"), typeNameGet().c_str())
@@ -867,7 +867,7 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::internalClone)(
 
 	// 1) create new instance of ourselves && all ancestors hierarchy
 	const EsScriptObjectIntf::Ptr& result = objectCreate(
-    buff, 
+    buff,
     splitCtx
   );
 	ES_ASSERT(result);
@@ -1113,9 +1113,9 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateFieldsLayout)(ulong offs
 		{
 			ulong fixedSize = m_attrsClass->attributeGet( fixedSizeAttr() ).asULong();
 			EsNumericCheck::checkRangeUInteger(
-        1, 
-        fixedSize, 
-        localSize, 
+        1,
+        fixedSize,
+        localSize,
         esT("Calculated object size")
       );
 		}
@@ -1210,14 +1210,14 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::internalOffsetSet)(long offs)
 	//
 	// if changing offset of POD object or fixed sized compound object - send notification to data buffer object.
 	// on layout update completion, data size && blocks positioning fixups will be applied as appropriate
-	if(	
+	if(
     -1 < offs &&
 		offs != m_offs &&
-		(isPOD() || (m_attrsClass && m_attrsClass->attributeExists( fixedSizeAttr() ))) 
+		(isPOD() || (m_attrsClass && m_attrsClass->attributeExists( fixedSizeAttr() )))
   )
 		m_data->onDataLayoutFixup(
-      m_offs, 
-      offs, 
+      m_offs,
+      offs,
       sizeGet()
     );
 
@@ -1420,8 +1420,8 @@ ES_IMPL_INTF_METHOD(EsBaseIntfPtr, EsScriptObject::fieldGet)(const EsString& nam
 
 	if( !result )
 		EsScriptException::ThrowFieldIsNotDeclared(
-      name, 
-      m_typeName, 
+      name,
+      m_typeName,
       m_ctx->vm()->currentDebugInfoGet()
     );
 
@@ -1803,7 +1803,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::propertySet)(const EsString& name, con
 		const EsPropertyInfo* info = classInfoGet().propertyInfoFind(name);
 		if( !info )
 			EsScriptException::ThrowPropertyIsNotDeclared(name, typeNameGet(), m_ctx->vm()->currentDebugInfoGet());
-		
+
 		info->set( asBaseIntf(), val);
 	}
 }
@@ -1827,7 +1827,7 @@ bool EsScriptObject::hasMethod(cr_EsString name, ulong paramCnt) const ES_NOTHRO
 {
 	return hasMethod(
     EsMethodInfoKeyT(
-      paramCnt, 
+      paramCnt,
       name
     )
   );
@@ -1838,7 +1838,7 @@ bool EsScriptObject::hasClassMethod(cr_EsString name, ulong paramCnt) const ES_N
 {
 	return hasClassMethod(
     EsMethodInfoKeyT(
-      paramCnt, 
+      paramCnt,
       name
     )
   );
@@ -1861,7 +1861,7 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::callMethod)(const EsString& name,
 		EsScriptValAccessorIntf::Ptr ret = m_ctx->vm()->exec(
       method,
       params,
-			EsScriptMachine::EvalMode::evalFunc,
+			EsScriptEvalMode::evalFunc,
       this
     );
 
@@ -2061,7 +2061,7 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::callClassMethod)(const EsString& 
 	}
 
 	const EsMethodInfo& info = classInfoGet().classMethodInfoGet(EsMethodInfoKeyT(paramsCount, name));
-	return info.classCall(params); 
+	return info.classCall(params);
 }
 //---------------------------------------------------------------------------
 
@@ -2170,21 +2170,21 @@ ES_IMPL_INTF_METHOD(ulong, EsScriptObject::sizeGet)() const ES_NOTHROW
 {
 	if( m_attrsClass && m_attrsClass->attributeExists( fixedSizeAttr() ) )
 		return m_attrsClass->attributeGet( fixedSizeAttr() ).asULong();
-	
-	return m_size; 
+
+	return m_size;
 }
 
 // member variables manipulation
 ES_IMPL_INTF_METHOD(void, EsScriptObject::variableDeclare)(const EsString& name, const EsScriptDebugInfoIntf::Ptr& dbg)
 {
 	ES_ASSERT(!name.empty());
-	
+
 	if( isFinal() )
 		EsScriptException::ThrowFinalObjectMayNotBeModified(typeNameGet(), dbg);
 
 	if(	isPOD() || isArray() || isIf() )
 		EsScriptException::ThrowPodObjectMayNotContainFieldsVarsOrProps(typeNameGet(), dbg);
-	
+
 	// check for fields or vars with such name
 	EsScriptObjectFieldFastFinder ffinder(this, name);
 	EsScriptObjectVarFastFinder vfinder(this, name);
@@ -2213,16 +2213,16 @@ ES_IMPL_INTF_METHOD(EsStringArray, EsScriptObject::thisScriptedPropertiesNamesGe
 
 	EsStringArray result;
 	result.reserve( m_propsMap->countGet() );
-		
+
 	for(ulong idx = 0; idx < m_propsMap->countGet(); ++idx)
 	{
 		EsScriptObjectPropertyInfoIntf::Ptr propInfo = m_propsMap->valueGet(idx).asExistingObject();
 		if( persistentOnly && !propInfo->isPersistent() )
 			continue;
-			
+
 		result.push_back(propInfo->nameGet());
 	}
-		
+
 	return result;
 }
 
@@ -2250,8 +2250,8 @@ ES_IMPL_INTF_METHOD(EsScriptValAccessorIntf::Ptr, EsScriptObject::variableFind)(
 		result = varFinder.resultGet();
 		if( !varFinder.found() && doThrow )
 			EsScriptException::ThrowMemberVarIsNotDeclared(
-        name, 
-        typeNameGet(), 
+        name,
+        typeNameGet(),
         m_ctx->vm()->currentDebugInfoGet()
       );
 	}
@@ -2340,18 +2340,18 @@ void EsScriptObject::propertyDeclare(const EsString& name, const EsAttributesInt
     );
 	ES_ASSERT(m_propsMap);
 
-	EsScriptObjectPropertyInfoIntf::Ptr propInfo = EsScriptObjectPropertyInfo::create( 
-    name, 
-    attrs, 
-    this, 
-    readerName, 
+	EsScriptObjectPropertyInfoIntf::Ptr propInfo = EsScriptObjectPropertyInfo::create(
+    name,
+    attrs,
+    this,
+    readerName,
     writerName
   );
 	ES_ASSERT(propInfo);
-	
-  m_propsMap->itemAdd( 
-    name, 
-    propInfo 
+
+  m_propsMap->itemAdd(
+    name,
+    propInfo
   );
 }
 

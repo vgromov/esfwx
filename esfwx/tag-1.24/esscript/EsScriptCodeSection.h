@@ -5,6 +5,13 @@
 class EsScriptThreadContext;
 class EsScriptCodeSection;
 
+/// Expressions evaluation modes for exec()
+enum EsScriptEvalMode
+{
+  evalExpr,
+  evalFunc
+};
+
 /// Try-catch frame class
 class EsScriptTryCatchBlock
 {
@@ -28,7 +35,7 @@ protected:
 	EsScriptInstructionOpcode execCatch(EsScriptThreadContext& ctx, EsScriptInstructions::const_iterator& instr);
 
 public:
-  bool isOk() const ES_NOTHROW { return 0 != m_owner; }
+  bool isOk() const ES_NOTHROW { return nullptr != m_owner; }
 
   bool isEmpty() const ES_NOTHROW { return m_tryInstructionsStart == m_tryInstructionsEnd; }
 

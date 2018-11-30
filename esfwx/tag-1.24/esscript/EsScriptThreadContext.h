@@ -10,11 +10,15 @@
 /// Forward decls
 ///
 class EsScriptCodeSectionScope;
+class EsScriptMachine;
 
 /// Script threading context
 ///
 class EsScriptThreadContext
 {
+public:
+  typedef std::shared_ptr<EsScriptThreadContext> Ptr;
+
 protected:
   EsScriptThreadContext(EsScriptMachine& owner, EsThreadId threadId) ES_NOTHROW;
 
@@ -107,7 +111,7 @@ protected:
   inline EsScriptValAccessorIntf::Ptr exec(
     const EsScriptCodeSection::Ptr& cs,
     const EsVariant& params,
-    EsScriptMachine::EvalMode evalMode,
+    EsScriptEvalMode evalMode,
     EsScriptObjectIntf* This
   )
   {
@@ -122,7 +126,7 @@ protected:
   EsScriptValAccessorIntf::Ptr exec(
     const EsScriptCodeSection* pcs,
     const EsVariant& params,
-    EsScriptMachine::EvalMode evalMode,
+    EsScriptEvalMode evalMode,
     EsScriptObjectIntf* This
   );
 

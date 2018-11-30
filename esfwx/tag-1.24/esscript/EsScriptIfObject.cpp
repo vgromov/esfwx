@@ -39,10 +39,10 @@ protected:
 		EsScriptIfBranchObject* obj = new EsScriptIfBranchObject(m_ctx, (m_flags & ~ofMetaclass)|ofNeedUpdateLayout,
 			m_methods, buff, m_true);
 		ES_ASSERT(obj);
-		
+
 		// copy properties (actually, all instances, declared in metaclass, got shared)
 		obj->m_propsMap = m_propsMap;
-			
+
 		// clone member variables
 		if( m_memberVars )
 			obj->m_memberVars = EsScriptSymbolTable::Ptr(new EsScriptSymbolTable(*m_memberVars.get(), 0));
@@ -58,10 +58,10 @@ protected:
 			ES_ASSERT( m_parent->isIf() );
 			return m_parent->typeNameGet() + esT("&") + m_typeName;
 		}
-		
+
 		return m_typeName;
 	}
-	
+
 	void invalidateFieldOffsets()
 	{
 		for(ulong idx = 0; idx < m_fieldsMap.countGet(); ++idx)
@@ -101,13 +101,13 @@ m_subscriptionInitialized(false)
 EsScriptObjectIntf::Ptr EsScriptIfObject::createMetaclass(const EsScriptContext::Ptr& ctx)
 {
 	// create if metaclass wo expression code section
-	std::unique_ptr<EsScriptIfObject> tmp( 
+	std::unique_ptr<EsScriptIfObject> tmp(
     new EsScriptIfObject(
-      ctx, 
+      ctx,
       ofMetaclass|ofIf,
-		  EsScriptObjectDataBufferPtr(), 
+		  EsScriptObjectDataBufferPtr(),
       EsScriptCodeSection::Ptr()
-    ) 
+    )
   );
 	ES_ASSERT(tmp.get());
 	// install expression code section
@@ -144,9 +144,9 @@ int EsScriptIfObject::internalExprEvaluate()
 	EsScriptObjectIntf* exprThis = topNonProxyGet();
 	// execute in expression mode
 	EsScriptValAccessorIntf::Ptr result = m_ctx->vm()->exec(
-    m_expr, 
+    m_expr,
     EsVariant::null(),
-		EsScriptMachine::EvalMode::evalExpr, 
+		EsScriptEvalMode::evalExpr,
     exprThis
   );
 	ES_ASSERT(result);
@@ -260,9 +260,9 @@ ES_IMPL_INTF_METHOD(void, EsScriptIfObject::internalUpdateLayout)(ulong offs)
 {
 	ES_ASSERT(!isMetaclass());
 
-	ESSCRIPT_OBJECT_TRACE4(esT("internalUpdateLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"), 
+	ESSCRIPT_OBJECT_TRACE4(esT("internalUpdateLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"),
 		typeNameGet().c_str(), offs, (m_flags & ofNeedUpdateLayout) ? esT("set") : esT("not set"))
-	
+
 	int prevExprValue = m_exprValue;
 	if( m_flags & ofNeedUpdateLayout )
 	{
@@ -305,10 +305,10 @@ ES_IMPL_INTF_METHOD(EsString, EsScriptIfObject::typeNameGet)() const ES_NOTHROW
 {
 	EsString upper;
 	if( m_parent )
-		upper = m_parent->typeNameGet();	
-	
+		upper = m_parent->typeNameGet();
+
 	if( !upper.empty() )
 		return upper + esT("&") + m_typeName;
-	
+
 	return m_typeName;
 }

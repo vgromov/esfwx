@@ -33,14 +33,14 @@ EsScriptObjectIntf::Ptr EsScriptArrayObject::createMetaclass(const EsScriptConte
 {
 	ES_ASSERT(itemMetaclass);
 	// create array metaclass wo expression code section
-	std::unique_ptr<EsScriptArrayObject> tmp( 
+	std::unique_ptr<EsScriptArrayObject> tmp(
 		new EsScriptArrayObject(
-			ctx, 
+			ctx,
 			ofMetaclass|ofFinal|ofArray,
-			EsScriptObjectDataBufferPtr(), 
-			EsScriptCodeSection::Ptr(), 
+			EsScriptObjectDataBufferPtr(),
+			EsScriptCodeSection::Ptr(),
 			itemMetaclass
-		) 
+		)
 	);
 	ES_ASSERT(tmp.get());
 	// install expression code section
@@ -52,7 +52,7 @@ EsScriptObjectIntf::Ptr EsScriptArrayObject::createMetaclass(const EsScriptConte
 
 	ES_ASSERT(expr);
 	tmp->m_expr = expr;
-	return tmp.release()->asBaseIntfPtrDirect(); 	
+	return tmp.release()->asBaseIntfPtrDirect();
 }
 
 ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::binBufferSet)(const EsBinBuffer& buff)
@@ -63,8 +63,8 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::binBufferSet)(const EsBinBuffer& 
 	// create temporary object, owning its own binary buffer
 	const EsScriptObjectDataBufferPtr& pbuff = EsScriptObjectDataBuffer::create();
 	EsScriptObjectIntf::Ptr tmp = internalClone(
-    nullptr, 
-    pbuff, 
+    nullptr,
+    pbuff,
     false
   );
 	ES_ASSERT(tmp);
@@ -76,7 +76,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::binBufferSet)(const EsBinBuffer& 
       )
     );
 	ES_ASSERT(pa);
-	
+
 	try
 	{
 		pa->m_directBinBufferAssignment = true;
@@ -90,7 +90,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::binBufferSet)(const EsBinBuffer& 
 		// rethrow
 		throw;
 	}
-	
+
 	EsBinBuffer::const_pointer pos = &buff[0];
 	if( tmp->internalBinBufferSet(pos, pos+buff.size()) )
 		copyFrom(tmp);
@@ -159,9 +159,9 @@ ulong EsScriptArrayObject::internalCountGet()
 	else
 	{
 		EsScriptValAccessorIntf::Ptr result = m_ctx->vm()->exec(
-      m_expr, 
+      m_expr,
       EsVariant::null(),
-			EsScriptMachine::EvalMode::evalExpr, 
+			EsScriptEvalMode::evalExpr,
       topNonProxyGet()
     );
 		ES_ASSERT(result);
@@ -230,7 +230,7 @@ ES_IMPL_INTF_METHOD(bool, EsScriptArrayObject::internalBinBufferSet)(EsBinBuffer
 			if( !item->internalBinBufferSet(pos, end) )
 				return false;
 		}
-	}	
+	}
 	return true;
 }
 
@@ -238,9 +238,9 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::internalUpdateLayout)(ulong offs)
 {
 	ES_ASSERT(!isMetaclass());
 
-	ESSCRIPT_OBJECT_TRACE4(esT("internalUpdateLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"), 
+	ESSCRIPT_OBJECT_TRACE4(esT("internalUpdateLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"),
 		typeNameGet().c_str(), offs, (m_flags & ofNeedUpdateLayout) ? esT("set") : esT("not set"))
-	
+
 	ulong localSize = 0;
 	size_t cnt = m_arr.size();
 	size_t newCnt = cnt;
@@ -257,7 +257,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::internalUpdateLayout)(ulong offs)
 		EsScriptObjectIntf::Ptr item = m_arr[idx];
 		item->internalUpdateLayout(offs+localSize);
 		localSize += item->sizeGet();
-	}		
+	}
 
 	if( cnt < newCnt )
 	{
@@ -267,7 +267,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::internalUpdateLayout)(ulong offs)
 		{
 			EsScriptObjectIntf::Ptr item = m_itemMetaclass->internalClone(this, m_data);
 			ES_ASSERT(item);
-			
+
       m_arr.push_back(item);
 			item->internalUpdateLayout(offs+localSize);
 			localSize += item->sizeGet();

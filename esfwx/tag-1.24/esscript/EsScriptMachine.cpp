@@ -12,7 +12,6 @@
 # pragma package(smart_init)
 #endif
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 // Script context implementation
 //
@@ -1212,17 +1211,12 @@ void EsScriptMachine::metaclassMemberVarDeclare(
 }
 //---------------------------------------------------------------------------
 
-EsScriptThreadContext* EsScriptMachine::threadCtxFindInternal(EsThreadId threadId) const
+EsScriptThreadContext::Ptr EsScriptMachine::threadCtxFindInternal(EsThreadId threadId) const
 {
   if( m_ctxCur && threadId == m_ctxCur->threadId() )
     return m_ctxCur;
 
-#ifdef ES_MODERN_CPP
-  auto cit
-#else
-  std::map<EsThreadId, EsScriptThreadContext*>::const_iterator cit
-#endif
-    = m_ctxs.find(threadId);
+  auto cit = m_ctxs.find(threadId);
 
   if( cit != m_ctxs.end() )
     return (*cit).second;
@@ -1231,7 +1225,7 @@ EsScriptThreadContext* EsScriptMachine::threadCtxFindInternal(EsThreadId threadI
 }
 //---------------------------------------------------------------------------
 
-EsScriptThreadContext* EsScriptMachine::threadCtxFind(EsThreadId threadId) const
+EsScriptThreadContext::Ptr EsScriptMachine::threadCtxFind(EsThreadId threadId) const
 {
   EsCriticalSectionLocker lock(m_cs);
   return threadCtxFindInternal(threadId);
@@ -1241,23 +1235,17 @@ EsScriptThreadContext* EsScriptMachine::threadCtxFind(EsThreadId threadId) const
 void EsScriptMachine::threadCtxRemove(EsThreadId threadId)
 {
   EsCriticalSectionLocker lock(m_cs);
-#ifdef ES_MODERN_CPP
-  auto it
-#else
-  std::map<EsThreadId, EsScriptThreadContext*>::iterator it
-#endif
-     = m_ctxs.find(threadId);
+  auto it = m_ctxs.find(threadId);
 
   if( it != m_ctxs.end() )
   {
     if( m_ctxCur && threadId == m_ctxCur->threadId() )
     {
       ESSCRIPT_MACHINE_TRACE2( esT("EsScriptMachine::threadCtxRemove: context 0x%08X cache nullified"), (int)threadId )
-      m_ctxCur = nullptr;
+      m_ctxCur.reset();
     }
 
     m_ctxs.erase(it);
-
     ESSCRIPT_MACHINE_TRACE2( esT("EsScriptMachine::threadCtxRemove: context 0x%08X removed"), (int)threadId )
   }
 }
@@ -1269,26 +1257,18 @@ void EsScriptMachine::threadCtxCleanup()
 
   EsCriticalSectionLocker lock(m_cs);
 
-  for(
-#ifdef ES_MODERN_CPP
-  auto it
-#else
-  std::map<EsThreadId, EsScriptThreadContext*>::iterator it
-#endif
-    = m_ctxs.begin(); it != m_ctxs.end(); )
+  for( auto it = m_ctxs.begin(); it != m_ctxs.end(); )
   {
-    EsScriptThreadContext* ctx = (*it).second;
+    EsScriptThreadContext::Ptr ctx = (*it).second;
     ES_ASSERT(ctx);
 
     if( !ctx->isExecuting() )
     {
       m_ctxs.erase(it++);
       if( m_ctxCur && m_ctxCur->threadId() == ctx->threadId() )
-        m_ctxCur = nullptr;
+        m_ctxCur.reset();
 
       ESSCRIPT_MACHINE_TRACE2( esT("EsScriptMachine::threadCtxCleanup: context 0x%08X removed"), (int)ctx->threadId() )
-
-      ES_DELETE(ctx);
     }
     else
       ++it;
@@ -1296,10 +1276,10 @@ void EsScriptMachine::threadCtxCleanup()
 }
 //---------------------------------------------------------------------------
 
-EsScriptThreadContext* EsScriptMachine::threadCtxGet(EsThreadId threadId)
+EsScriptThreadContext::Ptr EsScriptMachine::threadCtxGet(EsThreadId threadId)
 {
   EsCriticalSectionLocker lock(m_cs);
-  EsScriptThreadContext* ctx = threadCtxFindInternal(threadId);
+  EsScriptThreadContext::Ptr ctx = threadCtxFindInternal(threadId);
   if( ctx )
   {
     ESSCRIPT_MACHINE_TRACE2( esT("EsScriptMachine::threadCtxGet: Existing Thread context 0x%08X found"), (int)threadId )
@@ -1313,18 +1293,17 @@ EsScriptThreadContext* EsScriptMachine::threadCtxGet(EsThreadId threadId)
     return ctx;
   }
 
-  std::unique_ptr<EsScriptThreadContext> tmp(
+  EsScriptThreadContext::Ptr tmp(
     new EsScriptThreadContext(
       *this,
       threadId
     )
   );
   ES_ASSERT( tmp );
-
   ESSCRIPT_MACHINE_TRACE2( esT("EsScriptMachine::threadCtxGet: New Thread context 0x%08X created and is set current"), (int)threadId )
 
-  m_ctxs[threadId] = tmp.get();
-  m_ctxCur = tmp.release();
+  m_ctxs[threadId] = tmp;
+  m_ctxCur = tmp;
 
   return m_ctxCur;
 }
@@ -1334,24 +1313,7 @@ void EsScriptMachine::threadCtxsReset()
 {
   EsCriticalSectionLocker lock(m_cs);
 
-  m_ctxCur = nullptr;
-
-#ifdef ES_MODERN_CPP
-  for( auto &v: m_ctxs )
-  {
-
-#else
-  for( std::map<EsThreadId, EsScriptThreadContext*>::iterator it = m_ctxs.begin(); it != m_ctxs.end(); ++it )
-  {
-    std::map<EsThreadId, EsScriptThreadContext*>::value_type& v = (*it);
-
-#endif
-
-    ES_DELETE(
-      v.second
-    );
-  }
-
+  m_ctxCur.reset();
   m_ctxs.clear();
 
   ESSCRIPT_MACHINE_TRACE1( esT("EsScriptMachine::threadCtxsReset()") )
@@ -1361,11 +1323,11 @@ void EsScriptMachine::threadCtxsReset()
 EsScriptValAccessorIntf::Ptr EsScriptMachine::exec(
   const EsScriptCodeSection::Ptr& cs,
   const EsVariant& params,
-  EsScriptMachine::EvalMode evalMode,
+  EsScriptEvalMode evalMode,
   EsScriptObjectIntf* This
 )
 {
-  EsScriptThreadContext* ctx = threadCtxGet(
+  EsScriptThreadContext::Ptr ctx = threadCtxGet(
     EsThread::currentIdGet()
   );
   ES_ASSERT(ctx);
@@ -1384,7 +1346,7 @@ EsVariant EsScriptMachine::callGlobalMethod(
   const EsVariant& params
 )
 {
-  EsScriptThreadContext* ctx = threadCtxGet(
+  EsScriptThreadContext::Ptr ctx = threadCtxGet(
     EsThread::currentIdGet()
   );
   ES_ASSERT(ctx);
@@ -1403,7 +1365,7 @@ EsVariant EsScriptMachine::callGlobalMethod(
   const EsVariant& params
 )
 {
-  EsScriptThreadContext* ctx = threadCtxGet(
+  EsScriptThreadContext::Ptr ctx = threadCtxGet(
     EsThread::currentIdGet()
   );
   ES_ASSERT(ctx);
@@ -1422,7 +1384,7 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreateWithParameters(
   const EsVariant& params
 )
 {
-  EsScriptThreadContext* ctx = threadCtxGet(
+  EsScriptThreadContext::Ptr ctx = threadCtxGet(
     EsThread::currentIdGet()
   );
   ES_ASSERT(ctx);
@@ -1479,7 +1441,7 @@ EsVariant EsScriptMachine::exec()
   // rewind machine
   rewind();
 
-  EsScriptThreadContext* ctx = threadCtxGet(
+  EsScriptThreadContext::Ptr ctx = threadCtxGet(
     EsThread::currentIdGet()
   );
   ES_ASSERT(ctx);
@@ -1499,17 +1461,9 @@ EsVariant EsScriptMachine::call(const EsString& name)
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
     p0
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(1);
-
-  params.push_back(p0);
-#endif
 
   return callGlobalMethod(
     name,
@@ -1520,19 +1474,10 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0)
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
 		p0,
 		p1
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(2);
-
-  params.push_back(p0);
-	params.push_back(p1);
-#endif
 
   return callGlobalMethod(
     name,
@@ -1543,21 +1488,11 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
 		p0,
 		p1,
     p2
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(3);
-
-  params.push_back(p0);
-	params.push_back(p1);
-	params.push_back(p2);
-#endif
 
   return callGlobalMethod(
     name,
@@ -1568,23 +1503,12 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
 		p0,
 		p1,
     p2,
     p3
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(4);
-
-  params.push_back(p0);
-	params.push_back(p1);
-	params.push_back(p2);
-	params.push_back(p3);
-#endif
 
   return callGlobalMethod(
     name,
@@ -1595,7 +1519,6 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
 		p0,
 		p1,
@@ -1603,17 +1526,6 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
     p3,
     p4
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(5);
-
-  params.push_back(p0);
-	params.push_back(p1);
-	params.push_back(p2);
-	params.push_back(p3);
-	params.push_back(p4);
-#endif
 
   return callGlobalMethod(
     name,
@@ -1624,7 +1536,6 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4, const EsVariant& p5)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
 		p0,
 		p1,
@@ -1633,18 +1544,6 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
     p4,
     p5
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(6);
-
-  params.push_back(p0);
-	params.push_back(p1);
-	params.push_back(p2);
-	params.push_back(p3);
-	params.push_back(p4);
-	params.push_back(p5);
-#endif
 
   return callGlobalMethod(
     name,
@@ -1655,7 +1554,6 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4, const EsVariant& p5, const EsVariant& p6)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
 		p0,
 		p1,
@@ -1665,19 +1563,6 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
     p5,
     p6
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(7);
-
-  params.push_back(p0);
-	params.push_back(p1);
-	params.push_back(p2);
-	params.push_back(p3);
-	params.push_back(p4);
-	params.push_back(p5);
-	params.push_back(p6);
-#endif
 
   return callGlobalMethod(
     name,
@@ -1697,17 +1582,9 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name)
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array ps = {
 		p0
   };
-
-#else
-  EsVariant::Array ps;
-  ps.reserve(1);
-
-  ps.push_back(p0);
-#endif
 
   return objectCreateWithParameters(
     name,
@@ -1718,19 +1595,10 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array ps = {
 		p0,
 		p1
   };
-
-#else
-  EsVariant::Array ps;
-  ps.reserve(2);
-
-  ps.push_back(p0);
-	ps.push_back(p1);
-#endif
 
   return objectCreateWithParameters(
     name,
@@ -1741,21 +1609,11 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array ps = {
 		p0,
 		p1,
     p2
   };
-
-#else
-  EsVariant::Array ps;
-  ps.reserve(3);
-
-  ps.push_back(p0);
-	ps.push_back(p1);
-	ps.push_back(p2);
-#endif
 
   return objectCreateWithParameters(
     name,
@@ -1766,23 +1624,12 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array ps = {
 		p0,
 		p1,
     p2,
     p3
   };
-
-#else
-  EsVariant::Array ps;
-  ps.reserve(4);
-
-  ps.push_back(p0);
-	ps.push_back(p1);
-	ps.push_back(p2);
-	ps.push_back(p3);
-#endif
 
   return objectCreateWithParameters(
     name,
@@ -1793,7 +1640,6 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array ps = {
 		p0,
 		p1,
@@ -1801,17 +1647,6 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
     p3,
     p4
   };
-
-#else
-  EsVariant::Array ps;
-  ps.reserve(5);
-
-  ps.push_back(p0);
-	ps.push_back(p1);
-	ps.push_back(p2);
-	ps.push_back(p3);
-	ps.push_back(p4);
-#endif
 
   return objectCreateWithParameters(
     name,
@@ -1822,7 +1657,6 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4, const EsVariant& p5)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array ps = {
 		p0,
 		p1,
@@ -1832,22 +1666,9 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
     p5
   };
 
-#else
-  EsVariant::Array ps;
-  ps.reserve(6);
-
-  ps.push_back(p0);
-	ps.push_back(p1);
-	ps.push_back(p2);
-	ps.push_back(p3);
-	ps.push_back(p4);
-	ps.push_back(p5);
-#endif
-
   return objectCreateWithParameters(
     name,
     ps
   );
 }
 //---------------------------------------------------------------------------
-

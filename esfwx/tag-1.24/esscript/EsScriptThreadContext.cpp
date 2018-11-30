@@ -629,7 +629,7 @@ void EsScriptThreadContext::doConstructMemberAccessor(const EsScriptInstruction&
 
   const EsString& name = instr.nameGet();
   EsMemberRefType refType = instr.memberRefTypeGet();
-  
+
   EsScriptObjectIntf::Ptr obj;
   if( EsMemberRefType::mrFieldOrVar == refType)
   {
@@ -654,8 +654,8 @@ void EsScriptThreadContext::doConstructMemberAccessor(const EsScriptInstruction&
     acc = obj->variableFind(name, false);
   if(!acc)
 		EsScriptException::ThrowFieldOrMemberVarIsNotDeclared(
-      name, 
-      obj->typeNameGet(),	
+      name,
+      obj->typeNameGet(),
       instr.debugInfoGet()
     );
 
@@ -714,7 +714,7 @@ void EsScriptThreadContext::doAccessAttributeValue(const EsScriptInstruction& in
   if(obj)
   {
     // try active code section attributes first, if This is implied
-		if( 
+		if(
       iLoadThisAttributeVal == instr.opcode() &&
 			currentMethodGet()->attributesAccess()->attributeExists(name)
     )
@@ -816,7 +816,7 @@ void EsScriptThreadContext::doObjectMethodCall(
       EsScriptValAccessorIntf::Ptr ret = exec(
         method,
         params,
-        EsScriptMachine::EvalMode::evalFunc,
+        EsScriptEvalMode::evalFunc,
         sobj.get()
       );
 
@@ -873,7 +873,7 @@ void EsScriptThreadContext::doCallGlobalMethod(
   EsScriptValAccessorIntf::Ptr ret = exec(
     method,
     params,
-    EsScriptMachine::EvalMode::evalFunc,
+    EsScriptEvalMode::evalFunc,
     nullptr
   );
 
@@ -1391,8 +1391,8 @@ void EsScriptThreadContext::doLogicCheck(EsScriptInstructions::const_iterator& i
 
   EsScriptValAccessorIntf::Ptr check = m_csScope->stackPop();
   bool isTrue = check->get().asBool();
-  
-  if( 
+
+  if(
     (opidLogAnd == opid && !isTrue) ||
     (opidLogOr == opid && isTrue)
   )
@@ -1422,7 +1422,7 @@ bool EsScriptThreadContext::doJump(EsScriptInstructions::const_iterator& instr)
     ES_ASSERT(m_csScope);
 
     bool isTrue = m_csScope->stackPop()->get().asBool();
-    
+
   	handleJump = (iJumpFalse == opcode) ?
       !isTrue :
       isTrue;
@@ -1524,7 +1524,7 @@ void EsScriptThreadContext::methodSetCurrent(const EsScriptCodeSection::Ptr& cod
 EsScriptValAccessorIntf::Ptr EsScriptThreadContext::exec(
   const EsScriptCodeSection* pcs,
   const EsVariant& params,
-  EsScriptMachine::EvalMode evalMode,
+  EsScriptEvalMode evalMode,
   EsScriptObjectIntf* This
 )
 {
@@ -1555,7 +1555,7 @@ EsScriptValAccessorIntf::Ptr EsScriptThreadContext::exec(
   );
 
   if(
-    EsScriptMachine::evalExpr == evalMode &&
+    EsScriptEvalMode::evalExpr == evalMode &&
     !scope.stackIsEmpty()
   )
     section->resultSet(
@@ -1574,7 +1574,7 @@ EsVariant EsScriptThreadContext::exec()
 	EsScriptValAccessorIntf::Ptr result = exec(
     m_activeCode,
     EsVariant::null(),
-    EsScriptMachine::EvalMode::evalExpr,
+    EsScriptEvalMode::evalExpr,
     nullptr
   );
 
@@ -1598,7 +1598,7 @@ EsVariant EsScriptThreadContext::callGlobalMethod(const EsMethodInfoKeyT& key, c
 	EsScriptValAccessorIntf::Ptr result = exec(
     method,
     params,
-    EsScriptMachine::EvalMode::evalFunc,
+    EsScriptEvalMode::evalFunc,
     nullptr
   );
   ES_ASSERT(result);
@@ -1704,7 +1704,7 @@ public:
 			vm.exec(
         ctr.second,
         params,
-        EsScriptMachine::EvalMode::evalFunc,
+        EsScriptEvalMode::evalFunc,
         ctr.first
       );
     }
@@ -1725,7 +1725,7 @@ EsReflectedClassIntf::Ptr EsScriptThreadContext::objectCreateWithParameters(
   if(info)
   {
 		EsReflectedClassIntf::Ptr result = info->classCallMethod(
-      EsStdNames::reflectedCtr(), 
+      EsStdNames::reflectedCtr(),
       params
     ).asExistingObject();
 

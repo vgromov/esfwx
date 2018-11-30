@@ -55,13 +55,6 @@ protected:
 class ESSCRIPT_CLASS EsScriptMachine
 {
 public:
-	/// Expressions evaluation modes for exec()
-	enum EvalMode
-	{
-		evalExpr,
-		evalFunc
-	};
-
 	// compound field helper struct
 	struct CompoundFieldCreationResult
 	{
@@ -359,7 +352,7 @@ protected:
   EsScriptValAccessorIntf::Ptr exec(
     const EsScriptCodeSection::Ptr& cs,
     const EsVariant& params,
-    EvalMode evalMode,
+    EsScriptEvalMode evalMode,
     EsScriptObjectIntf* This
   );
 
@@ -416,7 +409,7 @@ protected:
   /// Find thread context for thread ID. If not found, nullptr is returned,
   /// otherwise, return pointer to existing EsScriptThreadContext instance.
   ///
-  EsScriptThreadContext* threadCtxFind(EsThreadId threadId) const;
+  EsScriptThreadContext::Ptr threadCtxFind(EsThreadId threadId) const;
 
   /// Remove thread context by thread ID. If it was cached,
   /// nullify cache as well.
@@ -426,11 +419,11 @@ protected:
   /// Return thread context for thread ID, create new one, if one does not exist,
   /// or find and get an existing one, making it cached.
   ///
-  EsScriptThreadContext* threadCtxGet(EsThreadId threadId);
+  EsScriptThreadContext::Ptr threadCtxGet(EsThreadId threadId);
 
 private:
   /// Non-interlocked context finder version, for internal use only
-  EsScriptThreadContext* threadCtxFindInternal(EsThreadId threadId) const;
+  EsScriptThreadContext::Ptr threadCtxFindInternal(EsThreadId threadId) const;
 
   /// Reset thread contexts
   void threadCtxsReset();
@@ -493,9 +486,9 @@ protected:
 	EsScriptHost m_host;
 
   /// Thread contexts map
-  std::map<EsThreadId, EsScriptThreadContext*> m_ctxs;
+  std::map<EsThreadId, EsScriptThreadContext::Ptr> m_ctxs;
   /// Current thread context. Kind of cached thread context
-  mutable EsScriptThreadContext* m_ctxCur;
+  mutable EsScriptThreadContext::Ptr m_ctxCur;
 
   /// Execution and abortion flags
   volatile bool m_abort;
