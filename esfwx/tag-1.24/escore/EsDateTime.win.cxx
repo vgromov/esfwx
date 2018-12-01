@@ -6,12 +6,12 @@
 
 static esDT internalNow()
 {
-	esDT _now;
-	SYSTEMTIME st;
-	::GetLocalTime(&st);
-	dtComposeDateTime(&_now, st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
+  esDT _now;
+  SYSTEMTIME st;
+  ::GetLocalTime(&st);
+  dtComposeDateTime(&_now, st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
 
-	return _now;
+  return _now;
 }
 
 EsTimeSpan EsDateTime::bias()

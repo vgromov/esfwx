@@ -36,9 +36,9 @@ ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsFtdiDriver, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO(    EsFtdiDriver, unloadStatic, unload, void_ClassCall, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsFtdiDriver, libraryVersionGet, EsVariant_ClassCall, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO(    EsFtdiDriver, isOkStatic, isOk, EsVariant_ClassCall, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsFtdiDriver, statusStringGet, EsString_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsFtdiDriver, statusCheck, bool_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsFtdiDriver, statusCheckThrow, void_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsFtdiDriver, statusStringGet, EsString_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsFtdiDriver, statusCheck, bool_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsFtdiDriver, statusCheckThrow, void_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsFtdiDriver, deviceCreate, EsVariant_ClassCall_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
 ES_DECL_REFLECTED_SERVICES_INFO_END
 
@@ -52,29 +52,29 @@ ID(0),
 LocId(0),
 ftHandle(0)
 {
-	memset(SerialNumber, 0, sizeof(SerialNumber));
-	memset(Description, 0, sizeof(Description));
+  memset(SerialNumber, 0, sizeof(SerialNumber));
+  memset(Description, 0, sizeof(Description));
 }
 //---------------------------------------------------------------------------
 
 EsString EsFtdiDriver::FT_DEVICE_LIST_INFO_NODE::serialNumberStrGet() const
 {
-	EsByteString bs(SerialNumber, esBstrnlen(SerialNumber, sizeof(SerialNumber)) );
-	return EsString::fromUtf8(bs);
+  EsByteString bs(SerialNumber, esBstrnlen(SerialNumber, sizeof(SerialNumber)) );
+  return EsString::fromUtf8(bs);
 }
 //---------------------------------------------------------------------------
 
 EsString EsFtdiDriver::FT_DEVICE_LIST_INFO_NODE::descriptionStrGet() const
 {
-	EsByteString bs(Description, esBstrnlen(Description, sizeof(Description)) );
-	return EsString::fromUtf8(bs);
+  EsByteString bs(Description, esBstrnlen(Description, sizeof(Description)) );
+  return EsString::fromUtf8(bs);
 }
 //---------------------------------------------------------------------------
 
 bool EsFtdiDriver::FT_DEVICE_LIST_INFO_NODE::mpsseSupported() const
 {
-	switch(Type)
-	{
+  switch(Type)
+  {
   case DEVICE_2232C:
     if((LocId & 0xf)==1)
       return true;
@@ -86,7 +86,7 @@ bool EsFtdiDriver::FT_DEVICE_LIST_INFO_NODE::mpsseSupported() const
       return true;
   case DEVICE_232H:
     return true;
-	}
+  }
 
   return false;
 }
@@ -97,8 +97,8 @@ esU32 EsFtdiDriver::FT_DEVICE_LIST_INFO_NODE::mpsseChannelsCntGet() const
   if( !mpsseSupported() )
     return 0;
 
-	switch(Type)
-	{
+  switch(Type)
+  {
   case DEVICE_2232C:
     return 1;
   case DEVICE_2232H:
@@ -107,7 +107,7 @@ esU32 EsFtdiDriver::FT_DEVICE_LIST_INFO_NODE::mpsseChannelsCntGet() const
     return 2;
   case DEVICE_232H:
     return 1;
-	}
+  }
 
   return 0;
 }
@@ -149,16 +149,16 @@ EsFtdiDriver& EsFtdiDriver::instanceGet()
 
 bool EsFtdiDriver::isOk() const
 {
-	EsCriticalSectionLocker lock(m_cs);
-	return m_drv && m_drv->isOk();
+  EsCriticalSectionLocker lock(m_cs);
+  return m_drv && m_drv->isOk();
 }
 //---------------------------------------------------------------------------
 
 bool EsFtdiDriver::internalLoad()
 {
-	if( !m_drv )
+  if( !m_drv )
   {
-		m_drv =
+    m_drv =
 #if ES_OS == ES_OS_WINDOWS
     EsDynamicLibrary::load(esT("ftd2xx.dll"), false);
 #elif ES_OS == ES_OS_MAC
@@ -206,15 +206,15 @@ bool EsFtdiDriver::internalLoad()
     }
   }
 
-	if( !m_drv )
-	{
-		if( m_doThrow )
-			EsException::Throw(
+  if( !m_drv )
+  {
+    if( m_doThrow )
+      EsException::Throw(
         _("FTDI device driver is not found or not installed on this device")
       );
 
     return false;
-	}
+  }
 
   return true;
 }
@@ -247,8 +247,8 @@ EsFtdiDeviceIntf::Ptr EsFtdiDriver::deviceCreate( EsFtdiDeviceKind kind, const E
 
 bool EsFtdiDriver::internalCheckLoaded()
 {
-	if( !m_drv )
-		return internalLoad();
+  if( !m_drv )
+    return internalLoad();
 
   return true;
 }
@@ -260,94 +260,94 @@ void EsFtdiDriver::internalUnload()
   {
     //TODO: Signal existing FTDI device objects, that driver is shut down
   }
-	m_drv.reset();
+  m_drv.reset();
 }
 //---------------------------------------------------------------------------
 
 bool EsFtdiDriver::load(bool doThrow /*= true*/)
 {
-	EsCriticalSectionLocker lock(m_cs);
-	m_doThrow = doThrow;
+  EsCriticalSectionLocker lock(m_cs);
+  m_doThrow = doThrow;
 
-	return internalLoad();
+  return internalLoad();
 }
 //---------------------------------------------------------------------------
 
 void EsFtdiDriver::unload()
 {
-	EsCriticalSectionLocker lock(m_cs);
+  EsCriticalSectionLocker lock(m_cs);
 
-	internalUnload();
+  internalUnload();
 }
 //---------------------------------------------------------------------------
 
 EsString EsFtdiDriver::statusStringGet( cr_EsVariant stat )
 {
-	EsString result;
-	switch( stat.asInt() )
-	{
-	case EsFtdiDeviceIntf::FT_OK:
-		result = _("Success");
-		break;
-	case EsFtdiDeviceIntf::FT_INVALID_HANDLE:
-		result = _("Invalid handle");
-		break;
-	case EsFtdiDeviceIntf::FT_DEVICE_NOT_FOUND:
-		result = _("Device is not found");
-		break;
-	case EsFtdiDeviceIntf::FT_DEVICE_NOT_OPENED:
-		result = _("Device is not open");
+  EsString result;
+  switch( stat.asInt() )
+  {
+  case EsFtdiDeviceIntf::FT_OK:
+    result = _("Success");
+    break;
+  case EsFtdiDeviceIntf::FT_INVALID_HANDLE:
+    result = _("Invalid handle");
+    break;
+  case EsFtdiDeviceIntf::FT_DEVICE_NOT_FOUND:
+    result = _("Device is not found");
+    break;
+  case EsFtdiDeviceIntf::FT_DEVICE_NOT_OPENED:
+    result = _("Device is not open");
     break;
   case EsFtdiDeviceIntf::FT_IO_ERROR:
-		result = _("Driver input-output error");
-		break;
-	case EsFtdiDeviceIntf::FT_INSUFFICIENT_RESOURCES:
-		result = _("Insufficient resources");
-		break;
-	case EsFtdiDeviceIntf::FT_INVALID_PARAMETER:
-		result = _("Invalid parameter");
-		break;
-	case EsFtdiDeviceIntf::FT_INVALID_BAUD_RATE:
-		result = _("Invalid baud rate");
-		break;
-	case EsFtdiDeviceIntf::FT_DEVICE_NOT_OPENED_FOR_ERASE:
-		result = _("Device not open for erase");
-		break;
-	case EsFtdiDeviceIntf::FT_DEVICE_NOT_OPENED_FOR_WRITE:
-		result = _("Device not open for write");
-		break;
-	case EsFtdiDeviceIntf::FT_FAILED_TO_WRITE_DEVICE:
-		result = _("Failed to write device");
-		break;
-	case EsFtdiDeviceIntf::FT_EEPROM_READ_FAILED:
-		result = _("Device EEPROM read failed");
-		break;
-	case EsFtdiDeviceIntf::FT_EEPROM_WRITE_FAILED:
-		result = _("Device EEPROM write failed");
-		break;
-	case EsFtdiDeviceIntf::FT_EEPROM_ERASE_FAILED:
-		result = _("Device EEPROM erase failed");
-		break;
-	case EsFtdiDeviceIntf::FT_EEPROM_NOT_PRESENT:
-		result = _("EEPROM not present in device");
-		break;
-	case EsFtdiDeviceIntf::FT_EEPROM_NOT_PROGRAMMED:
-		result = _("Device EEPROM not programmed");
-		break;
-	case EsFtdiDeviceIntf::FT_INVALID_ARGS:
-		result = _("Invalid arguments");
-		break;
-	case EsFtdiDeviceIntf::FT_NOT_SUPPORTED:
-		result = _("Operation not supported");
-		break;
-	case EsFtdiDeviceIntf::FT_OTHER_ERROR:
-		result = _("Unknown FTDI device error");
-		break;
-	default:
-		result = _("Unknown FTDI status.");
-	}
+    result = _("Driver input-output error");
+    break;
+  case EsFtdiDeviceIntf::FT_INSUFFICIENT_RESOURCES:
+    result = _("Insufficient resources");
+    break;
+  case EsFtdiDeviceIntf::FT_INVALID_PARAMETER:
+    result = _("Invalid parameter");
+    break;
+  case EsFtdiDeviceIntf::FT_INVALID_BAUD_RATE:
+    result = _("Invalid baud rate");
+    break;
+  case EsFtdiDeviceIntf::FT_DEVICE_NOT_OPENED_FOR_ERASE:
+    result = _("Device not open for erase");
+    break;
+  case EsFtdiDeviceIntf::FT_DEVICE_NOT_OPENED_FOR_WRITE:
+    result = _("Device not open for write");
+    break;
+  case EsFtdiDeviceIntf::FT_FAILED_TO_WRITE_DEVICE:
+    result = _("Failed to write device");
+    break;
+  case EsFtdiDeviceIntf::FT_EEPROM_READ_FAILED:
+    result = _("Device EEPROM read failed");
+    break;
+  case EsFtdiDeviceIntf::FT_EEPROM_WRITE_FAILED:
+    result = _("Device EEPROM write failed");
+    break;
+  case EsFtdiDeviceIntf::FT_EEPROM_ERASE_FAILED:
+    result = _("Device EEPROM erase failed");
+    break;
+  case EsFtdiDeviceIntf::FT_EEPROM_NOT_PRESENT:
+    result = _("EEPROM not present in device");
+    break;
+  case EsFtdiDeviceIntf::FT_EEPROM_NOT_PROGRAMMED:
+    result = _("Device EEPROM not programmed");
+    break;
+  case EsFtdiDeviceIntf::FT_INVALID_ARGS:
+    result = _("Invalid arguments");
+    break;
+  case EsFtdiDeviceIntf::FT_NOT_SUPPORTED:
+    result = _("Operation not supported");
+    break;
+  case EsFtdiDeviceIntf::FT_OTHER_ERROR:
+    result = _("Unknown FTDI device error");
+    break;
+  default:
+    result = _("Unknown FTDI status.");
+  }
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
@@ -367,21 +367,21 @@ static void ftdiErrorThrow(int error)
 
 EsFtdiDriver::DeviceList EsFtdiDriver::deviceListGet(bool onlyOpened /*= true*/)
 {
-	DeviceList result;
-	esU32 devCnt = 0;
-	EsCriticalSectionLocker lock(m_cs);
+  DeviceList result;
+  esU32 devCnt = 0;
+  EsCriticalSectionLocker lock(m_cs);
 
-	// Request device count & create device list
-	if(
+  // Request device count & create device list
+  if(
     statusCheck(
       internalCreateDeviceInfoList(&devCnt)
     ) &&
     devCnt
   )
-	{
-		// Request device list
-		result.resize(devCnt);
-		statusCheck(
+  {
+    // Request device list
+    result.resize(devCnt);
+    statusCheck(
       internalGetDeviceInfoList(
         &result[0],
         &devCnt
@@ -390,9 +390,9 @@ EsFtdiDriver::DeviceList EsFtdiDriver::deviceListGet(bool onlyOpened /*= true*/)
 
     m_devInfos = result;
 
-		// Remove opened devices from list
+    // Remove opened devices from list
     if( onlyOpened )
-		{
+    {
       auto new_end = std::remove_if(
         result.begin(),
         result.end(),
@@ -402,9 +402,9 @@ EsFtdiDriver::DeviceList EsFtdiDriver::deviceListGet(bool onlyOpened /*= true*/)
       );
       result.erase(new_end, result.end());
     }
-	}
+  }
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
@@ -547,7 +547,7 @@ EsVariant EsFtdiDriver::isOkStatic()
 
 bool EsFtdiDriver::statusCheck(cr_EsVariant stat)
 {
-	if( stat.asInt() != EsFtdiDeviceIntf::FT_OK )
+  if( stat.asInt() != EsFtdiDeviceIntf::FT_OK )
   {
     if( instanceGet().m_doThrow )
       statusCheckThrow(stat);
@@ -561,7 +561,7 @@ bool EsFtdiDriver::statusCheck(cr_EsVariant stat)
 
 void EsFtdiDriver::statusCheckThrow(cr_EsVariant stat)
 {
-	if( stat.asInt() != EsFtdiDeviceIntf::FT_OK )
+  if( stat.asInt() != EsFtdiDeviceIntf::FT_OK )
     ftdiErrorThrow(
       stat.asInt()
     );

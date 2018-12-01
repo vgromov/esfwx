@@ -9,7 +9,7 @@ EsAtomic::int_t EsAtomic::inc(EsAtomic::int_t& subj) ES_NOTHROW
 # error EsAtomic::inc not implemented!
 #endif
 
-	return ++subj;
+  return ++subj;
 }
 //---------------------------------------------------------------------------
 
@@ -21,6 +21,6 @@ EsAtomic::int_t EsAtomic::dec(EsAtomic::int_t& subj) ES_NOTHROW
 # error EsAtomic::dec not implemented!
 #endif
 
-	return --subj;
+  return --subj;
 }
 //---------------------------------------------------------------------------

@@ -26,30 +26,30 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsMathArrayReal, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, multiply_inplace, void_Call_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, divide, EsVariant_Call_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, divide_inplace, void_Call_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, countGet, ulong_CallConst, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, countSet, void_Call_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, itemGet, double_CallConst_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, itemSet, void_Call_ulong_double, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, countGet, ulong_CallConst, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, countSet, void_Call_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, itemGet, double_CallConst_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, itemSet, void_Call_ulong_double, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU8buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI8buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU16buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI16buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU32buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI32buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromFloatBuffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromDoubleBuffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
- 	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU8buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI8buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU16buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI16buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU32buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI32buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromFloatBuffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromDoubleBuffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI8buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU16buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI16buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU32buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI32buffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromFloatBuffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromDoubleBuffer, bool_Call_cr_EsBinBuffer, NO_METHOD_DESCR)
+   ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU8buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI8buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU16buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI16buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromU32buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromI32buffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromFloatBuffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, fromDoubleBuffer, bool_Call_cr_EsBinBuffer_double_double_bool_bool, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, asString, EsString_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, streamRead, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, streamWrite, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
-	// Reflected properties
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, streamRead, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(      EsMathArrayReal, streamWrite, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
+  // Reflected properties
   ES_DECL_PROP_INFO(                      EsMathArrayReal, dirty, bool, NO_PROPERTY_LABEL, true, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(                   EsMathArrayReal, empty, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(                   EsMathArrayReal, min, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
@@ -59,18 +59,18 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsMathArrayReal, NO_CLASS_DESCR)
   ES_DECL_PROP_INFO_RO(                   EsMathArrayReal, total, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO(                      EsMathArrayReal, count, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO(                      EsMathArrayReal, items, EsVariant, NO_PROPERTY_LABEL, EsVariant(EsVariant::VAR_VARIANT_COLLECTION), NO_PROPERTY_DESCR)
-	// Constructors
-	ES_DECL_REFLECTED_CTOR_INFO(            EsMathArrayReal, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CTOR_INFO(            EsMathArrayReal, EsBaseIntfPtr_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  // Constructors
+  ES_DECL_REFLECTED_CTOR_INFO(            EsMathArrayReal, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(            EsMathArrayReal, EsBaseIntfPtr_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   // Pseudo-constructors
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromU8buffer,     EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromI8buffer,     EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromU16buffer,    EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromI16buffer,    EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromU32buffer,    EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromI32buffer,    EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromFloatBuffer,  EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromDoubleBuffer, EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromI8buffer,     EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromU16buffer,    EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromI16buffer,    EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromU32buffer,    EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromI32buffer,    EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromFloatBuffer,  EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsMathArrayReal, newFromDoubleBuffer, EsBaseIntfPtr_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
@@ -82,16 +82,16 @@ m_minIdx(0),
 m_maxIdx(0),
 m_total(0)
 {
-	m_pimpl = new alglib::real_1d_array;
-	ES_ASSERT(m_pimpl);
+  m_pimpl = new alglib::real_1d_array;
+  ES_ASSERT(m_pimpl);
 
-	if( size && data )
-		dataSet(size, data);
-	else if( size && 0 == data )
-	{
-		countSet( size );
-		fill(0);
-	}
+  if( size && data )
+    dataSet(size, data);
+  else if( size && 0 == data )
+  {
+    countSet( size );
+    fill(0);
+  }
 }
 //---------------------------------------------------------------------------
 
@@ -102,17 +102,17 @@ m_minIdx(0),
 m_maxIdx(0),
 m_total(0)
 {
-	m_pimpl = new alglib::real_1d_array;
-	ES_ASSERT(m_pimpl);
+  m_pimpl = new alglib::real_1d_array;
+  ES_ASSERT(m_pimpl);
 
-	copy(src);
+  copy(src);
 }
 //---------------------------------------------------------------------------
 
 EsMathArrayReal::~EsMathArrayReal()
 {
-	delete (alglib::real_1d_array*)m_pimpl;
-	m_pimpl = 0;
+  delete (alglib::real_1d_array*)m_pimpl;
+  m_pimpl = 0;
 }
 //---------------------------------------------------------------------------
 
@@ -132,7 +132,7 @@ void EsMathArrayReal::set_dirty(const bool& dirty)
 /// emptiness check
 bool EsMathArrayReal::get_empty() const
 {
-	return 0 == countGet();
+  return 0 == countGet();
 }
 //---------------------------------------------------------------------------
 
@@ -145,22 +145,22 @@ ulong EsMathArrayReal::get_count() const
 
 void EsMathArrayReal::set_count(const ulong& newCount)
 {
-	ES_ASSERT(m_pimpl);
-	countSet( newCount );
+  ES_ASSERT(m_pimpl);
+  countSet( newCount );
 }
 //---------------------------------------------------------------------------
 
 /// fill array with specified value
 void EsMathArrayReal::fill(double val)
 {
-	ES_ASSERT(m_pimpl);
-	double* pos = dataAccess();
-	double* end = pos+countGet();
+  ES_ASSERT(m_pimpl);
+  double* pos = dataAccess();
+  double* end = pos+countGet();
 
-	while(pos < end)
-		*pos++ = val;
+  while(pos < end)
+    *pos++ = val;
 
-	set_dirty(true);
+  set_dirty(true);
 }
 //---------------------------------------------------------------------------
 
@@ -168,8 +168,8 @@ EsMathArrayReal* EsMathArrayReal::fromVariant(const EsVariant& in)
 {
   if( in.isObject() )
   {
-    EsReflectedClassIntf::Ptr obj	= in.asObject();
-		if( obj && obj->isKindOf(esT("EsMathArrayReal")) )
+    EsReflectedClassIntf::Ptr obj  = in.asObject();
+    if( obj && obj->isKindOf(esT("EsMathArrayReal")) )
     {
       EsBaseIntfPtr base = obj;
       ES_ASSERT(base);
@@ -403,18 +403,18 @@ EsString EsMathArrayReal::asString(const EsString& fmt, const EsString& sep) con
 
 void EsMathArrayReal::streamWrite(cr_EsBaseIntfPtr p)
 {
-	EsStreamIntf::Ptr stream = p;
-	ES_ASSERT(stream);
+  EsStreamIntf::Ptr stream = p;
+  ES_ASSERT(stream);
 
   const EsVariant& items = get_items();
-	stream->valueWrite( items );
+  stream->valueWrite( items );
 }
 //---------------------------------------------------------------------------
 
 void EsMathArrayReal::streamRead(cr_EsBaseIntfPtr p)
 {
-	EsStreamIntf::Ptr stream = p;
-	ES_ASSERT(stream);
+  EsStreamIntf::Ptr stream = p;
+  ES_ASSERT(stream);
 
   const EsVariant& items = stream->valueRead();
   set_items(items);
@@ -490,106 +490,106 @@ EsVariant EsMathArrayReal::get_items() const
 ///
 void EsMathArrayReal::countSet(ulong newSize)
 {
-	if( get_count() != newSize )
-	{
+  if( get_count() != newSize )
+  {
     ES_ALGLIB_TRY
-		((alglib::real_1d_array*)m_pimpl)->setlength(newSize);
-		set_dirty(true);
+    ((alglib::real_1d_array*)m_pimpl)->setlength(newSize);
+    set_dirty(true);
     ES_ALGLIB_CATCH
-	}
+  }
 }
 //---------------------------------------------------------------------------
 
 ulong EsMathArrayReal::countGet() const
 {
-	ES_ASSERT(m_pimpl);
-	return static_cast<ulong>(((const alglib::real_1d_array*)m_pimpl)->length());
+  ES_ASSERT(m_pimpl);
+  return static_cast<ulong>(((const alglib::real_1d_array*)m_pimpl)->length());
 }
 //---------------------------------------------------------------------------
 
 /// minimax access
 ulong EsMathArrayReal::get_minIdx() const
 {
-	const_cast<EsMathArrayReal*>(this)->minimaxRecalc();
-	return m_minIdx;
+  const_cast<EsMathArrayReal*>(this)->minimaxRecalc();
+  return m_minIdx;
 }
 //---------------------------------------------------------------------------
 
 ulong EsMathArrayReal::get_maxIdx() const
 {
-	const_cast<EsMathArrayReal*>(this)->minimaxRecalc();
+  const_cast<EsMathArrayReal*>(this)->minimaxRecalc();
   return m_maxIdx;
 }
 //---------------------------------------------------------------------------
 
 double EsMathArrayReal::get_total() const
 {
-	const_cast<EsMathArrayReal*>(this)->minimaxRecalc();
+  const_cast<EsMathArrayReal*>(this)->minimaxRecalc();
   return m_total;
 }
 //---------------------------------------------------------------------------
 
 double EsMathArrayReal::get_min() const
 {
-	return itemGet(get_minIdx());
+  return itemGet(get_minIdx());
 }
 //---------------------------------------------------------------------------
 
 double EsMathArrayReal::get_max() const
 {
-	return itemGet(get_maxIdx());
+  return itemGet(get_maxIdx());
 }
 //---------------------------------------------------------------------------
 
 /// indexed item acess operators
 double EsMathArrayReal::itemGet(ulong idx) const
 {
-	ES_ASSERT(idx < get_count());
-	return ((const alglib::real_1d_array*)m_pimpl)->operator[](idx);
+  ES_ASSERT(idx < get_count());
+  return ((const alglib::real_1d_array*)m_pimpl)->operator[](idx);
 }
 //---------------------------------------------------------------------------
 
 void EsMathArrayReal::itemSet(ulong idx, double val)
 {
-	ES_ASSERT(idx < get_count());
-	((alglib::real_1d_array*)m_pimpl)->operator[](idx) = val;
-	set_dirty(true);
+  ES_ASSERT(idx < get_count());
+  ((alglib::real_1d_array*)m_pimpl)->operator[](idx) = val;
+  set_dirty(true);
 }
 //---------------------------------------------------------------------------
 
 /// minimax recalculation
 void EsMathArrayReal::minimaxRecalc()
 {
-	if( m_needRecalc )
-	{
+  if( m_needRecalc )
+  {
     m_total = 0;
-		m_minIdx = m_maxIdx = 0;
-		if( !get_empty() )
-		{
-			double min = itemGet(0);
-			double max = min;
+    m_minIdx = m_maxIdx = 0;
+    if( !get_empty() )
+    {
+      double min = itemGet(0);
+      double max = min;
       m_total = min;
-			for(ulong idx = 1; idx < get_count(); ++idx)
-			{
-				double x = itemGet(idx);
-				if( max < x )
-				{
-					max = x;
-					m_maxIdx = idx;
-				}
+      for(ulong idx = 1; idx < get_count(); ++idx)
+      {
+        double x = itemGet(idx);
+        if( max < x )
+        {
+          max = x;
+          m_maxIdx = idx;
+        }
 
-				if( min > x )
-				{
-					min = x;
-					m_minIdx = idx;
-				}
+        if( min > x )
+        {
+          min = x;
+          m_minIdx = idx;
+        }
 
         m_total += x;
-			}
-		}
+      }
+    }
 
-		m_needRecalc = false;
-	}
+    m_needRecalc = false;
+  }
 }
 //---------------------------------------------------------------------------
 
@@ -602,28 +602,28 @@ void EsMathArrayReal::clear()
 
 EsBaseIntfPtr EsMathArrayReal::clone() const
 {
-	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal(*this) );
+  std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal(*this) );
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathArrayReal::baseIntfPtrCreate(cr_EsVariant src, EsMathArrayReal** outp)
 {
-	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
+  std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
 
- 	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+   ES_ASSERT(p.get());
+  p->m_dynamic = true;
   if( !src.isEmpty() )
     p->set_items(src);
 
   if( outp )
     *outp = p.get();
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -648,146 +648,146 @@ EsBaseIntfPtr EsMathArrayReal::NEW(cr_EsVariant src)
 
 EsBaseIntfPtr EsMathArrayReal::newFromU8buffer(const EsBinBuffer& src)
 {
-	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
+  std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
   fromBuffer<esU8>(p.get(), src, true);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathArrayReal::newFromI8buffer(const EsBinBuffer& src)
 {
-	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
+  std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
   fromBuffer<esI8>(p.get(), src, true);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathArrayReal::newFromU16buffer(const EsBinBuffer& src)
 {
-	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
+  std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
   fromBuffer<esU16>(p.get(), src, true);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathArrayReal::newFromI16buffer(const EsBinBuffer& src)
 {
-	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
+  std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
   fromBuffer<esI16>(p.get(), src, true);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathArrayReal::newFromU32buffer(const EsBinBuffer& src)
 {
-	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
+  std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
   fromBuffer<esU32>(p.get(), src, true);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathArrayReal::newFromI32buffer(const EsBinBuffer& src)
 {
-	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
+  std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
   fromBuffer<esI32>(p.get(), src, true);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathArrayReal::newFromFloatBuffer(const EsBinBuffer& src)
 {
-	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
+  std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
   fromBuffer<float>(p.get(), src, true);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathArrayReal::newFromDoubleBuffer(const EsBinBuffer& src)
 {
-	std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
+  std::unique_ptr<EsMathArrayReal> p( new EsMathArrayReal );
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
   fromBuffer<double>(p.get(), src, true);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 const double* EsMathArrayReal::dataGet() const
 {
-	if( !get_empty() )
-		return ((const alglib::real_1d_array*)m_pimpl)->getcontent();
+  if( !get_empty() )
+    return ((const alglib::real_1d_array*)m_pimpl)->getcontent();
 
-	return nullptr;
+  return nullptr;
 }
 //---------------------------------------------------------------------------
 
 double* EsMathArrayReal::dataAccess()
 {
-	if( !get_empty() )
-		return ((alglib::real_1d_array*)m_pimpl)->getcontent();
+  if( !get_empty() )
+    return ((alglib::real_1d_array*)m_pimpl)->getcontent();
 
-	return nullptr;
+  return nullptr;
 }
 //---------------------------------------------------------------------------
 
 void EsMathArrayReal::dataSet(ulong size, const double* data)
 {
-	ES_ASSERT(m_pimpl);
-	((alglib::real_1d_array*)m_pimpl)->setcontent(size, data);
-	set_dirty(true);
+  ES_ASSERT(m_pimpl);
+  ((alglib::real_1d_array*)m_pimpl)->setcontent(size, data);
+  set_dirty(true);
 }
 //---------------------------------------------------------------------------
 
 /// assignment operator
 EsMathArrayReal& EsMathArrayReal::operator=(const EsMathArrayReal& src)
 {
-	copy(src);
-	return *this;
+  copy(src);
+  return *this;
 }
 //---------------------------------------------------------------------------
 
 void EsMathArrayReal::copy(const EsMathArrayReal& src)
 {
-	if( &src != this )
-	{
-		alglibCastFromArray(*this).setcontent( src.get_count(),
-		alglibCastFromArray(src).getcontent() );
+  if( &src != this )
+  {
+    alglibCastFromArray(*this).setcontent( src.get_count(),
+    alglibCastFromArray(src).getcontent() );
 
-		m_needRecalc = src.m_needRecalc;
-		m_minIdx = src.m_minIdx;
-		m_maxIdx = src.m_maxIdx;
+    m_needRecalc = src.m_needRecalc;
+    m_minIdx = src.m_minIdx;
+    m_maxIdx = src.m_maxIdx;
     m_total = src.m_total;
-	}
+  }
 }
 //---------------------------------------------------------------------------
 

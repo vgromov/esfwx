@@ -10,9 +10,9 @@ NAMESPACE_BEGIN(CryptoPP)
 #if CRYPTOPP_DEBUG && !defined(CRYPTOPP_DOXYGEN_PROCESSING)
 void ElGamal_TestInstantiations()
 {
-	ElGamalEncryptor test1(1, 1, 1);
-	ElGamalDecryptor test2(NullRNG(), 123);
-	ElGamalEncryptor test3(test2);
+  ElGamalEncryptor test1(1, 1, 1);
+  ElGamalDecryptor test2(NullRNG(), 123);
+  ElGamalEncryptor test3(test2);
 }
 #endif
 

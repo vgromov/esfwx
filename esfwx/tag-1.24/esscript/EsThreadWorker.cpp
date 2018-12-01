@@ -17,21 +17,21 @@
 class EsThreadImpl : public EsThread
 {
 public:
-	EsThreadImpl(EsThreadWorker& This) :
-	EsThread(),
-	m_this(This),
-	m_breaker(*this)
-	{}
+  EsThreadImpl(EsThreadWorker& This) :
+  EsThread(),
+  m_this(This),
+  m_breaker(*this)
+  {}
 
-	EsBaseIntfPtr breakerGet()
-	{
-		EsBaseIntf::Ptr result(m_breaker.asBaseIntf(), false, false);
-		return result;
-	}
+  EsBaseIntfPtr breakerGet()
+  {
+    EsBaseIntf::Ptr result(m_breaker.asBaseIntf(), false, false);
+    return result;
+  }
 
 protected:
-	virtual long worker()
-	{
+  virtual long worker()
+  {
     long exitCode = 0;
 
     EsReflectedClassIntf::Ptr wrk;
@@ -69,8 +69,8 @@ protected:
     return exitCode;
   }
 
-	virtual void onEnterWorker()
-	{
+  virtual void onEnterWorker()
+  {
     EsReflectedClassIntf::Ptr wrk;
     {
       EsCriticalSectionLocker lock(m_this.m_cs);
@@ -81,10 +81,10 @@ protected:
       wrk->hasMethod(EsMethodInfoKeyT(0, esT("onThreadEnter")))
     )
       wrk->call(esT("onThreadEnter"));
-	}
+  }
 
-	virtual void onExitWorker()
-	{
+  virtual void onExitWorker()
+  {
     EsReflectedClassIntf::Ptr wrk;
     {
       EsCriticalSectionLocker lock(m_this.m_cs);
@@ -95,12 +95,12 @@ protected:
       wrk->hasMethod(EsMethodInfoKeyT(0, esT("onThreadExit")))
     )
       wrk->call(esT("onThreadExit"));
-	}
+  }
 
 protected:
-	EsThreadWorker& m_this;
+  EsThreadWorker& m_this;
 
-	ES_THREADED_IO_BREAK_DECL_STD( EsThreadImpl )
+  ES_THREADED_IO_BREAK_DECL_STD( EsThreadImpl )
 
   friend class EsThreadWorker;
 };
@@ -114,30 +114,30 @@ namespace EsReflection
 //---------------------------------------------------------------------------
 
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsThreadWorker, NO_CLASS_DESCR)
-	/// Reflected properties
-	ES_DECL_PROP_INFO_RO(                   EsThreadWorker, id, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                   EsThreadWorker, exitCode, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                   EsThreadWorker, errorLog, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                   EsThreadWorker, state, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                   EsThreadWorker, priority, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                   EsThreadWorker, breaker, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO(                      EsThreadWorker, worker, EsBaseIntfPtr, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO(                      EsThreadWorker, stoppingWaitTmo, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
-	// Ctors
-	ES_DECL_REFLECTED_CTOR_INFO(            EsThreadWorker, EsVariant_ClassCall, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CTOR_INFO(            EsThreadWorker, EsVariant_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  /// Reflected properties
+  ES_DECL_PROP_INFO_RO(                   EsThreadWorker, id, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                   EsThreadWorker, exitCode, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                   EsThreadWorker, errorLog, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                   EsThreadWorker, state, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                   EsThreadWorker, priority, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                   EsThreadWorker, breaker, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO(                      EsThreadWorker, worker, EsBaseIntfPtr, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO(                      EsThreadWorker, stoppingWaitTmo, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
+  // Ctors
+  ES_DECL_REFLECTED_CTOR_INFO(            EsThreadWorker, EsVariant_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(            EsThreadWorker, EsVariant_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CTOR_INFO(            EsThreadWorker, EsVariant_ClassCall_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
   /// Reflected services
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(     EsThreadWorker, EsThreadWorkerIntf, start, void_Call, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(     EsThreadWorker, EsThreadWorkerIntf, start, void_Call_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(     EsThreadWorker, EsThreadWorkerIntf, stop, void_Call, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(     EsThreadWorker, EsThreadWorkerIntf, stopAndWait, void_Call, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(     EsThreadWorker, EsThreadWorkerIntf, errorLogAppend, void_Call_cr_EsString, NO_METHOD_DESCR)
-	/// Static reflected services
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsThreadWorker, isMain, bool_ClassCall, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsThreadWorker, currentIdGet, EsVariant_ClassCall, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsThreadWorker, sleep, void_ClassCall_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsThreadWorker, yield, void_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(     EsThreadWorker, EsThreadWorkerIntf, start, void_Call, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(     EsThreadWorker, EsThreadWorkerIntf, start, void_Call_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(     EsThreadWorker, EsThreadWorkerIntf, stop, void_Call, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(     EsThreadWorker, EsThreadWorkerIntf, stopAndWait, void_Call, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(     EsThreadWorker, EsThreadWorkerIntf, errorLogAppend, void_Call_cr_EsString, NO_METHOD_DESCR)
+  /// Static reflected services
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsThreadWorker, isMain, bool_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsThreadWorker, currentIdGet, EsVariant_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsThreadWorker, sleep, void_ClassCall_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsThreadWorker, yield, void_ClassCall, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
@@ -147,19 +147,19 @@ m_impl(nullptr),
 m_stoppingWaitTmo(0),
 m_weakWorkerRef(weakWorkerRef)
 {
-	m_dynamic = true;
-	m_impl = new EsThreadImpl(*this);
-	ES_ASSERT(m_impl);
+  m_dynamic = true;
+  m_impl = new EsThreadImpl(*this);
+  ES_ASSERT(m_impl);
 }
 //---------------------------------------------------------------------------
 
 EsThreadWorker::~EsThreadWorker()
 {
-	if( m_impl )
-	{
-		m_impl->stopAndWait();
-		ES_DELETE(m_impl);
-	}
+  if( m_impl )
+  {
+    m_impl->stopAndWait();
+    ES_DELETE(m_impl);
+  }
 
   m_worker.reset();
 }
@@ -168,24 +168,24 @@ EsThreadWorker::~EsThreadWorker()
 EsThreadWorkerIntf::Ptr EsThreadWorker::create(bool weakWorkerRef /*= true*/,
   const EsBaseIntfPtr& worker /*= EsBaseIntfPtr()*/)
 {
-	std::unique_ptr<EsThreadWorker> tmp( new EsThreadWorker(weakWorkerRef) );
+  std::unique_ptr<EsThreadWorker> tmp( new EsThreadWorker(weakWorkerRef) );
 
   if( worker )
     tmp->workerSet(worker);
 
-	return tmp.release()->asBaseIntfPtrDirect();
+  return tmp.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::NEW()
 {
-	return create(true);
+  return create(true);
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::NEW(cr_EsVariant worker)
 {
-	return create(true, worker.asObject());
+  return create(true, worker.asObject());
 }
 //---------------------------------------------------------------------------
 
@@ -200,90 +200,90 @@ EsVariant EsThreadWorker::NEW(cr_EsVariant worker, cr_EsVariant weakref)
 
 void EsThreadWorker::start()
 {
-	ES_ASSERT(m_impl);
-	m_impl->start();
+  ES_ASSERT(m_impl);
+  m_impl->start();
 }
 //---------------------------------------------------------------------------
 
 void EsThreadWorker::start(ulong priority)
 {
-	ES_ASSERT(m_impl);
-	m_impl->start( priority );
+  ES_ASSERT(m_impl);
+  m_impl->start( priority );
 }
 //---------------------------------------------------------------------------
 
 void EsThreadWorker::stop()
 {
-	ES_ASSERT(m_impl);
-	m_impl->stop();
+  ES_ASSERT(m_impl);
+  m_impl->stop();
 }
 //---------------------------------------------------------------------------
 
 void EsThreadWorker::stopAndWait()
 {
-	ES_ASSERT(m_impl);
-	m_impl->stopAndWait();
+  ES_ASSERT(m_impl);
+  m_impl->stopAndWait();
 }
 //---------------------------------------------------------------------------
 
 void EsThreadWorker::errorLogAppend(cr_EsString err)
 {
-	ES_ASSERT(m_impl);
-	m_impl->errorLogAppend(err);
+  ES_ASSERT(m_impl);
+  m_impl->errorLogAppend(err);
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::idGet() const
 {
-	ES_ASSERT(m_impl);
-	return static_cast<ullong>(m_impl->idGet());
+  ES_ASSERT(m_impl);
+  return static_cast<ullong>(m_impl->idGet());
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::exitCodeGet() const
 {
-	ES_ASSERT(m_impl);
-	return m_impl->exitCodeGet();
+  ES_ASSERT(m_impl);
+  return m_impl->exitCodeGet();
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::errorLogGet() const
 {
-	ES_ASSERT(m_impl);
-	return m_impl->errorLogGet();
+  ES_ASSERT(m_impl);
+  return m_impl->errorLogGet();
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::stateGet() const
 {
-	ES_ASSERT(m_impl);
-	return static_cast<ulong>(m_impl->stateGet());
+  ES_ASSERT(m_impl);
+  return static_cast<ulong>(m_impl->stateGet());
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::priorityGet() const
 {
-	ES_ASSERT(m_impl);
-	return static_cast<ulong>(m_impl->priorityGet());
+  ES_ASSERT(m_impl);
+  return static_cast<ulong>(m_impl->priorityGet());
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::breakerGet() const
 {
-	ES_ASSERT(m_impl);
-	return reinterpret_cast<EsThreadImpl*>(m_impl)->breakerGet();
+  ES_ASSERT(m_impl);
+  return reinterpret_cast<EsThreadImpl*>(m_impl)->breakerGet();
 }
 //---------------------------------------------------------------------------
 
 void EsThreadWorker::workerSet(const EsBaseIntfPtr& worker)
 {
-	EsCriticalSectionLocker lock(m_cs);
+  EsCriticalSectionLocker lock(m_cs);
   EsReflectedClassIntf::Ptr rc = worker;
 
   if( m_weakWorkerRef ) //< Hold weak reference
   {
     if( rc )
-	  {
+    {
       m_worker = rc->asWeakReference();
       return;
     }
@@ -303,13 +303,13 @@ EsBaseIntfPtr EsThreadWorker::workerGet() const
 
 EsVariant EsThreadWorker::get_id() const
 {
-	return idGet();
+  return idGet();
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::get_exitCode() const
 {
-	return exitCodeGet();
+  return exitCodeGet();
 }
 //---------------------------------------------------------------------------
 
@@ -321,19 +321,19 @@ EsVariant EsThreadWorker::get_errorLog() const
 
 EsVariant EsThreadWorker::get_state() const
 {
-	return stateGet();
+  return stateGet();
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::get_priority() const
 {
-	return priorityGet();
+  return priorityGet();
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::get_breaker() const
 {
-	return breakerGet();
+  return breakerGet();
 }
 //---------------------------------------------------------------------------
 
@@ -375,25 +375,25 @@ void EsThreadWorker::stoppingCheckTmoSet(ulong tmo)
 
 bool EsThreadWorker::isMain()
 {
-	return EsThread::isMain();
+  return EsThread::isMain();
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsThreadWorker::currentIdGet()
 {
-	return static_cast<ullong>(EsThread::currentIdGet());
+  return static_cast<ullong>(EsThread::currentIdGet());
 }
 //---------------------------------------------------------------------------
 
 void EsThreadWorker::sleep(ulong ms)
 {
-	EsThread::sleep(ms);
+  EsThread::sleep(ms);
 }
 //---------------------------------------------------------------------------
 
 void EsThreadWorker::yield()
 {
-	EsThread::yield();
+  EsThread::yield();
 }
 //---------------------------------------------------------------------------
 

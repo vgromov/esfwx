@@ -19,10 +19,10 @@ const EsProtocolMonitorUdpSignature EsProtocolMonitorUdp::s_onFrameReceptionFail
 
 EsProtocolIoMonitorIntf::Ptr EsProtocolMonitorUdp::create(const EsString& target, unsigned short targetPort)
 {
-	std::unique_ptr<EsProtocolMonitorUdp> tmp(new EsProtocolMonitorUdp(target, targetPort));
-	tmp->m_dynamic = true;
+  std::unique_ptr<EsProtocolMonitorUdp> tmp(new EsProtocolMonitorUdp(target, targetPort));
+  tmp->m_dynamic = true;
 
-	return tmp.release()->asBaseIntfPtrDirect();
+  return tmp.release()->asBaseIntfPtrDirect();
 }
 
 EsProtocolMonitorUdp::EsProtocolMonitorUdp(const EsString& target, unsigned short targetPort) :
@@ -34,146 +34,146 @@ m_targetPort(targetPort)
 
 EsProtocolMonitorUdp::~EsProtocolMonitorUdp()
 {
-	EsCriticalSectionLocker lock(m_cs);
-	m_udp.reset();
+  EsCriticalSectionLocker lock(m_cs);
+  m_udp.reset();
 }
 
 wxDatagramSocket* EsProtocolMonitorUdp::socketInstanceGet()
 {
-	if( !m_udp.get() )
-	{
-		wxIPV4address addr;
-		addr.AnyAddress();
-		addr.Service(50001);
-		m_udp.reset( new wxDatagramSocket(addr) );
-	}
-	
-	ES_ASSERT(m_udp.get());
-	ES_ASSERT(m_udp->IsOk());
+  if( !m_udp.get() )
+  {
+    wxIPV4address addr;
+    addr.AnyAddress();
+    addr.Service(50001);
+    m_udp.reset( new wxDatagramSocket(addr) );
+  }
+  
+  ES_ASSERT(m_udp.get());
+  ES_ASSERT(m_udp->IsOk());
 
-	return m_udp.get();
+  return m_udp.get();
 }
 
 // internal socket helper
 static bool udpSigSend(wxDatagramSocket& udp, const wxSockAddress& peer, 
-											 const EsProtocolMonitorUdpSignature sig)
+                       const EsProtocolMonitorUdpSignature sig)
 {
-	return wxSOCKET_NOERROR == udp.SendTo( peer, sig, sizeof(EsProtocolMonitorUdpSignature)).LastError() &&
-			sizeof(EsProtocolMonitorUdpSignature) == udp.LastCount();
+  return wxSOCKET_NOERROR == udp.SendTo( peer, sig, sizeof(EsProtocolMonitorUdpSignature)).LastError() &&
+      sizeof(EsProtocolMonitorUdpSignature) == udp.LastCount();
 }
 
 static bool udpUint32Send(wxDatagramSocket& udp, const wxSockAddress& peer, esU32 val)
 {
-	return wxSOCKET_NOERROR == udp.SendTo(peer, &val, 4).LastError() &&
-		4 == udp.LastCount();
+  return wxSOCKET_NOERROR == udp.SendTo(peer, &val, 4).LastError() &&
+    4 == udp.LastCount();
 }
 
 static bool udpEsStringSend(wxDatagramSocket& udp, const wxSockAddress& peer, const EsString& str)
 {
-	esU32 len = str.size() * sizeof(EsString::value_type);
-	bool ok = udpUint32Send(udp, peer, len);
-	
-	if( ok && len )
-		ok = wxSOCKET_NOERROR == udp.SendTo(peer, str.c_str(), len).LastError() &&
-				 len == udp.LastCount();
+  esU32 len = str.size() * sizeof(EsString::value_type);
+  bool ok = udpUint32Send(udp, peer, len);
+  
+  if( ok && len )
+    ok = wxSOCKET_NOERROR == udp.SendTo(peer, str.c_str(), len).LastError() &&
+         len == udp.LastCount();
 
-	return ok;
+  return ok;
 }
 
 static bool udpEsBinBufferSend(wxDatagramSocket& udp, const wxSockAddress& peer, const EsBinBuffer& buff)
 {
-	esU32 len = buff.size();
-	bool ok = wxSOCKET_NOERROR == udp.SendTo(peer, &len, 4).LastError() &&
-		4 == udp.LastCount();
+  esU32 len = buff.size();
+  bool ok = wxSOCKET_NOERROR == udp.SendTo(peer, &len, 4).LastError() &&
+    4 == udp.LastCount();
 
-	if( ok && len )
-		ok = wxSOCKET_NOERROR == udp.SendTo(peer, &buff[0], len).LastError() &&
-			len == udp.LastCount();
+  if( ok && len )
+    ok = wxSOCKET_NOERROR == udp.SendTo(peer, &buff[0], len).LastError() &&
+      len == udp.LastCount();
 
-	return ok;
+  return ok;
 }
 
 // interface implementation
 ES_IMPL_INTF_METHOD(void, EsProtocolMonitorUdp::onFrameSent)(const EsString& channelConfig, 
-	const EsBinBuffer& frameData, size_t retry)
+  const EsBinBuffer& frameData, size_t retry)
 {
-	EsCriticalSectionLocker lock(m_cs);
-	wxDatagramSocket* udp = socketInstanceGet();
-	wxIPV4address peer;
-	peer.Hostname(m_target);
-	peer.Service(m_targetPort);
+  EsCriticalSectionLocker lock(m_cs);
+  wxDatagramSocket* udp = socketInstanceGet();
+  wxIPV4address peer;
+  peer.Hostname(m_target);
+  peer.Service(m_targetPort);
 
-	bool ok = udpSigSend(*udp, peer, s_onFrameSentSig);
-	if( ok )
-	{
-		ok = udpEsStringSend(*udp, peer, channelConfig);
-		if( ok )
-			ok = udpEsBinBufferSend(*udp, peer, frameData);
-		if( ok )
-			udpUint32Send(*udp, peer, retry);
-	}
+  bool ok = udpSigSend(*udp, peer, s_onFrameSentSig);
+  if( ok )
+  {
+    ok = udpEsStringSend(*udp, peer, channelConfig);
+    if( ok )
+      ok = udpEsBinBufferSend(*udp, peer, frameData);
+    if( ok )
+      udpUint32Send(*udp, peer, retry);
+  }
 }
 
 ES_IMPL_INTF_METHOD(void, EsProtocolMonitorUdp::onFrameSendingFailed)(const EsString& channelConfig, const EsString& channelError, 
-	const EsString& protocolError, size_t retry)
+  const EsString& protocolError, size_t retry)
 {
-	EsCriticalSectionLocker lock(m_cs);
-	wxDatagramSocket* udp = socketInstanceGet();
-	wxIPV4address peer;
-	peer.Hostname(m_target);
-	peer.Service(m_targetPort);
+  EsCriticalSectionLocker lock(m_cs);
+  wxDatagramSocket* udp = socketInstanceGet();
+  wxIPV4address peer;
+  peer.Hostname(m_target);
+  peer.Service(m_targetPort);
 
-	bool ok = udpSigSend(*udp, peer, s_onFrameSendingFailedSig);
-	if( ok )
-	{
-		ok = udpEsStringSend(*udp, peer, channelConfig);
-		if( ok )
-			ok = udpEsStringSend(*udp, peer, channelError);
-		if( ok )
-			ok = udpEsStringSend(*udp, peer, protocolError);
-		if( ok )
-			udpUint32Send(*udp, peer, retry);
-	}
+  bool ok = udpSigSend(*udp, peer, s_onFrameSendingFailedSig);
+  if( ok )
+  {
+    ok = udpEsStringSend(*udp, peer, channelConfig);
+    if( ok )
+      ok = udpEsStringSend(*udp, peer, channelError);
+    if( ok )
+      ok = udpEsStringSend(*udp, peer, protocolError);
+    if( ok )
+      udpUint32Send(*udp, peer, retry);
+  }
 }
 
 ES_IMPL_INTF_METHOD(void, EsProtocolMonitorUdp::onFrameReceived)(const EsString& channelConfig, 
-	const EsBinBuffer& frameData, size_t retry)
+  const EsBinBuffer& frameData, size_t retry)
 {
-	EsCriticalSectionLocker lock(m_cs);
-	wxDatagramSocket* udp = socketInstanceGet();
-	wxIPV4address peer;
-	peer.Hostname(m_target);
-	peer.Service(m_targetPort);
+  EsCriticalSectionLocker lock(m_cs);
+  wxDatagramSocket* udp = socketInstanceGet();
+  wxIPV4address peer;
+  peer.Hostname(m_target);
+  peer.Service(m_targetPort);
 
-	bool ok = udpSigSend(*udp, peer, s_onFrameReceivedSig);
-	if( ok )
-	{
-		ok = udpEsStringSend(*udp, peer, channelConfig);
-		if( ok )
-			ok = udpEsBinBufferSend(*udp, peer, frameData);
-		if( ok )
-			udpUint32Send(*udp, peer, retry);
-	}
+  bool ok = udpSigSend(*udp, peer, s_onFrameReceivedSig);
+  if( ok )
+  {
+    ok = udpEsStringSend(*udp, peer, channelConfig);
+    if( ok )
+      ok = udpEsBinBufferSend(*udp, peer, frameData);
+    if( ok )
+      udpUint32Send(*udp, peer, retry);
+  }
 }
 
 ES_IMPL_INTF_METHOD(void, EsProtocolMonitorUdp::onFrameReceptionFailed)(const EsString& channelConfig, const EsString& channelError, 
-	const EsString& protocolError, size_t retry)
+  const EsString& protocolError, size_t retry)
 {
-	EsCriticalSectionLocker lock(m_cs);
-	wxDatagramSocket* udp = socketInstanceGet();
-	wxIPV4address peer;
-	peer.Hostname(m_target);
-	peer.Service(m_targetPort);
+  EsCriticalSectionLocker lock(m_cs);
+  wxDatagramSocket* udp = socketInstanceGet();
+  wxIPV4address peer;
+  peer.Hostname(m_target);
+  peer.Service(m_targetPort);
 
-	bool ok = udpSigSend(*udp, peer, s_onFrameSendingFailedSig);
-	if( ok )
-	{
-		ok = udpEsStringSend(*udp, peer, channelConfig);
-		if( ok )
-			ok = udpEsStringSend(*udp, peer, channelError);
-		if( ok )
-			ok = udpEsStringSend(*udp, peer, protocolError);
-		if( ok )
-			udpUint32Send(*udp, peer, retry);
-	}
+  bool ok = udpSigSend(*udp, peer, s_onFrameSendingFailedSig);
+  if( ok )
+  {
+    ok = udpEsStringSend(*udp, peer, channelConfig);
+    if( ok )
+      ok = udpEsStringSend(*udp, peer, channelError);
+    if( ok )
+      ok = udpEsStringSend(*udp, peer, protocolError);
+    if( ok )
+      udpUint32Send(*udp, peer, retry);
+  }
 }*/

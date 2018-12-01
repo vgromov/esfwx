@@ -29,7 +29,7 @@ public:
   typedef FHMQV_Domain<GROUP_PARAMETERS, COFACTOR_OPTION, HASH> Domain;
 
 #ifndef CRYPTOPP_MAINTAIN_BACKWARDS_COMPATIBILITY_562
-	virtual ~FHMQV_Domain() {}
+  virtual ~FHMQV_Domain() {}
 #endif
 
   FHMQV_Domain(bool clientRole = true): m_role(clientRole ? RoleClient : RoleServer) {}

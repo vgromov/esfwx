@@ -76,14 +76,14 @@
 // zip compressor
 //
 EsZipCompressor::EsZipCompressor(int level /*= compressionBest*/,
-		int memLevel /*= memlevelDefault*/,
-		Strategy strategy /*= strategyDefault*/) :
+    int memLevel /*= memlevelDefault*/,
+    Strategy strategy /*= strategyDefault*/) :
 m_impl(0)
 {
-	m_impl = calloc(1, sizeof(z_stream));
+  m_impl = calloc(1, sizeof(z_stream));
 
 
-	int result =
+  int result =
 #ifdef ES_USE_ECC_ZLIB
     deflateInit2(
       *((z_stream*)m_impl),
@@ -104,32 +104,32 @@ m_impl(0)
     );
 #endif
 
-	if( Z_OK != result )
-		EsException::Throw(esT("Could not initialize zip compressor"));
+  if( Z_OK != result )
+    EsException::Throw(esT("Could not initialize zip compressor"));
 }
 
 EsZipCompressor::~EsZipCompressor()
 {
-	if(m_impl)
-		deflateEnd(
+  if(m_impl)
+    deflateEnd(
 #ifdef ES_USE_ECC_ZLIB
       *((z_stream*)m_impl)
 #else
       (z_stream*)m_impl
 #endif
       );
-	free(m_impl);
-	m_impl = 0;
+  free(m_impl);
+  m_impl = 0;
 }
 
 void EsZipCompressor::chunkRead(EsBinBuffer::pointer chunkBuff)
 {
-	ES_ASSERT(m_impl);
-	z_stream* zs = (z_stream*)m_impl;
+  ES_ASSERT(m_impl);
+  z_stream* zs = (z_stream*)m_impl;
 
   zs->avail_out = zipChunkSizeDef;
   zs->next_out = chunkBuff;
-	int result = deflate(
+  int result = deflate(
 #ifdef ES_USE_ECC_ZLIB
     *zs
 #else
@@ -138,21 +138,21 @@ void EsZipCompressor::chunkRead(EsBinBuffer::pointer chunkBuff)
     , Z_FINISH);
 
   if(Z_STREAM_ERROR == result)
-		EsException::Throw(esT("Error while compressing data"));
+    EsException::Throw(esT("Error while compressing data"));
 }
 
 EsBinBuffer EsZipCompressor::compress(const EsBinBuffer& src)
 {
-	ES_ASSERT(m_impl);
+  ES_ASSERT(m_impl);
 
-	if(src.empty())
-		return EsBinBuffer::null();
+  if(src.empty())
+    return EsBinBuffer::null();
 
-	EsBinBuffer result;
-	result.reserve(src.size());
+  EsBinBuffer result;
+  result.reserve(src.size());
 
-	z_stream* zs = (z_stream*)m_impl;
-	deflateReset(
+  z_stream* zs = (z_stream*)m_impl;
+  deflateReset(
 #ifdef ES_USE_ECC_ZLIB
     *zs
 #else
@@ -160,8 +160,8 @@ EsBinBuffer EsZipCompressor::compress(const EsBinBuffer& src)
 #endif
     );
 
-	zs->avail_in = static_cast<z_uInt>(src.size());
-	zs->next_in =
+  zs->avail_in = static_cast<z_uInt>(src.size());
+  zs->next_in =
 #ifdef ES_USE_ECC_ZLIB
     (System::Byte*)
 #else
@@ -169,17 +169,17 @@ EsBinBuffer EsZipCompressor::compress(const EsBinBuffer& src)
 #endif
     &src[0];
 
-	// read compressed buffer in chunks
-	EsBinBuffer::value_type chunk[zipChunkSizeDef];
+  // read compressed buffer in chunks
+  EsBinBuffer::value_type chunk[zipChunkSizeDef];
 
-	do
-	{
-		chunkRead(chunk);
-		result.append(zipChunkSizeDef - zs->avail_out, chunk);
+  do
+  {
+    chunkRead(chunk);
+    result.append(zipChunkSizeDef - zs->avail_out, chunk);
 
-	} while( 0 == zs->avail_out );
+  } while( 0 == zs->avail_out );
 
-	return result;
+  return result;
 }
 
 // decompressor
@@ -187,8 +187,8 @@ EsBinBuffer EsZipCompressor::compress(const EsBinBuffer& src)
 EsZipDecompressor::EsZipDecompressor() :
 m_impl(0)
 {
-	m_impl = calloc(1, sizeof(z_stream));
-	int result =
+  m_impl = calloc(1, sizeof(z_stream));
+  int result =
 #ifdef ES_USE_ECC_ZLIB
     inflateInit(
       *((z_stream*)m_impl)
@@ -199,15 +199,15 @@ m_impl(0)
     );
 #endif
 
-	if( Z_OK != result )
-		EsException::Throw(esT("Could not initialize zip de-compressor"));
+  if( Z_OK != result )
+    EsException::Throw(esT("Could not initialize zip de-compressor"));
 }
 
 EsZipDecompressor::~EsZipDecompressor()
 {
-	if(m_impl)
+  if(m_impl)
 #ifdef ES_USE_ECC_ZLIB
-		inflateEnd(
+    inflateEnd(
       *((z_stream*)m_impl)
     );
 #else
@@ -216,15 +216,15 @@ EsZipDecompressor::~EsZipDecompressor()
     );
 #endif
 
-	free(m_impl);
-	m_impl = 0;
+  free(m_impl);
+  m_impl = 0;
 }
 
 void EsZipDecompressor::chunkRead(EsBinBuffer::pointer chunkBuff)
 {
-	ES_ASSERT(m_impl);
-	z_stream* zs = (z_stream*)m_impl;
-	zs->avail_out = zipChunkSizeDef;
+  ES_ASSERT(m_impl);
+  z_stream* zs = (z_stream*)m_impl;
+  zs->avail_out = zipChunkSizeDef;
   zs->next_out = chunkBuff;
 
   int result = inflate(
@@ -236,36 +236,36 @@ void EsZipDecompressor::chunkRead(EsBinBuffer::pointer chunkBuff)
     , Z_NO_FLUSH);
   switch(result)
   {
-	case Z_STREAM_ERROR:
-		EsException::Throw(esT("The ZIP stream is inconsistent"));
-		break;
-	case Z_NEED_DICT:
-		EsException::Throw(esT("A preset dictionary is needed"));
-		break;
-	case Z_DATA_ERROR:
-		EsException::Throw(esT("ZIP input data is corrupted"));
-		break;
-	case Z_MEM_ERROR:
-		EsException::Throw(esT("Not enough memory for decompression"));
-		break;
-	case Z_STREAM_END:
-		// all input is decompressed
-		break;
-	}
+  case Z_STREAM_ERROR:
+    EsException::Throw(esT("The ZIP stream is inconsistent"));
+    break;
+  case Z_NEED_DICT:
+    EsException::Throw(esT("A preset dictionary is needed"));
+    break;
+  case Z_DATA_ERROR:
+    EsException::Throw(esT("ZIP input data is corrupted"));
+    break;
+  case Z_MEM_ERROR:
+    EsException::Throw(esT("Not enough memory for decompression"));
+    break;
+  case Z_STREAM_END:
+    // all input is decompressed
+    break;
+  }
 }
 
 EsBinBuffer EsZipDecompressor::decompress(const EsBinBuffer& src)
 {
-	ES_ASSERT(m_impl);
+  ES_ASSERT(m_impl);
 
-	if(src.empty())
-		return EsBinBuffer::null();
+  if(src.empty())
+    return EsBinBuffer::null();
 
-	EsBinBuffer result;
-	result.reserve(4*src.size());
+  EsBinBuffer result;
+  result.reserve(4*src.size());
 
-	z_stream* zs = (z_stream*)m_impl;
-	inflateReset(
+  z_stream* zs = (z_stream*)m_impl;
+  inflateReset(
 #ifdef ES_USE_ECC_ZLIB
     *zs
 #else
@@ -273,8 +273,8 @@ EsBinBuffer EsZipDecompressor::decompress(const EsBinBuffer& src)
 #endif
     );
 
-	zs->avail_in = static_cast<z_uInt>(src.size());
-	zs->next_in =
+  zs->avail_in = static_cast<z_uInt>(src.size());
+  zs->next_in =
 #ifdef ES_USE_ECC_ZLIB
     (System::Byte*)
 #else
@@ -282,17 +282,17 @@ EsBinBuffer EsZipDecompressor::decompress(const EsBinBuffer& src)
 #endif
     &src[0];
 
-	// read de-compressed buffer in chunks
-	EsBinBuffer::value_type chunk[zipChunkSizeDef];
+  // read de-compressed buffer in chunks
+  EsBinBuffer::value_type chunk[zipChunkSizeDef];
 
-	do
-	{
-		chunkRead(chunk);
-		result.append(zipChunkSizeDef - zs->avail_out, chunk);
+  do
+  {
+    chunkRead(chunk);
+    result.append(zipChunkSizeDef - zs->avail_out, chunk);
 
-	} while( 0 == zs->avail_out );
+  } while( 0 == zs->avail_out );
 
-	return result;
+  return result;
 }
 
 #endif // #ifdef ES_USE_ZLIB

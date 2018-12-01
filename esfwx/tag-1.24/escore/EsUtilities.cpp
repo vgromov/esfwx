@@ -31,47 +31,47 @@
 
 static inline void logEventPost(const EsString& msg, ulong level, const EsVariant& val) ES_NOTHROW
 {
-	EsVariant::Array payload;
+  EsVariant::Array payload;
   payload.reserve(2);
 
-	payload.push_back( msg );
-	payload.push_back( val );
+  payload.push_back( msg );
+  payload.push_back( val );
 
-	EsEventDispatcher::eventPost(ES_EVTC_APPLOG, level, payload);
+  EsEventDispatcher::eventPost(ES_EVTC_APPLOG, level, payload);
 }
 //---------------------------------------------------------------------------
 
 void EsUtilities::logInfo(const EsString& msg, const EsVariant& val /*= EsVariant::s_null*/)
 {
-	logEventPost(msg, static_cast<ulong>(EsAppLogLevel::Info), val);
+  logEventPost(msg, static_cast<ulong>(EsAppLogLevel::Info), val);
 }
 //---------------------------------------------------------------------------
 
 void EsUtilities::logDebug(const EsString& msg, const EsVariant& val /*= EsVariant::s_null*/)
 {
   ES_DEBUG_TRACE(esT("LogDebug: %s"), msg);
-	logEventPost(msg, static_cast<ulong>(EsAppLogLevel::Debug), val);
+  logEventPost(msg, static_cast<ulong>(EsAppLogLevel::Debug), val);
 }
 //---------------------------------------------------------------------------
 
 void EsUtilities::logWarning(const EsString& msg, const EsVariant& val /*= EsVariant::s_null*/)
 {
   ES_DEBUG_TRACE(esT("LogWarning: %s"), msg);
-	logEventPost(msg, static_cast<ulong>(EsAppLogLevel::Warning), val);
+  logEventPost(msg, static_cast<ulong>(EsAppLogLevel::Warning), val);
 }
 //---------------------------------------------------------------------------
 
 void EsUtilities::logError(const EsString& msg, const EsVariant& val /*= EsVariant::s_null*/)
 {
   ES_DEBUG_TRACE(esT("LogError: %s"), msg);
-	logEventPost(msg, static_cast<ulong>(EsAppLogLevel::Error), val);
+  logEventPost(msg, static_cast<ulong>(EsAppLogLevel::Error), val);
 }
 //---------------------------------------------------------------------------
 
 void EsUtilities::logCustom(ulong id, const EsString& msg, const EsVariant& val /*= EsVariant::s_null*/)
 {
   ES_DEBUG_TRACE(esT("LogCustom: %s"), msg);
-	logEventPost(msg, static_cast<ulong>(EsAppLogLevel::Custom)+id, val);
+  logEventPost(msg, static_cast<ulong>(EsAppLogLevel::Custom)+id, val);
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -79,34 +79,34 @@ void EsUtilities::logCustom(ulong id, const EsString& msg, const EsVariant& val 
 // return readable asl string
 EsString EsUtilities::aslStringGet(ulong asl)
 {
-	EsString result;
+  EsString result;
 
-	switch( static_cast<EsAppSecurityLevel>(asl) )
-	{
-	case EsAppSecurityLevel::aslNone: // no user is logged on
-		result = _("None");
-		break;
-	case EsAppSecurityLevel::aslGuest:
-		result = _("Guest");
-		break;
-	case EsAppSecurityLevel::aslUser:
-		result = _("User");
-		break;
-	case EsAppSecurityLevel::aslSuperuser:
-		result = _("Superuser");
-		break;
-	case EsAppSecurityLevel::aslAdministrator:
-		result = _("Administrator");
-		break;
-	case EsAppSecurityLevel::aslDeveloper:
-		result = _("Developer");
-		break;
-	default:
-		result = _("Invalid role value");
-		break;
-	}
+  switch( static_cast<EsAppSecurityLevel>(asl) )
+  {
+  case EsAppSecurityLevel::aslNone: // no user is logged on
+    result = _("None");
+    break;
+  case EsAppSecurityLevel::aslGuest:
+    result = _("Guest");
+    break;
+  case EsAppSecurityLevel::aslUser:
+    result = _("User");
+    break;
+  case EsAppSecurityLevel::aslSuperuser:
+    result = _("Superuser");
+    break;
+  case EsAppSecurityLevel::aslAdministrator:
+    result = _("Administrator");
+    break;
+  case EsAppSecurityLevel::aslDeveloper:
+    result = _("Developer");
+    break;
+  default:
+    result = _("Invalid role value");
+    break;
+  }
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
@@ -130,11 +130,11 @@ EsString EsUtilities::GUIDtoStr(const GUID& guid, bool canonical /*= false*/)
       guid.Data4[2], guid.Data4[3], guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7]);
   }
   else
-	{
-   	EsString result;
+  {
+     EsString result;
     EsString::binToHex(reinterpret_cast<const esU8*>(&guid), sizeof(GUID), result);
 
-	  return result;
+    return result;
   }
 }
 //---------------------------------------------------------------------------
@@ -220,32 +220,32 @@ GUID EsUtilities::GUIDfromStr(const EsString& str)
 // firmware processing (compression+encryption)
 EsBinBuffer EsUtilities::bToE(const EsBinBuffer& b, const EsString& key)
 {
-	EsCryptoDesLegacy des( key );
+  EsCryptoDesLegacy des( key );
 
-	EsBinBuffer dest;
+  EsBinBuffer dest;
 
 #ifdef ES_USE_ZLIB
   EsBinBuffer src;
-	EsZipCompressor zip;
-	src = zip.compress(b);
-	des.process(dest, src);
+  EsZipCompressor zip;
+  src = zip.compress(b);
+  des.process(dest, src);
 #else
-	des.process(dest, b);
+  des.process(dest, b);
 #endif
 
-	return dest;
+  return dest;
 }
 
 EsBinBuffer EsUtilities::eToB(const EsBinBuffer& e, const EsString& key)
 {
-	EsBinBuffer src;
-	EsCryptoDesLegacy des( key );
+  EsBinBuffer src;
+  EsCryptoDesLegacy des( key );
 
-	des.process(src, e, false);
+  des.process(src, e, false);
 
 #ifdef ES_USE_ZLIB
-	EsZipDecompressor zip;
-	return zip.decompress(src);
+  EsZipDecompressor zip;
+  return zip.decompress(src);
 #else
   return src;
 #endif
@@ -253,31 +253,31 @@ EsBinBuffer EsUtilities::eToB(const EsBinBuffer& e, const EsString& key)
 
 EsString EsUtilities::sToE(const EsString& s, const EsString& key)
 {
-	if( !s.empty() )
-	{
-		EsBinBuffer::const_pointer sBegin = (EsBinBuffer::const_pointer)s.data();
-		EsBinBuffer::const_pointer sEnd = sBegin+s.size()*EsString::value_size;
-		EsBinBuffer in(sBegin, sEnd);
-		const EsBinBuffer& out = EsUtilities::bToE(in, key);
-		return EsString::binToHex(out);
-	}
+  if( !s.empty() )
+  {
+    EsBinBuffer::const_pointer sBegin = (EsBinBuffer::const_pointer)s.data();
+    EsBinBuffer::const_pointer sEnd = sBegin+s.size()*EsString::value_size;
+    EsBinBuffer in(sBegin, sEnd);
+    const EsBinBuffer& out = EsUtilities::bToE(in, key);
+    return EsString::binToHex(out);
+  }
 
-	return EsString::null();
+  return EsString::null();
 }
 
 EsString EsUtilities::eToS(const EsString& e, const EsString& key)
 {
-	if( !e.empty() )
-	{
-		const EsBinBuffer& in = EsString::hexToBin(e);
-		const EsBinBuffer& out = EsUtilities::eToB(in, key);
-		ES_ASSERT( 0 == out.size() % EsString::value_size );
-		EsString::const_pointer beg = reinterpret_cast<EsString::const_pointer>(&out[0]);
-		EsString::const_pointer end = beg+(out.size() / EsString::value_size);
-		return EsString(beg, end);
-	}
+  if( !e.empty() )
+  {
+    const EsBinBuffer& in = EsString::hexToBin(e);
+    const EsBinBuffer& out = EsUtilities::eToB(in, key);
+    ES_ASSERT( 0 == out.size() % EsString::value_size );
+    EsString::const_pointer beg = reinterpret_cast<EsString::const_pointer>(&out[0]);
+    EsString::const_pointer end = beg+(out.size() / EsString::value_size);
+    return EsString(beg, end);
+  }
 
-	return EsString::null();
+  return EsString::null();
 }
 
 #endif // ES_USE_CRYPTO_LEGACY
@@ -356,7 +356,7 @@ class FloatingPoint
   // The mask for the exponent bits.
   static const Bits kExponentBitMask = ~(kSignBitMask | kFractionBitMask);
 
-	// Constructs a FloatingPoint from a raw floating-point number.
+  // Constructs a FloatingPoint from a raw floating-point number.
   //
   // On an Intel CPU, passing a non-normalized NAN (Not a Number)
   // around may change its bits, although the new value is guaranteed
@@ -411,20 +411,20 @@ class FloatingPoint
   //   - treats really large numbers as almost equal to infinity.
   //   - thinks +0.0 and -0.0 are 0 DLP's apart.
   inline bool AlmostEquals(const FloatingPoint& rhs, size_t maxUlps = 1) const ES_NOTHROW
-	{
+  {
     // The IEEE standard says that any comparison operation involving
     // a NAN must return false.
     if(is_nan() || rhs.is_nan())
-			return false;
+      return false;
 
     return DistanceBetweenSignAndMagnitudeNumbers(u_.bits_, rhs.u_.bits_)
-			<= std::max(static_cast<size_t>(1), std::min(static_cast<size_t>(kMaxUlps), maxUlps));
+      <= std::max(static_cast<size_t>(1), std::min(static_cast<size_t>(kMaxUlps), maxUlps));
   }
 
  private:
   // The data type used to store the actual floating-point number.
   union FloatingPointUnion
-	{
+  {
     RawType value_;  // The raw floating-point number.
     Bits bits_;      // The bits that represent the number.
   };
@@ -445,14 +445,14 @@ class FloatingPoint
   // Read http://en.wikipedia.org/wiki/Signed_number_representations
   // for more details on signed number representations.
   static inline Bits SignAndMagnitudeToBiased(const Bits &sam) ES_NOTHROW
-	{
+  {
     if(kSignBitMask & sam)
-		{
+    {
       // sam represents a negative number.
       return ~sam + 1;
     }
-		else
-		{
+    else
+    {
       // sam represents a positive number.
       return kSignBitMask | sam;
     }
@@ -461,7 +461,7 @@ class FloatingPoint
   // Given two numbers in the sign-and-magnitude representation,
   // returns the distance between them as an unsigned number.
   static inline Bits DistanceBetweenSignAndMagnitudeNumbers(const Bits &sam1, const Bits &sam2) ES_NOTHROW
-	{
+  {
     const Bits biased1 = SignAndMagnitudeToBiased(sam1);
     const Bits biased2 = SignAndMagnitudeToBiased(sam2);
     return (biased1 >= biased2) ? (biased1 - biased2) : (biased2 - biased1);
@@ -475,12 +475,12 @@ typedef FloatingPoint<double> EsDbl;
 
 bool EsUtilities::areEqualFloats(double _1, double _2, size_t maxUlps) ES_NOTHROW
 {
-	return EsDbl(_1).AlmostEquals(EsDbl(_2), maxUlps);
+  return EsDbl(_1).AlmostEquals(EsDbl(_2), maxUlps);
 }
 
 bool EsUtilities::areEqualFloats(float _1, float _2, size_t maxUlps) ES_NOTHROW
 {
-	return EsFlt(_1).AlmostEquals(EsFlt(_2), maxUlps);
+  return EsFlt(_1).AlmostEquals(EsFlt(_2), maxUlps);
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

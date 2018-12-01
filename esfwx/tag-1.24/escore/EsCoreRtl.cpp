@@ -5,8 +5,8 @@
 
 //---------------------------------------------------------------------------
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
-#	include <System.hpp>
-#	include <System.Math.hpp>
+#  include <System.hpp>
+#  include <System.Math.hpp>
 # pragma package(smart_init)
 
 # ifdef __cplusplus
@@ -15,25 +15,25 @@
 
 int es_finite(double d)
 {
-	return IsInfinite(d) ? 0 : 1;
+  return IsInfinite(d) ? 0 : 1;
 }
 //---------------------------------------------------------------------------
 
 int es_finitef(float f)
 {
-	return IsInfinite(f) ? 0 : 1;
+  return IsInfinite(f) ? 0 : 1;
 }
 //---------------------------------------------------------------------------
 
 int es_isnan(double d)
 {
-	return IsNan(d) ? 1 : 0;
+  return IsNan(d) ? 1 : 0;
 }
 //---------------------------------------------------------------------------
 
 int es_isnanf(float f)
 {
-	return IsNan(f) ? 1 : 0;
+  return IsNan(f) ? 1 : 0;
 }
 //---------------------------------------------------------------------------
 
@@ -225,10 +225,10 @@ ES_COMPILE_TIME_ASSERT(sizeof(ES_CHAR) <= sizeof(ES_UCHAR), es_uchar_SizeCheck);
 
 size_t es_strlen(ES_CTSTR s)
 {
-	register ES_CTSTR p = s;
-	while(*p) ++p;
+  register ES_CTSTR p = s;
+  while(*p) ++p;
 
-	return p-s;
+  return p-s;
 }
 //---------------------------------------------------------------------------
 
@@ -277,7 +277,7 @@ int es_strncmp(ES_CTSTR s1, ES_CTSTR s2, size_t n)
     c2 = *p2++;
 
     if( !c1 || c1 != c2 )
-    	break;
+      break;
 
     --n;
   }
@@ -293,42 +293,42 @@ int es_strncmp(ES_CTSTR s1, ES_CTSTR s2, size_t n)
 
 ES_CTSTR es_strchr(ES_CTSTR s, ES_CHAR c)
 {
-	do
+  do
   {
-		if(*s == c)
- 			return s;
+    if(*s == c)
+       return s;
 
-	} while(*s++);
+  } while(*s++);
 
-	return 0;
+  return 0;
 }
 //---------------------------------------------------------------------------
 
 ES_CTSTR es_strstr(ES_CTSTR s1, ES_CTSTR s2)
 {
-	register ES_CTSTR s = s1;
-	register ES_CTSTR p = s2;
+  register ES_CTSTR s = s1;
+  register ES_CTSTR p = s2;
 
-	do
+  do
   {
-		if(!*p)
-			return s1;
+    if(!*p)
+      return s1;
 
-		if(*p == *s)
+    if(*p == *s)
     {
-			++p;
-			++s;
-		}
+      ++p;
+      ++s;
+    }
     else
     {
-			p = s2;
-			if(!*s)
-				return nullptr;
+      p = s2;
+      if(!*s)
+        return nullptr;
 
-			s = ++s1;
-		}
+      s = ++s1;
+    }
 
-	} while (1);
+  } while (1);
 }
 //---------------------------------------------------------------------------
 
@@ -336,7 +336,7 @@ extern "C" void tm2esDT(const struct tm *val, esDT* dt);
 size_t es_strftime(ES_CHAR* str, size_t maxsize, ES_CTSTR fmt, const struct tm *ts)
 {
   esDT dt;
-	tm2esDT(ts, &dt);
+  tm2esDT(ts, &dt);
   EsDateTime edt(dt);
 
   return edt.strftime(

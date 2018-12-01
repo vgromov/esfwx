@@ -47,11 +47,11 @@ const EsWideString& nullWideString() ES_NOTHROW
 
 size_t esBstrnlen(const char* str, size_t maxCnt) ES_NOTHROW
 {
-	size_t len = 0;
-	if( str )
-		while( *str++ && ++len < maxCnt );
+  size_t len = 0;
+  if( str )
+    while( *str++ && ++len < maxCnt );
 
-	return len;
+  return len;
 }
 //---------------------------------------------------------------------------
 

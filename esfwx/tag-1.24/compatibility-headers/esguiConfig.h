@@ -3,7 +3,7 @@
 
 // lcd driver usage
 #ifndef USE_EMULATOR
-#	define USE_EMULATOR
+#  define USE_EMULATOR
 #endif
 
 // use widgets framework

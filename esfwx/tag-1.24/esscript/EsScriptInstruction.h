@@ -6,60 +6,60 @@ class EsScriptCodeSection;
 
 // Script operator ids
 enum EsScriptOperatorIds {
-	// special value
-	//
-	opidInvalid = -1,
-	// incdec ops
-	//
-	opidInc,			// ++a | a++
-	opidDec,			// --a | a--
-	// unary operators
-	// NB! negation op is the same as opidSub, so use the latter
-	//
-	opidBwNot,		// ~a
-	opidNot,			// !a
-	// binary operators
-	//
-	// access	
-	opidFldAcc,		// a.b
-	opidPropAcc,	// a$b
-	opidVsvcAcc,  // a#b
-	opidAttrAcc,	// a@b
-	opidScopeAcc, // a::b
-	// bitwise
-	opidBwAnd,		// a&b
-	opidBwOr,			// a|b
-	opidBwXor,		// a^b
-	// math
-	opidLsh,			// a<<b
-	opidRsh,			// a>>b
-	opidAdd,			// a+b
-	opidSub,			// a-b
-	opidMul,			// a*b
-	opidDiv,			// a/b	
-	opidMod,			// a%b
-	// logical
-	opidLogOr,		// a||b
-	opidLogAnd,		// a&&b
-	opidLess,			// a<b
-	opidGreater,	// a>b
-	opidEqual,		// a==b
-	opidNotEqual,	// a!=b
-	opidIn,				// a in b
-	opidLeEqual,	// a<=b
-	opidGrEqual,	// a>=b
-	// assignments
-	opidAsn,			// a=b
-	opidAsnDec,		// a-=b
-	opidAsnInc,		// a+=b
-	opidAsnDiv,		// a/=b
-	opidAsnMod,		// a%=b
-	opidAsnMul,		// a*=b
-	opidAsnOr,		// a|=b
-	opidAsnAnd,		// a&=b
-	opidAsnXor,		// a^=b
-	opidAsnLsh,		// a<<=b
-	opidAsnRsh,		// a>>=b
+  // special value
+  //
+  opidInvalid = -1,
+  // incdec ops
+  //
+  opidInc,      // ++a | a++
+  opidDec,      // --a | a--
+  // unary operators
+  // NB! negation op is the same as opidSub, so use the latter
+  //
+  opidBwNot,    // ~a
+  opidNot,      // !a
+  // binary operators
+  //
+  // access  
+  opidFldAcc,    // a.b
+  opidPropAcc,  // a$b
+  opidVsvcAcc,  // a#b
+  opidAttrAcc,  // a@b
+  opidScopeAcc, // a::b
+  // bitwise
+  opidBwAnd,    // a&b
+  opidBwOr,      // a|b
+  opidBwXor,    // a^b
+  // math
+  opidLsh,      // a<<b
+  opidRsh,      // a>>b
+  opidAdd,      // a+b
+  opidSub,      // a-b
+  opidMul,      // a*b
+  opidDiv,      // a/b  
+  opidMod,      // a%b
+  // logical
+  opidLogOr,    // a||b
+  opidLogAnd,    // a&&b
+  opidLess,      // a<b
+  opidGreater,  // a>b
+  opidEqual,    // a==b
+  opidNotEqual,  // a!=b
+  opidIn,        // a in b
+  opidLeEqual,  // a<=b
+  opidGrEqual,  // a>=b
+  // assignments
+  opidAsn,      // a=b
+  opidAsnDec,    // a-=b
+  opidAsnInc,    // a+=b
+  opidAsnDiv,    // a/=b
+  opidAsnMod,    // a%=b
+  opidAsnMul,    // a*=b
+  opidAsnOr,    // a|=b
+  opidAsnAnd,    // a&=b
+  opidAsnXor,    // a^=b
+  opidAsnLsh,    // a<<=b
+  opidAsnRsh,    // a>>=b
 };
 
 // script opid<-->op string dictionary, AKA operator symbol table
@@ -67,63 +67,63 @@ enum EsScriptOperatorIds {
 class EsScriptOpIds
 {
 public:
-	EsScriptOperatorIds getId(const EsString& op) const ES_NOTHROW;
-	const EsString& getIdStr(long id) const {	return m_idsMap.nameGet(id); }
-	static const EsScriptOpIds& instanceGet() ES_NOTHROW;
+  EsScriptOperatorIds getId(const EsString& op) const ES_NOTHROW;
+  const EsString& getIdStr(long id) const {  return m_idsMap.nameGet(id); }
+  static const EsScriptOpIds& instanceGet() ES_NOTHROW;
 
 private:
-	EsScriptOpIds();
+  EsScriptOpIds();
 
 protected:
-	// NB!! opid is item index.
-	// ids Map initialization order _must_ be the same as
-	// opids declaration order
-	EsStringIndexedMap m_idsMap;
+  // NB!! opid is item index.
+  // ids Map initialization order _must_ be the same as
+  // opids declaration order
+  EsStringIndexedMap m_idsMap;
 };
 
 // script instruction opcodes
 enum EsScriptInstructionOpcode {
-	iInvalid,
-	iVarInit,												// variable initialization instruction
-	iLoadConstVal,									// load constant value to data stack
-	iLoadImmediateVal,							// load immediate value to data stack (for instance, enum val or item label)
-	iLoadVarRef,										// load variable reference to data stack
-	iFuncCall,											// script global method call
-	iExtFuncCall,										// external method call
-	iMethodCall,										// script object method call
-	iVsvcCall,											// explicit variant service call
-	iConstructorCall,								// object constructor call
-	iRet,														// return instruction, load top of data stack into retval
-	iRetCleanup,										// additional instruction, moving function retval from data stack to retval register
-	iAsn,														// assignment instruction
-	iBinOpExpr,											// binary operation expression instruction. param contains opid code
-	iUnaryOpExpr,										// unary operation expression instruction. param contains opid code
-	iLogicCheck,										// logic check instruction, for short-cirquit logical expression evaluation
-	iIncDec,												// increment-decrement instruction
-	iLoadItemRef,										// perform access to variable's item at index
-	iAutoItemRefCreate,							// create auto item reference object on the data stack
-	iAutoItemLoad,									// load current auto item on data stack with internal index post increment
-	iIsOkLoad,											// load top data accessor isOk result on the data stack
-	iLoadMemberRef,									// perform access to variable's or explicit 'this' field | member variable
-	iLoadPropRef,										// perform access to variable's property
-	iLoadThisPropRef,								// perform access to property using implicit 'this' pointer
-	iLoadAttributeVal,							// perform access to variable's attribute value
-	iLoadThisAttributeVal,					// perform access to attribute value using implicit 'this' pointer
-	iJump,													// jump, param contains jump opcode + extra info, which is jump type (relative or absolute), followed by instruction offset
-	iJumpFalse,											// jump if false, param contains jump opcode + extra info, meaning is the same as iJump		
-	iJumpTrue,											// jump if true, param contains jump opcode + extra info, meaning is the same as iJump	
-	iThrow,													// exception throw instruction
-	iRethrow,												// caught exception re-throw instruction
-	iEnterTryCatch,									// enter try-catch block scope
-	// special value, must go last
-	iOpcodesCount
+  iInvalid,
+  iVarInit,                        // variable initialization instruction
+  iLoadConstVal,                  // load constant value to data stack
+  iLoadImmediateVal,              // load immediate value to data stack (for instance, enum val or item label)
+  iLoadVarRef,                    // load variable reference to data stack
+  iFuncCall,                      // script global method call
+  iExtFuncCall,                    // external method call
+  iMethodCall,                    // script object method call
+  iVsvcCall,                      // explicit variant service call
+  iConstructorCall,                // object constructor call
+  iRet,                            // return instruction, load top of data stack into retval
+  iRetCleanup,                    // additional instruction, moving function retval from data stack to retval register
+  iAsn,                            // assignment instruction
+  iBinOpExpr,                      // binary operation expression instruction. param contains opid code
+  iUnaryOpExpr,                    // unary operation expression instruction. param contains opid code
+  iLogicCheck,                    // logic check instruction, for short-cirquit logical expression evaluation
+  iIncDec,                        // increment-decrement instruction
+  iLoadItemRef,                    // perform access to variable's item at index
+  iAutoItemRefCreate,              // create auto item reference object on the data stack
+  iAutoItemLoad,                  // load current auto item on data stack with internal index post increment
+  iIsOkLoad,                      // load top data accessor isOk result on the data stack
+  iLoadMemberRef,                  // perform access to variable's or explicit 'this' field | member variable
+  iLoadPropRef,                    // perform access to variable's property
+  iLoadThisPropRef,                // perform access to property using implicit 'this' pointer
+  iLoadAttributeVal,              // perform access to variable's attribute value
+  iLoadThisAttributeVal,          // perform access to attribute value using implicit 'this' pointer
+  iJump,                          // jump, param contains jump opcode + extra info, which is jump type (relative or absolute), followed by instruction offset
+  iJumpFalse,                      // jump if false, param contains jump opcode + extra info, meaning is the same as iJump    
+  iJumpTrue,                      // jump if true, param contains jump opcode + extra info, meaning is the same as iJump  
+  iThrow,                          // exception throw instruction
+  iRethrow,                        // caught exception re-throw instruction
+  iEnterTryCatch,                  // enter try-catch block scope
+  // special value, must go last
+  iOpcodesCount
 };
 
 /// Jump extra opcodes
 enum EsJumpOpcode
 {
-	joRel,		// relative jump - next parameter contains relative jump instruction offset
-	joAbs,		// absolute jump - next parameter contains absolute instruction position to jump to
+  joRel,    // relative jump - next parameter contains relative jump instruction offset
+  joAbs,    // absolute jump - next parameter contains absolute instruction position to jump to
 };
 
 /// Misc consts
@@ -469,7 +469,7 @@ public:
   }
 
 protected:
-	EsScriptInstructionOpcode m_opcode;
+  EsScriptInstructionOpcode m_opcode;
   ulong m_payloadMask;
 
   // Optional param 0
@@ -503,11 +503,11 @@ protected:
   EsString::Array m_qname;
 
   // Optional debug information
-	EsScriptDebugInfoIntf::Ptr m_debugInfo;
+  EsScriptDebugInfoIntf::Ptr m_debugInfo;
 
-	friend class EsScriptCodeSection;
-	friend class EsScriptMachine;
-	friend class EsScriptObject;
+  friend class EsScriptCodeSection;
+  friend class EsScriptMachine;
+  friend class EsScriptObject;
 };
 
 typedef std::vector<EsScriptInstruction> EsScriptInstructions;

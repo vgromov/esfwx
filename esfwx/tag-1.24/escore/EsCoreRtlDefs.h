@@ -2,12 +2,12 @@
 #define _es_rtl_defs_h_
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
-#	define esFiniteF		                es_finitef
-#	define esIsInfF(x)	                (!es_finitef(x))
-#	define esIsNanF		                  es_isnanf
-#	define esFinite		                  es_finite
-#	define esIsInf(x)	                  (!es_finite(x))
-#	define esIsNan		                  es_isnan
+#  define esFiniteF                    es_finitef
+#  define esIsInfF(x)                  (!es_finitef(x))
+#  define esIsNanF                      es_isnanf
+#  define esFinite                      es_finite
+#  define esIsInf(x)                    (!es_finite(x))
+#  define esIsNan                      es_isnan
 # define esCeil                       es_ceil
 # define esLog                        es_log
 # define esLog10                      es_log10
@@ -29,14 +29,14 @@
 # define esAtan                       es_atan
 # define esAtanYX                     es_atan_yx
 #else
-#	ifdef __cplusplus
+#  ifdef __cplusplus
 #   include <cmath>
-#	  include <cfloat>
-#	  define esFiniteF(f)               std::isfinite(static_cast<float>(f))
-#	  define esIsInfF(f)                std::isinf(static_cast<float>(f))
-#	  define esIsInf(d)                 std::isinf(static_cast<double>(d))
-#	  define esIsNanF(f)                std::isnan(static_cast<float>(f))
-#	  define esIsNan(d)		              std::isnan(static_cast<double>(d))
+#    include <cfloat>
+#    define esFiniteF(f)               std::isfinite(static_cast<float>(f))
+#    define esIsInfF(f)                std::isinf(static_cast<float>(f))
+#    define esIsInf(d)                 std::isinf(static_cast<double>(d))
+#    define esIsNanF(f)                std::isnan(static_cast<float>(f))
+#    define esIsNan(d)                  std::isnan(static_cast<double>(d))
 #   define esCeil                     std::ceil
 #   define esLog                      std::log
 #   define esLog10                    std::log10
@@ -58,15 +58,15 @@
 #   define esAtanYX                   std::atan2
 # else
 #   include <math.h>
-#	  include <float.h>
-# 	define esFiniteF	                _finite
-# 	define esIsInfF(x)                (0 == _finite(x))
+#    include <float.h>
+#   define esFiniteF                  _finite
+#   define esIsInfF(x)                (0 == _finite(x))
 #   ifdef isnan
-# 	  define esIsNanF		              isnan
+#     define esIsNanF                  isnan
 #   else
-# 	  define esIsNanF		              _isnanf
+#     define esIsNanF                  _isnanf
 #   endif
-# 	define esIsNan		                _isnan
+#   define esIsNan                    _isnan
 #   define esCeil                     ceil
 #   define esLog                      log
 #   define esLog10                    log10
@@ -110,13 +110,13 @@
 
 // redirect min|max to std::min|std::max
 #ifdef max
-#	undef max
+#  undef max
 #endif
 #ifdef min
 # undef min
 #endif
 
-#define esMax(a, b)	                  std::max((a), (b))
-#define esMin(a, b)	                  std::min((a), (b))
+#define esMax(a, b)                    std::max((a), (b))
+#define esMin(a, b)                    std::min((a), (b))
 
 #endif // _es_rtl_defs_h_

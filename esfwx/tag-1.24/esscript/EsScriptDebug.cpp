@@ -143,12 +143,12 @@ void EsScriptDebug::EvtHandler::notify(const EsEventIntf::Ptr& evt)
 //---------------------------------------------------------------------------
 // reflection class info declaration
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsScriptDebug, NO_CLASS_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsScriptDebug, log, void_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 
 //---------------------------------------------------------------------------
@@ -641,9 +641,9 @@ void EsScriptDebug::breakpointsValidate()
 
 static void logDebug(const EsString& msg)
 {
-	ES_DEBUG_TRACE( esT("## %s"), msg );
+  ES_DEBUG_TRACE( esT("## %s"), msg );
 
-	EsEventDispatcher::eventPost(
+  EsEventDispatcher::eventPost(
     ES_EVTC_SCRIPT_DEBUG_RSP,
     as_<ulong>(EsScriptDebugEvt::Log),
     msg
@@ -653,40 +653,40 @@ static void logDebug(const EsString& msg)
 
 void EsScriptDebug::log(cr_EsVariant p1)
 {
-	if( p1.isCollection() || p1.isObject() || p1.isEmpty() )
-		logDebug( EsScriptMachine::traceVariant(p1) );
-	else
-		logDebug( p1.asString() );
+  if( p1.isCollection() || p1.isObject() || p1.isEmpty() )
+    logDebug( EsScriptMachine::traceVariant(p1) );
+  else
+    logDebug( p1.asString() );
 }
 //---------------------------------------------------------------------------
 
 void EsScriptDebug::log(cr_EsString p1, cr_EsVariant p2)
 {
-	logDebug( EsString::format(p1.c_str(), p2) );
+  logDebug( EsString::format(p1.c_str(), p2) );
 }
 //---------------------------------------------------------------------------
 
 void EsScriptDebug::log(cr_EsString p1, cr_EsVariant p2, cr_EsVariant p3)
 {
-	logDebug( EsString::format(p1.c_str(), p2, p3) );
+  logDebug( EsString::format(p1.c_str(), p2, p3) );
 }
 //---------------------------------------------------------------------------
 
 void EsScriptDebug::log(cr_EsString p1, cr_EsVariant p2, cr_EsVariant p3, cr_EsVariant p4)
 {
-	logDebug( EsString::format(p1.c_str(), p2, p3, p4) );
+  logDebug( EsString::format(p1.c_str(), p2, p3, p4) );
 }
 //---------------------------------------------------------------------------
 
 void EsScriptDebug::log(cr_EsString p1, cr_EsVariant p2, cr_EsVariant p3, cr_EsVariant p4, cr_EsVariant p5)
 {
-	logDebug( EsString::format(p1.c_str(), p2, p3, p4, p5) );
+  logDebug( EsString::format(p1.c_str(), p2, p3, p4, p5) );
 }
 //---------------------------------------------------------------------------
 
 void EsScriptDebug::log(cr_EsString p1, cr_EsVariant p2, cr_EsVariant p3, cr_EsVariant p4, cr_EsVariant p5, cr_EsVariant p6)
 {
-	logDebug( EsString::format(p1.c_str(), p2, p3, p4, p5, p6) );
+  logDebug( EsString::format(p1.c_str(), p2, p3, p4, p5, p6) );
 }
 //---------------------------------------------------------------------------
 

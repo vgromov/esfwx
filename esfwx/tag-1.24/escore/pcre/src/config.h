@@ -51,16 +51,16 @@
 //#undef HEAP_MATCH_RECURSE
 //#undef NEVER_BACKSLASH_C
 
-#define LINK_SIZE		              2
-#define MATCH_LIMIT		            10000000
-#define MATCH_LIMIT_RECURSION    	MATCH_LIMIT
+#define LINK_SIZE                  2
+#define MATCH_LIMIT                10000000
+#define MATCH_LIMIT_RECURSION      MATCH_LIMIT
 #define NEWLINE_DEFAULT           PCRE2_NEWLINE_ANYCRLF
 #define PARENS_NEST_LIMIT         250
 #define PCRE2GREP_BUFSIZE         20480
 #define PCRE2GREP_MAX_BUFSIZE     1048576
 
-#define MAX_NAME_SIZE	            32
-#define MAX_NAME_COUNT	          10000
+#define MAX_NAME_SIZE              32
+#define MAX_NAME_COUNT            10000
 
 #endif // _pcre_2_config_h_
 

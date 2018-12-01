@@ -19,8 +19,8 @@ namespace EsInternal {
 
 enum {
   flagNativeChanged     = 0x02, ///< we've changed native storage, need re-decompose.
-  flagDecompChanged     = 0x04,	///< we've changed decomposed storage, need to re-compose it.
-  flagInitialized		    = 0x08,	///< object initialization complete
+  flagDecompChanged     = 0x04,  ///< we've changed decomposed storage, need to re-compose it.
+  flagInitialized        = 0x08,  ///< object initialization complete
   flagDayOfYearInvalid  = 0x10  ///< Day of year DateTime field is not valid - need to recompose and re-decompose
 };
 
@@ -30,33 +30,33 @@ enum {
 // date time span class
 //
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsTimeSpan, NO_CLASS_DESCR)
-	// services
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, asString, EsString_CallConst_cr_EsString, NO_METHOD_DESCR)
+  // services
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, asString, EsString_CallConst_cr_EsString, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, abs, EsVariant_CallConst, NO_METHOD_DESCR)
-	// reflected operators
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, compare, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, add, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, subtract, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, multiply, EsVariant_CallConst_llong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, divide, EsVariant_CallConst_llong, NO_METHOD_DESCR)
+  // reflected operators
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, compare, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, add, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, subtract, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, multiply, EsVariant_CallConst_llong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, divide, EsVariant_CallConst_llong, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, clone, EsVariant_CallConst, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, streamRead, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, streamWrite, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
-	// reflected properties
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, streamRead, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsTimeSpan, streamWrite, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
+  // reflected properties
   ES_DECL_PROP_INFO(EsTimeSpan, value, EsVariant, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO(EsTimeSpan, negative, bool, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO(EsTimeSpan, days, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO(EsTimeSpan, hours, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO(EsTimeSpan, minutes, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO(EsTimeSpan, seconds, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO(EsTimeSpan, milliseconds, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(EsTimeSpan, allDays, llong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(EsTimeSpan, allHours, llong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(EsTimeSpan, allMinutes, llong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(EsTimeSpan, allSeconds, llong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(EsTimeSpan, allMilliseconds, llong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	// constructors
-	ES_DECL_REFLECTED_CTOR_INFO(EsTimeSpan, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_PROP_INFO(EsTimeSpan, negative, bool, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO(EsTimeSpan, days, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO(EsTimeSpan, hours, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO(EsTimeSpan, minutes, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO(EsTimeSpan, seconds, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO(EsTimeSpan, milliseconds, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(EsTimeSpan, allDays, llong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(EsTimeSpan, allHours, llong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(EsTimeSpan, allMinutes, llong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(EsTimeSpan, allSeconds, llong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(EsTimeSpan, allMilliseconds, llong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  // constructors
+  ES_DECL_REFLECTED_CTOR_INFO(EsTimeSpan, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ m_secs(0),
 m_msecs(0)
 {
   ES_REFLECTED_PROPERTIES_RESET;
-	m_flags |= EsInternal::flagInitialized;
+  m_flags |= EsInternal::flagInitialized;
 }
 //---------------------------------------------------------------------------
 
@@ -95,10 +95,10 @@ m_mins(0),
 m_secs(0),
 m_msecs(0)
 {
-	if( dt == 0 )
-		ES_REFLECTED_PROPERTIES_RESET;
+  if( dt == 0 )
+    ES_REFLECTED_PROPERTIES_RESET;
 
- 	m_flags |= EsInternal::flagInitialized;
+   m_flags |= EsInternal::flagInitialized;
 }
 //---------------------------------------------------------------------------
 
@@ -113,21 +113,21 @@ m_msecs(0)
 {
   m_dt = fromVariant(src);
 
-	if( m_dt == 0 )
-		ES_REFLECTED_PROPERTIES_RESET;
+  if( m_dt == 0 )
+    ES_REFLECTED_PROPERTIES_RESET;
 
- 	m_flags |= EsInternal::flagInitialized;
+   m_flags |= EsInternal::flagInitialized;
 }
 //---------------------------------------------------------------------------
 
 // internal initializer
 EsBaseIntfPtr EsTimeSpan::create(esDT dt)
 {
-	std::unique_ptr<EsTimeSpan> p( new EsTimeSpan(dt) );
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  std::unique_ptr<EsTimeSpan> p( new EsTimeSpan(dt) );
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -141,75 +141,75 @@ EsVariant EsTimeSpan::clone() const
 
 EsBaseIntfPtr EsTimeSpan::NEW()
 {
-	return create(0);
+  return create(0);
 }
 //---------------------------------------------------------------------------
 
 // composition|decomposition checkers
 void EsTimeSpan::checkComposed() const
 {
-	if( m_flags & EsInternal::flagDecompChanged )
-	{
-		// compose time span from components
-		m_dt =
-			(esDT)m_days * IMMEDIATE_INT64(86400000) +
-			(esDT)m_hours * IMMEDIATE_INT64(3600000) +
-			(esDT)m_mins * IMMEDIATE_INT64(60000) +
-			(esDT)m_secs * IMMEDIATE_INT64(1000) +
-			(esDT)m_msecs;
+  if( m_flags & EsInternal::flagDecompChanged )
+  {
+    // compose time span from components
+    m_dt =
+      (esDT)m_days * IMMEDIATE_INT64(86400000) +
+      (esDT)m_hours * IMMEDIATE_INT64(3600000) +
+      (esDT)m_mins * IMMEDIATE_INT64(60000) +
+      (esDT)m_secs * IMMEDIATE_INT64(1000) +
+      (esDT)m_msecs;
 
-		m_flags &= ~EsInternal::flagDecompChanged;
-	}
+    m_flags &= ~EsInternal::flagDecompChanged;
+  }
 }
 //---------------------------------------------------------------------------
 
 void EsTimeSpan::checkDecomposed() const
 {
-	if( m_flags & EsInternal::flagNativeChanged )
-	{
-		// decompose native into components
-		esDT dt = m_dt;
-		long tmp = (long)(dt / IMMEDIATE_INT64(86400000));
-		dt = dt % IMMEDIATE_INT64(86400000);
-		if( tmp < 0 )
-			m_days = -tmp;
-		else
-			m_days = tmp;
-		tmp = (long)(dt / IMMEDIATE_INT64(3600000));
-		dt = dt % IMMEDIATE_INT64(3600000);
-		if( tmp < 0 )
-			m_hours = -tmp;
-		else
-			m_hours = tmp;
-		tmp = (long)(dt / IMMEDIATE_INT64(60000));
-		dt = dt % IMMEDIATE_INT64(60000);
-		if( tmp < 0 )
-			m_mins = -tmp;
-		else
-			m_mins = tmp;
-		tmp = (long)(dt / IMMEDIATE_INT64(1000));
-		dt = dt % IMMEDIATE_INT64(1000);
-		if( tmp < 0 )
-			m_secs = -tmp;
-		else
-			m_secs = tmp;
-		tmp = (long)dt;
-		if( tmp < 0 )
-			m_msecs = -tmp;
-		else
-			m_msecs = tmp;
+  if( m_flags & EsInternal::flagNativeChanged )
+  {
+    // decompose native into components
+    esDT dt = m_dt;
+    long tmp = (long)(dt / IMMEDIATE_INT64(86400000));
+    dt = dt % IMMEDIATE_INT64(86400000);
+    if( tmp < 0 )
+      m_days = -tmp;
+    else
+      m_days = tmp;
+    tmp = (long)(dt / IMMEDIATE_INT64(3600000));
+    dt = dt % IMMEDIATE_INT64(3600000);
+    if( tmp < 0 )
+      m_hours = -tmp;
+    else
+      m_hours = tmp;
+    tmp = (long)(dt / IMMEDIATE_INT64(60000));
+    dt = dt % IMMEDIATE_INT64(60000);
+    if( tmp < 0 )
+      m_mins = -tmp;
+    else
+      m_mins = tmp;
+    tmp = (long)(dt / IMMEDIATE_INT64(1000));
+    dt = dt % IMMEDIATE_INT64(1000);
+    if( tmp < 0 )
+      m_secs = -tmp;
+    else
+      m_secs = tmp;
+    tmp = (long)dt;
+    if( tmp < 0 )
+      m_msecs = -tmp;
+    else
+      m_msecs = tmp;
 
-		m_flags &= ~EsInternal::flagNativeChanged;
-	}
+    m_flags &= ~EsInternal::flagNativeChanged;
+  }
 }
 //---------------------------------------------------------------------------
 
 long EsTimeSpan::cmp(const EsTimeSpan* other) const
 {
-	ES_ASSERT(other);
-	checkComposed();
-	other->checkComposed();
-	return (m_dt < other->m_dt) ? -1 : ((m_dt == other->m_dt) ? 0 : 1);
+  ES_ASSERT(other);
+  checkComposed();
+  other->checkComposed();
+  return (m_dt < other->m_dt) ? -1 : ((m_dt == other->m_dt) ? 0 : 1);
 }
 //---------------------------------------------------------------------------
 
@@ -222,19 +222,19 @@ EsVariant EsTimeSpan::abs() const
 
 void EsTimeSpan::streamWrite(cr_EsBaseIntfPtr p)
 {
-	EsStreamIntf::Ptr stream = p;
-	ES_ASSERT(stream);
-	checkComposed();
-	stream->valueWrite( m_dt );
+  EsStreamIntf::Ptr stream = p;
+  ES_ASSERT(stream);
+  checkComposed();
+  stream->valueWrite( m_dt );
 }
 //---------------------------------------------------------------------------
 
 void EsTimeSpan::streamRead(cr_EsBaseIntfPtr p)
 {
-	EsStreamIntf::Ptr stream = p;
-	ES_ASSERT(stream);
-	m_dt = stream->valueRead().asLLong();
-	m_flags |= EsInternal::flagNativeChanged;
+  EsStreamIntf::Ptr stream = p;
+  ES_ASSERT(stream);
+  m_dt = stream->valueRead().asLLong();
+  m_flags |= EsInternal::flagNativeChanged;
   m_flags &= ~EsInternal::flagDecompChanged;
 }
 //---------------------------------------------------------------------------
@@ -242,109 +242,109 @@ void EsTimeSpan::streamRead(cr_EsBaseIntfPtr p)
 
 enum EsTimeSpanPart
 {
-	week,
-	day,
-	h,
-	m,
-	s,
-	ms
+  week,
+  day,
+  h,
+  m,
+  s,
+  ms
 };
 //---------------------------------------------------------------------------
 
 EsString EsTimeSpan::asString(const EsString& fmt) const
 {
-	if( fmt.empty() )
-		EsException::Throw( esT("TimeSpan format string must not be empty") );
+  if( fmt.empty() )
+    EsException::Throw( esT("TimeSpan format string must not be empty") );
 
-	checkDecomposed();
+  checkDecomposed();
 
-	EsString str;
-	str.reserve( fmt.size() );
+  EsString str;
+  str.reserve( fmt.size() );
 
-	// set the most significant part found so far
-	EsTimeSpanPart mspart = EsTimeSpanPart::ms;
-	for( size_t idx = 0; idx < fmt.size(); ++idx )
-	{
-		EsString::value_type ch = fmt[idx];
+  // set the most significant part found so far
+  EsTimeSpanPart mspart = EsTimeSpanPart::ms;
+  for( size_t idx = 0; idx < fmt.size(); ++idx )
+  {
+    EsString::value_type ch = fmt[idx];
 
-		if( esT('%') == ch )
-		{
-			// the start of the format specification of the printf() below
-			EsString fmtPfx( esT('%') );
-			// the number being formatted
-			ulong n;
-			// the number of digits for the format string, 0 if unused
-			ulong digits = 0;
+    if( esT('%') == ch )
+    {
+      // the start of the format specification of the printf() below
+      EsString fmtPfx( esT('%') );
+      // the number being formatted
+      ulong n;
+      // the number of digits for the format string, 0 if unused
+      ulong digits = 0;
 
-			ch = fmt[++idx];    // get the format spec char
-			switch( ch )
-			{
-			default:
-				EsException::Throw( esT("TimeSpan invalid format character encountered: '%c'"), ch );
-				// NB! fallthrough
-			case esT('%'):
-				str += ch;
-				// skip to the nest iteration
-				continue;
-			case esT('D'):
-				n = get_days();
-				if( mspart < EsTimeSpanPart::day )
-					n %= 7;
-				else
-					mspart = EsTimeSpanPart::day;
-				break;
-			case esT('E'):
-				mspart = EsTimeSpanPart::week;
-				n = get_weeks();
-				break;
-			case esT('H'):
-				n = get_hours();
-				if( mspart < EsTimeSpanPart::h )
-					n %= 24;
-				else
-					mspart = EsTimeSpanPart::h;
-				digits = 2;
-				break;
-			case esT('l'):
-				n = get_milliseconds();
-				if( mspart < EsTimeSpanPart::ms )
-					n %= 1000;
-				//else: no need to reset partBiggest to Part_MSec, it is
-				//      the least significant one anyhow
-				digits = 3;
-				break;
-			case esT('M'):
-				n = get_minutes();
-				if( mspart < EsTimeSpanPart::m )
-					n %= 60;
-				else
-					mspart = EsTimeSpanPart::m;
-				digits = 2;
-				break;
-			case esT('S'):
-				n = get_seconds();
-				if( mspart < EsTimeSpanPart::s )
-					n %= 60;
-				else
-					mspart = EsTimeSpanPart::s;
-				digits = 2;
-				break;
-			}
+      ch = fmt[++idx];    // get the format spec char
+      switch( ch )
+      {
+      default:
+        EsException::Throw( esT("TimeSpan invalid format character encountered: '%c'"), ch );
+        // NB! fallthrough
+      case esT('%'):
+        str += ch;
+        // skip to the nest iteration
+        continue;
+      case esT('D'):
+        n = get_days();
+        if( mspart < EsTimeSpanPart::day )
+          n %= 7;
+        else
+          mspart = EsTimeSpanPart::day;
+        break;
+      case esT('E'):
+        mspart = EsTimeSpanPart::week;
+        n = get_weeks();
+        break;
+      case esT('H'):
+        n = get_hours();
+        if( mspart < EsTimeSpanPart::h )
+          n %= 24;
+        else
+          mspart = EsTimeSpanPart::h;
+        digits = 2;
+        break;
+      case esT('l'):
+        n = get_milliseconds();
+        if( mspart < EsTimeSpanPart::ms )
+          n %= 1000;
+        //else: no need to reset partBiggest to Part_MSec, it is
+        //      the least significant one anyhow
+        digits = 3;
+        break;
+      case esT('M'):
+        n = get_minutes();
+        if( mspart < EsTimeSpanPart::m )
+          n %= 60;
+        else
+          mspart = EsTimeSpanPart::m;
+        digits = 2;
+        break;
+      case esT('S'):
+        n = get_seconds();
+        if( mspart < EsTimeSpanPart::s )
+          n %= 60;
+        else
+          mspart = EsTimeSpanPart::s;
+        digits = 2;
+        break;
+      }
 
-			if( digits )
-				fmtPfx += esT("0") + EsString::fromULong(digits);
-			fmtPfx += esT("lu");
+      if( digits )
+        fmtPfx += esT("0") + EsString::fromULong(digits);
+      fmtPfx += esT("lu");
 
-			str += EsString::format(fmtPfx.c_str(), n);
-		}
-		else // normal character, just copy
-			str += ch;
-	}
+      str += EsString::format(fmtPfx.c_str(), n);
+    }
+    else // normal character, just copy
+      str += ch;
+  }
 
-	if( get_negative() )
-		str = esT("-") + str;
+  if( get_negative() )
+    str = esT("-") + str;
 
-	return str;
+  return str;
 }
 //---------------------------------------------------------------------------
 
@@ -363,14 +363,14 @@ void EsTimeSpan::set_value(const EsVariant& val)
 
 bool EsTimeSpan::get_negative() const
 {
-	checkComposed();
-	return m_dt < IMMEDIATE_INT64(0);
+  checkComposed();
+  return m_dt < IMMEDIATE_INT64(0);
 }
 //---------------------------------------------------------------------------
 
 void EsTimeSpan::set_negative(const bool& negative)
 {
-	checkComposed();
+  checkComposed();
   if( negative != (m_dt < IMMEDIATE_INT64(0)) )
     m_dt = -m_dt;
 }
@@ -378,133 +378,133 @@ void EsTimeSpan::set_negative(const bool& negative)
 
 ulong EsTimeSpan::get_weeks() const
 {
-	checkDecomposed();
-	return m_days/7;
+  checkDecomposed();
+  return m_days/7;
 }
 //---------------------------------------------------------------------------
 
 void EsTimeSpan::set_weeks(cr_ulong val)
 {
-	m_days = val*7;
-	m_flags |= EsInternal::flagDecompChanged;
+  m_days = val*7;
+  m_flags |= EsInternal::flagDecompChanged;
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 llong EsTimeSpan::get_allWeeks() const
 {
-	checkComposed();
-	return m_dt/IMMEDIATE_INT64(604800000);
+  checkComposed();
+  return m_dt/IMMEDIATE_INT64(604800000);
 }
 //---------------------------------------------------------------------------
 
 ulong EsTimeSpan::get_days() const
 {
-	checkDecomposed();
-	return m_days;
+  checkDecomposed();
+  return m_days;
 }
 //---------------------------------------------------------------------------
 
 void EsTimeSpan::set_days(cr_ulong val)
 {
-	m_days = val;
-	m_flags |= EsInternal::flagDecompChanged;
+  m_days = val;
+  m_flags |= EsInternal::flagDecompChanged;
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 llong EsTimeSpan::get_allDays() const
 {
-	checkComposed();
-	return m_dt/IMMEDIATE_INT64(86400000);
+  checkComposed();
+  return m_dt/IMMEDIATE_INT64(86400000);
 }
 //---------------------------------------------------------------------------
 
 ulong EsTimeSpan::get_hours() const
 {
-	checkDecomposed();
-	return m_hours;
+  checkDecomposed();
+  return m_hours;
 }
 //---------------------------------------------------------------------------
 
 void EsTimeSpan::set_hours(cr_ulong val)
 {
-	m_hours = val;
-	m_flags |= EsInternal::flagDecompChanged;
+  m_hours = val;
+  m_flags |= EsInternal::flagDecompChanged;
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 llong EsTimeSpan::get_allHours() const
 {
-	checkComposed();
-	return m_dt/IMMEDIATE_INT64(3600000);
+  checkComposed();
+  return m_dt/IMMEDIATE_INT64(3600000);
 }
 //---------------------------------------------------------------------------
 
 ulong EsTimeSpan::get_minutes() const
 {
-	checkDecomposed();
-	return m_mins;
+  checkDecomposed();
+  return m_mins;
 }
 //---------------------------------------------------------------------------
 
 void EsTimeSpan::set_minutes(cr_ulong val)
 {
-	m_mins = val;
-	m_flags |= EsInternal::flagDecompChanged;
+  m_mins = val;
+  m_flags |= EsInternal::flagDecompChanged;
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 llong EsTimeSpan::get_allMinutes() const
 {
-	checkComposed();
-	return m_dt/IMMEDIATE_INT64(60000);
+  checkComposed();
+  return m_dt/IMMEDIATE_INT64(60000);
 }
 //---------------------------------------------------------------------------
 
 ulong EsTimeSpan::get_seconds() const
 {
-	checkDecomposed();
-	return m_secs;
+  checkDecomposed();
+  return m_secs;
 }
 //---------------------------------------------------------------------------
 
 void EsTimeSpan::set_seconds(cr_ulong val)
 {
-	m_secs = val;
-	m_flags |= EsInternal::flagDecompChanged;
+  m_secs = val;
+  m_flags |= EsInternal::flagDecompChanged;
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 llong EsTimeSpan::get_allSeconds() const
 {
-	checkComposed();
-	return m_dt/IMMEDIATE_INT64(1000);
+  checkComposed();
+  return m_dt/IMMEDIATE_INT64(1000);
 }
 //---------------------------------------------------------------------------
 
 ulong EsTimeSpan::get_milliseconds() const
 {
-	checkDecomposed();
-	return m_msecs;
+  checkDecomposed();
+  return m_msecs;
 }
 //---------------------------------------------------------------------------
 
 void EsTimeSpan::set_milliseconds(cr_ulong val)
 {
-	m_msecs = val;
-	m_flags |= EsInternal::flagDecompChanged;
+  m_msecs = val;
+  m_flags |= EsInternal::flagDecompChanged;
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 llong EsTimeSpan::get_allMilliseconds() const
 {
-	checkComposed();
-	return m_dt;
+  checkComposed();
+  return m_dt;
 }
 //---------------------------------------------------------------------------
 
@@ -522,164 +522,164 @@ esDT EsTimeSpan::fromVariant(const EsVariant& var)
   else
     return var.asLLong();
 
-	return 0; // pacify compilers
+  return 0; // pacify compilers
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsTimeSpan::toVariant(esDT dt)
 {
-	return EsTimeSpan::create(dt);
+  return EsTimeSpan::create(dt);
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsTimeSpan::compare(cr_EsVariant spanOrLlong) const
 {
-	if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
-	{
-		EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
-		EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
-		if( dts )
-			return cmp(dts);
-	}
-	else
-	{
-		llong other = spanOrLlong.asLLong();
-		return (m_dt < other) ? -1 : ((m_dt == other) ? 0 : 1);
-	}
+  if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
+  {
+    EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
+    if( dts )
+      return cmp(dts);
+  }
+  else
+  {
+    llong other = spanOrLlong.asLLong();
+    return (m_dt < other) ? -1 : ((m_dt == other) ? 0 : 1);
+  }
 
-	EsException::Throw(esT("Could not compare EsTimeSpan object with incompatible value"));
-	// pacify compilers
-	return 0;
+  EsException::Throw(esT("Could not compare EsTimeSpan object with incompatible value"));
+  // pacify compilers
+  return 0;
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsTimeSpan::add(cr_EsVariant spanOrLlong) const
 {
-	checkComposed();
-	if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
-	{
-		EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
-		EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
-		if(dts)
-			return create(m_dt + static_cast<esDT>(*dts));
-	}
-	else
-		return create(m_dt + spanOrLlong.asLLong());
+  checkComposed();
+  if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
+  {
+    EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
+    if(dts)
+      return create(m_dt + static_cast<esDT>(*dts));
+  }
+  else
+    return create(m_dt + spanOrLlong.asLLong());
 
-	EsException::Throw(esT("Could not add incompatible value and EsTimeSpan object"));
-	return EsVariant::null();
+  EsException::Throw(esT("Could not add incompatible value and EsTimeSpan object"));
+  return EsVariant::null();
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsTimeSpan::subtract(cr_EsVariant spanOrLlong) const
 {
-	checkComposed();
-	if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
-	{
-		EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
-		EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
-		if(dts)
-			return create(m_dt - static_cast<esDT>(*dts));
-	}
-	else
-		return create(m_dt - spanOrLlong.asLLong());
+  checkComposed();
+  if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
+  {
+    EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
+    if(dts)
+      return create(m_dt - static_cast<esDT>(*dts));
+  }
+  else
+    return create(m_dt - spanOrLlong.asLLong());
 
-	EsException::Throw(esT("Could not subtract incompatible value from EsTimeSpan object"));
-	return EsVariant::null();
+  EsException::Throw(esT("Could not subtract incompatible value from EsTimeSpan object"));
+  return EsVariant::null();
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsTimeSpan::multiply(llong factor) const
 {
-	checkComposed();
-	return create(m_dt * factor);
+  checkComposed();
+  return create(m_dt * factor);
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsTimeSpan::divide(llong divisor) const
 {
-	checkComposed();
-	if( !divisor )
-		EsException::ThrowDivisionByZero();
-	return create(m_dt / divisor);
+  checkComposed();
+  if( !divisor )
+    EsException::ThrowDivisionByZero();
+  return create(m_dt / divisor);
 }
 //---------------------------------------------------------------------------
 
 EsTimeSpan::operator esDT () const
 {
-	checkComposed();
-	return m_dt;
+  checkComposed();
+  return m_dt;
 }
 //---------------------------------------------------------------------------
 
 EsTimeSpan& EsTimeSpan::operator= (esDT src)
 {
-	if( m_dt != src )
-	{
-		m_dt = src;
-		m_flags |= EsInternal::flagNativeChanged;
+  if( m_dt != src )
+  {
+    m_dt = src;
+    m_flags |= EsInternal::flagNativeChanged;
     m_flags &= ~EsInternal::flagDecompChanged;
-	}
+  }
 
-	return *this;
+  return *this;
 }
 //---------------------------------------------------------------------------
 
 bool EsTimeSpan::operator== (const EsTimeSpan& other) const
 {
-	return 0 == cmp(&other);
+  return 0 == cmp(&other);
 }
 //---------------------------------------------------------------------------
 
 bool EsTimeSpan::operator< (const EsTimeSpan& other) const
 {
-	return -1 == cmp(&other);
+  return -1 == cmp(&other);
 }
 //---------------------------------------------------------------------------
 
 EsTimeSpan operator+ (const EsTimeSpan& _1, const EsTimeSpan& _2)
 {
-	_1.checkComposed();
-	_2.checkComposed();
-	return EsTimeSpan( _1.m_dt+_2.m_dt );
+  _1.checkComposed();
+  _2.checkComposed();
+  return EsTimeSpan( _1.m_dt+_2.m_dt );
 }
 //---------------------------------------------------------------------------
 
 EsTimeSpan operator+ (const EsTimeSpan& _1, llong _2)
 {
-	_1.checkComposed();
-	return EsTimeSpan(_1.m_dt+_2);
+  _1.checkComposed();
+  return EsTimeSpan(_1.m_dt+_2);
 }
 //---------------------------------------------------------------------------
 
 EsTimeSpan operator- (const EsTimeSpan& _1, const EsTimeSpan& _2)
 {
-	_1.checkComposed();
-	_2.checkComposed();
-	return EsTimeSpan(_1.m_dt-_2.m_dt);
+  _1.checkComposed();
+  _2.checkComposed();
+  return EsTimeSpan(_1.m_dt-_2.m_dt);
 }
 //---------------------------------------------------------------------------
 
 EsTimeSpan operator- (const EsTimeSpan& _1, llong _2)
 {
-	_1.checkComposed();
-	return EsTimeSpan(_1.m_dt-_2);
+  _1.checkComposed();
+  return EsTimeSpan(_1.m_dt-_2);
 }
 //---------------------------------------------------------------------------
 
 EsTimeSpan operator* (const EsTimeSpan& _1, llong _2)
 {
-	_1.checkComposed();
-	return EsTimeSpan(_1.m_dt*_2);
+  _1.checkComposed();
+  return EsTimeSpan(_1.m_dt*_2);
 }
 //---------------------------------------------------------------------------
 
 EsTimeSpan operator/ (const EsTimeSpan& _1, llong _2)
 {
-	_1.checkComposed();
-	if( !_2 )
-		EsException::ThrowDivisionByZero();
-	return EsTimeSpan(_1.m_dt/_2);
+  _1.checkComposed();
+  if( !_2 )
+    EsException::ThrowDivisionByZero();
+  return EsTimeSpan(_1.m_dt/_2);
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -687,44 +687,44 @@ EsTimeSpan operator/ (const EsTimeSpan& _1, llong _2)
 // date time class
 //
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsDateTime, NO_CLASS_DESCR)
-	// services
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, asString, EsString_CallConst, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, asDateString, EsString_CallConst, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, asTimeString, EsString_CallConst, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, asString, EsString_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, asString, EsString_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  // services
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, asString, EsString_CallConst, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, asDateString, EsString_CallConst, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, asTimeString, EsString_CallConst, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, asString, EsString_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, asString, EsString_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, clone, EsVariant_CallConst, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, streamRead, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, streamWrite, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
-	// class services
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, isLeapYear, bool_ClassCall_long, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, daysInMonthGet, ulong_ClassCall_long_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, daysInYearGet, ulong_ClassCall_long, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, dayOfWeekGet, ulong_ClassCall_long_ulong_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO(    EsDateTime, biasReflected, bias, EsVariant_ClassCall, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, isDstActive, bool_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, streamRead, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, streamWrite, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
+  // class services
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, isLeapYear, bool_ClassCall_long, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, daysInMonthGet, ulong_ClassCall_long_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, daysInYearGet, ulong_ClassCall_long, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, dayOfWeekGet, ulong_ClassCall_long_ulong_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO(    EsDateTime, biasReflected, bias, EsVariant_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, isDstActive, bool_ClassCall, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsDateTime, universalFmtToStrftime, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
   // reflected operators
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, compare, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, add, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, subtract, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
-	// reflected properties
-	ES_DECL_PROP_INFO_RO(EsDateTime, leapYear, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(EsDateTime, daysInMonth, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(EsDateTime, daysInYear, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(EsDateTime, dayOfYear, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(EsDateTime, dayOfWeek, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, compare, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, add, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsDateTime, subtract, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
+  // reflected properties
+  ES_DECL_PROP_INFO_RO(EsDateTime, leapYear, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(EsDateTime, daysInMonth, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(EsDateTime, daysInYear, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(EsDateTime, dayOfYear, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(EsDateTime, dayOfWeek, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO(   EsDateTime, value, EsVariant, NO_PROPERTY_LABEL, static_cast<ulong>(0), NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO(   EsDateTime, year, long, NO_PROPERTY_LABEL, static_cast<ulong>(DT_YEAR0), NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE(EsDateTime, month, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(1), static_cast<ulong>(1), static_cast<ulong>(12), NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE(EsDateTime, dayOfMonth, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(1), static_cast<ulong>(1), static_cast<ulong>(31), NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE(EsDateTime, hours, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(0), static_cast<ulong>(0), static_cast<ulong>(23), NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE(EsDateTime, minutes, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(0), static_cast<ulong>(0), static_cast<ulong>(59), NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE(EsDateTime, seconds, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(0), static_cast<ulong>(0), static_cast<ulong>(59), NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE(EsDateTime, milliseconds, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(0), static_cast<ulong>(0), static_cast<ulong>(999), NO_PROPERTY_DESCR)
-	// constructors
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO(EsDateTime, reflectedNow, now, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CTOR_INFO(EsDateTime, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_PROP_INFO_RANGE(EsDateTime, month, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(1), static_cast<ulong>(1), static_cast<ulong>(12), NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE(EsDateTime, dayOfMonth, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(1), static_cast<ulong>(1), static_cast<ulong>(31), NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE(EsDateTime, hours, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(0), static_cast<ulong>(0), static_cast<ulong>(23), NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE(EsDateTime, minutes, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(0), static_cast<ulong>(0), static_cast<ulong>(59), NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE(EsDateTime, seconds, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(0), static_cast<ulong>(0), static_cast<ulong>(59), NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE(EsDateTime, milliseconds, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(0), static_cast<ulong>(0), static_cast<ulong>(999), NO_PROPERTY_DESCR)
+  // constructors
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO(EsDateTime, reflectedNow, now, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsDateTime, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
@@ -733,7 +733,7 @@ m_flags(EsInternal::flagNativeChanged),
 m_dt(0)
 {
   ES_REFLECTED_PROPERTIES_RESET;
-	m_flags |= EsInternal::flagInitialized;
+  m_flags |= EsInternal::flagInitialized;
 }
 //---------------------------------------------------------------------------
 
@@ -756,10 +756,10 @@ EsDateTime::EsDateTime(esDT dt) :
 m_flags(EsInternal::flagNativeChanged),
 m_dt(dt)
 {
-	if( dt == 0 )
-		ES_REFLECTED_PROPERTIES_RESET;
+  if( dt == 0 )
+    ES_REFLECTED_PROPERTIES_RESET;
 
-	m_flags |= EsInternal::flagInitialized;
+  m_flags |= EsInternal::flagInitialized;
 
   if( dt != 0 )
     checkDecomposed(false);
@@ -773,10 +773,10 @@ m_dt(0)
   esDT dt = fromVariant(src);
   m_dt = dt;
 
-	if( dt == 0 )
-		ES_REFLECTED_PROPERTIES_RESET;
+  if( dt == 0 )
+    ES_REFLECTED_PROPERTIES_RESET;
 
-	m_flags |= EsInternal::flagInitialized;
+  m_flags |= EsInternal::flagInitialized;
 
   if( dt != 0 )
     checkDecomposed(false);
@@ -792,11 +792,11 @@ const EsDateTime& EsDateTime::null()
 
 EsBaseIntfPtr EsDateTime::create(esDT dt)
 {
-	std::unique_ptr<EsDateTime> p( new EsDateTime(dt) );
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  std::unique_ptr<EsDateTime> p( new EsDateTime(dt) );
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -817,99 +817,99 @@ EsVariant EsDateTime::clone() const
 
 EsDateTime EsDateTime::now()
 {
-	return EsDateTime(internalNow());
+  return EsDateTime(internalNow());
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsDateTime::reflectedNow()
 {
-	return create(internalNow());
+  return create(internalNow());
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsDateTime::NEW()
 {
-	return create(0);
+  return create(0);
 }
 //---------------------------------------------------------------------------
 
 bool EsDateTime::isOk() const
 {
-	checkComposed(false);
-	checkDecomposed(false);
+  checkComposed(false);
+  checkDecomposed(false);
 
-	return 0 != dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, m_min, m_sec, m_msec);
+  return 0 != dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, m_min, m_sec, m_msec);
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::compose(long year, ulong month, ulong dayOfMonth, ulong hour, ulong minute, ulong second, ulong millisecond)
 {
-	if( !dtIsValid(year, month, dayOfMonth, hour, minute, second, millisecond) )
-		EsException::Throw(esT("Could not compose valid date time value from date time components"));
+  if( !dtIsValid(year, month, dayOfMonth, hour, minute, second, millisecond) )
+    EsException::Throw(esT("Could not compose valid date time value from date time components"));
 
-	m_year = year;
-	m_month = month;
-	m_dayOfMonth = dayOfMonth;
-	m_hour = hour;
-	m_min = minute;
-	m_sec = second;
-	m_msec = millisecond;
-	// we need to recalc dayOfYear member
-	m_flags |= EsInternal::flagNativeChanged|EsInternal::flagDecompChanged|EsInternal::flagDayOfYearInvalid;
-	checkComposed();
-	checkDecomposed();
+  m_year = year;
+  m_month = month;
+  m_dayOfMonth = dayOfMonth;
+  m_hour = hour;
+  m_min = minute;
+  m_sec = second;
+  m_msec = millisecond;
+  // we need to recalc dayOfYear member
+  m_flags |= EsInternal::flagNativeChanged|EsInternal::flagDecompChanged|EsInternal::flagDayOfYearInvalid;
+  checkComposed();
+  checkDecomposed();
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::checkDecomposed(bool doThrow /*= true*/) const
 {
-	if( m_flags & (EsInternal::flagNativeChanged|EsInternal::flagDayOfYearInvalid) )
-	{
-	  // Zero all outbound members, in case their platform size > sizeof(int) and therefore, not all their conents would be
-	  // properly assigned inside dtDecomposeDateTime calculator
-	  //
-	  m_year = m_dayOfYear = m_month = m_dayOfMonth = m_hour = m_min = m_sec = m_msec = 0;
-		dtDecomposeDateTime(
-		  &m_dt,
-		  (int*)&m_year,
-		  (int*)&m_dayOfYear,
-		  (int*)&m_month,
-		  (int*)&m_dayOfMonth,
-		  (int*)&m_hour,
-		  (int*)&m_min,
-		  (int*)&m_sec,
-		  (int*)&m_msec
+  if( m_flags & (EsInternal::flagNativeChanged|EsInternal::flagDayOfYearInvalid) )
+  {
+    // Zero all outbound members, in case their platform size > sizeof(int) and therefore, not all their conents would be
+    // properly assigned inside dtDecomposeDateTime calculator
+    //
+    m_year = m_dayOfYear = m_month = m_dayOfMonth = m_hour = m_min = m_sec = m_msec = 0;
+    dtDecomposeDateTime(
+      &m_dt,
+      (int*)&m_year,
+      (int*)&m_dayOfYear,
+      (int*)&m_month,
+      (int*)&m_dayOfMonth,
+      (int*)&m_hour,
+      (int*)&m_min,
+      (int*)&m_sec,
+      (int*)&m_msec
     );
-		if( !dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, m_min, m_sec, m_msec) )
+    if( !dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, m_min, m_sec, m_msec) )
     {
       if( doThrow )
-			  EsException::Throw(esT("Could not decompose esDT value into valid date time components"));
+        EsException::Throw(esT("Could not decompose esDT value into valid date time components"));
     }
     else
-		  m_flags &= ~(EsInternal::flagNativeChanged|EsInternal::flagDayOfYearInvalid);
-	}
+      m_flags &= ~(EsInternal::flagNativeChanged|EsInternal::flagDayOfYearInvalid);
+  }
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::checkComposed(bool doThrow /*= true*/) const
 {
-	if( m_flags & EsInternal::flagDecompChanged )
-	{
-		if( !dtComposeDateTime(&m_dt, m_year, m_month, m_dayOfMonth, m_hour, m_min, m_sec, m_msec) )
-		{
-    	if( doThrow )
+  if( m_flags & EsInternal::flagDecompChanged )
+  {
+    if( !dtComposeDateTime(&m_dt, m_year, m_month, m_dayOfMonth, m_hour, m_min, m_sec, m_msec) )
+    {
+      if( doThrow )
         EsException::Throw(esT("Could not compose date time comonents into valid esDT value"));
     }
     else
-		  m_flags &= ~EsInternal::flagDecompChanged;
-	}
+      m_flags &= ~EsInternal::flagDecompChanged;
+  }
 }
 //---------------------------------------------------------------------------
 
 EsDateTime::operator esDT () const
 {
-	checkComposed();
-	return m_dt;
+  checkComposed();
+  return m_dt;
 }
 //---------------------------------------------------------------------------
 
@@ -927,20 +927,20 @@ esDT EsDateTime::fromVariant(const EsVariant& var)
   else
     return var.asLLong();
 
-	return 0; // pacify compilers
+  return 0; // pacify compilers
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsDateTime::toVariant(esDT dt)
 {
-	return EsDateTime::create(dt);
+  return EsDateTime::create(dt);
 }
 //---------------------------------------------------------------------------
 
 EsString EsDateTime::asString() const
 {
-	// return ISO 8601 Date and Time with space as date-time separator
-	return asString(
+  // return ISO 8601 Date and Time with space as date-time separator
+  return asString(
     EsLocale::locale(),
     esT("%F %T")
   );
@@ -950,7 +950,7 @@ EsString EsDateTime::asString() const
 EsString EsDateTime::asDateString() const
 {
   // Return ISO 8601 Date
-	return asString(
+  return asString(
     EsLocale::locale(),
     esT("%F")
   );
@@ -960,7 +960,7 @@ EsString EsDateTime::asDateString() const
 EsString EsDateTime::asTimeString() const
 {
   // Return ISO 8601 Time
-	return asString(
+  return asString(
     EsLocale::locale(),
     esT("%T")
   );
@@ -969,44 +969,44 @@ EsString EsDateTime::asTimeString() const
 
 bool EsDateTime::isLeapYear(long year)
 {
-	return 0 != dtIsLeapYear(year);
+  return 0 != dtIsLeapYear(year);
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::daysInMonthGet(long year, ulong month)
 {
-	return dtGetMonthDayCount(year, month);
+  return dtGetMonthDayCount(year, month);
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::daysInYearGet(long year)
 {
-	return dtGetDaysInYear(year);
+  return dtGetDaysInYear(year);
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::dayOfWeekGet(long year, ulong month, ulong dayOfMonth)
 {
-	return dtGetDayOfWeek(year, month, dayOfMonth);
+  return dtGetDayOfWeek(year, month, dayOfMonth);
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
 bool EsDateTime::get_leapYear() const
 {
-	return EsDateTime::isLeapYear(get_year());
+  return EsDateTime::isLeapYear(get_year());
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::get_daysInMonth() const
 {
-	return EsDateTime::daysInMonthGet(get_year(), get_month());
+  return EsDateTime::daysInMonthGet(get_year(), get_month());
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::get_daysInYear() const
 {
-	return EsDateTime::daysInYearGet(get_year());
+  return EsDateTime::daysInYearGet(get_year());
 }
 //---------------------------------------------------------------------------
 
@@ -1018,13 +1018,13 @@ ulong EsDateTime::get_dayOfYear() const
   checkComposed();
   checkDecomposed();
 
-	return m_dayOfYear;
+  return m_dayOfYear;
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::get_dayOfWeek() const
 {
-	return EsDateTime::dayOfWeekGet(get_year(), get_month(), get_dayOfMonth());
+  return EsDateTime::dayOfWeekGet(get_year(), get_month(), get_dayOfMonth());
 }
 //---------------------------------------------------------------------------
 
@@ -1044,234 +1044,234 @@ void EsDateTime::set_value(const EsVariant& val)
 
 long EsDateTime::get_year() const
 {
-	checkDecomposed();
-	return m_year;
+  checkDecomposed();
+  return m_year;
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::set_year(cr_long val)
 {
-	if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(val, m_month, m_dayOfMonth, m_hour, m_min, m_sec, m_msec) )
-		EsException::Throw(esT("Setting year to %d would result in invalid date time object"), val);
-	m_year = val;
-	m_flags |= (EsInternal::flagDecompChanged|EsInternal::flagDayOfYearInvalid);
+  if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(val, m_month, m_dayOfMonth, m_hour, m_min, m_sec, m_msec) )
+    EsException::Throw(esT("Setting year to %d would result in invalid date time object"), val);
+  m_year = val;
+  m_flags |= (EsInternal::flagDecompChanged|EsInternal::flagDayOfYearInvalid);
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::get_month() const
 {
-	checkDecomposed();
-	return m_month;
+  checkDecomposed();
+  return m_month;
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::set_month(cr_ulong val)
 {
-	if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, val, m_dayOfMonth, m_hour, m_min, m_sec, m_msec) )
-		EsException::Throw(esT("Setting month to %d would result in invalid date time object"), val);
-	m_month = val;
-	m_flags |= (EsInternal::flagDecompChanged|EsInternal::flagDayOfYearInvalid);
+  if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, val, m_dayOfMonth, m_hour, m_min, m_sec, m_msec) )
+    EsException::Throw(esT("Setting month to %d would result in invalid date time object"), val);
+  m_month = val;
+  m_flags |= (EsInternal::flagDecompChanged|EsInternal::flagDayOfYearInvalid);
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::get_dayOfMonth() const
 {
-	checkDecomposed();
-	return m_dayOfMonth;
+  checkDecomposed();
+  return m_dayOfMonth;
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::set_dayOfMonth(cr_ulong val)
 {
-	if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, m_month, val, m_hour, m_min, m_sec, m_msec) )
-		EsException::Throw(esT("Setting day of month to %d would result in invalid date time object"), val);
-	m_dayOfMonth = val;
-	m_flags |= (EsInternal::flagDecompChanged|EsInternal::flagDayOfYearInvalid);
+  if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, m_month, val, m_hour, m_min, m_sec, m_msec) )
+    EsException::Throw(esT("Setting day of month to %d would result in invalid date time object"), val);
+  m_dayOfMonth = val;
+  m_flags |= (EsInternal::flagDecompChanged|EsInternal::flagDayOfYearInvalid);
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::get_hours() const
 {
-	checkDecomposed();
-	return m_hour;
+  checkDecomposed();
+  return m_hour;
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::set_hours(cr_ulong val)
 {
-	if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, m_month, m_dayOfMonth, val, m_min, m_sec, m_msec) )
-		EsException::Throw(esT("Setting hour to %d would result in invalid date time object"), val);
-	m_hour = val;
-	m_flags |= EsInternal::flagDecompChanged;
+  if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, m_month, m_dayOfMonth, val, m_min, m_sec, m_msec) )
+    EsException::Throw(esT("Setting hour to %d would result in invalid date time object"), val);
+  m_hour = val;
+  m_flags |= EsInternal::flagDecompChanged;
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::get_minutes() const
 {
-	checkDecomposed();
-	return m_min;
+  checkDecomposed();
+  return m_min;
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::set_minutes(cr_ulong val)
 {
-	if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, val, m_sec, m_msec) )
-		EsException::Throw(esT("Setting minutes to %d would result in invalid date time object"), val);
-	m_min = val;
-	m_flags |= EsInternal::flagDecompChanged;
+  if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, val, m_sec, m_msec) )
+    EsException::Throw(esT("Setting minutes to %d would result in invalid date time object"), val);
+  m_min = val;
+  m_flags |= EsInternal::flagDecompChanged;
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::get_seconds() const
 {
-	checkDecomposed();
-	return m_sec;
+  checkDecomposed();
+  return m_sec;
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::set_seconds(cr_ulong val)
 {
-	if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, m_min, val, m_msec) )
-		EsException::Throw(esT("Setting seconds to %d would result in invalid date time object"), val);
-	m_sec = val;
-	m_flags |= EsInternal::flagDecompChanged;
+  if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, m_min, val, m_msec) )
+    EsException::Throw(esT("Setting seconds to %d would result in invalid date time object"), val);
+  m_sec = val;
+  m_flags |= EsInternal::flagDecompChanged;
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 ulong EsDateTime::get_milliseconds() const
 {
-	checkDecomposed();
-	return m_msec;
+  checkDecomposed();
+  return m_msec;
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::set_milliseconds(cr_ulong val)
 {
-	if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, m_min, m_sec, val) )
-		EsException::Throw(esT("Setting milliseconds to %d would result in invalid date time object"), val);
-	m_msec = val;
-	m_flags |= EsInternal::flagDecompChanged;
+  if( (m_flags & EsInternal::flagInitialized) && !dtIsValid(m_year, m_month, m_dayOfMonth, m_hour, m_min, m_sec, val) )
+    EsException::Throw(esT("Setting milliseconds to %d would result in invalid date time object"), val);
+  m_msec = val;
+  m_flags |= EsInternal::flagDecompChanged;
   m_flags &= ~EsInternal::flagNativeChanged;
 }
 //---------------------------------------------------------------------------
 
 long EsDateTime::cmp(const EsDateTime* other) const
 {
-	ES_ASSERT(other);
-	checkComposed();
-	other->checkComposed();
-	return (m_dt < other->m_dt) ? -1 : ((m_dt == other->m_dt) ? 0 : 1);
+  ES_ASSERT(other);
+  checkComposed();
+  other->checkComposed();
+  return (m_dt < other->m_dt) ? -1 : ((m_dt == other->m_dt) ? 0 : 1);
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsDateTime::compare(cr_EsVariant otherDt) const
 {
-	if( otherDt.isObject() && !otherDt.isEmpty() )
-	{
-		EsReflectedClassIntf::Ptr o = otherDt.asExistingObject();
-		EsDateTime* dt = ES_INTFPTR_TO_OBJECTPTR(o, EsDateTime);
-		if( dt )
-			return cmp(dt);
-	}
+  if( otherDt.isObject() && !otherDt.isEmpty() )
+  {
+    EsReflectedClassIntf::Ptr o = otherDt.asExistingObject();
+    EsDateTime* dt = ES_INTFPTR_TO_OBJECTPTR(o, EsDateTime);
+    if( dt )
+      return cmp(dt);
+  }
 
-	EsException::Throw(esT("Could not compare EsDateTime object with incompatible value"));
-	// pacify compilers
-	return 0;
+  EsException::Throw(esT("Could not compare EsDateTime object with incompatible value"));
+  // pacify compilers
+  return 0;
 }
 //---------------------------------------------------------------------------
 
-EsVariant	EsDateTime::add(cr_EsVariant spanOrLlong) const
+EsVariant  EsDateTime::add(cr_EsVariant spanOrLlong) const
 {
-	checkComposed();
-	if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
-	{
-		EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
-		EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
-		if(dts)
-			return create(m_dt + static_cast<esDT>(*dts));
-	}
-	else
-		return create(m_dt + spanOrLlong.asLLong());
+  checkComposed();
+  if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
+  {
+    EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
+    if(dts)
+      return create(m_dt + static_cast<esDT>(*dts));
+  }
+  else
+    return create(m_dt + spanOrLlong.asLLong());
 
-	EsException::Throw(esT("Could not add incompatible value and EsDateTime object"));
-	// pacify compilers
-	return EsVariant::null();
+  EsException::Throw(esT("Could not add incompatible value and EsDateTime object"));
+  // pacify compilers
+  return EsVariant::null();
 }
 //---------------------------------------------------------------------------
 
-EsVariant	EsDateTime::subtract(cr_EsVariant spanOrDtOrLlong) const
+EsVariant  EsDateTime::subtract(cr_EsVariant spanOrDtOrLlong) const
 {
-	checkComposed();
-	if( spanOrDtOrLlong.isObject() && !spanOrDtOrLlong.isEmpty() )
-	{
-		EsReflectedClassIntf::Ptr o = spanOrDtOrLlong.asExistingObject();
-		// try span
-		EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
-		if(dts)
-			return create(m_dt - static_cast<esDT>(*dts));
-		else
-		{
-			// try date time - should return span object then
-			EsDateTime* dt = ES_INTFPTR_TO_OBJECTPTR(o, EsDateTime);
-			if( dt )
-				return EsTimeSpan::create(m_dt - static_cast<esDT>(*dt));
-		}
-	}
-	else
-		return create(m_dt - spanOrDtOrLlong.asLLong());
+  checkComposed();
+  if( spanOrDtOrLlong.isObject() && !spanOrDtOrLlong.isEmpty() )
+  {
+    EsReflectedClassIntf::Ptr o = spanOrDtOrLlong.asExistingObject();
+    // try span
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
+    if(dts)
+      return create(m_dt - static_cast<esDT>(*dts));
+    else
+    {
+      // try date time - should return span object then
+      EsDateTime* dt = ES_INTFPTR_TO_OBJECTPTR(o, EsDateTime);
+      if( dt )
+        return EsTimeSpan::create(m_dt - static_cast<esDT>(*dt));
+    }
+  }
+  else
+    return create(m_dt - spanOrDtOrLlong.asLLong());
 
-	EsException::Throw(esT("Could not subtract incompatible value from EsDateTime object"));
-	// pacify compilers
-	return EsVariant::null();
+  EsException::Throw(esT("Could not subtract incompatible value from EsDateTime object"));
+  // pacify compilers
+  return EsVariant::null();
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::streamWrite(cr_EsBaseIntfPtr p)
 {
-	EsStreamIntf::Ptr stream = p;
-	ES_ASSERT(stream);
-	checkComposed();
-	stream->valueWrite( m_dt );
+  EsStreamIntf::Ptr stream = p;
+  ES_ASSERT(stream);
+  checkComposed();
+  stream->valueWrite( m_dt );
 }
 //---------------------------------------------------------------------------
 
 void EsDateTime::streamRead(cr_EsBaseIntfPtr p)
 {
-	EsStreamIntf::Ptr stream = p;
-	ES_ASSERT(stream);
-	m_dt = stream->valueRead().asLLong();
-	m_flags |= EsInternal::flagNativeChanged;
+  EsStreamIntf::Ptr stream = p;
+  ES_ASSERT(stream);
+  m_dt = stream->valueRead().asLLong();
+  m_flags |= EsInternal::flagNativeChanged;
   m_flags &= ~EsInternal::flagDecompChanged;
 }
 //---------------------------------------------------------------------------
 
 EsDateTime& EsDateTime::operator= (esDT src)
 {
-	if(m_dt != src)
-	{
-		m_dt = src;
-		m_flags |= EsInternal::flagNativeChanged;
+  if(m_dt != src)
+  {
+    m_dt = src;
+    m_flags |= EsInternal::flagNativeChanged;
     m_flags &= ~EsInternal::flagDecompChanged;
-	}
-	return *this;
+  }
+  return *this;
 }
 //---------------------------------------------------------------------------
 
 bool EsDateTime::operator== (const EsDateTime& other) const
 {
-	return 0 == cmp(&other);
+  return 0 == cmp(&other);
 }
 //---------------------------------------------------------------------------
 
 bool EsDateTime::operator< (const EsDateTime& other) const
 {
-	return -1 == cmp(&other);
+  return -1 == cmp(&other);
 }
 //---------------------------------------------------------------------------
 
@@ -1309,44 +1309,44 @@ const EsDateTime& EsDateTime::operator-= (llong other)
 
 EsDateTime operator+ (const EsDateTime& _1, const EsTimeSpan& _2)
 {
-	_1.checkComposed();
-	return EsDateTime(_1.m_dt+static_cast<esDT>(_2));
+  _1.checkComposed();
+  return EsDateTime(_1.m_dt+static_cast<esDT>(_2));
 }
 //---------------------------------------------------------------------------
 
 EsDateTime operator+ (const EsDateTime& _1, llong _2)
 {
-	_1.checkComposed();
-	return EsDateTime(_1.m_dt+_2);
+  _1.checkComposed();
+  return EsDateTime(_1.m_dt+_2);
 }
 //---------------------------------------------------------------------------
 
 EsTimeSpan operator- (const EsDateTime& _1, const EsDateTime& _2)
 {
-	_1.checkComposed();
-	_2.checkComposed();
-	return EsTimeSpan( _1.m_dt-_2.m_dt );
+  _1.checkComposed();
+  _2.checkComposed();
+  return EsTimeSpan( _1.m_dt-_2.m_dt );
 }
 //---------------------------------------------------------------------------
 
 EsDateTime operator- (const EsDateTime& _1, const EsTimeSpan& _2)
 {
-	_1.checkComposed();
-	return EsDateTime(_1.m_dt-static_cast<esDT>(_2));
+  _1.checkComposed();
+  return EsDateTime(_1.m_dt-static_cast<esDT>(_2));
 }
 //---------------------------------------------------------------------------
 
 EsDateTime operator- (const EsDateTime& _1, llong _2)
 {
-	_1.checkComposed();
-	return EsDateTime(_1.m_dt-_2);
+  _1.checkComposed();
+  return EsDateTime(_1.m_dt-_2);
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
 EsString EsDateTime::asString(cr_EsString fmt) const
 {
-	return asString(
+  return asString(
     EsLocale::locale(),
     fmt
   );
@@ -1355,7 +1355,7 @@ EsString EsDateTime::asString(cr_EsString fmt) const
 
 EsString EsDateTime::asString(const EsString& loc, cr_EsString fmt) const
 {
-	return asString(
+  return asString(
     EsLocale::locale(loc),
     fmt
   );
@@ -1364,15 +1364,15 @@ EsString EsDateTime::asString(const EsString& loc, cr_EsString fmt) const
 
 EsString EsDateTime::asString(const std::locale& loc, const EsString& fmt) const
 {
-	if( fmt.empty() || !isOk() )
-		return EsString::null();
+  if( fmt.empty() || !isOk() )
+    return EsString::null();
 
-	std::vector<EsString::value_type> buff(fmt.size()+128);
+  std::vector<EsString::value_type> buff(fmt.size()+128);
 
-	if( strftime(loc, &buff[0], buff.size(), fmt.c_str()) )
-		return EsString(&buff[0]);
+  if( strftime(loc, &buff[0], buff.size(), fmt.c_str()) )
+    return EsString(&buff[0]);
 
-	return EsString::null();
+  return EsString::null();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

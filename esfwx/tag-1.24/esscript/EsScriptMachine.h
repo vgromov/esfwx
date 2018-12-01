@@ -15,20 +15,20 @@ typedef std::map<EsString, EsDynamicLibrary::Ptr> EsScriptBinaryLinks;
 class ESSCRIPT_CLASS EsScriptContext
 {
 public:
-	typedef std::shared_ptr<EsScriptContext> Ptr;
+  typedef std::shared_ptr<EsScriptContext> Ptr;
 
 protected:
-	EsScriptContext(EsScriptMachine* machine) ES_NOTHROW;
+  EsScriptContext(EsScriptMachine* machine) ES_NOTHROW;
 
 public:
-	static EsScriptContext::Ptr create(EsScriptMachine* machine) ES_NOTHROW;
+  static EsScriptContext::Ptr create(EsScriptMachine* machine) ES_NOTHROW;
   ~EsScriptContext() ES_NOTHROW;
 
-	EsScriptMachine* vm() ES_NOTHROW { ES_ASSERT(m_machine); return m_machine; }
-	const EsScriptMachine* vm() const ES_NOTHROW { ES_ASSERT(m_machine); return m_machine; }
+  EsScriptMachine* vm() ES_NOTHROW { ES_ASSERT(m_machine); return m_machine; }
+  const EsScriptMachine* vm() const ES_NOTHROW { ES_ASSERT(m_machine); return m_machine; }
 
 protected:
-	void switchTo( EsScriptMachine* other ) ES_NOTHROW;
+  void switchTo( EsScriptMachine* other ) ES_NOTHROW;
   void linkTo(const EsScriptContext::Ptr other) ES_NOTHROW;
   void unlink() ES_NOTHROW;
 
@@ -37,7 +37,7 @@ private:
   void linkDelete(EsScriptContext* link) ES_NOTHROW;
 
 protected:
-	EsScriptMachine* m_machine;
+  EsScriptMachine* m_machine;
   EsScriptContext* m_masterCtx;
   std::set<EsScriptContext*> m_links;
 
@@ -45,8 +45,8 @@ protected:
   EsScriptContext(const EsScriptContext&) ES_REMOVEDECL;
   EsScriptContext& operator=(const EsScriptContext&) ES_REMOVEDECL;
 
-	friend class EsScriptMachine;
-	friend class EsScriptObject;
+  friend class EsScriptMachine;
+  friend class EsScriptObject;
 };
 //---------------------------------------------------------------------------
 
@@ -55,12 +55,12 @@ protected:
 class ESSCRIPT_CLASS EsScriptMachine
 {
 public:
-	// compound field helper struct
-	struct CompoundFieldCreationResult
-	{
-		EsScriptObjectIntf::Ptr m_fieldMetaclass;
-		EsScriptCodeSection::Ptr m_fieldExpr;
-	};
+  // compound field helper struct
+  struct CompoundFieldCreationResult
+  {
+    EsScriptObjectIntf::Ptr m_fieldMetaclass;
+    EsScriptCodeSection::Ptr m_fieldExpr;
+  };
 
 private:
   /// Special low-priority thread for periodic cleaning-up a dead thread contexts
@@ -78,19 +78,19 @@ private:
   };
 
 protected:
-	// Only accessible to script friend class
-	EsScriptMachine(const EsScript& owner);
-	~EsScriptMachine();
+  // Only accessible to script friend class
+  EsScriptMachine(const EsScript& owner);
+  ~EsScriptMachine();
 
 public:
-	/// Return owner reference
-	const EsScript& ownerGet() const ES_NOTHROW { return m_owner; }
+  /// Return owner reference
+  const EsScript& ownerGet() const ES_NOTHROW { return m_owner; }
 
-	/// Return true if script machine is in destruction stage
-	bool isDestroying() const ES_NOTHROW { return m_destroying; }
+  /// Return true if script machine is in destruction stage
+  bool isDestroying() const ES_NOTHROW { return m_destroying; }
 
-	/// Reset virtual machine to uninitialized state
-	void reset();
+  /// Reset virtual machine to uninitialized state
+  void reset();
 
   /// Source File (modules of compilation) services
   ///
@@ -157,34 +157,34 @@ public:
   /// Create an object by its name using constructor with six parameters
   EsReflectedClassIntf::Ptr objectCreate(cr_EsString name, cr_EsVariant p0, cr_EsVariant p1, cr_EsVariant p2, cr_EsVariant p3, cr_EsVariant p4, cr_EsVariant p5);
 
-	/// Call global function by its name with specified parameters, and return result
-	EsVariant callGlobalMethod(const EsString& name, const EsVariant& params);
+  /// Call global function by its name with specified parameters, and return result
+  EsVariant callGlobalMethod(const EsString& name, const EsVariant& params);
 
-	/// Miscellaneous services
-	///
+  /// Miscellaneous services
+  ///
 
-	/// Script version
-	EsString versionGet() const;
+  /// Script version
+  EsString versionGet() const;
 
-	/// Return machine locale
-	const std::locale& loc() const ES_NOTHROW { return m_loc; }
+  /// Return machine locale
+  const std::locale& loc() const ES_NOTHROW { return m_loc; }
 
-	/// Linked binaries manipulation
-	void linkAdd(const EsString& link);
+  /// Linked binaries manipulation
+  void linkAdd(const EsString& link);
 
-	/// RO access to constants, system, and global variables
-	const EsScriptSymbolTable& externs() const ES_NOTHROW { return m_externs; }
-	const EsScriptSymbolTable& consts() const ES_NOTHROW { return m_consts; }
-	const EsScriptSymbolTable& sysVars() const ES_NOTHROW { return m_sysVars; }
-	const EsScriptSymbolTable& vars() const ES_NOTHROW;
+  /// RO access to constants, system, and global variables
+  const EsScriptSymbolTable& externs() const ES_NOTHROW { return m_externs; }
+  const EsScriptSymbolTable& consts() const ES_NOTHROW { return m_consts; }
+  const EsScriptSymbolTable& sysVars() const ES_NOTHROW { return m_sysVars; }
+  const EsScriptSymbolTable& vars() const ES_NOTHROW;
 
-	/// Constant access
-	EsVariant constantGet(const EsString& name) const { return m_consts.symbolGet(name, true)->get(); }
+  /// Constant access
+  EsVariant constantGet(const EsString& name) const { return m_consts.symbolGet(name, true)->get(); }
 
-	/// Variable access
-	EsVariant sysVariableGet(const EsString& name) const { return m_sysVars.symbolGet(name, true)->get(); }
-	EsVariant variableGet(const EsString& name) const { return vars().symbolGet(name, true)->get(); }
-	void variableSet(const EsString& name, const EsVariant& val) { const_cast<EsScriptSymbolTable&>(vars()).symbolValSet(name, val); }
+  /// Variable access
+  EsVariant sysVariableGet(const EsString& name) const { return m_sysVars.symbolGet(name, true)->get(); }
+  EsVariant variableGet(const EsString& name) const { return vars().symbolGet(name, true)->get(); }
+  void variableSet(const EsString& name, const EsVariant& val) { const_cast<EsScriptSymbolTable&>(vars()).symbolValSet(name, val); }
 
   /// Check if given symbol ia declared as an external
   bool isExternal(const EsString& name) const ES_NOTHROW { return m_externs.symbolExists(name); }
@@ -207,10 +207,10 @@ public:
   /// Get global code section by method key
   EsScriptCodeSection::Ptr globalMethodGet(const EsMethodInfoKeyT& key, bool doThrow = true) const;
 
-	/// Compile time operations
-	///
+  /// Compile time operations
+  ///
 
-	/// Access special null constant
+  /// Access special null constant
   static EsScriptValAccessorIntf::Ptr nullcGet() ES_NOTHROW;
 
   /// Declare an external symbol. External symbol got added to special symbol table for
@@ -219,32 +219,32 @@ public:
   void externEnumDeclare(const EsString& name);
   void externMetaclassDeclare(const EsString& name);
 
-	/// Declare constant
-	EsScriptValAccessorIntf::Ptr constDeclare(const EsString& name, const EsVariant& val, bool builtIn = false);
+  /// Declare constant
+  EsScriptValAccessorIntf::Ptr constDeclare(const EsString& name, const EsVariant& val, bool builtIn = false);
 
-	/// Add new unnamed const and return its internal name. if const with such value is already declared,
-	/// return existing name for its access
+  /// Add new unnamed const and return its internal name. if const with such value is already declared,
+  /// return existing name for its access
   ///
-	EsString unnamedDeclare(const EsVariant& val);
+  EsString unnamedDeclare(const EsVariant& val);
 
-	/// Script enumerations manipulation
-	///
-
-	EsStringArray enumNamesGet() const ES_NOTHROW { return m_enumsMap.namesGet(); }
-
-	/// Find enumeration object by name, throw exception if enum is not found && doThrow is set
-	EsEnumerationIntf::Ptr enumFind(const EsString& name, bool doThrow = false) const;
-
-	/// Create new enumeration object by name,
-	/// throw exception if enumeration with 'name' already exists
+  /// Script enumerations manipulation
   ///
-	EsEnumerationIntf::Ptr enumDeclare(const EsString& name);
 
-	/// Declare enumeration attribute
-	void enumAttributeDeclare(const EsEnumerationIntf::Ptr& enu, const EsString& name, const EsVariant& val);
+  EsStringArray enumNamesGet() const ES_NOTHROW { return m_enumsMap.namesGet(); }
 
-	/// Declare enumeration item. throw exception if item with such name already exists
-	void enumItemDeclare(const EsEnumerationIntf::Ptr& enu, const EsString& symbol, const EsVariant& val, const EsString& label = EsString::null());
+  /// Find enumeration object by name, throw exception if enum is not found && doThrow is set
+  EsEnumerationIntf::Ptr enumFind(const EsString& name, bool doThrow = false) const;
+
+  /// Create new enumeration object by name,
+  /// throw exception if enumeration with 'name' already exists
+  ///
+  EsEnumerationIntf::Ptr enumDeclare(const EsString& name);
+
+  /// Declare enumeration attribute
+  void enumAttributeDeclare(const EsEnumerationIntf::Ptr& enu, const EsString& name, const EsVariant& val);
+
+  /// Declare enumeration item. throw exception if item with such name already exists
+  void enumItemDeclare(const EsEnumerationIntf::Ptr& enu, const EsString& symbol, const EsVariant& val, const EsString& label = EsString::null());
 
   /// Return enumeration value
   EsVariant enumValueGet(const EsString& name, const EsString& sym);
@@ -252,73 +252,73 @@ public:
   /// Return enumeration value label
   EsVariant enumValueLabelGet(const EsString& name, const EsString& sym);
 
-	/// Script metaclasses manipulation
-	///
+  /// Script metaclasses manipulation
+  ///
 
   /// Return all declared metaclasses names
-	EsStringArray metaclassNamesGet() const ES_NOTHROW { return m_metaclassesMap.namesGet(); }
+  EsStringArray metaclassNamesGet() const ES_NOTHROW { return m_metaclassesMap.namesGet(); }
 
-	/// Find script object metaclass by name, throw exception if metaclass is not found && doThrow is set
-	EsScriptObjectIntf::Ptr metaclassFind(const EsString& name, bool doThrow = false) const;
+  /// Find script object metaclass by name, throw exception if metaclass is not found && doThrow is set
+  EsScriptObjectIntf::Ptr metaclassFind(const EsString& name, bool doThrow = false) const;
 
-	/// Create new script object metaclass by name, optionally using baseName metaclass as its ancestor,
-	/// throw exception if baseName metaclass is not found, or metaclass 'name' already exists
+  /// Create new script object metaclass by name, optionally using baseName metaclass as its ancestor,
+  /// throw exception if baseName metaclass is not found, or metaclass 'name' already exists
   ///
-	EsScriptObjectIntf::Ptr metaclassDeclare(const EsString& name, const EsString& baseName);
+  EsScriptObjectIntf::Ptr metaclassDeclare(const EsString& name, const EsString& baseName);
 
-	/// Declare simple|array metaclass field
-	EsScriptObjectIntf::Ptr metaclassFieldDeclare(const EsString& metaclassName,
-		const EsString& fieldType, const EsString& fieldName, const EsAttributesIntf::Ptr& attrs = EsAttributesIntf::Ptr());
-	EsScriptObjectIntf::Ptr metaclassFieldDeclare(const EsScriptObjectIntf::Ptr& metaclass,
-		const EsString& fieldType, const EsString& fieldName, const EsAttributesIntf::Ptr& attrs = EsAttributesIntf::Ptr());
-	CompoundFieldCreationResult metaclassArrayFieldDeclare(const EsString& metaclassName,
-		const EsString& fieldType, const EsString& fieldName, const EsAttributesIntf::Ptr& attrs = EsAttributesIntf::Ptr());
-	CompoundFieldCreationResult metaclassArrayFieldDeclare(const EsScriptObjectIntf::Ptr& metaclass,
-		const EsString& fieldType, const EsString& fieldName, const EsAttributesIntf::Ptr& attrs = EsAttributesIntf::Ptr());
-	CompoundFieldCreationResult metaclassIfFieldDeclare(const EsString& metaclassName);
-	CompoundFieldCreationResult metaclassIfFieldDeclare(const EsScriptObjectIntf::Ptr& metaclass);
+  /// Declare simple|array metaclass field
+  EsScriptObjectIntf::Ptr metaclassFieldDeclare(const EsString& metaclassName,
+    const EsString& fieldType, const EsString& fieldName, const EsAttributesIntf::Ptr& attrs = EsAttributesIntf::Ptr());
+  EsScriptObjectIntf::Ptr metaclassFieldDeclare(const EsScriptObjectIntf::Ptr& metaclass,
+    const EsString& fieldType, const EsString& fieldName, const EsAttributesIntf::Ptr& attrs = EsAttributesIntf::Ptr());
+  CompoundFieldCreationResult metaclassArrayFieldDeclare(const EsString& metaclassName,
+    const EsString& fieldType, const EsString& fieldName, const EsAttributesIntf::Ptr& attrs = EsAttributesIntf::Ptr());
+  CompoundFieldCreationResult metaclassArrayFieldDeclare(const EsScriptObjectIntf::Ptr& metaclass,
+    const EsString& fieldType, const EsString& fieldName, const EsAttributesIntf::Ptr& attrs = EsAttributesIntf::Ptr());
+  CompoundFieldCreationResult metaclassIfFieldDeclare(const EsString& metaclassName);
+  CompoundFieldCreationResult metaclassIfFieldDeclare(const EsScriptObjectIntf::Ptr& metaclass);
 
-	/// Declare attribute for the given object|object instance
-	void objectAttributeDeclare(const EsScriptObjectIntf::Ptr& obj, const EsString& attrName, const EsVariant& attrVal);
+  /// Declare attribute for the given object|object instance
+  void objectAttributeDeclare(const EsScriptObjectIntf::Ptr& obj, const EsString& attrName, const EsVariant& attrVal);
 
-	/// Declare metaclass member variable
-	void metaclassMemberVarDeclare(const EsScriptObjectIntf::Ptr& obj, const EsString& attrName,
-		const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr());
+  /// Declare metaclass member variable
+  void metaclassMemberVarDeclare(const EsScriptObjectIntf::Ptr& obj, const EsString& attrName,
+    const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr());
 
   /// Declare new named code section AKA script method
   EsScriptCodeSection::Ptr methodDeclare(const EsString& name, const EsString::Array& params, const EsScriptObjectIntf::Ptr& metaclass);
   EsScriptCodeSection::Ptr globalMethodDeclare(const EsString& name, const EsString::Array& params);
 
-	/// Declare attribute for the code section
-	void functionAttributeDeclare(const EsScriptCodeSection::Ptr& function, const EsString& attrName, const EsVariant& attrVal);
+  /// Declare attribute for the code section
+  void functionAttributeDeclare(const EsScriptCodeSection::Ptr& function, const EsString& attrName, const EsVariant& attrVal);
 
-	/// Special reflected classes, owned by machine
-	///
+  /// Special reflected classes, owned by machine
+  ///
 
-	/// Meta-information bridge class singleton instance access
-	inline EsMetaclassIntf::Ptr metaGet() const ES_NOTHROW
+  /// Meta-information bridge class singleton instance access
+  inline EsMetaclassIntf::Ptr metaGet() const ES_NOTHROW
   {
     return m_meta.asWeakReference();
   }
 
-	/// Scripting host services proxy class singleton instance access
-	inline EsReflectedClassIntf::Ptr hostGet() ES_NOTHROW
+  /// Scripting host services proxy class singleton instance access
+  inline EsReflectedClassIntf::Ptr hostGet() ES_NOTHROW
   {
     return m_host.asWeakReference();
   }
 
-	/// Execution control
-	inline void execAbort() ES_NOTHROW { m_abort = true; }
-	inline bool isAborting() const ES_NOTHROW { return m_abort; }
+  /// Execution control
+  inline void execAbort() ES_NOTHROW { m_abort = true; }
+  inline bool isAborting() const ES_NOTHROW { return m_abort; }
 
-	/// Return debug information (if any) for instruction currently being executed in active thread context
-	EsScriptDebugInfoIntf::Ptr currentDebugInfoGet() const ES_NOTHROW;
+  /// Return debug information (if any) for instruction currently being executed in active thread context
+  EsScriptDebugInfoIntf::Ptr currentDebugInfoGet() const ES_NOTHROW;
 
   /// Trace instruction in debugger, if it is assigned
   void debuggerInstructionTrace(EsScriptInstructions::const_iterator instr);
 
   /// Variant container trace helper
-	static EsString traceVariant(const EsVariant& v);
+  static EsString traceVariant(const EsVariant& v);
 
   /// Run non-executing thread contexts cleanup once
   void threadCtxCleanup();
@@ -333,16 +333,16 @@ public:
   void translatableAdd(const EsString& strVal);
 
 protected:
-	/// Internal services
-	///
+  /// Internal services
+  ///
 
   void rewindInternal(bool startGC);
 
   /// Thread Execution delegates
   ///
 
-	/// Call global function by its method key
-	EsVariant callGlobalMethod(const EsMethodInfoKeyT& key, const EsVariant& params);
+  /// Call global function by its method key
+  EsVariant callGlobalMethod(const EsMethodInfoKeyT& key, const EsVariant& params);
 
   /// Execute specific code section inside an appropriate thread context
   EsScriptValAccessorIntf::Ptr exec(
@@ -352,8 +352,8 @@ protected:
     EsScriptObjectIntf* This
   );
 
-	/// Create object by object name with parameters, in current thread execution context, and return object instance.
-	EsReflectedClassIntf::Ptr objectCreateWithParameters(
+  /// Create object by object name with parameters, in current thread execution context, and return object instance.
+  EsReflectedClassIntf::Ptr objectCreateWithParameters(
     const EsString& name,
     const EsVariant& params
   );
@@ -364,37 +364,37 @@ protected:
   /// Unregister and cleanup linked binaries
   void binLinksClear();
 
-	/// Return true if machine may perform object marshalling
-	bool canMarshal() const ES_NOTHROW;
+  /// Return true if machine may perform object marshalling
+  bool canMarshal() const ES_NOTHROW;
 
-	/// Internal service for optionally marshalling scripted objects to the master script context
-	void marshalObject(const EsScriptObjectIntf::Ptr& obj) const;
+  /// Internal service for optionally marshalling scripted objects to the master script context
+  void marshalObject(const EsScriptObjectIntf::Ptr& obj) const;
   void marshalData(const EsVariant& data) const;
 
   /// Sys initialization
-	void sysConstsInit();
-	void sysVarsInit();
+  void sysConstsInit();
+  void sysVarsInit();
 
-	/// Misc method lookup && checking services
-	static void checkMethodIsNotInMap(const EsString& mapName, const EsScriptMethodMapPtr& map,
-		const EsMethodInfoKeyT& key, const EsScriptDebugInfoIntf::Ptr& dbg);
+  /// Misc method lookup && checking services
+  static void checkMethodIsNotInMap(const EsString& mapName, const EsScriptMethodMapPtr& map,
+    const EsMethodInfoKeyT& key, const EsScriptDebugInfoIntf::Ptr& dbg);
 
-	static void addMethodToMap(const EsString& mapName, EsScriptMethodMapPtr& map,
-		const EsMethodInfoKeyT& key, const EsScriptCodeSection::Ptr& method,
-		const EsScriptDebugInfoIntf::Ptr& dbg);
+  static void addMethodToMap(const EsString& mapName, EsScriptMethodMapPtr& map,
+    const EsMethodInfoKeyT& key, const EsScriptCodeSection::Ptr& method,
+    const EsScriptDebugInfoIntf::Ptr& dbg);
 
-	static void deleteMethodFromMap(const EsString& mapName, EsScriptMethodMapPtr& map,
-		const EsMethodInfoKeyT& key);
+  static void deleteMethodFromMap(const EsString& mapName, EsScriptMethodMapPtr& map,
+    const EsMethodInfoKeyT& key);
 
-	/// Initialization services
-	///
+  /// Initialization services
+  ///
 
   /// Return script method key given method code section ptr
   static EsMethodInfoKeyT methodKeyCreate(const EsScriptCodeSection::Ptr& code);
 
-	/// Register base script POD (Plain Old Data) metaclasses
-	void registerMetaclass(const EsScriptObjectIntf::Ptr& metaclass);
-	void registerPodMetaclasses();
+  /// Register base script POD (Plain Old Data) metaclasses
+  void registerMetaclass(const EsScriptObjectIntf::Ptr& metaclass);
+  void registerPodMetaclasses();
 
   /// Set temporary pointer to script debugger
   void debuggerSet(EsScriptDebug* dbg) ES_NOTHROW;
@@ -425,17 +425,17 @@ private:
   void threadCtxsReset();
 
 protected:
-	mutable EsCriticalSection m_cs;
+  mutable EsCriticalSection m_cs;
   EsCriticalSection m_csDbg;
 
-	/// Owner of this virtual machine
-	const EsScript& m_owner;
+  /// Owner of this virtual machine
+  const EsScript& m_owner;
 
-	/// Locale used for compilation|execution
-	const std::locale& m_loc;
+  /// Locale used for compilation|execution
+  const std::locale& m_loc;
 
-	// This script context
-	EsScriptContext::Ptr m_ctxScriptThis;
+  // This script context
+  EsScriptContext::Ptr m_ctxScriptThis;
 
   /// Garbage collector thread
   GarbageCollector m_gc;
@@ -446,40 +446,40 @@ protected:
   // Used source file references
   EsAssocContainerIntf::Ptr m_filesInfo;
 
-	/// Linked binaries
-	EsScriptBinaryLinks m_links;
+  /// Linked binaries
+  EsScriptBinaryLinks m_links;
 
   /// External symbols
   EsScriptSymbolTable m_externs;
 
-	/// Constants
-	EsScriptSymbolTable m_consts;
+  /// Constants
+  EsScriptSymbolTable m_consts;
 
-	/// System variables
-	EsScriptSymbolTable m_sysVars;
+  /// System variables
+  EsScriptSymbolTable m_sysVars;
 
   /// Startup code
   EsScriptCodeSection::Ptr m_startup;
 
-	/// Global code
-	EsScriptMethodMapPtr m_globalMethods;
+  /// Global code
+  EsScriptMethodMapPtr m_globalMethods;
 
-	/// Metaclasses (as payload to the collection items)
-	EsStringIndexedMap m_metaclassesMap;
+  /// Metaclasses (as payload to the collection items)
+  EsStringIndexedMap m_metaclassesMap;
 
-	/// Enumerations (as payload to the collection items)
-	EsStringIndexedMap m_enumsMap;
+  /// Enumerations (as payload to the collection items)
+  EsStringIndexedMap m_enumsMap;
 
   /// Translatable strings aggregator. Used during compilation process
   /// to allocate unique translatable strings (marked by I) from source files.
   ///
   EsStringIndexedMap m_translatables;
 
-	/// Metaclass proxy service object
-	EsScriptMetaclass m_meta;
+  /// Metaclass proxy service object
+  EsScriptMetaclass m_meta;
 
-	/// Script host proxy service object
-	EsScriptHost m_host;
+  /// Script host proxy service object
+  EsScriptHost m_host;
 
   /// Thread contexts map
   std::map<EsThreadId, EsScriptThreadContext::Ptr> m_ctxs;
@@ -489,72 +489,72 @@ protected:
   /// Execution and abortion flags
   volatile bool m_abort;
 
-	/// Destruction flag. mainly used for final deletion of temporaries
-	bool m_destroying;
+  /// Destruction flag. mainly used for final deletion of temporaries
+  bool m_destroying;
 
-	// direct reference to the null const accessor
-	static EsScriptValAccessorIntf::Ptr s_nullc;
+  // direct reference to the null const accessor
+  static EsScriptValAccessorIntf::Ptr s_nullc;
 
 private:
-	EsScriptMachine(const EsScriptMachine&) ES_REMOVEDECL;
-	const EsScriptMachine& operator=(const EsScriptMachine&) ES_REMOVEDECL;
+  EsScriptMachine(const EsScriptMachine&) ES_REMOVEDECL;
+  const EsScriptMachine& operator=(const EsScriptMachine&) ES_REMOVEDECL;
 
-	friend class EsScript;
-	friend class EsScriptHost;
-	friend class EsScriptlet;
-	friend class EsScriptTmpValAccessor;
-	friend class EsScriptObject;
-	friend class EsScriptArrayObject;
-	friend class EsScriptIfObject;
-	friend class EsScriptCompiledBinaryWriter;
-	friend class EsScriptCompiledBinaryReader;
+  friend class EsScript;
+  friend class EsScriptHost;
+  friend class EsScriptlet;
+  friend class EsScriptTmpValAccessor;
+  friend class EsScriptObject;
+  friend class EsScriptArrayObject;
+  friend class EsScriptIfObject;
+  friend class EsScriptCompiledBinaryWriter;
+  friend class EsScriptCompiledBinaryReader;
   friend class EsScriptDebug;
 };
 
 #ifdef ESSCRIPT_MACHINE_USE_TRACE
-#	ifdef ESSCRIPT_MACHINE_USE_DATA_TRACE
-#		define ESSCRIPT_MACHINE_TRACE1(a)											ES_DEBUG_TRACE(a);
-#		define ESSCRIPT_MACHINE_TRACE2(a, b)									ES_DEBUG_TRACE((a), (b));
-#		define ESSCRIPT_MACHINE_TRACE3(a, b, c)								ES_DEBUG_TRACE((a), (b), (c));
-#		define ESSCRIPT_MACHINE_TRACE4(a, b, c, d)						ES_DEBUG_TRACE((a), (b), (c), (d));
-#		define ESSCRIPT_MACHINE_TRACE5(a, b, c, d, e)					ES_DEBUG_TRACE((a), (b), (c), (d), (e));
-#		define ESSCRIPT_MACHINE_TRACE6(a, b, c, d, e, f)			ES_DEBUG_TRACE((a), (b), (c), (d), (e), (f));
-#	else
-#		define ESSCRIPT_MACHINE_TRACE1(a)
-#		define ESSCRIPT_MACHINE_TRACE2(a, b)
-#		define ESSCRIPT_MACHINE_TRACE3(a, b, c)
-#		define ESSCRIPT_MACHINE_TRACE4(a, b, c, d)
-#		define ESSCRIPT_MACHINE_TRACE5(a, b, c, d, e)
-#		define ESSCRIPT_MACHINE_TRACE6(a, b, c, d, e, f)
-#	endif
-#	ifdef ESSCRIPT_MACHINE_USE_CALL_TRACE
-#		define ESSCRIPT_MACHINE_CALL_TRACE1(a)								ES_DEBUG_TRACE(a);
-#		define ESSCRIPT_MACHINE_CALL_TRACE2(a, b)							ES_DEBUG_TRACE((a), (b));
-#		define ESSCRIPT_MACHINE_CALL_TRACE3(a, b, c)					ES_DEBUG_TRACE((a), (b), (c));
-#		define ESSCRIPT_MACHINE_CALL_TRACE4(a, b, c, d)				ES_DEBUG_TRACE((a), (b), (c), (d));
-#		define ESSCRIPT_MACHINE_CALL_TRACE5(a, b, c, d, e)		ES_DEBUG_TRACE((a), (b), (c), (d), (e));
-#		define ESSCRIPT_MACHINE_CALL_TRACE6(a, b, c, d, e, f)	ES_DEBUG_TRACE((a), (b), (c), (d), (e), (f));
-#	else
-#		define ESSCRIPT_MACHINE_CALL_TRACE1(a)
-#		define ESSCRIPT_MACHINE_CALL_TRACE2(a, b)
-#		define ESSCRIPT_MACHINE_CALL_TRACE3(a, b, c)
-#		define ESSCRIPT_MACHINE_CALL_TRACE4(a, b, c, d)
-#		define ESSCRIPT_MACHINE_CALL_TRACE5(a, b, c, d, e)
-#		define ESSCRIPT_MACHINE_CALL_TRACE6(a, b, c, d, e, f)
-#	endif
+#  ifdef ESSCRIPT_MACHINE_USE_DATA_TRACE
+#    define ESSCRIPT_MACHINE_TRACE1(a)                      ES_DEBUG_TRACE(a);
+#    define ESSCRIPT_MACHINE_TRACE2(a, b)                  ES_DEBUG_TRACE((a), (b));
+#    define ESSCRIPT_MACHINE_TRACE3(a, b, c)                ES_DEBUG_TRACE((a), (b), (c));
+#    define ESSCRIPT_MACHINE_TRACE4(a, b, c, d)            ES_DEBUG_TRACE((a), (b), (c), (d));
+#    define ESSCRIPT_MACHINE_TRACE5(a, b, c, d, e)          ES_DEBUG_TRACE((a), (b), (c), (d), (e));
+#    define ESSCRIPT_MACHINE_TRACE6(a, b, c, d, e, f)      ES_DEBUG_TRACE((a), (b), (c), (d), (e), (f));
+#  else
+#    define ESSCRIPT_MACHINE_TRACE1(a)
+#    define ESSCRIPT_MACHINE_TRACE2(a, b)
+#    define ESSCRIPT_MACHINE_TRACE3(a, b, c)
+#    define ESSCRIPT_MACHINE_TRACE4(a, b, c, d)
+#    define ESSCRIPT_MACHINE_TRACE5(a, b, c, d, e)
+#    define ESSCRIPT_MACHINE_TRACE6(a, b, c, d, e, f)
+#  endif
+#  ifdef ESSCRIPT_MACHINE_USE_CALL_TRACE
+#    define ESSCRIPT_MACHINE_CALL_TRACE1(a)                ES_DEBUG_TRACE(a);
+#    define ESSCRIPT_MACHINE_CALL_TRACE2(a, b)              ES_DEBUG_TRACE((a), (b));
+#    define ESSCRIPT_MACHINE_CALL_TRACE3(a, b, c)          ES_DEBUG_TRACE((a), (b), (c));
+#    define ESSCRIPT_MACHINE_CALL_TRACE4(a, b, c, d)        ES_DEBUG_TRACE((a), (b), (c), (d));
+#    define ESSCRIPT_MACHINE_CALL_TRACE5(a, b, c, d, e)    ES_DEBUG_TRACE((a), (b), (c), (d), (e));
+#    define ESSCRIPT_MACHINE_CALL_TRACE6(a, b, c, d, e, f)  ES_DEBUG_TRACE((a), (b), (c), (d), (e), (f));
+#  else
+#    define ESSCRIPT_MACHINE_CALL_TRACE1(a)
+#    define ESSCRIPT_MACHINE_CALL_TRACE2(a, b)
+#    define ESSCRIPT_MACHINE_CALL_TRACE3(a, b, c)
+#    define ESSCRIPT_MACHINE_CALL_TRACE4(a, b, c, d)
+#    define ESSCRIPT_MACHINE_CALL_TRACE5(a, b, c, d, e)
+#    define ESSCRIPT_MACHINE_CALL_TRACE6(a, b, c, d, e, f)
+#  endif
 #else
-#	define ESSCRIPT_MACHINE_TRACE1(a)
-#	define ESSCRIPT_MACHINE_TRACE2(a, b)
-#	define ESSCRIPT_MACHINE_TRACE3(a, b, c)
-#	define ESSCRIPT_MACHINE_TRACE4(a, b, c, d)
-#	define ESSCRIPT_MACHINE_TRACE5(a, b, c, d, e)
-#	define ESSCRIPT_MACHINE_TRACE6(a, b, c, d, e, f)
-#	define ESSCRIPT_MACHINE_CALL_TRACE1(a)
-#	define ESSCRIPT_MACHINE_CALL_TRACE2(a, b)
-#	define ESSCRIPT_MACHINE_CALL_TRACE3(a, b, c)
-#	define ESSCRIPT_MACHINE_CALL_TRACE4(a, b, c, d)
-#	define ESSCRIPT_MACHINE_CALL_TRACE5(a, b, c, d, e)
-#	define ESSCRIPT_MACHINE_CALL_TRACE6(a, b, c, d, e, f)
+#  define ESSCRIPT_MACHINE_TRACE1(a)
+#  define ESSCRIPT_MACHINE_TRACE2(a, b)
+#  define ESSCRIPT_MACHINE_TRACE3(a, b, c)
+#  define ESSCRIPT_MACHINE_TRACE4(a, b, c, d)
+#  define ESSCRIPT_MACHINE_TRACE5(a, b, c, d, e)
+#  define ESSCRIPT_MACHINE_TRACE6(a, b, c, d, e, f)
+#  define ESSCRIPT_MACHINE_CALL_TRACE1(a)
+#  define ESSCRIPT_MACHINE_CALL_TRACE2(a, b)
+#  define ESSCRIPT_MACHINE_CALL_TRACE3(a, b, c)
+#  define ESSCRIPT_MACHINE_CALL_TRACE4(a, b, c, d)
+#  define ESSCRIPT_MACHINE_CALL_TRACE5(a, b, c, d, e)
+#  define ESSCRIPT_MACHINE_CALL_TRACE6(a, b, c, d, e, f)
 #endif
 
 #endif // _es_script_machine_h_

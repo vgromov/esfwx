@@ -18,18 +18,18 @@ const int KEY_SHIFT[EsCryptoDesLegacy::ROUNDS] = {1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,
 
 const esU8 COMPRESSION_PERMUTATION[EsCryptoDesLegacy::SBUFFER_SIZE] =
 {
-	14,17,11,24, 1, 5, 3,28,15, 6,21,10,
-	23,19,12, 4,26, 8,16, 7,27,20,13, 2,
-	41,52,31,37,47,55,30,40,51,45,33,48,
-	44,49,39,56,34,53,46,42,50,36,29,32
+  14,17,11,24, 1, 5, 3,28,15, 6,21,10,
+  23,19,12, 4,26, 8,16, 7,27,20,13, 2,
+  41,52,31,37,47,55,30,40,51,45,33,48,
+  44,49,39,56,34,53,46,42,50,36,29,32
 };
 
 const esU8 EXPANSION_PERMUTATION[EsCryptoDesLegacy::SBUFFER_SIZE] =
 {
-	32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9,
-	8, 9,10,11,12,13,12,13,14,15,16,17,
-	16,17,18,19,20,21,20,21,22,23,24,25,
-	24,25,26,27,28,29,28,29,30,31,32, 1
+  32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9,
+  8, 9,10,11,12,13,12,13,14,15,16,17,
+  16,17,18,19,20,21,20,21,22,23,24,25,
+  24,25,26,27,28,29,28,29,30,31,32, 1
 };
 
 /*
@@ -81,112 +81,112 @@ S-Boxes:
 
 const esU8 MODIFIED_SBOX_1[4*64] =
 {
-	1,1,1,0,0,1,0,0,1,1,0,1,0,0,0,1,0,0,1,0,1,1,1,1,1,0,1,1,1,0,0,0,
-	0,0,1,1,1,0,1,0,0,1,1,0,1,1,0,0,0,1,0,1,1,0,0,1,0,0,0,0,0,1,1,1,
-	0,0,0,0,1,1,1,1,0,1,1,1,0,1,0,0,1,1,1,0,0,0,1,0,1,1,0,1,0,0,0,1,
-	1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,1,1,0,0,1,0,1,0,1,0,0,1,1,1,0,0,0,
-	0,1,0,0,0,0,0,1,1,1,1,0,1,0,0,0,1,1,0,1,0,1,1,0,0,0,1,0,1,0,1,1,
-	1,1,1,1,1,1,0,0,1,0,0,1,0,1,1,1,0,0,1,1,1,0,1,0,0,1,0,1,0,0,0,0,
-	1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,1,0,1,1,1,
-	0,1,0,1,1,0,1,1,0,0,1,1,1,1,1,0,1,0,1,0,0,0,0,0,0,1,1,0,1,1,0,1
+  1,1,1,0,0,1,0,0,1,1,0,1,0,0,0,1,0,0,1,0,1,1,1,1,1,0,1,1,1,0,0,0,
+  0,0,1,1,1,0,1,0,0,1,1,0,1,1,0,0,0,1,0,1,1,0,0,1,0,0,0,0,0,1,1,1,
+  0,0,0,0,1,1,1,1,0,1,1,1,0,1,0,0,1,1,1,0,0,0,1,0,1,1,0,1,0,0,0,1,
+  1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,1,1,0,0,1,0,1,0,1,0,0,1,1,1,0,0,0,
+  0,1,0,0,0,0,0,1,1,1,1,0,1,0,0,0,1,1,0,1,0,1,1,0,0,0,1,0,1,0,1,1,
+  1,1,1,1,1,1,0,0,1,0,0,1,0,1,1,1,0,0,1,1,1,0,1,0,0,1,0,1,0,0,0,0,
+  1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,1,0,1,1,1,
+  0,1,0,1,1,0,1,1,0,0,1,1,1,1,1,0,1,0,1,0,0,0,0,0,0,1,1,0,1,1,0,1
 };
 
 const esU8 MODIFIED_SBOX_2[4*64] =
 {
-	1,1,1,1,0,0,0,1,1,0,0,0,1,1,1,0,0,1,1,0,1,0,1,1,0,0,1,1,0,1,0,0,
-	1,0,0,1,0,1,1,1,0,0,1,0,1,1,0,1,1,1,0,0,0,0,0,0,0,1,0,1,1,0,1,0,
-	0,0,1,1,1,1,0,1,0,1,0,0,0,1,1,1,1,1,1,1,0,0,1,0,1,0,0,0,1,1,1,0,
-	1,1,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,1,1,0,1,0,0,1,1,0,1,1,0,1,0,1,
-	0,0,0,0,1,1,1,0,0,1,1,1,1,0,1,1,1,0,1,0,0,1,0,0,1,1,0,1,0,0,0,1,
-	0,1,0,1,1,0,0,0,1,1,0,0,0,1,1,0,1,0,0,1,0,0,1,1,0,0,1,0,1,1,1,1,
-	1,1,0,1,1,0,0,0,1,0,1,0,0,0,0,1,0,0,1,1,1,1,1,1,0,1,0,0,0,0,1,0,
-	1,0,1,1,0,1,1,0,0,1,1,1,1,1,0,0,0,0,0,0,0,1,0,1,1,1,1,0,1,0,0,1
+  1,1,1,1,0,0,0,1,1,0,0,0,1,1,1,0,0,1,1,0,1,0,1,1,0,0,1,1,0,1,0,0,
+  1,0,0,1,0,1,1,1,0,0,1,0,1,1,0,1,1,1,0,0,0,0,0,0,0,1,0,1,1,0,1,0,
+  0,0,1,1,1,1,0,1,0,1,0,0,0,1,1,1,1,1,1,1,0,0,1,0,1,0,0,0,1,1,1,0,
+  1,1,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,1,1,0,1,0,0,1,1,0,1,1,0,1,0,1,
+  0,0,0,0,1,1,1,0,0,1,1,1,1,0,1,1,1,0,1,0,0,1,0,0,1,1,0,1,0,0,0,1,
+  0,1,0,1,1,0,0,0,1,1,0,0,0,1,1,0,1,0,0,1,0,0,1,1,0,0,1,0,1,1,1,1,
+  1,1,0,1,1,0,0,0,1,0,1,0,0,0,0,1,0,0,1,1,1,1,1,1,0,1,0,0,0,0,1,0,
+  1,0,1,1,0,1,1,0,0,1,1,1,1,1,0,0,0,0,0,0,0,1,0,1,1,1,1,0,1,0,0,1
 };
 
 const esU8 MODIFIED_SBOX_3[4*64] =
 {
-	1,0,1,0,0,0,0,0,1,0,0,1,1,1,1,0,0,1,1,0,0,0,1,1,1,1,1,1,0,1,0,1,
-	0,0,0,1,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,1,0,1,0,0,0,0,1,0,1,0,0,0,
-	1,1,0,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,1,1,0,1,0,0,0,1,1,0,1,0,1,0,
-	0,0,1,0,1,0,0,0,0,1,0,1,1,1,1,0,1,1,0,0,1,0,1,1,1,1,1,1,0,0,0,1,
-	1,1,0,1,0,1,1,0,0,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,0,0,1,1,0,0,0,0,
-	1,0,1,1,0,0,0,1,0,0,1,0,1,1,0,0,0,1,0,1,1,0,1,0,1,1,1,0,0,1,1,1,
-	0,0,0,1,1,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,0,1,1,0,0,0,0,1,1,1,
-	0,1,0,0,1,1,1,1,1,1,1,0,0,0,1,1,1,0,1,1,0,1,0,1,0,0,1,0,1,1,0,0
+  1,0,1,0,0,0,0,0,1,0,0,1,1,1,1,0,0,1,1,0,0,0,1,1,1,1,1,1,0,1,0,1,
+  0,0,0,1,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,1,0,1,0,0,0,0,1,0,1,0,0,0,
+  1,1,0,1,0,1,1,1,0,0,0,0,1,0,0,1,0,0,1,1,0,1,0,0,0,1,1,0,1,0,1,0,
+  0,0,1,0,1,0,0,0,0,1,0,1,1,1,1,0,1,1,0,0,1,0,1,1,1,1,1,1,0,0,0,1,
+  1,1,0,1,0,1,1,0,0,1,0,0,1,0,0,1,1,0,0,0,1,1,1,1,0,0,1,1,0,0,0,0,
+  1,0,1,1,0,0,0,1,0,0,1,0,1,1,0,0,0,1,0,1,1,0,1,0,1,1,1,0,0,1,1,1,
+  0,0,0,1,1,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,0,1,1,0,0,0,0,1,1,1,
+  0,1,0,0,1,1,1,1,1,1,1,0,0,0,1,1,1,0,1,1,0,1,0,1,0,0,1,0,1,1,0,0
 };
 
 const esU8 MODIFIED_SBOX_4[4*64] =
 {
-	0,1,1,1,1,1,0,1,1,1,1,0,0,0,1,1,0,0,0,0,0,1,1,0,1,0,0,1,1,0,1,0,
-	0,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,0,1,1,1,1,0,0,0,1,0,0,1,1,1,1,
-	1,1,0,1,1,0,0,0,1,0,1,1,0,1,0,1,0,1,1,0,1,1,1,1,0,0,0,0,0,0,1,1,
-	0,1,0,0,0,1,1,1,0,0,1,0,1,1,0,0,0,0,0,1,1,0,1,0,1,1,1,0,1,0,0,1,
-	1,0,1,0,0,1,1,0,1,0,0,1,0,0,0,0,1,1,0,0,1,0,1,1,0,1,1,1,1,1,0,1,
-	1,1,1,1,0,0,0,1,0,0,1,1,1,1,1,0,0,1,0,1,0,0,1,0,1,0,0,0,0,1,0,0,
-	0,0,1,1,1,1,1,1,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,1,1,1,0,1,1,0,0,0,
-	1,0,0,1,0,1,0,0,0,1,0,1,1,0,1,1,1,1,0,0,0,1,1,1,0,0,1,0,1,1,1,0
+  0,1,1,1,1,1,0,1,1,1,1,0,0,0,1,1,0,0,0,0,0,1,1,0,1,0,0,1,1,0,1,0,
+  0,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,0,1,1,1,1,0,0,0,1,0,0,1,1,1,1,
+  1,1,0,1,1,0,0,0,1,0,1,1,0,1,0,1,0,1,1,0,1,1,1,1,0,0,0,0,0,0,1,1,
+  0,1,0,0,0,1,1,1,0,0,1,0,1,1,0,0,0,0,0,1,1,0,1,0,1,1,1,0,1,0,0,1,
+  1,0,1,0,0,1,1,0,1,0,0,1,0,0,0,0,1,1,0,0,1,0,1,1,0,1,1,1,1,1,0,1,
+  1,1,1,1,0,0,0,1,0,0,1,1,1,1,1,0,0,1,0,1,0,0,1,0,1,0,0,0,0,1,0,0,
+  0,0,1,1,1,1,1,1,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,1,1,1,0,1,1,0,0,0,
+  1,0,0,1,0,1,0,0,0,1,0,1,1,0,1,1,1,1,0,0,0,1,1,1,0,0,1,0,1,1,1,0
 };
 
 const esU8 MODIFIED_SBOX_5[4*64] =
 {
-	0,0,1,0,1,1,0,0,0,1,0,0,0,0,0,1,0,1,1,1,1,0,1,0,1,0,1,1,0,1,1,0,
-	1,0,0,0,0,1,0,1,0,0,1,1,1,1,1,1,1,1,0,1,0,0,0,0,1,1,1,0,1,0,0,1,
-	1,1,1,0,1,0,1,1,0,0,1,0,1,1,0,0,0,1,0,0,0,1,1,1,1,1,0,1,0,0,0,1,
-	0,1,0,1,0,0,0,0,1,1,1,1,1,0,1,0,0,0,1,1,1,0,0,1,1,0,0,0,0,1,1,0,
-	0,1,0,0,0,0,1,0,0,0,0,1,1,0,1,1,1,0,1,0,1,1,0,1,0,1,1,1,1,0,0,0,
-	1,1,1,1,1,0,0,1,1,1,0,0,0,1,0,1,0,1,1,0,0,0,1,1,0,0,0,0,1,1,1,0,
-	1,0,1,1,1,0,0,0,1,1,0,0,0,1,1,1,0,0,0,1,1,1,1,0,0,0,1,0,1,1,0,1,
-	0,1,1,0,1,1,1,1,0,0,0,0,1,0,0,1,1,0,1,0,0,1,0,0,0,1,0,1,0,0,1,1
+  0,0,1,0,1,1,0,0,0,1,0,0,0,0,0,1,0,1,1,1,1,0,1,0,1,0,1,1,0,1,1,0,
+  1,0,0,0,0,1,0,1,0,0,1,1,1,1,1,1,1,1,0,1,0,0,0,0,1,1,1,0,1,0,0,1,
+  1,1,1,0,1,0,1,1,0,0,1,0,1,1,0,0,0,1,0,0,0,1,1,1,1,1,0,1,0,0,0,1,
+  0,1,0,1,0,0,0,0,1,1,1,1,1,0,1,0,0,0,1,1,1,0,0,1,1,0,0,0,0,1,1,0,
+  0,1,0,0,0,0,1,0,0,0,0,1,1,0,1,1,1,0,1,0,1,1,0,1,0,1,1,1,1,0,0,0,
+  1,1,1,1,1,0,0,1,1,1,0,0,0,1,0,1,0,1,1,0,0,0,1,1,0,0,0,0,1,1,1,0,
+  1,0,1,1,1,0,0,0,1,1,0,0,0,1,1,1,0,0,0,1,1,1,1,0,0,0,1,0,1,1,0,1,
+  0,1,1,0,1,1,1,1,0,0,0,0,1,0,0,1,1,0,1,0,0,1,0,0,0,1,0,1,0,0,1,1
 };
 
 const esU8 MODIFIED_SBOX_6[4*64] =
 {
-	1,1,0,0,0,0,0,1,1,0,1,0,1,1,1,1,1,0,0,1,0,0,1,0,0,1,1,0,1,0,0,0,
-	0,0,0,0,1,1,0,1,0,0,1,1,0,1,0,0,1,1,1,0,0,1,1,1,0,1,0,1,1,0,1,1,
-	1,0,1,0,1,1,1,1,0,1,0,0,0,0,1,0,0,1,1,1,1,1,0,0,1,0,0,1,0,1,0,1,
-	0,1,1,0,0,0,0,1,1,1,0,1,1,1,1,0,0,0,0,0,1,0,1,1,0,0,1,1,1,0,0,0,
-	1,0,0,1,1,1,1,0,1,1,1,1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,0,0,0,1,1,
-	0,1,1,1,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,1,1,1,0,1,1,0,1,1,0,1,1,0,
-	0,1,0,0,0,0,1,1,0,0,1,0,1,1,0,0,1,0,0,1,0,1,0,1,1,1,1,1,1,0,1,0,
-	1,0,1,1,1,1,1,0,0,0,0,1,0,1,1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,1
+  1,1,0,0,0,0,0,1,1,0,1,0,1,1,1,1,1,0,0,1,0,0,1,0,0,1,1,0,1,0,0,0,
+  0,0,0,0,1,1,0,1,0,0,1,1,0,1,0,0,1,1,1,0,0,1,1,1,0,1,0,1,1,0,1,1,
+  1,0,1,0,1,1,1,1,0,1,0,0,0,0,1,0,0,1,1,1,1,1,0,0,1,0,0,1,0,1,0,1,
+  0,1,1,0,0,0,0,1,1,1,0,1,1,1,1,0,0,0,0,0,1,0,1,1,0,0,1,1,1,0,0,0,
+  1,0,0,1,1,1,1,0,1,1,1,1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,0,0,0,1,1,
+  0,1,1,1,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,1,1,1,0,1,1,0,1,1,0,1,1,0,
+  0,1,0,0,0,0,1,1,0,0,1,0,1,1,0,0,1,0,0,1,0,1,0,1,1,1,1,1,1,0,1,0,
+  1,0,1,1,1,1,1,0,0,0,0,1,0,1,1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,1
 };
 
 const esU8 MODIFIED_SBOX_7[4*64] =
 {
-	0,1,0,0,1,0,1,1,0,0,1,0,1,1,1,0,1,1,1,1,0,0,0,0,1,0,0,0,1,1,0,1,
-	0,0,1,1,1,1,0,0,1,0,0,1,0,1,1,1,0,1,0,1,1,0,1,0,0,1,1,0,0,0,0,1,
-	1,1,0,1,0,0,0,0,1,0,1,1,0,1,1,1,0,1,0,0,1,0,0,1,0,0,0,1,1,0,1,0,
-	1,1,1,0,0,0,1,1,0,1,0,1,1,1,0,0,0,0,1,0,1,1,1,1,1,0,0,0,0,1,1,0,
-	0,0,0,1,0,1,0,0,1,0,1,1,1,1,0,1,1,1,0,0,0,0,1,1,0,1,1,1,1,1,1,0,
-	1,0,1,0,1,1,1,1,0,1,1,0,1,0,0,0,0,0,0,0,0,1,0,1,1,0,0,1,0,0,1,0,
-	0,1,1,0,1,0,1,1,1,1,0,1,1,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,1,1,1,
-	1,0,0,1,0,1,0,1,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,1,1,1,1,0,0
+  0,1,0,0,1,0,1,1,0,0,1,0,1,1,1,0,1,1,1,1,0,0,0,0,1,0,0,0,1,1,0,1,
+  0,0,1,1,1,1,0,0,1,0,0,1,0,1,1,1,0,1,0,1,1,0,1,0,0,1,1,0,0,0,0,1,
+  1,1,0,1,0,0,0,0,1,0,1,1,0,1,1,1,0,1,0,0,1,0,0,1,0,0,0,1,1,0,1,0,
+  1,1,1,0,0,0,1,1,0,1,0,1,1,1,0,0,0,0,1,0,1,1,1,1,1,0,0,0,0,1,1,0,
+  0,0,0,1,0,1,0,0,1,0,1,1,1,1,0,1,1,1,0,0,0,0,1,1,0,1,1,1,1,1,1,0,
+  1,0,1,0,1,1,1,1,0,1,1,0,1,0,0,0,0,0,0,0,0,1,0,1,1,0,0,1,0,0,1,0,
+  0,1,1,0,1,0,1,1,1,1,0,1,1,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,1,1,1,
+  1,0,0,1,0,1,0,1,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,1,1,1,1,0,0
 };
 
 const esU8 MODIFIED_SBOX_8[4*64] =
 {
-	1,1,0,1,0,0,1,0,1,0,0,0,0,1,0,0,0,1,1,0,1,1,1,1,1,0,1,1,0,0,0,1,
-	1,0,1,0,1,0,0,1,0,0,1,1,1,1,1,0,0,1,0,1,0,0,0,0,1,1,0,0,0,1,1,1,
-	0,0,0,1,1,1,1,1,1,1,0,1,1,0,0,0,1,0,1,0,0,0,1,1,0,1,1,1,0,1,0,0,
-	1,1,0,0,0,1,0,1,0,1,1,0,1,0,1,1,0,0,0,0,1,1,1,0,1,0,0,1,0,0,1,0,
-	0,1,1,1,1,0,1,1,0,1,0,0,0,0,0,1,1,0,0,1,1,1,0,0,1,1,1,0,0,0,1,0,
-	0,0,0,0,0,1,1,0,1,0,1,0,1,1,0,1,1,1,1,1,0,0,1,1,0,1,0,1,1,0,0,0,
-	0,0,1,0,0,0,0,1,1,1,1,0,0,1,1,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,1,
-	1,1,1,1,1,1,0,0,1,0,0,1,0,0,0,0,0,0,1,1,0,1,0,1,0,1,1,0,1,0,1,1
+  1,1,0,1,0,0,1,0,1,0,0,0,0,1,0,0,0,1,1,0,1,1,1,1,1,0,1,1,0,0,0,1,
+  1,0,1,0,1,0,0,1,0,0,1,1,1,1,1,0,0,1,0,1,0,0,0,0,1,1,0,0,0,1,1,1,
+  0,0,0,1,1,1,1,1,1,1,0,1,1,0,0,0,1,0,1,0,0,0,1,1,0,1,1,1,0,1,0,0,
+  1,1,0,0,0,1,0,1,0,1,1,0,1,0,1,1,0,0,0,0,1,1,1,0,1,0,0,1,0,0,1,0,
+  0,1,1,1,1,0,1,1,0,1,0,0,0,0,0,1,1,0,0,1,1,1,0,0,1,1,1,0,0,0,1,0,
+  0,0,0,0,0,1,1,0,1,0,1,0,1,1,0,1,1,1,1,1,0,0,1,1,0,1,0,1,1,0,0,0,
+  0,0,1,0,0,0,0,1,1,1,1,0,0,1,1,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,1,
+  1,1,1,1,1,1,0,0,1,0,0,1,0,0,0,0,0,0,1,1,0,1,0,1,0,1,1,0,1,0,1,1
 };
 
 const esU8 PBOX_PERMUTATION[32] =
 {
-	16, 7,20,21,29,12,28,17, 1,15,23,26, 5,18,31,10,
-	2, 8,24,14,32,27, 3, 9,19,13,30, 6,22,11, 4,25
+  16, 7,20,21,29,12,28,17, 1,15,23,26, 5,18,31,10,
+  2, 8,24,14,32,27, 3, 9,19,13,30, 6,22,11, 4,25
 };
 
 static void shift_half_key_left(esU8 *k) ES_NOTHROW
 {
-	esU8 x = *k;
-	esU8 *kmax = k + (EsCryptoDesLegacy::KEY_SIZE/2-1);
-	do k[0] = k[1]; while (++k < kmax);
-	*k = x;
+  esU8 x = *k;
+  esU8 *kmax = k + (EsCryptoDesLegacy::KEY_SIZE/2-1);
+  do k[0] = k[1]; while (++k < kmax);
+  *k = x;
 }
 
 /*-----------------------------------------------------------------------------
@@ -196,23 +196,23 @@ and compressed keys.
 
 void EsCryptoDesLegacy::initialize(const esU8 key[EsCryptoDesLegacy::KEY_SIZE]) ES_NOTHROW
 {
-	esU8 shifted_key[EsCryptoDesLegacy::KEY_SIZE];
-	memcpy(shifted_key, key, EsCryptoDesLegacy::KEY_SIZE);
-	for (int round = 0; round < EsCryptoDesLegacy::ROUNDS; round++)
-	{
-		shift_half_key_left(shifted_key);
-		shift_half_key_left(shifted_key+EsCryptoDesLegacy::KEY_SIZE/2);
-		if (KEY_SHIFT[round] == 2)
-		{
-			shift_half_key_left(shifted_key);
-			shift_half_key_left(shifted_key+EsCryptoDesLegacy::KEY_SIZE/2);
-		}
-		for (int i = 0; i < EsCryptoDesLegacy::SBUFFER_SIZE; i++)
-		{
-			m_compressed_shifted_key[round][i] =
-				shifted_key[COMPRESSION_PERMUTATION[i]-1];
-		}
-	}
+  esU8 shifted_key[EsCryptoDesLegacy::KEY_SIZE];
+  memcpy(shifted_key, key, EsCryptoDesLegacy::KEY_SIZE);
+  for (int round = 0; round < EsCryptoDesLegacy::ROUNDS; round++)
+  {
+    shift_half_key_left(shifted_key);
+    shift_half_key_left(shifted_key+EsCryptoDesLegacy::KEY_SIZE/2);
+    if (KEY_SHIFT[round] == 2)
+    {
+      shift_half_key_left(shifted_key);
+      shift_half_key_left(shifted_key+EsCryptoDesLegacy::KEY_SIZE/2);
+    }
+    for (int i = 0; i < EsCryptoDesLegacy::SBUFFER_SIZE; i++)
+    {
+      m_compressed_shifted_key[round][i] =
+        shifted_key[COMPRESSION_PERMUTATION[i]-1];
+    }
+  }
 }
 
 /*-----------------------------------------------------------------------------
@@ -226,57 +226,57 @@ The encrypted or decrypted data is returned to the data[] buffer.
 
 void EsCryptoDesLegacy::encrypt_decrypt(esU8 data[EsCryptoDesLegacy::DATA_SIZE], bool encrypt) ES_NOTHROW
 {
-	esU8 sbuffer[EsCryptoDesLegacy::SBUFFER_SIZE];
-	union pbuffer_tag
-	{
-		esU8 byte[EsCryptoDesLegacy::DATA_SIZE/2];
-		esU32 dword[EsCryptoDesLegacy::DATA_SIZE/8];
-	} pbuffer;
+  esU8 sbuffer[EsCryptoDesLegacy::SBUFFER_SIZE];
+  union pbuffer_tag
+  {
+    esU8 byte[EsCryptoDesLegacy::DATA_SIZE/2];
+    esU32 dword[EsCryptoDesLegacy::DATA_SIZE/8];
+  } pbuffer;
 
-	for (int round = 0; round < EsCryptoDesLegacy::ROUNDS; round++)
-	{
-		/* XOR compressed key with expanded right half of data */
-		{
-			int i;
-			for (i = 0; i < EsCryptoDesLegacy::SBUFFER_SIZE; i++)
-			{
-				sbuffer[i] = data[EsCryptoDesLegacy::DATA_SIZE/2 + EXPANSION_PERMUTATION[i]-1] ^
-					m_compressed_shifted_key[encrypt ? round : 15-round][i];
-			}
-		}
-		/* S-Box substitutions */
-		{
+  for (int round = 0; round < EsCryptoDesLegacy::ROUNDS; round++)
+  {
+    /* XOR compressed key with expanded right half of data */
+    {
+      int i;
+      for (i = 0; i < EsCryptoDesLegacy::SBUFFER_SIZE; i++)
+      {
+        sbuffer[i] = data[EsCryptoDesLegacy::DATA_SIZE/2 + EXPANSION_PERMUTATION[i]-1] ^
+          m_compressed_shifted_key[encrypt ? round : 15-round][i];
+      }
+    }
+    /* S-Box substitutions */
+    {
 #define index(n) ((sbuffer[(n)] << (5+2)) | (sbuffer[(n)+5] << (4+2)) | \
-	(sbuffer[(n)+1] << (3+2)) | (sbuffer[(n)+2] << (2+2)) | (sbuffer[(n)+3] << (1+2)) | \
-	(sbuffer[(n)+4] << (0+2)))
-			pbuffer.dword[0] = * (esU32 *) (MODIFIED_SBOX_1 + index(0));
-			pbuffer.dword[1] = * (esU32 *) (MODIFIED_SBOX_2 + index(6));
-			pbuffer.dword[2] = * (esU32 *) (MODIFIED_SBOX_3 + index(12));
-			pbuffer.dword[3] = * (esU32 *) (MODIFIED_SBOX_4 + index(18));
-			pbuffer.dword[4] = * (esU32 *) (MODIFIED_SBOX_5 + index(24));
-			pbuffer.dword[5] = * (esU32 *) (MODIFIED_SBOX_6 + index(30));
-			pbuffer.dword[6] = * (esU32 *) (MODIFIED_SBOX_7 + index(36));
-			pbuffer.dword[7] = * (esU32 *) (MODIFIED_SBOX_8 + index(42));
-		}
+  (sbuffer[(n)+1] << (3+2)) | (sbuffer[(n)+2] << (2+2)) | (sbuffer[(n)+3] << (1+2)) | \
+  (sbuffer[(n)+4] << (0+2)))
+      pbuffer.dword[0] = * (esU32 *) (MODIFIED_SBOX_1 + index(0));
+      pbuffer.dword[1] = * (esU32 *) (MODIFIED_SBOX_2 + index(6));
+      pbuffer.dword[2] = * (esU32 *) (MODIFIED_SBOX_3 + index(12));
+      pbuffer.dword[3] = * (esU32 *) (MODIFIED_SBOX_4 + index(18));
+      pbuffer.dword[4] = * (esU32 *) (MODIFIED_SBOX_5 + index(24));
+      pbuffer.dword[5] = * (esU32 *) (MODIFIED_SBOX_6 + index(30));
+      pbuffer.dword[6] = * (esU32 *) (MODIFIED_SBOX_7 + index(36));
+      pbuffer.dword[7] = * (esU32 *) (MODIFIED_SBOX_8 + index(42));
+    }
 
-		/* XOR and swap */
-		if (round < 15)
-		{
-			int i;
-			for (i = 0; i < EsCryptoDesLegacy::DATA_SIZE/2; i++)
-			{
-				esU8 x = data[EsCryptoDesLegacy::DATA_SIZE/2 + i];
-				data[EsCryptoDesLegacy::DATA_SIZE/2 + i] = data[i] ^ pbuffer.byte[PBOX_PERMUTATION[i]-1];
-				data[i] = x;
-			}
-		}
-		else
-		{
-			int i;
-			for (i = 0; i < EsCryptoDesLegacy::DATA_SIZE/2; i++)
-				data[i] = data[i] ^ pbuffer.byte[PBOX_PERMUTATION[i]-1];
-		}
-	}
+    /* XOR and swap */
+    if (round < 15)
+    {
+      int i;
+      for (i = 0; i < EsCryptoDesLegacy::DATA_SIZE/2; i++)
+      {
+        esU8 x = data[EsCryptoDesLegacy::DATA_SIZE/2 + i];
+        data[EsCryptoDesLegacy::DATA_SIZE/2 + i] = data[i] ^ pbuffer.byte[PBOX_PERMUTATION[i]-1];
+        data[i] = x;
+      }
+    }
+    else
+    {
+      int i;
+      for (i = 0; i < EsCryptoDesLegacy::DATA_SIZE/2; i++)
+        data[i] = data[i] ^ pbuffer.byte[PBOX_PERMUTATION[i]-1];
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------
@@ -287,60 +287,60 @@ pointer to the next character of the password.
 
 const char* EsCryptoDesLegacy::xmix(const char *password, esU8 buffer[EsCryptoDesLegacy::DATA_SIZE], const esU8 key[EsCryptoDesLegacy::KEY_SIZE]) ES_NOTHROW
 {
-	int i;
-	for (i = 0; i < 64; i+=8)
-	{
-		int c = *password;
-		if (c != 0) password++;
-		buffer[i] ^= c >> 7 & 1;
-		buffer[i+1] ^= c >> 6 & 1;
-		buffer[i+2] ^= c >> 5 & 1;
-		buffer[i+3] ^= c >> 4 & 1;
-		buffer[i+4] ^= c >> 3 & 1;
-		buffer[i+5] ^= c >> 2 & 1;
-		buffer[i+6] ^= c >> 1 & 1;
-		buffer[i+7] ^= c & 1;
-	}
-	initialize(key);
-	encrypt_decrypt(buffer, true);
-	return password;
+  int i;
+  for (i = 0; i < 64; i+=8)
+  {
+    int c = *password;
+    if (c != 0) password++;
+    buffer[i] ^= c >> 7 & 1;
+    buffer[i+1] ^= c >> 6 & 1;
+    buffer[i+2] ^= c >> 5 & 1;
+    buffer[i+3] ^= c >> 4 & 1;
+    buffer[i+4] ^= c >> 3 & 1;
+    buffer[i+5] ^= c >> 2 & 1;
+    buffer[i+6] ^= c >> 1 & 1;
+    buffer[i+7] ^= c & 1;
+  }
+  initialize(key);
+  encrypt_decrypt(buffer, true);
+  return password;
 }
 
 static const esU8 MIXER1[EsCryptoDesLegacy::KEY_SIZE] =
 {
-	1,0,1,0,0,0,0,0,0,1,
-	0,1,0,0,1,1,0,1,0,0,
-	1,1,0,1,1,1,0,1,1,0,
-	0,0,0,0,1,0,0,1,0,1,
-	1,1,0,0,0,0,1,1,1,0,
-	0,1,0,1,1,0
+  1,0,1,0,0,0,0,0,0,1,
+  0,1,0,0,1,1,0,1,0,0,
+  1,1,0,1,1,1,0,1,1,0,
+  0,0,0,0,1,0,0,1,0,1,
+  1,1,0,0,0,0,1,1,1,0,
+  0,1,0,1,1,0
 };
 static const esU8 MIXER2[EsCryptoDesLegacy::KEY_SIZE] =
 {
-	1,0,1,0,1,1,0,0,0,0,
-	0,1,1,1,1,0,1,0,0,1,
-	1,1,1,0,1,0,0,0,0,0,
-	0,1,1,0,1,0,1,0,0,0,
-	1,1,0,0,0,0,1,1,0,0,
-	0,0,0,0,0,0
+  1,0,1,0,1,1,0,0,0,0,
+  0,1,1,1,1,0,1,0,0,1,
+  1,1,1,0,1,0,0,0,0,0,
+  0,1,1,0,1,0,1,0,0,0,
+  1,1,0,0,0,0,1,1,0,0,
+  0,0,0,0,0,0
 };
 static const esU8 MIXER3[EsCryptoDesLegacy::KEY_SIZE] =
 {
-	1,0,0,0,1,1,1,1,1,0,
-	1,0,0,0,1,1,0,0,1,0,
-	0,1,0,1,1,0,0,0,0,0,
-	0,0,1,1,1,0,0,0,1,0,
-	1,0,0,0,1,0,0,0,1,1,
-	1,1,1,1,0,0
+  1,0,0,0,1,1,1,1,1,0,
+  1,0,0,0,1,1,0,0,1,0,
+  0,1,0,1,1,0,0,0,0,0,
+  0,0,1,1,1,0,0,0,1,0,
+  1,0,0,0,1,0,0,0,1,1,
+  1,1,1,1,0,0
 };
 static const esU8 MIXER4[EsCryptoDesLegacy::KEY_SIZE] =
 {
-	0,1,1,0,1,0,0,0,0,1,
-	0,1,0,0,0,1,1,0,0,1,
-	0,1,0,1,1,1,0,0,0,1,
-	0,0,1,1,1,0,1,1,0,1,
-	1,1,1,1,1,0,0,0,1,0,
-	0,1,1,1,0,0
+  0,1,1,0,1,0,0,0,0,1,
+  0,1,0,0,0,1,1,0,0,1,
+  0,1,0,1,1,1,0,0,0,1,
+  0,0,1,1,1,0,1,1,0,1,
+  1,1,1,1,1,0,0,0,1,0,
+  0,1,1,1,0,0
 };
 
 /*----------------------------------------------------------------------------
@@ -350,116 +350,116 @@ the key.
 
 void EsCryptoDesLegacy::setKey(const EsString& key)
 {
-	esU8 buffer[EsCryptoDesLegacy::DATA_SIZE];
-	memset(buffer, 0, sizeof(buffer));
-	const EsByteString& bs = EsString::toUtf8(key);
+  esU8 buffer[EsCryptoDesLegacy::DATA_SIZE];
+  memset(buffer, 0, sizeof(buffer));
+  const EsByteString& bs = EsString::toUtf8(key);
 
   if( bs.size() < 32 )
     EsException::Throw( esT("Codec key is too short") );
 
-	const char* p = xmix(bs.c_str(), buffer, MIXER1);
-	p = xmix(p, buffer, MIXER2);
-	p = xmix(p, buffer, MIXER3);
-	xmix(p, buffer, MIXER4);
+  const char* p = xmix(bs.c_str(), buffer, MIXER1);
+  p = xmix(p, buffer, MIXER2);
+  p = xmix(p, buffer, MIXER3);
+  xmix(p, buffer, MIXER4);
 
-	initialize(buffer);
+  initialize(buffer);
 }
 //---------------------------------------------------------------------------
 
 void EsCryptoDesLegacy::process(EsBinBuffer& dest, const EsBinBuffer& src, bool encode /*= true*/)
 {
-	// prepend -in with the original block length on encoding
-	// otherwise, we have no information on original block length
-	// codec will always align block length to nearest multiple of 8
-	EsBinBuffer tmp;
+  // prepend -in with the original block length on encoding
+  // otherwise, we have no information on original block length
+  // codec will always align block length to nearest multiple of 8
+  EsBinBuffer tmp;
   esU32 orgLen = 0;
-	if(encode)
-	{
-		orgLen = static_cast<esU32>(src.size());
+  if(encode)
+  {
+    orgLen = static_cast<esU32>(src.size());
     // limit maximum processing block with maximal number of bytes esU32 may address
     ES_ASSERT(orgLen <= static_cast<esU32>(0xFFFFFFFF));
-		tmp.assign(
+    tmp.assign(
       reinterpret_cast<EsBinBuffer::const_pointer>(&orgLen),
-			reinterpret_cast<EsBinBuffer::const_pointer>(&orgLen) + sizeof(orgLen)
+      reinterpret_cast<EsBinBuffer::const_pointer>(&orgLen) + sizeof(orgLen)
     );
-	}
-	EsBinBuffer in = tmp;
-	in += src;
+  }
+  EsBinBuffer in = tmp;
+  in += src;
 
-	//8 byte - align input buffer, padding it with 0
+  //8 byte - align input buffer, padding it with 0
   size_t sze = in.size();
-	size_t iMod = sze % 8;
-	if( iMod )
-		in.resize( sze + 8 - iMod, 0 );
+  size_t iMod = sze % 8;
+  if( iMod )
+    in.resize( sze + 8 - iMod, 0 );
   sze = in.size();
 
-	//prepare buff out
-	dest.clear();
-	//buff-out length is buff-in length + 8 byte - aligned
-	dest.reserve( sze );
+  //prepare buff out
+  dest.clear();
+  //buff-out length is buff-in length + 8 byte - aligned
+  dest.reserve( sze );
 
-	//encode input password & compare
-	EsBinBuffer::value_type block[EsCryptoDesLegacy::DATA_SIZE];
+  //encode input password & compare
+  EsBinBuffer::value_type block[EsCryptoDesLegacy::DATA_SIZE];
 
-	size_t inIdx = 0;
-	while( inIdx < sze )
-	{
-		//encrypt by 8 byte blocks
-		size_t blockIdx = 0;
-		size_t byteCnt = 8;
-		while( byteCnt )
-		{
-			EsBinBuffer::value_type item = in[inIdx++];
-			block[blockIdx++] = item >> 7 & 1;
-			block[blockIdx++] = item >> 6 & 1;
-			block[blockIdx++] = item >> 5 & 1;
-			block[blockIdx++] = item >> 4 & 1;
-			block[blockIdx++] = item >> 3 & 1;
-			block[blockIdx++] = item >> 2 & 1;
-			block[blockIdx++] = item >> 1 & 1;
-			block[blockIdx++] = item & 1;
+  size_t inIdx = 0;
+  while( inIdx < sze )
+  {
+    //encrypt by 8 byte blocks
+    size_t blockIdx = 0;
+    size_t byteCnt = 8;
+    while( byteCnt )
+    {
+      EsBinBuffer::value_type item = in[inIdx++];
+      block[blockIdx++] = item >> 7 & 1;
+      block[blockIdx++] = item >> 6 & 1;
+      block[blockIdx++] = item >> 5 & 1;
+      block[blockIdx++] = item >> 4 & 1;
+      block[blockIdx++] = item >> 3 & 1;
+      block[blockIdx++] = item >> 2 & 1;
+      block[blockIdx++] = item >> 1 & 1;
+      block[blockIdx++] = item & 1;
 
-			--byteCnt;
-		}
+      --byteCnt;
+    }
 
-		encrypt_decrypt( block, encode );
+    encrypt_decrypt( block, encode );
 
-		for(blockIdx = 0; blockIdx < EsCryptoDesLegacy::DATA_SIZE; blockIdx += 8)
-		{
-			EsBinBuffer::value_type item =
-				block[blockIdx]		<< 7 |
-				block[blockIdx+1] << 6 |
-				block[blockIdx+2] << 5 |
-				block[blockIdx+3] << 4 |
-				block[blockIdx+4] << 3 |
-				block[blockIdx+5] << 2 |
-				block[blockIdx+6] << 1 |
-				block[blockIdx+7];
+    for(blockIdx = 0; blockIdx < EsCryptoDesLegacy::DATA_SIZE; blockIdx += 8)
+    {
+      EsBinBuffer::value_type item =
+        block[blockIdx]    << 7 |
+        block[blockIdx+1] << 6 |
+        block[blockIdx+2] << 5 |
+        block[blockIdx+3] << 4 |
+        block[blockIdx+4] << 3 |
+        block[blockIdx+5] << 2 |
+        block[blockIdx+6] << 1 |
+        block[blockIdx+7];
 
-			dest.push_back(item);
-		}
-	}
+      dest.push_back(item);
+    }
+  }
 
-	if( !encode && !dest.empty() )
-	{
-		ES_ASSERT(dest.size() >= sizeof(esU32));
+  if( !encode && !dest.empty() )
+  {
+    ES_ASSERT(dest.size() >= sizeof(esU32));
 
-		// extract length from decoded block and
-		// trim output to its original length
-		memcpy(
+    // extract length from decoded block and
+    // trim output to its original length
+    memcpy(
       reinterpret_cast<EsBinBuffer::pointer>(&orgLen),
       dest.data(),
       sizeof(orgLen)
     );
 
-		if( orgLen < dest.size() )
-		{
-			std::rotate(dest.begin(), dest.begin()+sizeof(orgLen), dest.end());
-			dest.resize(orgLen);
-		}
-		else
-			EsException::Throw(esT("Invalid decoded block length encountered"));
-	}
+    if( orgLen < dest.size() )
+    {
+      std::rotate(dest.begin(), dest.begin()+sizeof(orgLen), dest.end());
+      dest.resize(orgLen);
+    }
+    else
+      EsException::Throw(esT("Invalid decoded block length encountered"));
+  }
 }
 //---------------------------------------------------------------------------
 

@@ -108,21 +108,21 @@ int StringToValue<int, true>(const std::string& str);
 class StreamState
 {
 public:
-	StreamState(std::ostream& out)
-		: m_out(out), m_fmt(out.flags()), m_prec(out.precision())
-	{
-	}
+  StreamState(std::ostream& out)
+    : m_out(out), m_fmt(out.flags()), m_prec(out.precision())
+  {
+  }
 
-	~StreamState()
-	{
-		m_out.precision(m_prec);
-		m_out.flags(m_fmt);
-	}
+  ~StreamState()
+  {
+    m_out.precision(m_prec);
+    m_out.flags(m_fmt);
+  }
 
 private:
-	std::ostream& m_out;
-	std::ios_base::fmtflags m_fmt;
-	std::streamsize m_prec;
+  std::ostream& m_out;
+  std::ios_base::fmtflags m_fmt;
+  std::streamsize m_prec;
 };
 
 // Functions that need a RNG; uses AES inf CFB mode with Seed.

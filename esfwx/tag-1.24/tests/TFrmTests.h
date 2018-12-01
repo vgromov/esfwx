@@ -13,11 +13,11 @@
 //---------------------------------------------------------------------------
 class TFrmTests : public TForm
 {
-__published:	// IDE-managed Components
+__published:  // IDE-managed Components
   TMemo *memo_;
   void __fastcall FormActivate(TObject *Sender);
-private:	// User declarations
-public:		// User declarations
+private:  // User declarations
+public:    // User declarations
   __fastcall TFrmTests(TComponent* Owner);
 };
 //---------------------------------------------------------------------------

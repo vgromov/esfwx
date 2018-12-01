@@ -2,20 +2,20 @@
 #define _es_core_defs_h_
 
 /// @file EsCoreDefs.h
-///	common, most basic, esfwx framework definitions go here
+///  common, most basic, esfwx framework definitions go here
 ///
 
 /// Configuration definitions must go first
 #include <EsCoreConfig.h>
 
 #if defined(DEBUG) || defined(_DEBUG)
-#	ifndef _DEBUG
-#		define _DEBUG 1
-#	endif
-#	ifndef DEBUG
-#		define DEBUG 1
-#	endif
-#	undef NDEBUG
+# ifndef _DEBUG
+#   define _DEBUG 1
+# endif
+# ifndef DEBUG
+#   define DEBUG 1
+# endif
+# undef NDEBUG
 # define ES_DEBUG
 #endif
 
@@ -31,16 +31,16 @@
 /// Posix compatible OS flag
 /// ES_POSIX_COMPAT
 /// Supported OSes
-#define ES_OS_UNDEFINED			0
-#define ES_OS_WINDOWS				1
-#define ES_OS_MAC         	2
-#define ES_OS_IOS         	3
-#define ES_OS_ANDROID				4
+#define ES_OS_UNDEFINED      0
+#define ES_OS_WINDOWS        1
+#define ES_OS_MAC           2
+#define ES_OS_IOS           3
+#define ES_OS_ANDROID        4
 #define ES_OS_LINUX         5
 #define ES_OS_UNIX          6
 
 #if defined(__WINDOWS__) || defined(__WIN32__) || _WIN32 || _WIN64
-#	define ES_OS							ES_OS_WINDOWS
+#  define ES_OS              ES_OS_WINDOWS
 #elif defined(__APPLE__)
 # include "TargetConditionals.h"
 # if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
@@ -51,7 +51,7 @@
 # endif
 # define ES_POSIX_COMPAT
 #elif defined(__ANDROID__)
-#	define ES_OS							ES_OS_ANDROID
+#  define ES_OS              ES_OS_ANDROID
 # define ES_IS_MOBILE_OS
 # define ES_POSIX_COMPAT
 #elif defined(linux) || defined(__LINUX__) || defined(__linux__) || defined(__linux)
@@ -61,7 +61,7 @@
 # define ES_OS              ES_OS_UNIX
 # define ES_POSIX_COMPAT
 #else
-#	define ES_OS							ES_OS_UNDEFINED
+#  define ES_OS              ES_OS_UNDEFINED
 #endif
 
 #if ES_OS == ES_OS_UNDEFINED
@@ -70,29 +70,29 @@
 
 // compiler vendor specifics
 //
-#define ES_COMPILER_VENDOR_UNDEFINED	  0
-#define ES_COMPILER_VENDOR_BORLAND			1
-#define ES_COMPILER_VENDOR_MS				    2
-#define ES_COMPILER_VENDOR_INTEL			  3
-#define ES_COMPILER_VENDOR_GNUC				  4
-#define ES_COMPILER_VENDOR_DIGITALMARS	5
+#define ES_COMPILER_VENDOR_UNDEFINED    0
+#define ES_COMPILER_VENDOR_BORLAND      1
+#define ES_COMPILER_VENDOR_MS            2
+#define ES_COMPILER_VENDOR_INTEL        3
+#define ES_COMPILER_VENDOR_GNUC          4
+#define ES_COMPILER_VENDOR_DIGITALMARS  5
 
 #if defined(__BORLANDC__)
-#	define ES_COMPILER_VENDOR		ES_COMPILER_VENDOR_BORLAND
+#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_BORLAND
 #elif defined(_MSC_VER)
-#	define ES_COMPILER_VENDOR		ES_COMPILER_VENDOR_MS
+#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_MS
 #elif defined(__INTEL_COMPILER)
-#	define ES_COMPILER_VENDOR		ES_COMPILER_VENDOR_INTEL
+#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_INTEL
 #elif defined(__GNUC__)
-#	define ES_COMPILER_VENDOR		ES_COMPILER_VENDOR_GNUC
+#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_GNUC
 #elif defined(__DMC__)
-#	define ES_COMPILER_VENDOR		ES_COMPILER_VENDOR_DIGITALMARS
+#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_DIGITALMARS
 #else
-#	define ES_COMPILER_VENDOR		ES_COMPILER_VENDOR_UNDEFINED
+#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_UNDEFINED
 #endif
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_UNDEFINED
-#	error Compiler vendor is not defined!
+#  error Compiler vendor is not defined!
 #endif
 
 #ifdef __clang__
@@ -214,16 +214,16 @@
 #   if ES_OS == ES_OS_WINDOWS
 #     include <no_sal2.h>
 #   endif
-#elif ES_COMPILER_VENDOR ==	ES_COMPILER_VENDOR_MS
+#elif ES_COMPILER_VENDOR ==  ES_COMPILER_VENDOR_MS
 // Disable C4191 warning for reflected class static method pointer types typecasts
-#	pragma warning( once: 4191 )
+#  pragma warning( once: 4191 )
 // Disable C4584 warning which occurs in many places due to our multiple interface inheritance technique
-#	pragma warning( disable: 4584 )
+#  pragma warning( disable: 4584 )
 // Disable DLL warnings for inline objects && data
-#	pragma warning( disable: 4251 )
+#  pragma warning( disable: 4251 )
 # ifndef _CRT_SECURE_NO_WARNINGS
-#		define _CRT_SECURE_NO_WARNINGS
-#	endif
+#    define _CRT_SECURE_NO_WARNINGS
+#  endif
 #elif ES_COMPILER_VENDOR == ESCOMPILER_VENDOR_GNUC
 // Disable inaccessible direct base for multiple inheritance classes
 # pragma GCC diagnostic ignored "-W"
@@ -231,25 +231,25 @@
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC
 # define ES_ABSTRACT
-#	define ES_NO_INLINE __attribute__((noinline))
+#  define ES_NO_INLINE __attribute__((noinline))
 #elif (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND)
-#	define ES_ABSTRACT	__declspec(novtable)
-#	define ES_NO_INLINE
+#  define ES_ABSTRACT  __declspec(novtable)
+#  define ES_NO_INLINE
 #elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-#	define ES_ABSTRACT	__declspec(novtable)
-#	define ES_NO_INLINE __declspec(noinline)
+#  define ES_ABSTRACT  __declspec(novtable)
+#  define ES_NO_INLINE __declspec(noinline)
 #else
-#	define ES_NO_INLINE
-#	define ES_ABSTRACT
+#  define ES_NO_INLINE
+#  define ES_ABSTRACT
 #endif
 
 /// Always use unicode build
 ///
 #ifndef _UNICODE
-#	define _UNICODE
+#  define _UNICODE
 #endif
 #ifndef UNICODE
-#	define UNICODE
+#  define UNICODE
 #endif
 
 /// Standard C includes,
@@ -265,12 +265,12 @@
 
 #if ES_OS == ES_OS_WINDOWS
 # include <tchar.h>
-#	include <stdlib.h>
-#	include <stdio.h>
+#  include <stdlib.h>
+#  include <stdio.h>
 
 // Prevent winsock.h to be included from windows.h, we use winsock2.h internally in comm, no need to spoil defs and structs there
 # define _WINSOCKAPI_
-#	include <windows.h>
+#  include <windows.h>
   // Undef wingdi's GetObject macro, to prevent clash with FMX headers GetObject object member service(s)
 # undef GetObject
 #elif defined(ES_POSIX_COMPAT)
@@ -289,24 +289,24 @@
 # if ESCOMPILER_VENDOR_GCC == ES_COMPILER_VENDOR
 #   define _BSD_SOURCE //< Ensure we wiil gettimeofday in time.h
 # endif
-#	include <unistd.h>
-#	include <stdlib.h>
+#  include <unistd.h>
+#  include <stdlib.h>
 # include <stdio.h>
 # include <errno.h>
-#	include <time.h>
-#	include <pthread.h>
-#	include <semaphore.h>
-#	if ES_OS == ES_OS_MAC
+#  include <time.h>
+#  include <pthread.h>
+#  include <semaphore.h>
+#  if ES_OS == ES_OS_MAC
 #       define ES_PMUTEX_NO_ROBUST
-#		define ES_PTHREAD_NO_TIMEDLOCK
-#		define ES_PTHREAD_NO_PRIO
+#    define ES_PTHREAD_NO_TIMEDLOCK
+#    define ES_PTHREAD_NO_PRIO
 #       define ES_PTHREAD_NO_YIELD
 #   elif ES_OS == ES_OS_ANDROID
 #       define ES_PMUTEX_NO_ROBUST
-#		define ES_PTHREAD_NO_TIMEDLOCK
-#		define ES_PTHREAD_NO_PRIO
+#    define ES_PTHREAD_NO_TIMEDLOCK
+#    define ES_PTHREAD_NO_PRIO
 #       define ES_PTHREAD_NO_YIELD
-#	endif
+#  endif
 # if ES_OS == ES_OS_ANDROID && ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 // undefine some macros(ed) errno-s, as soon as
 // these are re-declared as consts in ECC system headers
@@ -324,28 +324,28 @@
 #define ES_CONCAT_HELPER(x1, x2) x1 ## x2
 
 #define ES_CONCAT(x1, x2) \
-	ES_CONCAT_HELPER(x1, x2)
+  ES_CONCAT_HELPER(x1, x2)
 
 #define ES_CONCAT3(x1, x2, x3) \
-	ES_CONCAT(ES_CONCAT(x1, x2), x3)
+  ES_CONCAT(ES_CONCAT(x1, x2), x3)
 
 #define ES_CONCAT4(x1, x2, x3, x4) \
-	ES_CONCAT(ES_CONCAT3(x1, x2, x3), x4)
+  ES_CONCAT(ES_CONCAT3(x1, x2, x3), x4)
 
 #define ES_CONCAT5(x1, x2, x3, x4, x5) \
-	ES_CONCAT(ES_CONCAT4(x1, x2, x3, x4), x5)
+  ES_CONCAT(ES_CONCAT4(x1, x2, x3, x4), x5)
 
 #define ES_CONCAT6(x1, x2, x3, x4, x5, x6) \
-	ES_CONCAT(ES_CONCAT5(x1, x2, x3, x4, x5), x6)
+  ES_CONCAT(ES_CONCAT5(x1, x2, x3, x4, x5), x6)
 
 #define ES_CONCAT7(x1, x2, x3, x4, x5, x6, x7) \
-	ES_CONCAT(ES_CONCAT6(x1, x2, x3, x4, x5, x6), x7)
+  ES_CONCAT(ES_CONCAT6(x1, x2, x3, x4, x5, x6), x7)
 
 #define ES_CONCAT8(x1, x2, x3, x4, x5, x6, x7, x8) \
-	ES_CONCAT(ES_CONCAT7(x1, x2, x3, x4, x5, x6, x7), x8)
+  ES_CONCAT(ES_CONCAT7(x1, x2, x3, x4, x5, x6, x7), x8)
 
 #define ES_CONCAT9(x1, x2, x3, x4, x5, x6, x7, x8, x9) \
-	ES_CONCAT(ES_CONCAT8(x1, x2, x3, x4, x5, x6, x7, x8), x9)
+  ES_CONCAT(ES_CONCAT8(x1, x2, x3, x4, x5, x6, x7, x8), x9)
 
 // Chars, Strings confiduration & defines
 #include "EsStringDefs.h"
@@ -356,12 +356,18 @@
 // Misc defines
 //
 #if defined(ES_MODERN_CPP) && defined(ES_HAVE_NOEXCEPT)
-# define ES_NOTHROW	  noexcept
+# define ES_NOTHROW    noexcept
 #else
-# define ES_NOTHROW	  throw()
+# define ES_NOTHROW    throw()
 #endif
 
-#define ES_UNUSED(x)
+#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC
+# define ES_UNUSED(x) x __attribute__((unused))
+#elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
+# define ES_UNUSED(x) _Pragma("warning(suppress: 4100)") x
+#else
+# define ES_UNUSED(x) x
+#endif
 
 // Non-copyable class
 //
@@ -384,26 +390,26 @@ private:\
 template <typename T>
 inline void ES_DELETE(T*& ptr)
 {
-	typedef char TypeIsCompleteCheck[sizeof(T)];
+  ES_UNUSED(typedef char TypeIsCompleteCheck[sizeof(T)]);
 
-	if( nullptr != ptr )
-	{
-		delete ptr;
-		ptr = nullptr;
-	}
+  if( nullptr != ptr )
+  {
+    delete ptr;
+    ptr = nullptr;
+  }
 }
 #endif
 
 // Deprecated features macro
 //
 #ifndef ES_DEPRECATED
-#	if defined(__GNUC__)
-#		define ES_DEPRECATED __attribute__((deprecated))
-#	elif defined(_MSC_VER) && _MSC_VER >= 1300
-#		define ES_DEPRECATED __declspec(deprecated)
-#	else
-#		define ES_DEPRECATED
-#	endif
+#  if defined(__GNUC__)
+#    define ES_DEPRECATED __attribute__((deprecated))
+#  elif defined(_MSC_VER) && _MSC_VER >= 1300
+#    define ES_DEPRECATED __declspec(deprecated)
+#  else
+#    define ES_DEPRECATED
+#  endif
 #endif
 
 // Debugging stuff
@@ -411,14 +417,14 @@ inline void ES_DELETE(T*& ptr)
 // Assertion macros
 //
 #ifndef NDEBUG
-#	include <assert.h>
-#	define ES_ASSERT( x )		assert( x )
-# define ES_FAIL					ES_ASSERT( 0 )
-#	define ES_FAIL_MSG( x )	ES_ASSERT( 0 == (x) )
+#  include <assert.h>
+#  define ES_ASSERT( x )    assert( x )
+# define ES_FAIL          ES_ASSERT( 0 )
+#  define ES_FAIL_MSG( x )  ES_ASSERT( 0 == (x) )
 #else
-#	define ES_ASSERT( x )
+#  define ES_ASSERT( x )
 # define ES_FAIL          abort()
-#	define ES_FAIL_MSG( x ) abort()
+#  define ES_FAIL_MSG( x ) abort()
 #endif
 
 #ifdef __cplusplus
@@ -440,17 +446,17 @@ inline void ES_DELETE(T*& ptr)
 #ifdef ES_DEBUG
 # if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS && defined(__cplusplus)
 #   define ES_DEBUG_TRACE_INIT      do{ _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG); _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_WNDW); } while(0)
-#   define ES_DEBUG_TRACE(...)	    OutputDebugString(EsString(EsString::format(__VA_ARGS__) + esT("\n")).c_str())
+#   define ES_DEBUG_TRACE(...)      OutputDebugString(EsString(EsString::format(__VA_ARGS__) + esT("\n")).c_str())
 #   define ES_DEBUG_TRACE_RAW(...)  do{ char _tmpdbg[256]; snprintf(_tmpdbg, 255, __VA_ARGS__); _tmpdbg[255] = 0; OutputDebugStringA(_tmpdbg); } while(0)
 #   define USE_MEMLEAK_DETECTION  0
 # elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND && ES_OS == ES_OS_WINDOWS
 #    define ES_DEBUG_TRACE_INIT     ((void)0)
-#    define ES_DEBUG_TRACE(...)	    OutputDebugString(EsString::format(__VA_ARGS__).c_str())
+#    define ES_DEBUG_TRACE(...)      OutputDebugString(EsString::format(__VA_ARGS__).c_str())
 #    define ES_DEBUG_TRACE_RAW(...) do{ char _tmpdbg[256]; snprintf(_tmpdbg, 255, __VA_ARGS__); _tmpdbg[255] = 0; OutputDebugStringA(_tmpdbg); } while(0)
 #    define USE_MEMLEAK_DETECTION   0
 # elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC && ES_OS != ES_OS_WINDOWS
 #    define ES_DEBUG_TRACE_INIT     ((void)0)
-#    define ES_DEBUG_TRACE(...)	    wprintf(EsString::format(__VA_ARGS__).c_str())
+#    define ES_DEBUG_TRACE(...)      wprintf(EsString::format(__VA_ARGS__).c_str())
 #    define ES_DEBUG_TRACE_RAW(...) do{ char _tmpdbg[256]; snprintf(_tmpdbg, 255, __VA_ARGS__); _tmpdbg[255] = 0; printf(_tmpdbg); } while(0)
 #    define USE_MEMLEAK_DETECTION   0
 # else

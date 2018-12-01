@@ -2,27 +2,27 @@
 #define _es_math_h_
 
 #ifndef _es_core_h_
-#	error "escore.h must be included prior to this header!"
+#  error "escore.h must be included prior to this header!"
 #endif
 
 // math export-import defines
 #ifdef ES_DYNAMIC_LINKAGE
-#	ifdef ESMATH_EXPORTS
-#		define ESMATH_CLASS	            ES_EXPORT_SPEC
+#  ifdef ESMATH_EXPORTS
+#    define ESMATH_CLASS              ES_EXPORT_SPEC
 #   define ESMATH_FUNC(type, decl)  ES_FUNCEXPORT_SPEC(type, decl)
-#		define ESMATH_DATA(type, decl)	ES_DATAEXPORT_SPEC(type, decl)
-#		define ESMATH_PKG	              DELPHICLASS
-#	else
-#		define ESMATH_CLASS	            ES_IMPORT_SPEC
-#		define ESMATH_FUNC(type, decl)  ES_FUNCIMPORT_SPEC(type, decl)
-#		define ESMATH_DATA(type, decl)	ES_DATAIMPORT_SPEC(type, decl)
-#		define ESMATH_PKG	              DELPHICLASS
-#	endif
+#    define ESMATH_DATA(type, decl)  ES_DATAEXPORT_SPEC(type, decl)
+#    define ESMATH_PKG                DELPHICLASS
+#  else
+#    define ESMATH_CLASS              ES_IMPORT_SPEC
+#    define ESMATH_FUNC(type, decl)  ES_FUNCIMPORT_SPEC(type, decl)
+#    define ESMATH_DATA(type, decl)  ES_DATAIMPORT_SPEC(type, decl)
+#    define ESMATH_PKG                DELPHICLASS
+#  endif
 #else
-#	define ESMATH_CLASS
-#	define ESMATH_FUNC(type, decl)    type decl
-#	define ESMATH_DATA(type, decl)    type decl
-#	define ESMATH_PKG	                DELPHICLASS
+#  define ESMATH_CLASS
+#  define ESMATH_FUNC(type, decl)    type decl
+#  define ESMATH_DATA(type, decl)    type decl
+#  define ESMATH_PKG                  DELPHICLASS
 #endif
 
 #include <esmath/EsMathException.h>

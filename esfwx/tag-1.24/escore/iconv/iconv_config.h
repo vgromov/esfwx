@@ -66,7 +66,7 @@
 
 /* Define if the machine's byte ordering is little endian. */
 #if ES_ENDIAN == ES_LITTLE_ENDIAN
-#	define WORDS_LITTLEENDIAN 1
+#  define WORDS_LITTLEENDIAN 1
 #else 
-#	define WORDS_LITTLEENDIAN 0
+#  define WORDS_LITTLEENDIAN 0
 #endif

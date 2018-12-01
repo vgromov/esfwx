@@ -12,7 +12,7 @@ typedef std::basic_string<ES_CHAR>            EsBasicStringT;
 #endif
 
 #if !defined(ES_USE_NARROW_ES_CHAR)
-  typedef std::string					                EsByteString;
+  typedef std::string                          EsByteString;
   ESCORE_FUNC( const EsByteString&,           nullByteString() ES_NOTHROW );
 # if defined(ES_CHAR_IS_WCHAR_T)
     typedef std::basic_string<char16_t>       EsWideString16;

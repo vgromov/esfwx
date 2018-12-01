@@ -131,7 +131,7 @@ m_ctxCur(nullptr),
 m_abort(false),
 m_destroying(false)
 {
-	ESSCRIPT_MACHINE_TRACE1( esT("Script machine ctor entered") )
+  ESSCRIPT_MACHINE_TRACE1( esT("Script machine ctor entered") )
   m_filesInfo = EsAssocContainer::create();
 
   m_ctxScriptThis = EsScriptContext::create(this);
@@ -159,10 +159,10 @@ EsString EsScriptMachine::traceVariant(const EsVariant& v)
     {
       EsScriptValAccessorIntf::Ptr acc = obj;
       if(acc)
-				return EsString::format(
+        return EsString::format(
           esT("object '%s'='%s'"),
           acc->typeNameGet(),
-					acc->trace()
+          acc->trace()
         );
       else
         return EsString::format(
@@ -177,7 +177,7 @@ EsString EsScriptMachine::traceVariant(const EsVariant& v)
   {
     EsString str;
     for(ulong idx = 0; idx < v.countGet(); ++idx)
-			str += EsString::format(
+      str += EsString::format(
         esT("[%d]='%s';"),
         idx,
         traceVariant(v.itemGet(idx))
@@ -361,9 +361,9 @@ bool EsScriptMachine::canMarshal() const ES_NOTHROW
 void EsScriptMachine::marshalObject(const EsScriptObjectIntf::Ptr& obj) const
 {
   EsScriptIntf::Ptr master = m_owner.get_master();
-	if( obj &&
-			master &&
-			!obj->hasClassAttribute(esT("nomarshal")) )
+  if( obj &&
+      master &&
+      !obj->hasClassAttribute(esT("nomarshal")) )
   {
     EsScriptMachine* otherMachine = &master->vm();
     obj->machineSet(otherMachine);
@@ -376,25 +376,25 @@ void EsScriptMachine::marshalData(const EsVariant& data) const
   if( !canMarshal() )
     return;
 
-	if( data.isObject() ) //< marshal objects
-	{
-		EsScriptObjectIntf::Ptr so = data.asObject();
-		if( so ) //< process script object, unless it's marked with 'nomarhsal' attribute
-			marshalObject(so);
-	}
-	else if( EsVariant::VAR_VARIANT_COLLECTION == data.typeGet() ) //< marshal variant collection
-	{
-		const EsVariant::Array& da = data.asVariantCollection();
-		for( size_t idx = 0; idx < da.size(); ++idx )
-			marshalData( da[idx] );
-	}
+  if( data.isObject() ) //< marshal objects
+  {
+    EsScriptObjectIntf::Ptr so = data.asObject();
+    if( so ) //< process script object, unless it's marked with 'nomarhsal' attribute
+      marshalObject(so);
+  }
+  else if( EsVariant::VAR_VARIANT_COLLECTION == data.typeGet() ) //< marshal variant collection
+  {
+    const EsVariant::Array& da = data.asVariantCollection();
+    for( size_t idx = 0; idx < da.size(); ++idx )
+      marshalData( da[idx] );
+  }
 }
 // ---------------------------------------------------------------------------
 
 EsScriptValAccessorIntf::Ptr EsScriptMachine::nullcGet() ES_NOTHROW
 {
-	static EsScriptValAccessorIntf::Ptr s_nullc = EsScriptSymbolTable::valAccessorCreate(
-		EsScriptStdNames::null(),
+  static EsScriptValAccessorIntf::Ptr s_nullc = EsScriptSymbolTable::valAccessorCreate(
+    EsScriptStdNames::null(),
     EsVariant::null(),
     EsScriptSymbolFlag::ReadOnly |
     EsScriptSymbolFlag::BuiltIn
@@ -473,7 +473,7 @@ void EsScriptMachine::externMetaclassDeclare(const EsString& name)
   {
     m_externs.symbolTemplateAdd(name, flags);
 
-	  ESSCRIPT_MACHINE_TRACE2(esT("An external object '%s' declared"), name.c_str())
+    ESSCRIPT_MACHINE_TRACE2(esT("An external object '%s' declared"), name.c_str())
   }
   else
   {
@@ -514,13 +514,13 @@ EsScriptValAccessorIntf::Ptr EsScriptMachine::constDeclare(const EsString& name,
   if(builtIn)
     flags |= EsScriptSymbolFlag::BuiltIn;
 
-	const EsScriptValAccessorIntf::Ptr& result = m_consts.symbolNonTemplateAdd(
+  const EsScriptValAccessorIntf::Ptr& result = m_consts.symbolNonTemplateAdd(
     name,
     val,
     flags
   );
 
-	ESSCRIPT_MACHINE_TRACE3(
+  ESSCRIPT_MACHINE_TRACE3(
     esT("Constant '%s'='%s' created"),
     name.c_str(),
     traceVariant(val).c_str()
@@ -557,14 +557,14 @@ EsString EsScriptMachine::unnamedDeclare(const EsVariant& val)
 // ---------------------------------------------------------------------------
 
 void EsScriptMachine::checkMethodIsNotInMap(const EsString& mapName, const EsScriptMethodMapPtr& map,
-	const EsMethodInfoKeyT& key, const EsScriptDebugInfoIntf::Ptr& dbg)
+  const EsMethodInfoKeyT& key, const EsScriptDebugInfoIntf::Ptr& dbg)
 {
   // find if method signature already exists in script method table
   EsScriptMethodMap::const_iterator cit = map->find(key);
   if(cit != map->end())
   {
     if(mapName.empty())
-			EsScriptException::Throw(
+      EsScriptException::Throw(
         EsString::format(
           esT("Global script method '%s', taking %d parameters, is already declared"),
           key.nameGet(),
@@ -574,7 +574,7 @@ void EsScriptMachine::checkMethodIsNotInMap(const EsString& mapName, const EsScr
         dbg
       );
     else
-			EsScriptException::Throw(
+      EsScriptException::Throw(
         EsString::format(
           esT("Script method '%s', taking %d parameters, is already declared in '%s'"),
           key.nameGet(),
@@ -588,7 +588,7 @@ void EsScriptMachine::checkMethodIsNotInMap(const EsString& mapName, const EsScr
 // ---------------------------------------------------------------------------
 
 void EsScriptMachine::addMethodToMap(const EsString& mapName, EsScriptMethodMapPtr& map,
-	const EsMethodInfoKeyT& key, const EsScriptCodeSection::Ptr& method,
+  const EsMethodInfoKeyT& key, const EsScriptCodeSection::Ptr& method,
     const EsScriptDebugInfoIntf::Ptr& dbg)
 {
   checkMethodIsNotInMap(
@@ -605,9 +605,9 @@ void EsScriptMachine::addMethodToMap(const EsString& mapName, EsScriptMethodMapP
     )
   );
 
-	ESSCRIPT_MACHINE_TRACE4(
+  ESSCRIPT_MACHINE_TRACE4(
     esT("Method '%s', taking %d parameters, added to the script's namespace or object '%s'"),
-		method->nameGet().c_str(),
+    method->nameGet().c_str(),
     method->inputParametersCntGet(),
     mapName.c_str()
   )
@@ -620,9 +620,9 @@ void EsScriptMachine::deleteMethodFromMap(const EsString& mapName, EsScriptMetho
   {
     map->erase(key);
 
-		ESSCRIPT_MACHINE_TRACE4(
+    ESSCRIPT_MACHINE_TRACE4(
       esT("Method '%s', taking %d parameters, removed from the script's namespace or object '%s'"),
-			key.nameGet().c_str(),
+      key.nameGet().c_str(),
       key.parametersCountGet(),
       mapName.c_str()
     )
@@ -636,18 +636,18 @@ EsScriptCodeSection::Ptr EsScriptMachine::methodDeclare(const EsString& name, co
   ES_ASSERT(metaclass);
 
   if(metaclass->isFinal())
-		EsScriptException::ThrowFinalObjectMayNotBeModified(
+    EsScriptException::ThrowFinalObjectMayNotBeModified(
       metaclass->typeNameGet(),
-			currentDebugInfoGet()
+      currentDebugInfoGet()
     );
 
   if(metaclass->isIf())
-		EsScriptException::Throw(
+    EsScriptException::Throw(
       esT("Methods may not be declared in 'if' conditional object scope"),
       currentDebugInfoGet()
     );
 
-	EsScriptCodeSection::Ptr result = EsScriptCodeSection::create(
+  EsScriptCodeSection::Ptr result = EsScriptCodeSection::create(
     name,
     params,
     metaclass.get()
@@ -660,7 +660,7 @@ EsScriptCodeSection::Ptr EsScriptMachine::methodDeclare(const EsString& name, co
   // add method to the scoped method map
   EsScriptMethodMapPtr scopedMethods = metaclass->thisScriptedMethodsGet();
   // todo: issue hints if method may hide| be hidden by existing one
-	addMethodToMap(
+  addMethodToMap(
     metaclass->typeNameGet(),
     scopedMethods,
     key,
@@ -692,7 +692,7 @@ EsScriptCodeSection::Ptr EsScriptMachine::globalMethodDeclare(const EsString& na
   EsMethodInfoKeyT key = methodKeyCreate(result);
   ES_ASSERT(key.isOk());
 
-	addMethodToMap(
+  addMethodToMap(
     EsString::null(),
     m_globalMethods,
     key,
@@ -708,44 +708,44 @@ EsScriptCodeSection::Ptr EsScriptMachine::globalMethodDeclare(const EsString& na
 
 EsString EsScriptMachine::versionGet() const
 {
-	return COMPONENT_VERSION_STRING;
+  return COMPONENT_VERSION_STRING;
 }
 //---------------------------------------------------------------------------
 
 void EsScriptMachine::linkAdd(const EsString& link)
 {
-	ES_ASSERT( !link.empty() );
-	const EsString& linkName = EsScript::absoluteFileNameGet(
+  ES_ASSERT( !link.empty() );
+  const EsString& linkName = EsScript::absoluteFileNameGet(
     link,
     m_owner.linkPathsGet()
   );
 
-	if( !linkName.empty() )
-	{
-		const EsPath& fname = EsPath::createFromFilePath(linkName);
-		const EsString& fullFname = fname.pathGet();
-		const EsStringIndexedMap& loadedList = EsDynamicLibrary::loadedLibrariesGet();
+  if( !linkName.empty() )
+  {
+    const EsPath& fname = EsPath::createFromFilePath(linkName);
+    const EsString& fullFname = fname.pathGet();
+    const EsStringIndexedMap& loadedList = EsDynamicLibrary::loadedLibrariesGet();
 
-		bool loaded = false;
+    bool loaded = false;
 
-		for(ulong idx = 0; idx < loadedList.countGet(); ++idx)
-		{
-			const EsString& loadedFname = loadedList.nameGet(idx);
-			if( EsString::cmpEqual == EsString::scompare(fullFname, loadedFname, true, m_loc) )
-			{
-				loaded = true;
-				break;
-			}
-		}
+    for(ulong idx = 0; idx < loadedList.countGet(); ++idx)
+    {
+      const EsString& loadedFname = loadedList.nameGet(idx);
+      if( EsString::cmpEqual == EsString::scompare(fullFname, loadedFname, true, m_loc) )
+      {
+        loaded = true;
+        break;
+      }
+    }
 
-		if( m_links.end() == m_links.find( fname.fileNameExtGet() ) &&
-				!loaded
+    if( m_links.end() == m_links.find( fname.fileNameExtGet() ) &&
+        !loaded
     )
-		{
+    {
       const EsString& name = fname.fileNameGet();
-			EsDynamicLibrary::Ptr lib = EsDynamicLibrary::load( fullFname, false );
-			if( lib )
-			{
+      EsDynamicLibrary::Ptr lib = EsDynamicLibrary::load( fullFname, false );
+      if( lib )
+      {
         // Try to locate reflection registrar entry
         EsDynamicLibrary::Pfn pfn = lib->procAddrGet(
           EsString::format(
@@ -768,44 +768,44 @@ void EsScriptMachine::linkAdd(const EsString& link)
           reinterpret_cast<void (*)(EsClassRegistryAccessorT)>(pfn)( EsClassInfo::classes );
         }
 
-				m_links[ fname.fileNameExtGet() ] = lib;
-				loaded = true;
-			}
-		}
+        m_links[ fname.fileNameExtGet() ] = lib;
+        loaded = true;
+      }
+    }
 
-		if( !loaded )
-		{
-			EsScriptException::Throw(
-				EsString::format(
+    if( !loaded )
+    {
+      EsScriptException::Throw(
+        EsString::format(
           esT("Could not link '%s', failed to load file ('%s')"),
-				  linkName,
-				  EsUtilities::osErrorStringGet(EsUtilities::osErrorCodeGet())
+          linkName,
+          EsUtilities::osErrorStringGet(EsUtilities::osErrorCodeGet())
         ),
-				currentDebugInfoGet()
+        currentDebugInfoGet()
       );
-		}
-	}
-	else
-		EsScriptException::Throw(
-			EsString::format(
+    }
+  }
+  else
+    EsScriptException::Throw(
+      EsString::format(
         esT("Could not link '%s', file was not found"),
         link
       ),
-			currentDebugInfoGet()
+      currentDebugInfoGet()
     );
 }
 //---------------------------------------------------------------------------
 
 const EsScriptSymbolTable& EsScriptMachine::vars() const ES_NOTHROW
 {
-	ES_ASSERT(m_startup);
-	return m_startup->variablesAccess();
+  ES_ASSERT(m_startup);
+  return m_startup->variablesAccess();
 }
 //---------------------------------------------------------------------------
 
 EsScriptCodeSection::Ptr EsScriptMachine::globalMethodGet(const EsMethodInfoKeyT& key, bool doThrow /*= true*/) const
 {
-	if( !m_globalMethods )
+  if( !m_globalMethods )
 #ifdef ES_MODERN_CPP
     return nullptr;
 #else
@@ -863,10 +863,10 @@ EsEnumerationIntf::Ptr EsScriptMachine::enumFind(const EsString& name, bool doTh
   }
 
   if(doThrow)
-		EsScriptException::Throw(
+    EsScriptException::Throw(
       EsString::format(
         esT("Enumeration '%s' is not defined"),
-			  name
+        name
       ),
       currentDebugInfoGet()
     );
@@ -878,7 +878,7 @@ EsEnumerationIntf::Ptr EsScriptMachine::enumFind(const EsString& name, bool doTh
 EsEnumerationIntf::Ptr EsScriptMachine::enumDeclare(const EsString& name)
 {
   if(enumFind(name))
-		EsScriptException::Throw(
+    EsScriptException::Throw(
       EsString::format(
         esT("Enumeration '%s' is already defined"),
         name
@@ -886,10 +886,10 @@ EsEnumerationIntf::Ptr EsScriptMachine::enumDeclare(const EsString& name)
       currentDebugInfoGet()
     );
 
-	if( metaclassFind(name) ||
-			EsClassInfo::classInfoGet(name)
+  if( metaclassFind(name) ||
+      EsClassInfo::classInfoGet(name)
   )
-	  EsScriptException::Throw(
+    EsScriptException::Throw(
       EsString::format(
         esT("'%s' is already defined as class"),
         name
@@ -923,7 +923,7 @@ void EsScriptMachine::enumAttributeDeclare(const EsEnumerationIntf::Ptr& enu, co
 //---------------------------------------------------------------------------
 
 void EsScriptMachine::enumItemDeclare(const EsEnumerationIntf::Ptr& enu, const EsString& symbol,
-																			const EsVariant& val, const EsString& label /*= EsString::null()*/)
+                                      const EsVariant& val, const EsString& label /*= EsString::null()*/)
 {
   ES_ASSERT(enu);
   enu->itemAdd(
@@ -1000,7 +1000,7 @@ void EsScriptMachine::registerMetaclass(const EsScriptObjectIntf::Ptr& metaclass
     metaclass
   );
 
-	ESSCRIPT_MACHINE_TRACE2(
+  ESSCRIPT_MACHINE_TRACE2(
     esT("Metaclass '%s' declaration added to script machine"),
     name.c_str()
   )
@@ -1035,7 +1035,7 @@ EsScriptObjectIntf::Ptr EsScriptMachine::metaclassDeclare(const EsString &name, 
 
   // search class name among enumerations
   if(enumFind(name))
-		EsScriptException::Throw(
+    EsScriptException::Throw(
       EsString::format(
         esT("'%s' already defined as enumeration"),
         name
@@ -1061,15 +1061,15 @@ EsScriptObjectIntf::Ptr EsScriptMachine::metaclassDeclare(const EsString &name, 
   EsScriptMethodMapPtr methods;
   methods.reset(new EsScriptMethodMap);
 
-	EsScriptObjectIntf::Ptr metaclass(
-		new EsScriptObject(
+  EsScriptObjectIntf::Ptr metaclass(
+    new EsScriptObject(
       name,
       baseMetaclass,
       methods,
       m_ctxScriptThis,
       EsScriptObject::ofMetaclass,
-		  EsScriptObjectDataBuffer::null(),
-		  EsAttributes::create(
+      EsScriptObjectDataBuffer::null(),
+      EsAttributes::create(
         name,
         false
       )
@@ -1085,7 +1085,7 @@ EsScriptObjectIntf::Ptr EsScriptMachine::metaclassDeclare(const EsString &name, 
 
 EsScriptObjectIntf::Ptr EsScriptMachine::metaclassFieldDeclare(
   const EsString& metaclassName,
-	const EsString& fieldType,
+  const EsString& fieldType,
   const EsString& fieldName,
   const EsAttributesIntf::Ptr& attrs
 )
@@ -1102,7 +1102,7 @@ EsScriptObjectIntf::Ptr EsScriptMachine::metaclassFieldDeclare(
 
 EsScriptObjectIntf::Ptr EsScriptMachine::metaclassFieldDeclare(
   const EsScriptObjectIntf::Ptr& metaclass,
-	const EsString& fieldType,
+  const EsString& fieldType,
   const EsString& fieldName,
   const EsAttributesIntf::Ptr& attrs
 )
@@ -1121,7 +1121,7 @@ EsScriptObjectIntf::Ptr EsScriptMachine::metaclassFieldDeclare(
 
 EsScriptMachine::CompoundFieldCreationResult EsScriptMachine::metaclassArrayFieldDeclare(
   const EsString& metaclassName,
-	const EsString& fieldType,
+  const EsString& fieldType,
   const EsString& fieldName,
   const EsAttributesIntf::Ptr& attrs
 )
@@ -1137,13 +1137,13 @@ EsScriptMachine::CompoundFieldCreationResult EsScriptMachine::metaclassArrayFiel
 //---------------------------------------------------------------------------
 
 EsScriptMachine::CompoundFieldCreationResult EsScriptMachine::metaclassArrayFieldDeclare(const EsScriptObjectIntf::Ptr& metaclass,
-	const EsString& fieldType, const EsString& fieldName, const EsAttributesIntf::Ptr& attrs)
+  const EsString& fieldType, const EsString& fieldName, const EsAttributesIntf::Ptr& attrs)
 {
   EsScriptObjectIntf::Ptr itemMetaclass = metaclassFind(fieldType, true);
 
   // append field in metaclass declaration mode
   CompoundFieldCreationResult result;
-	result.m_fieldMetaclass = EsScriptArrayObject::createMetaclass(m_ctxScriptThis, itemMetaclass);
+  result.m_fieldMetaclass = EsScriptArrayObject::createMetaclass(m_ctxScriptThis, itemMetaclass);
   ES_ASSERT(result.m_fieldMetaclass);
 
   result.m_fieldExpr = result.m_fieldMetaclass->thisFieldExprGet();
@@ -1191,7 +1191,7 @@ void EsScriptMachine::objectAttributeDeclare(
 
 void EsScriptMachine::functionAttributeDeclare(
   const EsScriptCodeSection::Ptr& function,
-	const EsString& attrName,
+  const EsString& attrName,
   const EsVariant& attrVal
 )
 {
@@ -1446,7 +1446,7 @@ EsVariant EsScriptMachine::exec()
   );
   ES_ASSERT(ctx);
 
-	return ctx->exec();
+  return ctx->exec();
 }
 //---------------------------------------------------------------------------
 
@@ -1475,8 +1475,8 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0)
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1)
 {
   EsVariant::Array params = {
-		p0,
-		p1
+    p0,
+    p1
   };
 
   return callGlobalMethod(
@@ -1489,8 +1489,8 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2)
 {
   EsVariant::Array params = {
-		p0,
-		p1,
+    p0,
+    p1,
     p2
   };
 
@@ -1504,8 +1504,8 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3)
 {
   EsVariant::Array params = {
-		p0,
-		p1,
+    p0,
+    p1,
     p2,
     p3
   };
@@ -1520,8 +1520,8 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4)
 {
   EsVariant::Array params = {
-		p0,
-		p1,
+    p0,
+    p1,
     p2,
     p3,
     p4
@@ -1537,8 +1537,8 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4, const EsVariant& p5)
 {
   EsVariant::Array params = {
-		p0,
-		p1,
+    p0,
+    p1,
     p2,
     p3,
     p4,
@@ -1555,8 +1555,8 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4, const EsVariant& p5, const EsVariant& p6)
 {
   EsVariant::Array params = {
-		p0,
-		p1,
+    p0,
+    p1,
     p2,
     p3,
     p4,
@@ -1583,7 +1583,7 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name)
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0)
 {
   EsVariant::Array ps = {
-		p0
+    p0
   };
 
   return objectCreateWithParameters(
@@ -1596,8 +1596,8 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1)
 {
   EsVariant::Array ps = {
-		p0,
-		p1
+    p0,
+    p1
   };
 
   return objectCreateWithParameters(
@@ -1610,8 +1610,8 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2)
 {
   EsVariant::Array ps = {
-		p0,
-		p1,
+    p0,
+    p1,
     p2
   };
 
@@ -1625,8 +1625,8 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3)
 {
   EsVariant::Array ps = {
-		p0,
-		p1,
+    p0,
+    p1,
     p2,
     p3
   };
@@ -1641,8 +1641,8 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4)
 {
   EsVariant::Array ps = {
-		p0,
-		p1,
+    p0,
+    p1,
     p2,
     p3,
     p4
@@ -1658,8 +1658,8 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4, const EsVariant& p5)
 {
   EsVariant::Array ps = {
-		p0,
-		p1,
+    p0,
+    p1,
     p2,
     p3,
     p4,

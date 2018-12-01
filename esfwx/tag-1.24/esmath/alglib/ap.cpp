@@ -2724,15 +2724,15 @@ void ae_acquire_lock(ae_lock *lock)
 #if AE_OS==AE_WINDOWS
     for(;;)
     {
-		if( InterlockedCompareExchange((LONG volatile *)lock->p_lock, 1, 0)==0 )
-		    return;
+    if( InterlockedCompareExchange((LONG volatile *)lock->p_lock, 1, 0)==0 )
+        return;
         ae_spin_wait(AE_LOCK_CYCLES);
     }
 #elif AE_OS==AE_POSIX
     for(;;)
     {
-		if(  pthread_mutex_trylock(&lock->mutex)==0 )
-		    return;
+    if(  pthread_mutex_trylock(&lock->mutex)==0 )
+        return;
         ae_spin_wait(AE_LOCK_CYCLES);
     }
    ;

@@ -13,26 +13,26 @@
 
 // reflection class info declaration
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsChannelIoBluetoothLE, _i("Bluetooth LE byte streaming service channel"))
-	// Reflected property infos declarations
-	//
-	ES_DECL_PROP_INFO_PERSISTENT(EsChannelIoBluetoothLE, deviceAddress, EsString, _i("Bluetooth LE device address"), EsBluetooth::anyAddr(), NO_PROPERTY_DESCR)
+  // Reflected property infos declarations
+  //
+  ES_DECL_PROP_INFO_PERSISTENT(EsChannelIoBluetoothLE, deviceAddress, EsString, _i("Bluetooth LE device address"), EsBluetooth::anyAddr(), NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_PERSISTENT(EsChannelIoBluetoothLE, subscribeToNotifications, bool, _i("Subscribe to pending notifications"), false, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(EsChannelIoBluetoothLE, deviceName, EsString, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_WO(EsChannelIoBluetoothLE, monitor, EsBaseIntfPtr, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_WO(EsChannelIoBluetoothLE, breaker, EsBaseIntfPtr, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	// EsChannelIoIntf
-	//
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, open, bool_Call, _i("Open Bluetooth LE channel"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, close, void_Call, _i("Close Bluetooth LE channel"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, isOpen, bool_CallConst, _i("Return true if Bluetooth LE channel is open"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, bytesPut, ulong_Call_cr_EsBinBuffer_ulong, _i("Send bytes over a channel"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, bytesGet, EsBinBuffer_Call_ulong_ulong, _i("Receive bytes from a channel"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, txTimeEstimateGet, ulong_CallConst_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, errorGet, long_CallConst, _i("Get channel-specific error code"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, errorStringGet, EsString_CallConst, _i("Get channel-specific error string"))
-	// Reflected class methods
-	//
-	ES_DECL_REFLECTED_CTOR_INFO(EsChannelIoBluetoothLE, EsBaseIntfPtr_ClassCall, _i("EsChannelIoBluetoothLE constructor"))
+  ES_DECL_PROP_INFO_RO(EsChannelIoBluetoothLE, deviceName, EsString, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_WO(EsChannelIoBluetoothLE, monitor, EsBaseIntfPtr, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_WO(EsChannelIoBluetoothLE, breaker, EsBaseIntfPtr, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  // EsChannelIoIntf
+  //
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, open, bool_Call, _i("Open Bluetooth LE channel"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, close, void_Call, _i("Close Bluetooth LE channel"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, isOpen, bool_CallConst, _i("Return true if Bluetooth LE channel is open"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, bytesPut, ulong_Call_cr_EsBinBuffer_ulong, _i("Send bytes over a channel"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, bytesGet, EsBinBuffer_Call_ulong_ulong, _i("Receive bytes from a channel"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, txTimeEstimateGet, ulong_CallConst_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, errorGet, long_CallConst, _i("Get channel-specific error code"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoBluetoothLE, EsChannelIoIntf, errorStringGet, EsString_CallConst, _i("Get channel-specific error string"))
+  // Reflected class methods
+  //
+  ES_DECL_REFLECTED_CTOR_INFO(EsChannelIoBluetoothLE, EsBaseIntfPtr_ClassCall, _i("EsChannelIoBluetoothLE constructor"))
   // Class attributes
   //
   ES_DECL_REFLECTED_CLASS_ATTR(p2p)
@@ -46,23 +46,23 @@ m_inTxBatch(false)
 {
   EsBluetoothLE::initialize();
 
-	// initialize properties to their default values
-	ES_REFLECTED_PROPERTIES_RESET;
+  // initialize properties to their default values
+  ES_REFLECTED_PROPERTIES_RESET;
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsChannelIoBluetoothLE::NEW()
 {
-	std::unique_ptr<EsChannelIoBluetoothLE> chnl( new EsChannelIoBluetoothLE() );
-	ES_ASSERT(chnl.get());
- 	chnl->m_dynamic = true;
-	return chnl.release()->asBaseIntfPtrDirect();
+  std::unique_ptr<EsChannelIoBluetoothLE> chnl( new EsChannelIoBluetoothLE() );
+  ES_ASSERT(chnl.get());
+   chnl->m_dynamic = true;
+  return chnl.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsChannelIoBluetoothLE::~EsChannelIoBluetoothLE()
 {
-	close();
+  close();
   EsBluetoothLE::uninitialize();
 }
 //---------------------------------------------------------------------------
@@ -287,7 +287,7 @@ void EsChannelIoBluetoothLE::internalConnect()
     if( EsBluetoothLEresult::gattSuccess == m_result )
     {
       if(m_monitor)
-  		  ES_DUAL_CALL1_NR(m_monitor, EsChannelIoMonitorIntf, channelOpened, internalIdGet());
+        ES_DUAL_CALL1_NR(m_monitor, EsChannelIoMonitorIntf, channelOpened, internalIdGet());
 
       EsBluetoothLEdescriptor::Ptr dcr = m_chxPendingBytes->descriptorFind(
         EsBluetoothLEdescriptor::uuidGetByKind(
@@ -333,7 +333,7 @@ void EsChannelIoBluetoothLE::close()
 
 EsString EsChannelIoBluetoothLE::internalIdGet() const
 {
-	return EsString::format(
+  return EsString::format(
     esT("%s-%s"), 
     typeNameGet(), 
     m_addr
@@ -350,16 +350,16 @@ EsString EsChannelIoBluetoothLE::idGet() const
 
 bool EsChannelIoBluetoothLE::internalIsBreaking() const
 {
-	EsVariant result = false;
-	ES_DUAL_CALL0(result, m_breaker, EsBreakIntf, isBreaking);
-	return result.asBool();
+  EsVariant result = false;
+  ES_DUAL_CALL0(result, m_breaker, EsBreakIntf, isBreaking);
+  return result.asBool();
 }
 //---------------------------------------------------------------------------
 
 void EsChannelIoBluetoothLE::checkLogLastError() const
 {
-	if( EsBluetoothLEresult::gattSuccess != m_result )
-		ES_DUAL_CALL2_NR( m_monitor, EsChannelIoMonitorIntf, channelError, internalIdGet(), EsBluetoothLE::resultCodeStringGet(m_result) );
+  if( EsBluetoothLEresult::gattSuccess != m_result )
+    ES_DUAL_CALL2_NR( m_monitor, EsChannelIoMonitorIntf, channelError, internalIdGet(), EsBluetoothLE::resultCodeStringGet(m_result) );
 }
 //---------------------------------------------------------------------------
 
@@ -505,7 +505,7 @@ esU32 EsChannelIoBluetoothLE::txCacheSend()
         toWrite -= len;
         pos += len;
 
-     		ES_DUAL_CALL2_NR(m_monitor, EsChannelIoMonitorIntf, channelBytesSent, internalIdGet(), bb);
+         ES_DUAL_CALL2_NR(m_monitor, EsChannelIoMonitorIntf, channelBytesSent, internalIdGet(), bb);
         ullong ms = span.get_allMilliseconds();
         if (ms > std::numeric_limits<esU32>::max())
           ms = std::numeric_limits<esU32>::max();
@@ -641,168 +641,168 @@ void EsChannelIoBluetoothLE::txBatchEnd(bool ok)
 //
 esBL EsChannelIoBluetoothLE::cLock(EseChannelIo* p, esU32 tmo)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
-		EsMutex::Result result = chnl->m_mx.lock(tmo);
-		ES_ASSERT( EsMutex::resultDeadlock != result );
-		return EsMutex::resultOk == result;
-	}
-	catch(...)
-	{}
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
+    EsMutex::Result result = chnl->m_mx.lock(tmo);
+    ES_ASSERT( EsMutex::resultDeadlock != result );
+    return EsMutex::resultOk == result;
+  }
+  catch(...)
+  {}
 
-	return FALSE;
+  return FALSE;
 }
 
 void EsChannelIoBluetoothLE::cUnlock(EseChannelIo* p)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
-		EsMutex::Result result = chnl->m_mx.unlock();
-		ES_ASSERT(EsMutex::resultOk == result);
-	}
-	catch(...)
-	{}
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
+    EsMutex::Result result = chnl->m_mx.unlock();
+    ES_ASSERT(EsMutex::resultOk == result);
+  }
+  catch(...)
+  {}
 }
 
 esBL EsChannelIoBluetoothLE::cIsConnected(EseChannelIo* p)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	return chnl->isOpen();
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  return chnl->isOpen();
 }
 
 esBL EsChannelIoBluetoothLE::cConnect(EseChannelIo* p)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
     chnl->internalConnect();
-		return chnl->internalIsConnected();
-	}
-	catch(...)
-	{}
+    return chnl->internalIsConnected();
+  }
+  catch(...)
+  {}
 
-	return FALSE;
+  return FALSE;
 }
 
 void EsChannelIoBluetoothLE::cDisconnect(EseChannelIo* p)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
-		chnl->uninit();
-	}
-	catch(...)
-	{}
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
+    chnl->uninit();
+  }
+  catch(...)
+  {}
 }
 
 esU32 EsChannelIoBluetoothLE::cPutBytes(EseChannelIo* p, const esU8* data, esU32 count)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
-		return chnl->internalBytesPut(data, count, 0);
-	}
-	catch(...)
-	{}
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
+    return chnl->internalBytesPut(data, count, 0);
+  }
+  catch(...)
+  {}
 
-	return 0;
+  return 0;
 }
 
 esU32 EsChannelIoBluetoothLE::cGetBytes(EseChannelIo* p, esU8* data, esU32 count, esU32 timeout)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
-		return chnl->internalBytesGet(data, count, timeout);
-	}
-	catch(...)
-	{}
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
+    return chnl->internalBytesGet(data, count, timeout);
+  }
+  catch(...)
+  {}
 
-	return 0;
+  return 0;
 }
 
 esBL EsChannelIoBluetoothLE::cTxBatchBegin(EseChannelIo* p)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
-		return chnl->txBatchBegin() ? TRUE : FALSE;
-	}
-	catch(...)
-	{}
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
+    return chnl->txBatchBegin() ? TRUE : FALSE;
+  }
+  catch(...)
+  {}
 
   return FALSE;
 }
 
 void EsChannelIoBluetoothLE::cTxBatchEnd(EseChannelIo* p, esBL ok)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
-		chnl->txBatchEnd( TRUE == ok );
-	}
-	catch(...)
-	{}
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
+    chnl->txBatchEnd( TRUE == ok );
+  }
+  catch(...)
+  {}
 }
 
 void EsChannelIoBluetoothLE::cResetIo(EseChannelIo* p)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
-		chnl->internalReset();
-	}
-	catch(...)
-	{}
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
+    chnl->internalReset();
+  }
+  catch(...)
+  {}
 }
 
 esU32 EsChannelIoBluetoothLE::cSendEstimateGet(EseChannelIo* p, esU32 len)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
-		return chnl->txTimeEstimateGet(len);
-	}
-	catch(...)
-	{}
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
+    return chnl->txTimeEstimateGet(len);
+  }
+  catch(...)
+  {}
 
   return 0;
 }
 
 int EsChannelIoBluetoothLE::cGetError(EseChannelIo* p)
 {
-	EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
-	try
-	{
-		return static_cast<int>(chnl->errorGet());
-	}
-	catch(...)
-	{}
+  EsChannelIoBluetoothLE* chnl = (EsChannelIoBluetoothLE*)p->m_bus;
+  try
+  {
+    return static_cast<int>(chnl->errorGet());
+  }
+  catch(...)
+  {}
 
-	return 0;
+  return 0;
 }
 
 // initialize C EseChannelIo from existing EsChannelIoIntf
 ES_IMPL_INTF_METHOD(void, EsChannelIoBluetoothLE::commChannelInit)(EseChannelIo* chnl)
 {
-	chnlInit(chnl, this);
-	chnl->m_type = CHNL_BLUETOOTH;
-	chnl->lock = EsChannelIoBluetoothLE::cLock;
-	chnl->unlock = EsChannelIoBluetoothLE::cUnlock;
-	chnl->isConnected = EsChannelIoBluetoothLE::cIsConnected;
-	chnl->connect = EsChannelIoBluetoothLE::cConnect;
-	chnl->disconnect = EsChannelIoBluetoothLE::cDisconnect;
-	// data io
-	chnl->bytesPut = EsChannelIoBluetoothLE::cPutBytes;
-	chnl->bytesGet = EsChannelIoBluetoothLE::cGetBytes;
-	chnl->resetIo = EsChannelIoBluetoothLE::cResetIo;
+  chnlInit(chnl, this);
+  chnl->m_type = CHNL_BLUETOOTH;
+  chnl->lock = EsChannelIoBluetoothLE::cLock;
+  chnl->unlock = EsChannelIoBluetoothLE::cUnlock;
+  chnl->isConnected = EsChannelIoBluetoothLE::cIsConnected;
+  chnl->connect = EsChannelIoBluetoothLE::cConnect;
+  chnl->disconnect = EsChannelIoBluetoothLE::cDisconnect;
+  // data io
+  chnl->bytesPut = EsChannelIoBluetoothLE::cPutBytes;
+  chnl->bytesGet = EsChannelIoBluetoothLE::cGetBytes;
+  chnl->resetIo = EsChannelIoBluetoothLE::cResetIo;
   // TX batch
   chnl->txBatchBegin = EsChannelIoBluetoothLE::cTxBatchBegin;
   chnl->txBatchEnd = EsChannelIoBluetoothLE::cTxBatchEnd;
-	// misc
-	chnl->errorGet = EsChannelIoBluetoothLE::cGetError;
+  // misc
+  chnl->errorGet = EsChannelIoBluetoothLE::cGetError;
   chnl->sendTimeEstimateGet = EsChannelIoBluetoothLE::cSendEstimateGet;
 }
 #endif // ES_COMM_USE_CHANNEL_BLUETOOTH_LE

@@ -10,18 +10,18 @@ public:
   typedef std::match_results<EsString::const_iterator> RegexMatchT;
 
 public:
-	EsRegExImplStd() :
+  EsRegExImplStd() :
   m_compiled(false),
   m_matched(false)
-	{}
+  {}
 
-	virtual ~EsRegExImplStd()
-	{}
+  virtual ~EsRegExImplStd()
+  {}
 
-	virtual inline bool compile(const EsString& pattern, ulong flags) ES_OVERRIDE
-	{
-		try
-		{
+  virtual inline bool compile(const EsString& pattern, ulong flags) ES_OVERRIDE
+  {
+    try
+    {
       m_compiled = false;
 
       m_re.imbue(
@@ -36,9 +36,9 @@ public:
 
       m_matched = false;
       m_compiled = true;
-		}
-		catch(std::exception& ex)
-		{
+    }
+    catch(std::exception& ex)
+    {
       EsString msg( ex.what() );
       EsException::Throw(
         0,
@@ -46,10 +46,10 @@ public:
         EsException::facilityEsCommon,
         msg.c_str()
       );
-		}
+    }
 
-		return m_compiled;
-	}
+    return m_compiled;
+  }
 
   void internalMatch(ulong flags) const
   {
@@ -67,8 +67,8 @@ public:
     }
   }
 
-	virtual inline bool matchGet(ulong& start, ulong& len, ulong subExprIdx) const ES_OVERRIDE
-	{
+  virtual inline bool matchGet(ulong& start, ulong& len, ulong subExprIdx) const ES_OVERRIDE
+  {
     if( m_matched && subExprIdx < static_cast<ulong>(m_matches.size()) )
     {
       len = m_matches.length(subExprIdx);
@@ -78,42 +78,42 @@ public:
     }
 
     return false;
-	}
+  }
 
-	virtual inline ulong matchCountGet() const ES_OVERRIDE
-	{
+  virtual inline ulong matchCountGet() const ES_OVERRIDE
+  {
     if( m_matched )
       return m_matches.size();
 
-		return 0;
-	}
+    return 0;
+  }
 
-	virtual inline bool isOk() const ES_OVERRIDE
-	{
-		return m_compiled;
-	}
+  virtual inline bool isOk() const ES_OVERRIDE
+  {
+    return m_compiled;
+  }
 
-	virtual inline bool matches(const EsString& text, ulong offs, ulong flags) const ES_OVERRIDE
-	{
+  virtual inline bool matches(const EsString& text, ulong offs, ulong flags) const ES_OVERRIDE
+  {
     ES_ASSERT(m_compiled);
 
     m_matched = false;
-		if( offs < text.size() )
-		{
+    if( offs < text.size() )
+    {
       m_beg = text.begin()+offs;
       m_end = text.end();
       internalMatch(flags);
-		}
+    }
 
-		return m_matched;
-	}
+    return m_matched;
+  }
 
-	virtual inline EsString replace(const EsString& text, ulong offs, const EsString& replacement, ulong flags) const ES_OVERRIDE
-	{
+  virtual inline EsString replace(const EsString& text, ulong offs, const EsString& replacement, ulong flags) const ES_OVERRIDE
+  {
     ES_ASSERT(m_compiled);
 
-		if( offs < text.size() )
-		{
+    if( offs < text.size() )
+    {
       m_beg = text.begin()+offs;
       m_end = text.end();
 
@@ -128,10 +128,10 @@ public:
       );
 
       return result;
-		}
+    }
 
-		return EsString::null();
-	}
+    return EsString::null();
+  }
 
   // option translation helper
   static inline RegExT::flag_type flagsToCompileOptions(ulong flags)
@@ -191,7 +191,7 @@ public:
   }
 
 protected:
-	RegExT m_re;
+  RegExT m_re;
   mutable RegexMatchT m_matches;
   mutable bool m_compiled;
   mutable bool m_matched;

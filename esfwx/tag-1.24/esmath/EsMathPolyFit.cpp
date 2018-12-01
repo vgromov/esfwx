@@ -27,14 +27,14 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsMathPolyFit, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathPolyFit, reset, void_Call, NO_METHOD_DESCR)
   // Properties
   ES_DECL_PROP_INFO_RO(             EsMathPolyFit, isOk, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathPolyFit, minX, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathPolyFit, minX, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathPolyFit, maxX, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathPolyFit, rangeX, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathPolyFit, info, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathPolyFit, rmsError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathPolyFit, avgError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathPolyFit, avgRelativeError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathPolyFit, maxError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathPolyFit, info, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathPolyFit, rmsError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathPolyFit, avgError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathPolyFit, avgRelativeError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathPolyFit, maxError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathPolyFit, coefficients, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
@@ -43,81 +43,81 @@ ES_DECL_CLASS_INFO_END
 class EsMathPolyFitSolver
 {
 public:
-	EsMathPolyFitSolver()
-	{}
-	
-	void build(const EsMathArrayReal& x, const EsMathArrayReal& y,
-		size_t power, const EsMathFitConstraints& constraints)
-	{
-		size_t cnt = x.get_count();
+  EsMathPolyFitSolver()
+  {}
+  
+  void build(const EsMathArrayReal& x, const EsMathArrayReal& y,
+    size_t power, const EsMathFitConstraints& constraints)
+  {
+    size_t cnt = x.get_count();
 
-		size_t constraintCnt = constraints.size();
-		if( constraintCnt )
-		{
-			alglib::real_1d_array w;
-
-      ES_ALGLIB_TRY
-
-			w.setlength(cnt);
-			for( size_t idx = 0; idx < cnt; ++idx)
-				w[idx] = 1.;
-
-			alglib::real_1d_array xc;
-			xc.setlength(constraintCnt);
-			alglib::real_1d_array yc;
-			yc.setlength(constraintCnt);
-			alglib::integer_1d_array dc;
-			dc.setlength(constraintCnt);
-			for(size_t idx = 0; idx < constraintCnt; ++idx)
-			{
-				const EsMathFitConstraint& constraint = constraints[idx];
-				xc[idx] = constraint.xGet();
-				yc[idx] = constraint.constraintGet();
-				dc[idx] = static_cast<ulong>(constraint.kindGet());
-			}
-			// build cubic polynom in baricentric representation
-			alglib::polynomialfitwc(alglibCastFromArray(x), alglibCastFromArray(y),
-				w, xc, yc, dc, power+1, m_info, m_interpolant, m_report);
-
-      ES_ALGLIB_CATCH
-		}
-		else
+    size_t constraintCnt = constraints.size();
+    if( constraintCnt )
     {
+      alglib::real_1d_array w;
+
       ES_ALGLIB_TRY
 
-			alglib::polynomialfit(alglibCastFromArray(x), alglibCastFromArray(y),
-				power+1, m_info, m_interpolant, m_report);
+      w.setlength(cnt);
+      for( size_t idx = 0; idx < cnt; ++idx)
+        w[idx] = 1.;
+
+      alglib::real_1d_array xc;
+      xc.setlength(constraintCnt);
+      alglib::real_1d_array yc;
+      yc.setlength(constraintCnt);
+      alglib::integer_1d_array dc;
+      dc.setlength(constraintCnt);
+      for(size_t idx = 0; idx < constraintCnt; ++idx)
+      {
+        const EsMathFitConstraint& constraint = constraints[idx];
+        xc[idx] = constraint.xGet();
+        yc[idx] = constraint.constraintGet();
+        dc[idx] = static_cast<ulong>(constraint.kindGet());
+      }
+      // build cubic polynom in baricentric representation
+      alglib::polynomialfitwc(alglibCastFromArray(x), alglibCastFromArray(y),
+        w, xc, yc, dc, power+1, m_info, m_interpolant, m_report);
 
       ES_ALGLIB_CATCH
     }
-	}
+    else
+    {
+      ES_ALGLIB_TRY
 
-	void polyGet(EsMathArrayReal& poly) const
-	{
+      alglib::polynomialfit(alglibCastFromArray(x), alglibCastFromArray(y),
+        power+1, m_info, m_interpolant, m_report);
+
+      ES_ALGLIB_CATCH
+    }
+  }
+
+  void polyGet(EsMathArrayReal& poly) const
+  {
     ES_ALGLIB_TRY
 
-		// convert baricentric to power form
-		alglib::polynomialbar2pow(m_interpolant, alglibCastFromArray(poly));
+    // convert baricentric to power form
+    alglib::polynomialbar2pow(m_interpolant, alglibCastFromArray(poly));
 
     ES_ALGLIB_CATCH
-	}
+  }
 
-	void fittingReportGet(double& rmsErr, double& avgErr, double& avgRelErr, double& maxErr) const
-	{
-		rmsErr = m_report.rmserror; 
-		avgErr = m_report.avgerror;
-		avgRelErr = m_report.avgrelerror;
-		maxErr = m_report.maxerror;
-	}
+  void fittingReportGet(double& rmsErr, double& avgErr, double& avgRelErr, double& maxErr) const
+  {
+    rmsErr = m_report.rmserror; 
+    avgErr = m_report.avgerror;
+    avgRelErr = m_report.avgrelerror;
+    maxErr = m_report.maxerror;
+  }
 
-	alglib::ae_int_t fittingInfoGet() const
-	{
-		return m_info;
-	}
+  alglib::ae_int_t fittingInfoGet() const
+  {
+    return m_info;
+  }
 
 protected:
-	alglib::barycentricinterpolant m_interpolant;
-	alglib::ae_int_t m_info;
+  alglib::barycentricinterpolant m_interpolant;
+  alglib::ae_int_t m_info;
   alglib::polynomialfitreport m_report;
 };
 //---------------------------------------------------------------------------
@@ -134,14 +134,14 @@ m_avgError(0),
 m_avgRelativeError(0),
 m_maxError(0)
 {
-	m_solver = new EsMathPolyFitSolver;
-	ES_ASSERT(m_solver);
+  m_solver = new EsMathPolyFitSolver;
+  ES_ASSERT(m_solver);
 }
 //---------------------------------------------------------------------------
 
 EsMathPolyFit::~EsMathPolyFit()
 {
-	ES_DELETE(m_solver);
+  ES_DELETE(m_solver);
 }
 //---------------------------------------------------------------------------
 
@@ -149,42 +149,42 @@ EsMathPolyFit::~EsMathPolyFit()
 //
 void EsMathPolyFit::resetFittingErrors()
 {
-	m_rmsError = m_avgError = m_avgRelativeError = m_maxError = 0;
+  m_rmsError = m_avgError = m_avgRelativeError = m_maxError = 0;
 }
 //---------------------------------------------------------------------------
 
 void EsMathPolyFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y, ulong power,
-					 const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
+           const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
 {
-	reset();
+  reset();
 
-	ES_ASSERT(m_solver);
-	if(x.countGet() != y.countGet())
-		EsException::Throw(esT("x and y data arrays must be equally sized"));
-	if(x.countGet() < 2)
-		EsException::Throw(esT("Data array size is too small, must be at least 2"));
+  ES_ASSERT(m_solver);
+  if(x.countGet() != y.countGet())
+    EsException::Throw(esT("x and y data arrays must be equally sized"));
+  if(x.countGet() < 2)
+    EsException::Throw(esT("Data array size is too small, must be at least 2"));
 
-	EsNumericCheck::checkRangeInteger(1, 8, power, esT("Polynomial power"));
+  EsNumericCheck::checkRangeInteger(1, 8, power, esT("Polynomial power"));
 
-	m_xmin = x.get_min();
-	m_xmax = x.get_max();
-	ES_ASSERT(m_xmin != m_xmax);
-	m_solver->build(x, y, power, constraints);
-	m_solver->polyGet(m_poly);
-	m_solver->fittingReportGet(m_rmsError, m_avgError, m_avgRelativeError, m_maxError);
-	m_info = alglibInfoToFitInfo(m_solver->fittingInfoGet());
+  m_xmin = x.get_min();
+  m_xmax = x.get_max();
+  ES_ASSERT(m_xmin != m_xmax);
+  m_solver->build(x, y, power, constraints);
+  m_solver->polyGet(m_poly);
+  m_solver->fittingReportGet(m_rmsError, m_avgError, m_avgRelativeError, m_maxError);
+  m_info = alglibInfoToFitInfo(m_solver->fittingInfoGet());
 }
 //---------------------------------------------------------------------------
 
 // x taken from y's indeces
 void EsMathPolyFit::build(const EsMathArrayReal& y, ulong power,
-					 const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
+           const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
 {
-	EsMathArrayReal x( y.countGet() );
-	for(ulong idx = 0; idx < x.countGet(); ++idx)
-		x.itemSet(idx, idx);
+  EsMathArrayReal x( y.countGet() );
+  for(ulong idx = 0; idx < x.countGet(); ++idx)
+    x.itemSet(idx, idx);
 
-	build(
+  build(
     x, 
     y, 
     power, 
@@ -196,17 +196,17 @@ void EsMathPolyFit::build(const EsMathArrayReal& y, ulong power,
 // calculate polynom value at specified point
 double EsMathPolyFit::calculate(double x) const
 {
-	ES_ASSERT(get_isOk());
+  ES_ASSERT(get_isOk());
 
-	double result = m_poly.itemGet(0);
-	double xpow = x;
-	for( ulong idx = 1; idx < m_poly.countGet(); ++idx)
-	{
-		result += xpow*m_poly.itemGet(idx);
-		xpow *= x;
-	}
+  double result = m_poly.itemGet(0);
+  double xpow = x;
+  for( ulong idx = 1; idx < m_poly.countGet(); ++idx)
+  {
+    result += xpow*m_poly.itemGet(idx);
+    xpow *= x;
+  }
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
@@ -272,17 +272,17 @@ void EsMathPolyFit::calculateVectorInplace(cr_EsVariant in) const
 // reset fitting polynom to unbuilt state
 void EsMathPolyFit::reset()
 {
-	m_info = EsMathFitInfo::None;
-	resetFittingErrors();
-	m_poly.clear();
+  m_info = EsMathFitInfo::None;
+  resetFittingErrors();
+  m_poly.clear();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathPolyFit::NEW()
 {
-	std::unique_ptr<EsMathPolyFit> f( new EsMathPolyFit );
-	f->m_dynamic = true;
-	return f.release()->asBaseIntfPtrDirect();
+  std::unique_ptr<EsMathPolyFit> f( new EsMathPolyFit );
+  f->m_dynamic = true;
+  return f.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -381,8 +381,8 @@ void EsMathPolyFit::buildConstrained(cr_EsVariant vy, ulong power, cr_EsVariant 
 bool EsMathPolyFit::get_isOk() const
 {
   return nullptr != m_solver &&
-			m_poly.get_count() > 1 &&
-			EsMathFitInfo::Success == m_info;
+      m_poly.get_count() > 1 &&
+      EsMathFitInfo::Success == m_info;
 }
 //---------------------------------------------------------------------------
 

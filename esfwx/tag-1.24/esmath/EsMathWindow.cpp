@@ -13,9 +13,9 @@
 //---------------------------------------------------------------------------
 
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsMathWindow, NO_CLASS_DESCR)
-	// Services
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathWindow, generate, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathWindow, generateNormalized, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
+  // Services
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathWindow, generate, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathWindow, generateNormalized, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
@@ -75,17 +75,17 @@ EsVariant EsMathWindow::generateNormalized(cr_EsVariant cnt) const
 //---------------------------------------------------------------------------
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN( EsMathWindowBartlettHann, EsMathWindow, _i("Modified Bartlett-Hann window") )
-	ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowBartlettHann, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowBartlettHann, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathWindowBartlettHann::NEW()
 {
-	std::unique_ptr<EsMathWindowBartlettHann> p( new EsMathWindowBartlettHann );
-	ES_ASSERT(p);
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathWindowBartlettHann> p( new EsMathWindowBartlettHann );
+  ES_ASSERT(p);
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -118,17 +118,17 @@ void EsMathWindowBartlettHann::doGenerate() const
 
 //---------------------------------------------------------------------------
 ES_DECL_CLASS_INFO_DERIVED_BEGIN( EsMathWindowBlackman, EsMathWindow, _i("Blackman window") )
-	ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowBlackman, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowBlackman, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathWindowBlackman::NEW()
 {
-	std::unique_ptr<EsMathWindowBlackman> p( new EsMathWindowBlackman );
-	ES_ASSERT(p);
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathWindowBlackman> p( new EsMathWindowBlackman );
+  ES_ASSERT(p);
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -176,17 +176,17 @@ void EsMathWindowBlackman::doGenerate() const
 
 //---------------------------------------------------------------------------
 ES_DECL_CLASS_INFO_DERIVED_BEGIN( EsMathWindowBlackmanHarris, EsMathWindow, _i("Minimum 4-term Blackman-Harris window") )
-	ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowBlackmanHarris, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowBlackmanHarris, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathWindowBlackmanHarris::NEW()
 {
-	std::unique_ptr<EsMathWindowBlackmanHarris> p( new EsMathWindowBlackmanHarris );
-	ES_ASSERT(p);
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathWindowBlackmanHarris> p( new EsMathWindowBlackmanHarris );
+  ES_ASSERT(p);
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -229,17 +229,17 @@ void EsMathWindowBlackmanHarris::doGenerate() const
 
 //---------------------------------------------------------------------------
 ES_DECL_CLASS_INFO_DERIVED_BEGIN( EsMathWindowFlatTop, EsMathWindow, _i("Flat-Top window") )
-	ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowFlatTop, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowFlatTop, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathWindowFlatTop::NEW()
 {
-	std::unique_ptr<EsMathWindowFlatTop> p( new EsMathWindowFlatTop );
-	ES_ASSERT(p);
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathWindowFlatTop> p( new EsMathWindowFlatTop );
+  ES_ASSERT(p);
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -287,7 +287,7 @@ void EsMathWindowFlatTop::doGenerate() const
 //---------------------------------------------------------------------------
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN( EsMathWindowGaussian, EsMathWindow, _i("Gaussian window") )
-	ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowGaussian, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowGaussian, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
   ES_DECL_PROP_INFO(          EsMathWindowGaussian, alpha, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
@@ -299,11 +299,11 @@ m_alpha(0)
 
 EsBaseIntfPtr EsMathWindowGaussian::NEW()
 {
-	std::unique_ptr<EsMathWindowGaussian> p( new EsMathWindowGaussian );
-	ES_ASSERT(p);
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathWindowGaussian> p( new EsMathWindowGaussian );
+  ES_ASSERT(p);
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -362,17 +362,17 @@ void EsMathWindowGaussian::doGenerate() const
 //---------------------------------------------------------------------------
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN( EsMathWindowHamming, EsMathWindow, _i("Hamming window") )
-	ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowHamming, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowHamming, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathWindowHamming::NEW()
 {
-	std::unique_ptr<EsMathWindowHamming> p( new EsMathWindowHamming );
-	ES_ASSERT(p);
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathWindowHamming> p( new EsMathWindowHamming );
+  ES_ASSERT(p);
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -403,17 +403,17 @@ void EsMathWindowHamming::doGenerate() const
 //---------------------------------------------------------------------------
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN( EsMathWindowHann, EsMathWindow, _i("Hann window") )
-	ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowHann, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowHann, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathWindowHann::NEW()
 {
-	std::unique_ptr<EsMathWindowHann> p( new EsMathWindowHann );
-	ES_ASSERT(p);
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathWindowHann> p( new EsMathWindowHann );
+  ES_ASSERT(p);
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -446,17 +446,17 @@ void EsMathWindowHann::doGenerate() const
 //---------------------------------------------------------------------------
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN( EsMathWindowNuttall, EsMathWindow, _i("Nuttall window") )
-	ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowNuttall, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowNuttall, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathWindowNuttall::NEW()
 {
-	std::unique_ptr<EsMathWindowNuttall> p( new EsMathWindowNuttall );
-	ES_ASSERT(p);
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathWindowNuttall> p( new EsMathWindowNuttall );
+  ES_ASSERT(p);
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 

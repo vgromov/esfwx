@@ -75,34 +75,34 @@ EsBaseIntf::Ptr EsFtdiDeviceMpsseSpi::create(EsFtdiDriver& owner, const EsFtdiDr
 
 bool EsFtdiDeviceMpsseSpi::spiCsLineSelect()
 {
-	/* Ensure new CS lines is set as OUT */
-	m_currentPinState |= ((1<<((m_currentPinState & MPSSE::SPI_CONFIG_OPTION_CS_MASK)>>2))<<3);
+  /* Ensure new CS lines is set as OUT */
+  m_currentPinState |= ((1<<((m_currentPinState & MPSSE::SPI_CONFIG_OPTION_CS_MASK)>>2))<<3);
 
-	/*Set initial state of clock line*/
-	esU8 mode = static_cast<esU8>(m_optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
-	switch(mode)
-	{
-		case 0:
-		case 1:
-			/* clock idle low */
-			m_currentPinState &= 0xFEFF;
-			break;
+  /*Set initial state of clock line*/
+  esU8 mode = static_cast<esU8>(m_optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
+  switch(mode)
+  {
+    case 0:
+    case 1:
+      /* clock idle low */
+      m_currentPinState &= 0xFEFF;
+      break;
 
-		case 2:
-		case 3:
-			/* clock idle high */
-			m_currentPinState |= 0x0100;
-			break;
-		default:
-			ES_FAIL; //< Should never be here
-	}
+    case 2:
+    case 3:
+      /* clock idle high */
+      m_currentPinState |= 0x0100;
+      break;
+    default:
+      ES_FAIL; //< Should never be here
+  }
 
   mpsseBufInit();
 
   esU32 noOfBytes = 0;
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-	m_tmpBuff[noOfBytes++] = static_cast<esU8>((m_currentPinState & 0xFF00)>>8);/*Val*/
-	m_tmpBuff[noOfBytes++] = static_cast<esU8>(m_currentPinState & 0x00FF); /*Dir*/
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+  m_tmpBuff[noOfBytes++] = static_cast<esU8>((m_currentPinState & 0xFF00)>>8);/*Val*/
+  m_tmpBuff[noOfBytes++] = static_cast<esU8>(m_currentPinState & 0x00FF); /*Dir*/
 
   esU32 noOfBytesTransferred = 0;
   if( !ftWrite(
@@ -133,13 +133,13 @@ bool EsFtdiDeviceMpsseSpi::spiInit()
   // Set initial direction of line SCLK  as OUT
   //
   esU32 optPin = m_optPin;
-	optPin |= 0x00000001;/*Note: Direction is out if bit is 1!!! */
-	/* Set initial direction of  MOSI line as OUT */
-	optPin |= 0x00000002;
-	/* Set initial direction of MISO line as IN */
-	optPin &= 0xFFFFFFFB;
-	/* Set initial direction of CS line as OUT */
-	optPin |= ((1<<((m_optSPI & MPSSE::SPI_CONFIG_OPTION_CS_MASK)>>2))<<3);
+  optPin |= 0x00000001;/*Note: Direction is out if bit is 1!!! */
+  /* Set initial direction of  MOSI line as OUT */
+  optPin |= 0x00000002;
+  /* Set initial direction of MISO line as IN */
+  optPin &= 0xFFFFFFFB;
+  /* Set initial direction of CS line as OUT */
+  optPin |= ((1<<((m_optSPI & MPSSE::SPI_CONFIG_OPTION_CS_MASK)>>2))<<3);
 
   m_currentPinState = static_cast<esU16>(optPin) & 0xFFFF;
   m_finalPinState = static_cast<esU16>(optPin >> 16);
@@ -161,23 +161,23 @@ bool EsFtdiDeviceMpsseSpi::spiUnInit()
 
   esU32 noOfBytes = 0;
 
-	/* Set lines to final state */
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-	m_tmpBuff[noOfBytes++] = static_cast<esU8>((m_finalPinState & 0xFF00) >> 8); /*Value*/
-	m_tmpBuff[noOfBytes++] = static_cast<esU8>(m_finalPinState & 0x00FF); /*Direction*/
+  /* Set lines to final state */
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+  m_tmpBuff[noOfBytes++] = static_cast<esU8>((m_finalPinState & 0xFF00) >> 8); /*Value*/
+  m_tmpBuff[noOfBytes++] = static_cast<esU8>(m_finalPinState & 0x00FF); /*Direction*/
 
   esU32 noOfBytesTransferred = 0;
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       noOfBytes,
-		  &noOfBytesTransferred
+      &noOfBytesTransferred
     )
   )
     return false;
 
   m_flags = flagUnInitialized; //< Reset flags to uninitialized state
 
-	return (noOfBytesTransferred == noOfBytes);
+  return (noOfBytesTransferred == noOfBytes);
 }
 //---------------------------------------------------------------------------
 
@@ -185,42 +185,42 @@ bool EsFtdiDeviceMpsseSpi::spiToggleCS(bool state)
 {
   esU32 optSPI = m_optSPI;
 
-	bool activeLow = (optSPI & MPSSE::SPI_CONFIG_OPTION_CS_ACTIVELOW) ?
+  bool activeLow = (optSPI & MPSSE::SPI_CONFIG_OPTION_CS_ACTIVELOW) ?
     true :
     false;
 
-	//direction = (esU8)config->currentPinState;/*get current state*/
+  //direction = (esU8)config->currentPinState;/*get current state*/
   esU8 direction = static_cast<esU8>(m_currentPinState & 0x00FF);//20110718
-	direction |= static_cast<esU8>((1<<((optSPI & MPSSE::SPI_CONFIG_OPTION_CS_MASK)>>2))<<3);
+  direction |= static_cast<esU8>((1<<((optSPI & MPSSE::SPI_CONFIG_OPTION_CS_MASK)>>2))<<3);
 
-	//oldValue = (esU8)(8>>config->currentPinState);
-	esU8 oldValue = static_cast<esU8>((m_currentPinState & 0xFF00)>>8);//20110718
-	esU8 value = static_cast<esU8>((1<<((optSPI & MPSSE::SPI_CONFIG_OPTION_CS_MASK)>>2))<<3);
+  //oldValue = (esU8)(8>>config->currentPinState);
+  esU8 oldValue = static_cast<esU8>((m_currentPinState & 0xFF00)>>8);//20110718
+  esU8 value = static_cast<esU8>((1<<((optSPI & MPSSE::SPI_CONFIG_OPTION_CS_MASK)>>2))<<3);
 
-	ES_DEBUG_TRACE(
+  ES_DEBUG_TRACE(
     esT("EsFtdiDeviceMpsseSpi::spiToggleCS oldValue=0x%0X value=0x%0X"),
     (int)oldValue,
     (int)value
   );
 
-	if((state && !activeLow) || (!state && activeLow))
-		value = oldValue | value; /* set the CS line high */
+  if((state && !activeLow) || (!state && activeLow))
+    value = oldValue | value; /* set the CS line high */
 
-	if((state && activeLow) || (!state && !activeLow))
-		value = oldValue & ~value;/* set the CS line low */
+  if((state && activeLow) || (!state && !activeLow))
+    value = oldValue & ~value;/* set the CS line low */
 
-	m_currentPinState = static_cast<esU16>((static_cast<esU16>(value)<<8) | direction);/*save  dirn & value*/
+  m_currentPinState = static_cast<esU16>((static_cast<esU16>(value)<<8) | direction);/*save  dirn & value*/
 
   mpsseBufInit();
 
   esU32 noOfBytes = 0;
-	/*MPSSE command to set low bytes*/
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-	m_tmpBuff[noOfBytes++] = value;		/*value*/
-	m_tmpBuff[noOfBytes++] = direction;	/*direction*/
+  /*MPSSE command to set low bytes*/
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+  m_tmpBuff[noOfBytes++] = value;    /*value*/
+  m_tmpBuff[noOfBytes++] = direction;  /*direction*/
 
   esU32 noOfBytesTransferred = 0;
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       noOfBytes,
       &noOfBytesTransferred
@@ -234,19 +234,19 @@ bool EsFtdiDeviceMpsseSpi::spiToggleCS(bool state)
 
 bool EsFtdiDeviceMpsseSpi::spiIsBusy(bool& busy)
 {
-	/*Enable CS*/
-	if( !spiToggleCS(true) )
+  /*Enable CS*/
+  if( !spiToggleCS(true) )
     return false;
 
   ES_ASSERT( !m_tmpBuff.empty() );
 
   esU32 noOfBytes = 0;
-	/*Send command to read*/
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_GET_DATA_BITS_LOWBYTE;
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SEND_IMMEDIATE;
+  /*Send command to read*/
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_GET_DATA_BITS_LOWBYTE;
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SEND_IMMEDIATE;
 
   esU32 noOfBytesTransferred = 0;
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       noOfBytes,
       &noOfBytesTransferred
@@ -260,10 +260,10 @@ bool EsFtdiDeviceMpsseSpi::spiIsBusy(bool& busy)
     return false;
   }
 
-	noOfBytesTransferred=0;
+  noOfBytesTransferred=0;
 
   /*Read*/
-	if( !ftRead(
+  if( !ftRead(
       m_tmpBuff.data(),
       1,
       &noOfBytesTransferred
@@ -277,18 +277,18 @@ bool EsFtdiDeviceMpsseSpi::spiIsBusy(bool& busy)
     return false;
   }
 
-	ES_DEBUG_TRACE(
+  ES_DEBUG_TRACE(
     esT("EsFtdiDeviceMpsseSpi::spiIsBusy Low byte read = 0x%0X"),
     (int)m_tmpBuff[0]
   );
 
-	if(0 == (m_tmpBuff[0] & 0x04))
-		busy = false;
-	else
-		busy = true;
+  if(0 == (m_tmpBuff[0] & 0x04))
+    busy = false;
+  else
+    busy = true;
 
-	/*Disable CS*/
-	return spiToggleCS(false);
+  /*Disable CS*/
+  return spiToggleCS(false);
 }
 //---------------------------------------------------------------------------
 
@@ -296,38 +296,38 @@ bool EsFtdiDeviceMpsseSpi::spiWrite8bits(esU8 byte, esU8 len)
 {
   mpsseBufInit();
 
-	/*mode is given by bit1-bit0 of SPI_ChannelConfig.Options*/
+  /*mode is given by bit1-bit0 of SPI_ChannelConfig.Options*/
   esU32 optSPI = m_optSPI;
-	esU8 mode = static_cast<esU8>(optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
+  esU8 mode = static_cast<esU8>(optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
 
   esU32 noOfBytes = 0;
-	/* Command to write 8bits */
-	switch( mode )
-	{
-		case 0:
-			m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;
-			break;
-		case 1:
-			m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_POS_EDGE;
-			break;
-		case 2:
-			m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_POS_EDGE;
-			break;
-		case 3:
-			m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;
-			break;
-		default:
-			ES_FAIL; //< Should never be here
-	}
+  /* Command to write 8bits */
+  switch( mode )
+  {
+    case 0:
+      m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;
+      break;
+    case 1:
+      m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_POS_EDGE;
+      break;
+    case 2:
+      m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_POS_EDGE;
+      break;
+    case 3:
+      m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;
+      break;
+    default:
+      ES_FAIL; //< Should never be here
+  }
 
-	m_tmpBuff[noOfBytes++] = len-1;/* 1bit->arg=0, for 8bits->arg=7 */
-	m_tmpBuff[noOfBytes++] = byte;
+  m_tmpBuff[noOfBytes++] = len-1;/* 1bit->arg=0, for 8bits->arg=7 */
+  m_tmpBuff[noOfBytes++] = byte;
 
   esU32 noOfBytesTransferred = 0;
   if( !ftWrite(
       m_tmpBuff.data(),
       noOfBytes,
-		  &noOfBytesTransferred
+      &noOfBytesTransferred
     )
   )
     return false;
@@ -335,37 +335,37 @@ bool EsFtdiDeviceMpsseSpi::spiWrite8bits(esU8 byte, esU8 len)
   if( noOfBytesTransferred != noOfBytes )
     m_stat = FT_IO_ERROR;
 
-	return (noOfBytesTransferred == noOfBytes);
+  return (noOfBytesTransferred == noOfBytes);
 }
 //---------------------------------------------------------------------------
 
 bool EsFtdiDeviceMpsseSpi::spiWrite(EsBinBuffer::const_pointer buffer,
-	esU32 sizeToTransfer, esU32& sizeTransferred, esU32 opts
+  esU32 sizeToTransfer, esU32& sizeTransferred, esU32 opts
 )
 {
-	/* Mode is given by bit1-bit0 of SPI_ChannelConfig.Options */
-	if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_ENABLE)
-	{
-		/* enable CHIPSELECT line for the channel */
-		if( !spiToggleCS(true) )
+  /* Mode is given by bit1-bit0 of SPI_ChannelConfig.Options */
+  if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_ENABLE)
+  {
+    /* enable CHIPSELECT line for the channel */
+    if( !spiToggleCS(true) )
       return false;
-	}
+  }
 
   esU32 optSPI = m_optSPI;
   bool ok = true;
-	if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_SIZE_IN_BITS)
-	{/* sizeToTransfer is in bits */
-		sizeTransferred = 0;
-		/* loop until all the bits are transferred */
-		while(sizeTransferred < sizeToTransfer)
-		{
+  if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_SIZE_IN_BITS)
+  {/* sizeToTransfer is in bits */
+    sizeTransferred = 0;
+    /* loop until all the bits are transferred */
+    while(sizeTransferred < sizeToTransfer)
+    {
       esU32 bitsToTransfer;
-			if( (sizeToTransfer - sizeTransferred) >= 8)
-				bitsToTransfer = 8;
-			else
-				bitsToTransfer = static_cast<esU8>(sizeToTransfer - sizeTransferred);
+      if( (sizeToTransfer - sizeTransferred) >= 8)
+        bitsToTransfer = 8;
+      else
+        bitsToTransfer = static_cast<esU8>(sizeToTransfer - sizeTransferred);
 
-			esU8 byte = buffer[(sizeTransferred+1)/8];
+      esU8 byte = buffer[(sizeTransferred+1)/8];
       if( 
         !spiWrite8bits(
           byte,
@@ -377,48 +377,48 @@ bool EsFtdiDeviceMpsseSpi::spiWrite(EsBinBuffer::const_pointer buffer,
         break;
       }
 
-		  sizeTransferred += bitsToTransfer;
-		}
-	}
-	else
-	{/* sizeToTransfer is in bytes */
+      sizeTransferred += bitsToTransfer;
+    }
+  }
+  else
+  {/* sizeToTransfer is in bytes */
     mpsseBufInit();
 
-		/*mode is given by bit1-bit0 of SPI_ChannelConfig.Options*/
-		esU8 mode = static_cast<esU8>(optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
+    /*mode is given by bit1-bit0 of SPI_ChannelConfig.Options*/
+    esU8 mode = static_cast<esU8>(optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
 
-		esU32 noOfBytes = 0;
-		/* Command to write 8bits */
-		switch(mode)
-		{
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE0:
-				m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BYTES_NEG_EDGE;
-				break;
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE1:
-				m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BYTES_POS_EDGE;
-				break;
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE2:
-				m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BYTES_POS_EDGE;
-				break;
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE3:
-				m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BYTES_NEG_EDGE;
-				break;
-			default:
-				ES_FAIL; //< Should never be here
-		}
+    esU32 noOfBytes = 0;
+    /* Command to write 8bits */
+    switch(mode)
+    {
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE0:
+        m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BYTES_NEG_EDGE;
+        break;
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE1:
+        m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BYTES_POS_EDGE;
+        break;
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE2:
+        m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BYTES_POS_EDGE;
+        break;
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE3:
+        m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BYTES_NEG_EDGE;
+        break;
+      default:
+        ES_FAIL; //< Should never be here
+    }
 
-		/* length low byte */
-		m_tmpBuff[noOfBytes++] = static_cast<esU8>((sizeToTransfer-1) & 0x000000FF);
-		/* length high byte */
-		m_tmpBuff[noOfBytes++] = static_cast<esU8>(((sizeToTransfer-1) & 0x0000FF00)>>8);
+    /* length low byte */
+    m_tmpBuff[noOfBytes++] = static_cast<esU8>((sizeToTransfer-1) & 0x000000FF);
+    /* length high byte */
+    m_tmpBuff[noOfBytes++] = static_cast<esU8>(((sizeToTransfer-1) & 0x0000FF00)>>8);
 
     esU32 noOfBytesTransferred = 0;
 
-		/* write command */
+    /* write command */
     if( !ftWrite(
         m_tmpBuff.data(),
         noOfBytes,
-			  &noOfBytesTransferred
+        &noOfBytesTransferred
       )
     )
     {
@@ -436,18 +436,18 @@ bool EsFtdiDeviceMpsseSpi::spiWrite(EsBinBuffer::const_pointer buffer,
     ok = ftWrite(
         buffer,
         sizeToTransfer,
-			  &sizeTransferred
+        &sizeTransferred
     );
-	}
+  }
 
 finalize:
-	if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_DISABLE)
-	{
-		/* disable CHIPSELECT line for the channel */
-		spiToggleCS(false);
-	}
+  if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_DISABLE)
+  {
+    /* disable CHIPSELECT line for the channel */
+    spiToggleCS(false);
+  }
 
-	return ok;
+  return ok;
 }
 //---------------------------------------------------------------------------
 
@@ -457,13 +457,13 @@ bool EsFtdiDeviceMpsseSpi::spiRead8bits(esU8& byte, esU8 len)
 
   esU32 optSPI = m_optSPI;
 
-	/*mode is given by bit1-bit0 of SPI_ChannelConfig.Options*/
-	esU8 mode = (optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
+  /*mode is given by bit1-bit0 of SPI_ChannelConfig.Options*/
+  esU8 mode = (optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
   esU32 noOfBytes = 0;
 
-	/* Command to write 8bits */
-	switch(mode)
-	{
+  /* Command to write 8bits */
+  switch(mode)
+  {
   case 0:
     m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;
     break;
@@ -478,18 +478,18 @@ bool EsFtdiDeviceMpsseSpi::spiRead8bits(esU8& byte, esU8 len)
     break;
   default:
     ES_FAIL;
-	}
+  }
 
-	m_tmpBuff[noOfBytes++] = len-1;/* 1bit->arg=0, for 8bits->arg=7 */
+  m_tmpBuff[noOfBytes++] = len-1;/* 1bit->arg=0, for 8bits->arg=7 */
 
-	/*Command MPSSE to send data to PC immediately */
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SEND_IMMEDIATE;
+  /*Command MPSSE to send data to PC immediately */
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SEND_IMMEDIATE;
 
   esU32 noOfBytesTransferred = 0;
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       noOfBytes,
-		  &noOfBytesTransferred
+      &noOfBytesTransferred
     )
   )
     return false;
@@ -500,8 +500,8 @@ bool EsFtdiDeviceMpsseSpi::spiRead8bits(esU8& byte, esU8 len)
     return false;
   }
 
-	noOfBytesTransferred = 0;
-	if( !ftRead(
+  noOfBytesTransferred = 0;
+  if( !ftRead(
       m_tmpBuff.data(),
       1,
       &noOfBytesTransferred
@@ -515,37 +515,37 @@ bool EsFtdiDeviceMpsseSpi::spiRead8bits(esU8& byte, esU8 len)
     return false;
   }
 
-	byte = m_tmpBuff[0];
+  byte = m_tmpBuff[0];
 
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 
 bool EsFtdiDeviceMpsseSpi::spiRead(EsBinBuffer::pointer buffer, esU32 sizeToTransfer, esU32& sizeTransferred, esU32 opts)
 {
-	if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_ENABLE)
-	{
-		/* Enable CHIPSELECT line for the channel */
-		if( !spiToggleCS(true) )
+  if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_ENABLE)
+  {
+    /* Enable CHIPSELECT line for the channel */
+    if( !spiToggleCS(true) )
       return false;
-	}
+  }
 
   bool ok = true;
-	if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_SIZE_IN_BITS)
-	{/*sizeToTransfer is in bits*/
-		sizeTransferred = 0;
+  if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_SIZE_IN_BITS)
+  {/*sizeToTransfer is in bits*/
+    sizeTransferred = 0;
 
-		while( sizeTransferred < sizeToTransfer )
-		{
+    while( sizeTransferred < sizeToTransfer )
+    {
       esU8 bitsToTransfer;
 
-			if( (sizeToTransfer - sizeTransferred) >= 8 )
-				bitsToTransfer = 8;
-			else
-				bitsToTransfer = static_cast<esU8>(sizeToTransfer - sizeTransferred);
+      if( (sizeToTransfer - sizeTransferred) >= 8 )
+        bitsToTransfer = 8;
+      else
+        bitsToTransfer = static_cast<esU8>(sizeToTransfer - sizeTransferred);
 
       esU8 byte = 0;
-			if( !spiRead8bits(
+      if( !spiRead8bits(
           byte,
           bitsToTransfer
         )
@@ -555,50 +555,50 @@ bool EsFtdiDeviceMpsseSpi::spiRead(EsBinBuffer::pointer buffer, esU32 sizeToTran
         break;
       }
 
-			buffer[(sizeTransferred+1)/8] = byte;
+      buffer[(sizeTransferred+1)/8] = byte;
 
-		  sizeTransferred += bitsToTransfer;
-		}
-	}
-	else
-	{/*sizeToTransfer is in bytes*/
+      sizeTransferred += bitsToTransfer;
+    }
+  }
+  else
+  {/*sizeToTransfer is in bytes*/
     mpsseBufInit();
 
-		/*mode is given by bit1-bit0 of SPI_ChannelConfig.Options*/
+    /*mode is given by bit1-bit0 of SPI_ChannelConfig.Options*/
     esU32 optSPI = m_optSPI;
-		esU8 mode = static_cast<esU8>(optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
+    esU8 mode = static_cast<esU8>(optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
 
     esU32 noOfBytes = 0;
-		/* Command to write 8bits */
-		switch(mode)
-		{
-			case 0:
-				m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BYTES_POS_EDGE;
-				break;
-			case 1:
-				m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BYTES_NEG_EDGE;
-				break;
-			case 2:
-				m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BYTES_NEG_EDGE;
-				break;
-			case 3:
-				m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BYTES_POS_EDGE;
-				break;
-			default:
-				ES_FAIL; //< Should never be here
-		}
+    /* Command to write 8bits */
+    switch(mode)
+    {
+      case 0:
+        m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BYTES_POS_EDGE;
+        break;
+      case 1:
+        m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BYTES_NEG_EDGE;
+        break;
+      case 2:
+        m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BYTES_NEG_EDGE;
+        break;
+      case 3:
+        m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BYTES_POS_EDGE;
+        break;
+      default:
+        ES_FAIL; //< Should never be here
+    }
 
-		/* length LSB */
-		m_tmpBuff[noOfBytes++] = static_cast<esU8>((sizeToTransfer-1) & 0x000000FF);
+    /* length LSB */
+    m_tmpBuff[noOfBytes++] = static_cast<esU8>((sizeToTransfer-1) & 0x000000FF);
 
-		/* length MSB */
-		m_tmpBuff[noOfBytes++] = static_cast<esU8>(((sizeToTransfer-1) & 0x0000FF00)>>8);
+    /* length MSB */
+    m_tmpBuff[noOfBytes++] = static_cast<esU8>(((sizeToTransfer-1) & 0x0000FF00)>>8);
 
-		/*Command MPSSE to send data to PC immediately */
-		m_tmpBuff[noOfBytes++] = MPSSE::CMD_SEND_IMMEDIATE;
+    /*Command MPSSE to send data to PC immediately */
+    m_tmpBuff[noOfBytes++] = MPSSE::CMD_SEND_IMMEDIATE;
 
     esU32 noOfBytesTransferred = 0;
-		if( !ftWrite(
+    if( !ftWrite(
         m_tmpBuff.data(),
         noOfBytes,
         &noOfBytesTransferred
@@ -616,21 +616,21 @@ bool EsFtdiDeviceMpsseSpi::spiRead(EsBinBuffer::pointer buffer, esU32 sizeToTran
       goto finalize;
     }
 
-		ok = ftRead(
+    ok = ftRead(
       buffer,
       sizeToTransfer,
       &sizeTransferred
     );
-	}
+  }
 
 finalize:
-	if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_DISABLE)
-	{
-		/* Disable CHIPSELECT line for the channel */
-		spiToggleCS(false);
-	}
+  if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_DISABLE)
+  {
+    /* Disable CHIPSELECT line for the channel */
+    spiToggleCS(false);
+  }
 
-	return ok;
+  return ok;
 }
 //---------------------------------------------------------------------------
 
@@ -640,60 +640,60 @@ bool EsFtdiDeviceMpsseSpi::spiReadWrite(EsBinBuffer::const_pointer src, EsBinBuf
 
   esU32 optSPI = m_optSPI;
 
-	if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_ENABLE)
-	{
-		/* enable CHIPSELECT line for the channel */
-		if( !spiToggleCS(true) )
+  if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_ENABLE)
+  {
+    /* enable CHIPSELECT line for the channel */
+    if( !spiToggleCS(true) )
       return false;
-	}
+  }
 
   /*mode is given by bit1-bit0 of SPI_ChannelConfig.Options*/
   esU8 mode = static_cast<esU8>(optSPI & MPSSE::SPI_CONFIG_OPTION_MODE_MASK);
 
-	/* start of transfer */
+  /* start of transfer */
   bool ok = true;
-	if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_SIZE_IN_BITS)
-	{/* sizeToTransfer is in bits */
-		sizeTransferred=0;
+  if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_SIZE_IN_BITS)
+  {/* sizeToTransfer is in bits */
+    sizeTransferred=0;
 
-		/* Command to write 8bits */
-		switch(mode)
-		{
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE0:
-				m_tmpBuff[0] = MPSSE::CMD_DATA_BITS_IN_POS_OUT_NEG_EDGE;
-				break;
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE1:
-				m_tmpBuff[0] = MPSSE::CMD_DATA_BITS_IN_NEG_OUT_POS_EDGE;
-				break;
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE2:
-				m_tmpBuff[0] = MPSSE::CMD_DATA_BITS_IN_NEG_OUT_POS_EDGE;
-				break;
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE3:
-				m_tmpBuff[0] = MPSSE::CMD_DATA_BITS_IN_POS_OUT_NEG_EDGE;
-				break;
-			default:
-				ES_FAIL; //< Should never be here
-		}
+    /* Command to write 8bits */
+    switch(mode)
+    {
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE0:
+        m_tmpBuff[0] = MPSSE::CMD_DATA_BITS_IN_POS_OUT_NEG_EDGE;
+        break;
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE1:
+        m_tmpBuff[0] = MPSSE::CMD_DATA_BITS_IN_NEG_OUT_POS_EDGE;
+        break;
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE2:
+        m_tmpBuff[0] = MPSSE::CMD_DATA_BITS_IN_NEG_OUT_POS_EDGE;
+        break;
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE3:
+        m_tmpBuff[0] = MPSSE::CMD_DATA_BITS_IN_POS_OUT_NEG_EDGE;
+        break;
+      default:
+        ES_FAIL; //< Should never be here
+    }
 
-		while( sizeTransferred < sizeToTransfer )
-		{
+    while( sizeTransferred < sizeToTransfer )
+    {
       esU8 bitsToTransfer;
 
-			if((sizeToTransfer - sizeTransferred)>=8)
-				bitsToTransfer = 8;
-			else
-				bitsToTransfer = static_cast<esU8>(sizeToTransfer - sizeTransferred);
+      if((sizeToTransfer - sizeTransferred)>=8)
+        bitsToTransfer = 8;
+      else
+        bitsToTransfer = static_cast<esU8>(sizeToTransfer - sizeTransferred);
 
-			m_tmpBuff[1] = bitsToTransfer - 1; /*takes value 0 for 1 bit; 7 for 8 bits*/
-			m_tmpBuff[2] = src[(sizeTransferred+1)/8];
+      m_tmpBuff[1] = bitsToTransfer - 1; /*takes value 0 for 1 bit; 7 for 8 bits*/
+      m_tmpBuff[2] = src[(sizeTransferred+1)/8];
 
       esU32 noOfBytesTransferred = 0;
 
-			/*Write command and data*/
-			if( !ftWrite(
+      /*Write command and data*/
+      if( !ftWrite(
           m_tmpBuff.data(),
           3,
-				  &noOfBytesTransferred
+          &noOfBytesTransferred
         )
       )
       {
@@ -702,15 +702,15 @@ bool EsFtdiDeviceMpsseSpi::spiReadWrite(EsBinBuffer::const_pointer src, EsBinBuf
       }
 
       if(3 > noOfBytesTransferred)
-			{
+      {
         ok = false;
         break;
-			}
+      }
 
       noOfBytesTransferred = 0;
 
-			/*Read from buffer*/
-			if( !ftRead(
+      /*Read from buffer*/
+      if( !ftRead(
           dest+((sizeTransferred+1)/8),
           1,
           &noOfBytesTransferred
@@ -721,45 +721,45 @@ bool EsFtdiDeviceMpsseSpi::spiReadWrite(EsBinBuffer::const_pointer src, EsBinBuf
         break;
       }
 
-			if(1 > noOfBytesTransferred)
-			{
+      if(1 > noOfBytesTransferred)
+      {
         ok = false;
         break;
-			}
+      }
 
-		  sizeTransferred += bitsToTransfer;
-		}
-	}
-	else
-	{/*sizeToTransfer is in bytes*/
-		sizeTransferred = 0;
+      sizeTransferred += bitsToTransfer;
+    }
+  }
+  else
+  {/*sizeToTransfer is in bytes*/
+    sizeTransferred = 0;
 
-		/* Command to write 8bits */
-		switch(mode)
-		{
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE0:
-				m_tmpBuff[0] = MPSSE::CMD_DATA_BYTES_IN_POS_OUT_NEG_EDGE;
-				break;
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE1:
-				m_tmpBuff[0] = MPSSE::CMD_DATA_BYTES_IN_NEG_OUT_POS_EDGE;
-				break;
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE2:
-				m_tmpBuff[0] = MPSSE::CMD_DATA_BYTES_IN_NEG_OUT_POS_EDGE;
-				break;
-			case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE3:
-				m_tmpBuff[0] = MPSSE::CMD_DATA_BYTES_IN_POS_OUT_NEG_EDGE;
-				break;
-			default:
-				ES_FAIL; //< Should neve be here
-		}
+    /* Command to write 8bits */
+    switch(mode)
+    {
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE0:
+        m_tmpBuff[0] = MPSSE::CMD_DATA_BYTES_IN_POS_OUT_NEG_EDGE;
+        break;
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE1:
+        m_tmpBuff[0] = MPSSE::CMD_DATA_BYTES_IN_NEG_OUT_POS_EDGE;
+        break;
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE2:
+        m_tmpBuff[0] = MPSSE::CMD_DATA_BYTES_IN_NEG_OUT_POS_EDGE;
+        break;
+      case EsFtdiMpsseSpiIntf::CPOL_CPHA::MODE3:
+        m_tmpBuff[0] = MPSSE::CMD_DATA_BYTES_IN_POS_OUT_NEG_EDGE;
+        break;
+      default:
+        ES_FAIL; //< Should neve be here
+    }
 
-		m_tmpBuff[1] = static_cast<esU8>((sizeToTransfer-1) & 0x000000FF);/* lengthL */
-		m_tmpBuff[2] = static_cast<esU8>(((sizeToTransfer-1) & 0x0000FF00)>>8);/*lenghtH*/
+    m_tmpBuff[1] = static_cast<esU8>((sizeToTransfer-1) & 0x000000FF);/* lengthL */
+    m_tmpBuff[2] = static_cast<esU8>(((sizeToTransfer-1) & 0x0000FF00)>>8);/*lenghtH*/
 
     esU32 noOfBytesTransferred = 0;
 
-		/*Write command*/
-		if( !ftWrite(
+    /*Write command*/
+    if( !ftWrite(
         m_tmpBuff.data(),
         3,
         &noOfBytesTransferred
@@ -778,11 +778,11 @@ bool EsFtdiDeviceMpsseSpi::spiReadWrite(EsBinBuffer::const_pointer src, EsBinBuf
     }
 
     noOfBytesTransferred = 0;
-		/*Write data*/
-		if( !ftWrite(
+    /*Write data*/
+    if( !ftWrite(
         src,
         sizeToTransfer,
-			  &noOfBytesTransferred
+        &noOfBytesTransferred
       )
     )
     {
@@ -800,7 +800,7 @@ bool EsFtdiDeviceMpsseSpi::spiReadWrite(EsBinBuffer::const_pointer src, EsBinBuf
     }
 
     noOfBytesTransferred = 0;
-		/*Read to buffer*/
+    /*Read to buffer*/
     if( !ftRead(
         dest,
         sizeToTransfer,
@@ -820,17 +820,17 @@ bool EsFtdiDeviceMpsseSpi::spiReadWrite(EsBinBuffer::const_pointer src, EsBinBuf
       ok = false;
       goto finalize;
     }
-	}
-	/* end of transfer */
+  }
+  /* end of transfer */
 
 finalize:
-	if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_DISABLE)
-	{
-		/* disable CHIPSELECT line for the channel */
-		spiToggleCS(false);
-	}
+  if(opts & EsFtdiMpsseSpiIntf::TRANSFER_OPTIONS_CHIPSELECT_DISABLE)
+  {
+    /* disable CHIPSELECT line for the channel */
+    spiToggleCS(false);
+  }
 
-	return ok;
+  return ok;
 }
 //---------------------------------------------------------------------------
 
@@ -1159,13 +1159,13 @@ bool EsFtdiDeviceMpsseSpi::pinsStateCurrentSet(esU8 set)
   mpsseBufInit();
 
   esU32 noOfBytes = 0;
-	/*MPSSE command to set low bytes*/
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-	m_tmpBuff[noOfBytes++] = static_cast<esU8>((m_currentPinState & 0xFF00)>>8);/*Val*/
-	m_tmpBuff[noOfBytes++] = currentDir;
+  /*MPSSE command to set low bytes*/
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+  m_tmpBuff[noOfBytes++] = static_cast<esU8>((m_currentPinState & 0xFF00)>>8);/*Val*/
+  m_tmpBuff[noOfBytes++] = currentDir;
 
   esU32 noOfBytesTransferred = 0;
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       noOfBytes,
       &noOfBytesTransferred

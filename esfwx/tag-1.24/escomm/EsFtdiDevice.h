@@ -81,24 +81,24 @@ public:
   ES_DECL_REFLECTED_METHOD1(EsVariant, eeEccRead, cr_EsVariant);
 
   /// Generate FTDI generic device services
-	#define FTDI_DRIVER_ENTRY0(Name)
-	#define FTDI_DRIVER_ENTRY1(Name, Param1)
-	#define FTDI_DRIVER_ENTRY2(Name, Param1, Param2)
-	#define FTDI_DRIVER_ENTRY3(Name, Param1, Param2, Param3)
-	#define FTDI_DRIVER_ENTRY4(Name, Param1, Param2, Param3, Param4)
-	#define FTDI_DRIVER_ENTRY5(Name, Param1, Param2, Param3, Param4, Param5)
-	#define FTDI_DRIVER_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6)
-	#define FTDI_DRIVER_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7)
-	#define FTDI_DRIVER_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8)
-	#define FTDI_DRIVER_DEV_ENTRY1(Name, Param1) ES_DECL_INTF_METHOD(bool, ft## Name)() ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node) ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY2(Name, Param1, Param2) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY3(Name, Param1, Param2, Param3) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY4(Name, Param1, Param2, Param3, Param4) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY5(Name, Param1, Param2, Param3, Param4, Param5) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6, p7 ); return m_owner->statusCheck( m_stat ); }
-	#define FTDI_DRIVER_DEV_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6, p7, p8 ); return m_owner->statusCheck( m_stat ); }
-	#include "EsFtdiDriver.win.hxx"
+  #define FTDI_DRIVER_ENTRY0(Name)
+  #define FTDI_DRIVER_ENTRY1(Name, Param1)
+  #define FTDI_DRIVER_ENTRY2(Name, Param1, Param2)
+  #define FTDI_DRIVER_ENTRY3(Name, Param1, Param2, Param3)
+  #define FTDI_DRIVER_ENTRY4(Name, Param1, Param2, Param3, Param4)
+  #define FTDI_DRIVER_ENTRY5(Name, Param1, Param2, Param3, Param4, Param5)
+  #define FTDI_DRIVER_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6)
+  #define FTDI_DRIVER_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7)
+  #define FTDI_DRIVER_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8)
+  #define FTDI_DRIVER_DEV_ENTRY1(Name, Param1) ES_DECL_INTF_METHOD(bool, ft## Name)() ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node) ); return m_owner->statusCheck( m_stat ); }
+  #define FTDI_DRIVER_DEV_ENTRY2(Name, Param1, Param2) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2 ); return m_owner->statusCheck( m_stat ); }
+  #define FTDI_DRIVER_DEV_ENTRY3(Name, Param1, Param2, Param3) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3 ); return m_owner->statusCheck( m_stat ); }
+  #define FTDI_DRIVER_DEV_ENTRY4(Name, Param1, Param2, Param3, Param4) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4 ); return m_owner->statusCheck( m_stat ); }
+  #define FTDI_DRIVER_DEV_ENTRY5(Name, Param1, Param2, Param3, Param4, Param5) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5 ); return m_owner->statusCheck( m_stat ); }
+  #define FTDI_DRIVER_DEV_ENTRY6(Name, Param1, Param2, Param3, Param4, Param5, Param6) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6 ); return m_owner->statusCheck( m_stat ); }
+  #define FTDI_DRIVER_DEV_ENTRY7(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6, p7 ); return m_owner->statusCheck( m_stat ); }
+  #define FTDI_DRIVER_DEV_ENTRY8(Name, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8) ES_DECL_INTF_METHOD(bool, ft## Name)(Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) ES_OVERRIDE { ES_ASSERT(m_owner); m_stat = m_owner->ft## Name( EsFtdiDriver::nodeHandleAccess(m_node), p2, p3, p4, p5, p6, p7, p8 ); return m_owner->statusCheck( m_stat ); }
+  #include "EsFtdiDriver.win.hxx"
 
   // Reflected device properties
   ES_DECL_PROPERTY_RO(isOpen, bool)
@@ -139,16 +139,16 @@ protected:
   mutable EsBinBuffer m_tmpBuff;
   FT_STATUS m_stat;
 
-	esU32	m_cfgClockRate; ///< Device lock rate, used mainly in deriverd classes
+  esU32  m_cfgClockRate; ///< Device lock rate, used mainly in deriverd classes
 
   //  Latency timer timeout in milliseconds.
-  //	Valid range is 1 – 255
-  //	In the FT8U232AM and FT8U245AM devices, the receive buffer timeout that is used to flush
-  //	remaining data from the receive buffer was fixed at 16 ms. In all other FTDI devices, this
-  //	timeout is programmable and can be set at 1 ms intervals between 1ms and 255 ms.  This
-  //	allows the device to be better optimized for protocols requiring faster response times from
-  //	short data packets
-  //	NOTE: This is a per-chip feature and not per device
+  //  Valid range is 1 – 255
+  //  In the FT8U232AM and FT8U245AM devices, the receive buffer timeout that is used to flush
+  //  remaining data from the receive buffer was fixed at 16 ms. In all other FTDI devices, this
+  //  timeout is programmable and can be set at 1 ms intervals between 1ms and 255 ms.  This
+  //  allows the device to be better optimized for protocols requiring faster response times from
+  //  short data packets
+  //  NOTE: This is a per-chip feature and not per device
   //
   esU8 m_cfgLatencyTimer;
 

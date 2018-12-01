@@ -17,86 +17,86 @@
 class EsMathSplineFitSolver
 {
 public:
-	void build(const EsMathArrayReal& x, const EsMathArrayReal& y,
-		size_t basisFunctionsCount, const EsMathFitConstraints& constraints)
-	{
-		size_t cnt = x.countGet();
+  void build(const EsMathArrayReal& x, const EsMathArrayReal& y,
+    size_t basisFunctionsCount, const EsMathFitConstraints& constraints)
+  {
+    size_t cnt = x.countGet();
 
-		alglib::real_1d_array w;
+    alglib::real_1d_array w;
 
     ES_ALGLIB_TRY
 
-		w.setlength(cnt);
-		for( size_t idx = 0; idx < cnt; ++idx)
-			w[idx] = 1.;
+    w.setlength(cnt);
+    for( size_t idx = 0; idx < cnt; ++idx)
+      w[idx] = 1.;
 
-		size_t constraintCnt = constraints.size();
-		alglib::real_1d_array xc;
-		xc.setlength(constraintCnt);
-		alglib::real_1d_array yc;
-		yc.setlength(constraintCnt);
-		alglib::integer_1d_array dc;
-		dc.setlength(constraintCnt);
-		for(size_t idx = 0; idx < constraintCnt; ++idx)
-		{
-			const EsMathFitConstraint& constraint = constraints[idx];
-			xc[idx] = constraint.xGet();
-			yc[idx] = constraint.constraintGet();
-			dc[idx] = static_cast<ulong>(constraint.kindGet());
-		}
+    size_t constraintCnt = constraints.size();
+    alglib::real_1d_array xc;
+    xc.setlength(constraintCnt);
+    alglib::real_1d_array yc;
+    yc.setlength(constraintCnt);
+    alglib::integer_1d_array dc;
+    dc.setlength(constraintCnt);
+    for(size_t idx = 0; idx < constraintCnt; ++idx)
+    {
+      const EsMathFitConstraint& constraint = constraints[idx];
+      xc[idx] = constraint.xGet();
+      yc[idx] = constraint.constraintGet();
+      dc[idx] = static_cast<ulong>(constraint.kindGet());
+    }
 
-		alglib::spline1dfitcubicwc(*(const alglib::real_1d_array*)x.pimplGet(), *(const alglib::real_1d_array*)y.pimplGet(), w,
-			xc, yc, dc,	basisFunctionsCount,
-			m_info,	m_interpolant, m_report);
+    alglib::spline1dfitcubicwc(*(const alglib::real_1d_array*)x.pimplGet(), *(const alglib::real_1d_array*)y.pimplGet(), w,
+      xc, yc, dc,  basisFunctionsCount,
+      m_info,  m_interpolant, m_report);
 
     ES_ALGLIB_CATCH
-	}
+  }
 
-	void build(const EsMathArrayReal& x, const EsMathArrayReal& y,
-		size_t basisFunctionsCount, double rho)
-	{
+  void build(const EsMathArrayReal& x, const EsMathArrayReal& y,
+    size_t basisFunctionsCount, double rho)
+  {
     ES_ALGLIB_TRY
 
-		alglib::spline1dfitpenalized(*(const alglib::real_1d_array*)x.pimplGet(), *(const alglib::real_1d_array*)y.pimplGet(),
-			basisFunctionsCount,
+    alglib::spline1dfitpenalized(*(const alglib::real_1d_array*)x.pimplGet(), *(const alglib::real_1d_array*)y.pimplGet(),
+      basisFunctionsCount,
       rho,
-			m_info,	m_interpolant, m_report);
+      m_info,  m_interpolant, m_report);
 
     ES_ALGLIB_CATCH
-	}
+  }
 
-	double calculate(double x) const
-	{
+  double calculate(double x) const
+  {
     double result = 0;
 
     ES_ALGLIB_TRY
 
-		result = alglib::spline1dcalc(m_interpolant, x);
+    result = alglib::spline1dcalc(m_interpolant, x);
 
     ES_ALGLIB_CATCH
 
     return result;
-	}
+  }
 
-	void fittingReportGet(double& rmsErr, double& avgErr, double& avgRelErr, double& maxErr) const
-	{
-		rmsErr = m_report.rmserror;
-		avgErr = m_report.avgerror;
-		avgRelErr = m_report.avgrelerror;
-		maxErr = m_report.maxerror;
-	}
+  void fittingReportGet(double& rmsErr, double& avgErr, double& avgRelErr, double& maxErr) const
+  {
+    rmsErr = m_report.rmserror;
+    avgErr = m_report.avgerror;
+    avgRelErr = m_report.avgrelerror;
+    maxErr = m_report.maxerror;
+  }
 
-	alglib::ae_int_t fittingInfoGet() const
-	{
-		return m_info;
-	}
+  alglib::ae_int_t fittingInfoGet() const
+  {
+    return m_info;
+  }
 
   const alglib::spline1dinterpolant& splinesGet() const { return m_interpolant; }
 
 protected:
-	alglib::spline1dinterpolant m_interpolant;
-	alglib::ae_int_t m_info;
-	alglib::spline1dfitreport m_report;
+  alglib::spline1dinterpolant m_interpolant;
+  alglib::ae_int_t m_info;
+  alglib::spline1dfitreport m_report;
 };
 //---------------------------------------------------------------------------
 
@@ -113,17 +113,17 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsMathSplineFit, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathSplineFit, calculate, double_CallConst_double, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathSplineFit, calculateV, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathSplineFit, calculateVectorInplace, void_CallConst_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathSplineFit, reset, void_Call, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathSplineFit, reset, void_Call, NO_METHOD_DESCR)
   // Properties
   ES_DECL_PROP_INFO_RO(             EsMathSplineFit, isOk, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathSplineFit, minX, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathSplineFit, minX, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathSplineFit, maxX, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathSplineFit, rangeX, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathSplineFit, info, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathSplineFit, rmsError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathSplineFit, avgError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathSplineFit, avgRelativeError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathSplineFit, maxError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathSplineFit, info, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathSplineFit, rmsError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathSplineFit, avgError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathSplineFit, avgRelativeError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathSplineFit, maxError, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathSplineFit, nodes, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
@@ -139,14 +139,14 @@ m_avgError(0),
 m_avgRelativeError(0),
 m_maxError(0)
 {
-	m_solver = new EsMathSplineFitSolver;
-	ES_ASSERT(m_solver);
+  m_solver = new EsMathSplineFitSolver;
+  ES_ASSERT(m_solver);
 }
 //---------------------------------------------------------------------------
 
 EsMathSplineFit::~EsMathSplineFit()
 {
-	ES_DELETE(m_solver);
+  ES_DELETE(m_solver);
 }
 //---------------------------------------------------------------------------
 
@@ -154,43 +154,43 @@ EsMathSplineFit::~EsMathSplineFit()
 //
 void EsMathSplineFit::resetFittingErrors()
 {
-	m_rmsError = m_avgError = m_avgRelativeError = m_maxError = 0;
+  m_rmsError = m_avgError = m_avgRelativeError = m_maxError = 0;
 }
 //---------------------------------------------------------------------------
 
 void EsMathSplineFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y,
-	ulong basisFunctionsCnt, const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
+  ulong basisFunctionsCnt, const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
 {
-	reset();
-	ES_ASSERT(m_solver);
+  reset();
+  ES_ASSERT(m_solver);
 
-	if(x.countGet() != y.countGet())
-		EsMathException::Throw(esT("x and y data arrays must be equally sized"));
-	if(x.countGet() < 2)
-		EsMathException::Throw(esT("Data array size is too small, must be at least 2"));
-	EsNumericCheck::checkRangeInteger(
+  if(x.countGet() != y.countGet())
+    EsMathException::Throw(esT("x and y data arrays must be equally sized"));
+  if(x.countGet() < 2)
+    EsMathException::Throw(esT("Data array size is too small, must be at least 2"));
+  EsNumericCheck::checkRangeInteger(
     4, 
     x.countGet()+2, 
     basisFunctionsCnt, 
     esT("Basis functions count")
   );
 
-	m_xmin = x.get_min();
-	m_xmax = x.get_max();
-	ES_ASSERT(m_xmin != m_xmax);
-	m_solver->build(x, y, basisFunctionsCnt, constraints);
-	m_solver->fittingReportGet(m_rmsError, m_avgError, m_avgRelativeError, m_maxError);
-	m_info = alglibInfoToFitInfo(m_solver->fittingInfoGet());
+  m_xmin = x.get_min();
+  m_xmax = x.get_max();
+  ES_ASSERT(m_xmin != m_xmax);
+  m_solver->build(x, y, basisFunctionsCnt, constraints);
+  m_solver->fittingReportGet(m_rmsError, m_avgError, m_avgRelativeError, m_maxError);
+  m_info = alglibInfoToFitInfo(m_solver->fittingInfoGet());
 }
 //---------------------------------------------------------------------------
 
 // x taken from y's indeces
 void EsMathSplineFit::build(const EsMathArrayReal& y, ulong basisFunctionsCnt, const EsMathFitConstraints& constraints /*= EsMathFitConstraints()*/)
 {
-	EsMathArrayReal x( y.countGet() );
-	for(ulong idx = 0; idx < x.countGet(); ++idx)
-		x.itemSet(idx, idx);
-	
+  EsMathArrayReal x( y.countGet() );
+  for(ulong idx = 0; idx < x.countGet(); ++idx)
+    x.itemSet(idx, idx);
+  
   build(
     x, 
     y, 
@@ -200,16 +200,16 @@ void EsMathSplineFit::build(const EsMathArrayReal& y, ulong basisFunctionsCnt, c
 }
 //---------------------------------------------------------------------------
 
-void EsMathSplineFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y,	ulong basisFunctionsCnt, double rho)
+void EsMathSplineFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y,  ulong basisFunctionsCnt, double rho)
 {
-	reset();
-	ES_ASSERT(m_solver);
+  reset();
+  ES_ASSERT(m_solver);
 
-	if(x.countGet() != y.countGet())
-		EsMathException::Throw(esT("x and y data arrays must be equally sized"));
-	if(x.countGet() < 2)
-		EsMathException::Throw(esT("Data array size is too small, must be at least 2"));
-	
+  if(x.countGet() != y.countGet())
+    EsMathException::Throw(esT("x and y data arrays must be equally sized"));
+  if(x.countGet() < 2)
+    EsMathException::Throw(esT("Data array size is too small, must be at least 2"));
+  
   EsNumericCheck::checkRangeInteger(
     4, 
     x.countGet()+2, 
@@ -217,32 +217,32 @@ void EsMathSplineFit::build(const EsMathArrayReal& x, const EsMathArrayReal& y,	
     esT("Basis functions count")
   );
 
-	m_xmin = x.get_min();
-	m_xmax = x.get_max();
-	ES_ASSERT(m_xmin != m_xmax);
-	m_solver->build(
+  m_xmin = x.get_min();
+  m_xmax = x.get_max();
+  ES_ASSERT(m_xmin != m_xmax);
+  m_solver->build(
     x, 
     y, 
     basisFunctionsCnt, 
     rho
   );
-	m_solver->fittingReportGet(
+  m_solver->fittingReportGet(
     m_rmsError, 
     m_avgError, 
     m_avgRelativeError, 
     m_maxError
   );
-	m_info = alglibInfoToFitInfo(m_solver->fittingInfoGet());
+  m_info = alglibInfoToFitInfo(m_solver->fittingInfoGet());
 }
 //---------------------------------------------------------------------------
 
 // x taken from y's indeces
 void EsMathSplineFit::build(const EsMathArrayReal& y, ulong basisFunctionsCnt, double rho)
 {
-	EsMathArrayReal x( y.countGet() );
-	for(ulong idx = 0; idx < x.countGet(); ++idx)
-		x.itemSet(idx, idx);
-	
+  EsMathArrayReal x( y.countGet() );
+  for(ulong idx = 0; idx < x.countGet(); ++idx)
+    x.itemSet(idx, idx);
+  
   build(
     x, 
     y, 
@@ -255,9 +255,9 @@ void EsMathSplineFit::build(const EsMathArrayReal& y, ulong basisFunctionsCnt, d
 // calculate spline value at specified point
 double EsMathSplineFit::calculate(double x) const
 {
-	ES_ASSERT(get_isOk());
+  ES_ASSERT(get_isOk());
 
-	return m_solver->calculate(x);
+  return m_solver->calculate(x);
 }
 //---------------------------------------------------------------------------
 
@@ -324,14 +324,14 @@ void EsMathSplineFit::calculateVectorInplace(cr_EsVariant in) const
 // reset spline fit to unbuilt state
 void EsMathSplineFit::reset()
 {
-	m_info = EsMathFitInfo::None;
-	resetFittingErrors();
+  m_info = EsMathFitInfo::None;
+  resetFittingErrors();
 }
 //---------------------------------------------------------------------------
 
 void EsMathSplineFit::tableGet(EsMathSplineTable& out) const
 {
-	ES_ASSERT(get_isOk());
+  ES_ASSERT(get_isOk());
 
   alglib::ae_int_t n;
   alglib::real_2d_array tbl;
@@ -356,9 +356,9 @@ void EsMathSplineFit::tableGet(EsMathSplineTable& out) const
 
 EsBaseIntfPtr EsMathSplineFit::NEW()
 {
-	std::unique_ptr<EsMathSplineFit> f( new EsMathSplineFit );
-	f->m_dynamic = true;
-	return f.release()->asBaseIntfPtrDirect();
+  std::unique_ptr<EsMathSplineFit> f( new EsMathSplineFit );
+  f->m_dynamic = true;
+  return f.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -533,7 +533,7 @@ void EsMathSplineFit::buildPenalized(cr_EsVariant vy, ulong basisCnt, cr_EsVaria
 bool EsMathSplineFit::get_isOk() const
 {
   return 0 != m_solver &&
-			EsMathFitInfo::Success == m_info;
+      EsMathFitInfo::Success == m_info;
 }
 //---------------------------------------------------------------------------
 

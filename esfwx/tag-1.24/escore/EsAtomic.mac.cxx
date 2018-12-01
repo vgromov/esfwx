@@ -5,13 +5,13 @@
 
 EsAtomic::int_t EsAtomic::inc(EsAtomic::int_t& subj) ES_NOTHROW
 {
-	return OSAtomicIncrement32( &subj );
+  return OSAtomicIncrement32( &subj );
 }
 //---------------------------------------------------------------------------
 
 EsAtomic::int_t EsAtomic::dec(EsAtomic::int_t& subj) ES_NOTHROW
 {
-	return OSAtomicDecrement32( &subj );
+  return OSAtomicDecrement32( &subj );
 }
 //---------------------------------------------------------------------------
 

@@ -33,7 +33,7 @@ public:
 
   /// EsBaseIntf implementation
   ///
- 	ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
+   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// EsFtdiDeviceIntf overrides
   ///
@@ -163,7 +163,7 @@ protected:
 
   //  This member provides a way to enable/disable features
   //  specific to the protocol that are implemented in the chip
-  //  BIT1-0=CPOL-CPHA:	00 - MODE0 - data captured on rising edge, propagated on falling
+  //  BIT1-0=CPOL-CPHA:  00 - MODE0 - data captured on rising edge, propagated on falling
   //            01 - MODE1 - data captured on falling edge, propagated on rising
   //            10 - MODE2 - data captured on falling edge, propagated on rising
   //            11 - MODE3 - data captured on rising edge, propagated on falling
@@ -173,21 +173,21 @@ protected:
   //       : 011 - A/B/C/D_DBUS6=ChipSelect
   //       : 100 - A/B/C/D_DBUS7=ChipSelect
   //  BIT5: ChipSelect is active high if this bit is 0
-  //  BIT6 -BIT31		: Reserved
+  //  BIT6 -BIT31    : Reserved
   //
-	esU32	m_optSPI;
+  esU32  m_optSPI;
 
   // BIT7  -BIT0:  Initial direction of the pins
   // BIT15 -BIT8:  Initial values of the pins
   // BIT23 -BIT16: Final direction of the pins
   // BIT31 -BIT24: Final values of the pins
   //
-	esU32	m_optPin;
+  esU32  m_optPin;
 
   // BIT7  -BIT0: Current direction of the pins
   // BIT15 -BIT8:   Current values of the pins
   //
-	esU16	m_currentPinState;
+  esU16  m_currentPinState;
 
   // Upon spi channel close, return pins to this state
   esU16 m_finalPinState;

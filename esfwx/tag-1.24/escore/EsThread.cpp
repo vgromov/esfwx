@@ -30,44 +30,44 @@ EsThreadState EsThread::stateGet() const
 
 void EsThread::start(long priority, EsThreadStartState ss /*= EsThreadStartState::Normal*/)
 {
-	EsThreadState state = stateGet();
-	if( EsThreadState::None != state )
-	{
-		switch( state )
-		{
+  EsThreadState state = stateGet();
+  if( EsThreadState::None != state )
+  {
+    switch( state )
+    {
     case EsThreadState::Suspended:
       resume();
       break;
-		case EsThreadState::Running:
-			EsException::Throw(_("Thread is already executing"));
-			break;
-		case EsThreadState::Stopping:
-			EsException::Throw(_("Thread is in stopping stage and could not be started until after termination"));
-			break;
-		}
-	}
-	else
-	{
-		// check priority value
-		EsNumericCheck::checkRangeInteger(
+    case EsThreadState::Running:
+      EsException::Throw(_("Thread is already executing"));
+      break;
+    case EsThreadState::Stopping:
+      EsException::Throw(_("Thread is in stopping stage and could not be started until after termination"));
+      break;
+    }
+  }
+  else
+  {
+    // check priority value
+    EsNumericCheck::checkRangeInteger(
       static_cast<long>(EsThreadPriority::Minimal),
       static_cast<long>(EsThreadPriority::Maximal),
       priority,
       esT("Thread priority")
     );
-		m_priority = priority;
+    m_priority = priority;
 
-		// re-initialize semaphores && misc members
-		//
-		// reset error
-		m_errorCode = 0;
-		// reset error log
-		m_errorLog.clear();
-		// reset start semaphore, just in case
-		m_started.tryWait();
+    // re-initialize semaphores && misc members
+    //
+    // reset error
+    m_errorCode = 0;
+    // reset error log
+    m_errorLog.clear();
+    // reset start semaphore, just in case
+    m_started.tryWait();
 
-		// cleanup, just in case
-		cleanup();
+    // cleanup, just in case
+    cleanup();
 
     // mark 'pause on start' condition
     if( EsThreadStartState::Suspended == ss )
@@ -79,57 +79,57 @@ void EsThread::start(long priority, EsThreadStartState ss /*= EsThreadStartState
 
     // wait until thread is really started
     m_started.wait(ES_INFINITE);
-	}
+  }
 }
 //---------------------------------------------------------------------------
 
 void EsThread::stop()
 {
-	if(
+  if(
 #if ES_OS == ES_OS_WINDOWS
-		0 == m_thread
+    0 == m_thread
 #elif defined(ES_POSIX_COMPAT)
-		EsThreadIdNone == m_id
+    EsThreadIdNone == m_id
 #endif
-	)
-		return;
+  )
+    return;
 
-	EsCriticalSectionLocker lock(m_cs);
-	if( EsThreadState::None != m_state )
-	{
-		m_state = EsThreadState::Stopping;
+  EsCriticalSectionLocker lock(m_cs);
+  if( EsThreadState::None != m_state )
+  {
+    m_state = EsThreadState::Stopping;
     m_pause.post();
-		m_stop.post();
-	}
+    m_stop.post();
+  }
 }
 //---------------------------------------------------------------------------
 
 void EsThread::stopAndWait()
 {
-	if(
+  if(
 #if ES_OS == ES_OS_WINDOWS
-		0 == m_thread
+    0 == m_thread
 #elif defined(ES_POSIX_COMPAT)
-		EsThreadIdNone == m_id
+    EsThreadIdNone == m_id
 #endif
-	)
-		return;
+  )
+    return;
 
-	if( EsThreadState::None != stateGet() )
-	{
-		stoppingSet();
-		// wait until thread is stopped
-		if( EsSemaphore::resultOk == m_stopped.wait(ES_INFINITE) )
-			m_stopped.post(); // enable multiple wait for stop
-	}
+  if( EsThreadState::None != stateGet() )
+  {
+    stoppingSet();
+    // wait until thread is stopped
+    if( EsSemaphore::resultOk == m_stopped.wait(ES_INFINITE) )
+      m_stopped.post(); // enable multiple wait for stop
+  }
 
-	cleanup();
+  cleanup();
 }
 //---------------------------------------------------------------------------
 
 void EsThread::suspend()
 {
-	EsCriticalSectionLocker lock(m_cs);
+  EsCriticalSectionLocker lock(m_cs);
   if( EsThreadState::Running == m_state )
   {
     if( EsSemaphore::resultOk == m_pause.wait() )
@@ -140,7 +140,7 @@ void EsThread::suspend()
 
 void EsThread::resume()
 {
-	EsCriticalSectionLocker lock(m_cs);
+  EsCriticalSectionLocker lock(m_cs);
   if( EsThreadState::Suspended == m_state )
   {
     m_state = EsThreadState::Running;
@@ -151,32 +151,32 @@ void EsThread::resume()
 
 long EsThread::exitCodeGet() const
 {
-	EsCriticalSectionLocker lock(m_cs);
-	return m_errorCode;
+  EsCriticalSectionLocker lock(m_cs);
+  return m_errorCode;
 }
 //---------------------------------------------------------------------------
 
 const EsString::Array& EsThread::errorLogGet() const
 {
-	EsCriticalSectionLocker lock(m_cs);
-	return m_errorLog;
+  EsCriticalSectionLocker lock(m_cs);
+  return m_errorLog;
 }
 //---------------------------------------------------------------------------
 
 void EsThread::errorLogAppend(const EsString& msg)
 {
-	EsCriticalSectionLocker lock(m_cs);
-	if( !msg.empty() )
-		m_errorLog.push_back(msg);
+  EsCriticalSectionLocker lock(m_cs);
+  if( !msg.empty() )
+    m_errorLog.push_back(msg);
 }
 //---------------------------------------------------------------------------
 
 void EsThread::resultSet(long error, const EsString& msg)
 {
-	EsCriticalSectionLocker lock(m_cs);
-	m_errorCode = error;
-	if( !msg.empty() )
-		m_errorLog.push_back(msg);
+  EsCriticalSectionLocker lock(m_cs);
+  m_errorCode = error;
+  if( !msg.empty() )
+    m_errorLog.push_back(msg);
 }
 //---------------------------------------------------------------------------
 
@@ -192,30 +192,30 @@ bool EsThread::checkForStopping(ulong ms)
 {
   pausedCheck();
 
-	if( EsSemaphore::resultOk == m_stop.wait(ms) )
-	{
-		m_stop.post(); // allow multiple stop re-query by releasing semaphore
-		return true;
-	}
+  if( EsSemaphore::resultOk == m_stop.wait(ms) )
+  {
+    m_stop.post(); // allow multiple stop re-query by releasing semaphore
+    return true;
+  }
 
-	return false;
+  return false;
 }
 //---------------------------------------------------------------------------
 
 void EsThread::runningSet()
 {
-	EsCriticalSectionLocker lock(m_cs);
-	m_state = EsThreadState::Running;
-	m_started.post();
+  EsCriticalSectionLocker lock(m_cs);
+  m_state = EsThreadState::Running;
+  m_started.post();
 }
 //---------------------------------------------------------------------------
 
 void EsThread::stoppingSet()
 {
-	EsCriticalSectionLocker lock(m_cs);
-	m_state = EsThreadState::Stopping;
+  EsCriticalSectionLocker lock(m_cs);
+  m_state = EsThreadState::Stopping;
   m_pause.post();
-	m_stop.post();
+  m_stop.post();
 }
 //---------------------------------------------------------------------------
 
@@ -223,7 +223,7 @@ void EsThread::startSuspendedCheck()
 {
   if( EsSemaphore::resultOk != m_pause.tryWait() )
   {
-  	EsCriticalSectionLocker lock(m_cs);
+    EsCriticalSectionLocker lock(m_cs);
     m_state = EsThreadState::Suspended;
   }
   else
@@ -236,32 +236,32 @@ void EsThread::startSuspendedCheck()
 // EsThreadStateProxy helper implementation
 //
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsThreadStateProxy, NO_CLASS_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsThreadStateProxy, checkForStop, bool_Call_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsThreadStateProxy, checkForStop, bool_Call_ulong, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
 bool EsThreadStateProxy::checkForStop(ulong tmo)
 {
-	return m_thread.checkForStopping(tmo);
+  return m_thread.checkForStopping(tmo);
 }
 //---------------------------------------------------------------------------
 
 bool EsThreadStateProxy::isBreaking() const
 {
-	return m_thread.checkForStopping(0);
+  return m_thread.checkForStopping(0);
 }
 //---------------------------------------------------------------------------
 
 bool EsThreadStateProxy::isBreaking(ulong ms) const
 {
-	return m_thread.checkForStopping(ms);
+  return m_thread.checkForStopping(ms);
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntf::Ptr EsThread::threadStateProxyGet()
 {
-	std::unique_ptr<EsThreadStateProxy> proxy( new EsThreadStateProxy(*this) );
-	return proxy.release()->asBaseIntfPtrDirect();
+  std::unique_ptr<EsThreadStateProxy> proxy( new EsThreadStateProxy(*this) );
+  return proxy.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -379,14 +379,14 @@ EsThread::ResultT ES_THREADCALL EsThread::threadWorker( EsThread::ParamT param )
 
   ES_THREAD_EXIT
 
-	return (EsThread::ResultT)error;
+  return (EsThread::ResultT)error;
 }
 //---------------------------------------------------------------------------
 
 bool EsThread::isMain()
 {
-	return !s_mainId ||
-		s_mainId == currentIdGet();
+  return !s_mainId ||
+    s_mainId == currentIdGet();
 }
 //---------------------------------------------------------------------------
 

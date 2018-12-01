@@ -26,13 +26,13 @@ typedef void (*_cproxyT)(EsVariant&, const EsMethodT&, const EsVariant& params);
 
 EsAttributesIntf::Ptr EsAttributes::create(const EsString& ownerName, bool interlocked) ES_NOTHROW
 {
-	std::unique_ptr<EsAttributes> p(
+  std::unique_ptr<EsAttributes> p(
     new EsAttributes(
       ownerName,
       interlocked
     )
   );
-	ES_ASSERT(p.get());
+  ES_ASSERT(p.get());
 
   return p.release()->asBaseIntfPtrDirect();
 }
@@ -41,93 +41,93 @@ EsAttributesIntf::Ptr EsAttributes::create(const EsString& ownerName, bool inter
 /// EsBaseIntf implementation
 EsString EsAttributes::typeNameGet() const ES_NOTHROW
 {
-	const EsString& owner = m_contents.nameGet();
-	if( owner.empty() )
-		return esT("EsAttributes");
-	else
-		return esT("EsAttributes of ") + owner;
+  const EsString& owner = m_contents.nameGet();
+  if( owner.empty() )
+    return esT("EsAttributes");
+  else
+    return esT("EsAttributes of ") + owner;
 }
 //---------------------------------------------------------------------------
 
 /// EsAttributesIntf implementation
 EsAttributesIntf::Ptr EsAttributes::clone() const
 {
-	std::unique_ptr<EsAttributes> p(
+  std::unique_ptr<EsAttributes> p(
     new EsAttributes(
       m_contents.nameGet(),
       m_contents.isInterlocked()
     )
   );
-	ES_ASSERT(p.get());
+  ES_ASSERT(p.get());
 
-	p->m_contents = m_contents;
-	return p.release()->asBaseIntfPtrDirect();
+  p->m_contents = m_contents;
+  return p.release()->asBaseIntfPtrDirect();
 
 }
 //---------------------------------------------------------------------------
 
 const EsString& EsAttributes::ownerNameGet() const ES_NOTHROW
 {
-	return m_contents.nameGet();
+  return m_contents.nameGet();
 }
 //---------------------------------------------------------------------------
 
 void EsAttributes::clearAll() ES_NOTHROW
 {
-	m_contents.clear();
+  m_contents.clear();
 }
 //---------------------------------------------------------------------------
 
 EsStringArray EsAttributes::allNamesGet() const ES_NOTHROW
 {
-	return m_contents.namesGet();
+  return m_contents.namesGet();
 }
 //---------------------------------------------------------------------------
 
 const EsVariant& EsAttributes::attributeGet(const EsString& name) const
 {
-	return m_contents.valueGet(name);
+  return m_contents.valueGet(name);
 }
 //---------------------------------------------------------------------------
 
 bool EsAttributes::attributeExists(const EsString& name) const ES_NOTHROW
 {
-	return m_contents.itemExists(name);
+  return m_contents.itemExists(name);
 }
 //---------------------------------------------------------------------------
 
 const EsVariant& EsAttributes::attributeGetDef(const EsString& name, const EsVariant& def) const ES_NOTHROW
 {
-	ulong idx = m_contents.itemFind(name);
-	if( EsStringIndexedMap::npos != idx )
-		return m_contents.valueGet(idx);
-	else
-		return def;
+  ulong idx = m_contents.itemFind(name);
+  if( EsStringIndexedMap::npos != idx )
+    return m_contents.valueGet(idx);
+  else
+    return def;
 }
 //---------------------------------------------------------------------------
 
 EsAttributesIntf::Ptr EsAttributes::attributeSet(const EsString& name, const EsVariant& val, bool create /*= false*/)
 {
-	if( attributeExists(name) )
-		m_contents.valueSet(name, val);
-	else if( create )
-		m_contents.itemAdd(name, val);
-	else
-		EsException::Throw(
+  if( attributeExists(name) )
+    m_contents.valueSet(name, val);
+  else if( create )
+    m_contents.itemAdd(name, val);
+  else
+    EsException::Throw(
       esT("Attribute '%s' does not exist in '%s'"),
       name,
       m_contents.nameGet()
     );
 
-	return asBaseIntfPtrDirectWeak();
+  return asBaseIntfPtrDirectWeak();
 }
 //---------------------------------------------------------------------------
 
 EsAttributesIntf::Ptr EsAttributes::attributeAdd(const EsString& name, const EsVariant& val)
 {
-	m_contents.itemAdd(name, val);
+  m_contents.itemAdd(name, val);
 
-	return asBaseIntfPtrDirectWeak();
+  return asBaseIntfPtrDirectWeak();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -151,27 +151,27 @@ m_name(name)
 
 EsMethodInfoKeyT::EsMethodInfoKeyT(const EsString& mangledName)
 {
-	fromMangledName(mangledName);
+  fromMangledName(mangledName);
 }
 //---------------------------------------------------------------------------
 
 void EsMethodInfoKeyT::fromMangledName(const EsString& mangledName)
 {
-	static EsRegEx s_re(
+  static EsRegEx s_re(
     esT("^([_a-zA-Z][0-9_a-zA-Z]*)\\|([0-9])$")
   );
 
-	s_re.set_text(mangledName);
-	if( s_re.get_matches() )
-	{
-		const EsString& name = s_re.matchGet(1);
-		size_t paramsCount = EsString::toULong(s_re.matchGet(2));
+  s_re.set_text(mangledName);
+  if( s_re.get_matches() )
+  {
+    const EsString& name = s_re.matchGet(1);
+    ulong paramsCount = EsString::toULong(s_re.matchGet(2));
 
-		m_paramsCount = paramsCount;
-		m_name = name;
-	}
-	else
-		EsException::Throw(
+    m_paramsCount = paramsCount;
+    m_name = name;
+  }
+  else
+    EsException::Throw(
       esT("Invalid method mangled name '%s'"),
       mangledName
     );
@@ -180,20 +180,20 @@ void EsMethodInfoKeyT::fromMangledName(const EsString& mangledName)
 
 bool EsMethodInfoKeyT::operator <(const EsMethodInfoKeyT& other) const ES_NOTHROW
 {
-	long cmpResult = m_name.compare(other.m_name);
-	if( EsString::cmpLess == cmpResult )
-		return true;
-	else if( EsString::cmpEqual == cmpResult )
-		return m_paramsCount < other.m_paramsCount;
+  long cmpResult = m_name.compare(other.m_name);
+  if( EsString::cmpLess == cmpResult )
+    return true;
+  else if( EsString::cmpEqual == cmpResult )
+    return m_paramsCount < other.m_paramsCount;
 
-	return false;
+  return false;
 }
 //---------------------------------------------------------------------------
 
 EsString EsMethodInfoKeyT::asString() const
 {
-	ES_ASSERT(isOk());
-	return EsString::format(
+  ES_ASSERT(isOk());
+  return EsString::format(
     esT("%s|%d"),
     m_name,
     m_paramsCount
@@ -218,13 +218,13 @@ EsMethodInfo::SigStringsT& EsMethodInfo::SigStringsT::add(MethodSignature sig, c
 }
 //---------------------------------------------------------------------------
 
-const EsString& EsMethodInfo::SigStringsT::stringGet(int sig) const ES_NOTHROW
+const EsString& EsMethodInfo::SigStringsT::stringGet(long sig) const ES_NOTHROW
 {
-	SigsT::const_iterator cit = m_sigs.find(sig);
-	if( cit != m_sigs.end() )
-		return cit->second;
-	else
-		return EsString::null();
+  SigsT::const_iterator cit = m_sigs.find(sig);
+  if( cit != m_sigs.end() )
+    return cit->second;
+  else
+    return EsString::null();
 }
 //---------------------------------------------------------------------------
 
@@ -241,8 +241,8 @@ void EsMethodInfo::SigStringsT::init()
 //
 EsMethodInfo::EsMethodInfo(
   EsClassInfo& owner,
-  int sig,
-  esU8 paramsCount,
+  long sig,
+  ulong paramsCount,
   const EsString& name,
   const EsString& descr,
   EsMemberCallT method
@@ -260,25 +260,25 @@ m_paramsCount(paramsCount)
 {
   m_method.m_method = method;
 
-	ES_ASSERT( method );
-	ES_ASSERT( sig > invalidSignature );
-	ES_ASSERT( sig < methodSignaturesEnd );
-	// calculate hash
-	m_name.hashGet();
-	if( !descr.empty() )
-		m_attrs->attributeAdd(esT("help"), descr);
-	owner.m_methods[ EsMethodInfoKeyT(m_paramsCount, m_name) ] = this;
+  ES_ASSERT( method );
+  ES_ASSERT( sig > invalidSignature );
+  ES_ASSERT( sig < methodSignaturesEnd );
+  // calculate hash
+  m_name.hashGet();
+  if( !descr.empty() )
+    m_attrs->attributeAdd(esT("help"), descr);
+  owner.m_methods[ EsMethodInfoKeyT(m_paramsCount, m_name) ] = this;
 }
 //---------------------------------------------------------------------------
 
 EsMethodInfo::EsMethodInfo(
   EsClassInfo& owner,
-  int sig,
-  esU8 paramsCount,
+  long sig,
+  ulong paramsCount,
   const EsString& name,
   const EsString& descr,
   EsClassCallT classMethod,
-  int ES_UNUSED(tagClassCallInfo)
+  long ES_UNUSED(tagClassCallInfo)
 ) ES_NOTHROW :
 m_owner(owner),
 m_name(name),
@@ -293,24 +293,24 @@ m_paramsCount(paramsCount)
 {
   m_method.m_classMethod = classMethod;
 
-	ES_ASSERT( classMethod );
-	ES_ASSERT( sig > invalidSignature );
-	ES_ASSERT( maxMethodSignature < sig && sig < classMethodSignaturesEnd );
-	// calculate hash
-	m_name.hashGet();
-	if( !descr.empty() )
-		m_attrs->attributeAdd(esT("help"), descr);
-	owner.m_classMethods[ EsMethodInfoKeyT(m_paramsCount, m_name) ] = this;
+  ES_ASSERT( classMethod );
+  ES_ASSERT( sig > invalidSignature );
+  ES_ASSERT( maxMethodSignature < sig && sig < classMethodSignaturesEnd );
+  // calculate hash
+  m_name.hashGet();
+  if( !descr.empty() )
+    m_attrs->attributeAdd(esT("help"), descr);
+  owner.m_classMethods[ EsMethodInfoKeyT(m_paramsCount, m_name) ] = this;
 }
 //---------------------------------------------------------------------------
 
 // initialize interface method info
 EsMethodInfo::EsMethodInfo(
   EsClassInfo& owner,
-  int sig,
+  long sig,
   const EsIID& iid,
-  esU8 paramsCount,
-	const EsString& name,
+  ulong paramsCount,
+  const EsString& name,
   const EsString& descr,
   EsMemberCallT intfMethod
 ) ES_NOTHROW :
@@ -328,14 +328,14 @@ m_paramsCount(paramsCount)
 {
   m_method.m_method = intfMethod;
 
-	ES_ASSERT( intfMethod );
-	ES_ASSERT( sig > invalidSignature );
-	ES_ASSERT( sig < methodSignaturesEnd );
-	// calculate hash
-	m_name.hashGet();
-	if( !descr.empty() )
-		m_attrs->attributeAdd(esT("help"), descr);
-	owner.m_methods[ EsMethodInfoKeyT(m_paramsCount, m_name) ] = this;
+  ES_ASSERT( intfMethod );
+  ES_ASSERT( sig > invalidSignature );
+  ES_ASSERT( sig < methodSignaturesEnd );
+  // calculate hash
+  m_name.hashGet();
+  if( !descr.empty() )
+    m_attrs->attributeAdd(esT("help"), descr);
+  owner.m_methods[ EsMethodInfoKeyT(m_paramsCount, m_name) ] = this;
 }
 //---------------------------------------------------------------------------
 
@@ -352,32 +352,32 @@ const EsMethodInfo::SigStringsT& EsMethodInfo::sigs() ES_NOTHROW
 
 EsString EsMethodInfo::descriptionGet() const
 {
-	EsString result = EsString::format(
+  EsString result = EsString::format(
     esT("%s(%s)"),
     m_name,
     signatureStringGet()
   );
 
-	EsVariant help = m_attrs->attributeGetDef(
+  EsVariant help = m_attrs->attributeGetDef(
     esT("help"),
     EsVariant::null()
   );
 
-	if( !help.isEmpty() )
-		result += esT("\n") + esTranslationGet( help.asString() );
+  if( !help.isEmpty() )
+    result += esT("\n") + esTranslationGet( help.asString() );
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
-void EsMethodInfo::checkSignature(int sig)
+void EsMethodInfo::checkSignature(long sig)
 {
-	if( sig <= invalidSignature )
-		EsException::Throw(esT("Invalid method signature value: %d"), sig);
-	else if( sig >= methodSignaturesEnd && sig <= maxMethodSignature )
-		EsException::Throw(esT("Unknown method signature: %d"), sig);
-	else if( sig >= classMethodSignaturesEnd )
-		EsException::Throw(esT("Unknown class method signature: %d"), sig);
+  if( sig <= invalidSignature )
+    EsException::Throw(esT("Invalid method signature value: %d"), sig);
+  else if( sig >= methodSignaturesEnd && sig <= maxMethodSignature )
+    EsException::Throw(esT("Unknown method signature: %d"), sig);
+  else if( sig >= classMethodSignaturesEnd )
+    EsException::Throw(esT("Unknown class method signature: %d"), sig);
 }
 //---------------------------------------------------------------------------
 
@@ -396,38 +396,38 @@ EsString EsMethodInfo::fqNameGet() const
 // Parameter checks
 void EsMethodInfo::checkParamsCount(const EsVariant& params) const
 {
-	if( m_paramsCount )
-	{
-		if(
+  if( m_paramsCount )
+  {
+    if(
       (1 < m_paramsCount && EsVariant::VAR_VARIANT_COLLECTION != params.typeGet()) ||
-			(1 == m_paramsCount && params.isEmpty())
+      (1 == m_paramsCount && params.isEmpty())
     )
-			EsException::Throw(
+      EsException::Throw(
         esT("Parameter list expected in call to %s.%s of type %s"),
-				m_owner.nameGet(),
+        m_owner.nameGet(),
         m_name,
         signatureStringGet()
       );
-		else if(
+    else if(
       EsVariant::VAR_VARIANT_COLLECTION == params.typeGet() &&
-			m_paramsCount != params.countGet()
+      m_paramsCount != params.countGet()
     )
-			EsException::Throw(
+      EsException::Throw(
         esT("Wrong parameters count in call to %s.%s of type %s; expected %d, got %d"),
-				m_owner.nameGet(),
+        m_owner.nameGet(),
         m_name,
         signatureStringGet(),
-				m_paramsCount,
+        m_paramsCount,
         params.countGet()
       );
-	}
-	else if(
+  }
+  else if(
     !params.isEmpty() &&
-		!(params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION && 0 == params.countGet())
+    !(params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION && 0 == params.countGet())
   )
-			EsException::Throw(
+      EsException::Throw(
         esT("Method %s.%s of type %s does not expect parameters"),
-				m_owner.nameGet(),
+        m_owner.nameGet(),
         m_name,
         signatureStringGet()
       );
@@ -445,36 +445,36 @@ void EsMethodInfo::checkParamsCount(const EsVariant& params) const
 // object member function caller
 EsVariant EsMethodInfo::call(EsBaseIntf* obj, const EsVariant& params) const
 {
-	// assert it's normal method
-	if( isClassMethod() )
-		EsException::Throw(
+  // assert it's normal method
+  if( isClassMethod() )
+    EsException::Throw(
       esT("The method %s.%s of type %s is class method"),
-		  m_owner.nameGet(),
+      m_owner.nameGet(),
       m_name,
       signatureStringGet()
     );
-	else if( !obj )
-		EsException::Throw(
+  else if( !obj )
+    EsException::Throw(
       esT("Cannot call method %s.%s of type %s without an object"),
-		  m_owner.nameGet(),
+      m_owner.nameGet(),
       m_name,
       signatureStringGet()
     );
 
-	checkParamsCount(params);
+  checkParamsCount(params);
 
-	EsVariant result;
+  EsVariant result;
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-	// cast to properly aligned interface pointer, if it's reflected interface method.
-	if( !m_iid.empty() )
-	{
-		obj = (EsBaseIntf*)obj->requestIntf(
+  // cast to properly aligned interface pointer, if it's reflected interface method.
+  if( !m_iid.empty() )
+  {
+    obj = (EsBaseIntf*)obj->requestIntf(
       m_iid,
       false
     );
-		ES_ASSERT(obj);
-	}
+    ES_ASSERT(obj);
+  }
 #endif
 
   // Call member jump table
@@ -487,38 +487,38 @@ EsVariant EsMethodInfo::call(EsBaseIntf* obj, const EsVariant& params) const
     params
   );
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 // class function caller
 EsVariant EsMethodInfo::classCall(const EsVariant& params) const
 {
-	// assert it's class method
-	if( !isClassMethod() )
-		EsException::Throw(
-		  esT("The method %s.%s of type %s is not a class method and cannot be called without an object"),
-		  m_owner.nameGet(),
+  // assert it's class method
+  if( !isClassMethod() )
+    EsException::Throw(
+      esT("The method %s.%s of type %s is not a class method and cannot be called without an object"),
+      m_owner.nameGet(),
       m_name,
       signatureStringGet()
     );
 
-	checkParamsCount(params);
+  checkParamsCount(params);
 
-	EsVariant result;
+  EsVariant result;
 
   // Call static members jump table
   ES_ASSERT( m_signature > maxMethodSignature );
   ES_ASSERT( m_signature < classMethodSignaturesEnd );
 
-  int staticSig = m_signature-maxMethodSignature-1;
+  long staticSig = m_signature-maxMethodSignature-1;
   EsReflectionCallProxies::sc_staticProxies[staticSig](
     result,
     m_method,
     params
   );
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
@@ -527,18 +527,18 @@ void EsMethodInfo::fqNameParse(
   EsString& className,
   bool& isClassMethod,
   EsString& methodName,
-  int& paramCount,
+  ulong& paramCount,
   EsString& signature
 )
 {
-	static EsRegEx s_re(
+  static EsRegEx s_re(
     esT("^([_a-zA-Z][0-9_a-zA-Z]*)(\\:{2}|\\.)([_a-zA-Z][0-9_a-zA-Z]*)\\|([0-9])\\|([0-9_a-zA-Z]+)$")
   );
 
-	s_re.set_text(fqName);
+  s_re.set_text(fqName);
 
-	if( !s_re.get_matches() )
-		EsException::Throw(
+  if( !s_re.get_matches() )
+    EsException::Throw(
       esT("Could not parse FQ name. Invalid FQ method name: '%s'"),
       fqName
     );
@@ -559,7 +559,7 @@ const EsMethodInfo* EsMethodInfo::infoFromFqNameGet(const EsString& fqName, bool
   EsString className;
   bool isClassMethod;
   EsString methodName;
-  int paramCount;
+  ulong paramCount;
   EsString signature;
 
   EsMethodInfo::fqNameParse(
@@ -571,7 +571,7 @@ const EsMethodInfo* EsMethodInfo::infoFromFqNameGet(const EsString& fqName, bool
     signature
   );
 
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className, true);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className, true);
   EsMethodInfoKeyT key(
     paramCount,
     methodName
@@ -596,11 +596,11 @@ const EsMethodInfo* EsMethodInfo::infoFromFqNameGet(const EsString& fqName, bool
 // prop info name comparison predicate
 struct PropertyInfoNameIs
 {
-	PropertyInfoNameIs(const EsString& name) : m_name(name) {}
-	inline bool operator() (const EsPropertyInfo* info) const
-	{ ES_ASSERT(info); return m_name == info->nameGet(); }
+  PropertyInfoNameIs(const EsString& name) : m_name(name) {}
+  inline bool operator() (const EsPropertyInfo* info) const
+  { ES_ASSERT(info); return m_name == info->nameGet(); }
 
-	const EsString& m_name;
+  const EsString& m_name;
 };
 //---------------------------------------------------------------------------
 
@@ -614,9 +614,9 @@ EsPropertyInfo::EsPropertyInfo(
   const EsString& descr,
   const EsVariant& def,
   EsMemberCallT reader,
-  int readerSig,
+  long readerSig,
   EsMemberCallT writer,
-  int writerSig,
+  long writerSig,
   const EsVariant& restriction,
   bool persistent /*= false*/
 ) :
@@ -633,73 +633,73 @@ m_readerSignature(readerSig),
 m_writer(writer),
 m_writerSignature(writerSig)
 {
-	// assert reader & writer signatures
-	ES_ASSERT( m_reader ? (invalidSignature < readerSig && readerSig < methodSignaturesEnd) : true );
-	ES_ASSERT( m_writer ? (invalidSignature < writerSig && writerSig < methodSignaturesEnd) : true );
-	// calculate hash
-	m_name.hashGet();
-	// validate default value, if set
-	if( !def.isEmpty() )
-	{
-		validate(def, true);
-		m_attrs->attributeAdd(esT("default"), def);
-	}
-	if( !label.empty() )
-		m_attrs->attributeAdd(esT("label"), label);
-	if( !descr.empty() )
-		m_attrs->attributeAdd(esT("help"), descr);
-	if( !restriction.isEmpty() )
-		m_attrs->attributeAdd(esT("restriction"), restriction);
-	// ensure wee have both reader and writer if persistent flag is set
-	ES_ASSERT( persistent ? persistent && canRead() && canWrite() : true );
-	if( persistent && canRead() && canWrite() )
-		m_attrs->attributeAdd(esT("persistent"), EsVariant::null());
+  // assert reader & writer signatures
+  ES_ASSERT( m_reader ? (invalidSignature < readerSig && readerSig < methodSignaturesEnd) : true );
+  ES_ASSERT( m_writer ? (invalidSignature < writerSig && writerSig < methodSignaturesEnd) : true );
+  // calculate hash
+  m_name.hashGet();
+  // validate default value, if set
+  if( !def.isEmpty() )
+  {
+    validate(def, true);
+    m_attrs->attributeAdd(esT("default"), def);
+  }
+  if( !label.empty() )
+    m_attrs->attributeAdd(esT("label"), label);
+  if( !descr.empty() )
+    m_attrs->attributeAdd(esT("help"), descr);
+  if( !restriction.isEmpty() )
+    m_attrs->attributeAdd(esT("restriction"), restriction);
+  // ensure wee have both reader and writer if persistent flag is set
+  ES_ASSERT( persistent ? persistent && canRead() && canWrite() : true );
+  if( persistent && canRead() && canWrite() )
+    m_attrs->attributeAdd(esT("persistent"), EsVariant::null());
 
-	// append reflected property info to the metaclass
-	owner.m_propInfos.push_back(this);
+  // append reflected property info to the metaclass
+  owner.m_propInfos.push_back(this);
 }
 //---------------------------------------------------------------------------
 
 bool EsPropertyInfo::isPersistent() const ES_NOTHROW
 {
-	return m_attrs->attributeExists(esT("persistent")) && canRead() && canWrite();
+  return m_attrs->attributeExists(esT("persistent")) && canRead() && canWrite();
 }
 //---------------------------------------------------------------------------
 
 // generic value access
 EsVariant EsPropertyInfo::get(const EsBaseIntf* obj) const
 {
-	if( !obj )
-		EsException::Throw(esT("Cannot get property without an object"));
+  if( !obj )
+    EsException::Throw(esT("Cannot get property without an object"));
 
-	EsVariant result;
+  EsVariant result;
 
-	// generate property getters
-	#include "EsReflectionDefGetters.hxx"
+  // generate property getters
+  #include "EsReflectionDefGetters.hxx"
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 void EsPropertyInfo::set(EsBaseIntf* obj, const EsVariant& val) const
 {
-	if( !obj )
-		EsException::Throw(esT("Cannot set property without an object"));
+  if( !obj )
+    EsException::Throw(esT("Cannot set property without an object"));
 
-	// generate setters
-	#include "EsReflectionDefSetters.hxx"
+  // generate setters
+  #include "EsReflectionDefSetters.hxx"
 }
 //---------------------------------------------------------------------------
 
 // reset property value to default, if there is one. if property has no default, exception is thrown
 void EsPropertyInfo::reset(EsBaseIntf* obj) const
 {
-	if( defaultExists() )
-		set(obj, defaultGet());
-	else
-		EsException::Throw(
+  if( defaultExists() )
+    set(obj, defaultGet());
+  else
+    EsException::Throw(
       esT("Property '%s.%s' does not have default value"),
-		  m_owner.nameGet(),
+      m_owner.nameGet(),
       nameGet()
     );
 }
@@ -707,63 +707,63 @@ void EsPropertyInfo::reset(EsBaseIntf* obj) const
 
 const EsVariant& EsPropertyInfo::defaultGet() const
 {
-	return m_attrs->attributeGet(esT("default"));
+  return m_attrs->attributeGet(esT("default"));
 }
 //---------------------------------------------------------------------------
 
 bool EsPropertyInfo::defaultExists() const ES_NOTHROW
 {
-	return m_attrs->attributeExists(esT("default"));
+  return m_attrs->attributeExists(esT("default"));
 }
 //---------------------------------------------------------------------------
 
 EsString EsPropertyInfo::labelGet() const ES_NOTHROW
 {
-	EsVariant label = m_attrs->attributeGetDef(esT("label"), EsVariant::null());
-	if( !label.isEmpty() )
-		return esTranslationGet( label.asString().c_str() );
+  EsVariant label = m_attrs->attributeGetDef(esT("label"), EsVariant::null());
+  if( !label.isEmpty() )
+    return esTranslationGet( label.asString().c_str() );
 
-	return m_name;
+  return m_name;
 }
 //---------------------------------------------------------------------------
 
 EsString EsPropertyInfo::descriptionGet() const ES_NOTHROW
 {
-	EsVariant help = m_attrs->attributeGetDef(esT("help"), EsVariant::null());
-	if( !help.isEmpty() )
-		return esT("\n") + esTranslationGet( help.asString() );
+  EsVariant help = m_attrs->attributeGetDef(esT("help"), EsVariant::null());
+  if( !help.isEmpty() )
+    return esT("\n") + esTranslationGet( help.asString() );
 
-	return m_name;
+  return m_name;
 }
 //---------------------------------------------------------------------------
 
 const EsVariant& EsPropertyInfo::restrictionGet() const
 {
-	return m_attrs->attributeGet(esT("restriction"));
+  return m_attrs->attributeGet(esT("restriction"));
 }
 //---------------------------------------------------------------------------
 
 bool EsPropertyInfo::restrictionExists() const ES_NOTHROW
 {
-	return m_attrs->attributeExists(esT("restriction"));
+  return m_attrs->attributeExists(esT("restriction"));
 }
 //---------------------------------------------------------------------------
 
 bool EsPropertyInfo::validate(const EsVariant &val, bool doThrow/* = false*/) const
 {
-	if( restrictionExists() )
-	{
-		bool result = restrictionGet().has(val);
-		if( !result && doThrow )
-			EsException::Throw(
-				esT("Property '%s' value does not comply with restriction"),
-				m_name
+  if( restrictionExists() )
+  {
+    bool result = restrictionGet().has(val);
+    if( !result && doThrow )
+      EsException::Throw(
+        esT("Property '%s' value does not comply with restriction"),
+        m_name
       );
 
-		return result;
-	}
+    return result;
+  }
 
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 
@@ -780,8 +780,8 @@ m_attrs(
   )
 )
 {
-	if( !descr.empty() )
-		m_attrs->attributeAdd(esT("help"), descr);
+  if( !descr.empty() )
+    m_attrs->attributeAdd(esT("help"), descr);
 
   doRegister();
 }
@@ -853,33 +853,33 @@ void EsClassInfo::unregister(EsClassRegistryAccessorT acc /*= nullptr*/) const
 // inheritance access
 bool EsClassInfo::isKindOf(const EsString& name) const ES_NOTHROW
 {
-	// check self
-	if( name == m_name )
-		return true;
-	else
-	{
-		// look-up ancestors
-		const EsClassInfo* ancestor = m_ancestor;
-		while( ancestor )
-		{
-			const EsString& aname = ancestor->nameGet();
-			if( name == aname )
-				return true;
-			ancestor = ancestor->m_ancestor;
-		}
-	}
+  // check self
+  if( name == m_name )
+    return true;
+  else
+  {
+    // look-up ancestors
+    const EsClassInfo* ancestor = m_ancestor;
+    while( ancestor )
+    {
+      const EsString& aname = ancestor->nameGet();
+      if( name == aname )
+        return true;
+      ancestor = ancestor->m_ancestor;
+    }
+  }
 
-	return false;
+  return false;
 }
 //---------------------------------------------------------------------------
 
  EsString EsClassInfo::descriptionGet() const ES_NOTHROW
 {
-	EsVariant help = m_attrs->attributeGetDef(esT("help"), EsVariant::null());
-	if( help.isEmpty() )
-		return m_name;
-	else
-		return esTranslationGet(help.asString().c_str());
+  EsVariant help = m_attrs->attributeGetDef(esT("help"), EsVariant::null());
+  if( help.isEmpty() )
+    return m_name;
+  else
+    return esTranslationGet(help.asString().c_str());
 }
 //---------------------------------------------------------------------------
 
@@ -888,189 +888,189 @@ bool EsClassInfo::isKindOf(const EsString& name) const ES_NOTHROW
 // property names enumeration helper
 void EsClassInfo::appendPropertyNames(EsString::Array& out, bool onlyPersistent, bool allHierarchy) const
 {
-	if( allHierarchy && m_ancestor )
-		m_ancestor->appendPropertyNames(out, onlyPersistent, allHierarchy);
+  if( allHierarchy && m_ancestor )
+    m_ancestor->appendPropertyNames(out, onlyPersistent, allHierarchy);
 
-	for(PropertyInfosT::const_iterator cit = m_propInfos.begin(); cit != m_propInfos.end(); ++cit)
-	{
-		if( onlyPersistent )
-		{
-			if( (*cit)->isPersistent() )
-				out.push_back( (*cit)->nameGet() );
-		}
-		else
-			out.push_back( (*cit)->nameGet() );
-	}
+  for(PropertyInfosT::const_iterator cit = m_propInfos.begin(); cit != m_propInfos.end(); ++cit)
+  {
+    if( onlyPersistent )
+    {
+      if( (*cit)->isPersistent() )
+        out.push_back( (*cit)->nameGet() );
+    }
+    else
+      out.push_back( (*cit)->nameGet() );
+  }
 }
 //---------------------------------------------------------------------------
 
 void EsClassInfo::appendPropertyInfos(PropertyInfosT& out, bool onlyPersistent, bool allHierarchy) const
 {
-	if( allHierarchy && m_ancestor )
-		m_ancestor->appendPropertyInfos(out, onlyPersistent, allHierarchy);
+  if( allHierarchy && m_ancestor )
+    m_ancestor->appendPropertyInfos(out, onlyPersistent, allHierarchy);
 
-	for(PropertyInfosT::const_iterator cit = m_propInfos.begin(); cit != m_propInfos.end(); ++cit)
-	{
-		if( onlyPersistent )
-		{
-			if( (*cit)->isPersistent() )
-				out.push_back( *cit );
-		}
-		else
-			out.push_back( *cit );
-	}
+  for(PropertyInfosT::const_iterator cit = m_propInfos.begin(); cit != m_propInfos.end(); ++cit)
+  {
+    if( onlyPersistent )
+    {
+      if( (*cit)->isPersistent() )
+        out.push_back( *cit );
+    }
+    else
+      out.push_back( *cit );
+  }
 }
 //---------------------------------------------------------------------------
 
 EsString::Array EsClassInfo::propertyNamesGet(bool onlyPersistent /*= false*/, bool allHierarchy /*= true*/) const ES_NOTHROW
 {
-	EsString::Array result;
-	appendPropertyNames(result, onlyPersistent, allHierarchy);
+  EsString::Array result;
+  appendPropertyNames(result, onlyPersistent, allHierarchy);
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 EsClassInfo::PropertyInfosT EsClassInfo::propertyInfosGet(bool onlyPersistent /*= false*/, bool allHierarchy /*= true*/) const ES_NOTHROW
 {
-	PropertyInfosT result;
-	appendPropertyInfos(result, onlyPersistent, allHierarchy);
+  PropertyInfosT result;
+  appendPropertyInfos(result, onlyPersistent, allHierarchy);
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 const EsPropertyInfo* EsClassInfo::propertyInfoFind(const EsString& name, bool allHierarchy) const ES_NOTHROW
 {
-	PropertyInfosT::const_iterator cit = std::find_if(m_propInfos.begin(), m_propInfos.end(),
-		PropertyInfoNameIs(name) );
+  PropertyInfosT::const_iterator cit = std::find_if(m_propInfos.begin(), m_propInfos.end(),
+    PropertyInfoNameIs(name) );
 
-	if( cit != m_propInfos.end() )
-		return *cit;
-	else if( allHierarchy && m_ancestor )
-		return m_ancestor->propertyInfoFind(name, allHierarchy);
+  if( cit != m_propInfos.end() )
+    return *cit;
+  else if( allHierarchy && m_ancestor )
+    return m_ancestor->propertyInfoFind(name, allHierarchy);
 
-	return 0;
+  return 0;
 }
 //---------------------------------------------------------------------------
 
 bool EsClassInfo::hasProperty(const EsString& name, bool allHierarchy /*= true*/) const ES_NOTHROW
 {
-	return propertyInfoFind(name, allHierarchy) != 0;
+  return propertyInfoFind(name, allHierarchy) != 0;
 }
 //---------------------------------------------------------------------------
 
 const EsPropertyInfo& EsClassInfo::propertyInfoGet(const EsString& name, bool allHierarchy /*= true*/ ) const
 {
-	const EsPropertyInfo* result = propertyInfoFind(name, allHierarchy);
-	if( !result )
-		EsException::Throw(
+  const EsPropertyInfo* result = propertyInfoFind(name, allHierarchy);
+  if( !result )
+    EsException::Throw(
       esT("There is no '%s' property in class '%s'"),
-			name,
+      name,
       m_name
     );
 
-	return *result;
+  return *result;
 }
 //---------------------------------------------------------------------------
 
 // reflected method infos access
 void EsClassInfo::appendMethodKeys(EsMethodInfoKeysT& out, bool allHierarchy) const
 {
-	if( allHierarchy && m_ancestor )
-		m_ancestor->appendMethodKeys(out, allHierarchy);
-	else
-	{
-		for(MethodInfosT::const_iterator cit = m_methods.begin(); cit != m_methods.end(); ++cit)
-			out.push_back( cit->first );
-	}
+  if( allHierarchy && m_ancestor )
+    m_ancestor->appendMethodKeys(out, allHierarchy);
+  else
+  {
+    for(MethodInfosT::const_iterator cit = m_methods.begin(); cit != m_methods.end(); ++cit)
+      out.push_back( cit->first );
+  }
 }
 //---------------------------------------------------------------------------
 
 void EsClassInfo::appendClassMethodKeys(EsMethodInfoKeysT& out, bool allHierarchy) const
 {
-	if( allHierarchy && m_ancestor )
-		m_ancestor->appendClassMethodKeys(out, allHierarchy);
-	else
-	{
-		for(MethodInfosT::const_iterator cit = m_classMethods.begin(); cit != m_classMethods.end(); ++cit)
-			out.push_back( cit->first );
-	}
+  if( allHierarchy && m_ancestor )
+    m_ancestor->appendClassMethodKeys(out, allHierarchy);
+  else
+  {
+    for(MethodInfosT::const_iterator cit = m_classMethods.begin(); cit != m_classMethods.end(); ++cit)
+      out.push_back( cit->first );
+  }
 }
 //---------------------------------------------------------------------------
 
 const EsMethodInfo* EsClassInfo::methodInfoFind(const EsMethodInfoKeyT& key, bool allHierarchy) const ES_NOTHROW
 {
-	MethodInfosT::const_iterator cit = m_methods.find(key);
-	if( cit != m_methods.end() )
-		return cit->second;
-	else if( allHierarchy && m_ancestor )
-		return m_ancestor->methodInfoFind(key, allHierarchy);
+  MethodInfosT::const_iterator cit = m_methods.find(key);
+  if( cit != m_methods.end() )
+    return cit->second;
+  else if( allHierarchy && m_ancestor )
+    return m_ancestor->methodInfoFind(key, allHierarchy);
 
-	return 0;
+  return 0;
 }
 //---------------------------------------------------------------------------
 
 const EsMethodInfo* EsClassInfo::classMethodInfoFind(const EsMethodInfoKeyT& key, bool allHierarchy) const ES_NOTHROW
 {
-	MethodInfosT::const_iterator cit = m_classMethods.find(key);
-	if( cit != m_classMethods.end() )
-		return cit->second;
-	else if( allHierarchy && m_ancestor )
-		return m_ancestor->methodInfoFind(key, allHierarchy);
+  MethodInfosT::const_iterator cit = m_classMethods.find(key);
+  if( cit != m_classMethods.end() )
+    return cit->second;
+  else if( allHierarchy && m_ancestor )
+    return m_ancestor->methodInfoFind(key, allHierarchy);
 
-	return 0;
+  return 0;
 }
 //---------------------------------------------------------------------------
 
 EsMethodInfoKeysT EsClassInfo::methodKeysGet(bool allHierarchy /*= true*/) const ES_NOTHROW
 {
-	EsMethodInfoKeysT result;
-	result.reserve(m_methods.size() + 32);
+  EsMethodInfoKeysT result;
+  result.reserve(m_methods.size() + 32);
 
-	appendMethodKeys(result, allHierarchy);
+  appendMethodKeys(result, allHierarchy);
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 bool EsClassInfo::hasMethod( const EsMethodInfoKeyT& key, bool allHierarchy /*= true*/ ) const ES_NOTHROW
 {
-	const EsMethodInfo* info = methodInfoFind(key, allHierarchy);
-	return info != 0;
+  const EsMethodInfo* info = methodInfoFind(key, allHierarchy);
+  return info != 0;
 }
 //---------------------------------------------------------------------------
 
 const EsMethodInfo& EsClassInfo::methodInfoGet(const EsMethodInfoKeyT& key, bool allHierarchy /*= true*/ ) const
 {
-	const EsMethodInfo* info = methodInfoFind(key, allHierarchy);
-	if( !info )
-		EsException::Throw(
+  const EsMethodInfo* info = methodInfoFind(key, allHierarchy);
+  if( !info )
+    EsException::Throw(
       esT("Method %s, taking %d parameters, is not found in class %s"),
-			key.nameGet(),
+      key.nameGet(),
       key.parametersCountGet(),
       nameGet()
     );
 
-	return *info;
+  return *info;
 }
 //---------------------------------------------------------------------------
 
 EsMethodInfoKeysT EsClassInfo::classMethodKeysGet(bool allHierarchy /*= false*/) const ES_NOTHROW
 {
-	EsMethodInfoKeysT result;
-	result.reserve(m_classMethods.size() + 32);
+  EsMethodInfoKeysT result;
+  result.reserve(m_classMethods.size() + 32);
 
-	appendClassMethodKeys(result, allHierarchy);
+  appendClassMethodKeys(result, allHierarchy);
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 EsString::Array EsClassInfo::fqMethodNamesGet(bool allHierarchy /*= true*/) const ES_NOTHROW
 {
-	EsMethodInfoKeysT mk;
-	EsMethodInfoKeysT cmk;
+  EsMethodInfoKeysT mk;
+  EsMethodInfoKeysT cmk;
 
   mk.reserve(m_methods.size() + 32);
   cmk.reserve(m_classMethods.size() + 32);
@@ -1118,53 +1118,53 @@ EsString::Array EsClassInfo::fqMethodNamesGet(bool allHierarchy /*= true*/) cons
 
 bool EsClassInfo::hasClassMethod( const EsMethodInfoKeyT& key, bool allHierarchy /*= true*/ ) const ES_NOTHROW
 {
-	const EsMethodInfo* info = classMethodInfoFind(key, allHierarchy);
-	return info != nullptr;
+  const EsMethodInfo* info = classMethodInfoFind(key, allHierarchy);
+  return info != nullptr;
 }
 //---------------------------------------------------------------------------
 
 const EsMethodInfo& EsClassInfo::classMethodInfoGet(const EsMethodInfoKeyT& key, bool allHierarchy /*= false*/ ) const
 {
-	const EsMethodInfo* info = classMethodInfoFind(key, allHierarchy);
-	if( !info )
-		EsException::Throw(
+  const EsMethodInfo* info = classMethodInfoFind(key, allHierarchy);
+  if( !info )
+    EsException::Throw(
       esT("Class method %s, taking %d parameters, is not found in class %s"),
-			key.nameGet(),
+      key.nameGet(),
       key.parametersCountGet(),
       nameGet()
     );
 
-	return *info;
+  return *info;
 }
 //---------------------------------------------------------------------------
 
 // property services simplified
 EsVariant EsClassInfo::propertyGet(EsBaseIntf* obj, const EsString& name) const
 {
-	const EsPropertyInfo& info = propertyInfoGet(name);
-	return info.get(obj);
+  const EsPropertyInfo& info = propertyInfoGet(name);
+  return info.get(obj);
 }
 
 void EsClassInfo::propertySet(EsBaseIntf* obj, const EsString& name, const EsVariant& val) const
 {
-	const EsPropertyInfo& info = propertyInfoGet(name);
-	info.set(obj, val);
+  const EsPropertyInfo& info = propertyInfoGet(name);
+  info.set(obj, val);
 }
 
 void EsClassInfo::propertyReset(EsBaseIntf* obj, const EsString& name) const
 {
-	const EsPropertyInfo& info = propertyInfoGet(name);
-	return info.reset(obj);
+  const EsPropertyInfo& info = propertyInfoGet(name);
+  return info.reset(obj);
 }
 
 void EsClassInfo::resetAllProperties(EsBaseIntf* obj) const
 {
-	const PropertyInfosT& allProps = propertyInfosGet();
-	for(PropertyInfosT::const_iterator cit = allProps.begin(); cit != allProps.end(); ++cit)
-	{
-		if( (*cit)->defaultExists() )
-			(*cit)->reset(obj);
-	}
+  const PropertyInfosT& allProps = propertyInfosGet();
+  for(PropertyInfosT::const_iterator cit = allProps.begin(); cit != allProps.end(); ++cit)
+  {
+    if( (*cit)->defaultExists() )
+      (*cit)->reset(obj);
+  }
 }
 
 // return true if standard indexed services are found
@@ -1172,13 +1172,13 @@ void EsClassInfo::resetAllProperties(EsBaseIntf* obj) const
 //
 bool EsClassInfo::isIndexed() const ES_NOTHROW
 {
-	return hasMethod(
+  return hasMethod(
     EsMethodInfoKeyT(
       0,
       EsStdNames::countGet()
     )
   ) &&
-	(
+  (
     hasMethod(
       EsMethodInfoKeyT(
         1,
@@ -1197,13 +1197,13 @@ bool EsClassInfo::isIndexed() const ES_NOTHROW
 // method services simplified
 EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name) const
 {
-	const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(0, name));
-	return info.call(obj, EsVariant::null());
+  const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(0, name));
+  return info.call(obj, EsVariant::null());
 }
 
 EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1) const
 {
-	const EsMethodInfo& info = methodInfoGet(
+  const EsMethodInfo& info = methodInfoGet(
     EsMethodInfoKeyT(
       1,
       name
@@ -1211,9 +1211,9 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
   );
 
   EsVariant::Array params;
-	params.push_back(param1);
+  params.push_back(param1);
 
-	return info.call(
+  return info.call(
     obj,
     params
   );
@@ -1221,14 +1221,14 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
 
 EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2) const
 {
-	const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(2, name));
-	EsVariant::Array params;
+  const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(2, name));
+  EsVariant::Array params;
   params.reserve(2);
 
-	params.push_back(param1);
+  params.push_back(param1);
   params.push_back(param2);
 
-	return info.call(
+  return info.call(
     obj,
     params
   );
@@ -1236,15 +1236,15 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
 
 EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3) const
 {
-	const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(3, name));
-	EsVariant::Array params;
+  const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(3, name));
+  EsVariant::Array params;
   params.reserve(3);
 
-	params.push_back(param1);
+  params.push_back(param1);
   params.push_back(param2);
   params.push_back(param3);
 
-	return info.call(
+  return info.call(
     obj,
     params
   );
@@ -1252,16 +1252,16 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
 
 EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4) const
 {
-	const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(4, name));
-	EsVariant::Array params;
+  const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(4, name));
+  EsVariant::Array params;
   params.reserve(4);
 
-	params.push_back(param1);
+  params.push_back(param1);
   params.push_back(param2);
   params.push_back(param3);
-	params.push_back(param4);
+  params.push_back(param4);
 
-	return info.call(
+  return info.call(
     obj,
     params
   );
@@ -1269,17 +1269,17 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
 
 EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5) const
 {
-	const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(5, name));
-	EsVariant::Array params;
+  const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(5, name));
+  EsVariant::Array params;
   params.reserve(5);
 
-	params.push_back(param1);
+  params.push_back(param1);
   params.push_back(param2);
   params.push_back(param3);
-	params.push_back(param4);
-	params.push_back(param5);
+  params.push_back(param4);
+  params.push_back(param5);
 
-	return info.call(
+  return info.call(
     obj,
     params
   );
@@ -1287,18 +1287,18 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
 
 EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5, const EsVariant& param6) const
 {
-	const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(6, name));
-	EsVariant::Array params;
+  const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(6, name));
+  EsVariant::Array params;
   params.reserve(6);
 
-	params.push_back(param1);
+  params.push_back(param1);
   params.push_back(param2);
   params.push_back(param3);
-	params.push_back(param4);
-	params.push_back(param5);
-	params.push_back(param6);
+  params.push_back(param4);
+  params.push_back(param5);
+  params.push_back(param6);
 
-	return info.call(
+  return info.call(
     obj,
     params
   );
@@ -1306,7 +1306,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
 
 EsVariant EsClassInfo::callMethod(EsBaseIntf* obj, const EsString& name, const EsVariant& params) const
 {
-	int paramsCount = params.isEmpty() ?
+  ulong paramsCount = params.isEmpty() ?
     0 :
     (
       params.isVariantCollection() ?
@@ -1314,7 +1314,7 @@ EsVariant EsClassInfo::callMethod(EsBaseIntf* obj, const EsString& name, const E
         1
     );
 
-	const EsMethodInfo& info = methodInfoGet(
+  const EsMethodInfo& info = methodInfoGet(
     EsMethodInfoKeyT(
       paramsCount,
       name
@@ -1329,92 +1329,92 @@ EsVariant EsClassInfo::callMethod(EsBaseIntf* obj, const EsString& name, const E
 
 EsVariant EsClassInfo::classCall(const EsString& name) const
 {
-	const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(0, name));
-	return info.classCall(EsVariant::null());
+  const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(0, name));
+  return info.classCall(EsVariant::null());
 }
 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1) const
 {
-	const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(1, name));
-	EsVariant::Array params;
-	params.push_back(param1);
+  const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(1, name));
+  EsVariant::Array params;
+  params.push_back(param1);
 
-	return info.classCall(params);
+  return info.classCall(params);
 }
 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2) const
 {
-	const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(2, name));
-	EsVariant::Array params;
+  const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(2, name));
+  EsVariant::Array params;
   params.reserve(2);
 
-	params.push_back(param1);
+  params.push_back(param1);
   params.push_back(param2);
 
-	return info.classCall(params);
+  return info.classCall(params);
 }
 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3) const
 {
-	const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(3, name));
-	EsVariant::Array params;
+  const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(3, name));
+  EsVariant::Array params;
   params.reserve(3);
 
-	params.push_back(param1);
+  params.push_back(param1);
   params.push_back(param2);
-	params.push_back(param3);
+  params.push_back(param3);
 
-	return info.classCall(params);
+  return info.classCall(params);
 }
 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4) const
 {
-	const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(4, name));
-	EsVariant::Array params;
+  const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(4, name));
+  EsVariant::Array params;
   params.reserve(4);
 
-	params.push_back(param1);
+  params.push_back(param1);
   params.push_back(param2);
-	params.push_back(param3);
-	params.push_back(param4);
+  params.push_back(param3);
+  params.push_back(param4);
 
-	return info.classCall(params);
+  return info.classCall(params);
 }
 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5) const
 {
-	const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(5, name));
-	EsVariant::Array params;
+  const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(5, name));
+  EsVariant::Array params;
   params.reserve(5);
 
-	params.push_back(param1);
+  params.push_back(param1);
   params.push_back(param2);
-	params.push_back(param3);
-	params.push_back(param4);
+  params.push_back(param3);
+  params.push_back(param4);
   params.push_back(param5);
 
-	return info.classCall(params);
+  return info.classCall(params);
 }
 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5, const EsVariant& param6) const
 {
-	const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(6, name));
-	EsVariant::Array params;
+  const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(6, name));
+  EsVariant::Array params;
   params.reserve(6);
 
-	params.push_back(param1);
+  params.push_back(param1);
   params.push_back(param2);
-	params.push_back(param3);
-	params.push_back(param4);
+  params.push_back(param3);
+  params.push_back(param4);
   params.push_back(param5);
   params.push_back(param6);
 
-	return info.classCall(params);
+  return info.classCall(params);
 }
 
 EsVariant EsClassInfo::classCallMethod(const EsString& name, const EsVariant& params) const
 {
-	int paramsCount =
+  ulong paramsCount =
     params.isEmpty() ?
       0 :
       (
@@ -1423,7 +1423,7 @@ EsVariant EsClassInfo::classCallMethod(const EsString& name, const EsVariant& pa
           1
       );
 
-	const EsMethodInfo& info = classMethodInfoGet(
+  const EsMethodInfo& info = classMethodInfoGet(
     EsMethodInfoKeyT(
       paramsCount,
       name
@@ -1438,33 +1438,33 @@ EsVariant EsClassInfo::classCallMethod(const EsString& name, const EsVariant& pa
 // use local static init on first use idiom for the class info registry
 EsStringIndexedMap& EsClassInfo::classes() ES_NOTHROW
 {
-	static EsStringIndexedMap s_classes;
-	return s_classes;
+  static EsStringIndexedMap s_classes;
+  return s_classes;
 }
 //---------------------------------------------------------------------------
 
 EsString::Array EsClassInfo::classNamesGet() ES_NOTHROW
 {
-	return classes().namesGet();
+  return classes().namesGet();
 }
 //---------------------------------------------------------------------------
 
 const EsClassInfo* EsClassInfo::classInfoGet(const EsString& name, bool Throw/* = false*/ )
 {
-	const EsClassInfo* result = 0;
-	ulong idx = classes().itemFind(name);
-	if( EsStringIndexedMap::npos != idx )
-	{
-		result = (const EsClassInfo*)classes().valueGet(idx).asPointer();
-		ES_ASSERT(result);
-	}
-	else if( Throw )
-		EsException::Throw(
+  const EsClassInfo* result = 0;
+  ulong idx = classes().itemFind(name);
+  if( EsStringIndexedMap::npos != idx )
+  {
+    result = (const EsClassInfo*)classes().valueGet(idx).asPointer();
+    ES_ASSERT(result);
+  }
+  else if( Throw )
+    EsException::Throw(
       esT("Class '%s' is not registered"),
       name
     );
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 

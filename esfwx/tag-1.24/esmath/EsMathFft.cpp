@@ -21,16 +21,16 @@ ES_DECL_REFLECTED_SERVICES_INFO_END
 void EsMathFft::transform(const EsMathArrayReal& in, EsMathArrayComplex& out)
 {
   ES_ALGLIB_TRY
-	alglib::fftr1d(alglibCastFromArray(in), alglibCastFromArray(out));
+  alglib::fftr1d(alglibCastFromArray(in), alglibCastFromArray(out));
   ES_ALGLIB_CATCH
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsMathFft::transformReal( cr_EsVariant in )
 {
-	std::unique_ptr<EsMathArrayComplex> out( new EsMathArrayComplex );
-	ES_ASSERT(out.get());
-	out->m_dynamic = true;
+  std::unique_ptr<EsMathArrayComplex> out( new EsMathArrayComplex );
+  ES_ASSERT(out.get());
+  out->m_dynamic = true;
 
   EsMathArrayReal sig;
   sig.set_items(in);

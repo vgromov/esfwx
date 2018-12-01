@@ -78,21 +78,21 @@ protected:
   friend class Runner;
 
   /// Main process requests handler
-	class EvtHandler : public EsEventSubscriber
-	{
-	public:
-		EvtHandler(EsScriptDebug& owner);
+  class EvtHandler : public EsEventSubscriber
+  {
+  public:
+    EvtHandler(EsScriptDebug& owner);
 
-		virtual void notify(const EsEventIntf::Ptr& evt);
+    virtual void notify(const EsEventIntf::Ptr& evt);
 
-	protected:
-		EsScriptDebug& m_owner;
-	};
-	friend class Subuscriber;
+  protected:
+    EsScriptDebug& m_owner;
+  };
+  friend class Subuscriber;
 
 public:
-	ES_DECL_REFLECTED_CLASS_BASE(EsScriptDebug)
-	ES_DECL_ATTR_HANDLING_STD
+  ES_DECL_REFLECTED_CLASS_BASE(EsScriptDebug)
+  ES_DECL_ATTR_HANDLING_STD
 
   EsScriptDebug();
   virtual ~EsScriptDebug();
@@ -173,12 +173,12 @@ public:
   /// Debug logging goes to IDE console output (if supported) in DEBUG C++ code.
   /// In addition, trace information is being sent to the standard applog with message level == debug
   ///
-	ES_DECL_REFLECTED_CLASS_METHOD1(void, log, cr_EsVariant);
-	ES_DECL_REFLECTED_CLASS_METHOD2(void, log, cr_EsString, cr_EsVariant);
-	ES_DECL_REFLECTED_CLASS_METHOD3(void, log, cr_EsString, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_CLASS_METHOD4(void, log, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_CLASS_METHOD5(void, log, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
-	ES_DECL_REFLECTED_CLASS_METHOD6(void, log, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD1(void, log, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD2(void, log, cr_EsString, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD3(void, log, cr_EsString, cr_EsVariant, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD4(void, log, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD5(void, log, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD6(void, log, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
 
 protected:
   // Set-up|reset debugger for script virtual machine

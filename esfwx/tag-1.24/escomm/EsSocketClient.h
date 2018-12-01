@@ -54,14 +54,14 @@ protected:
 public:
   EsSocketClient();
 
-	ES_DECL_REFLECTED_CLASS_BASE( EsSocketClient )
-	ES_DECL_ATTR_HANDLING_STD
+  ES_DECL_REFLECTED_CLASS_BASE( EsSocketClient )
+  ES_DECL_ATTR_HANDLING_STD
 
   /// Reflected services
   ///
 
   /// Create client socket of specific socketType
- 	ES_DECL_REFLECTED_CLASS_CTOR1(EsVariant, cr_EsVariant);
+   ES_DECL_REFLECTED_CLASS_CTOR1(EsVariant, cr_EsVariant);
 
   /// Open-close
   ES_DECL_REFLECTED_METHOD0(bool, open);
@@ -81,13 +81,13 @@ public:
 
   /// Reflected properties
   ///
-	ES_DECL_PROPERTY_RO(  isOk, bool)
-	ES_DECL_PROPERTY_RO(  isActive, bool)
-	ES_DECL_PROPERTY_RO(  error, long)
+  ES_DECL_PROPERTY_RO(  isOk, bool)
+  ES_DECL_PROPERTY_RO(  isActive, bool)
+  ES_DECL_PROPERTY_RO(  error, long)
   ES_DECL_PROPERTY_STD( socketType, ulong)
-	ES_DECL_PROPERTY(     address, EsVariant)
-	ES_DECL_PROPERTY_STD( doThrow, bool)
-	ES_DECL_PROPERTY_WO(  ioHandler, EsVariant)       ///< Attacheable IO handler for the client. Its reflected methods will be called
+  ES_DECL_PROPERTY(     address, EsVariant)
+  ES_DECL_PROPERTY_STD( doThrow, bool)
+  ES_DECL_PROPERTY_WO(  ioHandler, EsVariant)       ///< Attacheable IO handler for the client. Its reflected methods will be called
                                                     ///  in current execution context. It should implement some, or all methods
                                                     ///  with the same names as Clent overridables. Handler implementation must have an additional
                                                     ///  first parameter, in which a non-refcounted reference to this object instance is passed.

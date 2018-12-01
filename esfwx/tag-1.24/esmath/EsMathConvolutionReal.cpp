@@ -53,7 +53,7 @@ m_flags(flags),
 m_substL(0),
 m_substR(0)
 {
-	m_filter.dataSet(
+  m_filter.dataSet(
     filterSize, 
     filter
   );
@@ -63,22 +63,22 @@ m_substR(0)
 ///
 void EsMathConvolutionReal::filterSet(const EsMathArrayReal& filter, ulong flags /*= 0*/)
 {
-	m_filter = filter;
-	// NB! change only filter-related flags
-	m_flags &= ~static_cast<ulong>(EsMathConvolutionFlag::FilterMask);
-	m_flags |= (flags & static_cast<ulong>(EsMathConvolutionFlag::FilterMask));
+  m_filter = filter;
+  // NB! change only filter-related flags
+  m_flags &= ~static_cast<ulong>(EsMathConvolutionFlag::FilterMask);
+  m_flags |= (flags & static_cast<ulong>(EsMathConvolutionFlag::FilterMask));
 }
 
 void EsMathConvolutionReal::filterSet(ulong filterSize, EsMathArrayReal::const_pointer filter, ulong flags /*= 0*/)
 {
-	m_filter.dataSet(
+  m_filter.dataSet(
     filterSize, 
     filter
   );
-	
+  
   // NB! change only filter-related flags
-	m_flags &= ~static_cast<ulong>(EsMathConvolutionFlag::FilterMask);
-	m_flags |= (flags & static_cast<ulong>(EsMathConvolutionFlag::FilterMask));
+  m_flags &= ~static_cast<ulong>(EsMathConvolutionFlag::FilterMask);
+  m_flags |= (flags & static_cast<ulong>(EsMathConvolutionFlag::FilterMask));
 }
 
 /// real 1-dimentional convolution
@@ -88,120 +88,120 @@ void EsMathConvolutionReal::filterSet(ulong filterSize, EsMathArrayReal::const_p
 ///
 void EsMathConvolutionReal::process(const EsMathArrayReal& sig, EsMathArrayReal& out) const
 {
-	ES_ASSERT(!m_filter.get_empty());
-	ES_ASSERT(sig.countGet()/2 > m_filter.countGet());
+  ES_ASSERT(!m_filter.get_empty());
+  ES_ASSERT(sig.countGet()/2 > m_filter.countGet());
 
-	ulong fCnt = 0;
-	if( m_flags & static_cast<ulong>(EsMathConvolutionFlag::FilterIsSymmetrical) )
-		fCnt = m_filter.countGet()/2;
-	else
-		fCnt = m_filter.countGet();
+  ulong fCnt = 0;
+  if( m_flags & static_cast<ulong>(EsMathConvolutionFlag::FilterIsSymmetrical) )
+    fCnt = m_filter.countGet()/2;
+  else
+    fCnt = m_filter.countGet();
 
-	double lsubstVal = m_substL;
-	double rsubstVal = m_substR;
+  double lsubstVal = m_substL;
+  double rsubstVal = m_substR;
 
-	if( m_flags & static_cast<ulong>(EsMathConvolutionFlag::SignalIsStable) )
-	{
-		if( !(m_flags & static_cast<ulong>(EsMathConvolutionFlag::UseFixedLsubst)) )
-		{
-			// in case of stable signal, calculate lsubstVal and rsubstVal as average per
-			// lCnt and rCnt signal points
-			lsubstVal = 0;
-			for(ulong idx = 0; idx < fCnt; ++idx)
-				lsubstVal += sig.itemGet(idx);
-			lsubstVal /= (double)fCnt;
-		}
-
-		if( !(m_flags & static_cast<ulong>(EsMathConvolutionFlag::UseFixedRsubst)) )
-		{
-			rsubstVal = 0;
-			for(ulong idx = sig.countGet()-fCnt; idx < sig.countGet(); ++idx)
-				rsubstVal += sig.itemGet(idx);
-			rsubstVal /= (double)fCnt;
+  if( m_flags & static_cast<ulong>(EsMathConvolutionFlag::SignalIsStable) )
+  {
+    if( !(m_flags & static_cast<ulong>(EsMathConvolutionFlag::UseFixedLsubst)) )
+    {
+      // in case of stable signal, calculate lsubstVal and rsubstVal as average per
+      // lCnt and rCnt signal points
+      lsubstVal = 0;
+      for(ulong idx = 0; idx < fCnt; ++idx)
+        lsubstVal += sig.itemGet(idx);
+      lsubstVal /= (double)fCnt;
     }
-	}
 
-	ulong start = 0;
-	ulong end = sig.countGet();
-	if( m_flags & static_cast<ulong>(EsMathConvolutionFlag::SignalIsStable) )
-	{
-		out.countSet( sig.countGet() );
-	}
-	else
-	{
-		out.countSet( sig.countGet() - 2*fCnt );
-		start = fCnt;
-		end = sig.countGet()-fCnt;
-	}
+    if( !(m_flags & static_cast<ulong>(EsMathConvolutionFlag::UseFixedRsubst)) )
+    {
+      rsubstVal = 0;
+      for(ulong idx = sig.countGet()-fCnt; idx < sig.countGet(); ++idx)
+        rsubstVal += sig.itemGet(idx);
+      rsubstVal /= (double)fCnt;
+    }
+  }
 
-	ulong idx = 0;
-	for( ulong sidx = start; sidx < end; ++sidx )
-	{
-		double acc = 0;
-		for( ulong fidx = 0; fidx < m_filter.countGet(); ++fidx )
-		{
-			double sv;
-			ulong ssidx = sidx+fidx;
-			if( ssidx < fCnt )
-				sv = lsubstVal;
-			else
-			{
-				ssidx -= fCnt;
-				if( ssidx >= end )
-					sv = rsubstVal;
-				else
-					sv = sig.itemGet(ssidx);
-			}
+  ulong start = 0;
+  ulong end = sig.countGet();
+  if( m_flags & static_cast<ulong>(EsMathConvolutionFlag::SignalIsStable) )
+  {
+    out.countSet( sig.countGet() );
+  }
+  else
+  {
+    out.countSet( sig.countGet() - 2*fCnt );
+    start = fCnt;
+    end = sig.countGet()-fCnt;
+  }
 
-			acc += sv * m_filter.itemGet(fidx);
-		}
+  ulong idx = 0;
+  for( ulong sidx = start; sidx < end; ++sidx )
+  {
+    double acc = 0;
+    for( ulong fidx = 0; fidx < m_filter.countGet(); ++fidx )
+    {
+      double sv;
+      ulong ssidx = sidx+fidx;
+      if( ssidx < fCnt )
+        sv = lsubstVal;
+      else
+      {
+        ssidx -= fCnt;
+        if( ssidx >= end )
+          sv = rsubstVal;
+        else
+          sv = sig.itemGet(ssidx);
+      }
 
-		if( !(m_flags & static_cast<ulong>(EsMathConvolutionFlag::FilterIsNormalized)) )
-			acc /= (double)m_filter.countGet();
+      acc += sv * m_filter.itemGet(fidx);
+    }
 
-		out.itemSet(idx++, acc);
-	}
+    if( !(m_flags & static_cast<ulong>(EsMathConvolutionFlag::FilterIsNormalized)) )
+      acc /= (double)m_filter.countGet();
+
+    out.itemSet(idx++, acc);
+  }
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathConvolutionReal::NEW()
 {
-	std::unique_ptr<EsMathConvolutionReal> p( new EsMathConvolutionReal );
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathConvolutionReal> p( new EsMathConvolutionReal );
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathConvolutionReal::NEW(cr_EsVariant filter)
 {
-	std::unique_ptr<EsMathConvolutionReal> p( new EsMathConvolutionReal );
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathConvolutionReal> p( new EsMathConvolutionReal );
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
   p->set_filter(filter);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsMathConvolutionReal::NEW(cr_EsVariant filter, ulong flags)
 {
-	std::unique_ptr<EsMathConvolutionReal> p( new EsMathConvolutionReal );
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  std::unique_ptr<EsMathConvolutionReal> p( new EsMathConvolutionReal );
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
   p->set_filter(filter);
   p->set_flags(flags);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsVariant EsMathConvolutionReal::process(cr_EsVariant in) const
 {
-	std::unique_ptr<EsMathArrayReal> out( new EsMathArrayReal );
-	ES_ASSERT(out);
-	out->m_dynamic = true;
+  std::unique_ptr<EsMathArrayReal> out( new EsMathArrayReal );
+  ES_ASSERT(out);
+  out->m_dynamic = true;
 
   EsMathArrayReal* sig = EsMathArrayReal::fromVariant(in);
   bool needFree = false;

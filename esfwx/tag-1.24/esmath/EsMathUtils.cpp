@@ -125,71 +125,71 @@ bool EsMath::areEqualFloats(double _1, double _2)
 //
 double EsMath::pow10(long power)
 {
-	static const double sc_powers10 [] =
-	{
-		0.0000001,   //  [0] = pow(10.0, -7)
-		0.000001,    //  [1] = pow(10.0, -6)
-		0.00001,     //  [2] = pow(10.0, -5)
-		0.0001,      //  [3] = pow(10.0, -4)
-		0.001,       //  [4] = pow(10.0, -3)
-		0.01,        //  [5] = pow(10.0, -2)
-		0.1,         //  [6] = pow(10.0, -1)
-		1.0,         //  [7] = pow(10.0,  0)
-		10.0,        //  [8] = pow(10.0,  1)
-		100.0,       //  [9] = pow(10.0,  2)
-		1000.0,      // [10] = pow(10.0,  3)
-		10000.0,     // [11] = pow(10.0,  4)
-		100000.0,    // [12] = pow(10.0,  5)
-		1000000.0,   // [13] = pow(10.0,  6)
-		10000000.0,  // [14] = pow(10.0,  7)
-		100000000.0  // [15] = pow(10.0,  8)
-	};
+  static const double sc_powers10 [] =
+  {
+    0.0000001,   //  [0] = pow(10.0, -7)
+    0.000001,    //  [1] = pow(10.0, -6)
+    0.00001,     //  [2] = pow(10.0, -5)
+    0.0001,      //  [3] = pow(10.0, -4)
+    0.001,       //  [4] = pow(10.0, -3)
+    0.01,        //  [5] = pow(10.0, -2)
+    0.1,         //  [6] = pow(10.0, -1)
+    1.0,         //  [7] = pow(10.0,  0)
+    10.0,        //  [8] = pow(10.0,  1)
+    100.0,       //  [9] = pow(10.0,  2)
+    1000.0,      // [10] = pow(10.0,  3)
+    10000.0,     // [11] = pow(10.0,  4)
+    100000.0,    // [12] = pow(10.0,  5)
+    1000000.0,   // [13] = pow(10.0,  6)
+    10000000.0,  // [14] = pow(10.0,  7)
+    100000000.0  // [15] = pow(10.0,  8)
+  };
 
-	long index = power + 7;
-	if ( index >= 0 && index < (int)ES_CONST_ARRAY_COUNT(sc_powers10) )
-		return sc_powers10[index];
+  long index = power + 7;
+  if ( index >= 0 && index < (int)ES_CONST_ARRAY_COUNT(sc_powers10) )
+    return sc_powers10[index];
 
-	return esPow(10.0, power); // Default, inefficient implementation
+  return esPow(10.0, power); // Default, inefficient implementation
 }
 //---------------------------------------------------------------------------
 
 double EsMath::pow2(long power)
 {
-	static const double sc_negativePowers2 [] =
-	{
-		0.00390625,  //  [0] = pow(2.0, -8)
-		0.0078125,   //  [0] = pow(2.0, -7)
-		0.015625,    //  [1] = pow(2.0, -6)
-		0.03125,     //  [2] = pow(2.0, -5)
-		0.0625,      //  [3] = pow(2.0, -4)
-		0.125,       //  [4] = pow(2.0, -3)
-		0.25,        //  [5] = pow(2.0, -2)
-		0.5          //  [6] = pow(2.0, -1)
-	};
+  static const double sc_negativePowers2 [] =
+  {
+    0.00390625,  //  [0] = pow(2.0, -8)
+    0.0078125,   //  [0] = pow(2.0, -7)
+    0.015625,    //  [1] = pow(2.0, -6)
+    0.03125,     //  [2] = pow(2.0, -5)
+    0.0625,      //  [3] = pow(2.0, -4)
+    0.125,       //  [4] = pow(2.0, -3)
+    0.25,        //  [5] = pow(2.0, -2)
+    0.5          //  [6] = pow(2.0, -1)
+  };
 
-	if( power >= 0 )
-	{
-		if( power < 32 )
-			return static_cast<double>( static_cast<unsigned>(1u << power));
-	}
-	else
-	{
-		long powerIndex = power + ES_CONST_ARRAY_COUNT(sc_negativePowers2);
-		if( powerIndex >= 0 )
-			return sc_negativePowers2[powerIndex];
-	}
+  if( power >= 0 )
+  {
+    if( power < 32 )
+      return static_cast<double>( static_cast<unsigned>(1u << power));
+  }
+  else
+  {
+    long powerIndex = power + ES_CONST_ARRAY_COUNT(sc_negativePowers2);
+    if( powerIndex >= 0 )
+      return sc_negativePowers2[powerIndex];
+  }
 
-	return esPow(2.0, power);
+  return esPow(2.0, power);
 }
 //---------------------------------------------------------------------------
 
 double EsMath::round(double val, ulong numDecimalPlaces)
 {
-	if ( numDecimalPlaces == 0 ) // special much faster and more precise case
-		return EsUtilities::round0(val);
+  if ( numDecimalPlaces == 0 ) // special much faster and more precise case
+    return EsUtilities::round0(val);
 
-	double multiplier = EsMath::pow10(numDecimalPlaces);
-	return EsUtilities::round0(val * multiplier) / multiplier;
+  double multiplier = EsMath::pow10(numDecimalPlaces);
+  return EsUtilities::round0(val * multiplier) / multiplier;
 }
 //---------------------------------------------------------------------------
 
@@ -202,16 +202,16 @@ double EsMath::round(double val)
 // convert deg to rad and vice versa
 double EsMath::degToRad(double deg)
 {
-	double n;
-	double frac = std::modf(deg, &n);
-	deg = static_cast<double>(static_cast<long>(n) % 360) + frac;
-	return (deg * c_2pi) / 360.;
+  double n;
+  double frac = std::modf(deg, &n);
+  deg = static_cast<double>(static_cast<long>(n) % 360) + frac;
+  return (deg * c_2pi) / 360.;
 }
 //---------------------------------------------------------------------------
 
 double EsMath::radToDeg(double rad)
 {
-	return 360. * rad / c_2pi;
+  return 360. * rad / c_2pi;
 }
 //---------------------------------------------------------------------------
 

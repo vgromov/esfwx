@@ -6,13 +6,13 @@
 // thread id type
 //
 #if ES_OS == ES_OS_WINDOWS
-	typedef DWORD EsThreadId;
-#	define EsThreadIdNone ((EsThreadId)-1)
-# define ES_INFINITE 		INFINITE
+  typedef DWORD EsThreadId;
+#  define EsThreadIdNone ((EsThreadId)-1)
+# define ES_INFINITE     INFINITE
 #elif defined(ES_POSIX_COMPAT)
-	typedef llong EsThreadId;
-#	define EsThreadIdNone ((EsThreadId)-1)
-# define ES_INFINITE 		((ulong)-1)
+  typedef llong EsThreadId;
+#  define EsThreadIdNone ((EsThreadId)-1)
+# define ES_INFINITE     ((ulong)-1)
 #endif
 //---------------------------------------------------------------------------
 
@@ -21,45 +21,45 @@
 class ESCORE_CLASS EsMutex
 {
 public:
-	enum Type {
-		typeDefault,
-		typeRecursive
-	};
+  enum Type {
+    typeDefault,
+    typeRecursive
+  };
 
-	enum Result {
-    resultOk = 0,						// operation completed successfully
-    resultInvalid,					// mutex hasn't been initialized
-    resultDeadlock,					// mutex is already locked by the calling thread
-    resultBusy,							// mutex is already locked by another thread
-    resultAlreadyUnlocked,	// attempt to unlock a mutex which is not locked
-    resultTimeout,					// lock(ms) has timed out
-    resultError							// any other error
-	};
+  enum Result {
+    resultOk = 0,            // operation completed successfully
+    resultInvalid,          // mutex hasn't been initialized
+    resultDeadlock,          // mutex is already locked by the calling thread
+    resultBusy,              // mutex is already locked by another thread
+    resultAlreadyUnlocked,  // attempt to unlock a mutex which is not locked
+    resultTimeout,          // lock(ms) has timed out
+    resultError              // any other error
+  };
 
 public:
-	EsMutex(Type type = typeDefault);
-	~EsMutex();
+  EsMutex(Type type = typeDefault);
+  ~EsMutex();
 
-	// validity check
-	bool isOk() const;
-	Result lock();
-	Result lock(ulong ms);
-	Result tryLock();
-	Result unlock();
-
-private:
-	// prohibited functinoality
-	EsMutex(const EsMutex&) ES_REMOVEDECL;
-	EsMutex& operator=(const EsMutex&) ES_REMOVEDECL;
+  // validity check
+  bool isOk() const;
+  Result lock();
+  Result lock(ulong ms);
+  Result tryLock();
+  Result unlock();
 
 private:
-	Type m_type;
-	EsThreadId m_owningThreadId;
+  // prohibited functinoality
+  EsMutex(const EsMutex&) ES_REMOVEDECL;
+  EsMutex& operator=(const EsMutex&) ES_REMOVEDECL;
+
+private:
+  Type m_type;
+  EsThreadId m_owningThreadId;
 #if ES_OS == ES_OS_WINDOWS
-	HANDLE m_mx;
+  HANDLE m_mx;
 #elif defined(ES_POSIX_COMPAT)
-	pthread_mutexattr_t m_mxAttrs;
-	pthread_mutex_t m_mx;
+  pthread_mutexattr_t m_mxAttrs;
+  pthread_mutex_t m_mx;
 #endif
 };
 //---------------------------------------------------------------------------
@@ -67,19 +67,19 @@ private:
 class ESCORE_CLASS EsMutexLocker
 {
 public:
-	EsMutexLocker(EsMutex& mx);
-	~EsMutexLocker();
-	bool isOk() const { return m_ok; }
+  EsMutexLocker(EsMutex& mx);
+  ~EsMutexLocker();
+  bool isOk() const { return m_ok; }
 
 private:
-	// prohibited functionality
-	EsMutexLocker() ES_REMOVEDECL;
-	EsMutexLocker(const EsMutexLocker&) ES_REMOVEDECL;
-	EsMutexLocker& operator=(const EsMutexLocker&) ES_REMOVEDECL;
+  // prohibited functionality
+  EsMutexLocker() ES_REMOVEDECL;
+  EsMutexLocker(const EsMutexLocker&) ES_REMOVEDECL;
+  EsMutexLocker& operator=(const EsMutexLocker&) ES_REMOVEDECL;
 
 private:
-	EsMutex& m_mx;
-	bool m_ok;
+  EsMutex& m_mx;
+  bool m_ok;
 };
 //---------------------------------------------------------------------------
 
@@ -91,42 +91,42 @@ public:
   typedef std::unique_ptr<EsCriticalSection> Ptr;
 
 public:
-	EsCriticalSection();
-	~EsCriticalSection();
+  EsCriticalSection();
+  ~EsCriticalSection();
 
-	void enter();
-	bool tryEnter();
-	void leave();
+  void enter();
+  bool tryEnter();
+  void leave();
 
 private:
-	// prohibited functionality
-	EsCriticalSection(const EsCriticalSection&) ES_REMOVEDECL;
-	EsCriticalSection& operator=(const EsCriticalSection&) ES_REMOVEDECL;
+  // prohibited functionality
+  EsCriticalSection(const EsCriticalSection&) ES_REMOVEDECL;
+  EsCriticalSection& operator=(const EsCriticalSection&) ES_REMOVEDECL;
 
 private:
 #if ES_OS == ES_OS_WINDOWS
-	CRITICAL_SECTION
+  CRITICAL_SECTION
 #elif defined(ES_POSIX_COMPAT)
-	EsMutex
+  EsMutex
 #endif
-		m_cs;
+    m_cs;
 };
 //---------------------------------------------------------------------------
 
 class ESCORE_CLASS EsCriticalSectionLocker
 {
 public:
-	EsCriticalSectionLocker(EsCriticalSection& obj);
-	~EsCriticalSectionLocker();
+  EsCriticalSectionLocker(EsCriticalSection& obj);
+  ~EsCriticalSectionLocker();
 
 private:
-	// prohibited functionality
-	EsCriticalSectionLocker() ES_REMOVEDECL;
-	EsCriticalSectionLocker(const EsCriticalSectionLocker&) ES_REMOVEDECL;
-	EsCriticalSectionLocker& operator=(const EsCriticalSectionLocker&) ES_REMOVEDECL;
+  // prohibited functionality
+  EsCriticalSectionLocker() ES_REMOVEDECL;
+  EsCriticalSectionLocker(const EsCriticalSectionLocker&) ES_REMOVEDECL;
+  EsCriticalSectionLocker& operator=(const EsCriticalSectionLocker&) ES_REMOVEDECL;
 
 private:
-	EsCriticalSection& m_obj;
+  EsCriticalSection& m_obj;
 };
 //---------------------------------------------------------------------------
 
@@ -152,45 +152,45 @@ private:
 class ESCORE_CLASS EsSemaphore
 {
 public:
-	enum Result
-	{
-	  resultOk = 0,
+  enum Result
+  {
+    resultOk = 0,
     resultInvalid,         // semaphore hasn't been initialized successfully
     resultBusy,            // returned by tryWait() if wait() would block
     resultTimeout,         // returned by waitTimeout()
     resultOverflow,        // post() would increase counter past the max
     resultError
-	};
+  };
 
 public:
-	/// Default constructor.
-	/// Specifying a maxcount of 0 actually makes EsSemaphore behave as if there
-	/// is no upper limit, if maxcount is 1 the semaphore behaves as a mutex
-	///
-	EsSemaphore( ulong initialCount = 0, ulong maxCount = 0 );
-	~EsSemaphore();
+  /// Default constructor.
+  /// Specifying a maxcount of 0 actually makes EsSemaphore behave as if there
+  /// is no upper limit, if maxcount is 1 the semaphore behaves as a mutex
+  ///
+  EsSemaphore( ulong initialCount = 0, ulong maxCount = 0 );
+  ~EsSemaphore();
 
-	/// Validity check
-	bool isOk() const;
+  /// Validity check
+  bool isOk() const;
 
-	/// Same as wait(), but as a timeout limit, returns wxSEMA_NO_ERROR if the
-	/// semaphore was acquired and resultTimeout if the timeout has elapsed
-	///
-	Result wait(ulong ms);
+  /// Same as wait(), but as a timeout limit, returns wxSEMA_NO_ERROR if the
+  /// semaphore was acquired and resultTimeout if the timeout has elapsed
+  ///
+  Result wait(ulong ms);
 
-	/// Wait indefinitely, until the semaphore count goes beyond 0
-	/// and then decrement it and return
-	///
-	Result wait();
+  /// Wait indefinitely, until the semaphore count goes beyond 0
+  /// and then decrement it and return
+  ///
+  Result wait();
 
-	/// Same as wait(), but does not block, returns resultOk if
-	/// successful and resultBusy if the count is currently zero
-	///
-	Result tryWait();
+  /// Same as wait(), but does not block, returns resultOk if
+  /// successful and resultBusy if the count is currently zero
+  ///
+  Result tryWait();
 
-	/// Increments the semaphore count and signals one of the waiting threads
-	///
-	Result post();
+  /// Increments the semaphore count and signals one of the waiting threads
+  ///
+  Result post();
 
 private:
 #if defined(ES_POSIX_COMPAT)
@@ -208,7 +208,7 @@ private:
 private:
 #if ES_OS == ES_OS_WINDOWS
 
-	HANDLE m_sem;
+  HANDLE m_sem;
 
 #elif defined(ES_POSIX_COMPAT)
 
@@ -228,13 +228,13 @@ private:
   ulong m_maxCnt;
 
 #else
-#	error Semaphore is not implemented in this OS
+#  error Semaphore is not implemented in this OS
 #endif
 
 private:
-	// Prohibited functionality
-	EsSemaphore(const EsSemaphore&) ES_REMOVEDECL;
-	EsSemaphore& operator=(const EsSemaphore&) ES_REMOVEDECL;
+  // Prohibited functionality
+  EsSemaphore(const EsSemaphore&) ES_REMOVEDECL;
+  EsSemaphore& operator=(const EsSemaphore&) ES_REMOVEDECL;
 };
 //---------------------------------------------------------------------------
 

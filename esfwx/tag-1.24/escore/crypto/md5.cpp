@@ -12,16 +12,16 @@ namespace Weak1 {
 #if CRYPTOPP_DEBUG && !defined(CRYPTOPP_DOXYGEN_PROCESSING)
 void MD5_TestInstantiations()
 {
-	MD5 x;
+  MD5 x;
 }
 #endif
 
 void MD5::InitState(HashWordType *state)
 {
-	state[0] = 0x67452301L;
-	state[1] = 0xefcdab89L;
-	state[2] = 0x98badcfeL;
-	state[3] = 0x10325476L;
+  state[0] = 0x67452301L;
+  state[1] = 0xefcdab89L;
+  state[2] = 0x98badcfeL;
+  state[3] = 0x10325476L;
 }
 
 void MD5::Transform (word32 *digest, const word32 *in)
@@ -33,14 +33,14 @@ void MD5::Transform (word32 *digest, const word32 *in)
 #define F4(x, y, z) (y ^ (x | ~z))
 
 #define MD5STEP(f, w, x, y, z, data, s) \
-	w = rotlFixed(w + f(x, y, z) + data, s) + x
+  w = rotlFixed(w + f(x, y, z) + data, s) + x
 
     word32 a, b, c, d;
 
-	a=digest[0];
-	b=digest[1];
-	c=digest[2];
-	d=digest[3];
+  a=digest[0];
+  b=digest[1];
+  c=digest[2];
+  d=digest[3];
 
     MD5STEP(F1, a, b, c, d, in[0] + 0xd76aa478, 7);
     MD5STEP(F1, d, a, b, c, in[1] + 0xe8c7b756, 12);
@@ -110,10 +110,10 @@ void MD5::Transform (word32 *digest, const word32 *in)
     MD5STEP(F4, c, d, a, b, in[2] + 0x2ad7d2bb, 15);
     MD5STEP(F4, b, c, d, a, in[9] + 0xeb86d391, 21);
 
-	digest[0]+=a;
-	digest[1]+=b;
-	digest[2]+=c;
-	digest[3]+=d;
+  digest[0]+=a;
+  digest[1]+=b;
+  digest[2]+=c;
+  digest[3]+=d;
 }
 
 }

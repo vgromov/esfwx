@@ -31,16 +31,16 @@ public:
   /// Return current value of execution flag
   inline bool isExecuting() const ES_NOTHROW { return m_executing; }
 
-	/// Debug trace | code dumping helpers
-	///
-	static EsString instructionAsString(const EsScriptInstruction& instr);
-	void traceInstruction(EsScriptInstructions::const_iterator instr);
+  /// Debug trace | code dumping helpers
+  ///
+  static EsString instructionAsString(const EsScriptInstruction& instr);
+  void traceInstruction(EsScriptInstructions::const_iterator instr);
 
-	/// Return debug information (if any) for instruction currently being executed
-	EsScriptDebugInfoIntf::Ptr currentDebugInfoGet() const ES_NOTHROW;
+  /// Return debug information (if any) for instruction currently being executed
+  EsScriptDebugInfoIntf::Ptr currentDebugInfoGet() const ES_NOTHROW;
 
   /// Call external method|method in specific namespace
-	static void callExtMethod(
+  static void callExtMethod(
     EsVariant& result,
     const EsString& name,
     const EsVariant& params,
@@ -97,14 +97,14 @@ protected:
   /// Execute entire script, beginning from startup code
   EsVariant exec();
 
-	/// Generic call handlers
-	///
+  /// Generic call handlers
+  ///
 
-	/// Call global function by its method key
-	EsVariant callGlobalMethod(const EsMethodInfoKeyT& key, const EsVariant& params);
+  /// Call global function by its method key
+  EsVariant callGlobalMethod(const EsMethodInfoKeyT& key, const EsVariant& params);
 
-	/// Call global function by its name and parameters
-	EsVariant callGlobalMethod(const EsString& name, const EsVariant& params);
+  /// Call global function by its name and parameters
+  EsVariant callGlobalMethod(const EsString& name, const EsVariant& params);
 
   /// Execution services
   ///
@@ -223,8 +223,8 @@ protected:
   /// Object creation helper
   ///
 
-	/// Create with parameters, and return object instance by object name.
-	EsReflectedClassIntf::Ptr objectCreateWithParameters(const EsString& name, const EsVariant& params);
+  /// Create with parameters, and return object instance by object name.
+  EsReflectedClassIntf::Ptr objectCreateWithParameters(const EsString& name, const EsVariant& params);
 
 public:
   // Semi-private services.
@@ -248,8 +248,8 @@ protected:
   volatile bool m_executing;
 
   friend class EsScriptMachine;
-	friend class EsScriptObjectCtrExecutor;
-	friend class EsScriptTryCatchBlock;
+  friend class EsScriptObjectCtrExecutor;
+  friend class EsScriptTryCatchBlock;
   friend class EsScriptOptbl;
   friend class EsScriptCodeSectionScope;
 };

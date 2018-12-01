@@ -15,13 +15,13 @@
 //
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsUUID, NO_CLASS_DESCR)
   // Constructors
-	ES_DECL_REFLECTED_CTOR_INFO(EsUUID, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
- 	ES_DECL_REFLECTED_CTOR_INFO(EsUUID, EsBaseIntfPtr_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsUUID, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
+   ES_DECL_REFLECTED_CTOR_INFO(EsUUID, EsBaseIntfPtr_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   // Services
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsUUID, compare, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsUUID, compare, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsUUID, asString, EsString_CallConst_bool, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsUUID, streamRead, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsUUID, streamWrite, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsUUID, streamRead, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsUUID, streamWrite, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
   // Class services
   ES_DECL_REFLECTED_CLASS_METHOD_INFO(EsUUID, generateReflected, generate, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
   // Properties
@@ -44,11 +44,11 @@ m_uuid(GUID_NULL)
 
 EsBaseIntfPtr EsUUID::create(const GUID& uuid/* = EsUUID::null()*/)
 {
-	std::unique_ptr<EsUUID> p( new EsUUID(uuid) );
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  std::unique_ptr<EsUUID> p( new EsUUID(uuid) );
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 

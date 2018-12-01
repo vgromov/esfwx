@@ -18,58 +18,58 @@ static EsCriticalSection& envCsGet()
 extern char **environ;
 ulong EsUtilities::osErrorCodeGet()
 {
-	return errno;
+  return errno;
 }
 //---------------------------------------------------------------------------
 
 EsString EsUtilities::osErrorStringGet(ulong code)
 {
-	EsString result;
+  EsString result;
 
-	EsCriticalSectionLocker lock(envCsGet());
-	const char* errStr = strerror(code);
-	if( errStr )
-		result = EsString::fromUtf8(errStr);
-	else
-		// if this happens, something is seriously wrong, so don't use i18n _() here
-		result = EsString::format(esT("Unknown OS error %lx"), code);
+  EsCriticalSectionLocker lock(envCsGet());
+  const char* errStr = strerror(code);
+  if( errStr )
+    result = EsString::fromUtf8(errStr);
+  else
+    // if this happens, something is seriously wrong, so don't use i18n _() here
+    result = EsString::format(esT("Unknown OS error %lx"), code);
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 EsStringIndexedMap EsUtilities::environmentVarsListGet()
 {
-	EsStringIndexedMap result;
+  EsStringIndexedMap result;
 
-	EsCriticalSectionLocker lock(envCsGet());
-	int idx = 0;
-	while(environ[idx])
-	{
-		EsString var, val;
+  EsCriticalSectionLocker lock(envCsGet());
+  int idx = 0;
+  while(environ[idx])
+  {
+    EsString var, val;
 
-		// parse name, value pair
-		char* beg = environ[idx++];
-		char* pos = beg;
+    // parse name, value pair
+    char* beg = environ[idx++];
+    char* pos = beg;
 
-		while( *pos )
-		{
-			if( esT('=') == *pos++ )
-			{
-				var = EsString::fromUtf8( EsByteString(beg, pos-1) );
-				val = EsString::fromUtf8(pos);
-				val = EsString::trim(val);
-				break;
-			}
-		}
+    while( *pos )
+    {
+      if( esT('=') == *pos++ )
+      {
+        var = EsString::fromUtf8( EsByteString(beg, pos-1) );
+        val = EsString::fromUtf8(pos);
+        val = EsString::trim(val);
+        break;
+      }
+    }
 
-		if( var.empty() )
-			var = EsString::fromUtf8(beg);
-		var = EsString::trim(var);
-		result.itemAdd(var, val);
-	}
+    if( var.empty() )
+      var = EsString::fromUtf8(beg);
+    var = EsString::trim(var);
+    result.itemAdd(var, val);
+  }
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 

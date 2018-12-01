@@ -12,46 +12,46 @@
 //---------------------------------------------------------------------------
 
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsScriptMetaclass, NO_CLASS_DESCR)
-	// Interface services
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectNamesGet, EsStringArray_CallConst, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, baseObjectNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, hasClass, bool_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, isKindOf, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, hasAttribute, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, attributeNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, attributeGet, EsVariant_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, methodNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, classMethodNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, thisMethodNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, thisClassMethodNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, hasMethod, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, hasClassMethod, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  // Interface services
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectNamesGet, EsStringArray_CallConst, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, baseObjectNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, hasClass, bool_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, isKindOf, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, hasAttribute, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, attributeNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, attributeGet, EsVariant_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, methodNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, classMethodNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, thisMethodNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, thisClassMethodNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, hasMethod, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, hasClassMethod, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, fqNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, thisFqNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, methodAttributeNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, methodHasAttribute, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, methodAttributeGet, EsVariant_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, methodDescriptionGet, EsString_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, thisPropertyNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, persistentPropertyNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, thisPersistentPropertyNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, hasProperty, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyCanRead, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyCanWrite, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyAttributeNamesGet, EsStringArray_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyHasAttribute, bool_CallConst_cr_EsString_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyAttributeGet, EsVariant_CallConst_cr_EsString_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyLabelGet, EsString_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyDescriptionGet, EsString_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, methodAttributeNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, methodHasAttribute, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, methodAttributeGet, EsVariant_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, methodDescriptionGet, EsString_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, thisPropertyNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, persistentPropertyNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, thisPersistentPropertyNamesGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, hasProperty, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyCanRead, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyCanWrite, bool_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyAttributeNamesGet, EsStringArray_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyHasAttribute, bool_CallConst_cr_EsString_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyAttributeGet, EsVariant_CallConst_cr_EsString_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyLabelGet, EsString_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, propertyDescriptionGet, EsString_CallConst_cr_EsString_cr_EsString, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, enumerationNamesGet, EsStringArray_CallConst, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, enumerationSymbolsGet, EsStringArray_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsScriptMetaclass, EsMetaclassIntf, objectCreate, EsVariant_CallConst_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
 
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsScriptMetaclass, scriptMachineGet, EsVariant_CallConst, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
@@ -64,45 +64,45 @@ m_owner(owner)
 
 EsStringArray EsScriptMetaclass::objectNamesGet() const ES_NOTHROW
 {
-	EsStringArray names = EsClassInfo::classNamesGet();
-	const EsStringArray& metaNames = m_owner.metaclassNamesGet();
-	names.reserve(names.size() + metaNames.size());
-	names.insert(names.end(), metaNames.begin(), metaNames.end());
+  EsStringArray names = EsClassInfo::classNamesGet();
+  const EsStringArray& metaNames = m_owner.metaclassNamesGet();
+  names.reserve(names.size() + metaNames.size());
+  names.insert(names.end(), metaNames.begin(), metaNames.end());
 
-	return names;
+  return names;
 }
 //---------------------------------------------------------------------------
 
 EsStringArray EsScriptMetaclass::baseObjectNamesGet(const EsString& className) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
-	EsStringArray result;
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  EsStringArray result;
 
-	if(info)
-	{
-		if( info->hasAncestor() )
-			result.push_back( info->ancestorGet()->nameGet() );
-	}
-	else
-	{
-		EsScriptObjectIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
-		metaclass = metaclass->ancestorGet();
-		if( metaclass )
-			result.push_back( metaclass->typeNameGet() );
-	}
+  if(info)
+  {
+    if( info->hasAncestor() )
+      result.push_back( info->ancestorGet()->nameGet() );
+  }
+  else
+  {
+    EsScriptObjectIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
+    metaclass = metaclass->ancestorGet();
+    if( metaclass )
+      result.push_back( metaclass->typeNameGet() );
+  }
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 bool EsScriptMetaclass::hasClass(const EsString& className) const ES_NOTHROW
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
-	if(info)
-		return true;
-	else
-		return m_owner.metaclassFind(
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  if(info)
+    return true;
+  else
+    return m_owner.metaclassFind(
       className,
       false
     );
@@ -111,17 +111,17 @@ bool EsScriptMetaclass::hasClass(const EsString& className) const ES_NOTHROW
 
 bool EsScriptMetaclass::isKindOf(const EsString& className, const EsString& otherName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	if( info )
-		return info->isKindOf(otherName);
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  if( info )
+    return info->isKindOf(otherName);
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->isKindOf(otherName);
-	}
+    return metaclass->isKindOf(otherName);
+  }
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -129,83 +129,83 @@ bool EsScriptMetaclass::isKindOf(const EsString& className, const EsString& othe
 /// Query if class has attribute
 bool EsScriptMetaclass::hasAttribute(cr_EsString className, cr_EsString attrName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	if( info )
-	{
-		EsAttributesIntf::Ptr attrs = info->attributesAccess();
-		if( attrs )
-			return attrs->attributeExists(attrName);
-	}
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  if( info )
+  {
+    EsAttributesIntf::Ptr attrs = info->attributesAccess();
+    if( attrs )
+      return attrs->attributeExists(attrName);
+  }
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->hasAttribute(attrName);
-	}
+    return metaclass->hasAttribute(attrName);
+  }
 
-	return false;
+  return false;
 }
 //---------------------------------------------------------------------------
 
 /// Query names of all attributes for the specified class
 EsStringArray EsScriptMetaclass::attributeNamesGet(cr_EsString className) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	EsStringArray result;
-	if( info )
-	{
-		EsAttributesIntf::Ptr attrs = info->attributesAccess();
-		if( attrs )
-			result = attrs->allNamesGet();
-	}
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  EsStringArray result;
+  if( info )
+  {
+    EsAttributesIntf::Ptr attrs = info->attributesAccess();
+    if( attrs )
+      result = attrs->allNamesGet();
+  }
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		result = metaclass->attributeNamesGet();
-	}
+    result = metaclass->attributeNamesGet();
+  }
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 /// Return value associated with specified attribute
 EsVariant EsScriptMetaclass::attributeGet(cr_EsString className, cr_EsString attrName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	if( info )
-	{
-		EsAttributesIntf::Ptr attrs = info->attributesAccess();
-		if( attrs )
-			return attrs->attributeGet(attrName);
-		else
-			EsException::Throw(
+  if( info )
+  {
+    EsAttributesIntf::Ptr attrs = info->attributesAccess();
+    if( attrs )
+      return attrs->attributeGet(attrName);
+    else
+      EsException::Throw(
         esT("No attributes declared for '%s'"),
         className
       );
-	}
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  }
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->attributeGet(attrName);
-	}
+    return metaclass->attributeGet(attrName);
+  }
 
-	// pacify compilers
-	return EsVariant::null();
+  // pacify compilers
+  return EsVariant::null();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
 EsStringArray EsScriptMetaclass::methodNamesGet(const EsString& className) const
 {
-	EsStringArray result;
+  EsStringArray result;
   EsMethodInfoKeysT keys;
 
   if( className.empty() )
@@ -237,67 +237,67 @@ EsStringArray EsScriptMetaclass::methodNamesGet(const EsString& className) const
   for( size_t idx = 0; idx < keys.size(); ++idx )
     result.push_back(keys[idx].asString());
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 EsStringArray EsScriptMetaclass::classMethodNamesGet(const EsString& className) const
 {
-	return EsMetaclass::instance()->classMethodNamesGet(className);
+  return EsMetaclass::instance()->classMethodNamesGet(className);
 }
 //---------------------------------------------------------------------------
 
 EsStringArray EsScriptMetaclass::thisMethodNamesGet(const EsString& className) const
 {
-	EsStringArray result;
-	EsMethodInfoKeysT keys;
+  EsStringArray result;
+  EsMethodInfoKeysT keys;
 
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
-	if( info )
-		keys = info->methodKeysGet(false);
-	else
-	{
-		EsScriptObjectIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
-		result = thisMethodNamesGet( metaclass->classNameGet() );
-		keys = metaclass->scriptedMethodKeysGet(false);
-	}
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  if( info )
+    keys = info->methodKeysGet(false);
+  else
+  {
+    EsScriptObjectIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
+    result = thisMethodNamesGet( metaclass->classNameGet() );
+    keys = metaclass->scriptedMethodKeysGet(false);
+  }
 
-	result.reserve( result.size() + keys.size() );
-	for( size_t idx = 0; idx < keys.size(); ++idx )
-		result.push_back( keys[idx].asString() );
+  result.reserve( result.size() + keys.size() );
+  for( size_t idx = 0; idx < keys.size(); ++idx )
+    result.push_back( keys[idx].asString() );
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 EsStringArray EsScriptMetaclass::thisClassMethodNamesGet(const EsString& className) const
 {
-	return EsMetaclass::instance()->thisClassMethodNamesGet(className);
+  return EsMetaclass::instance()->thisClassMethodNamesGet(className);
 }
 //---------------------------------------------------------------------------
 
 bool EsScriptMetaclass::hasMethod(const EsString& className, const EsString& methodName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	EsMethodInfoKeyT key(methodName);
+  EsMethodInfoKeyT key(methodName);
 
-	if( info )
-		return info->hasMethod(key);
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  if( info )
+    return info->hasMethod(key);
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->hasMethod(key);
-	}
+    return metaclass->hasMethod(key);
+  }
 }
 //---------------------------------------------------------------------------
 
 bool EsScriptMetaclass::hasClassMethod(const EsString& className, const EsString& methodName) const
 {
-	return EsMetaclass::instance()->hasClassMethod(className, methodName);
+  return EsMetaclass::instance()->hasClassMethod(className, methodName);
 }
 //---------------------------------------------------------------------------
 
@@ -319,7 +319,7 @@ EsStringArray EsScriptMetaclass::internalFqNamesGet(cr_EsString className, bool 
   EsString::Array result;
 
   if( className.empty() )
-  { 
+  {
     const EsScriptMethodMap& globalMethods = m_owner.globalMethodsMapGet();
     result.reserve(
       globalMethods.size()
@@ -393,7 +393,7 @@ EsAttributesIntf::Ptr EsScriptMetaclass::methodAttrsAccess(cr_EsString fqName) c
   EsString className;
   bool isClassMethod;
   EsString methodName;
-  int paramCount;
+  ulong paramCount;
   EsString signature;
 
   EsMethodInfo::fqNameParse(
@@ -410,7 +410,7 @@ EsAttributesIntf::Ptr EsScriptMetaclass::methodAttrsAccess(cr_EsString fqName) c
     methodName
   );
 
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
   ES_ASSERT(info);
 
   if( info )
@@ -479,7 +479,7 @@ EsString EsScriptMetaclass::methodDescriptionGet(cr_EsString fqName) const
   EsString className;
   bool isClassMethod;
   EsString methodName;
-  int paramCount;
+  ulong paramCount;
   EsString signature;
 
   EsMethodInfo::fqNameParse(
@@ -491,19 +491,19 @@ EsString EsScriptMetaclass::methodDescriptionGet(cr_EsString fqName) const
     signature
   );
 
-	EsString result = EsString::format(
+  EsString result = EsString::format(
     esT("%s(%s)"),
     methodName,
     signature
   );
 
-	EsVariant help = attrs->attributeGetDef(
+  EsVariant help = attrs->attributeGetDef(
     esT("help"),
     EsVariant::null()
   );
 
-	if( !help.isEmpty() )
-		result += esT("\n") + esTranslationGet( help.asString() );
+  if( !help.isEmpty() )
+    result += esT("\n") + esTranslationGet( help.asString() );
 
   return result;
 }
@@ -512,231 +512,231 @@ EsString EsScriptMetaclass::methodDescriptionGet(cr_EsString fqName) const
 
 EsStringArray EsScriptMetaclass::propertyNamesGet(const EsString& className) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
-	if( info )
-		return info->propertyNamesGet();
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  if( info )
+    return info->propertyNamesGet();
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->propertyNamesGet();
-	}
+    return metaclass->propertyNamesGet();
+  }
 }
 //--------------------------------------------------------------------------------
 
 EsStringArray EsScriptMetaclass::thisPropertyNamesGet(const EsString& className) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	EsStringArray result;
-	if(info)
-		result = info->propertyNamesGet(false, false);
-	else
-	{
-		EsScriptObjectIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  EsStringArray result;
+  if(info)
+    result = info->propertyNamesGet(false, false);
+  else
+  {
+    EsScriptObjectIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		EsStringIndexedMap::Ptr props = metaclass->thisPropertiesMapGet();
-		if( props )
-			result = props->namesGet();
-	}
+    EsStringIndexedMap::Ptr props = metaclass->thisPropertiesMapGet();
+    if( props )
+      result = props->namesGet();
+  }
 
-	return result;
+  return result;
 }
 //--------------------------------------------------------------------------------
 
 EsStringArray EsScriptMetaclass::persistentPropertyNamesGet(const EsString& className) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
-	if(info)
-		return info->propertyNamesGet(true);
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  if(info)
+    return info->propertyNamesGet(true);
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->persistentPropertyNamesGet();
-	}
+    return metaclass->persistentPropertyNamesGet();
+  }
 }
 //--------------------------------------------------------------------------------
 
 EsStringArray EsScriptMetaclass::thisPersistentPropertyNamesGet(const EsString& className) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
-	if(info)
-		return info->propertyNamesGet(true, false);
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  if(info)
+    return info->propertyNamesGet(true, false);
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		// todo: return _this_ properties
-		return metaclass->persistentPropertyNamesGet();
-	}
+    // todo: return _this_ properties
+    return metaclass->persistentPropertyNamesGet();
+  }
 }
 //--------------------------------------------------------------------------------
 
 bool EsScriptMetaclass::hasProperty(const EsString& className, const EsString& propName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	if( info )
-		return info->hasProperty(propName);
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  if( info )
+    return info->hasProperty(propName);
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->hasProperty(propName);
-	}
+    return metaclass->hasProperty(propName);
+  }
 }
 //--------------------------------------------------------------------------------
 
 bool EsScriptMetaclass::propertyCanRead(const EsString& className, const EsString& propName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	if( info )
-		return info->propertyInfoGet(propName).canRead();
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  if( info )
+    return info->propertyInfoGet(propName).canRead();
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->propertyCanRead(propName);
-	}
+    return metaclass->propertyCanRead(propName);
+  }
 }
 //--------------------------------------------------------------------------------
 
 bool EsScriptMetaclass::propertyCanWrite(const EsString& className, const EsString& propName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	if( info )
-		return info->propertyInfoGet(propName).canWrite();
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  if( info )
+    return info->propertyInfoGet(propName).canWrite();
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->propertyCanWrite(propName);
-	}
+    return metaclass->propertyCanWrite(propName);
+  }
 }
 //--------------------------------------------------------------------------------
 
 EsStringArray EsScriptMetaclass::propertyAttributeNamesGet(const EsString& className, const EsString& propName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	if( info )
-	{
-		const EsPropertyInfo& pinfo = info->propertyInfoGet(propName);
+  if( info )
+  {
+    const EsPropertyInfo& pinfo = info->propertyInfoGet(propName);
 
-		EsAttributesIntf::Ptr attrs = pinfo.attributesAccess();
-		EsStringArray result;
-		if( attrs )
-			result = attrs->allNamesGet();
+    EsAttributesIntf::Ptr attrs = pinfo.attributesAccess();
+    EsStringArray result;
+    if( attrs )
+      result = attrs->allNamesGet();
 
-		return result;
-	}
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+    return result;
+  }
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->propertyAttributeNamesGet(propName);
-	}
+    return metaclass->propertyAttributeNamesGet(propName);
+  }
 }
 //--------------------------------------------------------------------------------
 
 bool EsScriptMetaclass::propertyHasAttribute(const EsString& className, const EsString& propName, const EsString& attrName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	if( info )
-	{
-		const EsPropertyInfo& pinfo = info->propertyInfoGet(propName);
+  if( info )
+  {
+    const EsPropertyInfo& pinfo = info->propertyInfoGet(propName);
 
-		EsAttributesIntf::Ptr attrs = pinfo.attributesAccess();
-		if( attrs )
-			return attrs->attributeExists(attrName);
-	}
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+    EsAttributesIntf::Ptr attrs = pinfo.attributesAccess();
+    if( attrs )
+      return attrs->attributeExists(attrName);
+  }
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->propertyHasAttribute(propName, attrName);
-	}
+    return metaclass->propertyHasAttribute(propName, attrName);
+  }
 
-	return false;
+  return false;
 }
 //--------------------------------------------------------------------------------
 
 EsVariant EsScriptMetaclass::propertyAttributeGet(const EsString& className, const EsString& propName, const EsString& attrName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
 
-	if( info )
-	{
-		const EsPropertyInfo& pinfo = info->propertyInfoGet(propName);
+  if( info )
+  {
+    const EsPropertyInfo& pinfo = info->propertyInfoGet(propName);
 
-		EsAttributesIntf::Ptr attrs = pinfo.attributesAccess();
-		if( attrs )
-			return attrs->attributeGet(attrName);
-		else
-			EsException::Throw(
+    EsAttributesIntf::Ptr attrs = pinfo.attributesAccess();
+    if( attrs )
+      return attrs->attributeGet(attrName);
+    else
+      EsException::Throw(
         esT("Property '%s' attribute '%s' does not exist"),
-				propName,
+        propName,
         attrName
       );
-	}
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  }
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->propertyAttributeGet(propName, attrName);
-	}
+    return metaclass->propertyAttributeGet(propName, attrName);
+  }
 
-	return EsVariant::null();
+  return EsVariant::null();
 }
 //--------------------------------------------------------------------------------
 
 EsString EsScriptMetaclass::propertyLabelGet(const EsString& className, const EsString& propName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
-	if( info )
-	{
-		const EsPropertyInfo& pinfo = info->propertyInfoGet(propName);
-		return pinfo.labelGet();
-	}
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  if( info )
+  {
+    const EsPropertyInfo& pinfo = info->propertyInfoGet(propName);
+    return pinfo.labelGet();
+  }
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->propertyLabelGet(propName);
-	}
+    return metaclass->propertyLabelGet(propName);
+  }
 }
 //--------------------------------------------------------------------------------
 
 EsString EsScriptMetaclass::propertyDescriptionGet(const EsString& className, const EsString& propName) const
 {
-	const EsClassInfo* info = EsClassInfo::classInfoGet(className);
-	if( info )
-	{
-		const EsPropertyInfo& pinfo = info->propertyInfoGet(propName);
-		return pinfo.descriptionGet();
-	}
-	else
-	{
-		EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
-		ES_ASSERT(metaclass);
+  const EsClassInfo* info = EsClassInfo::classInfoGet(className);
+  if( info )
+  {
+    const EsPropertyInfo& pinfo = info->propertyInfoGet(propName);
+    return pinfo.descriptionGet();
+  }
+  else
+  {
+    EsReflectedClassIntf::Ptr metaclass = m_owner.metaclassFind(className, true);
+    ES_ASSERT(metaclass);
 
-		return metaclass->propertyDescriptionGet(propName);
-	}
+    return metaclass->propertyDescriptionGet(propName);
+  }
 }
 //--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------
@@ -745,7 +745,7 @@ EsStringArray EsScriptMetaclass::enumerationNamesGet() const
 {
   EsStringArray enums = EsMetaclass::instance()->enumerationNamesGet();
   const EsStringArray& scriptEnums = m_owner.enumNamesGet();
-  
+
   enums.reserve(
     enums.size() + scriptEnums.size()
   );
@@ -771,37 +771,37 @@ EsStringArray EsScriptMetaclass::enumerationSymbolsGet(cr_EsString enu) const
 
 EsVariant EsScriptMetaclass::objectCreate(const EsString& className) const
 {
-	return const_cast<EsScriptMachine&>(m_owner).objectCreate(className);
+  return const_cast<EsScriptMachine&>(m_owner).objectCreate(className);
 }
 //--------------------------------------------------------------------------------
 
 EsVariant EsScriptMetaclass::objectCreate(const EsString& className, const EsVariant& p0) const
 {
-	return const_cast<EsScriptMachine&>(m_owner).objectCreate(className, p0);
+  return const_cast<EsScriptMachine&>(m_owner).objectCreate(className, p0);
 }
 //--------------------------------------------------------------------------------
 
 EsVariant EsScriptMetaclass::objectCreate(const EsString& className, const EsVariant& p0, const EsVariant& p1) const
 {
-	return const_cast<EsScriptMachine&>(m_owner).objectCreate(className, p0, p1);
+  return const_cast<EsScriptMachine&>(m_owner).objectCreate(className, p0, p1);
 }
 //--------------------------------------------------------------------------------
 
 EsVariant EsScriptMetaclass::objectCreate(const EsString& className, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2) const
 {
-	return const_cast<EsScriptMachine&>(m_owner).objectCreate(className, p0, p1, p2);
+  return const_cast<EsScriptMachine&>(m_owner).objectCreate(className, p0, p1, p2);
 }
 //--------------------------------------------------------------------------------
 
 EsVariant EsScriptMetaclass::objectCreate(const EsString& className, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3) const
 {
-	return const_cast<EsScriptMachine&>(m_owner).objectCreate(className, p0, p1, p2, p3);
+  return const_cast<EsScriptMachine&>(m_owner).objectCreate(className, p0, p1, p2, p3);
 }
 //--------------------------------------------------------------------------------
 
 EsVariant EsScriptMetaclass::objectCreate(const EsString& className, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4) const
 {
-	return const_cast<EsScriptMachine&>(m_owner).objectCreate(className, p0, p1, p2, p3, p4);
+  return const_cast<EsScriptMachine&>(m_owner).objectCreate(className, p0, p1, p2, p3, p4);
 }
 //--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------

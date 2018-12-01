@@ -24,7 +24,7 @@ public:
 
   /// EsBaseIntf implementation
   ///
- 	ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
+   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// EsFtdiDeviceIntf overrides
   ///
@@ -35,8 +35,8 @@ public:
   /// Configuration elements access. If channel is currently open, configuration changes
   /// will take place upon next successfull channel opening.
   ///
-	ES_DECL_INTF_METHOD(esU32, clockRateGet)() const ES_OVERRIDE { return m_cfgClockRate; }
-	ES_DECL_INTF_METHOD(void, clockRateSet)(esU32 rate) ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(esU32, clockRateGet)() const ES_OVERRIDE { return m_cfgClockRate; }
+  ES_DECL_INTF_METHOD(void, clockRateSet)(esU32 rate) ES_OVERRIDE;
 
   ES_DECL_INTF_METHOD(esU8, latencyTimerGet)() const ES_OVERRIDE { return m_cfgLatencyTimer; }
   ES_DECL_INTF_METHOD(void, latencyTimerSet)(esU8 tmo) ES_OVERRIDE;
@@ -127,13 +127,13 @@ protected:
   // These members provide a way to enable/disable features
   // specific to the protocol that are implemented in the chip
   //
-  // BIT0		: 3PhaseDataClocking - Setting this bit will turn on 3 phase data clocking for a
-  // 		FT2232H dual hi-speed device or FT4232H quad hi-speed device. Three phase
-  // 		data clocking, ensures the data is valid on both edges of a clock
+  // BIT0    : 3PhaseDataClocking - Setting this bit will turn on 3 phase data clocking for a
+  //     FT2232H dual hi-speed device or FT4232H quad hi-speed device. Three phase
+  //     data clocking, ensures the data is valid on both edges of a clock
   //
   bool m_opt3PhaseDataClocking;
 
-  // BIT1		: Loopback, AKA I2C_ENABLE_DRIVE_ONLY_ZERO
+  // BIT1    : Loopback, AKA I2C_ENABLE_DRIVE_ONLY_ZERO
   // The I2C master should actually drive the SDA line only when the output is LOW. It should
   // tristate the SDA line when the output should be high. This tristating the SDA line during high
   // output is supported only in FT232H chip. This feature is called DriveOnlyZero feature and is
@@ -141,7 +141,7 @@ protected:
   //
   bool m_optLoopback;
 
-  // BIT2		: Clock stretching
+  // BIT2    : Clock stretching
   bool m_optClockStretching;
 
   bool m_cfgChanged; //< Pending changes to config options

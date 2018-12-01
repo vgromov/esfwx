@@ -13,13 +13,13 @@
 
 EsMutex::Result EsMutex::tryLock()
 {
-	return lock(0);
+  return lock(0);
 }
 //---------------------------------------------------------------------------
 
 EsMutex::Result EsMutex::lock()
 {
-	return lock(ES_INFINITE);
+  return lock(ES_INFINITE);
 }
 //---------------------------------------------------------------------------
 
@@ -29,15 +29,15 @@ EsMutexLocker::EsMutexLocker(EsMutex& mx) :
 m_mx(mx),
 m_ok(false)
 {
-	ES_ASSERT( m_mx.isOk() );
-	m_ok = EsMutex::resultOk == m_mx.lock();
+  ES_ASSERT( m_mx.isOk() );
+  m_ok = EsMutex::resultOk == m_mx.lock();
 }
 //---------------------------------------------------------------------------
 
 EsMutexLocker::~EsMutexLocker()
 {
-	if( m_ok )
-		m_mx.unlock();
+  if( m_ok )
+    m_mx.unlock();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -45,13 +45,13 @@ EsMutexLocker::~EsMutexLocker()
 EsCriticalSectionLocker::EsCriticalSectionLocker(EsCriticalSection& obj) :
 m_obj(obj)
 {
-	m_obj.enter();
+  m_obj.enter();
 }
 //---------------------------------------------------------------------------
 
 EsCriticalSectionLocker::~EsCriticalSectionLocker()
 {
-	m_obj.leave();
+  m_obj.leave();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -78,13 +78,13 @@ EsCriticalSectionPtrLocker::~EsCriticalSectionPtrLocker()
 
 EsSemaphore::Result EsSemaphore::wait()
 {
-	return wait(ES_INFINITE);
+  return wait(ES_INFINITE);
 }
 //---------------------------------------------------------------------------
 
 EsSemaphore::Result EsSemaphore::tryWait()
 {
-	return wait(0);
+  return wait(0);
 }
 //---------------------------------------------------------------------------
 

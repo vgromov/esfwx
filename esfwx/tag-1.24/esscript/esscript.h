@@ -2,7 +2,7 @@
 #define _es_script_h_
 
 #ifndef _es_core_h_
-#	error "escore.h must be included prior to this header!"
+#  error "escore.h must be included prior to this header!"
 #endif
 
 // Script configuration
@@ -20,19 +20,19 @@
 
 // Core export-import defines
 #ifdef ES_USE_DLLS
-#	ifdef ESSCRIPT_EXPORTS
-#		define ESSCRIPT_CLASS	            ES_EXPORT_SPEC
-#		define ESSCRIPT_FUNC(type, decl)	ES_FUNCEXPORT_SPEC(type, decl)
-#		define ESSCRIPT_DATA(type, decl)	ES_DATAEXPORT_SPEC(type, decl)
-#	else
-#		define ESSCRIPT_CLASS	            ES_IMPORT_SPEC
-#		define ESSCRIPT_FUNC(type, decl)	ES_FUNCIMPORT_SPEC(type, decl)
-#		define ESSCRIPT_DATA(type, decl)	ES_DATAIMPORT_SPEC(type, decl)
-#	endif
+#  ifdef ESSCRIPT_EXPORTS
+#    define ESSCRIPT_CLASS              ES_EXPORT_SPEC
+#    define ESSCRIPT_FUNC(type, decl)  ES_FUNCEXPORT_SPEC(type, decl)
+#    define ESSCRIPT_DATA(type, decl)  ES_DATAEXPORT_SPEC(type, decl)
+#  else
+#    define ESSCRIPT_CLASS              ES_IMPORT_SPEC
+#    define ESSCRIPT_FUNC(type, decl)  ES_FUNCIMPORT_SPEC(type, decl)
+#    define ESSCRIPT_DATA(type, decl)  ES_DATAIMPORT_SPEC(type, decl)
+#  endif
 #else
-#	define ESSCRIPT_CLASS
-#	define ESSCRIPT_FUNC(type, decl)    type decl
-#	define ESSCRIPT_DATA(type, decl)    type decl
+#  define ESSCRIPT_CLASS
+#  define ESSCRIPT_FUNC(type, decl)    type decl
+#  define ESSCRIPT_DATA(type, decl)    type decl
 #endif
 
 // Standard includes

@@ -3,51 +3,51 @@ EsMutex::EsMutex(EsMutex::Type type /*= typeDefault*/) :
 m_type(type),
 m_owningThreadId(0)
 {
-	EsThread::checkPthreadError(
-		pthread_mutexattr_init(&m_mxAttrs)
-		);
+  EsThread::checkPthreadError(
+    pthread_mutexattr_init(&m_mxAttrs)
+    );
 
-	EsThread::checkPthreadError(
-		pthread_mutexattr_setpshared(&m_mxAttrs, PTHREAD_PROCESS_PRIVATE)
-		);
+  EsThread::checkPthreadError(
+    pthread_mutexattr_setpshared(&m_mxAttrs, PTHREAD_PROCESS_PRIVATE)
+    );
 
-	if( typeDefault == type  )
-		EsThread::checkPthreadError(
-			pthread_mutexattr_settype(&m_mxAttrs, PTHREAD_MUTEX_NORMAL)
-			);
-	else // create recursive mutex
-		EsThread::checkPthreadError(
-			pthread_mutexattr_settype(&m_mxAttrs, PTHREAD_MUTEX_RECURSIVE)
-			);
+  if( typeDefault == type  )
+    EsThread::checkPthreadError(
+      pthread_mutexattr_settype(&m_mxAttrs, PTHREAD_MUTEX_NORMAL)
+      );
+  else // create recursive mutex
+    EsThread::checkPthreadError(
+      pthread_mutexattr_settype(&m_mxAttrs, PTHREAD_MUTEX_RECURSIVE)
+      );
 
 #ifndef ES_PMUTEX_NO_ROBUST
-	EsThread::checkPthreadError(
-		pthread_mutexattr_setrobust(&m_mxAttrs, PTHREAD_MUTEX_ROBUST)
-		);
+  EsThread::checkPthreadError(
+    pthread_mutexattr_setrobust(&m_mxAttrs, PTHREAD_MUTEX_ROBUST)
+    );
 #endif
 
-	EsThread::checkPthreadError(
-		pthread_mutex_init(&m_mx, &m_mxAttrs)
-		);
+  EsThread::checkPthreadError(
+    pthread_mutex_init(&m_mx, &m_mxAttrs)
+    );
 }
 //---------------------------------------------------------------------------
 
 EsMutex::~EsMutex()
 {
 #ifdef ES_DEBUG
-	int err =
+  int err =
 #endif
-	pthread_mutex_destroy(&m_mx);
+  pthread_mutex_destroy(&m_mx);
 #ifdef ES_DEBUG
-	ES_DEBUG_TRACE(esT("pthread_mutex_destroy returned: %d"), err);
+  ES_DEBUG_TRACE(esT("pthread_mutex_destroy returned: %d"), err);
 #endif
 
 #ifdef ES_DEBUG
-	err =
+  err =
 #endif
-	pthread_mutexattr_destroy(&m_mxAttrs);
+  pthread_mutexattr_destroy(&m_mxAttrs);
 #ifdef ES_DEBUG
-	ES_DEBUG_TRACE(esT("pthread_mutexattr_destroy returned: %d"), err);
+  ES_DEBUG_TRACE(esT("pthread_mutexattr_destroy returned: %d"), err);
 #endif
 }
 //---------------------------------------------------------------------------
@@ -55,17 +55,17 @@ EsMutex::~EsMutex()
 // validity check
 bool EsMutex::isOk() const
 {
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 
 #ifndef ES_PTHREAD_NO_TIMEDLOCK
 static void timedwaitTmoCalc(ulong ms, timespec& tmo)
 {
-	clock_gettime( CLOCK_REALTIME, &tmo );
-	ulong lsec = ms/1000;
-	tmo.tv_sec += lsec;
-	tmo.tv_nsec += (ms % 1000) * 1000;
+  clock_gettime( CLOCK_REALTIME, &tmo );
+  ulong lsec = ms/1000;
+  tmo.tv_sec += lsec;
+  tmo.tv_nsec += (ms % 1000) * 1000;
 }
 #endif
 //---------------------------------------------------------------------------
@@ -73,29 +73,29 @@ static void timedwaitTmoCalc(ulong ms, timespec& tmo)
 static int pthreadMutexTimedLock(pthread_mutex_t* mx, ulong ms)
 {
 #ifdef ES_PTHREAD_NO_TIMEDLOCK
-	int err = 0;
-	while( ms-- )
-	{
-		err = pthread_mutex_trylock(mx);
-		if( 0 == err )
-			return 0;
-		else if( EINVAL == err )
-			return err;
+  int err = 0;
+  while( ms-- )
+  {
+    err = pthread_mutex_trylock(mx);
+    if( 0 == err )
+      return 0;
+    else if( EINVAL == err )
+      return err;
 
-		EsThread::sleep(1);
-	}
+    EsThread::sleep(1);
+  }
 
-	if( EBUSY == err )
-		err = ETIMEDOUT;
+  if( EBUSY == err )
+    err = ETIMEDOUT;
 
-	return err;
+  return err;
 
 #else
 
-	timespec tmo;
-	timedwaitTmoCalc(ms, tmo);
+  timespec tmo;
+  timedwaitTmoCalc(ms, tmo);
 
-	return pthread_mutex_timedlock(mx, &tmo);
+  return pthread_mutex_timedlock(mx, &tmo);
 
 #endif
 }
@@ -103,56 +103,56 @@ static int pthreadMutexTimedLock(pthread_mutex_t* mx, ulong ms)
 
 EsMutex::Result EsMutex::lock(ulong ms)
 {
-	if( m_type != typeRecursive &&
-			0 != m_owningThreadId &&
-			m_owningThreadId == EsThread::currentIdGet() )
-		return resultDeadlock;
+  if( m_type != typeRecursive &&
+      0 != m_owningThreadId &&
+      m_owningThreadId == EsThread::currentIdGet() )
+    return resultDeadlock;
 
-	if( !isOk() )
-		return resultInvalid;
+  if( !isOk() )
+    return resultInvalid;
 
-	int err = 0;
-	if( ES_INFINITE == ms )
-		err = pthread_mutex_lock(&m_mx);
-	else if( 0 == ms )
-		err = pthread_mutex_trylock(&m_mx);
-	else
-		err = pthreadMutexTimedLock(&m_mx, ms);
+  int err = 0;
+  if( ES_INFINITE == ms )
+    err = pthread_mutex_lock(&m_mx);
+  else if( 0 == ms )
+    err = pthread_mutex_trylock(&m_mx);
+  else
+    err = pthreadMutexTimedLock(&m_mx, ms);
 
-	switch( err )
-	{
-	case EBUSY:
-		return resultBusy;
-	case ETIMEDOUT:
-		return resultTimeout;
-	case EDEADLK:
-		return resultDeadlock;
-	case EAGAIN:
-	case EPERM:
-		return resultError;
-	case EINVAL:
-		return resultInvalid;
-	}
+  switch( err )
+  {
+  case EBUSY:
+    return resultBusy;
+  case ETIMEDOUT:
+    return resultTimeout;
+  case EDEADLK:
+    return resultDeadlock;
+  case EAGAIN:
+  case EPERM:
+    return resultError;
+  case EINVAL:
+    return resultInvalid;
+  }
 
-	if(m_type == typeDefault) // required for checking recursion
-		m_owningThreadId = EsThread::currentIdGet();
+  if(m_type == typeDefault) // required for checking recursion
+    m_owningThreadId = EsThread::currentIdGet();
 
-	return resultOk;
+  return resultOk;
 }
 //---------------------------------------------------------------------------
 
 EsMutex::Result EsMutex::unlock()
 {
-	// required for checking recursion
-	m_owningThreadId = 0;
-	if( !isOk() )
-		return resultInvalid;
+  // required for checking recursion
+  m_owningThreadId = 0;
+  if( !isOk() )
+    return resultInvalid;
 
-	int err = pthread_mutex_unlock(&m_mx);
-	if( err )
-		return resultError;
+  int err = pthread_mutex_unlock(&m_mx);
+  if( err )
+    return resultError;
 
-	return resultOk;
+  return resultOk;
 }
 //---------------------------------------------------------------------------
 
@@ -171,29 +171,29 @@ EsCriticalSection::~EsCriticalSection()
 void EsCriticalSection::enter()
 {
 #ifdef ES_DEBUG
-	EsMutex::Result result =
+  EsMutex::Result result =
 #endif
-	m_cs.lock();
+  m_cs.lock();
 #ifdef ES_DEBUG
-	ES_DEBUG_TRACE(esT("EsCriticalSection::enter returned: %d"), result);
+  ES_DEBUG_TRACE(esT("EsCriticalSection::enter returned: %d"), result);
 #endif
 }
 //---------------------------------------------------------------------------
 
 bool EsCriticalSection::tryEnter()
 {
-	return EsMutex::resultOk == m_cs.tryLock();
+  return EsMutex::resultOk == m_cs.tryLock();
 }
 //---------------------------------------------------------------------------
 
 void EsCriticalSection::leave()
 {
 #ifdef ES_DEBUG
-	EsMutex::Result result =
+  EsMutex::Result result =
 #endif
-	m_cs.unlock();
+  m_cs.unlock();
 #ifdef ES_DEBUG
-	ES_DEBUG_TRACE(esT("EsCriticalSection::leave returned: %d"), result);
+  ES_DEBUG_TRACE(esT("EsCriticalSection::leave returned: %d"), result);
 #endif
 }
 //---------------------------------------------------------------------------
@@ -233,7 +233,7 @@ sem_t* EsSemaphore::semaphoreInit(
   if( SEM_FAILED == sem )
   {
     sem = 0;
-		EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
+    EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
   }
 
 #else
@@ -241,10 +241,10 @@ sem_t* EsSemaphore::semaphoreInit(
   sem = reinterpret_cast<sem_t*>(malloc(sizeof(sem_t)));
   ES_ASSERT(sem);
 
-	if( -1 == sem_init(sem, 0, initVal) )
+  if( -1 == sem_init(sem, 0, initVal) )
   {
     sem = 0;
-		EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
+    EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
   }
 
 #endif
@@ -264,7 +264,7 @@ void EsSemaphore::semaphoreUninit(
   if( sem )
   {
 #ifdef ES_DEBUG
-		int err =
+    int err =
 #endif
 
 #if ES_OS == ES_OS_MAC
@@ -285,7 +285,7 @@ void EsSemaphore::semaphoreUninit(
 
 #else  // ES_OS_MAC
 
-		sem_destroy(sem);
+    sem_destroy(sem);
 
 # ifdef ES_DEBUG
     ES_DEBUG_TRACE(esT("sem_destroy returned: %d"), err);
@@ -304,16 +304,16 @@ m_semFree(nullptr),
 m_cnt(0),
 m_maxCnt(0)
 {
-	if( maxCount == 0 )
-		maxCount = SEM_VALUE_MAX;
+  if( maxCount == 0 )
+    maxCount = SEM_VALUE_MAX;
 
-	if( initialCount > maxCount )
-		initialCount = maxCount;
+  if( initialCount > maxCount )
+    initialCount = maxCount;
 
   m_cnt = initialCount;
   m_maxCnt = maxCount;
 
-	// non-shared semaphore (in-process)
+  // non-shared semaphore (in-process)
 #if ES_OS == ES_OS_MAC
 
   m_semLock = semaphoreInit(
@@ -364,7 +364,7 @@ EsSemaphore::~EsSemaphore()
 
 bool EsSemaphore::isOk() const
 {
-	return (nullptr != m_semLock) && (nullptr != m_semFree);
+  return (nullptr != m_semLock) && (nullptr != m_semFree);
 }
 //---------------------------------------------------------------------------
 
@@ -386,28 +386,28 @@ int EsSemaphore::lockDec()
 
 int EsSemaphore::semaphoreTimedLock(ulong ms)
 {
-	int err = 0;
+  int err = 0;
 
 #ifdef ES_PTHREAD_NO_TIMEDLOCK
-	while( ms-- )
-	{
-		err = sem_trywait(m_semFree);
-		if( 0 == err )
+  while( ms-- )
+  {
+    err = sem_trywait(m_semFree);
+    if( 0 == err )
       return lockDec();
-		else if( EINVAL == err )
-			return err;
+    else if( EINVAL == err )
+      return err;
 
-		EsThread::sleep(1);
-	}
+    EsThread::sleep(1);
+  }
 
-	if( EAGAIN == err )
-		err = ETIMEDOUT;
+  if( EAGAIN == err )
+    err = ETIMEDOUT;
 
 #else
-	timespec tmo;
-	timedwaitTmoCalc(ms, tmo);
+  timespec tmo;
+  timedwaitTmoCalc(ms, tmo);
 
-	err = sem_timedwait(m_semFree, &tmo);
+  err = sem_timedwait(m_semFree, &tmo);
   if( 0 == err )
     err = lockDec();
 #endif
@@ -418,52 +418,52 @@ int EsSemaphore::semaphoreTimedLock(ulong ms)
 
 EsSemaphore::Result EsSemaphore::wait(ulong ms)
 {
-	if( !isOk() )
-		return resultInvalid;
+  if( !isOk() )
+    return resultInvalid;
 
-	int err = 0;
-	if( ES_INFINITE == ms )
+  int err = 0;
+  if( ES_INFINITE == ms )
   {
-		err = sem_wait(m_semFree);
+    err = sem_wait(m_semFree);
     if( 0 == err )
       err = lockDec();
   }
-	else if( 0 == ms )
+  else if( 0 == ms )
   {
-		err = sem_trywait(m_semFree);
+    err = sem_trywait(m_semFree);
     if( -1 != err )
       err = lockDec();
   }
-	else
-		err = semaphoreTimedLock(ms);
+  else
+    err = semaphoreTimedLock(ms);
 
-	switch( err )
-	{
-	case 0:
-		return resultOk;
-	case EAGAIN:
-		return resultBusy;
-	case ETIMEDOUT:
-		return resultTimeout;
-	case EINVAL:
-		return resultInvalid;
-	}
+  switch( err )
+  {
+  case 0:
+    return resultOk;
+  case EAGAIN:
+    return resultBusy;
+  case ETIMEDOUT:
+    return resultTimeout;
+  case EINVAL:
+    return resultInvalid;
+  }
 
-	return resultError;
+  return resultError;
 }
 //---------------------------------------------------------------------------
 
 // increments the semaphore count and signals one of the waiting threads
 EsSemaphore::Result EsSemaphore::post()
 {
-	if( !isOk() )
-		return resultInvalid;
+  if( !isOk() )
+    return resultInvalid;
 
   m_mx.lock();
   int err = 0;
   if( m_cnt < m_maxCnt )
   {
-	  err = sem_post(m_semFree);
+    err = sem_post(m_semFree);
     if( 0 == err )
       ++m_cnt;
     m_mx.unlock();
@@ -472,15 +472,15 @@ EsSemaphore::Result EsSemaphore::post()
   else
     m_mx.unlock();
 
-	switch( err )
-	{
-	case EINVAL:
-		return resultInvalid;
-	case EOVERFLOW:
-		return resultOverflow;
-	}
+  switch( err )
+  {
+  case EINVAL:
+    return resultInvalid;
+  case EOVERFLOW:
+    return resultOverflow;
+  }
 
-	return resultOk;
+  return resultOk;
 }
 //---------------------------------------------------------------------------
 

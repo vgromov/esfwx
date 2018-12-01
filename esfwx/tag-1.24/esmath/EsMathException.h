@@ -16,19 +16,19 @@ protected:
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
   __fastcall
 #endif
-	EsMathException(const EsString& msg, const EsScriptDebugInfoIntf::Ptr& dbg);
+  EsMathException(const EsString& msg, const EsScriptDebugInfoIntf::Ptr& dbg);
 
 public:
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
   __fastcall
 #endif
-	EsMathException(const EsMathException& src, const EsScriptDebugInfoIntf::Ptr& dbg);
+  EsMathException(const EsMathException& src, const EsScriptDebugInfoIntf::Ptr& dbg);
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
   virtual __fastcall ~EsMathException();
 #endif
 
-	static void Throw(const EsString& msg, const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr());
+  static void Throw(const EsString& msg, const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr());
   static void ThrowArraySizesDoNotMatch( ulong cnt, ulong othercnt, const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr());
 
 private:

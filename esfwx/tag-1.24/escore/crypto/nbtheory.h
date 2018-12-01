@@ -80,8 +80,8 @@ CRYPTOPP_DLL bool CRYPTOPP_API VerifyPrime(RandomNumberGenerator &rng, const Int
 class CRYPTOPP_DLL PrimeSelector
 {
 public:
-	const PrimeSelector *GetSelectorPointer() const {return this;}
-	virtual bool IsAcceptable(const Integer &candidate) const =0;
+  const PrimeSelector *GetSelectorPointer() const {return this;}
+  virtual bool IsAcceptable(const Integer &candidate) const =0;
 };
 
 //! \brief Finds a random prime of special form
@@ -103,13 +103,13 @@ CRYPTOPP_DLL AlgorithmParameters CRYPTOPP_API MakeParametersForTwoPrimesOfEqualS
 // ********** other number theoretic functions ************
 
 inline Integer GCD(const Integer &a, const Integer &b)
-	{return Integer::Gcd(a,b);}
+  {return Integer::Gcd(a,b);}
 inline bool RelativelyPrime(const Integer &a, const Integer &b)
-	{return Integer::Gcd(a,b) == Integer::One();}
+  {return Integer::Gcd(a,b) == Integer::One();}
 inline Integer LCM(const Integer &a, const Integer &b)
-	{return a/Integer::Gcd(a,b)*b;}
+  {return a/Integer::Gcd(a,b)*b;}
 inline Integer EuclideanMultiplicativeInverse(const Integer &a, const Integer &b)
-	{return a.InverseMod(b);}
+  {return a.InverseMod(b);}
 
 // use Chinese Remainder Theorem to calculate x given x mod p and x mod q, and u = inverse of p mod q
 CRYPTOPP_DLL Integer CRYPTOPP_API CRT(const Integer &xp, const Integer &p, const Integer &xq, const Integer &q, const Integer &u);
@@ -124,7 +124,7 @@ CRYPTOPP_DLL Integer CRYPTOPP_API Lucas(const Integer &e, const Integer &p, cons
 CRYPTOPP_DLL Integer CRYPTOPP_API InverseLucas(const Integer &e, const Integer &m, const Integer &p, const Integer &q, const Integer &u);
 
 inline Integer ModularExponentiation(const Integer &a, const Integer &e, const Integer &m)
-	{return a_exp_b_mod_c(a, e, m);}
+  {return a_exp_b_mod_c(a, e, m);}
 // returns x such that x*x%p == a, p prime
 CRYPTOPP_DLL Integer CRYPTOPP_API ModularSquareRoot(const Integer &a, const Integer &p);
 // returns x such that a==ModularExponentiation(x, e, p*q), p q primes,
@@ -147,25 +147,25 @@ CRYPTOPP_DLL unsigned int CRYPTOPP_API FactoringWorkFactor(unsigned int bitlengt
 class CRYPTOPP_DLL PrimeAndGenerator
 {
 public:
-	PrimeAndGenerator() {}
-	// generate a random prime p of the form 2*q+delta, where delta is 1 or -1 and q is also prime
-	// Precondition: pbits > 5
-	// warning: this is slow, because primes of this form are harder to find
-	PrimeAndGenerator(signed int delta, RandomNumberGenerator &rng, unsigned int pbits)
-		{Generate(delta, rng, pbits, pbits-1);}
-	// generate a random prime p of the form 2*r*q+delta, where q is also prime
-	// Precondition: qbits > 4 && pbits > qbits
-	PrimeAndGenerator(signed int delta, RandomNumberGenerator &rng, unsigned int pbits, unsigned qbits)
-		{Generate(delta, rng, pbits, qbits);}
+  PrimeAndGenerator() {}
+  // generate a random prime p of the form 2*q+delta, where delta is 1 or -1 and q is also prime
+  // Precondition: pbits > 5
+  // warning: this is slow, because primes of this form are harder to find
+  PrimeAndGenerator(signed int delta, RandomNumberGenerator &rng, unsigned int pbits)
+    {Generate(delta, rng, pbits, pbits-1);}
+  // generate a random prime p of the form 2*r*q+delta, where q is also prime
+  // Precondition: qbits > 4 && pbits > qbits
+  PrimeAndGenerator(signed int delta, RandomNumberGenerator &rng, unsigned int pbits, unsigned qbits)
+    {Generate(delta, rng, pbits, qbits);}
 
-	void Generate(signed int delta, RandomNumberGenerator &rng, unsigned int pbits, unsigned qbits);
+  void Generate(signed int delta, RandomNumberGenerator &rng, unsigned int pbits, unsigned qbits);
 
-	const Integer& Prime() const {return p;}
-	const Integer& SubPrime() const {return q;}
-	const Integer& Generator() const {return g;}
+  const Integer& Prime() const {return p;}
+  const Integer& SubPrime() const {return q;}
+  const Integer& Generator() const {return g;}
 
 private:
-	Integer p, q, g;
+  Integer p, q, g;
 };
 
 NAMESPACE_END

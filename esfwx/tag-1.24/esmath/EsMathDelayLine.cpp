@@ -20,7 +20,7 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsMathDelayLine, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathDelayLine, clear, void_Call, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathDelayLine, itemAppend, void_Call_double, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathDelayLine, valueGet, double_CallConst, NO_METHOD_DESCR)
-	// Reflected properties
+  // Reflected properties
   ES_DECL_PROP_INFO_RO(             EsMathDelayLine, empty, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathDelayLine, saturated, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathDelayLine, count, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
@@ -28,7 +28,7 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsMathDelayLine, NO_CLASS_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathDelayLine, value, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO(                EsMathDelayLine, length, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
   // Constructors
-	ES_DECL_REFLECTED_CTOR_INFO(      EsMathDelayLine, EsBaseIntfPtr_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(      EsMathDelayLine, EsBaseIntfPtr_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
@@ -42,11 +42,11 @@ m_accum(0)
 
 EsBaseIntfPtr EsMathDelayLine::NEW( cr_EsVariant length )
 {
-	std::unique_ptr<EsMathDelayLine> p(new EsMathDelayLine(length.asULong()));
-	ES_ASSERT(p.get());
+  std::unique_ptr<EsMathDelayLine> p(new EsMathDelayLine(length.asULong()));
+  ES_ASSERT(p.get());
   p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -200,7 +200,7 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsMathDelayLineEx, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathDelayLineEx, itemAppend, void_Call_double, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathDelayLineEx, valueGet, double_CallConst, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathDelayLineEx, minimaxReset, void_Call, NO_METHOD_DESCR)
-	// Reflected properties
+  // Reflected properties
   ES_DECL_PROP_INFO_RO(             EsMathDelayLineEx, empty, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathDelayLineEx, saturated, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathDelayLineEx, count, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
@@ -212,7 +212,7 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsMathDelayLineEx, NO_CLASS_DESCR)
   ES_DECL_PROP_INFO(                EsMathDelayLineEx, minimaxResetThreshold, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(0xFFFFFFFF), NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO(                EsMathDelayLineEx, length, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
   // Constructors
-	ES_DECL_REFLECTED_CTOR_INFO(      EsMathDelayLineEx, EsBaseIntfPtr_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(      EsMathDelayLineEx, EsBaseIntfPtr_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
@@ -231,11 +231,11 @@ m_minimaxReset( true )
 
 EsBaseIntfPtr EsMathDelayLineEx::NEW( cr_EsVariant length )
 {
-	std::unique_ptr<EsMathDelayLineEx> p(new EsMathDelayLineEx(length.asULong()));
-	ES_ASSERT(p.get());
+  std::unique_ptr<EsMathDelayLineEx> p(new EsMathDelayLineEx(length.asULong()));
+  ES_ASSERT(p.get());
   p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 

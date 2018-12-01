@@ -7,7 +7,7 @@
 
 #include <IOKit/usb/USBSpec.h>
 #include <IOKit/hid/IOHIDKeys.h>
-#define kIOUSBDeviceClassName	"IOUSBDevice"
+#define kIOUSBDeviceClassName  "IOUSBDevice"
 //---------------------------------------------------------------------------
 
 EsVariant EsUtilities::macosSvcRegValSearch(io_service_t svc, const io_name_t plane,

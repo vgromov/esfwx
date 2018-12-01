@@ -4,13 +4,13 @@
 
 EsAtomic::int_t EsAtomic::inc(EsAtomic::int_t& subj) ES_NOTHROW
 {
-	return ::InterlockedIncrement( &subj );
+  return ::InterlockedIncrement( &subj );
 }
 //---------------------------------------------------------------------------
 
 EsAtomic::int_t EsAtomic::dec(EsAtomic::int_t& subj) ES_NOTHROW
 {
-	return ::InterlockedDecrement( &subj );
+  return ::InterlockedDecrement( &subj );
 }
 //---------------------------------------------------------------------------
 

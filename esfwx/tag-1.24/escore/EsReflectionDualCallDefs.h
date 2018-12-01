@@ -8,26 +8,26 @@
 //
 #define ES_DUAL_CALL_INTERNAL_NR(IntfPtr, NativeIntfT, NativeServiceCall, ReflectedServiceCall) \
 do { if( IntfPtr ) { \
-	NativeIntfT ::Ptr nativeIntf = IntfPtr; \
-	if(nativeIntf) { \
-		nativeIntf-> NativeServiceCall ; \
-	} else { \
-		EsReflectedClassIntf::Ptr reflectedIntf = IntfPtr; \
-		if(reflectedIntf) { \
-			reflectedIntf-> ReflectedServiceCall ; } \
-		} } \
+  NativeIntfT ::Ptr nativeIntf = IntfPtr; \
+  if(nativeIntf) { \
+    nativeIntf-> NativeServiceCall ; \
+  } else { \
+    EsReflectedClassIntf::Ptr reflectedIntf = IntfPtr; \
+    if(reflectedIntf) { \
+      reflectedIntf-> ReflectedServiceCall ; } \
+    } } \
 } while(0)
 
 #define ES_DUAL_CALL_INTERNAL(RetVar, IntfPtr, NativeIntfT, NativeServiceCall, ReflectedServiceCall) \
 do { if( IntfPtr ) { \
-	NativeIntfT ::Ptr nativeIntf = IntfPtr; \
-	if(nativeIntf) { \
-		RetVar = nativeIntf-> NativeServiceCall ; \
-	} else { \
-		EsReflectedClassIntf::Ptr reflectedIntf = IntfPtr; \
-		if(reflectedIntf) { \
-			RetVar = reflectedIntf-> ReflectedServiceCall ; } \
-		} } \
+  NativeIntfT ::Ptr nativeIntf = IntfPtr; \
+  if(nativeIntf) { \
+    RetVar = nativeIntf-> NativeServiceCall ; \
+  } else { \
+    EsReflectedClassIntf::Ptr reflectedIntf = IntfPtr; \
+    if(reflectedIntf) { \
+      RetVar = reflectedIntf-> ReflectedServiceCall ; } \
+    } } \
 } while(0)
 
 #define ES_NC_INTERNAL0(Service) Service()
@@ -60,4 +60,4 @@ do { if( IntfPtr ) { \
 #define ES_DUAL_CALL4(RetVar, IntfPtr, NativeIntfT, Service, p0, p1, p2, p3) ES_DUAL_CALL_INTERNAL(RetVar, IntfPtr, NativeIntfT, ES_NC_INTERNAL4(Service, p0, p1, p2, p3), ES_RC_INTERNAL4(Service, p0, p1, p2, p3))
 #define ES_DUAL_CALL5(RetVar, IntfPtr, NativeIntfT, Service, p0, p1, p2, p3, p4) ES_DUAL_CALL_INTERNAL(RetVar, IntfPtr, NativeIntfT, ES_NC_INTERNAL5(Service, p0, p1, p2, p3, p4), ES_RC_INTERNAL5(Service, p0, p1, p2, p4, p5))
 
-#endif //	_reflection_dual_call_defs_h_
+#endif //  _reflection_dual_call_defs_h_

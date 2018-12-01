@@ -7,7 +7,7 @@
 class ESCORE_CLASS EsCryptoAes
 {
 public:
-	EsCryptoAes(const EsBinBuffer& key);
+  EsCryptoAes(const EsBinBuffer& key);
 
   void keySet(const EsBinBuffer& key);
   const EsBinBuffer& keyGet() const ES_NOTHROW { return m_key; }

@@ -6,14 +6,14 @@
 enum class EsMathConvolutionFlag : ulong
 {
   FilterIsSymmetrical = 0x0001,
-  FilterIsNormalized	= 0x0002,
-  UseFixedLsubst			= 0x0004,
+  FilterIsNormalized  = 0x0002,
+  UseFixedLsubst      = 0x0004,
   UseFixedRsubst      = 0x0008,
-  SignalIsStable 			= 0x0010,
+  SignalIsStable       = 0x0010,
 
   // Special masks
-  FilterMask					= static_cast<ulong>(EsMathConvolutionFlag::FilterIsSymmetrical)|
-												static_cast<ulong>(EsMathConvolutionFlag::FilterIsNormalized)
+  FilterMask          = static_cast<ulong>(EsMathConvolutionFlag::FilterIsSymmetrical)|
+                        static_cast<ulong>(EsMathConvolutionFlag::FilterIsNormalized)
 };
 
 // Convolution implementation
@@ -21,31 +21,31 @@ enum class EsMathConvolutionFlag : ulong
 class ESMATH_CLASS ES_INTF_IMPL1(EsMathConvolutionReal, EsReflectedClassIntf)
 
 public:
-	ES_DECL_REFLECTED_CLASS_BASE(EsMathConvolutionReal)
-	ES_DECL_ATTR_HANDLING_STD
+  ES_DECL_REFLECTED_CLASS_BASE(EsMathConvolutionReal)
+  ES_DECL_ATTR_HANDLING_STD
 
   /// Non-reflected services
   ///
 
   EsMathConvolutionReal();
-	EsMathConvolutionReal(const EsMathArrayReal& filter, ulong flags);
-	EsMathConvolutionReal(ulong filterSize, EsMathArrayReal::const_pointer filter, ulong flags);
+  EsMathConvolutionReal(const EsMathArrayReal& filter, ulong flags);
+  EsMathConvolutionReal(ulong filterSize, EsMathArrayReal::const_pointer filter, ulong flags);
 
-	/// validity check
-	bool isOk() const { return !m_filter.get_empty(); }
+  /// validity check
+  bool isOk() const { return !m_filter.get_empty(); }
 
-	/// filter access
-	///
-	void filterSet(const EsMathArrayReal& filter, ulong flags = 0);
-	void filterSet(ulong filterSize, EsMathArrayReal::const_pointer filter, ulong flags = 0);
-	const EsMathArrayReal& filterGet() const { return m_filter; }
+  /// filter access
+  ///
+  void filterSet(const EsMathArrayReal& filter, ulong flags = 0);
+  void filterSet(ulong filterSize, EsMathArrayReal::const_pointer filter, ulong flags = 0);
+  const EsMathArrayReal& filterGet() const { return m_filter; }
 
-	/// Linear 1-dimentional convolution
-	/// if signal is stable, we may use signal itself to define data at T < 0 domains
-	/// if filter is symmetrical, we may use half of its length as offset from the
-	/// signal sequence, to the first filtered point value
-	///
-	void process(const EsMathArrayReal& sig, EsMathArrayReal& out) const;
+  /// Linear 1-dimentional convolution
+  /// if signal is stable, we may use signal itself to define data at T < 0 domains
+  /// if filter is symmetrical, we may use half of its length as offset from the
+  /// signal sequence, to the first filtered point value
+  ///
+  void process(const EsMathArrayReal& sig, EsMathArrayReal& out) const;
 
   /// Reflected services
   ///
@@ -68,7 +68,7 @@ public:
   ///
   ES_DECL_REFLECTED_CLASS_CTOR2(EsBaseIntfPtr, cr_EsVariant, ulong);
 
-	/// Linear 1-dimentional convolution.
+  /// Linear 1-dimentional convolution.
   /// @param p0 [in]  EsVariant const reference, containing either real array object instance, or values collection
   /// @return         EsVariant with real array object instance, containing convolution result
   ///
@@ -83,7 +83,7 @@ public:
   ES_DECL_PROPERTY(filter, EsVariant)
 
 protected:
-	EsMathArrayReal m_filter;
+  EsMathArrayReal m_filter;
 };
 
 // Reflected convolution flags

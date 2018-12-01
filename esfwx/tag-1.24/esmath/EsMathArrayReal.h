@@ -6,35 +6,35 @@
 class ESMATH_CLASS ES_INTF_IMPL1(EsMathArrayReal, EsReflectedClassIntf)
 
 public:
-	typedef double 				value_type;
-	typedef double* 			pointer;
-	typedef const double* const_pointer;
+  typedef double         value_type;
+  typedef double*       pointer;
+  typedef const double* const_pointer;
 
 public:
-	ES_DECL_REFLECTED_CLASS_BASE(EsMathArrayReal)
-	ES_DECL_ATTR_HANDLING_STD
+  ES_DECL_REFLECTED_CLASS_BASE(EsMathArrayReal)
+  ES_DECL_ATTR_HANDLING_STD
 
   /// Non-reflected services
   ///
 
   EsMathArrayReal(ulong size = 0, const double* data = 0);
-	EsMathArrayReal(const EsMathArrayReal& src);
+  EsMathArrayReal(const EsMathArrayReal& src);
 
-	virtual ~EsMathArrayReal();
+  virtual ~EsMathArrayReal();
 
-	/// Direct data access
-	const double* dataGet() const;
-	double* dataAccess();
-	void dataSet(ulong size, const double* data);
+  /// Direct data access
+  const double* dataGet() const;
+  double* dataAccess();
+  void dataSet(ulong size, const double* data);
 
-	/// Assignment operator
-	EsMathArrayReal& operator=(const EsMathArrayReal& src);
+  /// Assignment operator
+  EsMathArrayReal& operator=(const EsMathArrayReal& src);
 
-	/// Semi-private "black box" access.
-	/// For internal usage only
-	///
-	void* pimplGet() { return m_pimpl; }
-	const void* pimplGet() const { return m_pimpl; }
+  /// Semi-private "black box" access.
+  /// For internal usage only
+  ///
+  void* pimplGet() { return m_pimpl; }
+  const void* pimplGet() const { return m_pimpl; }
 
   /// Return our dynamic copy as EsBaseIntfPtr
   ///
@@ -69,13 +69,13 @@ public:
 
   /// Pseudo-constructors. Assign real array from binary buffer contents
   ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromU8buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromI8buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromU16buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromI16buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromU32buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromI32buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromFloatBuffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromDoubleBuffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromI8buffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromU16buffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromI16buffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromU32buffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromI32buffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromFloatBuffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsBaseIntfPtr, newFromDoubleBuffer, cr_EsBinBuffer);
 
   /// Recalculate array minimax
   ES_DECL_REFLECTED_METHOD0(void, minimaxRecalc);
@@ -109,13 +109,13 @@ public:
   /// exceptions, just return false on any error occurred.
   ///
   ES_DECL_REFLECTED_METHOD1(bool, fromU8buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_METHOD1(bool, fromI8buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_METHOD1(bool, fromU16buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_METHOD1(bool, fromI16buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_METHOD1(bool, fromU32buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_METHOD1(bool, fromI32buffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_METHOD1(bool, fromFloatBuffer, cr_EsBinBuffer);
-	ES_DECL_REFLECTED_METHOD1(bool, fromDoubleBuffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_METHOD1(bool, fromI8buffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_METHOD1(bool, fromU16buffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_METHOD1(bool, fromI16buffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_METHOD1(bool, fromU32buffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_METHOD1(bool, fromI32buffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_METHOD1(bool, fromFloatBuffer, cr_EsBinBuffer);
+  ES_DECL_REFLECTED_METHOD1(bool, fromDoubleBuffer, cr_EsBinBuffer);
 
   /// Direct assignment from binary buffer with range check and spike elimination
   /// These 'full' versions of services above, do throw an exceptions,
@@ -135,20 +135,20 @@ public:
   ///                                       successful. Otherwise, an exception is thrown.
   ///
   ES_DECL_REFLECTED_METHOD5(bool, fromU8buffer, cr_EsBinBuffer, double, double, bool, bool);
-	ES_DECL_REFLECTED_METHOD5(bool, fromI8buffer, cr_EsBinBuffer, double, double, bool, bool);
-	ES_DECL_REFLECTED_METHOD5(bool, fromU16buffer, cr_EsBinBuffer, double, double, bool, bool);
-	ES_DECL_REFLECTED_METHOD5(bool, fromI16buffer, cr_EsBinBuffer, double, double, bool, bool);
-	ES_DECL_REFLECTED_METHOD5(bool, fromU32buffer, cr_EsBinBuffer, double, double, bool, bool);
-	ES_DECL_REFLECTED_METHOD5(bool, fromI32buffer, cr_EsBinBuffer, double, double, bool, bool);
-	ES_DECL_REFLECTED_METHOD5(bool, fromFloatBuffer, cr_EsBinBuffer, double, double, bool, bool);
-	ES_DECL_REFLECTED_METHOD5(bool, fromDoubleBuffer, cr_EsBinBuffer, double, double, bool, bool);
+  ES_DECL_REFLECTED_METHOD5(bool, fromI8buffer, cr_EsBinBuffer, double, double, bool, bool);
+  ES_DECL_REFLECTED_METHOD5(bool, fromU16buffer, cr_EsBinBuffer, double, double, bool, bool);
+  ES_DECL_REFLECTED_METHOD5(bool, fromI16buffer, cr_EsBinBuffer, double, double, bool, bool);
+  ES_DECL_REFLECTED_METHOD5(bool, fromU32buffer, cr_EsBinBuffer, double, double, bool, bool);
+  ES_DECL_REFLECTED_METHOD5(bool, fromI32buffer, cr_EsBinBuffer, double, double, bool, bool);
+  ES_DECL_REFLECTED_METHOD5(bool, fromFloatBuffer, cr_EsBinBuffer, double, double, bool, bool);
+  ES_DECL_REFLECTED_METHOD5(bool, fromDoubleBuffer, cr_EsBinBuffer, double, double, bool, bool);
 
   /// Indexed object services
   ///
-	ES_DECL_REFLECTED_CONST_METHOD0(ulong, countGet);
-	ES_DECL_REFLECTED_METHOD1(void, countSet, ulong);
-	ES_DECL_REFLECTED_CONST_METHOD1(double, itemGet, ulong);
-	ES_DECL_REFLECTED_METHOD2(void, itemSet, ulong, double);
+  ES_DECL_REFLECTED_CONST_METHOD0(ulong, countGet);
+  ES_DECL_REFLECTED_METHOD1(void, countSet, ulong);
+  ES_DECL_REFLECTED_CONST_METHOD1(double, itemGet, ulong);
+  ES_DECL_REFLECTED_METHOD2(void, itemSet, ulong, double);
 
   /// Return array contents as formatted string (each element is formatted
   /// according fmt parameter, or, if not set, using default: '%f')
@@ -156,18 +156,18 @@ public:
   ///
   ES_DECL_REFLECTED_CONST_METHOD2(EsString, asString, cr_EsString, cr_EsString);
 
-	/// Custom stream reader
-	ES_DECL_REFLECTED_METHOD1(void, streamRead, cr_EsBaseIntfPtr);
+  /// Custom stream reader
+  ES_DECL_REFLECTED_METHOD1(void, streamRead, cr_EsBaseIntfPtr);
 
-	/// Custom stream writer
-	ES_DECL_REFLECTED_METHOD1(void, streamWrite, cr_EsBaseIntfPtr);
+  /// Custom stream writer
+  ES_DECL_REFLECTED_METHOD1(void, streamWrite, cr_EsBaseIntfPtr);
 
   /// Properties
   ///
 
   /// "Array is dirty" flag.
-	/// IF set to true, it will cause minimax recalculation on next call to any
-	/// minimax getter
+  /// IF set to true, it will cause minimax recalculation on next call to any
+  /// minimax getter
   ///
   ES_DECL_PROPERTY(dirty, bool)
   /// Emptiness check
@@ -190,14 +190,14 @@ public:
 private:
   // Internal helpers
   //
-	void copy(const EsMathArrayReal& src);
+  void copy(const EsMathArrayReal& src);
 
 protected:
-	// "black box" storage implementation
-	void* m_pimpl;
-	mutable bool m_needRecalc;
-	mutable ulong m_minIdx;
-	mutable ulong m_maxIdx;
+  // "black box" storage implementation
+  void* m_pimpl;
+  mutable bool m_needRecalc;
+  mutable ulong m_minIdx;
+  mutable ulong m_maxIdx;
   mutable double m_total;
 
   friend class EsMathConvolutionReal;

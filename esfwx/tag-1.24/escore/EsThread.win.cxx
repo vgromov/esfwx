@@ -13,39 +13,39 @@ m_thread(0)
 
 EsThread::~EsThread()
 {
-	stopAndWait();
+  stopAndWait();
 }
 //---------------------------------------------------------------------------
 
 void EsThread::cleanup()
 {
-	if( m_thread )
-	{
-		// Finally, close and nullify thread handle
-		::WaitForSingleObject(m_thread, ES_INFINITE);	// make sure thread actually exited
-		::CloseHandle(m_thread);
-		m_thread = 0;
-	}
+  if( m_thread )
+  {
+    // Finally, close and nullify thread handle
+    ::WaitForSingleObject(m_thread, ES_INFINITE);  // make sure thread actually exited
+    ::CloseHandle(m_thread);
+    m_thread = 0;
+  }
 
-	// reset stop condition, just in case
-	m_state = EsThreadState::None;
-	m_stop.tryWait();
-	m_id = EsThreadIdNone;
+  // reset stop condition, just in case
+  m_state = EsThreadState::None;
+  m_stop.tryWait();
+  m_id = EsThreadIdNone;
 }
 //---------------------------------------------------------------------------
 
 int EsThread::priorityCalc()
 {
-	if(m_priority <= 20)
-		return THREAD_PRIORITY_LOWEST;
-	else if (m_priority <= 40)
-		return THREAD_PRIORITY_BELOW_NORMAL;
-	else if (m_priority <= 60)
-		return THREAD_PRIORITY_NORMAL;
-	else if (m_priority <= 80)
-		return THREAD_PRIORITY_ABOVE_NORMAL;
-	else
-		return THREAD_PRIORITY_HIGHEST;
+  if(m_priority <= 20)
+    return THREAD_PRIORITY_LOWEST;
+  else if (m_priority <= 40)
+    return THREAD_PRIORITY_BELOW_NORMAL;
+  else if (m_priority <= 60)
+    return THREAD_PRIORITY_NORMAL;
+  else if (m_priority <= 80)
+    return THREAD_PRIORITY_ABOVE_NORMAL;
+  else
+    return THREAD_PRIORITY_HIGHEST;
 }
 //---------------------------------------------------------------------------
 
@@ -84,19 +84,19 @@ void EsThread::threadCreate()
 
 EsThreadId EsThread::currentIdGet()
 {
-	return static_cast<EsThreadId>( ::GetCurrentThreadId() );
+  return static_cast<EsThreadId>( ::GetCurrentThreadId() );
 }
 //---------------------------------------------------------------------------
 
 void EsThread::sleep(ulong ms)
 {
-	::Sleep(ms);
+  ::Sleep(ms);
 }
 //---------------------------------------------------------------------------
 
 void EsThread::yield()
 {
-	EsThread::sleep(0);
+  EsThread::sleep(0);
 }
 //---------------------------------------------------------------------------
 

@@ -182,16 +182,16 @@ void EsFtdiDevice::close()
 
 bool EsFtdiDevice::loopbackStateSet(bool set)
 {
-	esU8 in = 0;
-	esU32 bytesWritten = 0;
-	esU32 bufIdx = 0;
+  esU8 in = 0;
+  esU32 bytesWritten = 0;
+  esU32 bufIdx = 0;
 
-	if( set )
+  if( set )
     in = MPSSE::CMD_TURN_ON_LOOPBACK;
-	else
-		in = MPSSE::CMD_TURN_OFF_LOOPBACK;
+  else
+    in = MPSSE::CMD_TURN_OFF_LOOPBACK;
 
-	return ftWrite(
+  return ftWrite(
     &in,
     1,
     &bytesWritten
@@ -209,12 +209,12 @@ void EsFtdiDevice::mpsseBufInit()
 
 bool EsFtdiDevice::inBuffClear()
 {
-	esU32 bytesInInputBuf = 0;
+  esU32 bytesInInputBuf = 0;
 
   if( !ftGetQueueStatus(&bytesInInputBuf) )
     return false;
 
-	if( !bytesInInputBuf )
+  if( !bytesInInputBuf )
     return true;
 
   mpsseBufInit();
@@ -239,31 +239,31 @@ bool EsFtdiDevice::inBuffClear()
 
   } while( bytesInInputBuf );
 
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 
 bool EsFtdiDevice::mpsseCmdSend(esU8 cmd, int echo, esU8& cmdEchoed)
 {
   cmdEchoed = 0; //< Nothing echoed
-	int loopCounter = 0;
+  int loopCounter = 0;
   bool sentOnce = false;
 
-	do
-	{
-		ES_DEBUG_TRACE(
+  do
+  {
+    ES_DEBUG_TRACE(
       esT("EsFtdiDevice::mpsseCmdSend loopCounter=%d"),
-			loopCounter
+      loopCounter
     );
 
-		// Check whether command has to be sent every time in the loop
-  	esU32 bytesWritten = 0;
+    // Check whether command has to be sent every time in the loop
+    esU32 bytesWritten = 0;
     if(
       (1 == echo && !sentOnce) ||
       (2 == echo)
     )
     {
-	    if( !ftWrite(
+      if( !ftWrite(
           &cmd,
           1,
           &bytesWritten
@@ -272,28 +272,28 @@ bool EsFtdiDevice::mpsseCmdSend(esU8 cmd, int echo, esU8& cmdEchoed)
         return false;
 
       sentOnce = true;
-		}
+    }
 
-		EsThread::sleep(1);
+    EsThread::sleep(1);
 
-		// Read the no of bytes available in Receive buffer
-  	esU32 bytesInInputBuf = 0;
-		if( !ftGetQueueStatus(&bytesInInputBuf) )
+    // Read the no of bytes available in Receive buffer
+    esU32 bytesInInputBuf = 0;
+    if( !ftGetQueueStatus(&bytesInInputBuf) )
       return false;
 
-		ES_DEBUG_TRACE(
+    ES_DEBUG_TRACE(
       esT("EsFtdiDevice::mpsseCmdSend bytesInInputBuf size=%d"),
       bytesInInputBuf
     );
 
-		if( bytesInInputBuf )
-		{
+    if( bytesInInputBuf )
+    {
       mpsseBufInit();
 
       ES_ASSERT( bytesInInputBuf <= MPSSE::MAX_IN_BUF_SIZE );
 
-    	esU32 numOfBytesRead = 0;
-			if( !ftRead(
+      esU32 numOfBytesRead = 0;
+      if( !ftRead(
           m_tmpBuff.data(),
           bytesInInputBuf,
           &numOfBytesRead
@@ -301,46 +301,46 @@ bool EsFtdiDevice::mpsseCmdSend(esU8 cmd, int echo, esU8& cmdEchoed)
       )
         return false;
 
-			if(numOfBytesRead)
-			{
-      	esU32 byteCounter = 0;
+      if(numOfBytesRead)
+      {
+        esU32 byteCounter = 0;
 
-				do
-				{
+        do
+        {
           cmdEchoed = m_tmpBuff[byteCounter];
-					++byteCounter;
+          ++byteCounter;
 
-				} while(
+        } while(
           (byteCounter < numOfBytesRead) &&
           (cmdEchoed != cmd)
         );
-			}
-		}
+      }
+    }
 
     ++loopCounter;
-		if( loopCounter > MPSSE::MAX_IN_BUF_SIZE )
-		{
-			ES_DEBUG_TRACE(
+    if( loopCounter > MPSSE::MAX_IN_BUF_SIZE )
+    {
+      ES_DEBUG_TRACE(
         esT("EsFtdiDevice::mpsseCmdSend Cmd IO loop exit after executing %d times"),
         loopCounter
       );
 
       return false;
-		}
+    }
 
-	} while(cmdEchoed != cmd);
+  } while(cmdEchoed != cmd);
 
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 
 bool EsFtdiDevice::mpsseSynch()
 {
-	if( !inBuffClear() )
+  if( !inBuffClear() )
     return false;
 
-	esU8 cmdEchoed;
-	// Send and receive command
+  esU8 cmdEchoed;
+  // Send and receive command
   if( !mpsseCmdSend(
       MPSSE::CMD_ECHO_1,
       2, //< Countinuous re-send
@@ -349,7 +349,7 @@ bool EsFtdiDevice::mpsseSynch()
   )
     return false;
 
-	if( MPSSE::CMD_ECHO_1 != cmdEchoed )
+  if( MPSSE::CMD_ECHO_1 != cmdEchoed )
     return false;
 
   if( !mpsseCmdSend(
@@ -360,21 +360,21 @@ bool EsFtdiDevice::mpsseSynch()
   )
     return false;
 
-	if(MPSSE::CMD_ECHO_2 != cmdEchoed)
+  if(MPSSE::CMD_ECHO_2 != cmdEchoed)
     return false;
 
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 
 bool EsFtdiDevice::mpsseClockSet(esU32 clock)
 {
-	esU32 bytesWritten = 0;
-	esU8 valH, valL;
-	esU32 val;
+  esU32 bytesWritten = 0;
+  esU8 valH, valL;
+  esU32 val;
 
-	switch( m_node.typeGet() )
-	{
+  switch( m_node.typeGet() )
+  {
   case EsFtdiDriver::DEVICE_2232C:
     // This is actually FT2232D but defined is FT_DEVICE_2232C
     // in D2XX. Also, it is the only FS device that supports MPSSE
@@ -433,28 +433,28 @@ bool EsFtdiDevice::mpsseClockSet(esU32 clock)
       val = (MPSSE::_30MHZ/clock) - 1;
     }
     break;
-	}
+  }
 
-	// Calculate valueH and ValueL
-	valL = static_cast<esU8>(val);
-	valH = static_cast<esU8>(val >> 8);
+  // Calculate valueH and ValueL
+  valL = static_cast<esU8>(val);
+  valH = static_cast<esU8>(val >> 8);
 
   mpsseBufInit();
 
-	// Set the clock
-	DWORD bufIdx = 0;
-	m_tmpBuff[bufIdx++] = MPSSE::CMD_SET_CLOCK_FREQUENCY;
+  // Set the clock
+  DWORD bufIdx = 0;
+  m_tmpBuff[bufIdx++] = MPSSE::CMD_SET_CLOCK_FREQUENCY;
 
-	ES_DEBUG_TRACE(
+  ES_DEBUG_TRACE(
     esT("EsFtdiDevice::mpsseClockSet: valueL=0x%0X valueH=0x%0X"),
     (int)valL,
     (int)valH
   );
 
-	m_tmpBuff[bufIdx++] = valL;
-	m_tmpBuff[bufIdx++] = valH;
+  m_tmpBuff[bufIdx++] = valL;
+  m_tmpBuff[bufIdx++] = valH;
 
-	if(
+  if(
     ftWrite(
       m_tmpBuff.data(),
       bufIdx,
@@ -464,7 +464,7 @@ bool EsFtdiDevice::mpsseClockSet(esU32 clock)
   )
   {
     // Wait for rate to stablilze
-	  EsThread::sleep(20);
+    EsThread::sleep(20);
     return true;
   }
 
@@ -492,8 +492,8 @@ bool EsFtdiDevice::mpsseEnable()
 
 bool EsFtdiDevice::latencyAndRateSetup(esU8 latency, esU32 rate, bool setFlowOff)
 {
-	// SetLatencyTimer
-	if( !ftSetLatencyTimer(latency) )
+  // SetLatencyTimer
+  if( !ftSetLatencyTimer(latency) )
     return false;
 
   if( setFlowOff && !ftSetFlowControl( //< Turn on flow control to synchronize IN requests
@@ -504,26 +504,26 @@ bool EsFtdiDevice::latencyAndRateSetup(esU8 latency, esU32 rate, bool setFlowOff
   )
     return false;
 
-	// ResetMPSSE
+  // ResetMPSSE
   if( !mpsseReset() )
     return false;
 
-	// EnableMPSSEInterface
+  // EnableMPSSEInterface
   if( !mpsseEnable() )
     return false;
 
-	// 20110608 - enabling loopback before sync
+  // 20110608 - enabling loopback before sync
   if( !loopbackStateSet(true) )
     return false;
 
-	// Sync MPSSE
+  // Sync MPSSE
   if( !mpsseSynch() )
     return false;
 
-	// Wait for USB
-	EsThread::sleep(50);
+  // Wait for USB
+  EsThread::sleep(50);
 
-	// Set Clock frequency
+  // Set Clock frequency
   if( !mpsseClockSet(rate) )
     return false;
 
@@ -625,11 +625,11 @@ bool EsFtdiDevice::mpsseChannelInit(esU32 rate)
   if( !ftResetDevice() )
     return false;
 
-	// Purge
+  // Purge
   if( !ftPurge(EsFtdiDriver::PURGE_RX | EsFtdiDriver::PURGE_TX) )
     return false;
 
-	// Set USB buffer size
+  // Set USB buffer size
   if( !ftSetUSBParameters(
       MPSSE::USB_INPUT_BUFFER_SIZE,
       MPSSE::USB_OUTPUT_BUFFER_SIZE
@@ -637,8 +637,8 @@ bool EsFtdiDevice::mpsseChannelInit(esU32 rate)
   )
     return false;
 
-	// Sets the special characters for the device,
-	// disable event and error characters
+  // Sets the special characters for the device,
+  // disable event and error characters
   //
   if( !ftSetChars(
       0,
@@ -649,9 +649,9 @@ bool EsFtdiDevice::mpsseChannelInit(esU32 rate)
   )
     return false;
 
-	// SetTimeOut
+  // SetTimeOut
 #ifdef FT800_HACK
-	if( !ftSetDeviceTimeOut(
+  if( !ftSetDeviceTimeOut(
       MPSSE::DEVICE_TIMEOUT_INFINITE,
       MPSSE::DEVICE_WRITE_TIMEOUT
     )
@@ -672,14 +672,14 @@ bool EsFtdiDevice::mpsseChannelInit(esU32 rate)
     false //< Do not touch flow control
   );
 
-	// Stop Loop back
+  // Stop Loop back
   if( !loopbackStateSet(false) )
     return false;
 
   if( !inBuffClear() )
     return false;
 
-	// Set i/o pin states
+  // Set i/o pin states
   if( !mpsseGpioLowSet(
       MPSSE::SET_LOW_BYTE_DATA_BITS_DATA,
       MPSSE::SET_LOW_BYTE_DATA_BITS_DATA
@@ -697,13 +697,13 @@ bool EsFtdiDevice::mpsseGpioLowSet(esU8 val, esU8 dir)
 
   mpsseBufInit();
 
-	m_tmpBuff[bufIdx++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-	m_tmpBuff[bufIdx++] = val;
-	m_tmpBuff[bufIdx++] = dir;
+  m_tmpBuff[bufIdx++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+  m_tmpBuff[bufIdx++] = val;
+  m_tmpBuff[bufIdx++] = dir;
 
   esU32 bytesWritten = 0;
 
-	return ftWrite(
+  return ftWrite(
     m_tmpBuff.data(),
     bufIdx,
     &bytesWritten
@@ -713,22 +713,22 @@ bool EsFtdiDevice::mpsseGpioLowSet(esU8 val, esU8 dir)
 
 bool EsFtdiDevice::mpsseGpioWrite(esU8 val, esU8 dir)
 {
-	esU32 bufIdx = 0;
+  esU32 bufIdx = 0;
 
   mpsseBufInit();
 
 #if 1 //def FT800_232HM
-	m_tmpBuff[bufIdx++] = MPSSE::CMD_SET_DATA_BITS_HIGHBYTE;
-	m_tmpBuff[bufIdx++] = val;
-	m_tmpBuff[bufIdx++] = dir;
+  m_tmpBuff[bufIdx++] = MPSSE::CMD_SET_DATA_BITS_HIGHBYTE;
+  m_tmpBuff[bufIdx++] = val;
+  m_tmpBuff[bufIdx++] = dir;
 #else
-	m_tmpBuff[bufIdx++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-	m_tmpBuff[bufIdx++] = val;
-	m_tmpBuff[bufIdx++] = dir;
+  m_tmpBuff[bufIdx++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+  m_tmpBuff[bufIdx++] = val;
+  m_tmpBuff[bufIdx++] = dir;
 #endif
 
   esU32 bytesWritten = 0;
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       bufIdx,
       &bytesWritten
@@ -736,36 +736,36 @@ bool EsFtdiDevice::mpsseGpioWrite(esU8 val, esU8 dir)
   )
     return false;
 
-	return bufIdx == bytesWritten;
+  return bufIdx == bytesWritten;
 }
 //---------------------------------------------------------------------------
 
 bool EsFtdiDevice::mpsseGpioRead(esU8& out)
 {
-	esU32 bufIdx = 0;
+  esU32 bufIdx = 0;
 
   mpsseBufInit();
 
 #if 1 //def FT800_232HM
-	m_tmpBuff[bufIdx++] = MPSSE::CMD_GET_DATA_BITS_HIGHBYTE;
-	m_tmpBuff[bufIdx++] = MPSSE::CMD_SEND_IMMEDIATE;
+  m_tmpBuff[bufIdx++] = MPSSE::CMD_GET_DATA_BITS_HIGHBYTE;
+  m_tmpBuff[bufIdx++] = MPSSE::CMD_SEND_IMMEDIATE;
 #else
-	m_tmpBuff[bufIdx++] = MPSSE::CMD_GET_DATA_BITS_LOWBYTE;
-	m_tmpBuff[bufIdx++] = MPSSE::CMD_SEND_IMMEDIATE;
+  m_tmpBuff[bufIdx++] = MPSSE::CMD_GET_DATA_BITS_LOWBYTE;
+  m_tmpBuff[bufIdx++] = MPSSE::CMD_SEND_IMMEDIATE;
 #endif
 
   out = 0;
   esU32 bytesTransfered = 0;
 
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       bufIdx,
-		  &bytesTransfered
+      &bytesTransfered
     )
   )
     return false;
 
-	if( !ftRead(
+  if( !ftRead(
       &out,
       1,
       &bytesTransfered
@@ -773,13 +773,13 @@ bool EsFtdiDevice::mpsseGpioRead(esU8& out)
   )
     return false;
 
-	if(1 != bytesTransfered)
+  if(1 != bytesTransfered)
   {
-		m_stat = FT_IO_ERROR;
+    m_stat = FT_IO_ERROR;
     return false;
   }
 
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 

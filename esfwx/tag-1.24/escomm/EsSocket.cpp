@@ -272,8 +272,8 @@ EsSocketAddr* EsSocketAddr::fromVariant(const EsVariant& in)
 {
   if( in.isObject() )
   {
-    EsReflectedClassIntf::Ptr obj	= in.asObject();
-		if( obj && obj->isKindOf(esT("EsSocketAddr")) )
+    EsReflectedClassIntf::Ptr obj  = in.asObject();
+    if( obj && obj->isKindOf(esT("EsSocketAddr")) )
     {
       EsBaseIntfPtr base = obj;
       ES_ASSERT(base);
@@ -493,15 +493,15 @@ bool EsSocketAddr::operator<(const EsSocketAddr& other) const
 EsBaseIntfPtr EsSocketAddr::clone() const
 {
 #ifdef ES_MODERN_CPP
-	std::unique_ptr<EsSocketAddr> p = std::make_unique<EsSocketAddr>(*this);
+  std::unique_ptr<EsSocketAddr> p = std::make_unique<EsSocketAddr>(*this);
 #else
   std::unique_ptr<EsSocketAddr> p( new EsSocketAddr(*this) );
 #endif
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -560,15 +560,15 @@ EsVariant EsSocketAddr::null()
 EsVariant EsSocketAddr::NEW()
 {
 #ifdef ES_MODERN_CPP
-	std::unique_ptr<EsSocketAddr> p = std::make_unique<EsSocketAddr>();
+  std::unique_ptr<EsSocketAddr> p = std::make_unique<EsSocketAddr>();
 #else
-	std::unique_ptr<EsSocketAddr> p( new EsSocketAddr );
+  std::unique_ptr<EsSocketAddr> p( new EsSocketAddr );
 #endif
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -619,10 +619,10 @@ EsVariant EsSocketAddr::NEW(cr_EsVariant vtype, cr_EsVariant vaddr, cr_EsVariant
     );
 #endif
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -1175,27 +1175,27 @@ ES_DECL_REFLECTED_SERVICES_INFO_END
 EsString EsSockets::errorStringGet( long err )
 {
   switch( err )
-	{
-	case static_cast<long>(EsSocketError::None):
-		return EsString::null();
-	case static_cast<long>(EsSocketError::Generic):
-		return _("Error");
+  {
+  case static_cast<long>(EsSocketError::None):
+    return EsString::null();
+  case static_cast<long>(EsSocketError::Generic):
+    return _("Error");
   case static_cast<long>(EsSocketError::NotInitialized):
     return _("Object not initialized");
   case static_cast<long>(EsSocketError::EngineNotInitialized):
     return _("Socket engine is not initialized");
-	case static_cast<long>(EsSocketError::NetDown):
-		return _("Network subsystem is down");
+  case static_cast<long>(EsSocketError::NetDown):
+    return _("Network subsystem is down");
   case static_cast<long>(EsSocketError::UnsupportedSocketType):
     return _("Socket type is not supported");
-	case static_cast<long>(EsSocketError::InvalidParameter):
-		return _("Invalid parameter in socket operation");
-	case static_cast<long>(EsSocketError::Busy):
-		return _("Socket is busy");
-	case static_cast<long>(EsSocketError::NotConnected):
-		return _("Socket is not connected");
-	case static_cast<long>(EsSocketError::InvalidSocket):
-		return _("Invalid (uninitialized) socket");
+  case static_cast<long>(EsSocketError::InvalidParameter):
+    return _("Invalid parameter in socket operation");
+  case static_cast<long>(EsSocketError::Busy):
+    return _("Socket is busy");
+  case static_cast<long>(EsSocketError::NotConnected):
+    return _("Socket is not connected");
+  case static_cast<long>(EsSocketError::InvalidSocket):
+    return _("Invalid (uninitialized) socket");
   case static_cast<long>(EsSocketError::TemporaryError):
     return _("Temporary socket service error; try again later");
   case static_cast<long>(EsSocketError::NonRecoverableError):
@@ -1252,9 +1252,9 @@ EsString EsSockets::errorStringGet( long err )
     return _("Cannot assign requested address. The requested address is not valid in its context");
   case static_cast<long>(EsSocketError::MessageIsTooLong):
     return _("Message is too long. A message sent on a datagram socket is larger than the allowed limit");
-	}
+  }
 
-	return _("Unknown socket error");
+  return _("Unknown socket error");
 }
 //---------------------------------------------------------------------------
 

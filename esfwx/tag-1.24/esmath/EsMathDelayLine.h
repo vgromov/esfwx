@@ -9,7 +9,7 @@ public:
   EsMathDelayLine(ulong length);
 
   ES_DECL_REFLECTED_CLASS_BASE(EsMathDelayLine)
-	ES_DECL_ATTR_HANDLING_STD
+  ES_DECL_ATTR_HANDLING_STD
 
   /// Reflected Constructors
   ///
@@ -90,7 +90,7 @@ public:
   EsMathDelayLineEx(ulong length);
 
   ES_DECL_REFLECTED_CLASS_BASE(EsMathDelayLineEx)
-	ES_DECL_ATTR_HANDLING_STD
+  ES_DECL_ATTR_HANDLING_STD
 
   /// Reflected Constructors
   ///

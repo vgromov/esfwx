@@ -2,13 +2,13 @@
 
 ulong EsUtilities::osErrorCodeGet()
 {
-	return ::GetLastError();
+  return ::GetLastError();
 }
 //---------------------------------------------------------------------------
 
 EsString EsUtilities::osErrorStringGet(ulong code)
 {
-	EsString result;
+  EsString result;
   // get error message from system
   LPVOID lpMsgBuf;
   if( ::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
@@ -18,30 +18,30 @@ EsString EsUtilities::osErrorStringGet(ulong code)
           (LPTSTR)&lpMsgBuf,
           0,
           NULL) == 0 )
-		// if this happens, something is seriously wrong, so don't use i18n _() here
-		result = EsString::format(esT("Unknown OS error %lx"), code);
-	else
-	{
-		result.assign((EsString::const_pointer)lpMsgBuf);
-		::LocalFree(lpMsgBuf);
-	}
+    // if this happens, something is seriously wrong, so don't use i18n _() here
+    result = EsString::format(esT("Unknown OS error %lx"), code);
+  else
+  {
+    result.assign((EsString::const_pointer)lpMsgBuf);
+    ::LocalFree(lpMsgBuf);
+  }
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 struct EsEnvBlockGuard
 {
-	EsEnvBlockGuard() : m_block( ::GetEnvironmentStrings() ) {}
-	~EsEnvBlockGuard() { if(m_block) ::FreeEnvironmentStrings(m_block); }
-	operator bool () const { return 0 != m_block; }
-	operator LPTCH () const { return m_block; }
+  EsEnvBlockGuard() : m_block( ::GetEnvironmentStrings() ) {}
+  ~EsEnvBlockGuard() { if(m_block) ::FreeEnvironmentStrings(m_block); }
+  operator bool () const { return 0 != m_block; }
+  operator LPTCH () const { return m_block; }
 
-	LPTCH m_block;
+  LPTCH m_block;
 
 private:
-	EsEnvBlockGuard(const EsEnvBlockGuard&);
-	EsEnvBlockGuard& operator=(const EsEnvBlockGuard&);
+  EsEnvBlockGuard(const EsEnvBlockGuard&);
+  EsEnvBlockGuard& operator=(const EsEnvBlockGuard&);
 };
 //---------------------------------------------------------------------------
 
@@ -49,51 +49,51 @@ private:
 
 EsStringIndexedMap EsUtilities::environmentVarsListGet()
 {
-	EsStringIndexedMap result;
+  EsStringIndexedMap result;
 
-	EsEnvBlockGuard block;
-	if( block )
-	{
-		LPTCH pos = block;
-		LPTCH beg = block;
+  EsEnvBlockGuard block;
+  if( block )
+  {
+    LPTCH pos = block;
+    LPTCH beg = block;
 
-		while( 1 )
-		{
-			if( 0 == *pos++ )
-			{
-				EsString var;
-				// parse varStr into name, value pair
-				LPTCH ppos = beg;
-				while( ppos < pos )
-				{
-					if( esT('=') == *ppos++ )
-					{
-						var.assign(beg, ppos-1);
-						break;
-					}
-				}
+    while( 1 )
+    {
+      if( 0 == *pos++ )
+      {
+        EsString var;
+        // parse varStr into name, value pair
+        LPTCH ppos = beg;
+        while( ppos < pos )
+        {
+          if( esT('=') == *ppos++ )
+          {
+            var.assign(beg, ppos-1);
+            break;
+          }
+        }
 
-				EsString val(ppos++, pos);
+        EsString val(ppos++, pos);
 
-				// trim leading|trailing spaces, just in case
-				var = EsString::trim(var);
-				if( !var.empty() )
-				{
-					val = EsString::trim(val);
-					result.itemAdd(var, val);
-				}
-							
-				if( 0 == *pos )
-					break;
+        // trim leading|trailing spaces, just in case
+        var = EsString::trim(var);
+        if( !var.empty() )
+        {
+          val = EsString::trim(val);
+          result.itemAdd(var, val);
+        }
+              
+        if( 0 == *pos )
+          break;
 
-				beg = pos;
-			}
-		}
-	}
-	else
-		EsException::ThrowOsError( osErrorCodeGet() );
+        beg = pos;
+      }
+    }
+  }
+  else
+    EsException::ThrowOsError( osErrorCodeGet() );
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 

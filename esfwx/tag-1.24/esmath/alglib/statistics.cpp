@@ -1499,7 +1499,7 @@ Output parameters:
 
 Accuracy of the approximation used (5<=N<=1951):
 
-p-value  	    relative error (5<=N<=1951)
+p-value        relative error (5<=N<=1951)
 [1, 0.1]            < 1%
 [0.1, 0.01]         < 2%
 [0.01, 0.001]       < 6%
@@ -4738,7 +4738,7 @@ Output parameters:
 
 Accuracy of the approximation used (5<=N<=1951):
 
-p-value  	    relative error (5<=N<=1951)
+p-value        relative error (5<=N<=1951)
 [1, 0.1]            < 1%
 [0.1, 0.01]         < 2%
 [0.01, 0.001]       < 6%

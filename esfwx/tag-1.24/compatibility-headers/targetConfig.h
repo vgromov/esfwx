@@ -3,7 +3,7 @@
 
 // compatibility target configuration header for cross-platform files
 //
-#define Fmcu	1000000000
+#define Fmcu  1000000000
 #include <escore/EsCoreDefs.h>
 
 #endif // _compatibility_target_h_

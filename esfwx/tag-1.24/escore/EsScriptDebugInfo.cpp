@@ -21,7 +21,7 @@ m_file(file)
 
 EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(ulong line, ulong col, const EsString& file) ES_NOTHROW
 {
-	return EsScriptDebugInfoIntf::Ptr( 
+  return EsScriptDebugInfoIntf::Ptr( 
     new EsScriptDebugInfo(
       line, 
       col, 
@@ -33,23 +33,23 @@ EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(ulong line, ulong col, cons
 
 EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(const EsString& input, EsString::const_pointer pos, const EsString& file /*= EsString::s_null*/) ES_NOTHROW
 {
-	ulong line = 1;
-	EsString::const_pointer start = input.c_str();
-	EsString::const_pointer cur = start;
-	while( cur <= pos )
-	{
-		if( esT('\n') == *cur++ )
-		{
-			++line;
-			if( esT('\r') == *cur )
-				++cur;
+  ulong line = 1;
+  EsString::const_pointer start = input.c_str();
+  EsString::const_pointer cur = start;
+  while( cur <= pos )
+  {
+    if( esT('\n') == *cur++ )
+    {
+      ++line;
+      if( esT('\r') == *cur )
+        ++cur;
 
-			start = cur;
-		}
-	}
-	ulong col = 1 + ( (pos > start) ? static_cast<ulong>(pos-start) : 0);
+      start = cur;
+    }
+  }
+  ulong col = 1 + ( (pos > start) ? static_cast<ulong>(pos-start) : 0);
 
-	return EsScriptDebugInfoIntf::Ptr( 
+  return EsScriptDebugInfoIntf::Ptr( 
     new EsScriptDebugInfo(
       line, 
       col, 
@@ -61,14 +61,14 @@ EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(const EsString& input, EsSt
 
 EsString EsScriptDebugInfo::asString() const
 {
-	if( m_file.empty() )
-		return EsString::format(
+  if( m_file.empty() )
+    return EsString::format(
       esT("at (%d, %d)"),
       m_line,
       m_col
     );
-	else
-		return EsString::format(
+  else
+    return EsString::format(
       esT("in '%s' at (%d, %d)"),
       m_file,
       m_line,

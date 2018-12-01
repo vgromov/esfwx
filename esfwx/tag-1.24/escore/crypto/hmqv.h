@@ -28,7 +28,7 @@ public:
   typedef HMQV_Domain<GROUP_PARAMETERS, COFACTOR_OPTION, HASH> Domain;
 
 #ifndef CRYPTOPP_MAINTAIN_BACKWARDS_COMPATIBILITY_562
-	virtual ~HMQV_Domain() {}
+  virtual ~HMQV_Domain() {}
 #endif
 
   HMQV_Domain(bool clientRole = true): m_role(clientRole ? RoleClient : RoleServer) {}
@@ -258,7 +258,7 @@ protected:
     if(sigma)
     {
       if (e1len != 0 || s1len != 0) {
-	CRYPTOPP_ASSERT(0);
+  CRYPTOPP_ASSERT(0);
       }
       Integer x = GetAbstractGroupParameters().ConvertElementToInteger(*sigma);
       SecByteBlock sbb(x.MinEncodedSize());
@@ -266,7 +266,7 @@ protected:
       hash.Update(sbb.BytePtr(), sbb.SizeInBytes());
     } else {
       if (e1len == 0 || s1len == 0) {
-	CRYPTOPP_ASSERT(0);
+  CRYPTOPP_ASSERT(0);
       }
       hash.Update(e1, e1len);
       hash.Update(s1, s1len);

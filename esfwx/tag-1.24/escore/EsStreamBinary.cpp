@@ -45,9 +45,9 @@ enum {
 //---------------------------------------------------------------------------
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN(EsStreamBinary, EsStream, NO_CLASS_DESCR)
-	ES_DECL_REFLECTED_CTOR_INFO(EsStreamBinary, EsBaseIntfPtr_ClassCall_ulong_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CTOR_INFO(EsStreamBinary, EsBaseIntfPtr_ClassCall_ulong_ulong_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsStreamBinary, save, void_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsStreamBinary, EsBaseIntfPtr_ClassCall_ulong_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsStreamBinary, EsBaseIntfPtr_ClassCall_ulong_ulong_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsStreamBinary, save, void_CallConst_cr_EsString, NO_METHOD_DESCR)
   // Reflected properties
   //
   ES_DECL_PROP_INFO(EsStreamBinary, key, EsString, esT("Encryption key"), NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
@@ -57,51 +57,51 @@ ES_DECL_CLASS_INFO_END
 EsStreamBinary::EsStreamBinary(ulong flags, ulong version, const EsVariant& src, const EsBaseIntfPtr& factory) :
 EsStream(flags, version, factory)
 {
-	init(src, version);
-	internalRewind();
+  init(src, version);
+  internalRewind();
 }
 //---------------------------------------------------------------------------
 
 EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, ulong version)
 {
-	return create(flags, 0, EsVariant::null(), EsBaseIntfPtr());
+  return create(flags, 0, EsVariant::null(), EsBaseIntfPtr());
 }
 //---------------------------------------------------------------------------
 
 EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, const EsVariant& src,
-		const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
+    const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
 {
-	return create(flags, 0, src, factory);
+  return create(flags, 0, src, factory);
 }
 //---------------------------------------------------------------------------
 
 EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, ulong version, const EsVariant& src,
-		const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
+    const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
 {
-	std::unique_ptr<EsStreamBinary> p(new EsStreamBinary(flags, version, src, factory));
-	ES_ASSERT(p.get());
-	return p.release()->asBaseIntfPtrDirect();
+  std::unique_ptr<EsStreamBinary> p(new EsStreamBinary(flags, version, src, factory));
+  ES_ASSERT(p.get());
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsStreamBinary::~EsStreamBinary()
 {
-	if( (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write)) ==
+  if( (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write)) ==
         (m_flags & (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write))) &&
-			( !EsPath::fileExists(m_file, EsString::null()) ||
-				(m_flags & flagDirty) )
+      ( !EsPath::fileExists(m_file, EsString::null()) ||
+        (m_flags & flagDirty) )
   )
-	{
-		// do not allow anything to throw from destructor
-		try
-		{
+  {
+    // do not allow anything to throw from destructor
+    try
+    {
       internalFileSave( m_file );
-		}
-		catch(...)
-		{}
+    }
+    catch(...)
+    {}
 
-  	m_flags &= ~flagDirty;
-	}
+    m_flags &= ~flagDirty;
+  }
 }
 //---------------------------------------------------------------------------
 
@@ -124,17 +124,17 @@ void EsStreamBinary::set_key(const EsString& key)
 
 void EsStreamBinary::init(const EsVariant& src, ulong version)
 {
-	if( src.isEmpty() )
+  if( src.isEmpty() )
     return;
 
-	if( m_flags & static_cast<ulong>(EsStreamFlag::File) )
-	{
-		if( !EsPath::fileExists( src.asString(), EsString::null() ) )
-		{
-			// initialize just file name
-			m_file = src.asString();
+  if( m_flags & static_cast<ulong>(EsStreamFlag::File) )
+  {
+    if( !EsPath::fileExists( src.asString(), EsString::null() ) )
+    {
+      // initialize just file name
+      m_file = src.asString();
       return;
-		}
+    }
 
     EsFile file(
       src.asString(),
@@ -143,22 +143,22 @@ void EsStreamBinary::init(const EsVariant& src, ulong version)
 
     EsBinBuffer bb;
 
-		if( file.open() )
-		{
+    if( file.open() )
+    {
       bb = file.readAllAsBinBuffer();
       parse(bb);
-			m_file = src.asString();
-		}
-		else
-			EsException::Throw(
-				esT("Could not load Binary stream '%s', '%s'"),
+      m_file = src.asString();
+    }
+    else
+      EsException::Throw(
+        esT("Could not load Binary stream '%s', '%s'"),
         src.asString(),
         EsUtilities::osErrorStringGet(
           file.recentErrorGet()
         )
       );
-	}
-	else // try to interpret src as binary buffer
+  }
+  else // try to interpret src as binary buffer
     parse(
       src.asBinBuffer()
     );
@@ -184,42 +184,42 @@ EsString EsStreamBinary::asString() const
   EsBinBuffer bb;
   generate(bb);
 
-	return EsString::binToHex(bb);
+  return EsString::binToHex(bb);
 }
 //---------------------------------------------------------------------------
 
 void EsStreamBinary::save(const EsString& target /*= EsString::null()*/) const
 {
-	if( !target.empty() )
-	{
-		// try to expand file path to absolute full one
-		const EsPath& fname = EsPath::createFromFilePath( target );
-		if( fname.isOk() )
-		{
-			const EsString& fpath = fname.pathGet();
-			if( internalFileSave(fpath) )
-			{
-				m_file = fpath;
-				m_flags |= static_cast<ulong>(EsStreamFlag::File);
-				m_flags &= ~flagDirty;
-			}
-		}
-	}
-	else if( !m_file.empty() )
-	{
-		ES_ASSERT(m_flags & static_cast<ulong>(EsStreamFlag::File));
+  if( !target.empty() )
+  {
+    // try to expand file path to absolute full one
+    const EsPath& fname = EsPath::createFromFilePath( target );
+    if( fname.isOk() )
+    {
+      const EsString& fpath = fname.pathGet();
+      if( internalFileSave(fpath) )
+      {
+        m_file = fpath;
+        m_flags |= static_cast<ulong>(EsStreamFlag::File);
+        m_flags &= ~flagDirty;
+      }
+    }
+  }
+  else if( !m_file.empty() )
+  {
+    ES_ASSERT(m_flags & static_cast<ulong>(EsStreamFlag::File));
 
-		if( !internalFileSave(m_file) )
-			EsException::Throw(
-				esT("Could not save document to file '%s'"),
+    if( !internalFileSave(m_file) )
+      EsException::Throw(
+        esT("Could not save document to file '%s'"),
         m_file
       );
 
-		m_flags &= ~flagDirty;
-	}
-	else
-		EsException::Throw(
-			esT("Could not save the document to default file, document must be saved to the file at list once first"));
+    m_flags &= ~flagDirty;
+  }
+  else
+    EsException::Throw(
+      esT("Could not save the document to default file, document must be saved to the file at list once first"));
 }
 //---------------------------------------------------------------------------
 
@@ -329,8 +329,8 @@ void EsStreamBinary::generate(EsBinBuffer& data) const
 
 void EsStreamBinary::mainHeaderCheck(const EsBinBuffer& bb)
 {
-	if( bb.size() < EsStreamBinaryHeader_SZE )
-		EsException::Throw(
+  if( bb.size() < EsStreamBinaryHeader_SZE )
+    EsException::Throw(
       esT("Binary stream size is too small.")
     );
 
@@ -342,12 +342,12 @@ void EsStreamBinary::mainHeaderCheck(const EsBinBuffer& bb)
   );
 
   if( hdr.m_magicId != sc_bsMagic )
-		EsException::Throw(
+    EsException::Throw(
       esT("Binary stream ID mismatch. Stream format is not recognized.")
     );
 
   if( hdr.m_len > bb.size()-EsStreamBinaryHeader_SZE )
-		EsException::Throw(
+    EsException::Throw(
       esT("Binary stream is of wrong length. Stream contents is broken.")
     );
 
@@ -358,7 +358,7 @@ void EsStreamBinary::mainHeaderCheck(const EsBinBuffer& bb)
   );
 
   if( hdr.m_crc != crc.get_value() )
-		EsException::Throw(
+    EsException::Throw(
       esT("Binary stream CRC check failed. Stream contents is broken.")
     );
 }
@@ -461,23 +461,23 @@ static EsVariant varPODread(const EsBinBuffer& data, ulong& pos, ulong end, ulon
   {
   case EsVariant::VAR_BOOL:
     return 0 != numericRead<esU8>(data, pos, end);
-	case EsVariant::VAR_BYTE:
+  case EsVariant::VAR_BYTE:
     return numericRead<esU8>(data, pos, end);
   case EsVariant::VAR_CHAR:
     return static_cast< EsString::value_type >(
       numericRead<esU32>(data, pos, end)
     );
-	case EsVariant::VAR_UINT:
+  case EsVariant::VAR_UINT:
     return numericRead<esU32>(data, pos, end);
-	case EsVariant::VAR_INT:
+  case EsVariant::VAR_INT:
     return numericRead<esI32>(data, pos, end);
-	case EsVariant::VAR_UINT64:
+  case EsVariant::VAR_UINT64:
     return numericRead<esU64>(data, pos, end);
-	case EsVariant::VAR_INT64:
+  case EsVariant::VAR_INT64:
     return numericRead<esI64>(data, pos, end);
-	case EsVariant::VAR_DOUBLE:
+  case EsVariant::VAR_DOUBLE:
     return numericRead<double>(data, pos, end);
-	case EsVariant::VAR_BIN_BUFFER:
+  case EsVariant::VAR_BIN_BUFFER:
     return bufferRead(data, pos, end);
   case EsVariant::VAR_STRING:
     return stringRead(data, pos, end);
@@ -732,28 +732,28 @@ static void varPODwrite(EsBinBuffer& data, ulong& pos, const EsVariant& var, boo
   case EsVariant::VAR_BOOL:
     numericWrite<esU8>(data, pos, var.asBool() ? 1 : 0 );
     break;
-	case EsVariant::VAR_BYTE:
+  case EsVariant::VAR_BYTE:
     numericWrite<esU8>(data, pos, var.asByte());
     break;
   case EsVariant::VAR_CHAR:
     numericWrite<esU32>(data, pos, var.asChar());
     break;
-	case EsVariant::VAR_UINT:
+  case EsVariant::VAR_UINT:
     numericWrite<esU32>(data, pos, var.asULong());
     break;
-	case EsVariant::VAR_INT:
+  case EsVariant::VAR_INT:
     numericWrite<esI32>(data, pos, var.asLong());
     break;
-	case EsVariant::VAR_UINT64:
+  case EsVariant::VAR_UINT64:
     numericWrite<esU64>(data, pos, var.asULLong());
     break;
-	case EsVariant::VAR_INT64:
+  case EsVariant::VAR_INT64:
     numericWrite<esI64>(data, pos, var.asLLong());
     break;
-	case EsVariant::VAR_DOUBLE:
+  case EsVariant::VAR_DOUBLE:
     numericWrite<double>(data, pos, var.asDouble());
     break;
-	case EsVariant::VAR_BIN_BUFFER:
+  case EsVariant::VAR_BIN_BUFFER:
     bufferWrite(data, pos, var.asBinBuffer());
     break;
   case EsVariant::VAR_STRING:

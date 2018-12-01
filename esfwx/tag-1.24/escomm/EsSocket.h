@@ -92,7 +92,7 @@ class ESCOMM_CLASS EsSocketException : public EsException
 {
 private:
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
-	__fastcall
+  __fastcall
 #endif
   EsSocketException(EsSocketError code, const EsString& msg);
 
@@ -169,7 +169,7 @@ public:
 
 public:
   ES_DECL_REFLECTED_CLASS_BASE(EsSocketAddr)
-	ES_DECL_ATTR_HANDLING_STD
+  ES_DECL_ATTR_HANDLING_STD
 
   /// Default constructor
   EsSocketAddr(
@@ -329,7 +329,7 @@ protected:
   void errorCheck() const;
 
 protected:
-	// Data members
+  // Data members
   //
   // Actual socket address implementation instance
   Impl* m_impl;
@@ -417,13 +417,13 @@ protected:
 public:
   static Impl* implCreate(const EsSocketAddr& addr, EsSocketType type);
 
-	virtual ~EsSocket();
+  virtual ~EsSocket();
 
-	/// Check if socket was created
-	bool isOk() const;
+  /// Check if socket was created
+  bool isOk() const;
 
   /// Return true if socket is OK and active
-	bool isActive() const;
+  bool isActive() const;
 
   /// Return type if OK, otherwise, return None
   EsSocketType typeGet() const;
@@ -435,10 +435,10 @@ public:
   bool open(const EsSocketAddr& addr, EsSocketType type = EsSocketType::None);
 
   /// Close socket, gracefully terminating the connection, if requested
-	void close(bool graceful = true, bool doThrow = false);
+  void close(bool graceful = true, bool doThrow = false);
 
-	/// Get recent socket error code
-	long errorGet() const;
+  /// Get recent socket error code
+  long errorGet() const;
 
   /// Get address associated with the socket
   const EsSocketAddr& addressGet(bool doThrow = false) const;
@@ -483,7 +483,7 @@ protected:
 
 protected:
   /// Actual socket implementation instance
-	Impl* m_impl;
+  Impl* m_impl;
 
 private:
   /// Prohibited functionality

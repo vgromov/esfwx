@@ -12,7 +12,7 @@ NAMESPACE_BEGIN(CryptoPP)
 #if CRYPTOPP_DEBUG && !defined(CRYPTOPP_DOXYGEN_PROCESSING)
 void TestInstantiations_MQV()
 {
-	MQV mqv;
+  MQV mqv;
 }
 
 void TestInstantiations_HMQV()

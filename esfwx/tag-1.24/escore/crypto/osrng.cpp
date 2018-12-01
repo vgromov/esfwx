@@ -58,13 +58,13 @@ NAMESPACE_BEGIN(CryptoPP)
 
 #if defined(NONBLOCKING_RNG_AVAILABLE) || defined(BLOCKING_RNG_AVAILABLE)
 OS_RNG_Err::OS_RNG_Err(const std::string &operation)
-	: Exception(OTHER_ERROR, "OS_Rng: " + operation + " operation failed with error " +
+  : Exception(OTHER_ERROR, "OS_Rng: " + operation + " operation failed with error " +
 #ifdef CRYPTOPP_WIN32_AVAILABLE
-		"0x" + IntToString(GetLastError(), 16)
+    "0x" + IntToString(GetLastError(), 16)
 #else
-		IntToString(errno)
+    IntToString(errno)
 #endif
-		)
+    )
 {
 }
 #endif
@@ -76,12 +76,12 @@ OS_RNG_Err::OS_RNG_Err(const std::string &operation)
 #if defined(USE_MS_CNGAPI)
 inline DWORD NtStatusToErrorCode(NTSTATUS status)
 {
-	if (status == STATUS_INVALID_PARAMETER)
-		return ERROR_INVALID_PARAMETER;
-	else if (status == STATUS_INVALID_HANDLE)
-		return ERROR_INVALID_HANDLE;
-	else
-		return (DWORD)status;
+  if (status == STATUS_INVALID_PARAMETER)
+    return ERROR_INVALID_PARAMETER;
+  else if (status == STATUS_INVALID_HANDLE)
+    return ERROR_INVALID_HANDLE;
+  else
+    return (DWORD)status;
 }
 #endif
 
@@ -94,37 +94,37 @@ inline DWORD NtStatusToErrorCode(NTSTATUS status)
 MicrosoftCryptoProvider::MicrosoftCryptoProvider() : m_hProvider(0)
 {
 #if defined(USE_MS_CRYPTOAPI)
-	// See http://support.microsoft.com/en-us/kb/238187 for CRYPT_NEWKEYSET fallback strategy
-	if (!CryptAcquireContext(&m_hProvider, 0, 0, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
-	{
-		const DWORD firstErr = GetLastError();
-		if (!CryptAcquireContext(&m_hProvider, CRYPTOPP_CONTAINER, 0, PROV_RSA_FULL, CRYPT_NEWKEYSET /*user*/) &&
-		    !CryptAcquireContext(&m_hProvider, CRYPTOPP_CONTAINER, 0, PROV_RSA_FULL, CRYPT_MACHINE_KEYSET|CRYPT_NEWKEYSET))
-		{
-			// Set original error with original code
-			SetLastError(firstErr);
-			throw OS_RNG_Err("CryptAcquireContext");
-		}
-	}
+  // See http://support.microsoft.com/en-us/kb/238187 for CRYPT_NEWKEYSET fallback strategy
+  if (!CryptAcquireContext(&m_hProvider, 0, 0, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
+  {
+    const DWORD firstErr = GetLastError();
+    if (!CryptAcquireContext(&m_hProvider, CRYPTOPP_CONTAINER, 0, PROV_RSA_FULL, CRYPT_NEWKEYSET /*user*/) &&
+        !CryptAcquireContext(&m_hProvider, CRYPTOPP_CONTAINER, 0, PROV_RSA_FULL, CRYPT_MACHINE_KEYSET|CRYPT_NEWKEYSET))
+    {
+      // Set original error with original code
+      SetLastError(firstErr);
+      throw OS_RNG_Err("CryptAcquireContext");
+    }
+  }
 #elif defined(USE_MS_CNGAPI)
-	NTSTATUS ret = BCryptOpenAlgorithmProvider(&m_hProvider, BCRYPT_RNG_ALGORITHM, MS_PRIMITIVE_PROVIDER, 0);
-	if (!(BCRYPT_SUCCESS(ret)))
-	{
-		// Hack... OS_RNG_Err calls GetLastError()
-		SetLastError(NtStatusToErrorCode(ret));
-		throw OS_RNG_Err("BCryptOpenAlgorithmProvider");
-	}
+  NTSTATUS ret = BCryptOpenAlgorithmProvider(&m_hProvider, BCRYPT_RNG_ALGORITHM, MS_PRIMITIVE_PROVIDER, 0);
+  if (!(BCRYPT_SUCCESS(ret)))
+  {
+    // Hack... OS_RNG_Err calls GetLastError()
+    SetLastError(NtStatusToErrorCode(ret));
+    throw OS_RNG_Err("BCryptOpenAlgorithmProvider");
+  }
 #endif
 }
 
 MicrosoftCryptoProvider::~MicrosoftCryptoProvider()
 {
 #if defined(USE_MS_CRYPTOAPI)
-	if (m_hProvider)
-		CryptReleaseContext(m_hProvider, 0);
+  if (m_hProvider)
+    CryptReleaseContext(m_hProvider, 0);
 #elif defined(USE_MS_CNGAPI)
-	if (m_hProvider)
-		BCryptCloseAlgorithmProvider(m_hProvider, 0);
+  if (m_hProvider)
+    BCryptCloseAlgorithmProvider(m_hProvider, 0);
 #endif
 }
 
@@ -133,52 +133,52 @@ MicrosoftCryptoProvider::~MicrosoftCryptoProvider()
 NonblockingRng::NonblockingRng()
 {
 #ifndef CRYPTOPP_WIN32_AVAILABLE
-	m_fd = open("/dev/urandom",O_RDONLY);
-	if (m_fd == -1)
-		throw OS_RNG_Err("open /dev/urandom");
+  m_fd = open("/dev/urandom",O_RDONLY);
+  if (m_fd == -1)
+    throw OS_RNG_Err("open /dev/urandom");
 #endif
 }
 
 NonblockingRng::~NonblockingRng()
 {
 #ifndef CRYPTOPP_WIN32_AVAILABLE
-	close(m_fd);
+  close(m_fd);
 #endif
 }
 
 void NonblockingRng::GenerateBlock(byte *output, size_t size)
 {
 #ifdef CRYPTOPP_WIN32_AVAILABLE
-	// Acquiring a provider is expensive. Do it once and retain the reference.
-	static const MicrosoftCryptoProvider &hProvider = Singleton<MicrosoftCryptoProvider>().Ref();
+  // Acquiring a provider is expensive. Do it once and retain the reference.
+  static const MicrosoftCryptoProvider &hProvider = Singleton<MicrosoftCryptoProvider>().Ref();
 # if defined(USE_MS_CRYPTOAPI)
-	if (!CryptGenRandom(hProvider.GetProviderHandle(), (DWORD)size, output))
-		throw OS_RNG_Err("CryptGenRandom");
+  if (!CryptGenRandom(hProvider.GetProviderHandle(), (DWORD)size, output))
+    throw OS_RNG_Err("CryptGenRandom");
 # elif defined(USE_MS_CNGAPI)
-	NTSTATUS ret = BCryptGenRandom(hProvider.GetProviderHandle(), output, (ULONG)size, 0);
-	if (!(BCRYPT_SUCCESS(ret)))
-	{
-		// Hack... OS_RNG_Err calls GetLastError()
-		SetLastError(NtStatusToErrorCode(ret));
-		throw OS_RNG_Err("BCryptGenRandom");
-	}
+  NTSTATUS ret = BCryptGenRandom(hProvider.GetProviderHandle(), output, (ULONG)size, 0);
+  if (!(BCRYPT_SUCCESS(ret)))
+  {
+    // Hack... OS_RNG_Err calls GetLastError()
+    SetLastError(NtStatusToErrorCode(ret));
+    throw OS_RNG_Err("BCryptGenRandom");
+  }
 # endif
 #else
-	while (size)
-	{
-		ssize_t len = read(m_fd, output, size);
-		if (len < 0)
-		{
-			// /dev/urandom reads CAN give EAGAIN errors! (maybe EINTR as well)
-			if (errno != EINTR && errno != EAGAIN)
-				throw OS_RNG_Err("read /dev/urandom");
+  while (size)
+  {
+    ssize_t len = read(m_fd, output, size);
+    if (len < 0)
+    {
+      // /dev/urandom reads CAN give EAGAIN errors! (maybe EINTR as well)
+      if (errno != EINTR && errno != EAGAIN)
+        throw OS_RNG_Err("read /dev/urandom");
 
-			continue;
-		}
+      continue;
+    }
 
-		output += len;
-		size -= len;
-	}
+    output += len;
+    size -= len;
+  }
 #endif  // CRYPTOPP_WIN32_AVAILABLE
 }
 
@@ -198,37 +198,37 @@ void NonblockingRng::GenerateBlock(byte *output, size_t size)
 
 BlockingRng::BlockingRng()
 {
-	m_fd = open(CRYPTOPP_BLOCKING_RNG_FILENAME,O_RDONLY);
-	if (m_fd == -1)
-		throw OS_RNG_Err("open " CRYPTOPP_BLOCKING_RNG_FILENAME);
+  m_fd = open(CRYPTOPP_BLOCKING_RNG_FILENAME,O_RDONLY);
+  if (m_fd == -1)
+    throw OS_RNG_Err("open " CRYPTOPP_BLOCKING_RNG_FILENAME);
 }
 
 BlockingRng::~BlockingRng()
 {
-	close(m_fd);
+  close(m_fd);
 }
 
 void BlockingRng::GenerateBlock(byte *output, size_t size)
 {
-	while (size)
-	{
-		// on some systems /dev/random will block until all bytes
-		// are available, on others it returns immediately
-		ssize_t len = read(m_fd, output, size);
-		if (len < 0)
-		{
-			// /dev/random reads CAN give EAGAIN errors! (maybe EINTR as well)
-			if (errno != EINTR && errno != EAGAIN)
-				throw OS_RNG_Err("read " CRYPTOPP_BLOCKING_RNG_FILENAME);
+  while (size)
+  {
+    // on some systems /dev/random will block until all bytes
+    // are available, on others it returns immediately
+    ssize_t len = read(m_fd, output, size);
+    if (len < 0)
+    {
+      // /dev/random reads CAN give EAGAIN errors! (maybe EINTR as well)
+      if (errno != EINTR && errno != EAGAIN)
+        throw OS_RNG_Err("read " CRYPTOPP_BLOCKING_RNG_FILENAME);
 
-			continue;
-		}
+      continue;
+    }
 
-		size -= len;
-		output += len;
-		if (size)
-			sleep(1);
-	}
+    size -= len;
+    output += len;
+    if (size)
+      sleep(1);
+  }
 }
 
 #endif  // BLOCKING_RNG_AVAILABLE
@@ -238,31 +238,31 @@ void BlockingRng::GenerateBlock(byte *output, size_t size)
 void OS_GenerateRandomBlock(bool blocking, byte *output, size_t size)
 {
 #ifdef NONBLOCKING_RNG_AVAILABLE
-	if (blocking)
+  if (blocking)
 #endif
-	{
+  {
 #ifdef BLOCKING_RNG_AVAILABLE
-		BlockingRng rng;
-		rng.GenerateBlock(output, size);
+    BlockingRng rng;
+    rng.GenerateBlock(output, size);
 #endif
-	}
+  }
 
 #ifdef BLOCKING_RNG_AVAILABLE
-	if (!blocking)
+  if (!blocking)
 #endif
-	{
+  {
 #ifdef NONBLOCKING_RNG_AVAILABLE
-		NonblockingRng rng;
-		rng.GenerateBlock(output, size);
+    NonblockingRng rng;
+    rng.GenerateBlock(output, size);
 #endif
-	}
+  }
 }
 
 void AutoSeededRandomPool::Reseed(bool blocking, unsigned int seedSize)
 {
-	SecByteBlock seed(seedSize);
-	OS_GenerateRandomBlock(blocking, seed, seedSize);
-	IncorporateEntropy(seed, seedSize);
+  SecByteBlock seed(seedSize);
+  OS_GenerateRandomBlock(blocking, seed, seedSize);
+  IncorporateEntropy(seed, seedSize);
 }
 
 NAMESPACE_END

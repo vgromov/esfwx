@@ -6,18 +6,18 @@
 
 bool EsPathEnumerator::internalProcess(const EsString& nestedDir /*= EsString::null()*/)
 {
-	bool result = true;
-	EsPathScope scope(
+  bool result = true;
+  EsPathScope scope(
     m_curPath,
     nestedDir
   );
 
-	// reserve space for nested dirs
-	EsString::Array dirs;
-	dirs.reserve(16);
-	EsString curPath = m_curPath.pathGet(	static_cast<ulong>(EsPathFlag::Default)|
-																				static_cast<ulong>(EsPathFlag::AppendSeparator)|
-																				static_cast<ulong>(EsPathFlag::ExcludeFile) );
+  // reserve space for nested dirs
+  EsString::Array dirs;
+  dirs.reserve(16);
+  EsString curPath = m_curPath.pathGet(  static_cast<ulong>(EsPathFlag::Default)|
+                                        static_cast<ulong>(EsPathFlag::AppendSeparator)|
+                                        static_cast<ulong>(EsPathFlag::ExcludeFile) );
   const EsByteString& patt = EsString::toUtf8( m_wildcard );
 
   const EsByteString& bpath = EsString::toUtf8(curPath);
@@ -91,16 +91,16 @@ bool EsPathEnumerator::internalProcess(const EsString& nestedDir /*= EsString::n
     dirp = 0;
   }
 
-	// proceed with recursion, if needed
-	if( result &&
+  // proceed with recursion, if needed
+  if( result &&
     (m_flags & static_cast<ulong>(EsPathEnumeratorFlag::Recursive)) &&
     !dirs.empty()
   )
-	{
-		for(size_t idx = 0; idx < dirs.size() && result; ++idx)
-			result = internalProcess(dirs[idx]);
-	}
+  {
+    for(size_t idx = 0; idx < dirs.size() && result; ++idx)
+      result = internalProcess(dirs[idx]);
+  }
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------

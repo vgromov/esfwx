@@ -18,24 +18,24 @@
 // Basic character classificator for custom locale(s)
 #if 0 != ES_USE_EMBEDDED_LOCALE_IMPL || defined(ES_USE_CUSTOM_CLASSIC_LOCALE)
 enum {
-  es_BB	      = 0x80,           /* BEL, BS, etc. */
-  es_CN	      = 0x40,           /* CR, FF, HT, NL, VT */
-  es_DI	      = 0x20,           /* '0'-'9' */
-  es_LO	      = 0x10,           /* 'a'-'z' */
+  es_BB       = 0x80,           /* BEL, BS, etc. */
+  es_CN       = 0x40,           /* CR, FF, HT, NL, VT */
+  es_DI       = 0x20,           /* '0'-'9' */
+  es_LO       = 0x10,           /* 'a'-'z' */
   es_PU       = 0x08,           /* punctuation */
-  es_SP	      = 0x04,           /* space */
+  es_SP       = 0x04,           /* space */
   es_UP       = 0x02,           /* 'A'-'Z' */
-  es_XD	      = 0x01,           /* '0'-'9', 'A'-'F', 'a'-'f' */
+  es_XD       = 0x01,           /* '0'-'9', 'A'-'F', 'a'-'f' */
   es_XBB      = es_BB | es_CN,  /* blank or control */
-  es_XDI      = es_DI | es_XD,	/* digit or hex digit */
-  es_XLO      = es_LO | es_XD,	/* lower case or hex digit */
-  es_XUP      = es_UP | es_XD	  /* upper case or hex digit */
+  es_XDI      = es_DI | es_XD,  /* digit or hex digit */
+  es_XLO      = es_LO | es_XD,  /* lower case or hex digit */
+  es_XUP      = es_UP | es_XD    /* upper case or hex digit */
 };
 
 static ulong esCharTypeBasicGet(ulong ch)
 {
   static const uint8_t sc_Ctyptab[256] =
-  {	/* indexed by [0, UCHAR_MAX] */
+  {  /* indexed by [0, UCHAR_MAX] */
    0, es_BB, es_BB, es_BB, es_BB, es_BB, es_BB, es_BB,
   es_BB, es_XBB, es_XBB, es_XBB, es_XBB, es_XBB, es_BB, es_BB,
   es_BB, es_BB, es_BB, es_BB, es_BB, es_BB, es_BB, es_BB,
@@ -52,7 +52,7 @@ static ulong esCharTypeBasicGet(ulong ch)
   es_LO, es_LO, es_LO, es_LO, es_LO, es_LO, es_LO, es_LO,
   es_LO, es_LO, es_LO, es_LO, es_LO, es_LO, es_LO, es_LO,
   es_LO, es_LO, es_LO, es_PU, es_PU, es_PU, es_PU, es_BB,
-  };	/* rest all match nothing */
+  };  /* rest all match nothing */
 
   if( ch > 255 )
     return 0;
@@ -284,7 +284,7 @@ void moneypunct<ES_CHAR>::_M_initialize_moneypunct(__c_locale __cloc, char const
 {
   // "C" locale
   if (!_M_data)
-  	_M_data = new __moneypunct_cache<ES_CHAR, false>;
+    _M_data = new __moneypunct_cache<ES_CHAR, false>;
 
   _M_data->_M_decimal_point = esT('.');
   _M_data->_M_thousands_sep = esT(',');
@@ -301,7 +301,7 @@ void moneypunct<ES_CHAR>::_M_initialize_moneypunct(__c_locale __cloc, char const
   _M_data->_M_neg_format = money_base::_S_default_pattern;
 
   for (size_t __i = 0; __i < money_base::_S_end; ++__i)
-	  _M_data->_M_atoms[__i] = static_cast<wchar_t>(money_base::_S_atoms[__i]);
+    _M_data->_M_atoms[__i] = static_cast<wchar_t>(money_base::_S_atoms[__i]);
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -312,7 +312,7 @@ ES_CHAR numpunct<ES_CHAR>::do_decimal_point() const
 #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
  ES_NOTHROW
 #endif
-{	// return decimal point
+{  // return decimal point
   return esT('.');
 }
 
@@ -321,7 +321,7 @@ ES_CHAR numpunct<ES_CHAR>::do_thousands_sep() const
 #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
  ES_NOTHROW
 #endif
-{	// return thousands separator
+{  // return thousands separator
   return esT('\0');
 }
 
@@ -330,7 +330,7 @@ std::string numpunct<ES_CHAR>::do_grouping() const
 #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
  ES_NOTHROW
 #endif
-{	// return grouping string
+{  // return grouping string
   return "";
 }
 
@@ -339,7 +339,7 @@ EsBasicStringT numpunct<ES_CHAR>::do_falsename() const
 #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
  ES_NOTHROW
 #endif
-{	// return name for false
+{  // return name for false
   return esT("false");
 }
 
@@ -348,7 +348,7 @@ EsBasicStringT numpunct<ES_CHAR>::do_truename() const
 #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
  ES_NOTHROW
 #endif
-{	// return name for true
+{  // return name for true
   return esT("true");
 }
 //---------------------------------------------------------------------------
@@ -581,7 +581,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return decimal point
+  {  // return decimal point
     if( m_node.m_sepDec )
       return m_node.m_sepDec[0];
 
@@ -592,7 +592,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return thousands separator
+  {  // return thousands separator
     if( m_node.m_sepTh )
       return m_node.m_sepTh[0];
 
@@ -603,7 +603,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return grouping string
+  {  // return grouping string
     return m_grp;
   }
 
@@ -611,7 +611,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return name for false
+  {  // return name for false
     static const EsBasicStringT sc_false = esT("false");
 
     return sc_false;
@@ -621,7 +621,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return name for true
+  {  // return name for true
     static const EsBasicStringT sc_true = esT("true");
 
     return sc_true;
@@ -648,10 +648,10 @@ public:
     m_ns.assign( m_node.m_minus );
 
     // initialize positive money fmt pattern according to MSDN LOCALE_ICURRENCY values
-    //0	Prefix, no separation, for example, $1.1
-    //1	Suffix, no separation, for example, 1.1$
-    //2	Prefix, 1-character separation, for example, $ 1.1
-    //3	Suffix, 1-character separation, for example, 1.1 $
+    //0  Prefix, no separation, for example, $1.1
+    //1  Suffix, no separation, for example, 1.1$
+    //2  Prefix, 1-character separation, for example, $ 1.1
+    //3  Suffix, 1-character separation, for example, 1.1 $
     //
     switch( m_node.m_curFmtPos )
     {
@@ -690,34 +690,34 @@ public:
     }
 
     // initialize negative money fmt pattern according to MSDN LOCALE_INEGCURR values
-    //0	Left parenthesis, monetary symbol, number, right parenthesis; for example, ($1.1)
-    //1	Negative sign, monetary symbol, number; for example, -$1.1
-    //2	Monetary symbol, negative sign, number; for example, $-1.1
-    //3	Monetary symbol, number, negative sign; for example, $1.1-
-    //4	Left parenthesis, number, monetary symbol, right parenthesis; for example, (1.1$)
-    //5	Negative sign, number, monetary symbol; for example, -1.1$
-    //6	Number, negative sign, monetary symbol; for example, 1.1-$
-    //7	Number, monetary symbol, negative sign; for example, 1.1$-
-    //8	Negative sign, number, space, monetary symbol (like #5, but with a space before the monetary symbol); for example, -1.1 $
-    //9	Negative sign, monetary symbol, space, number (like #1, but with a space after the monetary symbol); for example, -$ 1.1
-    //10	Number, space, monetary symbol, negative sign (like #7, but with a space before the monetary symbol); for example, 1.1 $-
-    //11	Monetary symbol, space, number, negative sign (like #3, but with a space after the monetary symbol); for example, $ 1.1-
-    //12	Monetary symbol, space, negative sign, number (like #2, but with a space after the monetary symbol); for example, $ -1.1
-    //13	Number, negative sign, space, monetary symbol (like #6, but with a space before the monetary symbol); for example, 1.1- $
-    //14	Left parenthesis, monetary symbol, space, number, right parenthesis (like #0, but with a space after the monetary symbol); for example, ($ 1.1)
-    //15	Left parenthesis, number, space, monetary symbol, right parenthesis (like #4, but with a space before the monetary symbol); for example, (1.1 $)
+    //0  Left parenthesis, monetary symbol, number, right parenthesis; for example, ($1.1)
+    //1  Negative sign, monetary symbol, number; for example, -$1.1
+    //2  Monetary symbol, negative sign, number; for example, $-1.1
+    //3  Monetary symbol, number, negative sign; for example, $1.1-
+    //4  Left parenthesis, number, monetary symbol, right parenthesis; for example, (1.1$)
+    //5  Negative sign, number, monetary symbol; for example, -1.1$
+    //6  Number, negative sign, monetary symbol; for example, 1.1-$
+    //7  Number, monetary symbol, negative sign; for example, 1.1$-
+    //8  Negative sign, number, space, monetary symbol (like #5, but with a space before the monetary symbol); for example, -1.1 $
+    //9  Negative sign, monetary symbol, space, number (like #1, but with a space after the monetary symbol); for example, -$ 1.1
+    //10  Number, space, monetary symbol, negative sign (like #7, but with a space before the monetary symbol); for example, 1.1 $-
+    //11  Monetary symbol, space, number, negative sign (like #3, but with a space after the monetary symbol); for example, $ 1.1-
+    //12  Monetary symbol, space, negative sign, number (like #2, but with a space after the monetary symbol); for example, $ -1.1
+    //13  Number, negative sign, space, monetary symbol (like #6, but with a space before the monetary symbol); for example, 1.1- $
+    //14  Left parenthesis, monetary symbol, space, number, right parenthesis (like #0, but with a space after the monetary symbol); for example, ($ 1.1)
+    //15  Left parenthesis, number, space, monetary symbol, right parenthesis (like #4, but with a space before the monetary symbol); for example, (1.1 $)
     switch( m_node.m_curFmtNeg )
     {
-	  //case 0: //<0 Left parenthesis, monetary symbol, number, right parenthesis; for example, ($1.1)
-	  case 1: //<1 Negative sign, monetary symbol, number; for example, -$1.1
-		  m_negpatt = {
-			  std::money_base::sign,
+    //case 0: //<0 Left parenthesis, monetary symbol, number, right parenthesis; for example, ($1.1)
+    case 1: //<1 Negative sign, monetary symbol, number; for example, -$1.1
+      m_negpatt = {
+        std::money_base::sign,
         std::money_base::symbol,
         std::money_base::none,
-			  std::money_base::value
-		  };
+        std::money_base::value
+      };
       break;
-    case 2: //<	Monetary symbol, negative sign, number; for example, $-1.1
+    case 2: //<  Monetary symbol, negative sign, number; for example, $-1.1
       m_negpatt = {
         std::money_base::symbol,
         std::money_base::sign,
@@ -725,7 +725,7 @@ public:
         std::money_base::value
       };
       break;
-    case 3: //<3	Monetary symbol, number, negative sign; for example, $1.1-
+    case 3: //<3  Monetary symbol, number, negative sign; for example, $1.1-
       m_negpatt = {
         std::money_base::symbol,
         std::money_base::none,
@@ -733,8 +733,8 @@ public:
         std::money_base::sign
       };
       break;
-    //4	Left parenthesis, number, monetary symbol, right parenthesis; for example, (1.1$)
-    case 5: //<5	Negative sign, number, monetary symbol; for example, -1.1$
+    //4  Left parenthesis, number, monetary symbol, right parenthesis; for example, (1.1$)
+    case 5: //<5  Negative sign, number, monetary symbol; for example, -1.1$
       m_negpatt = {
         std::money_base::sign,
         std::money_base::value,
@@ -742,7 +742,7 @@ public:
         std::money_base::symbol
       };
       break;
-    case 6: //<6	Number, negative sign, monetary symbol; for example, 1.1-$
+    case 6: //<6  Number, negative sign, monetary symbol; for example, 1.1-$
       m_negpatt = {
         std::money_base::value,
         std::money_base::sign,
@@ -750,7 +750,7 @@ public:
         std::money_base::symbol
       };
       break;
-    case 7: //<7	Number, monetary symbol, negative sign; for example, 1.1$-
+    case 7: //<7  Number, monetary symbol, negative sign; for example, 1.1$-
       m_negpatt = {
         std::money_base::value,
         std::money_base::none,
@@ -758,7 +758,7 @@ public:
         std::money_base::sign
       };
       break;
-    case 8: //<8	Negative sign, number, space, monetary symbol (like #5, but with a space before the monetary symbol); for example, -1.1 $
+    case 8: //<8  Negative sign, number, space, monetary symbol (like #5, but with a space before the monetary symbol); for example, -1.1 $
       m_negpatt = {
         std::money_base::sign,
         std::money_base::value,
@@ -766,7 +766,7 @@ public:
         std::money_base::symbol
       };
       break;
-    case 9: //<9	Negative sign, monetary symbol, space, number (like #1, but with a space after the monetary symbol); for example, -$ 1.1
+    case 9: //<9  Negative sign, monetary symbol, space, number (like #1, but with a space after the monetary symbol); for example, -$ 1.1
       m_negpatt = {
         std::money_base::sign,
         std::money_base::symbol,
@@ -774,7 +774,7 @@ public:
         std::money_base::value
       };
       break;
-    case 10: //<10	Number, space, monetary symbol, negative sign (like #7, but with a space before the monetary symbol); for example, 1.1 $-
+    case 10: //<10  Number, space, monetary symbol, negative sign (like #7, but with a space before the monetary symbol); for example, 1.1 $-
       m_negpatt = {
         std::money_base::value,
         std::money_base::space,
@@ -782,7 +782,7 @@ public:
         std::money_base::sign
       };
       break;
-    case 11: //<11	Monetary symbol, space, number, negative sign (like #3, but with a space after the monetary symbol); for example, $ 1.1-
+    case 11: //<11  Monetary symbol, space, number, negative sign (like #3, but with a space after the monetary symbol); for example, $ 1.1-
       m_negpatt = {
         std::money_base::symbol,
         std::money_base::space,
@@ -790,7 +790,7 @@ public:
         std::money_base::sign
       };
       break;
-    case 12: //<12	Monetary symbol, space, negative sign, number (like #2, but with a space after the monetary symbol); for example, $ -1.1
+    case 12: //<12  Monetary symbol, space, negative sign, number (like #2, but with a space after the monetary symbol); for example, $ -1.1
       m_negpatt = {
         std::money_base::symbol,
         std::money_base::space,
@@ -798,7 +798,7 @@ public:
         std::money_base::value
       };
       break;
-    case 13: //<13	Number, negative sign, space, monetary symbol (like #6, but with a space before the monetary symbol); for example, 1.1- $
+    case 13: //<13  Number, negative sign, space, monetary symbol (like #6, but with a space before the monetary symbol); for example, 1.1- $
       m_negpatt = {
         std::money_base::value,
         std::money_base::sign,
@@ -806,9 +806,9 @@ public:
         std::money_base::symbol
       };
       break;
-    //case 14: //<14	Left parenthesis, monetary symbol, space, number, right parenthesis (like #0, but with a space after the monetary symbol); for example, ($ 1.1)
-    //case 15: //<15	Left parenthesis, number, space, monetary symbol, right parenthesis (like #4, but with a space before the monetary symbol); for example, (1.1 $)
-	  default:
+    //case 14: //<14  Left parenthesis, monetary symbol, space, number, right parenthesis (like #0, but with a space after the monetary symbol); for example, ($ 1.1)
+    //case 15: //<15  Left parenthesis, number, space, monetary symbol, right parenthesis (like #4, but with a space before the monetary symbol); for example, (1.1 $)
+    default:
       m_negpatt = {
         std::money_base::symbol,
         std::money_base::sign,
@@ -823,7 +823,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return decimal point
+  {  // return decimal point
     if( m_node.m_moneySepDec )
       return m_node.m_moneySepDec[0];
 
@@ -834,7 +834,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return thousands separator
+  {  // return thousands separator
     if( m_node.m_moneySepTh )
       return m_node.m_moneySepTh[0];
 
@@ -845,7 +845,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return grouping string
+  {  // return grouping string
     return m_grp;
   }
 
@@ -853,7 +853,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return currency string
+  {  // return currency string
     return m_cur;
   }
 
@@ -861,7 +861,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return positive sign
+  {  // return positive sign
     return m_ps;
   }
 
@@ -869,7 +869,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return negative sign
+  {  // return negative sign
     return m_ns;
   }
 
@@ -877,7 +877,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return money fractiona digits
+  {  // return money fractiona digits
     return m_node.m_curFracDigits;
   }
 
@@ -885,7 +885,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return positive money formatting pattern
+  {  // return positive money formatting pattern
     return m_pospatt;
   }
 
@@ -893,7 +893,7 @@ public:
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
   #endif
-  {	// return negative money formatting pattern
+  {  // return negative money formatting pattern
     return m_negpatt;
   }
 

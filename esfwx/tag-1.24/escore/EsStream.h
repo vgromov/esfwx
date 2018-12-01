@@ -389,7 +389,7 @@ public:
 protected:
   /// Stream Model helpers
   void rootInit(ulong version);
- 	void internalRewind();
+   void internalRewind();
   void internalStateReset();
   EsString objectBlockTypeNameGet(EsStreamBlock* bobj) const;
 

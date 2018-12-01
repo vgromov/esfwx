@@ -1275,20 +1275,20 @@ ES_DECL_BASE_CLASS_INFO_BEGIN( EsSocketServer, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(            EsSocketServer, reset, void_Call, NO_METHOD_DESCR)
   /// Properties
   ES_DECL_PROP_INFO_RO(                         EsSocketServer, isOk, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                         EsSocketServer, isActive, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                         EsSocketServer, error, long, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                         EsSocketServer, clientsCount, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                         EsSocketServer, clientAddresses, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                         EsSocketServer, isActive, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                         EsSocketServer, error, long, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                         EsSocketServer, clientsCount, ulong, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                         EsSocketServer, clientAddresses, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_WO(                         EsSocketServer, ioHandler, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RESTRICTED_PERSISTENT(      EsSocketServer, socketType, ulong, NO_PROPERTY_LABEL, static_cast<ulong>(::EsSocketType::MessageOriented), ES_ENUM(EsSocketType), NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_PERSISTENT(                 EsSocketServer, address, EsVariant, NO_PROPERTY_LABEL, EsSocketAddr::null(), NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_PERSISTENT(                 EsSocketServer, doThrow, bool, NO_PROPERTY_LABEL, false, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, maxIncomingConnections, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::connCntDef, 1, ::EsSocketServer::connCntMax, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, listenerBuffLen, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::buffLenDef, ::EsSocketServer::buffLenMin, ::EsSocketServer::buffLenMax, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_PERSISTENT(                 EsSocketServer, address, EsVariant, NO_PROPERTY_LABEL, EsSocketAddr::null(), NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_PERSISTENT(                 EsSocketServer, doThrow, bool, NO_PROPERTY_LABEL, false, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, maxIncomingConnections, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::connCntDef, 1, ::EsSocketServer::connCntMax, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, listenerBuffLen, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::buffLenDef, ::EsSocketServer::buffLenMin, ::EsSocketServer::buffLenMax, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, listenerAcceptTmo, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::acceptTmoDef, ::EsSocketServer::acceptTmoMin, ::EsSocketServer::acceptTmoMax, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, handlerBuffLen, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::buffLenDef, ::EsSocketServer::buffLenMin, ::EsSocketServer::buffLenMax, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, handlerTtl, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::ttlDef, ::EsSocketServer::ttlMin, ::EsSocketServer::ttlMax, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, packetTimeout, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::packetTmoDef, ::EsSocketServer::packetTmoMin, ::EsSocketServer::packetTmoMax, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, handlerBuffLen, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::buffLenDef, ::EsSocketServer::buffLenMin, ::EsSocketServer::buffLenMax, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, handlerTtl, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::ttlDef, ::EsSocketServer::ttlMin, ::EsSocketServer::ttlMax, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE_PERSISTENT(           EsSocketServer, packetTimeout, ulong, NO_PROPERTY_LABEL, ::EsSocketServer::packetTmoDef, ::EsSocketServer::packetTmoMin, ::EsSocketServer::packetTmoMax, NO_PROPERTY_DESCR)
 ES_DECL_CLASS_INFO_END
 
 } // namespace EsReflection
@@ -1304,17 +1304,17 @@ m_srv(*this)
 EsVariant EsSocketServerReflected::NEW(ulong type)
 {
 #ifdef ES_MODERN_CPP
-	std::unique_ptr<EsSocketServer> p = std::make_unique<EsSocketServer>();
+  std::unique_ptr<EsSocketServer> p = std::make_unique<EsSocketServer>();
 #else
-	std::unique_ptr<EsSocketServer> p( new EsSocketServer );
+  std::unique_ptr<EsSocketServer> p( new EsSocketServer );
 #endif
 
-	ES_ASSERT(p.get());
-	p->m_dynamic = true;
+  ES_ASSERT(p.get());
+  p->m_dynamic = true;
 
   p->set_socketType(type);
 
-	return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 

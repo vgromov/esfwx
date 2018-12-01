@@ -3,84 +3,84 @@ static const GUID c_key = {0xB7013BFB, 0xD65C, 0x5346, 0x93, 0xD0, 0x71, 0xF4, 0
 
 TEST(MacosFileTest, Basics) {
 
-	EsPath path = EsPath::create(
+  EsPath path = EsPath::create(
     EsPath::stdDocsGet(),
     esT("eap"),
     esT("cesse")
   );
 
-	EsFile file(
+  EsFile file(
     path.pathGet(),
     static_cast<ulong>(EsFileFlag::Read)
   );
 
-	EXPECT_TRUE(file.open());
+  EXPECT_TRUE(file.open());
 
-	if( file.get_opened() )
-	{
- 		const EsString& k = EsUtilities::GUIDtoStr(c_key);
+  if( file.get_opened() )
+  {
+     const EsString& k = EsUtilities::GUIDtoStr(c_key);
     EXPECT_TRUE( !k.empty() );
 
     ullong len = file.get_length();
 
-		const EsBinBuffer& e = file.readAllAsBinBuffer();
+    const EsBinBuffer& e = file.readAllAsBinBuffer();
     EXPECT_TRUE( !e.empty() );
 
-		const EsBinBuffer& compiled = EsUtilities::eToB(e, k);
+    const EsBinBuffer& compiled = EsUtilities::eToB(e, k);
     EXPECT_TRUE( !compiled.empty() );
-	}
+  }
 
-	file.close();
+  file.close();
 }
 
 class EsTestEnumerator : public EsPathEnumerator
 {
 public:
-	EsTestEnumerator() :
-	EsPathEnumerator( EsPath::stdDocsGet() )
-	{}
+  EsTestEnumerator() :
+  EsPathEnumerator( EsPath::stdDocsGet() )
+  {}
 
-	const EsString::Array& objsGet() const
-	{
-		return m_objs;
-	}
+  const EsString::Array& objsGet() const
+  {
+    return m_objs;
+  }
 
 protected:
-	virtual void onStart()
-	{
-		m_objs.clear();
-	}
+  virtual void onStart()
+  {
+    m_objs.clear();
+  }
 
-	virtual bool onObject(const EsString& curPath, const EsString& name, bool isDir)
-	{
+  virtual bool onObject(const EsString& curPath, const EsString& name, bool isDir)
+  {
     if(
       !isDir &&
       0 == name.find( esT("EL3C_") ) //< Starts with desired substring
     )
-		  m_objs.push_back( curPath + name );
+      m_objs.push_back( curPath + name );
 
-		return true;
-	}
+    return true;
+  }
 
 private:
-	EsString::Array m_objs;
+  EsString::Array m_objs;
 };
 
 TEST(EsPathEnumeratorTest, Basics) {
 
-	EsTestEnumerator tenum;
-	tenum.execute();
-	const EsString::Array& objs = tenum.objsGet();
+  EsTestEnumerator tenum;
+  tenum.execute();
+  const EsString::Array& objs = tenum.objsGet();
 
-	ASSERT_TRUE(3 == objs.size());
+  ASSERT_TRUE(3 == objs.size());
 }
 
 TEST(EsPathEnumeratorTest, Recursion) {
 
-	EsTestEnumerator tenum;
-	tenum.execute( static_cast<ulong>(EsPathEnumeratorFlag::Recursive) );
-	const EsString::Array& objs = tenum.objsGet();
+  EsTestEnumerator tenum;
+  tenum.execute( static_cast<ulong>(EsPathEnumeratorFlag::Recursive) );
+  const EsString::Array& objs = tenum.objsGet();
 
-	ASSERT_TRUE(4 == objs.size());
+  ASSERT_TRUE(4 == objs.size());
 }
 

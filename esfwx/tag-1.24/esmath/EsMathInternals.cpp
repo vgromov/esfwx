@@ -42,14 +42,14 @@
 
 EsMathFitInfo alglibInfoToFitInfo(alglib::ae_int_t info)
 {
-	if( 0 < info )
-		return EsMathFitInfo::Success;
-	else if( -3 == info )
-		return EsMathFitInfo::ConstraintInconsistent;
-	else if( -4 == info )
-		return EsMathFitInfo::Inconvergence;
+  if( 0 < info )
+    return EsMathFitInfo::Success;
+  else if( -3 == info )
+    return EsMathFitInfo::ConstraintInconsistent;
+  else if( -4 == info )
+    return EsMathFitInfo::Inconvergence;
 
-	return EsMathFitInfo::Fail;
+  return EsMathFitInfo::Fail;
 }
 //---------------------------------------------------------------------------
 

@@ -6,52 +6,52 @@
 // zip compression-deompression utility classes
 //
 enum {
-	// default compression|decompression chunk size
-	zipChunkSizeDef = 128*1024
+  // default compression|decompression chunk size
+  zipChunkSizeDef = 128*1024
 };
 
 class ESCORE_CLASS EsZipCompressor
 {
 public:
-	enum {
-		// compression levels shortcuts
-		compressionNone			= 0,
-		compressionFastest	= 1,
-		compressionBest			= 9,
-		compressionDefault	= -1,
-		// memory levels
-		memlevelSmallest		= 1,
-		memlevelMax					= 9,
-		memlevelDefault			= 8,
-	};
-	// compression strategies
-	enum Strategy {
-		strategyFiltered		= 1,
-		strategyHuffmanOnly	= 2,
-		strategyRle					= 3,
-		strategyFixed				= 4,
-		strategyDefault			= 0
-	};
+  enum {
+    // compression levels shortcuts
+    compressionNone      = 0,
+    compressionFastest  = 1,
+    compressionBest      = 9,
+    compressionDefault  = -1,
+    // memory levels
+    memlevelSmallest    = 1,
+    memlevelMax          = 9,
+    memlevelDefault      = 8,
+  };
+  // compression strategies
+  enum Strategy {
+    strategyFiltered    = 1,
+    strategyHuffmanOnly  = 2,
+    strategyRle          = 3,
+    strategyFixed        = 4,
+    strategyDefault      = 0
+  };
 
 public:
-	EsZipCompressor(int level = compressionBest,
-		int memLevel = memlevelDefault, 
-		Strategy strategy = strategyDefault);
-	~EsZipCompressor();
+  EsZipCompressor(int level = compressionBest,
+    int memLevel = memlevelDefault, 
+    Strategy strategy = strategyDefault);
+  ~EsZipCompressor();
 
-	EsBinBuffer compress(const EsBinBuffer& src);
-
-private:
-	// internal services
-	void chunkRead(EsBinBuffer::pointer chunkBuff);
+  EsBinBuffer compress(const EsBinBuffer& src);
 
 private:
-	// prohibited functionality
-	EsZipCompressor(const EsZipCompressor&);
-	EsZipCompressor& operator=(const EsZipCompressor&);
+  // internal services
+  void chunkRead(EsBinBuffer::pointer chunkBuff);
 
 private:
-	void* m_impl;
+  // prohibited functionality
+  EsZipCompressor(const EsZipCompressor&);
+  EsZipCompressor& operator=(const EsZipCompressor&);
+
+private:
+  void* m_impl;
 };
 
 class ESCORE_CLASS EsZipDecompressor
@@ -59,22 +59,22 @@ class ESCORE_CLASS EsZipDecompressor
 public:
 
 public:
-	EsZipDecompressor();
-	~EsZipDecompressor();
+  EsZipDecompressor();
+  ~EsZipDecompressor();
 
-	EsBinBuffer decompress(const EsBinBuffer& src);
-
-private:
-	// internal services
-	void chunkRead(EsBinBuffer::pointer chunkBuff);
+  EsBinBuffer decompress(const EsBinBuffer& src);
 
 private:
-	// prohibited functionality
-	EsZipDecompressor(const EsZipDecompressor&);
-	EsZipDecompressor& operator=(const EsZipDecompressor&);
+  // internal services
+  void chunkRead(EsBinBuffer::pointer chunkBuff);
 
 private:
-	void* m_impl;
+  // prohibited functionality
+  EsZipDecompressor(const EsZipDecompressor&);
+  EsZipDecompressor& operator=(const EsZipDecompressor&);
+
+private:
+  void* m_impl;
 };
 
 #endif // #ifdef ES_USE_ZLIB

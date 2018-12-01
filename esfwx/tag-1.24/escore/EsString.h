@@ -18,12 +18,12 @@ public:
   typedef EsBasicStringT::traits_type traits_type;
   typedef EsBasicStringT::value_type value_type;
   typedef EsBasicStringT::reference reference;
-  typedef EsBasicStringT::const_reference const_reference;  
+  typedef EsBasicStringT::const_reference const_reference;
   typedef EsBasicStringT::const_pointer const_pointer;
   typedef EsBasicStringT::pointer pointer;
   typedef EsBasicStringT::const_iterator const_iterator;
   typedef EsBasicStringT::iterator iterator;
-  
+
   /// Constants
   ///
   enum {
@@ -77,7 +77,7 @@ public:
   ///
   EsString() ES_NOTHROW : m_hashInvalid(true) {}
   EsString(EsString::value_type ch) ES_NOTHROW : m_str(1, ch), m_hashInvalid(true) {}
-  EsString(const EsString& src) ES_NOTHROW : m_str(src.m_str), m_hashInvalid(src.m_hashInvalid), m_hash(src.m_hash) {}
+  EsString(const EsString& src) ES_NOTHROW : m_str(src.m_str), m_hash(src.m_hash), m_hashInvalid(src.m_hashInvalid) {}
   EsString(size_t cnt, EsString::value_type ch) ES_NOTHROW : m_str(cnt, ch), m_hashInvalid(true) {}
   EsString(EsString::const_pointer src) ES_NOTHROW : m_str(src), m_hashInvalid(true) {}
   EsString(EsString::const_pointer src, HashInit) ES_NOTHROW : m_str(src), m_hashInvalid(true) { hashGet(); }
@@ -224,25 +224,25 @@ public:
   inline EsString::reference operator [](size_t idx) { return at(idx); }
   // type conversion
   operator const EsBasicStringT& () const ES_NOTHROW { return m_str; }
-  
+
   // static services
   //
   // standard string conversion functions mappings
   static EsString fromLong(long l, int radix = 10, const std::locale& loc = EsLocale::locale());
   static long toLong(const EsString& str, int radix = 0, const std::locale& loc = EsLocale::locale());
-  
+
   static EsString fromULong(unsigned long u, int radix = 10, const std::locale& loc = EsLocale::locale());
   static unsigned long toULong(const EsString& str, int radix = 0, const std::locale& loc = EsLocale::locale());
-  
+
   static EsString fromInt64(esI64 i64, int radix = 10, const std::locale& loc = EsLocale::locale());
   static esI64 toInt64(const EsString& str, int radix = 0, const std::locale& loc = EsLocale::locale());
-  
+
   static EsString fromUInt64(esU64 u64, int radix = 10, const std::locale& loc = EsLocale::locale());
   static esU64 toUInt64(const EsString& str, int radix = 0, const std::locale& loc = EsLocale::locale());
 
   static EsString fromDouble(double d, const std::locale& loc = EsLocale::locale());
   static double toDouble(const EsString& str, const std::locale& loc = EsLocale::locale());
-  
+
   // String formatting. use supplied C++ locale object in formatting routines
   //
   static EsString formatV(const std::locale& loc, EsString::const_pointer fmt, const EsVariant& args);
@@ -289,18 +289,18 @@ public:
 
   // create string from array of strings, delimited by delimiter,
   // each string is optionally enclosed in specific chars, if left and right enclosures are set
-  static EsString fromStringArray(const EsString::Array& as, 
+  static EsString fromStringArray(const EsString::Array& as,
                            const EsString& delimiter = EsString::space(),
                            const EsString& leftEnclosure = EsString::null(),
                            const EsString& rightEnclosure = EsString::null() ) ES_NOTHROW;
-  
+
   /// String-to-string conversion
   static EsString toString(const EsString& src, ulong flags = 0);
   static EsString fromString(const EsString& src, ulong flags = 0, const std::locale& loc = EsLocale::locale());
-  
+
   /// Some preconfigured string conversions
   ///
-  /// 
+  ///
   static inline EsString toXMLString(const EsString& str)
   {
     return toString(str, (StrXML|StrNoCEscape));
@@ -316,7 +316,7 @@ public:
   {
     return toString(str);
   }
-  
+
   /// Acts as toEscapedString function plus "quotes" the result string.
   static inline EsString toQuotedEscapedString(const EsString& str)
   {
@@ -338,18 +338,18 @@ public:
   /// Convert any character to an string that is printable, possibly a
   /// C-like escape character.
   /// If the character is blank, it is represented as \x20.
-  /// 
+  ///
   static EsString charToEscapedString(int c);
 
   /// Convert the standard string that can contain C-like escape sequences to the standard
   /// string, where all escape sequences are taken literally, as characters.
   /// See function toEscapedString for backward conversion.
-  /// 
+  ///
   static inline EsString fromEscapedString(const EsString& str, const std::locale& loc = EsLocale::locale())
   {
     return fromString(str, StrQuote, loc); // possibly remove quotes
   }
-  
+
   /// Return true if ch belongs to hes chars
   static bool isHexChar( int ch ) ES_NOTHROW;
 
@@ -371,13 +371,13 @@ public:
   static EsString trimLeft(const EsString& str, const EsString& symbols = EsString::trimSymbolsDef());
   static EsString trimRight(const EsString& str, const EsString& symbols = EsString::trimSymbolsDef());
   static inline EsString trim(const EsString& str, const EsString& symbols = EsString::trimSymbolsDef())
-  { 
-    return trimLeft( trimRight(str, symbols), symbols); 
+  {
+    return trimLeft( trimRight(str, symbols), symbols);
   }
 
   // wrap string if its length exceeds line width. wrapped part is prepended with indentCount
   static EsString wrap(const EsString& str, unsigned indentCount, unsigned lineWidth);
-  
+
   // string comparison
   static long scompare(const EsString& s1, const EsString& s2, bool ignoreCase, const std::locale& loc = EsLocale::locale());
   static long scompare(EsString::const_pointer s1, EsString::const_pointer s2, bool ignoreCase = false);
@@ -387,7 +387,7 @@ public:
   static EsString toLower(const EsString& str, const std::locale& loc = EsLocale::locale());
   static EsString::value_type toUpper(EsString::value_type c, const std::locale& loc = EsLocale::locale());
   static EsString toUpper(const EsString& str, const std::locale& loc = EsLocale::locale());
-  
+
   /// get boolean representation
   static const EsString& booleanStringGet(bool val) ES_NOTHROW { return val ? EsStdNames::_true() : EsStdNames::_false(); }
   /// get internationalized variant of boolean string
@@ -408,7 +408,7 @@ public:
   // universal byte conversion
   static EsByteString toByteString(const EsString& src, int conversion);
   static EsString fromByteString(const EsByteString& src, int conversion);
-  
+
   // special values
   static const EsString& null() ES_NOTHROW;
   static const EsString::Array& nullArray() ES_NOTHROW;
@@ -462,14 +462,14 @@ public:
 
     // Check buffers && lengths. hex buffer length must be greater than 0 and even
     // Tune-up actual count of data which we may extract from hex buffer and place into binary buffer
-    // 
+    //
 
     hexLen = esMin(hexLen, binLen * 2);
 
     if(
-      hex && 
-      bin && 
-      hexLen > 0 && 
+      hex &&
+      bin &&
+      hexLen > 0 &&
       0 == (hexLen % 2)
     )
     {
@@ -479,14 +479,14 @@ public:
       {
         EsBinBuffer::value_type nibbleLo;
         EsBinBuffer::value_type nibbleHi;
-        
+
         if(
            hexToBinNibble(
-             *hex++, 
+             *hex++,
              nibbleHi
-            ) && 
+            ) &&
             hexToBinNibble(
-              *hex++, 
+              *hex++,
               nibbleLo
             )
         )
@@ -536,6 +536,6 @@ inline EsString::Array operator + (const EsString::Array& _1, const EsString& _2
 inline EsString::Array operator + (const EsString::Array& _1, const EsString::Array& _2) { EsString::Array tmp(_1); tmp.insert(tmp.end(), _2.begin(), _2.end()); return tmp; }
 
 // String array alias type
-typedef EsString::Array	EsStringArray;
+typedef EsString::Array  EsStringArray;
 
 #endif // _es_string_h_

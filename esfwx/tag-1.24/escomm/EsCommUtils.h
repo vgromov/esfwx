@@ -47,9 +47,9 @@ namespace EsReflection
 /// Byte read status reflected enumeration
 ///
 ES_DECL_EXPORTED_ENUMERATION_BEGIN(ESCOMM_CLASS, EsByteReadStatus)
-	ES_DECL_ENUMERATION_ITEM(Expired,	  static_cast<ulong>(::EsByteReadStatus::Expired))
-	ES_DECL_ENUMERATION_ITEM(Cancelled, static_cast<ulong>(::EsByteReadStatus::Cancelled))
-	ES_DECL_ENUMERATION_ITEM(Success,	  static_cast<ulong>(::EsByteReadStatus::Success))
+  ES_DECL_ENUMERATION_ITEM(Expired,    static_cast<ulong>(::EsByteReadStatus::Expired))
+  ES_DECL_ENUMERATION_ITEM(Cancelled, static_cast<ulong>(::EsByteReadStatus::Cancelled))
+  ES_DECL_ENUMERATION_ITEM(Success,    static_cast<ulong>(::EsByteReadStatus::Success))
 ES_DECL_ENUMERATION_END
 
 }

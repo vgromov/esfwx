@@ -10,10 +10,10 @@ NAMESPACE_BEGIN(CryptoPP)
 class Whirlpool : public IteratedHashWithStaticTransform<word64, BigEndian, 64, 64, Whirlpool>
 {
 public:
-	static void InitState(HashWordType *state);
-	static void Transform(word64 *digest, const word64 *data);
-	void TruncatedFinal(byte *hash, size_t size);
-	CRYPTOPP_CONSTEXPR static const char *StaticAlgorithmName() {return "Whirlpool";}
+  static void InitState(HashWordType *state);
+  static void Transform(word64 *digest, const word64 *data);
+  void TruncatedFinal(byte *hash, size_t size);
+  CRYPTOPP_CONSTEXPR static const char *StaticAlgorithmName() {return "Whirlpool";}
 };
 
 NAMESPACE_END

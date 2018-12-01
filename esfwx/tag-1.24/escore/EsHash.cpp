@@ -14,7 +14,7 @@
 // 32 bit FNV-1a
 EsHashFNV_1a_32::EsHashFNV_1a_32()
 {
-	reset();
+  reset();
 }
 //---------------------------------------------------------------------------
 
@@ -25,22 +25,22 @@ m_hash( src.m_hash )
 
 EsHashFNV_1a_32::EsHashFNV_1a_32(const EsString& str)
 {
-	reset();
-	update(str);
+  reset();
+  update(str);
 }
 //---------------------------------------------------------------------------
 
 EsHashFNV_1a_32::EsHashFNV_1a_32(const EsByteString& bstr)
 {
-	reset();
-	update(bstr);
+  reset();
+  update(bstr);
 }
 //---------------------------------------------------------------------------
 
 EsHashFNV_1a_32::EsHashFNV_1a_32(const EsBinBuffer& buff)
 {
-	reset();
-	update(buff);
+  reset();
+  update(buff);
 }
 //---------------------------------------------------------------------------
 
@@ -49,10 +49,10 @@ void EsHashFNV_1a_32::update(const EsString& str) ES_NOTHROW
   size_t cnt = str.size();
   EsString::const_pointer cp = str.c_str();
 
-	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU32, EsString::value_type>(
-		  cp[idx],
-		  m_hash
+  for(size_t idx = 0; idx < cnt; ++idx)
+    m_hash = fnv1a<esU32, EsString::value_type>(
+      cp[idx],
+      m_hash
     );
 }
 //---------------------------------------------------------------------------
@@ -62,10 +62,10 @@ void EsHashFNV_1a_32::update(const EsBinBuffer& buff) ES_NOTHROW
   size_t cnt = buff.size();
   EsBinBuffer::const_pointer cp = buff.data();
 
-	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU32, EsBinBuffer::value_type>(
-		  cp[idx],
-		  m_hash
+  for(size_t idx = 0; idx < cnt; ++idx)
+    m_hash = fnv1a<esU32, EsBinBuffer::value_type>(
+      cp[idx],
+      m_hash
     );
 }
 //---------------------------------------------------------------------------
@@ -75,57 +75,57 @@ void EsHashFNV_1a_32::update(const EsByteString& bstr) ES_NOTHROW
   size_t cnt = bstr.size();
   EsByteString::const_pointer cp = bstr.c_str();
 
-	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU32, EsByteString::value_type>(
-		  cp[idx],
-		  m_hash
+  for(size_t idx = 0; idx < cnt; ++idx)
+    m_hash = fnv1a<esU32, EsByteString::value_type>(
+      cp[idx],
+      m_hash
     );
 }
 //---------------------------------------------------------------------------
 
 void EsHashFNV_1a_32::reset() ES_NOTHROW
 {
-	m_hash = FNV_Traits<esU32>::c_init;
+  m_hash = FNV_Traits<esU32>::c_init;
 }
 //---------------------------------------------------------------------------
 
 const EsHashFNV_1a_32& EsHashFNV_1a_32::operator=(const EsHashFNV_1a_32& src) ES_NOTHROW
 {
-	m_hash = src.m_hash;
-	return *this;
+  m_hash = src.m_hash;
+  return *this;
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
 EsHashFNV_1a_64::EsHashFNV_1a_64()
 {
-	reset();
+  reset();
 }
 //---------------------------------------------------------------------------
 
 EsHashFNV_1a_64::EsHashFNV_1a_64(const EsHashFNV_1a_64& src) :
-	m_hash( src.m_hash )
+  m_hash( src.m_hash )
 {}
 //---------------------------------------------------------------------------
 
 EsHashFNV_1a_64::EsHashFNV_1a_64(const EsString& str)
 {
-	reset();
-	update(str);
+  reset();
+  update(str);
 }
 //---------------------------------------------------------------------------
 
 EsHashFNV_1a_64::EsHashFNV_1a_64(const EsByteString& bstr)
 {
-	reset();
-	update(bstr);
+  reset();
+  update(bstr);
 }
 //---------------------------------------------------------------------------
 
 EsHashFNV_1a_64::EsHashFNV_1a_64(const EsBinBuffer& buff)
 {
-	reset();
-	update(buff);
+  reset();
+  update(buff);
 }
 //---------------------------------------------------------------------------
 
@@ -134,10 +134,10 @@ void EsHashFNV_1a_64::update(const EsString& str) ES_NOTHROW
   size_t cnt = str.size();
   EsString::const_pointer cp = str.data();
 
-	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU64, EsString::value_type>(
-		  cp[idx],
-		  m_hash
+  for(size_t idx = 0; idx < cnt; ++idx)
+    m_hash = fnv1a<esU64, EsString::value_type>(
+      cp[idx],
+      m_hash
     );
 }
 //---------------------------------------------------------------------------
@@ -147,10 +147,10 @@ void EsHashFNV_1a_64::update(const EsBinBuffer& buff) ES_NOTHROW
   size_t cnt = buff.size();
   EsBinBuffer::const_pointer cp = buff.data();
 
-	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU64, EsBinBuffer::value_type>(
-		  cp[idx],
-		  m_hash
+  for(size_t idx = 0; idx < cnt; ++idx)
+    m_hash = fnv1a<esU64, EsBinBuffer::value_type>(
+      cp[idx],
+      m_hash
     );
 }
 //---------------------------------------------------------------------------
@@ -160,24 +160,24 @@ void EsHashFNV_1a_64::update(const EsByteString& bstr) ES_NOTHROW
   size_t cnt = bstr.size();
   EsByteString::const_pointer cp = bstr.c_str();
 
-	for(size_t idx = 0; idx < cnt; ++idx)
-		m_hash = fnv1a<esU64, EsByteString::value_type>(
-		  cp[idx],
-		  m_hash
+  for(size_t idx = 0; idx < cnt; ++idx)
+    m_hash = fnv1a<esU64, EsByteString::value_type>(
+      cp[idx],
+      m_hash
     );
 }
 //---------------------------------------------------------------------------
 
 void EsHashFNV_1a_64::reset() ES_NOTHROW
 {
-	m_hash = FNV_Traits<esU64>::c_init;
+  m_hash = FNV_Traits<esU64>::c_init;
 }
 //---------------------------------------------------------------------------
 
 const EsHashFNV_1a_64& EsHashFNV_1a_64::operator=(const EsHashFNV_1a_64& src) ES_NOTHROW
 {
-	m_hash = src.m_hash;
-	return *this;
+  m_hash = src.m_hash;
+  return *this;
 }
 //---------------------------------------------------------------------------
 

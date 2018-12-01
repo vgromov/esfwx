@@ -15,11 +15,11 @@
 
 // test engine includes
 #ifdef ES_USE_CPPTEST
-#	include "cpptest.h"
-	Test::Suite g_allTests;
+#  include "cpptest.h"
+  Test::Suite g_allTests;
 #else
-#	define GTEST_HAS_TR1_TUPLE 0
-#	include "src/gtest-all.cc"
+#  define GTEST_HAS_TR1_TUPLE 0
+#  include "src/gtest-all.cc"
 # define PRINTF(...)  do { testing::internal::ColoredPrintf(testing::internal::COLOR_GREEN, "[          ] "); testing::internal::ColoredPrintf(testing::internal::COLOR_YELLOW, __VA_ARGS__); } while(0)
 #endif
 
@@ -125,20 +125,40 @@ int main(int argc, char **argv)
 
   s_argv = argv;
 
-	escore::reflectionInit();
-	esmath::reflectionInit();
-	escomm::reflectionInit();
-	esscript::reflectionInit();
+  escore::reflectionInit();
+  esmath::reflectionInit();
+  escomm::reflectionInit();
+  esscript::reflectionInit();
 
   int result = 0;
+
+  EsScriptSymbolTable stbl(false);
+  ulong flags = EsScriptSymbolFlag::BuiltIn | EsScriptSymbolFlag::ReadOnly;
+
+  int idx = 0;
+  while(idx < 100)
+  {
+    EsChannelIoIntf::Ptr chnl = EsChannelIoFactory::channelCreate(
+      esT("EsChannelIoUart")
+    );
+
+    stbl.symbolNonTemplateAdd(
+      esT("val"),
+      chnl,
+      flags
+    );
+
+    stbl.reset();
+    ++idx;
+  }
 
   ES_DEBUG_TRACE(esT("EsCriticalSection size: %d"), sizeof(EsCriticalSection));
   ES_DEBUG_TRACE(esT("EsString size: %d"), sizeof(EsString));
   ES_DEBUG_TRACE(esT("EsVariant size: %d"), sizeof(EsVariant));
   ES_DEBUG_TRACE(esT("EsBinBuffer size: %d"), sizeof(EsBinBuffer));
   ES_DEBUG_TRACE(esT("EsStringIndexedMap size: %d"), sizeof(EsStringIndexedMap));
-	ES_DEBUG_TRACE(esT("EsStringIndexedMap::EsStringAssocMapT size: %d"), sizeof(EsStringIndexedMap::EsStringAssocMapT));
-	ES_DEBUG_TRACE(esT("EsStringIndexedMap::EsStringAssocVectorT size: %d"), sizeof(EsStringIndexedMap::EsStringAssocVectorT));
+  ES_DEBUG_TRACE(esT("EsStringIndexedMap::EsStringAssocMapT size: %d"), sizeof(EsStringIndexedMap::EsStringAssocMapT));
+  ES_DEBUG_TRACE(esT("EsStringIndexedMap::EsStringAssocVectorT size: %d"), sizeof(EsStringIndexedMap::EsStringAssocVectorT));
   ES_DEBUG_TRACE(esT("EsReflectedClassIntf size: %d"), sizeof(EsReflectedClassIntf));
   ES_DEBUG_TRACE(esT("EsAttributesIntf::Ptr size: %d"), sizeof(EsAttributesIntf::Ptr));
   ES_DEBUG_TRACE(esT("EsEnumeration size: %d"), sizeof(EsEnumeration));

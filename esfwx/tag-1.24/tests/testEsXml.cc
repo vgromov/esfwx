@@ -55,42 +55,42 @@ protected:
 
 TEST_F(EsStreamXmlTest0, ContextsWrite) {
 
-	// create write-only XML file stream
-	ASSERT_NO_THROW( streamw = EsStreamXml::create(
+  // create write-only XML file stream
+  ASSERT_NO_THROW( streamw = EsStreamXml::create(
     static_cast<ulong>(EsStreamFlag::Write)|
     static_cast<ulong>(EsStreamFlag::File),
     streamPath
     )
   );
-	ASSERT_TRUE( streamw );
+  ASSERT_TRUE( streamw );
 
-	// context tests
-	EXPECT_THROW(streamw->contextOpenCreate(esT("ROOT")), EsException);
+  // context tests
+  EXPECT_THROW(streamw->contextOpenCreate(esT("ROOT")), EsException);
 
-	// values - only context
-	EXPECT_NO_THROW(streamw->contextOpenCreate(esT("ctx1")));
-	EXPECT_NO_THROW(streamw->valueWrite(esT("value_float"), 123.13));
-	EXPECT_NO_THROW(streamw->valueWrite(esT("value_str"), strEng));
-	EXPECT_NO_THROW(streamw->valueWrite(esT("value_int"), 1356));
-	EXPECT_NO_THROW(streamw->contextCurrentClose());
-	// write some value at root context
-	EXPECT_NO_THROW(streamw->valueWrite(esT("value_float"), 13.138903));
-	// try to read write-only stream
-	EXPECT_THROW(streamw->valueRead(esT("value_float")), EsException);
+  // values - only context
+  EXPECT_NO_THROW(streamw->contextOpenCreate(esT("ctx1")));
+  EXPECT_NO_THROW(streamw->valueWrite(esT("value_float"), 123.13));
+  EXPECT_NO_THROW(streamw->valueWrite(esT("value_str"), strEng));
+  EXPECT_NO_THROW(streamw->valueWrite(esT("value_int"), 1356));
+  EXPECT_NO_THROW(streamw->contextCurrentClose());
+  // write some value at root context
+  EXPECT_NO_THROW(streamw->valueWrite(esT("value_float"), 13.138903));
+  // try to read write-only stream
+  EXPECT_THROW(streamw->valueRead(esT("value_float")), EsException);
 
-	// mixed value-object context
-	EXPECT_NO_THROW(streamw->contextOpenCreate(esT("ctx2")));
-	EXPECT_NO_THROW(streamw->valueWrite(esT("value_str"), strEngCesc));
-	EXPECT_NO_THROW(streamw->valueWrite(esT("value_int"), 9998));
+  // mixed value-object context
+  EXPECT_NO_THROW(streamw->contextOpenCreate(esT("ctx2")));
+  EXPECT_NO_THROW(streamw->valueWrite(esT("value_str"), strEngCesc));
+  EXPECT_NO_THROW(streamw->valueWrite(esT("value_int"), 9998));
 
   EsChannelIoIntf::Ptr ch;
-	ASSERT_NO_THROW(ch = EsChannelIoFactory::channelCreate(esT("EsChannelIoUart")));
-	ASSERT_TRUE(ch);
-	EXPECT_NO_THROW(streamw->objectWrite(ch));
+  ASSERT_NO_THROW(ch = EsChannelIoFactory::channelCreate(esT("EsChannelIoUart")));
+  ASSERT_TRUE(ch);
+  EXPECT_NO_THROW(streamw->objectWrite(ch));
 
-	EXPECT_NO_THROW(streamw->valueWrite(esT("value_float"), 99.9876));
-	EXPECT_NO_THROW(streamw->valueWrite(esT("val_str"), strRu0));
-	EXPECT_NO_THROW(streamw->contextCurrentClose());
+  EXPECT_NO_THROW(streamw->valueWrite(esT("value_float"), 99.9876));
+  EXPECT_NO_THROW(streamw->valueWrite(esT("val_str"), strRu0));
+  EXPECT_NO_THROW(streamw->contextCurrentClose());
 }
 //---------------------------------------------------------------------------
 
@@ -105,15 +105,15 @@ protected:
 
 TEST_F(EsStreamXmlTest1, ContextsRead) {
 
-	ASSERT_NO_THROW(
+  ASSERT_NO_THROW(
     streamw = EsStreamXml::create(
       static_cast<ulong>(EsStreamFlag::Read)|
       static_cast<ulong>(EsStreamFlag::File),
-		  streamPath
+      streamPath
     )
   );
-	ASSERT_TRUE( streamw );
-	EXPECT_NO_THROW(streamw->contextOpenExisting(esT("ctx1")));
+  ASSERT_TRUE( streamw );
+  EXPECT_NO_THROW(streamw->contextOpenExisting(esT("ctx1")));
 
   EsString str;
   EXPECT_NO_THROW(str = streamw->valueRead(esT("value_str")).asString());
@@ -127,14 +127,14 @@ TEST_F(EsStreamXmlTest1, ContextsRead) {
   EXPECT_TRUE(str == strEngCesc);
 
   EsChannelIoIntf::Ptr ch;
-	ASSERT_NO_THROW(ch = EsChannelIoFactory::channelCreate(esT("EsChannelIoUart")));
-	ASSERT_TRUE(ch);
-	ASSERT_TRUE(streamw->rootObjectTypeEntryLocate(ch->typeNameGet(), false));
-	EXPECT_NO_THROW(streamw->objectRead(ch));
+  ASSERT_NO_THROW(ch = EsChannelIoFactory::channelCreate(esT("EsChannelIoUart")));
+  ASSERT_TRUE(ch);
+  ASSERT_TRUE(streamw->rootObjectTypeEntryLocate(ch->typeNameGet(), false));
+  EXPECT_NO_THROW(streamw->objectRead(ch));
 
-	EXPECT_NO_THROW(str = streamw->valueRead(esT("val_str")).asString());
-	EXPECT_TRUE(str == strRu0);
-	EXPECT_NO_THROW(streamw->contextCurrentClose());
+  EXPECT_NO_THROW(str = streamw->valueRead(esT("val_str")).asString());
+  EXPECT_TRUE(str == strRu0);
+  EXPECT_NO_THROW(streamw->contextCurrentClose());
 }
 //---------------------------------------------------------------------------
 
@@ -177,8 +177,6 @@ protected:
 
     script = EsScript::create();
     ES_ASSERT(script);
-
-    script->vm().reset();
 
     static const GUID sc_key = {0xB7013BFB, 0xD65C, 0x5346, 0x93, 0xD0, 0x71, 0xF4, 0xF3, 0xC2, 0x8D, 0xD4};
 

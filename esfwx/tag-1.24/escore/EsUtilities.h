@@ -3,11 +3,11 @@
 
 #include <math.h>
 
-/// @file				EsUtilities.h
-///							Ekosf Core Utilities
-///							Misc. utility classes and procedures for Ekosf Core
-///	Author:			Vsevolod V Gromov
-///	Copyright:	EkoSfera 2009-2013
+/// @file        EsUtilities.h
+///              Ekosf Core Utilities
+///              Misc. utility classes and procedures for Ekosf Core
+///  Author:      Vsevolod V Gromov
+///  Copyright:  EkoSfera 2009-2013
 ///
 
 /// Application log levels
@@ -15,29 +15,29 @@
 /// using "applog" category. Standard log event id is always 0,
 /// and log level is the first parameter in payload, logged value follows.
 enum class EsAppLogLevel : ulong {
-	Info,				///< Generic log message
-	Warning,		///< Warning log message
-	Error,			///< Error log message
-	Debug,      ///< Debug log message
-	Custom,			///< Custom log levels, if any, should have values greater than
-											///	or equal to this id.
+  Info,        ///< Generic log message
+  Warning,    ///< Warning log message
+  Error,      ///< Error log message
+  Debug,      ///< Debug log message
+  Custom,      ///< Custom log levels, if any, should have values greater than
+                      ///  or equal to this id.
 };
 
 /// Application security levels
 ///
 enum class EsAppSecurityLevel : ulong {
-	aslNone,						///< No user is logged on
-	aslGuest,
-	aslUser,
-	aslSuperuser,
-	aslAdministrator,
-	aslDeveloper,
+  aslNone,            ///< No user is logged on
+  aslGuest,
+  aslUser,
+  aslSuperuser,
+  aslAdministrator,
+  aslDeveloper,
 };
 
 #ifndef ES_CONST_ARRAY_COUNT
 /// Return count of items in constant array, declared elsewhere
 ///
-#	define ES_CONST_ARRAY_COUNT(a)	static_cast<size_t>(sizeof(a)/sizeof(a[0]))
+#  define ES_CONST_ARRAY_COUNT(a)  static_cast<size_t>(sizeof(a)/sizeof(a[0]))
 #endif
 
 //---------------------------------------------------------------------------
@@ -52,12 +52,12 @@ ES_DECL_REFLECTED_SERVICES_BEGIN( EsUtilities )
   /// @param[in]  new systick period
   /// @return     actually assigned systick period
   ///
-	ES_DECL_REFLECTED_CLASS_METHOD1(EsVariant, systickChange, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsVariant, systickChange, cr_EsVariant);
 
   /// Restore systick period, previously changed by systickChange call
   /// @param[in]  systick period to be cancelled
   ///
-	ES_DECL_REFLECTED_CLASS_METHOD1(void, systickRestore, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD1(void, systickRestore, cr_EsVariant);
 
 ES_DECL_REFLECTED_SERVICES_END
 
@@ -94,21 +94,21 @@ namespace EsUtilities
 {
 /// Get error code from OS.
 ///
-/// @return	.
+/// @return  .
 ///
 ESCORE_FUNC( ulong, osErrorCodeGet() );
 
 /// Get error string from OS error code.
 ///
-/// @param	code	The code.
+/// @param  code  The code.
 ///
-/// @return	.
+/// @return  .
 ///
 ESCORE_FUNC( EsString, osErrorStringGet(ulong code) );
 
 /// Return assoc container of environment variables.
 ///
-/// @return	.
+/// @return  .
 ///
 ESCORE_FUNC( EsStringIndexedMap, environmentVarsListGet() );
 
@@ -118,66 +118,66 @@ ESCORE_FUNC( EsStringIndexedMap, environmentVarsListGet() );
 /// Application Logger event catergory
 #define ES_EVTC_APPLOG esT("applog")
 
-/// @param	msg	The message.
-/// @param	val	(optional) the value.
+/// @param  msg  The message.
+/// @param  val  (optional) the value.
 ///
 ESCORE_FUNC( void, logInfo(const EsString& msg, const EsVariant& val = EsVariant::null()) );
 
 /// Logs a debug.
 ///
-/// @param	msg	The message.
-/// @param	val	(optional) the value.
+/// @param  msg  The message.
+/// @param  val  (optional) the value.
 ///
 ESCORE_FUNC( void, logDebug(const EsString& msg, const EsVariant& val = EsVariant::null()) );
 
 /// Logs a warning.
 ///
-/// @param	msg	The message.
-/// @param	val	(optional) the value.
+/// @param  msg  The message.
+/// @param  val  (optional) the value.
 ///
 ESCORE_FUNC( void, logWarning(const EsString& msg, const EsVariant& val = EsVariant::null()) );
 
 /// Logs an error.
 ///
-/// @param	msg	The message.
-/// @param	val	(optional) the value.
+/// @param  msg  The message.
+/// @param  val  (optional) the value.
 ///
 ESCORE_FUNC( void, logError(const EsString& msg, const EsVariant& val = EsVariant::null()) );
 
 /// Logs custom message
 ///
-///	@param	id Custom log level id (NB! internally, Custom got added to it)
-/// @param	msg	The message.
-/// @param	val	(optional) the value.
+///  @param  id Custom log level id (NB! internally, Custom got added to it)
+/// @param  msg  The message.
+/// @param  val  (optional) the value.
 ///
 ESCORE_FUNC( void, logCustom(ulong id, const EsString& msg, const EsVariant& val = EsVariant::null()) );
 
 /// Return readable asl string.
 ///
-/// @param	asl	The asl.
+/// @param  asl  The asl.
 ///
-/// @return	.
+/// @return  .
 ///
 ESCORE_FUNC( EsString, aslStringGet(ulong asl) );
 
 /// Get languages installed under the specified directory. only use non-empty language folders
 /// containing mo files with specified base name.
 ///
-/// @param	languagesRoot	The languages root.
-/// @param	baseMoName	 	Name of the base mo.
+/// @param  languagesRoot  The languages root.
+/// @param  baseMoName     Name of the base mo.
 ///
-/// @return	.
+/// @return  .
 ///
 ESCORE_FUNC( EsString::Array, installedLanguagesGet(const EsString& languagesRoot, const EsString& baseMoName) );
 
 /// Convert GUID to string.
 ///
-/// @param	guid	    Unique identifier.
-/// @param	canonical	If true, use canonical GUID string formatting (with dashes as separators,
+/// @param  guid      Unique identifier.
+/// @param  canonical  If true, use canonical GUID string formatting (with dashes as separators,
 ///                   but not enclosed in curly brackets)
 ///                   If false - just convert GUID to continuous HEX string
 ///
-/// @return	String representation of GUID.
+/// @return  String representation of GUID.
 ///
 ESCORE_FUNC( EsString, GUIDtoStr(const GUID& guid, bool canonical = false) );
 
@@ -185,9 +185,9 @@ ESCORE_FUNC( EsString, GUIDtoStr(const GUID& guid, bool canonical = false) );
 /// Throw error if str is not valid representation of GUID.
 /// An empty string is interpreted as GUID_NULL.
 ///
-/// @param	str	String representation of GUID
+/// @param  str  String representation of GUID
 ///
-/// @return	GUID.
+/// @return  GUID.
 ///
 ESCORE_FUNC( GUID, GUIDfromStr(const EsString& str) );
 
@@ -195,37 +195,37 @@ ESCORE_FUNC( GUID, GUIDfromStr(const EsString& str) );
 
 /// Compress and encrypt source block b using supplied key
 ///
-/// @param	b	 	The const EsBinBuffer&amp; to process.
-/// @param	key	The key.
+/// @param  b     The const EsBinBuffer&amp; to process.
+/// @param  key  The key.
 ///
-/// @return	Compressed and encoded data block.
+/// @return  Compressed and encoded data block.
 ///
 ESCORE_FUNC( EsBinBuffer, bToE(const EsBinBuffer& b, const EsString& key) );
 
 /// Decrypt and decompress source block e using supplied key
 ///
-/// @param	e	 	The const EsBinBuffer&amp; to process.
-/// @param	key	The key.
+/// @param  e     The const EsBinBuffer&amp; to process.
+/// @param  key  The key.
 ///
-/// @return	Decoded and decompressed data block.
+/// @return  Decoded and decompressed data block.
 ///
 ESCORE_FUNC( EsBinBuffer, eToB(const EsBinBuffer& e, const EsString& key) );
 
 /// String codec based on bToE|eToB.
 ///
-/// @param	s	 	The const EsString&amp; to process.
-/// @param	key	The key.
+/// @param  s     The const EsString&amp; to process.
+/// @param  key  The key.
 ///
-/// @return	The given data converted to an EsString.
+/// @return  The given data converted to an EsString.
 ///
 ESCORE_FUNC( EsString, sToE(const EsString& s, const EsString& key) );
 
 /// Converts this object to the s.
 ///
-/// @param	e	 	The const EsString&amp; to process.
-/// @param	key	The key.
+/// @param  e     The const EsString&amp; to process.
+/// @param  key  The key.
 ///
-/// @return	The given data converted to an EsString.
+/// @return  The given data converted to an EsString.
 ///
 ESCORE_FUNC( EsString, eToS(const EsString& e, const EsString& key) );
 
@@ -236,44 +236,44 @@ ESCORE_FUNC( EsString, eToS(const EsString& e, const EsString& key) );
 
 /// inverse byte order in 2-byte integer.
 ///
-/// @param	in	The input 2-byte value.
+/// @param  in  The input 2-byte value.
 ///
-/// @return	Inversed 2-byte value.
+/// @return  Inversed 2-byte value.
 ///
 inline esU16 inverse2(esU16 in) ES_NOTHROW
 {
-	ulong b0 = in & 0xFF;
-	ulong b1 = (in >> 8);
+  ulong b0 = in & 0xFF;
+  ulong b1 = (in >> 8);
 
-	return static_cast<esU16>(b0 << 8) + static_cast<esU16>(b1);
+  return static_cast<esU16>(b0 << 8) + static_cast<esU16>(b1);
 }
 
 /// Inverse byte order in 4-byte integer.
 ///
-/// @param	in	The input 4-byte value.
+/// @param  in  The input 4-byte value.
 ///
-/// @return	Inversed 4-byte value.
+/// @return  Inversed 4-byte value.
 ///
 inline esU32 inverse4(esU32 in) ES_NOTHROW
 {
-	ulong w0 = inverse2(in & 0xFFFF);
-	ulong w1 = inverse2(in >> 16);
+  ulong w0 = inverse2(in & 0xFFFF);
+  ulong w1 = inverse2(in >> 16);
 
-	return (w0 << 16) + w1;
+  return (w0 << 16) + w1;
 }
 
 /// Inverse byte order in 8-byte integer.
 ///
-/// @param	in	The input 8-byte value.
+/// @param  in  The input 8-byte value.
 ///
-/// @return	Inversed 8-byte value.
+/// @return  Inversed 8-byte value.
 ///
 inline esU64 inverse8(esU64 in) ES_NOTHROW
 {
-	ulong l0 = inverse4(in & IMMEDIATE_UINT64(0xFFFFFFFF));
-	ulong l1 = inverse4(in >> 32);
+  ulong l0 = inverse4(in & IMMEDIATE_UINT64(0xFFFFFFFF));
+  ulong l1 = inverse4(in >> 32);
 
-	return (static_cast<esU64>(l0) << 32) + static_cast<esU64>(l1);
+  return (static_cast<esU64>(l0) << 32) + static_cast<esU64>(l1);
 }
 //---------------------------------------------------------------------------
 
@@ -349,33 +349,33 @@ private:
 
 /// Rounding double to int type.
 ///
-/// @tparam	T	Type of the typename t.
-/// @param	d	The double to process.
+/// @tparam  T  Type of the typename t.
+/// @param  d  The double to process.
 ///
-/// @return	.
+/// @return  .
 ///
 template <typename T>
 inline T roundTo(double d) ES_NOTHROW
 {
-	if( d >= 0.0 )
-		return static_cast<T>(d + 0.5);
-	else
-		return static_cast<T>(d - 0.5);
+  if( d >= 0.0 )
+    return static_cast<T>(d + 0.5);
+  else
+    return static_cast<T>(d - 0.5);
 }
 //---------------------------------------------------------------------------
 
 /// Rounding double to nearest integral double, greater in terms of modulus.
 ///
-/// @param	val	The value to process.
+/// @param  val  The value to process.
 ///
-/// @return	nearest greater rounded double, in terms of modulus.
+/// @return  nearest greater rounded double, in terms of modulus.
 ///
 inline double round0(double val) ES_NOTHROW
 {
-	if( val >= 0.0 )
-		return floor(val + 0.5);
-	else
-		return ceil(val - 0.5);
+  if( val >= 0.0 )
+    return floor(val + 0.5);
+  else
+    return ceil(val - 0.5);
 }
 //---------------------------------------------------------------------------
 

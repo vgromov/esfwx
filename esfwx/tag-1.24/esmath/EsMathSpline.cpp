@@ -58,42 +58,42 @@ EsMathSplineNode& EsMathSplineNode::operator=(const EsMathSplineNode& src)
 class EsMathSplineCubicSolver
 {
 public:
-	void build(const EsMathArrayReal& x, const EsMathArrayReal& y)
-	{
+  void build(const EsMathArrayReal& x, const EsMathArrayReal& y)
+  {
     ES_ALGLIB_TRY
 
-		alglib::spline1dbuildcubic(	alglibCastFromArray(x),
-			alglibCastFromArray(y), m_spline );
+    alglib::spline1dbuildcubic(  alglibCastFromArray(x),
+      alglibCastFromArray(y), m_spline );
 
     ES_ALGLIB_CATCH
-	}
+  }
 
-	void akimaBuild(const EsMathArrayReal& x, const EsMathArrayReal& y)
-	{
+  void akimaBuild(const EsMathArrayReal& x, const EsMathArrayReal& y)
+  {
     ES_ALGLIB_TRY
 
-		alglib::spline1dbuildcubic(	alglibCastFromArray(x),
-			alglibCastFromArray(y), m_spline );
+    alglib::spline1dbuildcubic(  alglibCastFromArray(x),
+      alglibCastFromArray(y), m_spline );
 
     ES_ALGLIB_CATCH
-	}
+  }
 
-	double calculate(double x) const
-	{
+  double calculate(double x) const
+  {
     double result = 0;
     ES_ALGLIB_TRY
 
-		result = alglib::spline1dcalc(m_spline, x);
+    result = alglib::spline1dcalc(m_spline, x);
 
     ES_ALGLIB_CATCH
 
     return result;
-	}
+  }
 
   const alglib::spline1dinterpolant& splineGet() const { return m_spline; }
 
 protected:
-	alglib::spline1dinterpolant m_spline;
+  alglib::spline1dinterpolant m_spline;
 };
 //---------------------------------------------------------------------------
 
@@ -110,10 +110,10 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsMathSpline, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathSpline, calculate, double_CallConst_double, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathSpline, calculateV, EsVariant_CallConst_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathSpline, calculateVectorInplace, void_CallConst_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathSpline, reset, void_Call, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsMathSpline, reset, void_Call, NO_METHOD_DESCR)
   // Properties
   ES_DECL_PROP_INFO_RO(             EsMathSpline, isOk, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(             EsMathSpline, minX, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(             EsMathSpline, minX, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathSpline, maxX, double, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathSpline, rangeX, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RO(             EsMathSpline, nodes, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
@@ -126,27 +126,27 @@ m_built(false),
 m_xmin(0),
 m_xmax(0)
 {
-	m_solver = new EsMathSplineCubicSolver;
+  m_solver = new EsMathSplineCubicSolver;
 }
 //---------------------------------------------------------------------------
 
 EsMathSpline::~EsMathSpline()
 {
-	ES_DELETE(m_solver);
+  ES_DELETE(m_solver);
 }
 //---------------------------------------------------------------------------
 
 void EsMathSpline::prepareBuild(const EsMathArrayReal& x, const EsMathArrayReal& y)
 {
-	reset();
+  reset();
 
-	if(x.countGet() != y.countGet())
-		EsMathException::Throw(esT("x and y data arrays must be equally sized"));
-	if(x.countGet() < 2)
-		EsMathException::Throw(esT("Data array size is too small, must be at least 2"));
+  if(x.countGet() != y.countGet())
+    EsMathException::Throw(esT("x and y data arrays must be equally sized"));
+  if(x.countGet() < 2)
+    EsMathException::Throw(esT("Data array size is too small, must be at least 2"));
 
-	m_xmin = x.get_min();
-	m_xmax = x.get_max();
+  m_xmin = x.get_min();
+  m_xmax = x.get_max();
 }
 //---------------------------------------------------------------------------
 
@@ -154,26 +154,26 @@ void EsMathSpline::build(const EsMathArrayReal& x, const EsMathArrayReal& y)
 {
   prepareBuild(x, y);
 
-	ES_ASSERT(m_solver);
-	m_solver->build(x, y);
-	m_built = true;
+  ES_ASSERT(m_solver);
+  m_solver->build(x, y);
+  m_built = true;
 }
 //---------------------------------------------------------------------------
 
 void EsMathSpline::xFromYinit(const EsMathArrayReal& y, EsMathArrayReal& x)
 {
-	x.countSet( y.countGet() );
-	for(ulong idx = 0; idx < x.countGet(); ++idx)
-		x.itemSet(idx, idx);
+  x.countSet( y.countGet() );
+  for(ulong idx = 0; idx < x.countGet(); ++idx)
+    x.itemSet(idx, idx);
 }
 //---------------------------------------------------------------------------
 
 void EsMathSpline::build(const EsMathArrayReal& y)
 {
-	EsMathArrayReal x;
+  EsMathArrayReal x;
   xFromYinit(y, x);
 
-	build(x, y);
+  build(x, y);
 }
 //---------------------------------------------------------------------------
 
@@ -181,15 +181,15 @@ void EsMathSpline::akimaBuild(const EsMathArrayReal& x, const EsMathArrayReal& y
 {
   prepareBuild(x, y);
 
-	ES_ASSERT(m_solver);
-	m_solver->akimaBuild(x, y);
-	m_built = true;
+  ES_ASSERT(m_solver);
+  m_solver->akimaBuild(x, y);
+  m_built = true;
 }
 //---------------------------------------------------------------------------
 
 void EsMathSpline::akimaBuild(const EsMathArrayReal& y)
 {
-	EsMathArrayReal x;
+  EsMathArrayReal x;
   xFromYinit(y, x);
 
   akimaBuild(x, y);
@@ -198,9 +198,9 @@ void EsMathSpline::akimaBuild(const EsMathArrayReal& y)
 
 double EsMathSpline::calculate(double x) const
 {
-	ES_ASSERT(get_isOk());
-//	EsNumericCheck::checkRangeFloat(m_xmin, m_xmax, x, esT("Spline definition range"));
-	return m_solver->calculate(x);
+  ES_ASSERT(get_isOk());
+//  EsNumericCheck::checkRangeFloat(m_xmin, m_xmax, x, esT("Spline definition range"));
+  return m_solver->calculate(x);
 }
 //---------------------------------------------------------------------------
 
@@ -266,15 +266,15 @@ void EsMathSpline::calculateVectorInplace(cr_EsVariant in) const
 
 void EsMathSpline::reset()
 {
-	m_built = false;
-	m_xmin = 0;
-	m_xmax = 0;
+  m_built = false;
+  m_xmin = 0;
+  m_xmax = 0;
 }
 //---------------------------------------------------------------------------
 
 void EsMathSpline::tableGet(EsMathSplineTable& out) const
 {
-	ES_ASSERT(get_isOk());
+  ES_ASSERT(get_isOk());
 
   alglib::ae_int_t n;
   alglib::real_2d_array tbl;
@@ -301,9 +301,9 @@ void EsMathSpline::tableGet(EsMathSplineTable& out) const
 //
 EsBaseIntfPtr EsMathSpline::NEW()
 {
-	std::unique_ptr<EsMathSpline> f( new EsMathSpline );
-	f->m_dynamic = true;
-	return f.release()->asBaseIntfPtrDirect();
+  std::unique_ptr<EsMathSpline> f( new EsMathSpline );
+  f->m_dynamic = true;
+  return f.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 

@@ -36,7 +36,7 @@ EsException::EsException(
   ulong severity, 
   ulong facility, 
   const EsString& msg,
-	const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/,
+  const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/,
   bool doLogErrors /*= true*/
 ) :
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
@@ -50,7 +50,7 @@ m_severity(severity),
 m_facility(facility)
 {
   if( doLogErrors )
-	  logEsException();
+    logEsException();
 }
 //---------------------------------------------------------------------------
 
@@ -147,109 +147,109 @@ EsScriptDebugInfoIntf::Ptr EsException::debugInfoGet() const ES_NOTHROW
 
 void EsException::Throw(ulong code, ulong severity, ulong facility, EsString::const_pointer fmt)
 {
-	throw EsException(code, severity, facility, EsString::format(fmt));
+  throw EsException(code, severity, facility, EsString::format(fmt));
 }
 
 void EsException::Throw(ulong code, ulong severity, ulong facility, EsString::const_pointer fmt, const EsVariant& arg0)
 {
-	throw EsException(code, severity, facility, EsString::format(fmt, arg0));
+  throw EsException(code, severity, facility, EsString::format(fmt, arg0));
 }
 
 void EsException::Throw(ulong code, ulong severity, ulong facility, EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1)
 {
-	throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1));
+  throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1));
 }
 
 void EsException::Throw(ulong code, ulong severity, ulong facility, EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2)
 {
-	throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2));
+  throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2));
 }
 
 void EsException::Throw(ulong code, ulong severity, ulong facility, EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3)
 {
-	throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3));
+  throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3));
 }
 
 void EsException::Throw(ulong code, ulong severity, ulong facility, EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4)
 {
-	throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4));
+  throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4));
 }
 
 void EsException::Throw(ulong code, ulong severity, ulong facility, EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5)
 {
-	throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5));
+  throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5));
 }
 
 void EsException::Throw(ulong code, ulong severity, ulong facility, EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5, const EsVariant& arg6)
 {
-	throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6));
+  throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6));
 }
 
 void EsException::Throw(ulong code, ulong severity, ulong facility, EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5, const EsVariant& arg6, const EsVariant& arg7)
 {
-	throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+  throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
 }
 
 void EsException::Throw(ulong code, ulong severity, ulong facility, EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5, const EsVariant& arg6, const EsVariant& arg7, const EsVariant& arg8)
 {
-	throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+  throw EsException(code, severity, facility, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
 }
 
 void EsException::Throw(EsString::const_pointer fmt)
 {
-	throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt));
+  throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt));
 }
 
 void EsException::Throw(EsString::const_pointer fmt, const EsVariant& arg0)
 {
-	throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0));
+  throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0));
 }
 
 void EsException::Throw(EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1)
 {
-	throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1));
+  throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1));
 }
 
 void EsException::Throw(EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2)
 {
-	throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2));
+  throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2));
 }
 
 void EsException::Throw(EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3)
 {
-	throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3));
+  throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3));
 }
 
 void EsException::Throw(EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4)
 {
-	throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4));
+  throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4));
 }
 
 void EsException::Throw(EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5)
 {
-	throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5));
+  throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5));
 }
 
 void EsException::Throw(EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5, const EsVariant& arg6)
 {
-	throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6));
+  throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6));
 }
 
 void EsException::Throw(EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5, const EsVariant& arg6, const EsVariant& arg7)
 {
-	throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+  throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
 }
 
 void EsException::Throw(EsString::const_pointer fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5, const EsVariant& arg6, const EsVariant& arg7, const EsVariant& arg8)
 {
-	throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
+  throw EsException(0, severityGeneric, facilityEsCommon, EsString::format(fmt, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
 }
 //---------------------------------------------------------------------------
 
 void EsException::ThrowOsErrorStr(ulong code, const EsString& errstr, const EsString& fmt)
 {
   if( !fmt.empty() )
-	  Throw(
+    Throw(
       code,
       severityGeneric,
       facilityEsOS,
@@ -257,7 +257,7 @@ void EsException::ThrowOsErrorStr(ulong code, const EsString& errstr, const EsSt
       errstr
     );
   else
-	  Throw(
+    Throw(
       code,
       severityGeneric,
       facilityEsOS,
@@ -268,7 +268,7 @@ void EsException::ThrowOsErrorStr(ulong code, const EsString& errstr, const EsSt
 
 void EsException::ThrowOsError(ulong code, const EsString& fmt)
 {
-	ThrowOsErrorStr(code, EsUtilities::osErrorStringGet(code), fmt);
+  ThrowOsErrorStr(code, EsUtilities::osErrorStringGet(code), fmt);
 }
 //---------------------------------------------------------------------------
 
@@ -323,14 +323,14 @@ void EsException::ThrowCannotIndexItem(const EsString& ctx /*= EsString::null()*
 void EsException::ThrowNotSupportedForThisType(const EsString& op /*= EsString::null()*/)
 {
   if( op.empty() )
-	  Throw(
+    Throw(
       0,
       severityGeneric,
       facilityEsCommon,
       _("Operation is not supported for this type")
     );
   else
-	  Throw(
+    Throw(
       0,
       severityGeneric,
       facilityEsCommon,
@@ -439,7 +439,7 @@ void EsException::ThrowAddingUsersWithAslIsNotAllowed(ulong asl, const EsString&
       severityGeneric,
       facilityEsSecurity,
       _("Adding users with role '%s' is not allowed"),
-		  EsUtilities::aslStringGet( asl )
+      EsUtilities::aslStringGet( asl )
     );
   else
     Throw(
@@ -448,7 +448,7 @@ void EsException::ThrowAddingUsersWithAslIsNotAllowed(ulong asl, const EsString&
       facilityEsSecurity,
       _("%s: Adding users with role '%s' is not allowed"),
       ctx,
-		  EsUtilities::aslStringGet( asl )
+      EsUtilities::aslStringGet( asl )
     );
 }
 
@@ -517,7 +517,7 @@ void EsException::ThrowAttributeDoesNotExist(const EsString& attribute, const Es
 
 void EsException::ThrowIncompatibleObjectTypes(const EsString& o1, const EsString& o2, const EsString& ctx /*= EsString::null()*/)
 {
-  if( ctx.empty() )			
+  if( ctx.empty() )      
     Throw(
       0, 
       severityGeneric, 
@@ -540,7 +540,7 @@ void EsException::ThrowIncompatibleObjectTypes(const EsString& o1, const EsStrin
 
 void EsException::ThrowWrongObjectSize(const EsString& name, size_t expectedSize, size_t size, const EsString& ctx /*= EsString::null()*/)
 {
-  if( ctx.empty() )		  
+  if( ctx.empty() )      
     Throw(
       0, 
       severityGeneric, 
@@ -565,7 +565,7 @@ void EsException::ThrowWrongObjectSize(const EsString& name, size_t expectedSize
 
 void EsException::ThrowIsNotAnObject(const EsString& ctx /*= EsString::null()*/)
 {
-  if( ctx.empty() )		  
+  if( ctx.empty() )      
     Throw(
       0,
       severityGeneric,
@@ -605,155 +605,155 @@ void EsException::ThrowObjectIsNotReflected(const EsString& ctx /*= EsString::nu
 // numeric checks reflected service
 //
 ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsNumericCheck, NO_CLASS_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsNumericCheck, checkRangeFloat, void_ClassCall_double_double_double_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsNumericCheck, checkRangeInteger, void_ClassCall_long_long_long_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsNumericCheck, checkRangeUInteger, void_ClassCall_ulong_ulong_ulong_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsNumericCheck, checkRangeLLInteger, void_ClassCall_llong_llong_llong_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsNumericCheck, checkRangeULLInteger, void_ClassCall_ullong_ullong_ullong_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsNumericCheck, checkRangeFloat, void_ClassCall_double_double_double_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsNumericCheck, checkRangeInteger, void_ClassCall_long_long_long_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsNumericCheck, checkRangeUInteger, void_ClassCall_ulong_ulong_ulong_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsNumericCheck, checkRangeLLInteger, void_ClassCall_llong_llong_llong_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsNumericCheck, checkRangeULLInteger, void_ClassCall_ullong_ullong_ullong_cr_EsString, NO_METHOD_DESCR)
 ES_DECL_REFLECTED_SERVICES_INFO_END
 //---------------------------------------------------------------------------
 
 void EsNumericCheck::checkRangeFloat(double min, double max, double val, const EsString& name)
 {
-	if( val < min || val > max )
-	{
-		if( !name.empty() )
-			EsException::Throw(
+  if( val < min || val > max )
+  {
+    if( !name.empty() )
+      EsException::Throw(
         0,
         EsException::severityGeneric,
         EsException::facilityEsNumeric,
-				_("Value '%s'=%f is out of [%f, %f] range"),
+        _("Value '%s'=%f is out of [%f, %f] range"),
         name,
         val,
         min,
         max
       );
-		else
-			EsException::Throw(
+    else
+      EsException::Throw(
         0,
         EsException::severityGeneric,
         EsException::facilityEsNumeric,
-				_("Value %f is out of [%f, %f] range"),
+        _("Value %f is out of [%f, %f] range"),
         val,
         min,
         max
       );
-	}
+  }
 }
 //---------------------------------------------------------------------------
 
 void EsNumericCheck::checkRangeInteger(long min, long max, long val, const EsString& name)
 {
-	if( val < min || val > max )
-	{
-		if( !name.empty() )
-			EsException::Throw(
+  if( val < min || val > max )
+  {
+    if( !name.empty() )
+      EsException::Throw(
         0,
         EsException::severityGeneric,
         EsException::facilityEsNumeric,
-				_("Value '%s'=%d is out of [%d, %d] range"),
+        _("Value '%s'=%d is out of [%d, %d] range"),
         name,
         val,
         min,
         max
       );
-		else
-			EsException::Throw(
+    else
+      EsException::Throw(
         0,
         EsException::severityGeneric,
         EsException::facilityEsNumeric,
-				_("Value %d is out of [%d, %d] range"),
+        _("Value %d is out of [%d, %d] range"),
         val,
         min,
         max
       );
-	}
+  }
 }
 //---------------------------------------------------------------------------
 
 void EsNumericCheck::checkRangeUInteger(ulong min, ulong max, ulong val, const EsString& name)
 {
-	if( val < min || val > max )
-	{
-		if( !name.empty() )
-			EsException::Throw(
+  if( val < min || val > max )
+  {
+    if( !name.empty() )
+      EsException::Throw(
         0,
         EsException::severityGeneric,
         EsException::facilityEsNumeric,
-				_("Value '%s'=%u is out of [%u, %u] range"),
+        _("Value '%s'=%u is out of [%u, %u] range"),
         name,
         val,
         min,
         max
       );
-		else
-			EsException::Throw(
+    else
+      EsException::Throw(
         0,
         EsException::severityGeneric,
         EsException::facilityEsNumeric,
-				_("Value %u is out of [%u, %u] range"),
+        _("Value %u is out of [%u, %u] range"),
         val,
         min,
         max
       );
-	}
+  }
 }
 //---------------------------------------------------------------------------
 
 void EsNumericCheck::checkRangeLLInteger(llong min, llong max, llong val, const EsString& name)
 {
-	if( val < min || val > max )
-	{
-		if( !name.empty() )
-			EsException::Throw(
+  if( val < min || val > max )
+  {
+    if( !name.empty() )
+      EsException::Throw(
         0,
         EsException::severityGeneric,
         EsException::facilityEsNumeric,
-				_("Value '%s'=%lld is out of [%lld, %lld] range"),
+        _("Value '%s'=%lld is out of [%lld, %lld] range"),
         name,
         val,
         min,
         max
       );
-		else
-			EsException::Throw(
+    else
+      EsException::Throw(
         0,
         EsException::severityGeneric,
         EsException::facilityEsNumeric,
-				_("Value %lld is out of [%lld, %lld] range"),
+        _("Value %lld is out of [%lld, %lld] range"),
         val,
         min,
         max
       );
-	}
+  }
 }
 //---------------------------------------------------------------------------
 
 void EsNumericCheck::checkRangeULLInteger(ullong min, ullong max, ullong val, const EsString& name)
 {
-	if( val < min || val > max )
-	{
-		if( !name.empty() )
-			EsException::Throw(
+  if( val < min || val > max )
+  {
+    if( !name.empty() )
+      EsException::Throw(
         0,
         EsException::severityGeneric,
         EsException::facilityEsNumeric,
-				_("Value '%s'=%llu is out of [%llu, %llu] range"),
+        _("Value '%s'=%llu is out of [%llu, %llu] range"),
         name,
         val,
         min,
         max
       );
-		else
-			EsException::Throw(
+    else
+      EsException::Throw(
         0,
         EsException::severityGeneric,
         EsException::facilityEsNumeric,
-				_("Value %llu is out of [%llu, %llu] range"),
+        _("Value %llu is out of [%llu, %llu] range"),
         val,
         min,
         max
       );
-	}
+  }
 }
 //---------------------------------------------------------------------------

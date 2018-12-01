@@ -12,9 +12,9 @@
 //---------------------------------------------------------------------------
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN(EsStreamXml, EsStream, NO_CLASS_DESCR)
-	ES_DECL_REFLECTED_CTOR_INFO(EsStreamXml, EsBaseIntfPtr_ClassCall_ulong_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CTOR_INFO(EsStreamXml, EsBaseIntfPtr_ClassCall_ulong_ulong_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_METHOD_INFO_STD(EsStreamXml, save, void_CallConst_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsStreamXml, EsBaseIntfPtr_ClassCall_ulong_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CTOR_INFO(EsStreamXml, EsBaseIntfPtr_ClassCall_ulong_ulong_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO_STD(EsStreamXml, save, void_CallConst_cr_EsString, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
@@ -28,103 +28,103 @@ EsStream(flags, version, factory)
   if( flags & static_cast<ulong>(EsStreamFlag::Compressed) )
     EsException::Throw(esT("Compression is not supported in EsStreamXml"));
 
-	init(src, version);
-	internalRewind();
+  init(src, version);
+  internalRewind();
 }
 //---------------------------------------------------------------------------
 
 EsStreamIntf::Ptr EsStreamXml::create(ulong flags, const EsString& src /*= EsString::null()*/,
-		const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
+    const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
 {
-	return create(flags, 0, src, factory);
+  return create(flags, 0, src, factory);
 }
 //---------------------------------------------------------------------------
 
 EsStreamIntf::Ptr EsStreamXml::create(ulong flags, ulong version, const EsString& src /*= EsString::null()*/,
-		const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
+    const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
 {
-	std::unique_ptr<EsStreamXml> p(new EsStreamXml(flags, version, src, factory));
-	ES_ASSERT(p.get());
-	return p.release()->asBaseIntfPtrDirect();
+  std::unique_ptr<EsStreamXml> p(new EsStreamXml(flags, version, src, factory));
+  ES_ASSERT(p.get());
+  return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
 EsStreamXml::~EsStreamXml()
 {
-	if( (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write)) == (m_flags & (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write))) &&
-			( !EsPath::fileExists(m_file, EsString::null()) ||
-				(m_flags & flagDirty)
+  if( (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write)) == (m_flags & (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write))) &&
+      ( !EsPath::fileExists(m_file, EsString::null()) ||
+        (m_flags & flagDirty)
       )
   )
-	{
-		// do not allow anything to throw from destructor
-		try
-		{
+  {
+    // do not allow anything to throw from destructor
+    try
+    {
       internalFileSave( m_file );
-		}
-		catch(...)
-		{}
+    }
+    catch(...)
+    {}
 
-		m_flags &= ~flagDirty;
- 	}
+    m_flags &= ~flagDirty;
+   }
 }
 //---------------------------------------------------------------------------
 
 void EsStreamXml::throwStreamIsMalformed(const EsString& expected, const EsString& got)
 {
-	EsException::Throw(
+  EsException::Throw(
     esT("XML Stream is malformed, expected '%s', got '%s' node"),
-		expected,
-		got
+    expected,
+    got
   );
 }
 //---------------------------------------------------------------------------
 
 void EsStreamXml::throwStreamIsMalformedNoAttr(const EsString& attr)
 {
-	EsException::Throw(
+  EsException::Throw(
     esT("XML Stream is malformed, expected attribute '%s', is not found"),
-		attr
+    attr
   );
 }
 //---------------------------------------------------------------------------
 
 void EsStreamXml::init(const EsString& src, ulong version)
 {
-	if( src.empty() )
+  if( src.empty() )
     return;
 
-	if( m_flags & static_cast<ulong>(EsStreamFlag::File) )
-	{
-		if( !EsPath::fileExists(src, EsString::null()) )
-		{
-			// initialize just file name
-			m_file = src;
+  if( m_flags & static_cast<ulong>(EsStreamFlag::File) )
+  {
+    if( !EsPath::fileExists(src, EsString::null()) )
+    {
+      // initialize just file name
+      m_file = src;
       return;
-		}
+    }
 
     EsXmlDocument xml;
-		if( xmlParseStatusOk == xml.loadFile(src, xmlParseDefault|xmlParseDeclaration).status )
-		{
+    if( xmlParseStatusOk == xml.loadFile(src, xmlParseDefault|xmlParseDeclaration).status )
+    {
       parse(xml);
-			m_file = src;
-		}
-		else
-			EsException::Throw(
-				esT("Could not load XML document '%s', or document is malformed"),
+      m_file = src;
+    }
+    else
+      EsException::Throw(
+        esT("Could not load XML document '%s', or document is malformed"),
         src
       );
-	}
-	else // try to interpret src as xml stream in a string
-	{
+  }
+  else // try to interpret src as xml stream in a string
+  {
     EsXmlDocument xml;
-		if( xmlParseStatusOk == xml.load(src) )
+    if( xmlParseStatusOk == xml.load(src) )
       parse(xml);
-		else
-			EsException::Throw(
-				esT("Could not parse XML document, document is malformed")
+    else
+      EsException::Throw(
+        esT("Could not parse XML document, document is malformed")
       );
-	}
+  }
 }
 //---------------------------------------------------------------------------
 
@@ -139,79 +139,79 @@ bool EsStreamXml::internalFileSave(const EsString& fname) const
 
 EsString EsStreamXml::asString() const
 {
-	EsByteString bs;
-	EsXmlWriterByteString bsw(bs);
+  EsByteString bs;
+  EsXmlWriterByteString bsw(bs);
 
   EsXmlDocument xml;
   generate(xml);
 
-	xml.save(bsw);
+  xml.save(bsw);
 
-	return EsString::fromUtf8(bs);
+  return EsString::fromUtf8(bs);
 }
 //---------------------------------------------------------------------------
 
 void EsStreamXml::save(const EsString& target /*= EsString::null()*/) const
 {
-	if( !target.empty() )
-	{
-		// try to expand file path to absolute full one
-		const EsPath& fname = EsPath::createFromFilePath( target );
-		if( fname.isOk() )
-		{
-			const EsString& fpath = fname.pathGet();
-			if( internalFileSave(fpath) )
-			{
-				m_file = fpath;
-				m_flags |= static_cast<ulong>(EsStreamFlag::File);
-				m_flags &= ~flagDirty;
-			}
-		}
-	}
-	else if( !m_file.empty() )
-	{
-		ES_ASSERT(m_flags & static_cast<ulong>(EsStreamFlag::File));
+  if( !target.empty() )
+  {
+    // try to expand file path to absolute full one
+    const EsPath& fname = EsPath::createFromFilePath( target );
+    if( fname.isOk() )
+    {
+      const EsString& fpath = fname.pathGet();
+      if( internalFileSave(fpath) )
+      {
+        m_file = fpath;
+        m_flags |= static_cast<ulong>(EsStreamFlag::File);
+        m_flags &= ~flagDirty;
+      }
+    }
+  }
+  else if( !m_file.empty() )
+  {
+    ES_ASSERT(m_flags & static_cast<ulong>(EsStreamFlag::File));
 
-		if( !internalFileSave(m_file) )
-			EsException::Throw(
-				esT("Could not save document to file '%s'"),
+    if( !internalFileSave(m_file) )
+      EsException::Throw(
+        esT("Could not save document to file '%s'"),
         m_file
       );
 
-		m_flags &= ~flagDirty;
-	}
-	else
-		EsException::Throw(
-			esT("Could not save the document to default file, document must be saved to the file at list once first"));
+    m_flags &= ~flagDirty;
+  }
+  else
+    EsException::Throw(
+      esT("Could not save the document to default file, document must be saved to the file at list once first"));
 }
 //---------------------------------------------------------------------------
 
 void EsStreamXml::xmlHeaderCheck(const EsXmlDocument& xml) const
 {
-	ES_ASSERT(xml);
-	const EsXmlNode& decl = xml.firstChildGet();
+  ES_ASSERT(xml);
+  const EsXmlNode& decl = xml.firstChildGet();
 
-	if( decl && xmlNodeDocDecl == decl.typeGet() )
-	{
-		if( 0 != EsString(esT("utf-8")).compare(decl.attributeGet(esT("encoding")).asString(), true) )
-			EsException::Throw(esT("Document encoding is not supported, expected 'utf-8'"));
+  if( decl && xmlNodeDocDecl == decl.typeGet() )
+  {
+    if( 0 != EsString(esT("utf-8")).compare(decl.attributeGet(esT("encoding")).asString(), true) )
+      EsException::Throw(esT("Document encoding is not supported, expected 'utf-8'"));
 
-		if( 0 != EsString(esT("1.0")).compare(decl.attributeGet(esT("version")).asString(), true) )
-			EsException::Throw(esT("Document version is not supported, expected 1.0"));
-	}
-	else
-		EsException::Throw(esT("Document is malformed, XML document declaration node is missing"));
+    if( 0 != EsString(esT("1.0")).compare(decl.attributeGet(esT("version")).asString(), true) )
+      EsException::Throw(esT("Document version is not supported, expected 1.0"));
+  }
+  else
+    EsException::Throw(esT("Document is malformed, XML document declaration node is missing"));
 
-	const EsXmlNode& root = decl.nextSiblingGet(esT("CONTEXT"));
-	const EsXmlAttribute& aname = root.attributeGet(
+  const EsXmlNode& root = decl.nextSiblingGet(esT("CONTEXT"));
+  const EsXmlAttribute& aname = root.attributeGet(
     EsStreamBlock::name().c_str()
   );
-	if( !root ||
+  if( !root ||
       !(EsString::cmpEqual == EsString::scompare( root.nameGet(), esT("CONTEXT")) &&
         aname &&
-				EsString::cmpEqual == EsString::scompare( aname.valueGet(), esT("ROOT") ))
+        EsString::cmpEqual == EsString::scompare( aname.valueGet(), esT("ROOT") ))
   )
-		EsException::Throw(esT("Document is malformed, 'ROOT' element is expected at root"));
+    EsException::Throw(esT("Document is malformed, 'ROOT' element is expected at root"));
 }
 //---------------------------------------------------------------------------
 
@@ -416,13 +416,13 @@ void EsStreamXml::nodeParse(const EsXmlNode& node)
         case EsVariant::VAR_BYTE:
           var = var.asByte();
           break;
-		    case EsVariant::VAR_CHAR:
+        case EsVariant::VAR_CHAR:
           var = var.asChar();
           break;
         case EsVariant::VAR_UINT:
           var = var.asULong();
           break;
-		    case EsVariant::VAR_INT:
+        case EsVariant::VAR_INT:
           var = var.asLong();
           break;
         case EsVariant::VAR_UINT64:
@@ -503,10 +503,10 @@ void EsStreamXml::nodeParse(const EsXmlNode& node)
 void EsStreamXml::generate(EsXmlDocument& xml) const
 {
   EsXmlNode decl = xml.childAppend(xmlNodeDocDecl);
-	ES_ASSERT(decl);
-	decl.attributeAppend(esT("version")) = esT("1.0");
-	decl.attributeAppend(esT("encoding")) = esT("UTF-8");
-	decl.attributeAppend(esT("standalone")) = esT("yes");
+  ES_ASSERT(decl);
+  decl.attributeAppend(esT("version")) = esT("1.0");
+  decl.attributeAppend(esT("encoding")) = esT("UTF-8");
+  decl.attributeAppend(esT("standalone")) = esT("yes");
 
   BlockScope scope(
     const_cast<EsStreamXml&>(*this),

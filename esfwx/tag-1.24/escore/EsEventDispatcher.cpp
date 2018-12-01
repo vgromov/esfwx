@@ -21,10 +21,10 @@ m_precedence(precedence),
 m_active(true),
 m_subscribed(false)
 {
-	if( categories.empty() )
-		categoriesReset();
-	else
-		categoriesSet(categories);
+  if( categories.empty() )
+    categoriesReset();
+  else
+    categoriesSet(categories);
 
   subscribe(precedence);
 }
@@ -34,7 +34,7 @@ EsEventSubscriber::~EsEventSubscriber()
   if( !m_subscribed )
     return;
 
-	unsubscribe();
+  unsubscribe();
 }
 
 EsEventDispatcher& EsEventDispatcher::instGet()
@@ -56,8 +56,8 @@ const EsString& EsEventSubscriber::all()
 
 void EsEventSubscriber::subscribe(ulong precedence)
 {
-	EsCriticalSectionLocker subsLock( EsEventDispatcher::instGet().m_csSubs);
-	EsCriticalSectionLocker lock(m_cs);
+  EsCriticalSectionLocker subsLock( EsEventDispatcher::instGet().m_csSubs);
+  EsCriticalSectionLocker lock(m_cs);
 
   if( !m_subscribed )
   {
@@ -69,85 +69,85 @@ void EsEventSubscriber::subscribe(ulong precedence)
 
 void EsEventSubscriber::unsubscribe()
 {
-	EsCriticalSectionLocker subsLock( EsEventDispatcher::instGet().m_csSubs );
-	EsCriticalSectionLocker lock(m_cs);
+  EsCriticalSectionLocker subsLock( EsEventDispatcher::instGet().m_csSubs );
+  EsCriticalSectionLocker lock(m_cs);
 
   if( m_subscribed )
   {
-	  EsEventDispatcher::instGet().internalUnsubscribe(this);
+    EsEventDispatcher::instGet().internalUnsubscribe(this);
     m_subscribed = false;
   }
 }
 
 bool EsEventSubscriber::isSubscribed() const
 {
-	EsCriticalSectionLocker lock(m_cs);
+  EsCriticalSectionLocker lock(m_cs);
   return m_subscribed;
 }
 
 bool EsEventSubscriber::isInterestedIn(const EsString& category) const
 {
-	// m_categories is thread-safe
-	return m_categories.itemExists(category) ||
-		m_categories.itemExists( EsEventSubscriber::all() );
+  // m_categories is thread-safe
+  return m_categories.itemExists(category) ||
+    m_categories.itemExists( EsEventSubscriber::all() );
 }
 
 EsString::Array EsEventSubscriber::categoriesGet() const
 {
-	// m_categories is thread-safe
-	return m_categories.namesGet();
+  // m_categories is thread-safe
+  return m_categories.namesGet();
 }
 
 void EsEventSubscriber::categoriesSet(const EsString::Array& categories)
 {
-	m_categories.clear();
-	for(size_t idx = 0; idx < categories.size(); ++idx)
-		categoryAdd(categories[idx]);
-	if(m_categories.isEmpty())
-		categoryAdd(esT("generic"));
+  m_categories.clear();
+  for(size_t idx = 0; idx < categories.size(); ++idx)
+    categoryAdd(categories[idx]);
+  if(m_categories.isEmpty())
+    categoryAdd(esT("generic"));
 }
 
 void EsEventSubscriber::categoriesSet(const EsString& categories)
-{	
-	m_categories.clear();	
-	EsStringTokenizer tok(categories, esT(",; \n\r\t"));
-	while( tok.get_moreTokens() )
-	{
-		const EsString& cat = tok.get_nextToken();
-		categoryAdd(cat);
-	}
-	if(m_categories.isEmpty())
-		categoryAdd(esT("generic"));
+{  
+  m_categories.clear();  
+  EsStringTokenizer tok(categories, esT(",; \n\r\t"));
+  while( tok.get_moreTokens() )
+  {
+    const EsString& cat = tok.get_nextToken();
+    categoryAdd(cat);
+  }
+  if(m_categories.isEmpty())
+    categoryAdd(esT("generic"));
 }
 
 void EsEventSubscriber::categoryAdd(const EsString& category)
 {
-	if( category.empty() )
-		EsException::Throw(esT("Subscriber category must not be empty"));
-	m_categories.itemAdd(category);
+  if( category.empty() )
+    EsException::Throw(esT("Subscriber category must not be empty"));
+  m_categories.itemAdd(category);
 }
 
 void EsEventSubscriber::categoryRemove(const EsString& category)
 {
-	m_categories.itemDelete(category);
+  m_categories.itemDelete(category);
 }
 
 void EsEventSubscriber::categoriesReset()
 {
-	m_categories.clear();
-	categoryAdd(esT("generic"));
+  m_categories.clear();
+  categoryAdd(esT("generic"));
 }
 
 bool EsEventSubscriber::activeGet() const
 {
-	EsCriticalSectionLocker lock(m_cs);
-	return m_active;
+  EsCriticalSectionLocker lock(m_cs);
+  return m_active;
 }
 
 void EsEventSubscriber::activeSet(bool active)
 {
-	EsCriticalSectionLocker lock(m_cs);
-	m_active = active;
+  EsCriticalSectionLocker lock(m_cs);
+  m_active = active;
 }
 
 // async event subscriber impl
@@ -156,52 +156,52 @@ EsEventSubscriberAsync::EsEventSubscriberAsync(const EsString& categories /*= Es
 EsEventSubscriber(categories),
 m_sem(0, queueMaxLength)
 {
-	ES_ASSERT( m_sem.isOk() );
+  ES_ASSERT( m_sem.isOk() );
 }
 
 EsEventSubscriberAsync::~EsEventSubscriberAsync()
 {
-	activeSet(false);
-	// clear event queue
-	reset();
+  activeSet(false);
+  // clear event queue
+  reset();
 }
 
 void EsEventSubscriberAsync::reset()
 {
-	EsCriticalSectionLocker lock(m_cs);
-	m_queue.clear();
-//	while( EsSemaphore::resultOk == m_sem.tryWait() );
+  EsCriticalSectionLocker lock(m_cs);
+  m_queue.clear();
+//  while( EsSemaphore::resultOk == m_sem.tryWait() );
 }
 
 // event notification interface
 void EsEventSubscriberAsync::notify(const EsEventIntf::Ptr& evt)
 {
-	ES_ASSERT(evt);
-	EsCriticalSectionLocker lock(m_cs);
-	while( m_queue.size() >= queueMaxLength )
+  ES_ASSERT(evt);
+  EsCriticalSectionLocker lock(m_cs);
+  while( m_queue.size() >= queueMaxLength )
   {
     ES_DEBUG_TRACE(esT("EsEventSubscriberAsync event queue overflow occurred!"));
 
-		m_queue.pop_front();
+    m_queue.pop_front();
   }
-	ES_ASSERT(m_queue.size() < queueMaxLength);
-	m_queue.push_back(evt);
+  ES_ASSERT(m_queue.size() < queueMaxLength);
+  m_queue.push_back(evt);
 
-	// Signal semaphore
-	m_sem.post();
+  // Signal semaphore
+  m_sem.post();
 }
 
 // async event reception interface
 EsEventIntf::Ptr EsEventSubscriberAsync::eventReceive()
 {
-	return eventReceive(0);
+  return eventReceive(0);
 }
 
 EsEventIntf::Ptr EsEventSubscriberAsync::eventReceive(ulong tmo)
 {
-	if( EsSemaphore::resultOk == m_sem.wait(tmo) )
-	{
-		EsCriticalSectionLocker lock(m_cs);
+  if( EsSemaphore::resultOk == m_sem.wait(tmo) )
+  {
+    EsCriticalSectionLocker lock(m_cs);
     if( !m_queue.empty() )
     {
       EsEventIntf::Ptr evt = m_queue.front();
@@ -209,9 +209,9 @@ EsEventIntf::Ptr EsEventSubscriberAsync::eventReceive(ulong tmo)
 
       return evt;
     }
-	}
+  }
 
-	return EsEventIntf::Ptr();
+  return EsEventIntf::Ptr();
 }
 //---------------------------------------------------------------------------
 
@@ -228,8 +228,8 @@ EsEventDispatcher::~EsEventDispatcher()
 
 void EsEventDispatcher::internalClear()
 {
-	EsCriticalSectionLocker lock(m_csSubs);
-	while( !m_subs.empty() )
+  EsCriticalSectionLocker lock(m_csSubs);
+  while( !m_subs.empty() )
   {
     EsEventSubscriber* sub = m_subs.begin()->second;
     ES_ASSERT(sub);
@@ -240,116 +240,116 @@ void EsEventDispatcher::internalClear()
 // event processor
 bool EsEventDispatcher::internalProcess()
 {
-	EsEventIntf::Ptr evt;
-	{
-		EsCriticalSectionLocker lock(m_cs);
-		if( !m_queue.empty() )
-		{
-			evt = m_queue.front();
-			m_queue.pop_front();
-		}
-	}
+  EsEventIntf::Ptr evt;
+  {
+    EsCriticalSectionLocker lock(m_cs);
+    if( !m_queue.empty() )
+    {
+      evt = m_queue.front();
+      m_queue.pop_front();
+    }
+  }
 
-	if( evt )
-	{
-		EsCriticalSectionLocker lock(m_csSubs);
+  if( evt )
+  {
+    EsCriticalSectionLocker lock(m_csSubs);
 
     const EsString& cat = evt->categoryGet();
-		for( Subscribers::const_iterator cit = m_subs.begin(); cit != m_subs.end(); ++cit )
-		{
-			EsEventSubscriber* sub = (*cit).second;
-			ES_ASSERT(sub);
+    for( Subscribers::const_iterator cit = m_subs.begin(); cit != m_subs.end(); ++cit )
+    {
+      EsEventSubscriber* sub = (*cit).second;
+      ES_ASSERT(sub);
 
-			if( sub->activeGet() && sub->isInterestedIn(cat) )
-				sub->notify(evt);
-			// check if consumed event flag is set
-			// if so, break further event processing
-			if( evt->flagsGet() & EsEvent::flagConsumed )
-				break;
-		}
+      if( sub->activeGet() && sub->isInterestedIn(cat) )
+        sub->notify(evt);
+      // check if consumed event flag is set
+      // if so, break further event processing
+      if( evt->flagsGet() & EsEvent::flagConsumed )
+        break;
+    }
 
     return true;
-	}
+  }
 
   return false;
 }
 
 bool EsEventDispatcher::internalNoSubscribers() const
 {
-	EsCriticalSectionLocker lock(m_csSubs);
+  EsCriticalSectionLocker lock(m_csSubs);
   return m_subs.empty();
 }
 
 void EsEventDispatcher::queueLengthRestrict()
 {
-	if( m_queue.size() >= queueMaxLength )
-		m_queue.pop_front();
-	ES_ASSERT(m_queue.size() < queueMaxLength);
+  if( m_queue.size() >= queueMaxLength )
+    m_queue.pop_front();
+  ES_ASSERT(m_queue.size() < queueMaxLength);
 }
 
 // internal event searching - merging interface helper
 EsEventQueue::iterator EsEventDispatcher::internalEventFind(const EsEventIntf::Ptr& evt)
 {
-	// todo: think of some way of events comparison. it must include not only category
-	// and id, but also payload. And not every payload could be compared...
-	return m_queue.end();
+  // todo: think of some way of events comparison. it must include not only category
+  // and id, but also payload. And not every payload could be compared...
+  return m_queue.end();
 }
 
 // event posting interface
 void EsEventDispatcher::internalEventPost(const EsEventIntf::Ptr& evt, bool merge)
 {
-	EsCriticalSectionLocker lock(m_cs);
-	queueLengthRestrict();
+  EsCriticalSectionLocker lock(m_cs);
+  queueLengthRestrict();
 
-	if( merge )
-	{
-		EsEventQueue::iterator it = internalEventFind(evt);
-		if( it != m_queue.end() )
-		{
-			(*it) = evt; // replace old event copy inplace
-			return;
-		}
-	}
+  if( merge )
+  {
+    EsEventQueue::iterator it = internalEventFind(evt);
+    if( it != m_queue.end() )
+    {
+      (*it) = evt; // replace old event copy inplace
+      return;
+    }
+  }
 
-	m_queue.push_back(evt);
+  m_queue.push_back(evt);
 }
 
 void EsEventDispatcher::internalEventPostUrgent(const EsEventIntf::Ptr& evt, bool merge)
 {
-	EsCriticalSectionLocker lock(m_cs);
-	queueLengthRestrict();
-	if( merge )
-	{
-		EsEventQueue::iterator it = internalEventFind(evt);
-		if( it != m_queue.end() )
-			m_queue.erase(it); // remove old event
-	}
+  EsCriticalSectionLocker lock(m_cs);
+  queueLengthRestrict();
+  if( merge )
+  {
+    EsEventQueue::iterator it = internalEventFind(evt);
+    if( it != m_queue.end() )
+      m_queue.erase(it); // remove old event
+  }
 
-	m_queue.push_front(evt);
+  m_queue.push_front(evt);
 }
 
 /// Simplified event posting service. Internally does call to the corresponding EsEvent::create
 void EsEventDispatcher::eventPost(const EsString& category, ulong id, const EsVariant& payload /*= EsVariant::s_null*/)
 {
-	instGet().internalEventPost( EsEvent::create(category, id, payload), false );
+  instGet().internalEventPost( EsEvent::create(category, id, payload), false );
 }
 
 /// Simplified event posting service. Internally does call to the corresponding EsEvent::create
 void EsEventDispatcher::eventPost(ulong id, const EsVariant& payload /*= EsVariant::s_null*/)
 {
-	instGet().internalEventPost( EsEvent::create(id, payload), false );
+  instGet().internalEventPost( EsEvent::create(id, payload), false );
 }
 
 /// Simplified event posting service. Internally does call to the corresponding EsEvent::create
 void EsEventDispatcher::eventPostUrgent(const EsString& category, ulong id, const EsVariant& payload /*= EsVariant::s_null*/)
 {
-	instGet().internalEventPostUrgent( EsEvent::create(category, id, payload), false );
+  instGet().internalEventPostUrgent( EsEvent::create(category, id, payload), false );
 }
 
 /// Simplified event posting service. Internally does call to the corresponding EsEvent::create
 void EsEventDispatcher::eventPostUrgent(ulong id, const EsVariant& payload /*= EsVariant::s_null*/)
 {
-	instGet().internalEventPostUrgent( EsEvent::create(id, payload), false );
+  instGet().internalEventPostUrgent( EsEvent::create(id, payload), false );
 }
 
 // Find subscriber by its instance
@@ -383,8 +383,8 @@ void EsEventDispatcher::internalSubscribe(EsEventSubscriber* sub)
   ES_ASSERT(sub);
 
   Subscribers::const_iterator cit = subscriberFind(sub);
-	if( cit == m_subs.end() )
-	{
+  if( cit == m_subs.end() )
+  {
     m_subs.insert(
       Subscribers::value_type(
         sub->precedenceGet(),
@@ -401,7 +401,7 @@ void EsEventDispatcher::internalUnsubscribe(EsEventSubscriber* sub)
 
   Subscribers::iterator cit = subscriberFind(sub);
   if( m_subs.end() != cit )
-	{
+  {
     m_subs.erase( cit );
     sub->m_subscribed = false;
   }
@@ -409,14 +409,14 @@ void EsEventDispatcher::internalUnsubscribe(EsEventSubscriber* sub)
 
 bool EsEventDispatcher::internalIsEmpty() const
 {
-	EsCriticalSectionLocker lock(m_cs);
-	return m_queue.empty();
+  EsCriticalSectionLocker lock(m_cs);
+  return m_queue.empty();
 }
 
 // event processor (must be pumped periodically by the main thread)
 bool EsEventDispatcher::process()
 {
-	return instGet().internalProcess();
+  return instGet().internalProcess();
 }
 
 void EsEventDispatcher::clear()
@@ -432,34 +432,34 @@ bool EsEventDispatcher::noSubscribers()
 // event posting interface
 void EsEventDispatcher::eventPost(const EsEventIntf::Ptr& evt)
 {
-	instGet().internalEventPost(evt, false);
+  instGet().internalEventPost(evt, false);
 }
 
 void EsEventDispatcher::eventPostUrgent(const EsEventIntf::Ptr& evt)
 {
-	instGet().internalEventPostUrgent(evt, false);
+  instGet().internalEventPostUrgent(evt, false);
 }
 
 //// subscription manipulation
 //void EsEventDispatcher::subscribe(EsEventSubscriber* sub)
 //{
-//	ES_ASSERT(sub);
+//  ES_ASSERT(sub);
 //
-//	EsCriticalSectionLocker lock(instGet().m_csSubs);
-//	instGet().internalSubscribe(sub);
+//  EsCriticalSectionLocker lock(instGet().m_csSubs);
+//  instGet().internalSubscribe(sub);
 //}
 //
 //void EsEventDispatcher::unsubscribe(EsEventSubscriber* sub)
 //{
-//	ES_ASSERT(sub);
+//  ES_ASSERT(sub);
 //
-//	EsCriticalSectionLocker lock(instGet().m_csSubs);
-//	instGet().internalUnsubscribe(sub);
+//  EsCriticalSectionLocker lock(instGet().m_csSubs);
+//  instGet().internalUnsubscribe(sub);
 //}
 
 /// Event queue emptiness check
 bool EsEventDispatcher::isEmpty()
 {
-	return instGet().internalIsEmpty();
+  return instGet().internalIsEmpty();
 }
 

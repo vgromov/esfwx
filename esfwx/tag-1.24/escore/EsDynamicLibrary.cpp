@@ -17,10 +17,10 @@ EsDynamicLibrary::EsDynamicLibrary(EsDynamicLibraryHandle handle, const EsString
 m_handle(handle),
 m_path(path)
 {
-	ES_ASSERT(handle);
-	m_version = versionExtract(path);
+  ES_ASSERT(handle);
+  m_version = versionExtract(path);
 
-	libsGet().itemAdd(
+  libsGet().itemAdd(
     path,
     m_version,
     false
@@ -30,7 +30,7 @@ m_path(path)
 
 EsDynamicLibrary::~EsDynamicLibrary()
 {
-	unload();
+  unload();
 }
 //---------------------------------------------------------------------------
 
@@ -52,8 +52,8 @@ const EsStringIndexedMap& EsDynamicLibrary::loadedLibrariesGet()
 
 void EsDynamicLibrary::checkLoaded() const
 {
-	if( !isOk() )
-		EsException::Throw(esT("Dynamic library is not loaded"));
+  if( !isOk() )
+    EsException::Throw(esT("Dynamic library is not loaded"));
 }
 //---------------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ void EsDynamicLibrary::checkLoaded() const
 // an exception is thrown
 EsDynamicLibrary::Pfn EsDynamicLibrary::procAddrGet(const EsString& name, bool doThrow /*= true*/)
 {
-	return (EsDynamicLibrary::Pfn)symbolAddrGet(name, doThrow);
+  return (EsDynamicLibrary::Pfn)symbolAddrGet(name, doThrow);
 }
 //---------------------------------------------------------------------------
 

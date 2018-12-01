@@ -1,19 +1,19 @@
 #ifndef _es_path_enumerator_h_
 #define _es_path_enumerator_h_
-/// @file				EsPathEnumerator.h
+/// @file        EsPathEnumerator.h
 ///
-///	Author:			Vsevolod V Gromov
-///	Copyright:	ExacTSoft 2009-2013
+///  Author:      Vsevolod V Gromov
+///  Copyright:  ExacTSoft 2009-2013
 /// 
 
 /// Enumerator flags
 enum class EsPathEnumeratorFlag : ulong
 {
-  Recursive				= 0x0001,		///< Perform recursive path enumeration
-  FollowSymlinks	= 0x0002,		///< Follow symlinks during enumeration
-  Default					= 0					///< Default behaviour:
-                              ///<	- do not recurse
-                              ///<	- do not follow symlinks
+  Recursive        = 0x0001,    ///< Perform recursive path enumeration
+  FollowSymlinks  = 0x0002,    ///< Follow symlinks during enumeration
+  Default          = 0          ///< Default behaviour:
+                              ///<  - do not recurse
+                              ///<  - do not follow symlinks
 };
 
 /// Path objects enumerator helper class base.
@@ -25,55 +25,55 @@ enum class EsPathEnumeratorFlag : ulong
 class ESCORE_CLASS EsPathEnumerator
 {
 public:
-	/// Constructor.
-	///
-	/// @param	path	EsPath object containing enumeration starting point
-	///
-	EsPathEnumerator(const EsPath& path, const EsString& wildcard = EsString::asterisk());
+  /// Constructor.
+  ///
+  /// @param  path  EsPath object containing enumeration starting point
+  ///
+  EsPathEnumerator(const EsPath& path, const EsString& wildcard = EsString::asterisk());
 
-	/// Constructor.
-	///
-	/// @param	path	EsString, containing enumeration starting point
-	///
-	EsPathEnumerator(const EsString& path, const EsString& wildcard = EsString::asterisk());
+  /// Constructor.
+  ///
+  /// @param  path  EsString, containing enumeration starting point
+  ///
+  EsPathEnumerator(const EsString& path, const EsString& wildcard = EsString::asterisk());
 
-	/// Destructor.
-	virtual ~EsPathEnumerator() {}
+  /// Destructor.
+  virtual ~EsPathEnumerator() {}
 
-	/// Execute enumeration process.
-	///
-	/// @param	flags	(optional) enumeration behaviour flags.
-	///
-	void execute(ulong flags = static_cast<ulong>(EsPathEnumeratorFlag::Default));
-
-protected:
-	/// Performs the start action at execution start.
-	/// Default implementation does nothing
-	///
-	virtual void onStart() {}
-
-	/// Performs the ending action at execution completion.
-	/// Default implementation does nothing
-	///
-	virtual void onEnd() {}
-
-	/// Executes the object action.
-	///
-	/// @param	curPath	Full pathname of the current file.
-	/// @param	name	 	The object (file or directory) name.
-	/// @param	isDir	 	true if this object is directory.
-	///
-	/// @return	true to continue, false to break enumeration.
-	///
-	virtual bool onObject(const EsString& curPath, const EsString& name, bool isDir) = 0;
+  /// Execute enumeration process.
+  ///
+  /// @param  flags  (optional) enumeration behaviour flags.
+  ///
+  void execute(ulong flags = static_cast<ulong>(EsPathEnumeratorFlag::Default));
 
 protected:
-	bool internalProcess(const EsString& nestedDir = EsString::null());
+  /// Performs the start action at execution start.
+  /// Default implementation does nothing
+  ///
+  virtual void onStart() {}
+
+  /// Performs the ending action at execution completion.
+  /// Default implementation does nothing
+  ///
+  virtual void onEnd() {}
+
+  /// Executes the object action.
+  ///
+  /// @param  curPath  Full pathname of the current file.
+  /// @param  name     The object (file or directory) name.
+  /// @param  isDir     true if this object is directory.
+  ///
+  /// @return  true to continue, false to break enumeration.
+  ///
+  virtual bool onObject(const EsString& curPath, const EsString& name, bool isDir) = 0;
 
 protected:
-	ulong m_flags;
-	EsPath m_curPath;
-	EsString m_wildcard;
+  bool internalProcess(const EsString& nestedDir = EsString::null());
+
+protected:
+  ulong m_flags;
+  EsPath m_curPath;
+  EsString m_wildcard;
 };
 
 /// Reflected path enumerator class. It's designed to be used in scripting,
@@ -84,29 +84,29 @@ protected:
 class ESCORE_CLASS ES_INTF_IMPL1(EsPathEnumeratorHelper, EsReflectedClassIntf)
 
 private:
-	EsPathEnumeratorHelper(const EsBaseIntfPtr& owner);
+  EsPathEnumeratorHelper(const EsBaseIntfPtr& owner);
 
 public:
-	ES_DECL_REFLECTED_CLASS_BASE(EsPathEnumeratorHelper)
-	ES_DECL_ATTR_HANDLING_STD
+  ES_DECL_REFLECTED_CLASS_BASE(EsPathEnumeratorHelper)
+  ES_DECL_ATTR_HANDLING_STD
 
-	/// Reflected constructor. Owning object is passed as parameter
-	///
-	ES_DECL_REFLECTED_CLASS_CTOR1(EsBaseIntfPtr, cr_EsBaseIntfPtr);
+  /// Reflected constructor. Owning object is passed as parameter
+  ///
+  ES_DECL_REFLECTED_CLASS_CTOR1(EsBaseIntfPtr, cr_EsBaseIntfPtr);
 
-	/// Execute enumeration using path and wildcard strings, and flags
-	///
-	ES_DECL_REFLECTED_METHOD3(void, enumerate, cr_EsString, cr_EsString, ulong);
+  /// Execute enumeration using path and wildcard strings, and flags
+  ///
+  ES_DECL_REFLECTED_METHOD3(void, enumerate, cr_EsString, cr_EsString, ulong);
 
 protected:
-	EsReflectedClassIntf::Ptr m_owner;
+  EsReflectedClassIntf::Ptr m_owner;
 
 private:
   EsPathEnumeratorHelper();
   EsPathEnumeratorHelper(const EsPathEnumeratorHelper&);
   EsPathEnumeratorHelper& operator=(const EsPathEnumeratorHelper&);
 
-	friend class EsPathEnumeratorImpl;
+  friend class EsPathEnumeratorImpl;
 };
 
 /// Enumeration flags reflected
@@ -115,9 +115,9 @@ namespace EsReflection
 {
 
 ES_DECL_EXPORTED_ENUMERATION_BEGIN(ESCORE_CLASS, EsPathEnumeratorFlag)
-	ES_DECL_ENUMERATION_ITEM_LABELLED(Recursive,			static_cast<ulong>(::EsPathEnumeratorFlag::Recursive), esT("Perform recursive path enumeration"))
-	ES_DECL_ENUMERATION_ITEM_LABELLED(FollowSymlinks,	static_cast<ulong>(::EsPathEnumeratorFlag::FollowSymlinks), esT("Follow symlinks during enumeration"))
-	ES_DECL_ENUMERATION_ITEM_LABELLED(Default,				static_cast<ulong>(::EsPathEnumeratorFlag::Default), esT("Default behaviour: do not recurse, do not follow symlinks"))
+  ES_DECL_ENUMERATION_ITEM_LABELLED(Recursive,      static_cast<ulong>(::EsPathEnumeratorFlag::Recursive), esT("Perform recursive path enumeration"))
+  ES_DECL_ENUMERATION_ITEM_LABELLED(FollowSymlinks,  static_cast<ulong>(::EsPathEnumeratorFlag::FollowSymlinks), esT("Follow symlinks during enumeration"))
+  ES_DECL_ENUMERATION_ITEM_LABELLED(Default,        static_cast<ulong>(::EsPathEnumeratorFlag::Default), esT("Default behaviour: do not recurse, do not follow symlinks"))
 ES_DECL_ENUMERATION_END
 
 }

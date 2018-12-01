@@ -16,7 +16,7 @@ NAMESPACE_BEGIN(CryptoPP)
 //! \brief SHARK block cipher information
 struct SHARK_Info : public FixedBlockSize<8>, public FixedKeyLength<16>, public VariableRounds<6, 2>
 {
-	CRYPTOPP_CONSTEXPR static const char *StaticAlgorithmName() {return "SHARK-E";}
+  CRYPTOPP_CONSTEXPR static const char *StaticAlgorithmName() {return "SHARK-E";}
 };
 
 //! \class SHARK
@@ -24,48 +24,48 @@ struct SHARK_Info : public FixedBlockSize<8>, public FixedKeyLength<16>, public 
 /// <a href="http://www.weidai.com/scan-mirror/cs.html#SHARK-E">SHARK-E</a>
 class SHARK : public SHARK_Info, public BlockCipherDocumentation
 {
-	//! \class Base
-	//! \brief SHARK block cipher default operation
-	class CRYPTOPP_NO_VTABLE Base : public BlockCipherImpl<SHARK_Info>
-	{
-	public:
-		void UncheckedSetKey(const byte *key, unsigned int length, const NameValuePairs &param);
+  //! \class Base
+  //! \brief SHARK block cipher default operation
+  class CRYPTOPP_NO_VTABLE Base : public BlockCipherImpl<SHARK_Info>
+  {
+  public:
+    void UncheckedSetKey(const byte *key, unsigned int length, const NameValuePairs &param);
 
-	protected:
-		unsigned int m_rounds;
-		SecBlock<word64> m_roundKeys;
-	};
+  protected:
+    unsigned int m_rounds;
+    SecBlock<word64> m_roundKeys;
+  };
 
-	//! \class Enc
-	//! \brief SHARK block cipher encryption operation
-	class CRYPTOPP_NO_VTABLE Enc : public Base
-	{
-	public:
-		void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const;
+  //! \class Enc
+  //! \brief SHARK block cipher encryption operation
+  class CRYPTOPP_NO_VTABLE Enc : public Base
+  {
+  public:
+    void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const;
 
-		// used by Base to do key setup
-		void InitForKeySetup();
+    // used by Base to do key setup
+    void InitForKeySetup();
 
-	private:
-		static const byte sbox[256];
-		static const word64 cbox[8][256];
-	};
+  private:
+    static const byte sbox[256];
+    static const word64 cbox[8][256];
+  };
 
-	//! \class Dec
-	//! \brief SHARK block cipher decryption operation
-	class CRYPTOPP_NO_VTABLE Dec : public Base
-	{
-	public:
-		void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const;
+  //! \class Dec
+  //! \brief SHARK block cipher decryption operation
+  class CRYPTOPP_NO_VTABLE Dec : public Base
+  {
+  public:
+    void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const;
 
-	private:
-		static const byte sbox[256];
-		static const word64 cbox[8][256];
-	};
+  private:
+    static const byte sbox[256];
+    static const word64 cbox[8][256];
+  };
 
 public:
-	typedef BlockCipherFinal<ENCRYPTION, Enc> Encryption;
-	typedef BlockCipherFinal<DECRYPTION, Dec> Decryption;
+  typedef BlockCipherFinal<ENCRYPTION, Enc> Encryption;
+  typedef BlockCipherFinal<DECRYPTION, Dec> Decryption;
 };
 
 typedef SHARK::Encryption SHARKEncryption;

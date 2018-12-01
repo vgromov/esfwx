@@ -99,19 +99,19 @@ namespace EsReflection {
 
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsSocketClient, _i("Client network socket"))
   // Reflected services
- 	ES_DECL_REFLECTED_CTOR_INFO(              EsSocketClient, EsVariant_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+   ES_DECL_REFLECTED_CTOR_INFO(              EsSocketClient, EsVariant_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(        EsSocketClient, open, bool_Call, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(        EsSocketClient, close, void_Call, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(        EsSocketClient, send, ulong_Call_cr_EsBinBuffer_ulong, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(        EsSocketClient, receive, EsBinBuffer_Call_ulong_ulong, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO_STD(        EsSocketClient, reset, void_Call, NO_METHOD_DESCR)
-	// Reflected property infos declarations
-	ES_DECL_PROP_INFO_PERSISTENT(             EsSocketClient, address, EsVariant, _i("Server address"), EsSocketAddr::null(), NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_PERSISTENT(             EsSocketClient, doThrow, bool, _i("Throw exceptions on Socket errors"), false, NO_PROPERTY_DESCR)
+  // Reflected property infos declarations
+  ES_DECL_PROP_INFO_PERSISTENT(             EsSocketClient, address, EsVariant, _i("Server address"), EsSocketAddr::null(), NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_PERSISTENT(             EsSocketClient, doThrow, bool, _i("Throw exceptions on Socket errors"), false, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_RESTRICTED_PERSISTENT(  EsSocketClient, socketType, ulong, _i("Client Socket type"), static_cast<ulong>(::EsSocketType::MessageOriented), ES_ENUM(EsSocketType), NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                     EsSocketClient, isOk, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                     EsSocketClient, isActive, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RO(                     EsSocketClient, error, long, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                     EsSocketClient, isOk, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                     EsSocketClient, isActive, bool, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RO(                     EsSocketClient, error, long, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
   ES_DECL_PROP_INFO_WO(                     EsSocketClient, ioHandler, EsVariant, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
 ES_DECL_CLASS_INFO_END
 
@@ -196,8 +196,8 @@ void EsSocketClientReflected::Client::onServerFarewellReceived(EsBinBuffer::cons
 EsSocketClientReflected::EsSocketClient() :
 m_cli(*this)
 {
-	// initialize properties to their default values
-	ES_REFLECTED_PROPERTIES_RESET;
+  // initialize properties to their default values
+  ES_REFLECTED_PROPERTIES_RESET;
 }
 //---------------------------------------------------------------------------
 
@@ -214,9 +214,9 @@ EsVariant EsSocketClientReflected::NEW(cr_EsVariant socketType)
   cli->set_socketType(
     socketType.asULong()
   );
-	cli->m_dynamic = true;
+  cli->m_dynamic = true;
 
-	return cli.release()->asBaseIntfPtrDirect();
+  return cli.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 

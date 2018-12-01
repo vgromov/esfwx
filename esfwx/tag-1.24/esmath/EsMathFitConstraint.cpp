@@ -19,7 +19,7 @@ ES_DECL_ENUMERATION_INFO(EsMathFitConstraintKind, NO_CLASS_DESCR)
 //---------------------------------------------------------------------------
 
 EsMathFitConstraint::EsMathFitConstraint(double x /*= 0.*/, double constraint /*= 0.*/,
-	EsMathFitConstraintKind kind /*= EsMathFitConstraintKind::Value*/) :
+  EsMathFitConstraintKind kind /*= EsMathFitConstraintKind::Value*/) :
 m_x(x),
 m_constraint(constraint),
 m_kind(kind)

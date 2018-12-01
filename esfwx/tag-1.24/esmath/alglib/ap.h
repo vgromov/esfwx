@@ -1173,7 +1173,7 @@ public:
     ae_int_t rows() const;
     ae_int_t cols() const;
     bool isempty() const;
-	ae_int_t getstride() const;
+  ae_int_t getstride() const;
 
     void attach_to(alglib_impl::ae_matrix *ptr);
     void allocate_own(ae_int_t rows, ae_int_t cols, alglib_impl::ae_datatype datatype);

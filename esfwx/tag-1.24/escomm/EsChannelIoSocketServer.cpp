@@ -15,27 +15,27 @@
 // -------------------------------------------------------------------------------------------------------
 // reflection class info declaration
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsChannelIoSocketServer, _i("Server socket (network) connection channel"))
-	// reflected property infos declarations
-	ES_DECL_PROP_INFO_RANGE_PERSISTENT(EsChannelIoSocketServer, port, long, _i("Server port"), 50000, 50000, 65535, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_RANGE_PERSISTENT(EsChannelIoSocketServer, operationTimeout, long, _i("Operation timeout (s)"), 5, 1, 15, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_WO(EsChannelIoSocketServer, monitor, EsBaseIntfPtr, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	ES_DECL_PROP_INFO_WO(EsChannelIoSocketServer, breaker, EsBaseIntfPtr, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
-	// reflected interface methods
-	//
-	// EsChannelIoIntf
-	//
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, open, bool_Call, _i("Open server socket channel"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, close, void_Call, _i("Close server socket channel"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, isOpen, bool_CallConst, _i("Return true, if server socket channel is listening"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, bytesPut, ulong_Call_cr_EsBinBuffer_ulong, _i("Send bytes over a channel"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, bytesGet, EsBinBuffer_Call_ulong_ulong, _i("Receive bytes from a channel"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, txTimeEstimateGet, ulong_CallConst_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, reset, void_Call, _i("Reset server socket channel IO buffers"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, errorGet, long_CallConst, _i("Get server socket channel-specific error code"))
-	ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, errorStringGet, EsString_CallConst, _i("Get server socket channel-specific error string"))			
-	// reflected class methods
-	//
-	ES_DECL_REFLECTED_CTOR_INFO(EsChannelIoSocketServer, EsBaseIntfPtr_ClassCall, _i("EsChannelIoSocketServer constructor"))
+  // reflected property infos declarations
+  ES_DECL_PROP_INFO_RANGE_PERSISTENT(EsChannelIoSocketServer, port, long, _i("Server port"), 50000, 50000, 65535, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_RANGE_PERSISTENT(EsChannelIoSocketServer, operationTimeout, long, _i("Operation timeout (s)"), 5, 1, 15, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_WO(EsChannelIoSocketServer, monitor, EsBaseIntfPtr, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO_WO(EsChannelIoSocketServer, breaker, EsBaseIntfPtr, NO_PROPERTY_LABEL, NO_PROPERTY_DESCR)
+  // reflected interface methods
+  //
+  // EsChannelIoIntf
+  //
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, open, bool_Call, _i("Open server socket channel"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, close, void_Call, _i("Close server socket channel"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, isOpen, bool_CallConst, _i("Return true, if server socket channel is listening"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, bytesPut, ulong_Call_cr_EsBinBuffer_ulong, _i("Send bytes over a channel"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, bytesGet, EsBinBuffer_Call_ulong_ulong, _i("Receive bytes from a channel"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, txTimeEstimateGet, ulong_CallConst_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, reset, void_Call, _i("Reset server socket channel IO buffers"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, errorGet, long_CallConst, _i("Get server socket channel-specific error code"))
+  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsChannelIoSocketServer, EsChannelIoIntf, errorStringGet, EsString_CallConst, _i("Get server socket channel-specific error string"))      
+  // reflected class methods
+  //
+  ES_DECL_REFLECTED_CTOR_INFO(EsChannelIoSocketServer, EsBaseIntfPtr_ClassCall, _i("EsChannelIoSocketServer constructor"))
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
@@ -117,8 +117,8 @@ m_srv(*this),
 m_sin(0, 1),
 m_expectedLen(0)
 {
-	// initialize properties to their default values
-	ES_REFLECTED_PROPERTIES_RESET;
+  // initialize properties to their default values
+  ES_REFLECTED_PROPERTIES_RESET;
   m_srv.listenerMaxIncomingConnSet(1);
 }
 //---------------------------------------------------------------------------
@@ -128,9 +128,9 @@ EsBaseIntfPtr EsChannelIoSocketServer::NEW()
   std::unique_ptr<EsChannelIoSocketServer> chnl( new EsChannelIoSocketServer );
   ES_ASSERT(chnl);
 
-	chnl->m_dynamic = true;
+  chnl->m_dynamic = true;
 
-	return chnl.release()->asBaseIntfPtrDirect();
+  return chnl.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -142,47 +142,47 @@ EsChannelIoSocketServer::~EsChannelIoSocketServer()
 
 long EsChannelIoSocketServer::get_port() const
 {
-	EsMutexLocker lock(m_mx);
-	return m_port;
+  EsMutexLocker lock(m_mx);
+  return m_port;
 }
 //---------------------------------------------------------------------------
 
 void EsChannelIoSocketServer::set_port(const long &val)
 {
-	EsMutexLocker lock(m_mx);
+  EsMutexLocker lock(m_mx);
 
-	if( ES_THIS_REFLECTED_PROP_INFO_GET(port).validate(val, true) )
-		m_port = val;
+  if( ES_THIS_REFLECTED_PROP_INFO_GET(port).validate(val, true) )
+    m_port = val;
 }
 //---------------------------------------------------------------------------
 
 long EsChannelIoSocketServer::get_operationTimeout() const
 {
-	return m_srv.handlerTtlGet()/1000;
+  return m_srv.handlerTtlGet()/1000;
 }
 //---------------------------------------------------------------------------
 
 void EsChannelIoSocketServer::set_operationTimeout(const long &val)
 {
-	m_srv.handlerTtlSet(val * 1000);
+  m_srv.handlerTtlSet(val * 1000);
 }
 //---------------------------------------------------------------------------
 
 void EsChannelIoSocketServer::set_breaker(const EsBaseIntfPtr& breaker)
 {
-	breakerSet( breaker );
+  breakerSet( breaker );
 }
 //---------------------------------------------------------------------------
 
 void EsChannelIoSocketServer::set_monitor(const EsBaseIntfPtr& monitor)
 {
-	monitorSet( monitor );
+  monitorSet( monitor );
 }
 //---------------------------------------------------------------------------
 
 EsString EsChannelIoSocketServer::internalIdGet() const
 {
-	return EsString::format(
+  return EsString::format(
     esT("%s-%d"),
     typeNameGet(),
     m_port
@@ -192,22 +192,22 @@ EsString EsChannelIoSocketServer::internalIdGet() const
 
 ES_IMPL_INTF_METHOD(EsString, EsChannelIoSocketServer::idGet)() const
 {
-	EsMutexLocker lock(m_mx);
-	return internalIdGet();
+  EsMutexLocker lock(m_mx);
+  return internalIdGet();
 }
 //---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(EsBaseIntf::Ptr, EsChannelIoSocketServer::monitorGet)() const
 {
-	EsMutexLocker lock(m_mx);
-	return m_monitor;
+  EsMutexLocker lock(m_mx);
+  return m_monitor;
 }
 //---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(void, EsChannelIoSocketServer::monitorSet)(const EsBaseIntf::Ptr& monitor)
 {
-	EsMutexLocker lock(m_mx);
-	m_monitor = monitor;
+  EsMutexLocker lock(m_mx);
+  m_monitor = monitor;
 }
 //---------------------------------------------------------------------------
 
@@ -298,22 +298,22 @@ ES_IMPL_INTF_METHOD(void, EsChannelIoSocketServer::close)()
 
 ES_IMPL_INTF_METHOD(bool, EsChannelIoSocketServer::isOpen)() const
 {
-	return m_srv.isActive();
+  return m_srv.isActive();
 }
 //---------------------------------------------------------------------------
 
 // io breaker access
 ES_IMPL_INTF_METHOD(EsBaseIntf::Ptr, EsChannelIoSocketServer::breakerGet)() const
 {
-	EsMutexLocker lock(m_mx);
-	return m_breaker;
+  EsMutexLocker lock(m_mx);
+  return m_breaker;
 }
 //---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(void, EsChannelIoSocketServer::breakerSet)(const EsBaseIntf::Ptr& breaker)
 {
-	EsMutexLocker lock(m_mx);
-	m_breaker = breaker;
+  EsMutexLocker lock(m_mx);
+  m_breaker = breaker;
 }
 //---------------------------------------------------------------------------
 
@@ -321,7 +321,7 @@ ES_IMPL_INTF_METHOD(esU32, EsChannelIoSocketServer::bytesPut)(const esU8* data, 
 {
   m_expectedLen = 0xFFFFFFFF;
 
-	esU32 result = m_srv.send(
+  esU32 result = m_srv.send(
     data,
     len,
     tmo,
@@ -335,19 +335,19 @@ ES_IMPL_INTF_METHOD(esU32, EsChannelIoSocketServer::bytesPut)(const esU8* data, 
     tmo
   );
 
-	if( result )
-		ES_DUAL_CALL2_NR(m_monitor, EsChannelIoMonitorIntf, channelBytesSent, internalIdGet(), EsBinBuffer(data, data+result));
+  if( result )
+    ES_DUAL_CALL2_NR(m_monitor, EsChannelIoMonitorIntf, channelBytesSent, internalIdGet(), EsBinBuffer(data, data+result));
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(ulong, EsChannelIoSocketServer::bytesPut)(const EsBinBuffer& data, ulong tmo)
 {
-	if( !data.empty() )
-		return bytesPut(&data[0], data.size(), tmo);
+  if( !data.empty() )
+    return bytesPut(&data[0], data.size(), tmo);
 
-	return 0;
+  return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -371,7 +371,7 @@ ES_IMPL_INTF_METHOD(esU32, EsChannelIoSocketServer::bytesGet)(esU8* data, esU32 
     tmo
   );
 
-	if( result )
+  if( result )
   {
     memcpy(
       data,
@@ -384,29 +384,29 @@ ES_IMPL_INTF_METHOD(esU32, EsChannelIoSocketServer::bytesGet)(esU8* data, esU32 
       m_in.begin()+result
     );
 
-		ES_DUAL_CALL2_NR(m_monitor, EsChannelIoMonitorIntf, channelBytesReceived, internalIdGet(), EsBinBuffer(data, data+result));
+    ES_DUAL_CALL2_NR(m_monitor, EsChannelIoMonitorIntf, channelBytesReceived, internalIdGet(), EsBinBuffer(data, data+result));
   }
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(EsBinBuffer, EsChannelIoSocketServer::bytesGet)(ulong len, ulong tmo)
 {
-	EsBinBuffer result(len);
-	if( len )
-	{
-		len = bytesGet(&result[0], len, tmo);
-		result.resize(len);
-	}
-	
-	return result;
+  EsBinBuffer result(len);
+  if( len )
+  {
+    len = bytesGet(&result[0], len, tmo);
+    result.resize(len);
+  }
+  
+  return result;
 }
 //---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(ulong, EsChannelIoSocketServer::txTimeEstimateGet)(ulong len) const
 {
-	return 100;	
+  return 100;  
 }
 //---------------------------------------------------------------------------
 
@@ -416,32 +416,32 @@ ES_IMPL_INTF_METHOD(void, EsChannelIoSocketServer::reset)()
   EsCriticalSectionLocker lock(m_csin);
   m_in.clear();
   m_sin.tryWait();
-	m_srv.reset();
+  m_srv.reset();
 }
 //---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(long, EsChannelIoSocketServer::errorGet)() const
 {
-	return m_srv.errorGet();
+  return m_srv.errorGet();
 }
 //---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(EsString, EsChannelIoSocketServer::errorStringGet)() const
 {
-	long err = m_srv.errorGet();
+  long err = m_srv.errorGet();
 
-	if( EsSocketError::None != static_cast<EsSocketError>(err) )
-		return EsSockets::errorStringGet(err);
+  if( EsSocketError::None != static_cast<EsSocketError>(err) )
+    return EsSockets::errorStringGet(err);
 
-	return EsString::null();
+  return EsString::null();
 }
 //---------------------------------------------------------------------------
 
 bool EsChannelIoSocketServer::internalIsBreaking() const
 {
-	EsVariant result = false;
-	ES_DUAL_CALL0(result, m_breaker, EsBreakIntf, isBreaking);
-	return result.asBool();
+  EsVariant result = false;
+  ES_DUAL_CALL0(result, m_breaker, EsBreakIntf, isBreaking);
+  return result.asBool();
 }
 //---------------------------------------------------------------------------
 
@@ -450,151 +450,151 @@ bool EsChannelIoSocketServer::internalIsBreaking() const
 //
 esBL EsChannelIoSocketServer::cLock(EseChannelIo* p, esU32 tmo)
 {
-	EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
-	try
-	{
-		EsMutex::Result result = chnl->m_mx.lock(tmo);
-		return EsMutex::resultOk == result;
-	}
-	catch(...)
-	{}
-	
-	return FALSE;
+  EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
+  try
+  {
+    EsMutex::Result result = chnl->m_mx.lock(tmo);
+    return EsMutex::resultOk == result;
+  }
+  catch(...)
+  {}
+  
+  return FALSE;
 }
 //---------------------------------------------------------------------------
 
 void EsChannelIoSocketServer::cUnlock(EseChannelIo* p)
 {
-	EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
-	try
-	{
-		EsMutex::Result result = chnl->m_mx.unlock();
-	}
-	catch(...)
-	{}
+  EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
+  try
+  {
+    EsMutex::Result result = chnl->m_mx.unlock();
+  }
+  catch(...)
+  {}
 }
 //---------------------------------------------------------------------------
 
 esBL EsChannelIoSocketServer::cIsConnected(EseChannelIo* p)
 {
-	EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
-	try
-	{
-		return chnl->isOpen();
-	}
-	catch(...)
-	{}
+  EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
+  try
+  {
+    return chnl->isOpen();
+  }
+  catch(...)
+  {}
 
-	return FALSE;
+  return FALSE;
 }
 //---------------------------------------------------------------------------
 
 esBL EsChannelIoSocketServer::cConnect(EseChannelIo* p)
 {
-	EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
-	try
-	{
-		return chnl->open();
-	}
-	catch(...)
-	{}
+  EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
+  try
+  {
+    return chnl->open();
+  }
+  catch(...)
+  {}
 
-	return FALSE;
+  return FALSE;
 }
 //---------------------------------------------------------------------------
 
 void EsChannelIoSocketServer::cDisconnect(EseChannelIo* p)
 {
-	EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
-	try
-	{
-		chnl->close();
-	}
-	catch(...)
-	{}
+  EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
+  try
+  {
+    chnl->close();
+  }
+  catch(...)
+  {}
 }
 //---------------------------------------------------------------------------
 
 esU32 EsChannelIoSocketServer::cPutBytes(EseChannelIo* p, const esU8* data, esU32 count)
 {
-	EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
-	try
-	{
-		return chnl->bytesPut(
+  EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
+  try
+  {
+    return chnl->bytesPut(
       data,
       count,
       chnl->txTimeEstimateGet(
         count
       )
     );
-	}
-	catch(...)
-	{}
+  }
+  catch(...)
+  {}
 
-	return 0;
+  return 0;
 }
 //---------------------------------------------------------------------------
 
 esU32 EsChannelIoSocketServer::cGetBytes(EseChannelIo* p, esU8* data, esU32 count, esU32 timeout)
 {
-	EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
-	try
-	{
-		return chnl->bytesGet(
+  EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
+  try
+  {
+    return chnl->bytesGet(
       data,
       count,
       timeout
     );
-	}
-	catch(...)
-	{}
+  }
+  catch(...)
+  {}
 
-	return 0;
+  return 0;
 }
 //---------------------------------------------------------------------------
 
 void EsChannelIoSocketServer::cResetIo(EseChannelIo* p)
 {
-	EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
-	try
-	{
-		chnl->reset();
-	}
-	catch(...)
-	{}
+  EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
+  try
+  {
+    chnl->reset();
+  }
+  catch(...)
+  {}
 }
 //---------------------------------------------------------------------------
 
 int EsChannelIoSocketServer::cGetError(EseChannelIo* p)
 {
-	EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
-	try
-	{
-		return chnl->errorGet();
-	}
-	catch(...)
-	{}
+  EsChannelIoSocketServer* chnl = (EsChannelIoSocketServer*)p->m_bus;
+  try
+  {
+    return chnl->errorGet();
+  }
+  catch(...)
+  {}
 
-	return 0;
+  return 0;
 }
 //---------------------------------------------------------------------------
 
 // initialize C EseChannelIo from existing EsChannelIoIntf
 ES_IMPL_INTF_METHOD(void, EsChannelIoSocketServer::commChannelInit)(EseChannelIo* chnl)
 {
-	chnlInit(chnl, this);
-	chnl->m_type = CHNL_UART;
-	chnl->lock = EsChannelIoSocketServer::cLock;
-	chnl->unlock = EsChannelIoSocketServer::cUnlock;
-	chnl->isConnected = EsChannelIoSocketServer::cIsConnected;
-	chnl->connect = EsChannelIoSocketServer::cConnect;
-	chnl->disconnect = EsChannelIoSocketServer::cDisconnect;
-	// data io
-	chnl->bytesPut = EsChannelIoSocketServer::cPutBytes;
-	chnl->bytesGet = EsChannelIoSocketServer::cGetBytes;
-	chnl->resetIo = EsChannelIoSocketServer::cResetIo;
-	// misc
-	chnl->errorGet = EsChannelIoSocketServer::cGetError;
+  chnlInit(chnl, this);
+  chnl->m_type = CHNL_UART;
+  chnl->lock = EsChannelIoSocketServer::cLock;
+  chnl->unlock = EsChannelIoSocketServer::cUnlock;
+  chnl->isConnected = EsChannelIoSocketServer::cIsConnected;
+  chnl->connect = EsChannelIoSocketServer::cConnect;
+  chnl->disconnect = EsChannelIoSocketServer::cDisconnect;
+  // data io
+  chnl->bytesPut = EsChannelIoSocketServer::cPutBytes;
+  chnl->bytesGet = EsChannelIoSocketServer::cGetBytes;
+  chnl->resetIo = EsChannelIoSocketServer::cResetIo;
+  // misc
+  chnl->errorGet = EsChannelIoSocketServer::cGetError;
 }
 //---------------------------------------------------------------------------
 

@@ -11,17 +11,17 @@
 
 /// String literal macros
 ///
-#define ES_STRINGIZE8(x)		    ES_CONCAT(u8, ES_STRINGIZE_HELPER(x))
-#define esT8(x)								  ES_CONCAT(u8, x)
+#define ES_STRINGIZE8(x)        ES_CONCAT(u8, ES_STRINGIZE_HELPER(x))
+#define esT8(x)                  ES_CONCAT(u8, x)
 
-#define ES_STRINGIZE16(x)		    ES_CONCAT(u, ES_STRINGIZE_HELPER(x))
-#define esT16(x)								ES_CONCAT(u, x)
+#define ES_STRINGIZE16(x)        ES_CONCAT(u, ES_STRINGIZE_HELPER(x))
+#define esT16(x)                ES_CONCAT(u, x)
 
-#define ES_STRINGIZE32(x)		    ES_CONCAT(U, ES_STRINGIZE_HELPER(x))
-#define esT32(x)								ES_CONCAT(U, x)
+#define ES_STRINGIZE32(x)        ES_CONCAT(U, ES_STRINGIZE_HELPER(x))
+#define esT32(x)                ES_CONCAT(U, x)
 
-#define ES_STRINGIZEW(x)		    ES_CONCAT(L, ES_STRINGIZE_HELPER(x))
-#define esTW(x)								  ES_CONCAT(L, x)
+#define ES_STRINGIZEW(x)        ES_CONCAT(L, ES_STRINGIZE_HELPER(x))
+#define esTW(x)                  ES_CONCAT(L, x)
 
 /// wchar_t size macros
 ///
@@ -45,16 +45,16 @@
 ///
 #if defined(ES_USE_NARROW_ES_CHAR)
   /// Narrow char is used as EsString value_type
-  typedef char					 				ES_CHAR;
+  typedef char                   ES_CHAR;
 # define ES_CHAR_SIZE           1
 # define ES_WCHAR               wchar_t
-# define ES_STRINGIZE		        ES_STRINGIZE_HELPER
+# define ES_STRINGIZE            ES_STRINGIZE_HELPER
 # define esT(x)                 x
 # define esTU                   esT8
 # define ES_USE_NARROW_CHAR_RTL
 #elif (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND)
 # if defined(WIDECHAR_IS_WCHAR)
-    typedef wchar_t						  ES_CHAR;
+    typedef wchar_t              ES_CHAR;
 #   define ES_CHAR_SIZE         ES_WCHAR_T_SIZE
 #   define ES_CHAR_IS_WCHAR_T
 #   define ES_WCHAR             wchar_t
@@ -66,12 +66,12 @@
 #   define ES_WCHAR_IS_NOT_WCHAR_T
 # endif
 #elif (ES_OS == ES_OS_WINDOWS)
-  typedef wchar_t						    ES_CHAR;
+  typedef wchar_t                ES_CHAR;
 # define ES_CHAR_SIZE           ES_WCHAR_T_SIZE
 # define ES_CHAR_IS_WCHAR_T
 # define ES_WCHAR               wchar_t
 #else
-  typedef wchar_t  				      ES_CHAR;
+  typedef wchar_t                ES_CHAR;
 # define ES_CHAR_IS_WCHAR_T
 # define ES_CHAR_SIZE           ES_WCHAR_T_SIZE
 # define ES_WCHAR               wchar_t
@@ -125,11 +125,11 @@
 // String I18n macros
 //
 #ifdef ES_I18N
-# define esTranslationGet(x)		EsStringI18n::translate( x )
-#	define _(x)										EsStringI18n::translate( esT(x) ).c_str()
+# define esTranslationGet(x)    EsStringI18n::translate( x )
+#  define _(x)                    EsStringI18n::translate( esT(x) ).c_str()
 #else
-# define esTranslationGet(x)		x
-#	define _(x)										esT(x)
+# define esTranslationGet(x)    x
+#  define _(x)                    esT(x)
 #endif
 
 // Misc commonly used sting macros
@@ -149,10 +149,10 @@
 #   define esCerr               std::wcerr
 #   define esClog               std::wclog
 #   define esPrintf             wprintf
-#   define esStrlen					    wcslen
-#   define esStrcmp					    wcscmp
+#   define esStrlen              wcslen
+#   define esStrcmp              wcscmp
 #   if (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS) || (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND)
-#     define esStricmp			    _wcsicmp
+#     define esStricmp          _wcsicmp
 #   else
 #     if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC
 #       if ES_OS_WINDOWS == ES_OS
@@ -162,30 +162,30 @@
 #       endif
 #     endif
 #   endif
-#   define esStrncmp				    wcsncmp
-#   define esStrchr					    wcsrchr
-#   define esStrstr					    wcsstr
-#   define esStrftime				    wcsftime
+#   define esStrncmp            wcsncmp
+#   define esStrchr              wcsrchr
+#   define esStrstr              wcsstr
+#   define esStrftime            wcsftime
 #   if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-#    define esVscprintf_l	      _vscwprintf_l
-#    define esVsprintf_l		    _vswprintf_l
-#    define esVscprinf			    _vscwprintf
-#    define esVsnprintf		      _vsnwprintf
+#    define esVscprintf_l        _vscwprintf_l
+#    define esVsprintf_l        _vswprintf_l
+#    define esVscprinf          _vscwprintf
+#    define esVsnprintf          _vsnwprintf
 #   else
-#    define esVsnprintf		      vsnwprintf
+#    define esVsnprintf          vsnwprintf
 #   endif
 # else
 // We use not wchar_t for EsString, but char16_t or char32_t instead
 // All non-standard functions are defined in EsCoreRtl module
 //
 #   define esPrintf             es_printf
-#   define esStrlen				      es_strlen
-#   define esStrcmp				      es_strcmp
-#   define esStricmp			      es_stricmp
-#	  define esStrncmp			      es_strncmp
-#   define esStrchr					    es_strchr
-#   define esStrstr					    es_strstr
-#   define esStrftime			      es_strftime
+#   define esStrlen              es_strlen
+#   define esStrcmp              es_strcmp
+#   define esStricmp            es_stricmp
+#    define esStrncmp            es_strncmp
+#   define esStrchr              es_strchr
+#   define esStrstr              es_strstr
+#   define esStrftime            es_strftime
 # endif
 #else
 # define esCout                 std::cout
@@ -193,21 +193,21 @@
 # define esCerr                 std::cerr
 # define esClog                 std::clog
 # define esPrintf               printf
-#	define esStrlen					      strlen
-# define esStrcmp					      strcmp
-# define esStricmp				      stricmp
-#	define esStrncmp              strncmp
-# define esStrchr					      strchr
-# define esStrstr					      strstr
-# define esStrftime				      strftime
-#	if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-#		define esVscprintf_l	      _vscprintf_l
-#		define esVsprintf_l		      _vsnprintf_l
-#		define esVscprinf			      _vscprintf
-# 	define esVsnprintf		      _vsnprintf
-#	else
-# 	define esVsnprintf		      vsnprintf
-#	endif
+#  define esStrlen                strlen
+# define esStrcmp                strcmp
+# define esStricmp              stricmp
+#  define esStrncmp              strncmp
+# define esStrchr                strchr
+# define esStrstr                strstr
+# define esStrftime              strftime
+#  if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
+#    define esVscprintf_l        _vscprintf_l
+#    define esVsprintf_l          _vsnprintf_l
+#    define esVscprinf            _vscprintf
+#   define esVsnprintf          _vsnprintf
+#  else
+#   define esVsnprintf          vsnprintf
+#  endif
 #endif
 
 #endif // _es_string_defs_h_

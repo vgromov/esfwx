@@ -175,33 +175,33 @@ bool EsFtdiDeviceMpsseI2c::i2cInit( esU32 opts )
   esU32 rate = m_cfgClockRate;
 
   // Adjust clock rate if 3phase clocking should be enabled
-	if( !(opts & MPSSE::I2C_DISABLE_3PHASE_CLOCKING) )
-		rate = (rate * 3)/2;
+  if( !(opts & MPSSE::I2C_DISABLE_3PHASE_CLOCKING) )
+    rate = (rate * 3)/2;
 
-	if( !i2cChannelInit(
+  if( !i2cChannelInit(
       rate,
       opts
     )
   )
     return false;
 
-	if( !(opts & MPSSE::I2C_DISABLE_3PHASE_CLOCKING) )
-	{
+  if( !(opts & MPSSE::I2C_DISABLE_3PHASE_CLOCKING) )
+  {
     mpsseBufInit();
 
-		esU32 noOfBytesTransferred = 0;
-		m_tmpBuff[0] = MPSSE::CMD_ENABLE_3PHASE_CLOCKING;/* MPSSE command */
+    esU32 noOfBytesTransferred = 0;
+    m_tmpBuff[0] = MPSSE::CMD_ENABLE_3PHASE_CLOCKING;/* MPSSE command */
 
-		if( !ftWrite(
+    if( !ftWrite(
         m_tmpBuff.data(),
         1,
         &noOfBytesTransferred
       )
     )
       return false;
-	}
+  }
 
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 
@@ -243,42 +243,42 @@ bool EsFtdiDeviceMpsseI2c::i2cWrite8bitsAndGetAck(esU8 data, bool& ack)
 {
   ES_ASSERT( !m_tmpBuff.empty() );
 
-	esU32 noOfBytes = 0;
+  esU32 noOfBytes = 0;
 
-	// Set direction
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;  //< MPSSE command
-	m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDAHIGH;       //< Value
-	m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;    //< Direction
+  // Set direction
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;  //< MPSSE command
+  m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDAHIGH;       //< Value
+  m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;    //< Direction
 
-	// Command to write 8bits
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE; //< MPSSE command
-	m_tmpBuff[noOfBytes++] = MPSSE::DATA_SIZE_8BITS;
-	m_tmpBuff[noOfBytes++] = data;
+  // Command to write 8bits
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE; //< MPSSE command
+  m_tmpBuff[noOfBytes++] = MPSSE::DATA_SIZE_8BITS;
+  m_tmpBuff[noOfBytes++] = data;
 
-	// Set SDA to input mode before reading ACK bit
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;  //< MPSSE command
-	m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDALOW;        //< Value
-	m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN;     //< Direction
+  // Set SDA to input mode before reading ACK bit
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;  //< MPSSE command
+  m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDALOW;        //< Value
+  m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN;     //< Direction
 
-	// Command to get ACK bit
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;  //< MPSSE command
-	m_tmpBuff[noOfBytes++] = MPSSE::DATA_SIZE_1BIT;             //< Read only one bit
+  // Command to get ACK bit
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;  //< MPSSE command
+  m_tmpBuff[noOfBytes++] = MPSSE::DATA_SIZE_1BIT;             //< Read only one bit
 
-	// Command MPSSE to send data to PC immediately
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SEND_IMMEDIATE;
+  // Command MPSSE to send data to PC immediately
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SEND_IMMEDIATE;
 
   esU32 noOfBytesTransferred = 0;
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       noOfBytes,
-		  &noOfBytesTransferred
+      &noOfBytesTransferred
     )
   )
 
-	if(noOfBytes != noOfBytesTransferred)
+  if(noOfBytes != noOfBytesTransferred)
     return false;
 
-	// Get ack
+  // Get ack
   EsThread::sleep(1);
   if( !ftRead(
       m_tmpBuff.data(),
@@ -288,81 +288,81 @@ bool EsFtdiDeviceMpsseI2c::i2cWrite8bitsAndGetAck(esU8 data, bool& ack)
   )
     return false;
 
-	if(1 != noOfBytesTransferred)
+  if(1 != noOfBytesTransferred)
     return false;
 
   ack = (0x01 == (m_tmpBuff[0] & 0x01));
 
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 
 bool EsFtdiDeviceMpsseI2c::i2cRead8bitsAndGiveAck(esU8& data, bool doAck)
 {
-	esU32 noOfBytes = 0;
+  esU32 noOfBytes = 0;
 
   ES_ASSERT( !m_tmpBuff.empty() );
   
-	// Set direction
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;//< MPSSE command 
-	m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDALOW;      //< Value
-	m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN;   //< Direction
+  // Set direction
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;//< MPSSE command 
+  m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDALOW;      //< Value
+  m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN;   //< Direction
 
-	// Command to read 8 bits
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;
-	m_tmpBuff[noOfBytes++] = MPSSE::DATA_SIZE_8BITS; /*0x00=1bit; 0x07=8bits*/
+  // Command to read 8 bits
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;
+  m_tmpBuff[noOfBytes++] = MPSSE::DATA_SIZE_8BITS; /*0x00=1bit; 0x07=8bits*/
 
-	// Command MPSSE to send data to PC immediately
-	m_tmpBuff[noOfBytes++] = MPSSE::CMD_SEND_IMMEDIATE;
+  // Command MPSSE to send data to PC immediately
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SEND_IMMEDIATE;
 
 // ACK_GLITCH_WORKAROUND
-	if( doAck )
-	{
-		/*set direction*/
-		m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-		m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
-		m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
+  if( doAck )
+  {
+    /*set direction*/
+    m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+    m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
+    m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
 
-		/*Command to write Ack/nAck bit*/
-		m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;                      // GB CHANGED TO NEG
-		m_tmpBuff[noOfBytes++] = MPSSE::DATA_SIZE_1BIT;
-		m_tmpBuff[noOfBytes++] = 0x00;
+    /*Command to write Ack/nAck bit*/
+    m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;                      // GB CHANGED TO NEG
+    m_tmpBuff[noOfBytes++] = MPSSE::DATA_SIZE_1BIT;
+    m_tmpBuff[noOfBytes++] = 0x00;
 
-		/*Back to Idle*/
-		m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-		m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
-		m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
-	}
-	else
-	{
-		/*set direction*/
-		m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-		m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
-		m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+    /*Back to Idle*/
+    m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+    m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
+    m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+  }
+  else
+  {
+    /*set direction*/
+    m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+    m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
+    m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
 
-		/*Command to write Ack/nAck bit*/
-		m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;                      // GB CHANGED TO NEG
-		m_tmpBuff[noOfBytes++] = MPSSE::DATA_SIZE_1BIT;
+    /*Command to write Ack/nAck bit*/
+    m_tmpBuff[noOfBytes++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;                      // GB CHANGED TO NEG
+    m_tmpBuff[noOfBytes++] = MPSSE::DATA_SIZE_1BIT;
     m_tmpBuff[noOfBytes++] = 0xFF;
 
-		/*Back to Idle*/
-		m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-		m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
-		m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
-	}
+    /*Back to Idle*/
+    m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+    m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
+    m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+  }
 // ACK_GLITCH_WORKAROUND end
 
   esU32 noOfBytesTransferred = 0;
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       noOfBytes,
-		  &noOfBytesTransferred
+      &noOfBytesTransferred
     )
   )
     return false;
     
-	if( noOfBytes != noOfBytesTransferred )
-		return false;
+  if( noOfBytes != noOfBytesTransferred )
+    return false;
   
   if( !ftRead(
       m_tmpBuff.data(),
@@ -377,7 +377,7 @@ bool EsFtdiDeviceMpsseI2c::i2cRead8bitsAndGiveAck(esU8& data, bool doAck)
     
   data = m_tmpBuff[0];
 
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 
@@ -420,27 +420,27 @@ bool EsFtdiDeviceMpsseI2c::i2cStart()
 
   ES_ASSERT( m_tmpBuff.size() > (MPSSE::START_DURATION_1+MPSSE::START_DURATION_2+1)*3 );
 
-	// SCL high, SDA high
+  // SCL high, SDA high
   esU32 cnt = 0;
-	for(int j = 0; j < MPSSE::START_DURATION_1; ++j)
-	{
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-	}
+  for(int j = 0; j < MPSSE::START_DURATION_1; ++j)
+  {
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+  }
 
-	// SCL high, SDA low
-	for(int j = 0; j < MPSSE::START_DURATION_2; ++j)
-	{
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-	}
+  // SCL high, SDA low
+  for(int j = 0; j < MPSSE::START_DURATION_2; ++j)
+  {
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+  }
 
-	// SCL low, SDA low
-	m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-	m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
-	m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+  // SCL low, SDA low
+  m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+  m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
+  m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
 
   esU32 noOfBytesTransferred = 0;
   if( !ftWrite(
@@ -449,9 +449,9 @@ bool EsFtdiDeviceMpsseI2c::i2cStart()
       &noOfBytesTransferred
     )
   )
-	  return false;
+    return false;
 
-	return (noOfBytesTransferred == cnt);
+  return (noOfBytesTransferred == cnt);
 }
 //---------------------------------------------------------------------------
 
@@ -461,37 +461,37 @@ bool EsFtdiDeviceMpsseI2c::i2cStop()
 
   ES_ASSERT( m_tmpBuff.size() > (MPSSE::STOP_DURATION_1+MPSSE::STOP_DURATION_2+MPSSE::STOP_DURATION_3+1)*3 );
 
-	// SCL low, SDA low
+  // SCL low, SDA low
   esU32 cnt = 0;
-	for(int j=0; j < MPSSE::STOP_DURATION_1; ++j)
-	{
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-	}
+  for(int j=0; j < MPSSE::STOP_DURATION_1; ++j)
+  {
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+  }
   
-	// SCL high, SDA low
-	for(int j=0; j < MPSSE::STOP_DURATION_2; ++j)
-	{
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-	}
+  // SCL high, SDA low
+  for(int j=0; j < MPSSE::STOP_DURATION_2; ++j)
+  {
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+  }
 
-	// SCL high, SDA high
-	for(int j=0; j < MPSSE::STOP_DURATION_3; ++j)
-	{
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-	}
+  // SCL high, SDA high
+  for(int j=0; j < MPSSE::STOP_DURATION_3; ++j)
+  {
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+  }
   
-	m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-	m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
-	m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLIN_SDAIN; // Tristate the SCL & SDA pins
+  m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+  m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
+  m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLIN_SDAIN; // Tristate the SCL & SDA pins
 
   esU32 noOfBytesTransferred = 0;
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       cnt,
       &noOfBytesTransferred
@@ -531,7 +531,7 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceRead(esU16 addr, EsBinBuffer::pointer buffer
 {
   bool ack = true;
   if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER)
-		return i2cFastRead(
+    return i2cFastRead(
       addr, 
       buffer, 
       sizeToTransfer, 
@@ -583,7 +583,7 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceRead(esU16 addr, EsBinBuffer::pointer buffer
   else if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_STOP_BIT) //< Write STOP bit
     return i2cStop();
 
-	return (EsFtdiDeviceIntf::FT_OK == m_stat);
+  return (EsFtdiDeviceIntf::FT_OK == m_stat);
 }
 //---------------------------------------------------------------------------
 
@@ -594,7 +594,7 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceWrite(esU16 addr, EsBinBuffer::const_pointer
 
   bool ack = true;
   if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER)
-		return i2cFastWrite(
+    return i2cFastWrite(
       addr, 
       buffer, 
       sizeToTransfer, 
@@ -662,7 +662,7 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceWrite(esU16 addr, EsBinBuffer::const_pointer
   if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_STOP_BIT)
     return i2cStop();
 
-	return true;
+  return true;
 }
 //---------------------------------------------------------------------------
 
@@ -671,169 +671,169 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
 )
 {
   esU32 bitsToTransfer;
-	if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BITS)
-	{/* size is in bits */
-		bitsToTransfer = sizeToTransfer;
-	}
-	else
-	{/* size is in bytes */
+  if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BITS)
+  {/* size is in bits */
+    bitsToTransfer = sizeToTransfer;
+  }
+  else
+  {/* size is in bytes */
     bitsToTransfer = sizeToTransfer * 8;
-	}
+  }
 
-	esU32 bytesToTransfer=
-	  (bitsToTransfer>0)?(((bitsToTransfer/8)==0)?1:((bitsToTransfer/8)+1)):(0);
+  esU32 bytesToTransfer=
+    (bitsToTransfer>0)?(((bitsToTransfer/8)==0)?1:((bitsToTransfer/8)+1)):(0);
 
-	/* Calculate size of required buffer */
-	esU32 sizeTotal = (bytesToTransfer*(6+5 // FASTWRITE_READ_ACK
-	)) /*the size of data itself */
-	+ ((!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS)) ?
+  /* Calculate size of required buffer */
+  esU32 sizeTotal = (bytesToTransfer*(6+5 // FASTWRITE_READ_ACK
+  )) /*the size of data itself */
+  + ((!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS)) ?
       11 :
       0
   )/*for address byte*/
-	+ ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT) ? 
+  + ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT) ? 
       ((MPSSE::START_DURATION_1+MPSSE::START_DURATION_2+1)*3) :
       0
   ) /* size required for START */
-	+ ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_STOP_BIT) ?
+  + ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_STOP_BIT) ?
       ((MPSSE::STOP_DURATION_1+MPSSE::STOP_DURATION_2+MPSSE::STOP_DURATION_3+1)*3) :
       0
   ); /* size for STOP */
 
-	esU32 sizeOverhead = sizeTotal - bytesToTransfer;
+  esU32 sizeOverhead = sizeTotal - bytesToTransfer;
 
-	/* Allocate buffers */
+  /* Allocate buffers */
   if( m_tmpBuff.size() < sizeTotal )
     m_tmpBuff.resize(sizeTotal);
 
-	esU32 cnt = 0; /* index of cmdBuffer that is filled */
+  esU32 cnt = 0; /* index of cmdBuffer that is filled */
 
-	/* Write START bit */
-	if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT)
-	{
-		/* SCL high, SDA high */
-		for(esU32 j = 0; j < MPSSE::START_DURATION_1; ++j)
-		{
-			m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-			m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
-			m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-		}
+  /* Write START bit */
+  if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT)
+  {
+    /* SCL high, SDA high */
+    for(esU32 j = 0; j < MPSSE::START_DURATION_1; ++j)
+    {
+      m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+      m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
+      m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+    }
     
-		/* SCL high, SDA low */
-		for(esU32 j = 0; j < MPSSE::START_DURATION_2; ++j)
-		{
-			m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-			m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
-			m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-		}
+    /* SCL high, SDA low */
+    for(esU32 j = 0; j < MPSSE::START_DURATION_2; ++j)
+    {
+      m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+      m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
+      m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+    }
     
-		/*SCL low, SDA low */
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-	}
+    /*SCL low, SDA low */
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+  }
 
-	esU32 bitsToRead = 0;
-	if(!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS))
-	{
-		addr <<= 1;
+  esU32 bitsToRead = 0;
+  if(!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS))
+  {
+    addr <<= 1;
     addr &= MPSSE::I2C_ADDRESS_WRITE_MASK;
 
-		/*set direction*/
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
+    /*set direction*/
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
 
-		/* write address + direction bit */
-		m_tmpBuff[cnt++]= MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;/* MPSSE command */
-		m_tmpBuff[cnt++]= MPSSE::DATA_SIZE_8BITS;
-		m_tmpBuff[cnt++] = static_cast<esU8>(addr);
+    /* write address + direction bit */
+    m_tmpBuff[cnt++]= MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;/* MPSSE command */
+    m_tmpBuff[cnt++]= MPSSE::DATA_SIZE_8BITS;
+    m_tmpBuff[cnt++] = static_cast<esU8>(addr);
 
-		/* Set SDA to input mode before reading ACK bit */
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+    /* Set SDA to input mode before reading ACK bit */
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
 
-		/* Command to get ACK bit */
-		m_tmpBuff[cnt++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;/* MPSSE command */
-		m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT; /* Read only one bit */
+    /* Command to get ACK bit */
+    m_tmpBuff[cnt++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;/* MPSSE command */
+    m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT; /* Read only one bit */
     
-		bitsToRead++;
-	}
+    bitsToRead++;
+  }
 
-	/* add commands & data to buffer */
-	esU32 j = 0;
-	while( j < bitsToTransfer )
-	{
-		esU8 bitsInThisTransfer = ((bitsToTransfer-j)>8) ? 
+  /* add commands & data to buffer */
+  esU32 j = 0;
+  while( j < bitsToTransfer )
+  {
+    esU8 bitsInThisTransfer = ((bitsToTransfer-j)>8) ? 
       8 :
       static_cast<esU8>(bitsToTransfer-j);
       
-		/*set direction*/
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
+    /*set direction*/
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
 
-		/* Command to write 8bits */
-		bitsInThisTransfer = ((bitsToTransfer-j)>8) ? 
+    /* Command to write 8bits */
+    bitsInThisTransfer = ((bitsToTransfer-j)>8) ? 
       8 :
      static_cast<esU8>(bitsToTransfer-j);
       
-		m_tmpBuff[cnt++]= MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;/* MPSSE command */
-		m_tmpBuff[cnt++]= bitsInThisTransfer - 1;
-		m_tmpBuff[cnt++] = buffer[j/8];
+    m_tmpBuff[cnt++]= MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;/* MPSSE command */
+    m_tmpBuff[cnt++]= bitsInThisTransfer - 1;
+    m_tmpBuff[cnt++] = buffer[j/8];
 
-		/* Read 1bit ack after each 8bits written - only in byte mode */
-		if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BYTES)
-		{
-			/* Set SDA to input mode before reading ACK bit */
-			m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-			m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
-			m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+    /* Read 1bit ack after each 8bits written - only in byte mode */
+    if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BYTES)
+    {
+      /* Set SDA to input mode before reading ACK bit */
+      m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+      m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
+      m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
 
-			/* Command to get ACK bit */
-			m_tmpBuff[cnt++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;/* MPSSE command */
-			m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT; /* Read only one bit */
+      /* Command to get ACK bit */
+      m_tmpBuff[cnt++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;/* MPSSE command */
+      m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT; /* Read only one bit */
 
-			bitsToRead++;
-		}
+      bitsToRead++;
+    }
 
-		j += bitsInThisTransfer;
-	}
+    j += bitsInThisTransfer;
+  }
 
-	/* Write STOP bit */
-	if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_STOP_BIT)
-	{
-		/* SCL low, SDA low */
-		for( j = 0; j < MPSSE::STOP_DURATION_1; ++j)
-		{
-			m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-			m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
-			m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-		}
+  /* Write STOP bit */
+  if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_STOP_BIT)
+  {
+    /* SCL low, SDA low */
+    for( j = 0; j < MPSSE::STOP_DURATION_1; ++j)
+    {
+      m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+      m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
+      m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+    }
     
-		/* SCL high, SDA low */
-		for( j = 0; j < MPSSE::STOP_DURATION_2; ++j)
-		{
-			m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-			m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
-			m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-		}
+    /* SCL high, SDA low */
+    for( j = 0; j < MPSSE::STOP_DURATION_2; ++j)
+    {
+      m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+      m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
+      m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+    }
     
-		/* SCL high, SDA high */
-		for( j = 0; j < MPSSE::STOP_DURATION_3; ++j)
-		{
-			m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-			m_tmpBuff[cnt++]=MPSSE::VALUE_SCLHIGH_SDAHIGH;
-			m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLOUT_SDAOUT;
-		}
+    /* SCL high, SDA high */
+    for( j = 0; j < MPSSE::STOP_DURATION_3; ++j)
+    {
+      m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+      m_tmpBuff[cnt++]=MPSSE::VALUE_SCLHIGH_SDAHIGH;
+      m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLOUT_SDAOUT;
+    }
     
-		m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-		m_tmpBuff[cnt++]=MPSSE::VALUE_SCLHIGH_SDAHIGH;
-		m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLIN_SDAIN; /* Tristate the SCL & SDA pins */
-	}
+    m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+    m_tmpBuff[cnt++]=MPSSE::VALUE_SCLHIGH_SDAHIGH;
+    m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLIN_SDAIN; /* Tristate the SCL & SDA pins */
+  }
 
   esU32 transferred = 0;
-	if( !ftWrite(
+  if( !ftWrite(
       m_tmpBuff.data(),
       cnt,
       &transferred
@@ -841,13 +841,13 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
   )
     return false;
 
-	sizeTransferred = sizeToTransfer;
+  sizeTransferred = sizeToTransfer;
 
-	/* Read ack of address */
-	if(!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS))
-	{
+  /* Read ack of address */
+  if(!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS))
+  {
     esU8 addrAck = 0;
-		if( !ftRead(
+    if( !ftRead(
         &addrAck,
         1, 
         &transferred
@@ -856,15 +856,15 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
       return false;
 
     ack = (0x01 == (addrAck & 0x01));
-	}
+  }
 
-	/* if byte mode: read 1bit ack after each 8bits written */
-	if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BYTES)
-	{
+  /* if byte mode: read 1bit ack after each 8bits written */
+  if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BYTES)
+  {
     if( m_tmpBuff.size() < sizeToTransfer )
       m_tmpBuff.resize(sizeToTransfer);
   
-		if( !ftRead(
+    if( !ftRead(
         m_tmpBuff.data(),
         sizeToTransfer,
         &transferred
@@ -887,7 +887,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
         ++transferred;
       }  
     }
-	}
+  }
 
   return true;
 }
@@ -898,18 +898,18 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
   bool& ack, esU32 opts
 )
 {
-	esU32 bitsToTransfer;
-	if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BITS)
-	{/* size is in bits */
-		bitsToTransfer = sizeToTransfer;
-	}
-	else
-	{/* size is in bytes */
-	  bitsToTransfer = sizeToTransfer * 8;
-	}
+  esU32 bitsToTransfer;
+  if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BITS)
+  {/* size is in bits */
+    bitsToTransfer = sizeToTransfer;
+  }
+  else
+  {/* size is in bytes */
+    bitsToTransfer = sizeToTransfer * 8;
+  }
 
-	esU32 bytesToTransfer =
-	  (bitsToTransfer > 0) ? 
+  esU32 bytesToTransfer =
+    (bitsToTransfer > 0) ? 
       (
         ((bitsToTransfer / 8) == 0) ?
           1 :
@@ -917,8 +917,8 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
       ) : 
       0;
 
-	/* Calculate size of required buffer */
-	esU32 sizeTotal = (bytesToTransfer*12) /* the size of data itself */
+  /* Calculate size of required buffer */
+  esU32 sizeTotal = (bytesToTransfer*12) /* the size of data itself */
     + ( (!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS)) ? 
           11 :
           0
@@ -933,185 +933,185 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
       ) /* size for STOP */
     + 5; // READ ACK
 
-	esU32 sizeOverhead = sizeTotal - bytesToTransfer;
+  esU32 sizeOverhead = sizeTotal - bytesToTransfer;
 
-	/* Allocate buffers */
+  /* Allocate buffers */
   if( m_tmpBuff.size() < sizeTotal )
     m_tmpBuff.resize( sizeTotal );
     
   esU32 cnt = 0;
-	/* Write START bit */
-	if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT)
-	{
-		/* SCL high, SDA high */
-		for(esU32 esU32j = 0; esU32j < MPSSE::START_DURATION_1; ++esU32j)
-		{
-			m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-			m_tmpBuff[cnt++]=MPSSE::VALUE_SCLHIGH_SDAHIGH;
-			m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLOUT_SDAOUT;
-		}
+  /* Write START bit */
+  if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT)
+  {
+    /* SCL high, SDA high */
+    for(esU32 esU32j = 0; esU32j < MPSSE::START_DURATION_1; ++esU32j)
+    {
+      m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+      m_tmpBuff[cnt++]=MPSSE::VALUE_SCLHIGH_SDAHIGH;
+      m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLOUT_SDAOUT;
+    }
 
-		/* SCL high, SDA low */
-		for(esU32 j = 0; j < MPSSE::START_DURATION_2; ++j)
-		{
-			m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-			m_tmpBuff[cnt++]=MPSSE::VALUE_SCLHIGH_SDALOW;
-			m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLOUT_SDAOUT;
-		}
+    /* SCL high, SDA low */
+    for(esU32 j = 0; j < MPSSE::START_DURATION_2; ++j)
+    {
+      m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+      m_tmpBuff[cnt++]=MPSSE::VALUE_SCLHIGH_SDALOW;
+      m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLOUT_SDAOUT;
+    }
 
-		/*SCL low, SDA low */
-		m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-		m_tmpBuff[cnt++]=MPSSE::VALUE_SCLLOW_SDALOW;
-		m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLOUT_SDAOUT;
-	}
+    /*SCL low, SDA low */
+    m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+    m_tmpBuff[cnt++]=MPSSE::VALUE_SCLLOW_SDALOW;
+    m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLOUT_SDAOUT;
+  }
 
-	if( !(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS) )
-	{
-		addr <<= 1;
-		addr |= MPSSE::I2C_ADDRESS_READ_MASK;
+  if( !(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS) )
+  {
+    addr <<= 1;
+    addr |= MPSSE::I2C_ADDRESS_READ_MASK;
     addr &= 0xFF;
 
-		/*set direction*/
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
+    /*set direction*/
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
 
-		/* write address + direction bit */
-		m_tmpBuff[cnt++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;/* MPSSE command */
-		m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_8BITS;
-		m_tmpBuff[cnt++] = static_cast<esU8>(addr);
+    /* write address + direction bit */
+    m_tmpBuff[cnt++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;/* MPSSE command */
+    m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_8BITS;
+    m_tmpBuff[cnt++] = static_cast<esU8>(addr);
 
-		/* Set SDA to input mode before reading ACK bit */
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+    /* Set SDA to input mode before reading ACK bit */
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
 
-		/* Command to get ACK bit */
-		m_tmpBuff[cnt++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;/* MPSSE command */
-		m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT; /* Read only one bit */
-	}
+    /* Command to get ACK bit */
+    m_tmpBuff[cnt++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;/* MPSSE command */
+    m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT; /* Read only one bit */
+  }
 
-	/* add commands & data to buffer */
-	esU32 j = 0;
-	while( j < bitsToTransfer)
-	{
-		esU32 bitsInThisTransfer = ((bitsToTransfer - j) > 8) ? 
+  /* add commands & data to buffer */
+  esU32 j = 0;
+  while( j < bitsToTransfer)
+  {
+    esU32 bitsInThisTransfer = ((bitsToTransfer - j) > 8) ? 
       8 :
       (bitsToTransfer-j);
 
-		/*set direction*/
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+    /*set direction*/
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
 
-		/*Command to read 8 bits*/
-		m_tmpBuff[cnt++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;
-		m_tmpBuff[cnt++] = static_cast<esU8>(bitsInThisTransfer - 1);
+    /*Command to read 8 bits*/
+    m_tmpBuff[cnt++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;
+    m_tmpBuff[cnt++] = static_cast<esU8>(bitsInThisTransfer - 1);
 
-		/*Command MPSSE to send data to PC immediately */
-		/*buffer[cnt++] = MPSSE_CMD_SEND_IMMEDIATE;*/
+    /*Command MPSSE to send data to PC immediately */
+    /*buffer[cnt++] = MPSSE_CMD_SEND_IMMEDIATE;*/
 
-		/* Write 1bit ack after each 8bits read - only in byte mode */
-		if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BYTES)
-		{
+    /* Write 1bit ack after each 8bits read - only in byte mode */
+    if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BYTES)
+    {
 /// NACK_GLITCH_WORKAROUND
 // SCL Glitch fix for Graham
-			if( j < (bitsToTransfer-1) )
-			{
-				//m_tmpBuff[cnt++] = SEND_ACK;
-				/*set direction*/
-				m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-				m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
-				m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
+      if( j < (bitsToTransfer-1) )
+      {
+        //m_tmpBuff[cnt++] = SEND_ACK;
+        /*set direction*/
+        m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+        m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
+        m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
 
-				/*Command to write Ack/nAck bit*/
-				m_tmpBuff[cnt++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;                      // GB CHANGED TO NEG
-				m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT;
-				m_tmpBuff[cnt++] = 0x00;
+        /*Command to write Ack/nAck bit*/
+        m_tmpBuff[cnt++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;                      // GB CHANGED TO NEG
+        m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT;
+        m_tmpBuff[cnt++] = 0x00;
 
-				/*Back to Idle*/
-				m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-				m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
-				m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
-			}
-			else
-			{
-				if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NACK_LAST_BYTE)
-				{
-					//m_tmpBuff[cnt++] = SEND_NACK;
-					/*set direction*/
-					m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-					m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
-					m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+        /*Back to Idle*/
+        m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+        m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
+        m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+      }
+      else
+      {
+        if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NACK_LAST_BYTE)
+        {
+          //m_tmpBuff[cnt++] = SEND_NACK;
+          /*set direction*/
+          m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+          m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
+          m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
 
-					/*Command to write Ack/nAck bit*/
-					m_tmpBuff[cnt++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;                      // GB CHANGED TO NEG
-					m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT;
-			    m_tmpBuff[cnt++] = 0xFF;
+          /*Command to write Ack/nAck bit*/
+          m_tmpBuff[cnt++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;                      // GB CHANGED TO NEG
+          m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT;
+          m_tmpBuff[cnt++] = 0xFF;
 
-					/*Back to Idle*/
-					m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-					m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
-					m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
-				}
-				else
-				{
-					//m_tmpBuff[cnt++] = SEND_ACK;
-					/*set direction*/
-					m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-					m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
-					m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
+          /*Back to Idle*/
+          m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+          m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
+          m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+        }
+        else
+        {
+          //m_tmpBuff[cnt++] = SEND_ACK;
+          /*set direction*/
+          m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+          m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW; /*Value*/
+          m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
 
-					/*Command to write Ack/nAck bit*/
-					m_tmpBuff[cnt++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;                      // GB CHANGED TO NEG
-					m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT;
-					m_tmpBuff[cnt++] = 0x00;
+          /*Command to write Ack/nAck bit*/
+          m_tmpBuff[cnt++] = MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;                      // GB CHANGED TO NEG
+          m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT;
+          m_tmpBuff[cnt++] = 0x00;
 
-					/*Back to Idle*/
-					m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
-					m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
-					m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
-				}
+          /*Back to Idle*/
+          m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
+          m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
+          m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAIN; /*Direction*/
+        }
 
-			}
+      }
 /// NACK_GLITCH_WORKAROUND end
-		}
+    }
     
-		j += bitsInThisTransfer;
-	}
-	sizeTransferred = j;
+    j += bitsInThisTransfer;
+  }
+  sizeTransferred = j;
 
-	/* Write STOP bit */
-	if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_STOP_BIT)
-	{
-		/* SCL low, SDA low */
-		for( j = 0; j < MPSSE::STOP_DURATION_1; ++j )
-		{
-			m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-			m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
-			m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-		}
+  /* Write STOP bit */
+  if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_STOP_BIT)
+  {
+    /* SCL low, SDA low */
+    for( j = 0; j < MPSSE::STOP_DURATION_1; ++j )
+    {
+      m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+      m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
+      m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+    }
 
-		/* SCL high, SDA low */
-		for( j = 0; j < MPSSE::STOP_DURATION_2; ++j )
-		{
-			m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-			m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
-			m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-		}
+    /* SCL high, SDA low */
+    for( j = 0; j < MPSSE::STOP_DURATION_2; ++j )
+    {
+      m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+      m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
+      m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+    }
     
-		/* SCL high, SDA high */
-		for( j = 0; j < MPSSE::STOP_DURATION_3; ++j )
-		{
-			m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-			m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
-			m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
-		}
+    /* SCL high, SDA high */
+    for( j = 0; j < MPSSE::STOP_DURATION_3; ++j )
+    {
+      m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+      m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
+      m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
+    }
     
-		m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
-		m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
-		m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLIN_SDAIN; /* Tristate the SCL & SDA pins */
-	}
+    m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
+    m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
+    m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLIN_SDAIN; /* Tristate the SCL & SDA pins */
+  }
 
   esU32 transferred = 0;
   if( !ftWrite(
@@ -1125,11 +1125,11 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
   if( transferred != cnt )
     return false;
     
-	// Read the address ack bit
-	if(!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS))
-	{
+  // Read the address ack bit
+  if(!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS))
+  {
     esU8 addrAck;
-		if( !ftRead(
+    if( !ftRead(
         &addrAck,
         1, 
         &transferred
@@ -1138,12 +1138,12 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
       return false;
 
     ack = 0x01 == (addrAck & 0x01);
-	}
+  }
 
-	/* read the actual data from the MPSSE-chip into the host system */
-	if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BYTES)
-	{
-  	if( !ftRead(
+  /* read the actual data from the MPSSE-chip into the host system */
+  if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BYTES)
+  {
+    if( !ftRead(
         buffer, 
         bytesToTransfer, 
         &transferred
@@ -1153,9 +1153,9 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
 
     return (transferred == bytesToTransfer);
   }
-	else
+  else
   {
-		if( !ftRead(
+    if( !ftRead(
         buffer,
         bytesToTransfer+1, 
         &transferred
@@ -1163,7 +1163,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
     )
       return false;
     
-  	return (bytesToTransfer+1) == transferred;
+    return (bytesToTransfer+1) == transferred;
   }
 }
 //---------------------------------------------------------------------------

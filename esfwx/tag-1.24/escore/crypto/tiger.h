@@ -16,13 +16,13 @@ NAMESPACE_BEGIN(CryptoPP)
 class Tiger : public IteratedHashWithStaticTransform<word64, LittleEndian, 64, 24, Tiger>
 {
 public:
-	static void InitState(HashWordType *state);
-	static void Transform(word64 *digest, const word64 *data);
-	void TruncatedFinal(byte *hash, size_t size);
-	CRYPTOPP_CONSTEXPR static const char *StaticAlgorithmName() {return "Tiger";}
+  static void InitState(HashWordType *state);
+  static void Transform(word64 *digest, const word64 *data);
+  void TruncatedFinal(byte *hash, size_t size);
+  CRYPTOPP_CONSTEXPR static const char *StaticAlgorithmName() {return "Tiger";}
 
 protected:
-	static const word64 table[4*256+3];
+  static const word64 table[4*256+3];
 };
 
 NAMESPACE_END

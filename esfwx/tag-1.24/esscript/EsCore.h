@@ -4,15 +4,15 @@
 /// Reflected core && OS utilities subset
 ///
 ES_DECL_REFLECTED_SERVICES_BEGIN( EsCore )
-	/// Global logging wrappers
-	ES_DECL_REFLECTED_CLASS_METHOD1(void, logInfo, cr_EsString);
-	ES_DECL_REFLECTED_CLASS_METHOD2(void, logInfo, cr_EsString, cr_EsVariant);
-	ES_DECL_REFLECTED_CLASS_METHOD1(void, logDebug, cr_EsString);
-	ES_DECL_REFLECTED_CLASS_METHOD2(void, logDebug, cr_EsString, cr_EsVariant);
-	ES_DECL_REFLECTED_CLASS_METHOD1(void, logWarning, cr_EsString);
-	ES_DECL_REFLECTED_CLASS_METHOD2(void, logWarning, cr_EsString, cr_EsVariant);
-	ES_DECL_REFLECTED_CLASS_METHOD1(void, logError, cr_EsString);
-	ES_DECL_REFLECTED_CLASS_METHOD2(void, logError, cr_EsString, cr_EsVariant);
+  /// Global logging wrappers
+  ES_DECL_REFLECTED_CLASS_METHOD1(void, logInfo, cr_EsString);
+  ES_DECL_REFLECTED_CLASS_METHOD2(void, logInfo, cr_EsString, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD1(void, logDebug, cr_EsString);
+  ES_DECL_REFLECTED_CLASS_METHOD2(void, logDebug, cr_EsString, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD1(void, logWarning, cr_EsString);
+  ES_DECL_REFLECTED_CLASS_METHOD2(void, logWarning, cr_EsString, cr_EsVariant);
+  ES_DECL_REFLECTED_CLASS_METHOD1(void, logError, cr_EsString);
+  ES_DECL_REFLECTED_CLASS_METHOD2(void, logError, cr_EsString, cr_EsVariant);
 ES_DECL_REFLECTED_SERVICES_END
 
 ES_DECL_REFLECTED_SERVICES_BEGIN( EsUtils )

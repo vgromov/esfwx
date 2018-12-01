@@ -10,43 +10,43 @@ class EsString;
 class ESCORE_CLASS EsHashFNV_1a_32
 {
 public:
-	EsHashFNV_1a_32();
-	EsHashFNV_1a_32(const EsHashFNV_1a_32& src);
-	EsHashFNV_1a_32(const EsString& str);
-	EsHashFNV_1a_32(const EsByteString& bstr);
-	EsHashFNV_1a_32(const EsBinBuffer& buff);
+  EsHashFNV_1a_32();
+  EsHashFNV_1a_32(const EsHashFNV_1a_32& src);
+  EsHashFNV_1a_32(const EsString& str);
+  EsHashFNV_1a_32(const EsByteString& bstr);
+  EsHashFNV_1a_32(const EsBinBuffer& buff);
 
-	void update(const EsString& str) ES_NOTHROW;
-	void update(const EsByteString& bstr) ES_NOTHROW;
+  void update(const EsString& str) ES_NOTHROW;
+  void update(const EsByteString& bstr) ES_NOTHROW;
   void update(const EsBinBuffer& buff) ES_NOTHROW;
-	void reset() ES_NOTHROW;
-	esU32 get() const ES_NOTHROW { return m_hash; }
+  void reset() ES_NOTHROW;
+  esU32 get() const ES_NOTHROW { return m_hash; }
 
-	const EsHashFNV_1a_32& operator=(const EsHashFNV_1a_32& src) ES_NOTHROW;
+  const EsHashFNV_1a_32& operator=(const EsHashFNV_1a_32& src) ES_NOTHROW;
 
 protected:
-	esU32 m_hash;
+  esU32 m_hash;
 };
 
 class ESCORE_CLASS EsHashFNV_1a_64
 {
 public:
-	EsHashFNV_1a_64();
-	EsHashFNV_1a_64(const EsHashFNV_1a_64& src);
-	EsHashFNV_1a_64(const EsString& str);
-	EsHashFNV_1a_64(const EsByteString& str);
-	EsHashFNV_1a_64(const EsBinBuffer& buff);
+  EsHashFNV_1a_64();
+  EsHashFNV_1a_64(const EsHashFNV_1a_64& src);
+  EsHashFNV_1a_64(const EsString& str);
+  EsHashFNV_1a_64(const EsByteString& str);
+  EsHashFNV_1a_64(const EsBinBuffer& buff);
 
-	void update(const EsString& str) ES_NOTHROW;
-	void update(const EsByteString& bstr) ES_NOTHROW;
-	void update(const EsBinBuffer& buff) ES_NOTHROW;
-	void reset() ES_NOTHROW;
-	esU64 get() const ES_NOTHROW { return m_hash; }
+  void update(const EsString& str) ES_NOTHROW;
+  void update(const EsByteString& bstr) ES_NOTHROW;
+  void update(const EsBinBuffer& buff) ES_NOTHROW;
+  void reset() ES_NOTHROW;
+  esU64 get() const ES_NOTHROW { return m_hash; }
 
-	const EsHashFNV_1a_64& operator=(const EsHashFNV_1a_64& src) ES_NOTHROW;
+  const EsHashFNV_1a_64& operator=(const EsHashFNV_1a_64& src) ES_NOTHROW;
 
 protected:
-	esU64 m_hash;
+  esU64 m_hash;
 };
 //---------------------------------------------------------------------------
 
@@ -56,27 +56,27 @@ protected:
 template< typename FNV_T >
 struct FNV_Traits
 {
-	typedef FNV_T T;
-	static const T c_prime = 16777619;	// the prime number to initialize the generator
-	static const T c_init = 2166136261;// initial value
+  typedef FNV_T T;
+  static const T c_prime = 16777619;  // the prime number to initialize the generator
+  static const T c_init = 2166136261;// initial value
 };
 //---------------------------------------------------------------------------
 
 template<>
 struct FNV_Traits<esU32>
 {
-	typedef esU32 T;
-	static const T c_prime = 16777619;	// the prime number to initialize the generator
-	static const T c_init = 2166136261;// initial value
+  typedef esU32 T;
+  static const T c_prime = 16777619;  // the prime number to initialize the generator
+  static const T c_init = 2166136261;// initial value
 };
 //---------------------------------------------------------------------------
 
 template<>
 struct FNV_Traits<esU64>
 {
-	typedef esU64 T;
-	static const T c_prime = IMMEDIATE_UINT64(1099511628211);	// the prime number to initialize the generator
-	static const T c_init = IMMEDIATE_UINT64(14695981039346656037);// initial value
+  typedef esU64 T;
+  static const T c_prime = IMMEDIATE_UINT64(1099511628211);  // the prime number to initialize the generator
+  static const T c_init = IMMEDIATE_UINT64(14695981039346656037);// initial value
 };
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

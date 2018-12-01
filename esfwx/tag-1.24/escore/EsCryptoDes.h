@@ -7,19 +7,19 @@
 class ESCORE_CLASS EsCryptoDes
 {
 public:
-	EsCryptoDes(const EsBinBuffer& key, const EsBinBuffer& key1 = EsBinBuffer::null(), const EsBinBuffer& key2 = EsBinBuffer::null());
+  EsCryptoDes(const EsBinBuffer& key, const EsBinBuffer& key1 = EsBinBuffer::null(), const EsBinBuffer& key2 = EsBinBuffer::null());
 
-	void keySet(const EsBinBuffer& key);
-	const EsBinBuffer& keyGet() const ES_NOTHROW { return m_key; }
+  void keySet(const EsBinBuffer& key);
+  const EsBinBuffer& keyGet() const ES_NOTHROW { return m_key; }
 
-	void keySet1(const EsBinBuffer& key);
-	const EsBinBuffer& keyGet1() const ES_NOTHROW { return m_key1; }
+  void keySet1(const EsBinBuffer& key);
+  const EsBinBuffer& keyGet1() const ES_NOTHROW { return m_key1; }
 
-	void keySet2(const EsBinBuffer& key);
-	const EsBinBuffer& keyGet2() const ES_NOTHROW { return m_key2; }
+  void keySet2(const EsBinBuffer& key);
+  const EsBinBuffer& keyGet2() const ES_NOTHROW { return m_key2; }
 
-	void encode(EsBinBuffer& dest, const EsBinBuffer& src) const;
-	void decode(EsBinBuffer& dest, const EsBinBuffer& src) const;
+  void encode(EsBinBuffer& dest, const EsBinBuffer& src) const;
+  void decode(EsBinBuffer& dest, const EsBinBuffer& src) const;
 
   void process(EsBinBuffer& dest, const EsBinBuffer& src, bool doEncode = true) const;
 
@@ -38,13 +38,13 @@ public:
 private:
   static void keybufInit(EsBinBuffer& keybuf, EsBinBuffer& keyvar, const EsBinBuffer& key, int keyIdx);
 
-	void encode1(EsBinBuffer& dest, const EsBinBuffer& src) const;
-	void encode2(EsBinBuffer& dest, const EsBinBuffer& src) const;
-	void encode3(EsBinBuffer& dest, const EsBinBuffer& src) const;
+  void encode1(EsBinBuffer& dest, const EsBinBuffer& src) const;
+  void encode2(EsBinBuffer& dest, const EsBinBuffer& src) const;
+  void encode3(EsBinBuffer& dest, const EsBinBuffer& src) const;
 
-	void decode1(EsBinBuffer& dest, const EsBinBuffer& src) const;
-	void decode2(EsBinBuffer& dest, const EsBinBuffer& src) const;
-	void decode3(EsBinBuffer& dest, const EsBinBuffer& src) const;
+  void decode1(EsBinBuffer& dest, const EsBinBuffer& src) const;
+  void decode2(EsBinBuffer& dest, const EsBinBuffer& src) const;
+  void decode3(EsBinBuffer& dest, const EsBinBuffer& src) const;
 
 private:
   EsBinBuffer m_key;
@@ -53,8 +53,8 @@ private:
   EsBinBuffer m_keybuf;
 
 private:
-	EsCryptoDes() ES_REMOVEDECL;
-	EsCryptoDes(const EsCryptoDes&) ES_REMOVEDECL;
+  EsCryptoDes() ES_REMOVEDECL;
+  EsCryptoDes(const EsCryptoDes&) ES_REMOVEDECL;
   EsCryptoDes& operator=(const EsCryptoDes&) ES_REMOVEDECL;
 };
 

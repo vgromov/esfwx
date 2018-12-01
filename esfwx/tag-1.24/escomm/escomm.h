@@ -2,26 +2,26 @@
 #define _es_comm_h_
 
 #ifndef _es_core_h_
-#	error "escore.h must be included prior to this header!"
+#  error "escore.h must be included prior to this header!"
 #endif
 
 // Communication stuff
 //
 // core export-import defines
 #ifdef ES_DYNAMIC_LINKAGE
-#	ifdef ESCOMM_EXPORTS
-#		define ESCOMM_CLASS	            ES_EXPORT_SPEC
-#		define ESCOMM_FUNC(type, decl)	ES_FUNCEXPORT_SPEC(type, decl)
-#		define ESCOMM_DATA(type, decl)	ES_DATAEXPORT_SPEC(type, decl)
-#	else
-#		define ESCOMM_CLASS	            ES_IMPORT_SPEC
-#		define ESCOMM_FUNC(type, decl)	ES_FUNCIMPORT_SPEC(type, decl)
-#		define ESCOMM_DATA(type, decl)	ES_DATAIMPORT_SPEC(type, decl)
-#	endif
+#  ifdef ESCOMM_EXPORTS
+#    define ESCOMM_CLASS              ES_EXPORT_SPEC
+#    define ESCOMM_FUNC(type, decl)  ES_FUNCEXPORT_SPEC(type, decl)
+#    define ESCOMM_DATA(type, decl)  ES_DATAEXPORT_SPEC(type, decl)
+#  else
+#    define ESCOMM_CLASS              ES_IMPORT_SPEC
+#    define ESCOMM_FUNC(type, decl)  ES_FUNCIMPORT_SPEC(type, decl)
+#    define ESCOMM_DATA(type, decl)  ES_DATAIMPORT_SPEC(type, decl)
+#  endif
 #else
-#	define ESCOMM_CLASS
-#	define ESCOMM_FUNC(type, decl)    type decl
-#	define ESCOMM_DATA(type, decl)    type decl
+#  define ESCOMM_CLASS
+#  define ESCOMM_FUNC(type, decl)    type decl
+#  define ESCOMM_DATA(type, decl)    type decl
 #endif
 
 // Comm library configuration

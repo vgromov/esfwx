@@ -33,7 +33,7 @@ extern "C" {
 //!   external "C++" linkage.
 //! \sa SignalHandler, SignalHandlerFn
 extern "C" {
-	inline void NullSignalHandler(int unused) {CRYPTOPP_UNUSED(unused);}
+  inline void NullSignalHandler(int unused) {CRYPTOPP_UNUSED(unused);}
 };
 
 //! Signal handler for Linux and Unix compatibles

@@ -15,56 +15,59 @@
 class ES_INTF_IMPL1(EsScriptValAccessor, EsScriptValAccessorIntf)
 
 protected:
-	// friend-only functionality
-	EsScriptValAccessor(const EsString& name, const EsVariant& var, ulong flags, EsScriptObjectIntf* parent);
-	static EsScriptValAccessorIntf::Ptr create(const EsString& name, const EsVariant& var, ulong flags, EsScriptObjectIntf* parent/* = 0*/)
-	{
-		return EsScriptValAccessorIntf::Ptr(new EsScriptValAccessor(name, var, flags, parent));
-	}
+  // friend-only functionality
+  EsScriptValAccessor(const EsString& name, const EsVariant& var, ulong flags, EsScriptObjectIntf* parent);
+  static EsScriptValAccessorIntf::Ptr create(const EsString& name, const EsVariant& var, ulong flags, EsScriptObjectIntf* parent/* = 0*/)
+  {
+    EsScriptValAccessorIntf::Ptr ptr(new EsScriptValAccessor(name, var, flags, parent));
+    ES_ASSERT(ptr);
+
+    return ptr;
+  }
 
 public:
-	virtual ~EsScriptValAccessor();
-	// EsBaseIntf override
-	//
-	ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW
-	{
-		return classNameGet();
-	}
+  virtual ~EsScriptValAccessor();
+  // EsBaseIntf override
+  //
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW
+  {
+    return classNameGet();
+  }
 
-	// interface impl
-	ES_DECL_INTF_METHOD(EsVariant&, get)();
-	ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW { return false; }
-	ES_DECL_INTF_METHOD(void, set)(const EsVariant& val);
-	ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW { return true; }
-	ES_DECL_INTF_METHOD(EsString, trace)() const;
-	ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW { return EsScriptSymbolFlag::ReadOnly == (m_flags & EsScriptSymbolFlag::ReadOnly); }
-	ES_DECL_INTF_METHOD(bool, isBuiltIn)() const ES_NOTHROW { return EsScriptSymbolFlag::BuiltIn == (m_flags & EsScriptSymbolFlag::BuiltIn); }
-	ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_NOTHROW { return m_flags; }
-	ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_NOTHROW { return m_name; }
-	// add object value update subscriber
-	ES_DECL_INTF_METHOD(void, updateSubscriberAdd)(EsScriptObjectIntf* subscriber)
-	{
-		ES_ASSERT(m_parent);
-		ES_ASSERT(subscriber);
-		if( m_updateSubscribers.end() == std::find(m_updateSubscribers.begin(), m_updateSubscribers.end(), subscriber) )
-		{
-			m_updateSubscribers.push_back(subscriber);
-			ESSCRIPT_OBJECT_TRACE3(esT("Update subscriber '%s' added to value accesor '%s'"), subscriber->typeNameGet().c_str(), m_name.c_str())
-		}
-	}
+  // interface impl
+  ES_DECL_INTF_METHOD(EsVariant&, get)();
+  ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW { return false; }
+  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val);
+  ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW { return true; }
+  ES_DECL_INTF_METHOD(EsString, trace)() const;
+  ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW { return EsScriptSymbolFlag::ReadOnly == (m_flags & EsScriptSymbolFlag::ReadOnly); }
+  ES_DECL_INTF_METHOD(bool, isBuiltIn)() const ES_NOTHROW { return EsScriptSymbolFlag::BuiltIn == (m_flags & EsScriptSymbolFlag::BuiltIn); }
+  ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_NOTHROW { return m_flags; }
+  ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_NOTHROW { return m_name; }
+  // add object value update subscriber
+  ES_DECL_INTF_METHOD(void, updateSubscriberAdd)(EsScriptObjectIntf* subscriber)
+  {
+    ES_ASSERT(m_parent);
+    ES_ASSERT(subscriber);
+    if( m_updateSubscribers.end() == std::find(m_updateSubscribers.begin(), m_updateSubscribers.end(), subscriber) )
+    {
+      m_updateSubscribers.push_back(subscriber);
+      ESSCRIPT_OBJECT_TRACE3(esT("Update subscriber '%s' added to value accesor '%s'"), subscriber->typeNameGet().c_str(), m_name.c_str())
+    }
+  }
 
 protected:
-	// data members
-	EsScriptObjectIntf* m_parent;
-	ulong m_flags;
-	EsVariant m_val;
-	EsString m_name;
-	// list of weak references to update subscribers
-	EsScriptObjectIntf::WeakPtrList m_updateSubscribers;
+  // data members
+  EsScriptObjectIntf* m_parent;
+  ulong m_flags;
+  EsVariant m_val;
+  EsString m_name;
+  // list of weak references to update subscribers
+  EsScriptObjectIntf::WeakPtrList m_updateSubscribers;
 
-	friend class EsScriptSymbolTable;
-	friend class EsScriptCodeSection;
-	friend class EsScriptObject;
+  friend class EsScriptSymbolTable;
+  friend class EsScriptCodeSection;
+  friend class EsScriptObject;
 };
 
 // values
@@ -75,30 +78,30 @@ m_flags(flags),
 m_val(val),
 m_name(name)
 {
-	m_dynamic = true;
+  m_dynamic = true;
 
-	ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
-	ESSCRIPT_VALACCESS_TRACE4(
+  ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
+  ESSCRIPT_VALACCESS_TRACE4(
     esT("EsScriptValAccessor (%s %p) created with '%s'"),
-		m_name,
-		EsVariant(
+    m_name,
+    EsVariant(
       this,
       EsVariant::ACCEPT_POINTER
     ),
-		EsScriptMachine::traceVariant(m_val)
+    EsScriptMachine::traceVariant(m_val)
   )
 }
 
 EsScriptValAccessor::~EsScriptValAccessor()
 {
-	ESSCRIPT_VALACCESS_TRACE4(
+  ESSCRIPT_VALACCESS_TRACE4(
     esT("EsScriptValAccessor (%s %p) deleted (had '%s')"),
-		m_name,
+    m_name,
     EsVariant(
       this,
       EsVariant::ACCEPT_POINTER
     ),
-		EsScriptMachine::traceVariant(m_val)
+    EsScriptMachine::traceVariant(m_val)
   )
 }
 //---------------------------------------------------------------------------
@@ -106,42 +109,42 @@ EsScriptValAccessor::~EsScriptValAccessor()
 // interface impl
 ES_IMPL_INTF_METHOD(EsVariant&, EsScriptValAccessor::get)()
 {
-	ESSCRIPT_MACHINE_TRACE3(
+  ESSCRIPT_MACHINE_TRACE3(
     esT("EsScriptValAccessor %s::get()='%s'"),
-		m_name,
-		EsScriptMachine::traceVariant(m_val)
+    m_name,
+    EsScriptMachine::traceVariant(m_val)
   )
 
-	return m_val;
+  return m_val;
 }
 //---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(void, EsScriptValAccessor::set)(const EsVariant& val)
 {
-	ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
+  ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
 
-	if( isReadOnly() )
-		EsScriptException::ThrowPerformingOperationOnReadOnly(esT("set"));
+  if( isReadOnly() )
+    EsScriptException::ThrowPerformingOperationOnReadOnly(esT("set"));
 
-	ESSCRIPT_MACHINE_TRACE4(esT("EsScriptValAccessor %s::set('%s') (was '%s')"),
-		m_name,
-		EsScriptMachine::traceVariant(val),
-		EsScriptMachine::traceVariant(m_val)
+  ESSCRIPT_MACHINE_TRACE4(esT("EsScriptValAccessor %s::set('%s') (was '%s')"),
+    m_name,
+    EsScriptMachine::traceVariant(val),
+    EsScriptMachine::traceVariant(m_val)
   )
 
-	m_val = val;
+  m_val = val;
 
-	// notify parent of data change
-	if( m_parent )
-		m_parent->publishDataChanged(m_updateSubscribers);
+  // notify parent of data change
+  if( m_parent )
+    m_parent->publishDataChanged(m_updateSubscribers);
 }
 
 ES_IMPL_INTF_METHOD(EsString, EsScriptValAccessor::trace)() const
 {
-	return EsString::format(
+  return EsString::format(
     esT("EsScriptValAccessor '%s' has '%s'"),
-		m_name,
-		EsScriptMachine::traceVariant(m_val)
+    m_name,
+    EsScriptMachine::traceVariant(m_val)
   );
 }
 //--------------------------------------------------------------------------
@@ -157,7 +160,7 @@ m_template(true)
 EsScriptSymbolTable::EsScriptSymbolTable(const EsScriptSymbolTable& src, EsScriptObjectIntf* parent/* = 0*/) :
 m_contents( EsStringIndexedMap::ContainerWithoutInterlock)
 {
-	clone(src, parent);
+  clone(src, parent);
 }
 
 EsScriptSymbolTable::~EsScriptSymbolTable() ES_NOTHROW
@@ -173,88 +176,88 @@ const EsScriptValAccessorIntf::Ptr& EsScriptSymbolTable::null() ES_NOTHROW
 
 void EsScriptSymbolTable::clone(const EsScriptSymbolTable& src, EsScriptObjectIntf* parent/* = nullptr*/)
 {
-	ES_ASSERT(src.isTemplate());
+  ES_ASSERT(src.isTemplate());
 
   m_contents.clear();
-	m_checkTemplate = src.m_checkTemplate;
-	m_template = false;
+  m_checkTemplate = src.m_checkTemplate;
+  m_template = false;
 
-	for( ulong idx = 0; idx < src.m_contents.countGet(); ++idx )
-	{
-		const EsString& name = src.m_contents.nameGet(idx);
-		ulong flags = src.m_contents.valueGet(idx).doInterpretAsVariantCollection()[1].asULong();
+  for( ulong idx = 0; idx < src.m_contents.countGet(); ++idx )
+  {
+    const EsString& name = src.m_contents.nameGet(idx);
+    ulong flags = src.m_contents.valueGet(idx).doInterpretAsVariantCollection()[1].asULong();
 
-		EsScriptValAccessorIntf::Ptr acc = EsScriptValAccessor::create(
+    EsScriptValAccessorIntf::Ptr acc = EsScriptValAccessor::create(
       name,
       EsVariant::null(),
       flags,
       parent
     );
 
-		EsVariant val(EsVariant::VAR_VARIANT_COLLECTION);
-		val.addToVariantCollection(acc)
-			.addToVariantCollection(flags);
+    EsVariant val(EsVariant::VAR_VARIANT_COLLECTION);
+    val.addToVariantCollection(acc)
+      .addToVariantCollection(flags);
 
-		m_contents.itemAdd(
+    m_contents.itemAdd(
       name,
       val
     );
-	}
+  }
 }
 
 EsStringArray EsScriptSymbolTable::allSymbolNamesGet(bool includeBuiltIns /*= true*/) const ES_NOTHROW
 {
-	EsStringArray a;
-	a.reserve( m_contents.countGet() );
-	for( ulong idx = 0; idx < m_contents.countGet(); ++idx )
-	{
-		ulong flags = m_contents.valueGet(idx).doInterpretAsVariantCollection()[1].asULong();
-		if(
+  EsStringArray a;
+  a.reserve( m_contents.countGet() );
+  for( ulong idx = 0; idx < m_contents.countGet(); ++idx )
+  {
+    ulong flags = m_contents.valueGet(idx).doInterpretAsVariantCollection()[1].asULong();
+    if(
       !includeBuiltIns &&
-			(flags & EsScriptSymbolFlag::BuiltIn)
+      (flags & EsScriptSymbolFlag::BuiltIn)
     )
-			continue;
+      continue;
 
-		const EsString& name = m_contents.nameGet(idx);
-		a.push_back(name);
-	}
+    const EsString& name = m_contents.nameGet(idx);
+    a.push_back(name);
+  }
 
-	return a;
+  return a;
 }
 
 // symbol container implementation
 bool EsScriptSymbolTable::isSymbolBuiltIn(const EsString& name) const
 {
-	ulong flags = m_contents.valueGet(name).doInterpretAsVariantCollection()[1].asULong();
-	return flags & EsScriptSymbolFlag::BuiltIn;
+  ulong flags = m_contents.valueGet(name).doInterpretAsVariantCollection()[1].asULong();
+  return flags & EsScriptSymbolFlag::BuiltIn;
 
-	return false; // pacify compilers
+  return false; // pacify compilers
 }
 
 const EsString& EsScriptSymbolTable::findFirstSymbolWithVal(const EsVariant& val) const ES_NOTHROW
 {
-	for( ulong idx = 0; idx < m_contents.countGet(); ++idx )
-	{
-		const EsScriptValAccessorIntf::Ptr& acc = m_contents.valueGet(idx).doInterpretAsVariantCollection()[0].asExistingObject();
-		const EsVariant& other = acc->get();
+  for( ulong idx = 0; idx < m_contents.countGet(); ++idx )
+  {
+    const EsScriptValAccessorIntf::Ptr& acc = m_contents.valueGet(idx).doInterpretAsVariantCollection()[0].asExistingObject();
+    const EsVariant& other = acc->get();
 
-		if(
+    if(
       (val.isEmpty() && other.isEmpty()) ||
-			(!val.isEmpty() && !other.isEmpty() && val.typeGet() == other.typeGet() && val == other)
+      (!val.isEmpty() && !other.isEmpty() && val.typeGet() == other.typeGet() && val == other)
     )
-			return m_contents.nameGet(idx);
-	}
+      return m_contents.nameGet(idx);
+  }
 
-	return EsString::null();
+  return EsString::null();
 }
 
 void EsScriptSymbolTable::symbolTemplateAdd(const EsString& name, ulong flags,
-																		const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/)
+                                    const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/)
 {
-	checkTemplateOperation();
+  checkTemplateOperation();
 
-	if( m_contents.itemExists(name) )
-		EsScriptException::Throw(
+  if( m_contents.itemExists(name) )
+    EsScriptException::Throw(
       EsString::format(
         esT("Symbol '%s' is already declared"),
         name
@@ -262,24 +265,24 @@ void EsScriptSymbolTable::symbolTemplateAdd(const EsString& name, ulong flags,
       dbg
     );
 
-	// Add slot with empty accessor
-	EsVariant::Array v = {
+  // Add slot with empty accessor
+  EsVariant::Array v = {
     EsScriptValAccessorIntf::Ptr(),
-		flags
+    flags
   };
 
-	m_contents.itemAdd(
+  m_contents.itemAdd(
     name,
     v
   );
 }
 
 EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::symbolNonTemplateAdd(const EsString& name, const EsVariant& val, ulong flags,
-																		const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/)
+                                    const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/)
 {
-	checkNonTemplateOperation();
-	if( m_contents.itemExists(name) )
-		EsScriptException::Throw(
+  checkNonTemplateOperation();
+  if( m_contents.itemExists(name) )
+    EsScriptException::Throw(
       EsString::format(
         esT("Symbol '%s' is already declared"),
         name
@@ -287,26 +290,26 @@ EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::symbolNonTemplateAdd(const EsS
       dbg
     );
 
-	EsScriptValAccessorIntf::Ptr result = valAccessorCreate(
+  EsScriptValAccessorIntf::Ptr result = valAccessorCreate(
     name,
     val,
     flags
   );
-	ES_ASSERT(result);
+  ES_ASSERT(result);
 
-	accessorAdd( result );
+  accessorAdd( result );
 
-	return result;
+  return result;
 }
 
 void EsScriptSymbolTable::accessorAdd(const EsScriptValAccessorIntf::Ptr& acc)
 {
-	EsVariant::Array v = {
-	  acc,
-		acc->flagsGet()
+  EsVariant::Array v = {
+    acc,
+    acc->flagsGet()
   };
 
-	m_contents.itemAdd(
+  m_contents.itemAdd(
     acc->nameGet(),
     v
   );
@@ -314,28 +317,28 @@ void EsScriptSymbolTable::accessorAdd(const EsScriptValAccessorIntf::Ptr& acc)
 
 ulong EsScriptSymbolTable::symbolFlagsGet(const EsString& name) const
 {
-	return m_contents.valueGet(name).doInterpretAsVariantCollection()[1].asULong();
+  return m_contents.valueGet(name).doInterpretAsVariantCollection()[1].asULong();
 }
 
 EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::symbolFind(const EsString& name, bool& found) const ES_NOTHROW
 {
-	ulong idx = m_contents.itemFind(name);
-	found = (EsStringIndexedMap::npos != idx);
+  ulong idx = m_contents.itemFind(name);
+  found = (EsStringIndexedMap::npos != idx);
 
   if( found )
     return m_contents.valueGet( idx ).doInterpretAsVariantCollection()[0].asObject();
 
-	return null();
+  return null();
 }
 
 EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::symbolGet(const EsString& name, bool doThrow) const
 {
-	checkNonTemplateOperation();
-	bool found;
-	const EsScriptValAccessorIntf::Ptr& sym = symbolFind(name, found);
+  checkNonTemplateOperation();
+  bool found;
+  const EsScriptValAccessorIntf::Ptr& sym = symbolFind(name, found);
 
-	if( found )
-	{
+  if( found )
+  {
 #ifdef ES_DEBUG
     if( name != sym->nameGet() )
     {
@@ -346,68 +349,68 @@ EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::symbolGet(const EsString& name
       );
     }
 #endif
-		ES_ASSERT(name == sym->nameGet());
+    ES_ASSERT(name == sym->nameGet());
 
-		return sym;
-	}
-	else if( doThrow )
-		EsScriptException::Throw(
+    return sym;
+  }
+  else if( doThrow )
+    EsScriptException::Throw(
       EsString::format(
         esT("Symbol '%s' was not found"),
         name
       )
     );
 
-	return null();
+  return null();
 }
 
 void EsScriptSymbolTable::symbolValSet(const EsString& name, const EsVariant& val)
 {
-	const EsScriptValAccessorIntf::Ptr& sym = symbolGet(name, true);
-	if( !sym )
-		EsScriptException::Throw(
+  const EsScriptValAccessorIntf::Ptr& sym = symbolGet(name, true);
+  if( !sym )
+    EsScriptException::Throw(
       EsString::format(
         esT("Symbol '%s' was not initialized"),
         name
       )
     );
 
-	sym->set(val);
+  sym->set(val);
 }
 
 void EsScriptSymbolTable::symbolValSetIgnoreReadOnly(const EsString& name, const EsVariant& val)
 {
-	const EsScriptValAccessorIntf::Ptr& sym = symbolGet(name, true);
-	if( !sym )
-		EsScriptException::Throw(
+  const EsScriptValAccessorIntf::Ptr& sym = symbolGet(name, true);
+  if( !sym )
+    EsScriptException::Throw(
       EsString::format(
         esT("Symbol '%s' was not initialized"),
         name
       )
     );
 
-	ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
+  ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
 
-	EsScriptValAccessor* pval = ES_INTFPTR_TO_OBJECTPTR(sym, EsScriptValAccessor);
-	ES_ASSERT(pval);
+  EsScriptValAccessor* pval = ES_INTFPTR_TO_OBJECTPTR(sym, EsScriptValAccessor);
+  ES_ASSERT(pval);
 
-	pval->m_val = val;
+  pval->m_val = val;
 }
 
 EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::valAccessorCreate(const EsString& name, const EsVariant& val, ulong flags)
 {
-	return EsScriptValAccessor::create(name, val, flags, 0);
+  return EsScriptValAccessor::create(name, val, flags, 0);
 }
 
 // internal services
 void EsScriptSymbolTable::checkTemplateOperation() const
 {
-	if( m_checkTemplate && !m_template )
-		EsScriptException::Throw( esT("Operation only allowed on symbol table template") );
+  if( m_checkTemplate && !m_template )
+    EsScriptException::Throw( esT("Operation only allowed on symbol table template") );
 }
 
 void EsScriptSymbolTable::checkNonTemplateOperation() const
 {
-	if( m_checkTemplate && m_template )
-		EsScriptException::Throw( esT("Operation only allowed on non template symbol table") );
+  if( m_checkTemplate && m_template )
+    EsScriptException::Throw( esT("Operation only allowed on non template symbol table") );
 }

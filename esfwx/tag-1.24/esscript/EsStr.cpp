@@ -16,63 +16,63 @@ ES_DECL_ENUMERATION_INFO(EsStrByteEncoding, esT("String byte encoding types"));
 //---------------------------------------------------------------------------
 
 ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsStr, NO_CLASS_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, formatV, EsString_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, format, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, formatV, EsString_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
 
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformatV, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformat, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, lformatV, EsString_ClassCall_cr_EsString_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
 
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, isHexChar, bool_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromString, EsString_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toString, EsString_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toLower, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toUpper, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toByteString, EsBinBuffer_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromByteString, EsString_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toByteString, EsBinBuffer_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromByteString, EsString_ClassCall_cr_EsBinBuffer_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, hexToBinNibble, long_ClassCall_long, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, isHexChar, bool_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromString, EsString_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toString, EsString_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toLower, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toUpper, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toByteString, EsBinBuffer_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromByteString, EsString_ClassCall_cr_EsBinBuffer, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toByteString, EsBinBuffer_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromByteString, EsString_ClassCall_cr_EsBinBuffer_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, hexToBinNibble, long_ClassCall_long, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, hexToBin, EsVariant_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, hexToBin, EsVariant_ClassCall_cr_EsVariant_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, compare, long_ClassCall_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromArray, EsString_ClassCall_cr_EsStringArray_cr_EsString_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, compare, long_ClassCall_cr_EsString_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromArray, EsString_ClassCall_cr_EsStringArray_cr_EsString_cr_EsString_cr_EsString, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, versionsCompare, EsVariant_ClassCall_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromLong, EsString_ClassCall_long_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toLong, long_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromULong, EsString_ClassCall_ulong_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toULong, ulong_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromInt64, EsString_ClassCall_llong_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toInt64, llong_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromUInt64, EsString_ClassCall_ullong_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toUInt64, ullong_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromDouble, EsString_ClassCall_double, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toDouble, double_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toLong, long_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromULong, EsString_ClassCall_ulong_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toULong, ulong_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromInt64, EsString_ClassCall_llong_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toInt64, llong_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromUInt64, EsString_ClassCall_ullong_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toUInt64, ullong_ClassCall_cr_EsString_ulong, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, fromDouble, EsString_ClassCall_double, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, toDouble, double_ClassCall_cr_EsString, NO_METHOD_DESCR)
 
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, defaultLocaleIdGet, EsString_ClassCall, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, defaultLocaleIdSet, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, defaultLocaleIdGet, EsString_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, defaultLocaleIdSet, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, localeIdsGet, EsStringArray_ClassCall, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, localeIdGet, EsString_ClassCall, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, localeIdSet, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, languageCodeGet, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, countryCodeGet, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, languageNameGet, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, nativeLanguageNameGet, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, translationDomainsGet, EsStringArray_ClassCall, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, translate, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, languageCodeGet, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, countryCodeGet, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, languageNameGet, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, nativeLanguageNameGet, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, translationDomainsGet, EsStringArray_ClassCall, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, translate, EsString_ClassCall_cr_EsString, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, translate, EsString_ClassCall_cr_EsString_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, translatePlural, EsString_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, translatePlural, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, translatePlural, EsString_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, translatePlural, EsString_ClassCall_cr_EsString_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, osLanguageIdGet, EsString_ClassCall, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, osCountryIdGet, EsString_ClassCall, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsStr, osLocaleIdGet, EsString_ClassCall, NO_METHOD_DESCR)
@@ -103,7 +103,7 @@ ES_DECL_REFLECTED_SERVICES_INFO_END
 
 EsString EsStr::format(const EsString& fmt)
 {
-	return EsString::format(fmt.c_str());
+  return EsString::format(fmt.c_str());
 }
 //---------------------------------------------------------------------------
 
@@ -162,7 +162,7 @@ EsString EsStr::formatV(const EsString& fmt, const EsVariant& args)
 
 EsString EsStr::lformat(const EsString& loc, const EsString& fmt)
 {
-	return EsString::format(EsLocale::locale(loc, true), fmt.c_str());
+  return EsString::format(EsLocale::locale(loc, true), fmt.c_str());
 }
 //---------------------------------------------------------------------------
 
@@ -218,35 +218,35 @@ EsString EsStr::lformatV(const EsString& loc, const EsString& fmt, const EsVaria
 
 bool EsStr::isHexChar(cr_EsVariant ch)
 {
-	return EsString::isHexChar(ch.asChar());
+  return EsString::isHexChar(ch.asChar());
 }
 
 EsString EsStr::fromString(const EsString& src, ulong flags)
 {
-	return EsString::fromString(src, flags);
+  return EsString::fromString(src, flags);
 }
 
 EsString EsStr::toString(const EsString& src, ulong flags)
 {
-	return EsString::toString(src, flags);
+  return EsString::toString(src, flags);
 }
 
 EsString EsStr::toLower(const EsString& src)
 {
-	return EsString::toLower(src);
+  return EsString::toLower(src);
 }
 
 EsString EsStr::toUpper(const EsString& src)
 {
-	return EsString::toUpper(src);
+  return EsString::toUpper(src);
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
 EsBinBuffer EsStr::toByteString(cr_EsString src)
 {
-	const EsByteString& bs = EsString::toAscii(src);
-	return EsBinBuffer(bs.begin(), bs.end());
+  const EsByteString& bs = EsString::toAscii(src);
+  return EsBinBuffer(bs.begin(), bs.end());
 }
 //---------------------------------------------------------------------------
 
@@ -257,7 +257,7 @@ EsString EsStr::fromByteString(cr_EsBinBuffer src)
 
   EsByteString::const_pointer csrc = reinterpret_cast<EsByteString::const_pointer>(src.data());
 
-	return EsString::fromAscii(
+  return EsString::fromAscii(
     csrc,
     esBstrnlen(csrc, src.size())
   );
@@ -269,9 +269,9 @@ EsBinBuffer EsStr::toByteString(cr_EsString src, ulong encoding)
   if( src.empty() )
     return EsBinBuffer::null();
 
-	const EsByteString& bs = EsString::toByteString(src, encoding);
+  const EsByteString& bs = EsString::toByteString(src, encoding);
 
-	return EsBinBuffer(
+  return EsBinBuffer(
     bs.begin(),
     bs.end()
   );
@@ -285,23 +285,23 @@ EsString EsStr::fromByteString(cr_EsBinBuffer src, ulong encoding)
 
   EsByteString::const_pointer csrc = reinterpret_cast<EsByteString::const_pointer>(src.data());
 
-	EsByteString bs(
+  EsByteString bs(
     csrc,
     esBstrnlen(csrc, src.size())
   );
 
-	return EsString::fromByteString(bs, encoding);
+  return EsString::fromByteString(bs, encoding);
 }
 //---------------------------------------------------------------------------
 
 long EsStr::hexToBinNibble(long ch)
 {
-	esU8 nibble = 0;
-	if( !EsString::hexToBinNibble(ch, nibble) )
-		EsException::Throw(0, EsException::severityGeneric, EsException::facilityEsScript,
-			esT("Invalid hex character encountered: '%c'"), ch);
+  esU8 nibble = 0;
+  if( !EsString::hexToBinNibble(ch, nibble) )
+    EsException::Throw(0, EsException::severityGeneric, EsException::facilityEsScript,
+      esT("Invalid hex character encountered: '%c'"), ch);
 
-	return nibble;
+  return nibble;
 }
 //---------------------------------------------------------------------------
 
@@ -380,13 +380,13 @@ EsVariant EsStr::hexToBin(cr_EsVariant hex, cr_EsVariant offs, cr_EsVariant cnt)
 
 long EsStr::compare(cr_EsString _1, cr_EsString _2)
 {
-	return _1.compare(_2);
+  return _1.compare(_2);
 }
 //---------------------------------------------------------------------------
 
 EsString EsStr::fromArray(cr_EsStringArray a, cr_EsString delimiter, cr_EsString leftEnclosure, cr_EsString rightEnclosure)
 {
-	return EsString::fromStringArray(a, delimiter, leftEnclosure, rightEnclosure);
+  return EsString::fromStringArray(a, delimiter, leftEnclosure, rightEnclosure);
 }
 //---------------------------------------------------------------------------
 

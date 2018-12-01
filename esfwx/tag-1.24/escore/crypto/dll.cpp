@@ -46,7 +46,7 @@ template<> const byte EMSA2HashId<SHA256>::id = 0x34;
 template<> const byte EMSA2HashId<SHA384>::id = 0x36;
 template<> const byte EMSA2HashId<SHA512>::id = 0x35;
 
-#endif	// CRYPTOPP_IS_DLL
+#endif  // CRYPTOPP_IS_DLL
 
 NAMESPACE_END
 
@@ -65,11 +65,11 @@ static PDelete s_pDelete = NULL;
 
 static void * New (size_t size)
 {
-	void *p;
-	while ((p = malloc(size)) == NULL)
-		CallNewHandler();
+  void *p;
+  while ((p = malloc(size)) == NULL)
+    CallNewHandler();
 
-	return p;
+  return p;
 }
 
 // Cast from FARPROC to funcptr with args, http://stackoverflow.com/q/4192058/608639
@@ -77,62 +77,62 @@ static void * New (size_t size)
 
 static void SetNewAndDeleteFunctionPointers()
 {
-	void *p = NULL;
-	HMODULE hModule = NULL;
-	MEMORY_BASIC_INFORMATION mbi;
+  void *p = NULL;
+  HMODULE hModule = NULL;
+  MEMORY_BASIC_INFORMATION mbi;
 
-	while (true)
-	{
-		VirtualQuery(p, &mbi, sizeof(mbi));
+  while (true)
+  {
+    VirtualQuery(p, &mbi, sizeof(mbi));
 
-		if (p >= (char *)mbi.BaseAddress + mbi.RegionSize)
-			break;
+    if (p >= (char *)mbi.BaseAddress + mbi.RegionSize)
+      break;
 
-		p = (char *)mbi.BaseAddress + mbi.RegionSize;
+    p = (char *)mbi.BaseAddress + mbi.RegionSize;
 
-		if (!mbi.AllocationBase || mbi.AllocationBase == hModule)
-			continue;
+    if (!mbi.AllocationBase || mbi.AllocationBase == hModule)
+      continue;
 
-		hModule = HMODULE(mbi.AllocationBase);
-		PGetNewAndDelete pGetNewAndDelete = (PGetNewAndDelete)GetProcAddress(hModule, "GetNewAndDeleteForCryptoPP");
-		if (pGetNewAndDelete)
-		{
-			pGetNewAndDelete(s_pNew, s_pDelete);
-			return;
-		}
+    hModule = HMODULE(mbi.AllocationBase);
+    PGetNewAndDelete pGetNewAndDelete = (PGetNewAndDelete)GetProcAddress(hModule, "GetNewAndDeleteForCryptoPP");
+    if (pGetNewAndDelete)
+    {
+      pGetNewAndDelete(s_pNew, s_pDelete);
+      return;
+    }
 
-		PSetNewAndDelete pSetNewAndDelete = (PSetNewAndDelete)GetProcAddress(hModule, "SetNewAndDeleteFromCryptoPP");
-		if (pSetNewAndDelete)
-		{
-			s_pNew = &New;
-			s_pDelete = &free;
-			pSetNewAndDelete(s_pNew, s_pDelete, &set_new_handler);
-			return;
-		}
-	}
+    PSetNewAndDelete pSetNewAndDelete = (PSetNewAndDelete)GetProcAddress(hModule, "SetNewAndDeleteFromCryptoPP");
+    if (pSetNewAndDelete)
+    {
+      s_pNew = &New;
+      s_pDelete = &free;
+      pSetNewAndDelete(s_pNew, s_pDelete, &set_new_handler);
+      return;
+    }
+  }
 
-	// try getting these directly using mangled names of new and delete operators
+  // try getting these directly using mangled names of new and delete operators
 
-	hModule = GetModuleHandle("msvcrtd");
-	if (!hModule)
-		hModule = GetModuleHandle("msvcrt");
-	if (hModule)
-	{
-		// 32-bit versions
-		s_pNew = (PNew)GetProcAddress(hModule, "??2@YAPAXI@Z");
-		s_pDelete = (PDelete)GetProcAddress(hModule, "??3@YAXPAX@Z");
-		if (s_pNew && s_pDelete)
-			return;
+  hModule = GetModuleHandle("msvcrtd");
+  if (!hModule)
+    hModule = GetModuleHandle("msvcrt");
+  if (hModule)
+  {
+    // 32-bit versions
+    s_pNew = (PNew)GetProcAddress(hModule, "??2@YAPAXI@Z");
+    s_pDelete = (PDelete)GetProcAddress(hModule, "??3@YAXPAX@Z");
+    if (s_pNew && s_pDelete)
+      return;
 
-		// 64-bit versions
-		s_pNew = (PNew)GetProcAddress(hModule, "??2@YAPEAX_K@Z");
-		s_pDelete = (PDelete)GetProcAddress(hModule, "??3@YAXPEAX@Z");
-		if (s_pNew && s_pDelete)
-			return;
-	}
+    // 64-bit versions
+    s_pNew = (PNew)GetProcAddress(hModule, "??2@YAPEAX_K@Z");
+    s_pDelete = (PDelete)GetProcAddress(hModule, "??3@YAXPEAX@Z");
+    if (s_pNew && s_pDelete)
+      return;
+  }
 
-	OutputDebugString("Crypto++ DLL was not able to obtain new and delete function pointers.\n");
-	throw 0;
+  OutputDebugString("Crypto++ DLL was not able to obtain new and delete function pointers.\n");
+  throw 0;
 }
 
 // Cast from FARPROC to funcptr with args
@@ -140,25 +140,25 @@ static void SetNewAndDeleteFunctionPointers()
 
 void * operator new (size_t size)
 {
-	if (!s_pNew)
-		SetNewAndDeleteFunctionPointers();
+  if (!s_pNew)
+    SetNewAndDeleteFunctionPointers();
 
-	return s_pNew(size);
+  return s_pNew(size);
 }
 
 void operator delete (void * p)
 {
-	s_pDelete(p);
+  s_pDelete(p);
 }
 
 void * operator new [] (size_t size)
 {
-	return operator new (size);
+  return operator new (size);
 }
 
 void operator delete [] (void * p)
 {
-	operator delete (p);
+  operator delete (p);
 }
 
-#endif	// #ifdef CRYPTOPP_EXPORTS
+#endif  // #ifdef CRYPTOPP_EXPORTS

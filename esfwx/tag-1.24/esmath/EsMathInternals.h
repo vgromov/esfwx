@@ -10,22 +10,22 @@ EsMathFitInfo alglibInfoToFitInfo(alglib::ae_int_t info);
 //
 inline alglib::real_1d_array& alglibCastFromArray(EsMathArrayReal& src)
 {
-	return *(alglib::real_1d_array*)src.pimplGet();
+  return *(alglib::real_1d_array*)src.pimplGet();
 }
 
 inline const alglib::real_1d_array& alglibCastFromArray(const EsMathArrayReal& src)
 {
-	return *(const alglib::real_1d_array*)src.pimplGet();
+  return *(const alglib::real_1d_array*)src.pimplGet();
 }
 
 inline alglib::complex_1d_array& alglibCastFromArray(EsMathArrayComplex& src)
 {
-	return *(alglib::complex_1d_array*)src.pimplGet();
+  return *(alglib::complex_1d_array*)src.pimplGet();
 }
 
 inline const alglib::complex_1d_array& alglibCastFromArray(const EsMathArrayComplex& src)
 {
-	return *(const alglib::complex_1d_array*)src.pimplGet();
+  return *(const alglib::complex_1d_array*)src.pimplGet();
 }
 
 #define ES_ALGLIB_TRY \

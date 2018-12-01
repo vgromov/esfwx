@@ -33,15 +33,15 @@ EsScriptThreadContext::~EsScriptThreadContext() ES_NOTHROW
 
 EsScriptCodeSection::Ptr EsScriptThreadContext::currentMethodGet() ES_NOTHROW
 {
-	ES_ASSERT(m_activeCode);
-	return m_activeCode;
+  ES_ASSERT(m_activeCode);
+  return m_activeCode;
 }
 //---------------------------------------------------------------------------
 
 const EsScriptCodeSection::Ptr& EsScriptThreadContext::currentMethodGet() const ES_NOTHROW
 {
-	ES_ASSERT(m_activeCode);
-	return m_activeCode;
+  ES_ASSERT(m_activeCode);
+  return m_activeCode;
 }
 //---------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ void EsScriptThreadContext::methodSetCurrent(const EsMethodInfoKeyT& key)
   EsScriptCodeSection::Ptr result = m_owner.globalMethodGet(key);
 
   if(!result)
-		EsScriptException::Throw(
+    EsScriptException::Throw(
       EsString::format(
         esT("Could not find global method '%s', taking %d parameters"),
         key.nameGet(),
@@ -85,7 +85,7 @@ EsString EsScriptThreadContext::instructionAsString(const EsScriptInstruction& i
   EsString result = EsString::format(
     esT("op: '%s'"),
     EsVariant(
-		  EsScriptInstruction::getOpcodeString(instr.opcode()),
+      EsScriptInstruction::getOpcodeString(instr.opcode()),
       EsVariant::ACCEPT_STRING
     )
   );
@@ -244,7 +244,7 @@ protected:
     return -1;
   }
 
-	// load top data accessor isOk result on the data stack
+  // load top data accessor isOk result on the data stack
   static int iIsOkLoad_proxy( EsScriptThreadContext& This, EsScriptInstructions::const_iterator& )
   {
     This.doIsOkLoad();
@@ -277,7 +277,7 @@ protected:
   }
 
   static int iJump_iJumpFalse_iJumpTrue_proxy( EsScriptThreadContext& This, EsScriptInstructions::const_iterator& si )
-	{
+  {
     if( This.doJump(si) )
       return 0;
 
@@ -652,7 +652,7 @@ void EsScriptThreadContext::doConstructMemberAccessor(const EsScriptInstruction&
   if(!acc && EsMemberRefType::mrThisField != refType)
     acc = obj->variableFind(name, false);
   if(!acc)
-		EsScriptException::ThrowFieldOrMemberVarIsNotDeclared(
+    EsScriptException::ThrowFieldOrMemberVarIsNotDeclared(
       name,
       obj->typeNameGet(),
       instr.debugInfoGet()
@@ -665,7 +665,7 @@ void EsScriptThreadContext::doConstructMemberAccessor(const EsScriptInstruction&
 
 void EsScriptThreadContext::doConstructPropAccessor(const EsScriptInstruction& instr)
 {
-	ES_ASSERT(iLoadPropRef == instr.opcode() || iLoadThisPropRef == instr.opcode());
+  ES_ASSERT(iLoadPropRef == instr.opcode() || iLoadThisPropRef == instr.opcode());
   ES_ASSERT(m_csScope);
 
   EsScriptValAccessorIntf::Ptr val;
@@ -673,7 +673,7 @@ void EsScriptThreadContext::doConstructPropAccessor(const EsScriptInstruction& i
     val = m_csScope->stackPop();
   else
   {
-		EsScriptObjectIntf::Ptr thisPtr(
+    EsScriptObjectIntf::Ptr thisPtr(
       currentMethodGet()->thisGet(),
       false,
       false
@@ -682,9 +682,9 @@ void EsScriptThreadContext::doConstructPropAccessor(const EsScriptInstruction& i
     val = EsScriptTmpValAccessor::create(thisPtr);
   }
 
-	EsScriptValAccessorIntf::Ptr acc = EsPropertyAccessor::create(
-		val,
-		instr
+  EsScriptValAccessorIntf::Ptr acc = EsPropertyAccessor::create(
+    val,
+    instr
   );
   m_csScope->stackPush(acc);
 }
@@ -692,7 +692,7 @@ void EsScriptThreadContext::doConstructPropAccessor(const EsScriptInstruction& i
 
 void EsScriptThreadContext::doAccessAttributeValue(const EsScriptInstruction& instr)
 {
-	ES_ASSERT(iLoadAttributeVal == instr.opcode() || iLoadThisAttributeVal == instr.opcode());
+  ES_ASSERT(iLoadAttributeVal == instr.opcode() || iLoadThisAttributeVal == instr.opcode());
   ES_ASSERT(m_csScope);
 
   EsScriptObjectIntf::Ptr obj;
@@ -713,11 +713,11 @@ void EsScriptThreadContext::doAccessAttributeValue(const EsScriptInstruction& in
   if(obj)
   {
     // try active code section attributes first, if This is implied
-		if(
+    if(
       iLoadThisAttributeVal == instr.opcode() &&
-			currentMethodGet()->attributesAccess()->attributeExists(name)
+      currentMethodGet()->attributesAccess()->attributeExists(name)
     )
-			acc = EsScriptTmpValAccessor::create(
+      acc = EsScriptTmpValAccessor::create(
         currentMethodGet()->attributesAccess()->attributeGet(name)
       );
     else
@@ -728,7 +728,7 @@ void EsScriptThreadContext::doAccessAttributeValue(const EsScriptInstruction& in
   else
     // no "this" implied, try to get attribute from
     // the current code section
-		acc = EsScriptTmpValAccessor::create(
+    acc = EsScriptTmpValAccessor::create(
       currentMethodGet()->attributesAccess()->attributeGet(name)
     );
 
@@ -792,7 +792,7 @@ void EsScriptThreadContext::doObjectMethodCall(
     params
   );
 
-  esU64 typeHash = obj->typeNameGet().hashGet();
+  obj->typeNameGet().hashGet();
   const EsClassInfo& info = obj->classInfoGet();
   const EsMethodInfo* methodInfo = info.methodInfoFind( key );
 
@@ -916,6 +916,9 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
         m_csScope->stackPop()->get()
       );
 
+    const EsString& paramsStr = EsScriptMachine::traceVariant(params);
+    ES_DEBUG_TRACE(esT("doCall: %s(%s)"), name, paramsStr);
+
     EsVariant callResult;
     switch(opcode)
     {
@@ -926,7 +929,7 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
 
         ES_ASSERT(scriptObj);
 
-				callResult = scriptObj->callAncestorMethod(
+        callResult = scriptObj->callAncestorMethod(
           name,
           params,
           targetNamespace
@@ -1123,7 +1126,7 @@ void EsScriptThreadContext::doBinOp(long opid)
 
 void EsScriptThreadContext::unaryOpEval(long opid, EsVariant& val)
 {
-	ES_ASSERT(opid == opidBwNot || opid == opidNot || opid == opidSub );
+  ES_ASSERT(opid == opidBwNot || opid == opidNot || opid == opidSub );
 
   switch(opid)
   {
@@ -1142,7 +1145,7 @@ void EsScriptThreadContext::unaryOpEval(long opid, EsVariant& val)
 
 void EsScriptThreadContext::doUnaryOp(long opid)
 {
-	ES_ASSERT(opid == opidBwNot || opid == opidNot || opid == opidSub || opid == opidScopeAcc);
+  ES_ASSERT(opid == opidBwNot || opid == opidNot || opid == opidSub || opid == opidScopeAcc);
 
   if(opid != opidScopeAcc)
   {
@@ -1174,7 +1177,7 @@ void EsScriptThreadContext::doUnaryOp(long opid)
 
 void EsScriptThreadContext::doAsnOp(const EsScriptInstruction& instr)
 {
-	EsScriptInstructionOpcode opcode = instr.opcode();
+  EsScriptInstructionOpcode opcode = instr.opcode();
   ES_ASSERT(iAsn == opcode || iVarInit == opcode);
 
   EsScriptOperatorIds opid;
@@ -1379,8 +1382,8 @@ void EsScriptThreadContext::doLogicCheck(EsScriptInstructions::const_iterator& i
   // Perform short-cirquit logic check
   // get enclosing binop opid
   //
-	EsScriptInstructions::const_iterator binopInstr = instr+(*instr).jumpOffsGet();
-	EsScriptOperatorIds opid = (*binopInstr).operatorIdGet();
+  EsScriptInstructions::const_iterator binopInstr = instr+(*instr).jumpOffsGet();
+  EsScriptOperatorIds opid = (*binopInstr).operatorIdGet();
 
   // Stack top contains left-hand operand of logic expression
   // if val evaluates to false - jump to enclosing iBinOpExpr.
@@ -1396,8 +1399,8 @@ void EsScriptThreadContext::doLogicCheck(EsScriptInstructions::const_iterator& i
     (opidLogOr == opid && isTrue)
   )
   {
-		ESSCRIPT_MACHINE_TRACE2(esT("Logic check short-evaluated, jumping +%d instructions"), binopInstr-instr)
-		instr = binopInstr;
+    ESSCRIPT_MACHINE_TRACE2(esT("Logic check short-evaluated, jumping +%d instructions"), binopInstr-instr)
+    instr = binopInstr;
   }
 
   m_csScope->stackPush(check);
@@ -1407,7 +1410,7 @@ void EsScriptThreadContext::doLogicCheck(EsScriptInstructions::const_iterator& i
 bool EsScriptThreadContext::doJump(EsScriptInstructions::const_iterator& instr)
 {
   EsScriptInstructionOpcode opcode = (*instr).opcode();
-	ES_ASSERT(
+  ES_ASSERT(
     iJumpFalse == opcode ||
     iJumpTrue == opcode ||
     iJump == opcode
@@ -1417,12 +1420,12 @@ bool EsScriptThreadContext::doJump(EsScriptInstructions::const_iterator& instr)
   bool handleJump = true;
 
   if(opcode != iJump)
-	{
+  {
     ES_ASSERT(m_csScope);
 
     bool isTrue = m_csScope->stackPop()->get().asBool();
 
-  	handleJump = (iJumpFalse == opcode) ?
+    handleJump = (iJumpFalse == opcode) ?
       !isTrue :
       isTrue;
   }
@@ -1443,13 +1446,13 @@ bool EsScriptThreadContext::doJump(EsScriptInstructions::const_iterator& instr)
       // perform relative jump
       ES_ASSERT(instrPos + offs <= instrEndPos);
       instr += offs;
-			ESSCRIPT_MACHINE_TRACE2(esT("Jumping %d instructions"), offs)
-			break;
+      ESSCRIPT_MACHINE_TRACE2(esT("Jumping %d instructions"), offs)
+      break;
     case joAbs:
       ES_ASSERT(instrStartPos + offs <= instrEndPos);
       instr = code->instructionStartGet() + offs;
-			ESSCRIPT_MACHINE_TRACE2(esT("Jumping to instruction at pos %d"), offs)
-			break;
+      ESSCRIPT_MACHINE_TRACE2(esT("Jumping to instruction at pos %d"), offs)
+      break;
     }
   }
 
@@ -1511,10 +1514,10 @@ void EsScriptThreadContext::methodSetCurrent(const EsScriptCodeSection::Ptr& cod
 
   m_activeCode = code;
 
-	ESSCRIPT_MACHINE_TRACE3(
+  ESSCRIPT_MACHINE_TRACE3(
     esT("Method '%s', taking %d arguments, is set active"),
-		m_activeCode->nameGet(),
-		m_activeCode->inputParametersCntGet()
+    m_activeCode->nameGet(),
+    m_activeCode->inputParametersCntGet()
   )
 }
 //---------------------------------------------------------------------------
@@ -1569,7 +1572,7 @@ EsScriptValAccessorIntf::Ptr EsScriptThreadContext::exec(
 
 EsVariant EsScriptThreadContext::exec()
 {
-	EsScriptValAccessorIntf::Ptr result = exec(
+  EsScriptValAccessorIntf::Ptr result = exec(
     m_activeCode,
     EsVariant::null(),
     EsScriptEvalMode::evalExpr,
@@ -1582,9 +1585,9 @@ EsVariant EsScriptThreadContext::exec()
 
 EsVariant EsScriptThreadContext::callGlobalMethod(const EsMethodInfoKeyT& key, const EsVariant& params)
 {
-	ES_ASSERT((int)key.parametersCountGet() ==
+  ES_ASSERT(key.parametersCountGet() ==
     (params.isEmpty() ?
-		  0 :
+      0 :
       ( params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION ?
           params.countGet() :
           1
@@ -1593,7 +1596,7 @@ EsVariant EsScriptThreadContext::callGlobalMethod(const EsMethodInfoKeyT& key, c
   );
 
   EsScriptCodeSection::Ptr method = m_owner.globalMethodGet(key);
-	EsScriptValAccessorIntf::Ptr result = exec(
+  EsScriptValAccessorIntf::Ptr result = exec(
     method,
     params,
     EsScriptEvalMode::evalFunc,
@@ -1607,7 +1610,7 @@ EsVariant EsScriptThreadContext::callGlobalMethod(const EsMethodInfoKeyT& key, c
 
 EsVariant EsScriptThreadContext::callGlobalMethod(const EsString& name, const EsVariant& params)
 {
-	ulong paramsCount = params.isEmpty() ?
+  ulong paramsCount = params.isEmpty() ?
     0 :
     (
       params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION ?
@@ -1635,14 +1638,14 @@ void EsScriptThreadContext::callExtMethod(
   const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/
 )
 {
-	ulong paramsCount = params.isEmpty() ?
+  ulong paramsCount = params.isEmpty() ?
     0 :
     (params.typeGet() == EsVariant::VAR_VARIANT_COLLECTION ?
       params.countGet() :
       1
     );
 
-  // try	to call reflected C++ service
+  // try  to call reflected C++ service
   const EsClassInfo* classInfo = EsClassInfo::classInfoGet(nameSpace, true);
   const EsMethodInfo& methodInfo = classInfo->classMethodInfoGet(
     EsMethodInfoKeyT(
@@ -1676,8 +1679,8 @@ protected:
   typedef std::vector<Ctr> Ctrs;
 
 public:
-	EsScriptObjectCtrExecutor(EsScriptObjectIntf* obj, const EsMethodInfoKeyT& ctrKey) ES_NOTHROW :
-	EsScriptObjectTopDownHierarchyTraverser(obj, false, true),
+  EsScriptObjectCtrExecutor(EsScriptObjectIntf* obj, const EsMethodInfoKeyT& ctrKey) ES_NOTHROW :
+  EsScriptObjectTopDownHierarchyTraverser(obj, false, true),
   m_ctrKey(ctrKey)
   {
     m_ctrs.reserve(8);
@@ -1689,7 +1692,7 @@ public:
 
     EsScriptCodeSection::Ptr ctrCode = obj->findScriptedMethod(m_ctrKey, false);
     if(ctrCode)
-			m_ctrs.push_back( std::make_pair(const_cast<EsScriptObjectIntf*>(obj), ctrCode) );
+      m_ctrs.push_back( std::make_pair(const_cast<EsScriptObjectIntf*>(obj), ctrCode) );
 
     return true;
   }
@@ -1699,7 +1702,7 @@ public:
     for(size_t idx = 0; idx < m_ctrs.size(); ++idx)
     {
       const Ctr& ctr = m_ctrs[idx];
-			vm.exec(
+      vm.exec(
         ctr.second,
         params,
         EsScriptEvalMode::evalFunc,
@@ -1722,7 +1725,7 @@ EsReflectedClassIntf::Ptr EsScriptThreadContext::objectCreateWithParameters(
   const EsClassInfo* info = EsClassInfo::classInfoGet(name);
   if(info)
   {
-		EsReflectedClassIntf::Ptr result = info->classCallMethod(
+    EsReflectedClassIntf::Ptr result = info->classCallMethod(
       EsStdNames::reflectedCtr(),
       params
     ).asExistingObject();
@@ -1742,7 +1745,7 @@ EsReflectedClassIntf::Ptr EsScriptThreadContext::objectCreateWithParameters(
   if(!obj)
     EsScriptException::ThrowMetaclassDoesNotExist(name, currentDebugInfoGet());
 
-	obj = obj->clone(); // consider cloning as a default (compiler-defined) constructor
+  obj = obj->clone(); // consider cloning as a default (compiler-defined) constructor
   if(obj)
   {
     // find if we're calling non-default constructor method
@@ -1784,7 +1787,7 @@ m_old(m_this.m_csScope)
   ES_ASSERT(m_code);
   m_this.m_csScope = this;
 
-	ESSCRIPT_MACHINE_CALL_TRACE2(
+  ESSCRIPT_MACHINE_CALL_TRACE2(
     esT("EsScriptCodeSectionScope::EsScriptCodeSectionScope: code '%s' pushed"),
     m_code->nameGet().c_str()
   )
@@ -1798,7 +1801,7 @@ m_old(m_this.m_csScope)
 
 EsScriptCodeSectionScope::~EsScriptCodeSectionScope()
 {
-	ESSCRIPT_MACHINE_CALL_TRACE2(
+  ESSCRIPT_MACHINE_CALL_TRACE2(
     esT("EsScriptCodeSectionScope::~EsScriptCodeSectionScope(): code '%s' popped"),
     m_code->nameGet().c_str()
   )
@@ -1811,7 +1814,7 @@ EsScriptCodeSectionScope::~EsScriptCodeSectionScope()
     m_this.startupMethodSetCurrent();
     m_this.m_executing = false; //< We're back to the pre-started point
 
-  	ESSCRIPT_MACHINE_CALL_TRACE1(
+    ESSCRIPT_MACHINE_CALL_TRACE1(
       esT("EsScriptCodeSectionScope::~EsScriptCodeSectionScope(): executing flag is reset")
     );
   }
@@ -1833,7 +1836,7 @@ const EsScriptCodeSectionScope* EsScriptCodeSectionScope::topScopeGet() const ES
 
 void EsScriptCodeSectionScope::stackSnapshotPush()
 {
-	ESSCRIPT_MACHINE_CALL_TRACE2(esT("code '%s' stack snapshot taken"), m_code->nameGet().c_str())
+  ESSCRIPT_MACHINE_CALL_TRACE2(esT("code '%s' stack snapshot taken"), m_code->nameGet().c_str())
 
   EsScriptDataStack::Ptr ptr(
     new EsScriptDataStack(m_stack)
@@ -1849,7 +1852,7 @@ void EsScriptCodeSectionScope::stackSnapshotPop()
 {
   ES_ASSERT( !m_snapshots.empty() );
 
-	ESSCRIPT_MACHINE_CALL_TRACE2(esT("code '%s' stack snapshot restored"), m_code->nameGet().c_str())
+  ESSCRIPT_MACHINE_CALL_TRACE2(esT("code '%s' stack snapshot restored"), m_code->nameGet().c_str())
 
   m_stack = *m_snapshots.back().get();
   m_snapshots.pop_back();

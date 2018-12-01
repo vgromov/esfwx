@@ -71,7 +71,7 @@ namespace std {
 #endif
 
 #ifdef _MSC_VER
-# pragma warning(disable: 4231)	// re-disable this
+# pragma warning(disable: 4231)  // re-disable this
 # ifdef _CRTAPI1
 #  define CRYPTOPP_MSVCRT6
 # endif

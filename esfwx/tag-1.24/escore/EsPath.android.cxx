@@ -13,7 +13,7 @@ EsString EsPath::stdAppPathGet()
 EsString EsPath::stdAppDataGet()
 {
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
-	return TPath::GetPublicPath().c_str();
+  return TPath::GetPublicPath().c_str();
 #else
 # error EsPath::stdAppDataGet is not implemented for this Compiler RTL
 #endif
@@ -23,7 +23,7 @@ EsString EsPath::stdAppDataGet()
 EsString EsPath::stdLocalAppDataGet()
 {
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
-	return TPath::GetLibraryPath().c_str();
+  return TPath::GetLibraryPath().c_str();
 #else
 # error EsPath::stdLocalAppDataGet is not implemented for this Compiler RTL
 #endif

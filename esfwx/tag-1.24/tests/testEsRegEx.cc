@@ -37,9 +37,9 @@ TEST(EsRegExTest, StrFormat) {
 }
 
 EsString::const_pointer c_testStr =
-esT("555.123.4567	+1-(800)-555-2468\n")
-esT("foo@demo.net	bar.ba@test.co.uk\n")
-esT("www.demo.com	http://foo.co.uk/\n")
+esT("555.123.4567  +1-(800)-555-2468\n")
+esT("foo@demo.net  bar.ba@test.co.uk\n")
+esT("www.demo.com  http://foo.co.uk/\n")
 esT("http://regexr.com/foo.html?q=bar\n");
 
 TEST(EsRegExTest, Match) {
@@ -84,9 +84,9 @@ TEST(EsRegExTest, Match) {
 }
 
 EsString::const_pointer c_replaceResultStr =
-esT("555.123.4567	+1-(800)-555-2468\n")
-esT("\n# foo@demo.net:\n\t	\n# bar.ba@test.co.uk:\n\t\n")
-esT("www.demo.com	http://foo.co.uk/\n")
+esT("555.123.4567  +1-(800)-555-2468\n")
+esT("\n# foo@demo.net:\n\t  \n# bar.ba@test.co.uk:\n\t\n")
+esT("www.demo.com  http://foo.co.uk/\n")
 esT("http://regexr.com/foo.html?q=bar\n");
 
 TEST(EsRegExTest, Replace) {

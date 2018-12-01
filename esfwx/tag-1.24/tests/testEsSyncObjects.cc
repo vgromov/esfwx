@@ -8,10 +8,10 @@ TEST(EsSyncObjectTest, Basics) {
   {
   EsCriticalSectionLocker lock(m_cs);
 
-	EXPECT_TRUE(m_cs.tryEnter());
+  EXPECT_TRUE(m_cs.tryEnter());
   }
 
-	EXPECT_TRUE(m_cs.tryEnter());
+  EXPECT_TRUE(m_cs.tryEnter());
 }
 
 TEST(EsSyncObjectTest, Semaphore) {

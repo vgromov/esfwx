@@ -57,11 +57,11 @@ EsBinBuffer::size_type EsBinBuffer::size() const ES_NOTHROW
 
 EsBinBuffer::operator esBA () const
 {
-	esBA ba;
-	ba.size = static_cast<esU32>(m_bb.size());
-	ba.data = const_cast<esU8*>(m_bb.empty() ? 0 : &m_bb[0]);
+  esBA ba;
+  ba.size = static_cast<esU32>(m_bb.size());
+  ba.data = const_cast<esU8*>(m_bb.empty() ? 0 : &m_bb[0]);
 
-	return ba;
+  return ba;
 }
 //---------------------------------------------------------------------------
 
@@ -91,54 +91,54 @@ EsBinBuffer::const_reference EsBinBuffer::operator[](size_type _Pos) const
 
 EsBinBuffer& EsBinBuffer::operator= (const esBA& src)
 {
-	m_bb.assign(src.data, src.size);
-	return *this;
+  m_bb.assign(src.data, src.size);
+  return *this;
 }
 //---------------------------------------------------------------------------
 
 EsBinBuffer& EsBinBuffer::operator= (const EsBinBuffer& src)
 {
-	m_bb = src.m_bb;
-	return *this;
+  m_bb = src.m_bb;
+  return *this;
 }
 //---------------------------------------------------------------------------
 
 void EsBinBuffer::append(const EsBinBuffer& src)
 {
-	m_bb.append(src.m_bb);
+  m_bb.append(src.m_bb);
 }
 //---------------------------------------------------------------------------
 
 void EsBinBuffer::append(size_t size, const esU8* buff)
 {
-	ES_ASSERT(buff);
-	if( size )
-		m_bb.append(buff, size);
+  ES_ASSERT(buff);
+  if( size )
+    m_bb.append(buff, size);
 }
 //---------------------------------------------------------------------------
 
 EsBinBuffer EsBinBuffer::operator+ (const EsBinBuffer& src) const
 {
-	EsBinBuffer tmp( *this );
-	tmp += src;
+  EsBinBuffer tmp( *this );
+  tmp += src;
 
-	return tmp;
+  return tmp;
 }
 //---------------------------------------------------------------------------
 
 EsBinBuffer& EsBinBuffer::operator+= (const EsBinBuffer& src)
 {
-	append(src);
+  append(src);
 
-	return *this;
+  return *this;
 }
 //---------------------------------------------------------------------------
 
 EsBinBuffer& EsBinBuffer::operator+= (const esBA& src)
 {
-	append(src.size, src.data);
+  append(src.size, src.data);
 
-	return *this;
+  return *this;
 }
 //---------------------------------------------------------------------------
 

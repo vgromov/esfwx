@@ -31,62 +31,62 @@
 // compiler tune-ups
 //
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-#	pragma warning(push)
-#	pragma warning(disable: 4127) // conditional expression is constant
-#	pragma warning(disable: 4324) // structure was padded due to __declspec(align())
-#	pragma warning(disable: 4702) // unreachable code
-#	pragma warning(disable: 4996) // this function or variable may be unsafe
+#  pragma warning(push)
+#  pragma warning(disable: 4127) // conditional expression is constant
+#  pragma warning(disable: 4324) // structure was padded due to __declspec(align())
+#  pragma warning(disable: 4702) // unreachable code
+#  pragma warning(disable: 4996) // this function or variable may be unsafe
 #elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_INTEL
-#	pragma warning(disable: 177) // function was declared but never referenced
-#	pragma warning(disable: 279) // controlling expression is constant
-#	pragma warning(disable: 1478 1786) // function was declared "deprecated"
-#	pragma warning(disable: 1684) // conversion from pointer to same-sized integral type
+#  pragma warning(disable: 177) // function was declared but never referenced
+#  pragma warning(disable: 279) // controlling expression is constant
+#  pragma warning(disable: 1478 1786) // function was declared "deprecated"
+#  pragma warning(disable: 1684) // conversion from pointer to same-sized integral type
 #elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
-#	pragma option push
-#	pragma warn -8008 // condition is always false
-#	pragma warn -8066 // unreachable code
+#  pragma option push
+#  pragma warn -8008 // condition is always false
+#  pragma warn -8066 // unreachable code
 #endif
 
 
 namespace EsXml {
 
-	void* default_allocate(size_t size)
-	{
-		return malloc(size);
-	}
+  void* default_allocate(size_t size)
+  {
+    return malloc(size);
+  }
 
-	void default_deallocate(void* ptr)
-	{
-		free(ptr);
-	}
+  void default_deallocate(void* ptr)
+  {
+    free(ptr);
+  }
 
-	template <typename T>
-	struct xml_memory_management_function_storage
-	{
-		static allocation_function allocate;
-		static deallocation_function deallocate;
-	};
+  template <typename T>
+  struct xml_memory_management_function_storage
+  {
+    static allocation_function allocate;
+    static deallocation_function deallocate;
+  };
 
-	template <typename T> allocation_function xml_memory_management_function_storage<T>::allocate = default_allocate;
-	template <typename T> deallocation_function xml_memory_management_function_storage<T>::deallocate = default_deallocate;
+  template <typename T> allocation_function xml_memory_management_function_storage<T>::allocate = default_allocate;
+  template <typename T> deallocation_function xml_memory_management_function_storage<T>::deallocate = default_deallocate;
 
-	typedef xml_memory_management_function_storage<int> Memory;
+  typedef xml_memory_management_function_storage<int> Memory;
 
-	void set_memory_management_functions(allocation_function allocate, deallocation_function deallocate)
-	{
-		Memory::allocate = allocate;
-		Memory::deallocate = deallocate;
-	}
+  void set_memory_management_functions(allocation_function allocate, deallocation_function deallocate)
+  {
+    Memory::allocate = allocate;
+    Memory::deallocate = deallocate;
+  }
 
-	allocation_function get_memory_allocation_function()
-	{
-		return Memory::allocate;
-	}
+  allocation_function get_memory_allocation_function()
+  {
+    return Memory::allocate;
+  }
 
-	deallocation_function get_memory_deallocation_function()
-	{
-		return Memory::deallocate;
-	}
+  deallocation_function get_memory_deallocation_function()
+  {
+    return Memory::deallocate;
+  }
 } // namespace EsXml
 //---------------------------------------------------------------------------
 
@@ -95,43 +95,43 @@ namespace EsXml {
 // Get string length
 static size_t strlength(EsString::const_pointer s)
 {
-	ES_ASSERT(s);
-	return esStrlen(s);
+  ES_ASSERT(s);
+  return esStrlen(s);
 }
 
 // Compare two strings
 static bool strequal(EsString::const_pointer src, EsString::const_pointer dst)
 {
-	ES_ASSERT(src && dst);
-	return 0 == esStrcmp(src, dst);
+  ES_ASSERT(src && dst);
+  return 0 == esStrcmp(src, dst);
 }
 
 // Compare lhs with [rhs_begin, rhs_end)
 static bool strequalrange(EsString::const_pointer lhs, EsString::const_pointer rhs, size_t count)
 {
-	for (size_t i = 0; i < count; ++i)
-		if (lhs[i] != rhs[i])
-			return false;
+  for (size_t i = 0; i < count; ++i)
+    if (lhs[i] != rhs[i])
+      return false;
 
-	return lhs[count] == 0;
+  return lhs[count] == 0;
 }
 
 // Get length of wide string, even if CRT lacks wide character support
 static size_t strlength_wide(const ES_WCHAR* s)
 {
-	ES_ASSERT(s);
+  ES_ASSERT(s);
 
-	const ES_WCHAR* end = s;
-	while (*end) end++;
-	return static_cast<size_t>(end - s);
+  const ES_WCHAR* end = s;
+  while (*end) end++;
+  return static_cast<size_t>(end - s);
 }
 
 #if !defined(ES_USE_NARROW_ES_CHAR)
 // Convert string to wide string, assuming all symbols are ASCII
 static void widen_ascii(EsString::value_type* dest, const char* source)
 {
-	for (const char* i = source; *i; ++i) *dest++ = *i;
-	*dest = 0;
+  for (const char* i = source; *i; ++i) *dest++ = *i;
+  *dest = 0;
 }
 #endif
 
@@ -139,24 +139,24 @@ static void widen_ascii(EsString::value_type* dest, const char* source)
 // unique_ptr-like buffer holder for exception recovery
 struct buffer_holder
 {
-	void* data;
-	void (*deleter)(void*);
+  void* data;
+  void (*deleter)(void*);
 
-	buffer_holder(void* data_, void (*deleter_)(void*)): data(data_), deleter(deleter_)
-	{
-	}
+  buffer_holder(void* data_, void (*deleter_)(void*)): data(data_), deleter(deleter_)
+  {
+  }
 
-	~buffer_holder()
-	{
-		if (data) deleter(data);
-	}
+  ~buffer_holder()
+  {
+    if (data) deleter(data);
+  }
 
-	void* release()
-	{
-		void* result = data;
-		data = 0;
-		return result;
-	}
+  void* release()
+  {
+    void* result = data;
+    data = 0;
+    return result;
+  }
 };
 #endif
 //---------------------------------------------------------------------------
@@ -165,11 +165,11 @@ typedef EsXml::Memory EsXmlMemory;
 
 static const size_t xml_memory_page_size =
 #ifdef ES_XML_MEMORY_PAGE_SIZE
-	ES_XML_MEMORY_PAGE_SIZE
+  ES_XML_MEMORY_PAGE_SIZE
 #else
-	32768
+  32768
 #endif
-	;
+  ;
 
 static const uintptr_t xml_memory_page_alignment = 32;
 static const uintptr_t xml_memory_page_pointer_mask = ~(xml_memory_page_alignment - 1);
@@ -181,210 +181,210 @@ struct EsXmlAllocator;
 
 struct EsXmlMemoryPage
 {
-	static EsXmlMemoryPage* construct(void* memory)
-	{
-		if (!memory) return 0; //$ redundant, left for performance
+  static EsXmlMemoryPage* construct(void* memory)
+  {
+    if (!memory) return 0; //$ redundant, left for performance
 
-		EsXmlMemoryPage* result = static_cast<EsXmlMemoryPage*>(memory);
+    EsXmlMemoryPage* result = static_cast<EsXmlMemoryPage*>(memory);
 
-		result->allocator = 0;
-		result->memory = 0;
-		result->prev = 0;
-		result->next = 0;
-		result->busy_size = 0;
-		result->freed_size = 0;
+    result->allocator = 0;
+    result->memory = 0;
+    result->prev = 0;
+    result->next = 0;
+    result->busy_size = 0;
+    result->freed_size = 0;
 
-		return result;
-	}
+    return result;
+  }
 
-	EsXmlAllocator* allocator;
+  EsXmlAllocator* allocator;
 
-	void* memory;
+  void* memory;
 
-	EsXmlMemoryPage* prev;
-	EsXmlMemoryPage* next;
+  EsXmlMemoryPage* prev;
+  EsXmlMemoryPage* next;
 
-	size_t busy_size;
-	size_t freed_size;
+  size_t busy_size;
+  size_t freed_size;
 
-	char data[1];
+  char data[1];
 };
 
 struct EsXmlMemoryStringHeader
 {
-	uint16_t page_offset; // offset from page->data
-	uint16_t full_size; // 0 if string occupies whole page
+  uint16_t page_offset; // offset from page->data
+  uint16_t full_size; // 0 if string occupies whole page
 };
 
 struct EsXmlAllocator
 {
-	EsXmlAllocator(EsXmlMemoryPage* root): _root(root), _busy_size(root->busy_size)
-	{
-	}
+  EsXmlAllocator(EsXmlMemoryPage* root): _root(root), _busy_size(root->busy_size)
+  {
+  }
 
-	EsXmlMemoryPage* allocate_page(size_t data_size)
-	{
-		size_t size = offsetof(EsXmlMemoryPage, data) + data_size;
+  EsXmlMemoryPage* allocate_page(size_t data_size)
+  {
+    size_t size = offsetof(EsXmlMemoryPage, data) + data_size;
 
-		// allocate block with some alignment, leaving memory for worst-case padding
-		void* memory = EsXmlMemory::allocate(size + xml_memory_page_alignment);
-		if (!memory) return 0;
+    // allocate block with some alignment, leaving memory for worst-case padding
+    void* memory = EsXmlMemory::allocate(size + xml_memory_page_alignment);
+    if (!memory) return 0;
 
-		// align upwards to page boundary
-		void* page_memory = reinterpret_cast<void*>((reinterpret_cast<uintptr_t>(memory) + (xml_memory_page_alignment - 1)) & ~(xml_memory_page_alignment - 1));
+    // align upwards to page boundary
+    void* page_memory = reinterpret_cast<void*>((reinterpret_cast<uintptr_t>(memory) + (xml_memory_page_alignment - 1)) & ~(xml_memory_page_alignment - 1));
 
-		// prepare page structure
-		EsXmlMemoryPage* page = EsXmlMemoryPage::construct(page_memory);
-		ES_ASSERT(page);
+    // prepare page structure
+    EsXmlMemoryPage* page = EsXmlMemoryPage::construct(page_memory);
+    ES_ASSERT(page);
 
-		page->memory = memory;
-		page->allocator = _root->allocator;
+    page->memory = memory;
+    page->allocator = _root->allocator;
 
-		return page;
-	}
+    return page;
+  }
 
-	static void deallocate_page(EsXmlMemoryPage* page)
-	{
-		EsXmlMemory::deallocate(page->memory);
-	}
+  static void deallocate_page(EsXmlMemoryPage* page)
+  {
+    EsXmlMemory::deallocate(page->memory);
+  }
 
-	void* allocate_memory_oob(size_t size, EsXmlMemoryPage*& out_page);
+  void* allocate_memory_oob(size_t size, EsXmlMemoryPage*& out_page);
 
-	void* allocate_memory(size_t size, EsXmlMemoryPage*& out_page)
-	{
-		if (_busy_size + size > xml_memory_page_size) return allocate_memory_oob(size, out_page);
+  void* allocate_memory(size_t size, EsXmlMemoryPage*& out_page)
+  {
+    if (_busy_size + size > xml_memory_page_size) return allocate_memory_oob(size, out_page);
 
-		void* buf = _root->data + _busy_size;
+    void* buf = _root->data + _busy_size;
 
-		_busy_size += size;
+    _busy_size += size;
 
-		out_page = _root;
+    out_page = _root;
 
-		return buf;
-	}
+    return buf;
+  }
 
-	void deallocate_memory(void* ptr, size_t size, EsXmlMemoryPage* page)
-	{
-		if (page == _root) page->busy_size = _busy_size;
+  void deallocate_memory(void* ptr, size_t size, EsXmlMemoryPage* page)
+  {
+    if (page == _root) page->busy_size = _busy_size;
 
-		ES_ASSERT(ptr >= page->data && ptr < page->data + page->busy_size);
-		(void)!ptr;
+    ES_ASSERT(ptr >= page->data && ptr < page->data + page->busy_size);
+    (void)!ptr;
 
-		page->freed_size += size;
-		ES_ASSERT(page->freed_size <= page->busy_size);
+    page->freed_size += size;
+    ES_ASSERT(page->freed_size <= page->busy_size);
 
-		if (page->freed_size == page->busy_size)
-		{
-			if (page->next == 0)
-			{
-				ES_ASSERT(_root == page);
+    if (page->freed_size == page->busy_size)
+    {
+      if (page->next == 0)
+      {
+        ES_ASSERT(_root == page);
 
-				// top page freed, just reset sizes
-				page->busy_size = page->freed_size = 0;
-				_busy_size = 0;
-			}
-			else
-			{
-				ES_ASSERT(_root != page);
-				ES_ASSERT(page->prev);
+        // top page freed, just reset sizes
+        page->busy_size = page->freed_size = 0;
+        _busy_size = 0;
+      }
+      else
+      {
+        ES_ASSERT(_root != page);
+        ES_ASSERT(page->prev);
 
-				// remove from the list
-				page->prev->next = page->next;
-				page->next->prev = page->prev;
+        // remove from the list
+        page->prev->next = page->next;
+        page->next->prev = page->prev;
 
-				// deallocate
-				deallocate_page(page);
-			}
-		}
-	}
+        // deallocate
+        deallocate_page(page);
+      }
+    }
+  }
 
-	EsString::pointer allocate_string(size_t length)
-	{
-		// allocate memory for string and header block
-		size_t size = sizeof(EsXmlMemoryStringHeader) + length * sizeof(EsString::value_type);
+  EsString::pointer allocate_string(size_t length)
+  {
+    // allocate memory for string and header block
+    size_t size = sizeof(EsXmlMemoryStringHeader) + length * sizeof(EsString::value_type);
 
-		// round size up to pointer alignment boundary
-		size_t full_size = (size + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1);
+    // round size up to pointer alignment boundary
+    size_t full_size = (size + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1);
 
-		EsXmlMemoryPage* page;
-		EsXmlMemoryStringHeader* header = static_cast<EsXmlMemoryStringHeader*>(allocate_memory(full_size, page));
+    EsXmlMemoryPage* page;
+    EsXmlMemoryStringHeader* header = static_cast<EsXmlMemoryStringHeader*>(allocate_memory(full_size, page));
 
-		if (!header) return 0;
+    if (!header) return 0;
 
-		// setup header
-		ptrdiff_t page_offset = reinterpret_cast<char*>(header) - page->data;
+    // setup header
+    ptrdiff_t page_offset = reinterpret_cast<char*>(header) - page->data;
 
-		ES_ASSERT(page_offset >= 0 && page_offset < (1 << 16));
-		header->page_offset = static_cast<uint16_t>(page_offset);
+    ES_ASSERT(page_offset >= 0 && page_offset < (1 << 16));
+    header->page_offset = static_cast<uint16_t>(page_offset);
 
-		// full_size == 0 for large strings that occupy the whole page
-		ES_ASSERT(full_size < (1 << 16) || (page->busy_size == full_size && page_offset == 0));
-		header->full_size = static_cast<uint16_t>(full_size < (1 << 16) ? full_size : 0);
+    // full_size == 0 for large strings that occupy the whole page
+    ES_ASSERT(full_size < (1 << 16) || (page->busy_size == full_size && page_offset == 0));
+    header->full_size = static_cast<uint16_t>(full_size < (1 << 16) ? full_size : 0);
 
-		// round-trip through void* to avoid 'cast increases required alignment of target type' warning
-		// header is guaranteed a pointer-sized alignment, which should be enough for EsString::value_type
-		return static_cast<EsString::pointer>(static_cast<void*>(header + 1));
-	}
+    // round-trip through void* to avoid 'cast increases required alignment of target type' warning
+    // header is guaranteed a pointer-sized alignment, which should be enough for EsString::value_type
+    return static_cast<EsString::pointer>(static_cast<void*>(header + 1));
+  }
 
-	void deallocate_string(EsString::pointer string)
-	{
-		// this function casts pointers through void* to avoid 'cast increases required alignment of target type' warnings
-		// we're guaranteed the proper (pointer-sized) alignment on the input string if it was allocated via allocate_string
+  void deallocate_string(EsString::pointer string)
+  {
+    // this function casts pointers through void* to avoid 'cast increases required alignment of target type' warnings
+    // we're guaranteed the proper (pointer-sized) alignment on the input string if it was allocated via allocate_string
 
-		// get header
-		EsXmlMemoryStringHeader* header = static_cast<EsXmlMemoryStringHeader*>(static_cast<void*>(string)) - 1;
+    // get header
+    EsXmlMemoryStringHeader* header = static_cast<EsXmlMemoryStringHeader*>(static_cast<void*>(string)) - 1;
 
-		// deallocate
-		size_t page_offset = offsetof(EsXmlMemoryPage, data) + header->page_offset;
-		EsXmlMemoryPage* page = reinterpret_cast<EsXmlMemoryPage*>(static_cast<void*>(reinterpret_cast<char*>(header) - page_offset));
+    // deallocate
+    size_t page_offset = offsetof(EsXmlMemoryPage, data) + header->page_offset;
+    EsXmlMemoryPage* page = reinterpret_cast<EsXmlMemoryPage*>(static_cast<void*>(reinterpret_cast<char*>(header) - page_offset));
 
-		// if full_size == 0 then this string occupies the whole page
-		size_t full_size = header->full_size == 0 ? page->busy_size : header->full_size;
+    // if full_size == 0 then this string occupies the whole page
+    size_t full_size = header->full_size == 0 ? page->busy_size : header->full_size;
 
-		deallocate_memory(header, full_size, page);
-	}
+    deallocate_memory(header, full_size, page);
+  }
 
-	EsXmlMemoryPage* _root;
-	size_t _busy_size;
+  EsXmlMemoryPage* _root;
+  size_t _busy_size;
 };
 
 void* EsXmlAllocator::allocate_memory_oob(size_t size, EsXmlMemoryPage*& out_page)
 {
-	const size_t large_allocation_threshold = xml_memory_page_size / 4;
+  const size_t large_allocation_threshold = xml_memory_page_size / 4;
 
-	EsXmlMemoryPage* page = allocate_page(size <= large_allocation_threshold ? xml_memory_page_size : size);
-	out_page = page;
+  EsXmlMemoryPage* page = allocate_page(size <= large_allocation_threshold ? xml_memory_page_size : size);
+  out_page = page;
 
-	if (!page) return 0;
+  if (!page) return 0;
 
-	if (size <= large_allocation_threshold)
-	{
-		_root->busy_size = _busy_size;
+  if (size <= large_allocation_threshold)
+  {
+    _root->busy_size = _busy_size;
 
-		// insert page at the end of linked list
-		page->prev = _root;
-		_root->next = page;
-		_root = page;
+    // insert page at the end of linked list
+    page->prev = _root;
+    _root->next = page;
+    _root = page;
 
-		_busy_size = size;
-	}
-	else
-	{
-		// insert page before the end of linked list, so that it is deleted as soon as possible
-		// the last page is not deleted even if it's empty (see deallocate_memory)
-		ES_ASSERT(_root->prev);
+    _busy_size = size;
+  }
+  else
+  {
+    // insert page before the end of linked list, so that it is deleted as soon as possible
+    // the last page is not deleted even if it's empty (see deallocate_memory)
+    ES_ASSERT(_root->prev);
 
-		page->prev = _root->prev;
-		page->next = _root;
+    page->prev = _root->prev;
+    page->next = _root;
 
-		_root->prev->next = page;
-		_root->prev = page;
-	}
+    _root->prev->next = page;
+    _root->prev = page;
+  }
 
-	// allocate inside page
-	page->busy_size = size;
+  // allocate inside page
+  page->busy_size = size;
 
-	return page->data;
+  return page->data;
 }
 
 
@@ -392,17 +392,17 @@ void* EsXmlAllocator::allocate_memory_oob(size_t size, EsXmlMemoryPage*& out_pag
 struct EsXmlAttributeStruct
 {
   /// Default ctor
-	EsXmlAttributeStruct(EsXmlMemoryPage* page): header(reinterpret_cast<uintptr_t>(page)), name(0), value(0), prev_attribute_c(0), next_attribute(0)
+  EsXmlAttributeStruct(EsXmlMemoryPage* page): header(reinterpret_cast<uintptr_t>(page)), name(0), value(0), prev_attribute_c(0), next_attribute(0)
   {
   }
 
   uintptr_t header;
 
-  EsString::pointer name;	///< Pointer to attribute name.
-  EsString::pointer	value;	///< Pointer to attribute value.
+  EsString::pointer name;  ///< Pointer to attribute name.
+  EsString::pointer  value;  ///< Pointer to attribute value.
 
-  EsXmlAttributeStruct* prev_attribute_c;	///< Previous attribute (cyclic list)
-  EsXmlAttributeStruct* next_attribute;	///< Next attribute
+  EsXmlAttributeStruct* prev_attribute_c;  ///< Previous attribute (cyclic list)
+  EsXmlAttributeStruct* next_attribute;  ///< Next attribute
 };
 
 /// An XML document tree node.
@@ -410,34 +410,34 @@ struct EsXmlNodeStruct
 {
   /// Default ctor
   /// \param type - node type
-	EsXmlNodeStruct(EsXmlMemoryPage* page, EsXmlNodeType type): header(reinterpret_cast<uintptr_t>(page) | (type - 1)), parent(0), name(0), value(0), first_child(0), prev_sibling_c(0), next_sibling(0), first_attribute(0)
+  EsXmlNodeStruct(EsXmlMemoryPage* page, EsXmlNodeType type): header(reinterpret_cast<uintptr_t>(page) | (type - 1)), parent(0), name(0), value(0), first_child(0), prev_sibling_c(0), next_sibling(0), first_attribute(0)
   {
   }
 
-	uintptr_t header;
+  uintptr_t header;
 
-	EsXmlNodeStruct*		parent;					///< Pointer to parent
+  EsXmlNodeStruct*    parent;          ///< Pointer to parent
 
-	EsString::pointer		name;						///< Pointer to element name.
-	EsString::pointer	 	value;					///< Pointer to any associated string data.
+  EsString::pointer    name;            ///< Pointer to element name.
+  EsString::pointer     value;          ///< Pointer to any associated string data.
 
-	EsXmlNodeStruct*		first_child;		///< First child
+  EsXmlNodeStruct*    first_child;    ///< First child
 
-	EsXmlNodeStruct*		prev_sibling_c;	///< Left brother (cyclic list)
-	EsXmlNodeStruct*		next_sibling;		///< Right brother
+  EsXmlNodeStruct*    prev_sibling_c;  ///< Left brother (cyclic list)
+  EsXmlNodeStruct*    next_sibling;    ///< Right brother
 
-  EsXmlAttributeStruct*	first_attribute; ///< First attribute
+  EsXmlAttributeStruct*  first_attribute; ///< First attribute
 };
 
 struct EsXmlExtraBuffer
 {
-	EsString::pointer buffer;
-	EsXmlExtraBuffer* next;
+  EsString::pointer buffer;
+  EsXmlExtraBuffer* next;
 };
 
 struct EsXmlDocumentStruct: public EsXmlNodeStruct, public EsXmlAllocator
 {
-	EsXmlDocumentStruct(EsXmlMemoryPage* page): EsXmlNodeStruct(page, xmlNodeDocument), EsXmlAllocator(page), buffer(0), extra_buffers(0)
+  EsXmlDocumentStruct(EsXmlMemoryPage* page): EsXmlNodeStruct(page, xmlNodeDocument), EsXmlAllocator(page), buffer(0), extra_buffers(0)
   {
   }
 
@@ -450,7 +450,7 @@ inline EsXmlAllocator& get_allocator(const EsXmlNodeStruct* node)
 {
   ES_ASSERT(node);
 
-	return *reinterpret_cast<EsXmlMemoryPage*>(node->header & xml_memory_page_pointer_mask)->allocator;
+  return *reinterpret_cast<EsXmlMemoryPage*>(node->header & xml_memory_page_pointer_mask)->allocator;
 }
 
 // Low-level DOM operations
@@ -942,14 +942,14 @@ template <typename wcT> void convert_wchar_endian_swap(wcT* result, const wcT* d
 
 enum chartype_t
 {
-  ct_parse_pcdata = 1,	// \0, &, \r, <
-  ct_parse_attr = 2,		// \0, &, \r, ', "
-  ct_parse_attr_ws = 4,	// \0, &, \r, ', ", \n, tab
-  ct_space = 8,			// \r, \n, space, tab
-  ct_parse_cdata = 16,	// \0, ], >, \r
-  ct_parse_comment = 32,	// \0, -, >, \r
-  ct_symbol = 64,			// Any symbol > 127, a-z, A-Z, 0-9, _, :, -, .
-  ct_start_symbol = 128	// Any symbol > 127, a-z, A-Z, _, :
+  ct_parse_pcdata = 1,  // \0, &, \r, <
+  ct_parse_attr = 2,    // \0, &, \r, ', "
+  ct_parse_attr_ws = 4,  // \0, &, \r, ', ", \n, tab
+  ct_space = 8,      // \r, \n, space, tab
+  ct_parse_cdata = 16,  // \0, ], >, \r
+  ct_parse_comment = 32,  // \0, -, >, \r
+  ct_symbol = 64,      // Any symbol > 127, a-z, A-Z, 0-9, _, :, -, .
+  ct_start_symbol = 128  // Any symbol > 127, a-z, A-Z, _, :
 };
 
 static const unsigned char chartype_table[256] =
@@ -977,9 +977,9 @@ enum chartypex_t
 {
   ctx_special_pcdata = 1,   // Any symbol >= 0 and < 32 (except \t, \r, \n), &, <, >
   ctx_special_attr = 2,     // Any symbol >= 0 and < 32 (except \t), &, <, >, "
-  ctx_start_symbol = 4,	  // Any symbol > 127, a-z, A-Z, _
-  ctx_digit = 8,			  // 0-9
-  ctx_symbol = 16			  // Any symbol > 127, a-z, A-Z, 0-9, _, -, .
+  ctx_start_symbol = 4,    // Any symbol > 127, a-z, A-Z, _
+  ctx_digit = 8,        // 0-9
+  ctx_symbol = 16        // Any symbol > 127, a-z, A-Z, 0-9, _, -, .
 };
 
 static const unsigned char chartypex_table[256] =
@@ -1455,7 +1455,7 @@ void as_utf8_end(char* buffer, size_t size, const ES_WCHAR* str, size_t length)
 EsByteString as_utf8_impl(const ES_WCHAR* str, size_t length)
 {
   // first pass: get length in utf8 characters
-	size_t size = as_utf8_begin(str, length);
+  size_t size = as_utf8_begin(str, length);
 
   // allocate resulting string
   EsByteString result;
@@ -1493,32 +1493,32 @@ EsWideString as_wide_impl(const char* str, size_t size)
 
 EsByteString as_utf8(const ES_WCHAR* str)
 {
-	ES_ASSERT(str);
+  ES_ASSERT(str);
 
-	return as_utf8_impl(str, strlength_wide(str));
+  return as_utf8_impl(str, strlength_wide(str));
 }
 
 EsByteString as_utf8(const EsWideString& str)
 {
-	return as_utf8_impl(str.c_str(), str.size());
+  return as_utf8_impl(str.c_str(), str.size());
 }
 
 EsWideString as_wide(const char* str)
 {
-	ES_ASSERT(str);
+  ES_ASSERT(str);
 
-	return as_wide_impl(str, strlen(str));
+  return as_wide_impl(str, strlen(str));
 }
 
 EsWideString as_wide(const EsByteString& str)
 {
-	return as_wide_impl(str.c_str(), str.size());
+  return as_wide_impl(str.c_str(), str.size());
 }
 
 inline bool strcpy_insitu_allow(size_t length, uintptr_t allocated, EsString::pointer target)
 {
   ES_ASSERT(target);
-	size_t target_length = strlength(target);
+  size_t target_length = strlength(target);
 
   // always reuse document buffer memory if possible
   if (!allocated) return target_length >= length;
@@ -1533,7 +1533,7 @@ bool strcpy_insitu(EsString::pointer& dest, uintptr_t& header, uintptr_t header_
 {
   ES_ASSERT(header);
 
-	size_t source_length = strlength(source);
+  size_t source_length = strlength(source);
 
   if (source_length == 0)
   {
@@ -1625,7 +1625,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
 
   switch (*stre)
   {
-    case '#':	// &#...
+    case '#':  // &#...
     {
       unsigned int ucsc = 0;
 
@@ -1653,7 +1653,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
 
         ++stre;
       }
-      else	// &#... (dec code)
+      else  // &#... (dec code)
       {
         EsString::value_type ch = *++stre;
 
@@ -1684,7 +1684,7 @@ EsString::pointer strconv_escape(EsString::pointer s, gap& g)
       return stre;
     }
 
-    case 'a':	// &a
+    case 'a':  // &a
     {
       ++stre;
 
@@ -1873,7 +1873,7 @@ template <typename opt_trim, typename opt_eol, typename opt_escape> struct strco
 
 strconv_pcdata_t get_strconv_pcdata(unsigned int optmask)
 {
-	ES_COMPILE_TIME_ASSERT(xmlParseEscapes == 0x10 && xmlParseNormalizeEol == 0x20 && xmlParseTrimPcdata == 0x0800, parseFlagsCheck);
+  ES_COMPILE_TIME_ASSERT(xmlParseEscapes == 0x10 && xmlParseNormalizeEol == 0x20 && xmlParseTrimPcdata == 0x0800, parseFlagsCheck);
 
   switch (((optmask >> 4) & 3) | ((optmask >> 9) & 4)) // get bitmask for flags (eol escapes trim)
   {
@@ -2082,15 +2082,15 @@ struct EsXmlParser
   EsXmlParseStatus error_status;
 
   // Parser utilities.
-  #define PUGI__SKIPWS()			{ while (PUGI__IS_CHARTYPE(*s, ct_space)) ++s; }
-  #define PUGI__OPTSET(OPT)			( optmsk & (OPT) )
-  #define PUGI__PUSHNODE(TYPE)		{ cursor = append_node(cursor, alloc, TYPE); if (!cursor) PUGI__THROW_ERROR(xmlParseStatusOutOfMemory, s); }
-  #define PUGI__POPNODE()			{ cursor = cursor->parent; }
-  #define PUGI__SCANFOR(X)			{ while (*s != 0 && !(X)) ++s; }
-  #define PUGI__SCANWHILE(X)		{ while ((X)) ++s; }
-  #define PUGI__ENDSEG()			{ ch = *s; *s = 0; ++s; }
-  #define PUGI__THROW_ERROR(err, m)	return error_offset = m, error_status = err, static_cast<EsString::pointer>(0)
-  #define PUGI__CHECK_ERROR(err, m)	{ if (*s == 0) PUGI__THROW_ERROR(err, m); }
+  #define PUGI__SKIPWS()      { while (PUGI__IS_CHARTYPE(*s, ct_space)) ++s; }
+  #define PUGI__OPTSET(OPT)      ( optmsk & (OPT) )
+  #define PUGI__PUSHNODE(TYPE)    { cursor = append_node(cursor, alloc, TYPE); if (!cursor) PUGI__THROW_ERROR(xmlParseStatusOutOfMemory, s); }
+  #define PUGI__POPNODE()      { cursor = cursor->parent; }
+  #define PUGI__SCANFOR(X)      { while (*s != 0 && !(X)) ++s; }
+  #define PUGI__SCANWHILE(X)    { while ((X)) ++s; }
+  #define PUGI__ENDSEG()      { ch = *s; *s = 0; ++s; }
+  #define PUGI__THROW_ERROR(err, m)  return error_offset = m, error_status = err, static_cast<EsString::pointer>(0)
+  #define PUGI__CHECK_ERROR(err, m)  { if (*s == 0) PUGI__THROW_ERROR(err, m); }
 
   EsXmlParser(const EsXmlAllocator& alloc_): alloc(alloc_), error_offset(0), error_status(xmlParseStatusOk)
   {
@@ -2237,7 +2237,7 @@ struct EsXmlParser
           PUGI__SCANFOR(s[0] == '-' && s[1] == '-' && ENDSWITH(s[2], '>'));
           PUGI__CHECK_ERROR(xmlParseStatusBadComment, s);
 
-					if (PUGI__OPTSET(xmlParseComments))
+          if (PUGI__OPTSET(xmlParseComments))
             *s = 0; // Zero-terminate this segment at the first terminating '-'.
 
           s += (s[2] == '>' ? 3 : 2); // Step over the '\0->'.
@@ -2252,12 +2252,12 @@ struct EsXmlParser
       {
         ++s;
 
-				if (PUGI__OPTSET(xmlParseCdata))
+        if (PUGI__OPTSET(xmlParseCdata))
         {
           PUGI__PUSHNODE(xmlNodeCdata); // Append a new node on the tree.
           cursor->value = s; // Save the offset.
 
-					if (PUGI__OPTSET(xmlParseNormalizeEol))
+          if (PUGI__OPTSET(xmlParseNormalizeEol))
           {
             s = strconv_cdata(s, endch);
 
@@ -2299,11 +2299,11 @@ struct EsXmlParser
       ES_ASSERT((*s == 0 && endch == '>') || *s == '>');
       if (*s) *s++ = 0;
 
-			if (PUGI__OPTSET(xmlParseDoctype))
+      if (PUGI__OPTSET(xmlParseDoctype))
       {
         while (PUGI__IS_CHARTYPE(*mark, ct_space)) ++mark;
 
-				PUGI__PUSHNODE(xmlNodeDoctype);
+        PUGI__PUSHNODE(xmlNodeDoctype);
 
         cursor->value = mark;
 
@@ -2337,7 +2337,7 @@ struct EsXmlParser
     // determine node type; stricmp / strcasecmp is not portable
     bool declaration = (target[0] | ' ') == 'x' && (target[1] | ' ') == 'm' && (target[2] | ' ') == 'l' && target + 3 == s;
 
-		if (declaration ? PUGI__OPTSET(xmlParseDeclaration) : PUGI__OPTSET(xmlParseProcInstr))
+    if (declaration ? PUGI__OPTSET(xmlParseDeclaration) : PUGI__OPTSET(xmlParseProcInstr))
     {
       if (declaration)
       {
@@ -2415,7 +2415,7 @@ struct EsXmlParser
     strconv_attribute_t strconv_attribute = get_strconv_attribute(optmsk);
     strconv_pcdata_t strconv_pcdata = get_strconv_pcdata(optmsk);
 
-		EsString::value_type ch = 0;
+    EsString::value_type ch = 0;
     EsXmlNodeStruct* cursor = root;
     EsString::pointer mark = s;
 
@@ -2426,7 +2426,7 @@ struct EsXmlParser
         ++s;
 
       LOC_TAG:
-				if (PUGI__IS_CHARTYPE(*s, ct_start_symbol)) // '<#...'
+        if (PUGI__IS_CHARTYPE(*s, ct_start_symbol)) // '<#...'
         {
           PUGI__PUSHNODE(xmlNodeElement); // Append a new node to the tree.
 
@@ -2599,17 +2599,17 @@ struct EsXmlParser
           // We skipped some whitespace characters because otherwise we would take the tag branch instead of PCDATA one
           ES_ASSERT(mark != s);
 
-					if (!PUGI__OPTSET(xmlParseWhitespacePcdata | xmlParseWhitespacePcdataSingle) || PUGI__OPTSET(xmlParseTrimPcdata))
+          if (!PUGI__OPTSET(xmlParseWhitespacePcdata | xmlParseWhitespacePcdataSingle) || PUGI__OPTSET(xmlParseTrimPcdata))
           {
             continue;
           }
-					else if (PUGI__OPTSET(xmlParseWhitespacePcdataSingle))
+          else if (PUGI__OPTSET(xmlParseWhitespacePcdataSingle))
           {
             if (s[0] != '<' || s[1] != '/' || cursor->first_child) continue;
           }
         }
 
-				if (!PUGI__OPTSET(xmlParseTrimPcdata))
+        if (!PUGI__OPTSET(xmlParseTrimPcdata))
           s = mark;
 
         if (cursor->parent || PUGI__OPTSET(xmlParseFragment))
@@ -2738,10 +2738,10 @@ EsXmlEncoding get_write_encoding(EsXmlEncoding encoding)
   if (encoding == xmlEncodingWchar) return get_wchar_encoding();
 
   // replace utf16 encoding with utf16 with specific endianness
-	if (encoding == xmlEncodingUtf16) return ES_XMLUTF16_ENDIAN;
+  if (encoding == xmlEncodingUtf16) return ES_XMLUTF16_ENDIAN;
 
   // replace utf32 encoding with utf32 with specific endianness
-	if (encoding == xmlEncodingUtf32) return ES_XMLUTF32_ENDIAN;
+  if (encoding == xmlEncodingUtf32) return ES_XMLUTF32_ENDIAN;
 
   // only do autodetection if no explicit encoding is requested
   if (encoding != xmlEncodingAuto) return encoding;
@@ -2849,7 +2849,7 @@ size_t convert_buffer_output(EsString::pointer /* r_char */, uint8_t* r_u8, uint
     uint16_t* end = utf_decoder<utf16_writer>::decode_utf8_block(reinterpret_cast<const uint8_t*>(data), length, dest);
 
     // swap if necessary
-		EsXmlEncoding native_encoding = ES_XMLUTF16_ENDIAN;
+    EsXmlEncoding native_encoding = ES_XMLUTF16_ENDIAN;
 
     if (native_encoding != encoding) convert_utf_endian_swap(dest, dest, static_cast<size_t>(end - dest));
 
@@ -2864,7 +2864,7 @@ size_t convert_buffer_output(EsString::pointer /* r_char */, uint8_t* r_u8, uint
     uint32_t* end = utf_decoder<utf32_writer>::decode_utf8_block(reinterpret_cast<const uint8_t*>(data), length, dest);
 
     // swap if necessary
-		EsXmlEncoding native_encoding = ES_XMLUTF32_ENDIAN;
+    EsXmlEncoding native_encoding = ES_XMLUTF32_ENDIAN;
 
     if (native_encoding != encoding) convert_utf_endian_swap(dest, dest, static_cast<size_t>(end - dest));
 
@@ -2892,7 +2892,7 @@ class EsXmlBufferedWriter
 public:
   EsXmlBufferedWriter(EsXmlWriterIntf& writer_, EsXmlEncoding user_encoding): writer(writer_), bufsize(0), encoding(get_write_encoding(user_encoding))
   {
-		ES_COMPILE_TIME_ASSERT(bufcapacity >= 8, bufcapacityCheck);
+    ES_COMPILE_TIME_ASSERT(bufcapacity >= 8, bufcapacityCheck);
   }
 
   ~EsXmlBufferedWriter()
@@ -2967,8 +2967,8 @@ public:
 
   void write(EsString::const_pointer data)
   {
-		write(data, strlength(data));
-	}
+    write(data, strlength(data));
+  }
 
   void write(EsString::value_type d0)
   {
@@ -3107,7 +3107,7 @@ void text_output_escaped(EsXmlBufferedWriter& writer, EsString::const_pointer s,
 
 void text_output(EsXmlBufferedWriter& writer, EsString::const_pointer s, chartypex_t type, unsigned int flags)
 {
-	if (flags & xmlFormatNoEscapes)
+  if (flags & xmlFormatNoEscapes)
     writer.write(s);
   else
     text_output_escaped(writer, s, type);
@@ -3139,10 +3139,10 @@ void node_output_attributes(EsXmlBufferedWriter& writer, const EsXmlNode& node, 
 {
   EsString::const_pointer default_name = esT(":anonymous");
 
-	for (EsXmlAttribute a = node.firstAttributeGet(); a; a = a.nextAttributeGet())
+  for (EsXmlAttribute a = node.firstAttributeGet(); a; a = a.nextAttributeGet())
   {
     writer.write(' ');
-		writer.write(a.nameGet()[0] ? a.nameGet() : default_name);
+    writer.write(a.nameGet()[0] ? a.nameGet() : default_name);
     writer.write('=', '"');
 
     text_output(writer, a.valueGet(), ctx_special_attr, flags);
@@ -3508,7 +3508,7 @@ bool set_value_convert(EsString::pointer& dest, uintptr_t& header, uintptr_t hea
   char buf[128];
   sprintf(buf, "%d", value);
 
-	return set_value_buffer(dest, header, header_mask, buf);
+  return set_value_buffer(dest, header, header_mask, buf);
 }
 
 bool set_value_convert(EsString::pointer& dest, uintptr_t& header, uintptr_t header_mask, unsigned int value)
@@ -3524,7 +3524,7 @@ bool set_value_convert(EsString::pointer& dest, uintptr_t& header, uintptr_t hea
   char buf[128];
   sprintf(buf, "%g", value);
 
-	return set_value_buffer(dest, header, header_mask, buf);
+  return set_value_buffer(dest, header, header_mask, buf);
 }
 
 bool set_value_convert(EsString::pointer& dest, uintptr_t& header, uintptr_t header_mask, bool value)
@@ -3534,7 +3534,7 @@ bool set_value_convert(EsString::pointer& dest, uintptr_t& header, uintptr_t hea
 
 bool set_value_convert(EsString::pointer& dest, uintptr_t& header, uintptr_t header_mask, long long value)
 {
-	char buf[128];
+  char buf[128];
   sprintf(buf, "%lld", value);
 
   return set_value_buffer(dest, header, header_mask, buf);
@@ -3582,65 +3582,65 @@ EsXmlParseResult load_buffer_impl(EsXmlDocumentStruct* doc, EsXmlNodeStruct* roo
 
 bool EsXmlDocument::saveFile(const EsString& path, const EsString& indent, unsigned int flags, EsXmlEncoding encoding) const
 {
-	EsFile file(path, static_cast<ulong>(EsFileFlag::Write)|static_cast<ulong>(EsFileFlag::Exclusive));
-	if( file.open() )
-	{
-		EsXmlWriterFile writer(file);
-		save(writer, indent, flags, encoding);
-		file.close();
-		return true;
-	}
-	else
-		EsException::ThrowOsError( file.recentErrorGet() );
+  EsFile file(path, static_cast<ulong>(EsFileFlag::Write)|static_cast<ulong>(EsFileFlag::Exclusive));
+  if( file.open() )
+  {
+    EsXmlWriterFile writer(file);
+    save(writer, indent, flags, encoding);
+    file.close();
+    return true;
+  }
+  else
+    EsException::ThrowOsError( file.recentErrorGet() );
 
-	return false;
+  return false;
 }
 
 static EsXmlParseResult load_file_impl(EsXmlDocument& doc, EsFile& file, unsigned int options, EsXmlEncoding encoding)
 {
-	// get file size (can result in I/O errors)
-	EsXmlParseStatus size_status = xmlParseStatusOk;
-	size_t size = (size_t)file.get_length();
+  // get file size (can result in I/O errors)
+  EsXmlParseStatus size_status = xmlParseStatusOk;
+  size_t size = (size_t)file.get_length();
 
-	if(size_status != xmlParseStatusOk)
-	{
-		file.close();
-		return make_parse_result(size_status);
-	}
+  if(size_status != xmlParseStatusOk)
+  {
+    file.close();
+    return make_parse_result(size_status);
+  }
 
-	// allocate buffer for the whole file
-	char* contents = static_cast<char*>(EsXmlMemory::allocate(size > 0 ? size : 1));
+  // allocate buffer for the whole file
+  char* contents = static_cast<char*>(EsXmlMemory::allocate(size > 0 ? size : 1));
 
-	if (!contents)
-	{
-		file.close();
-		return make_parse_result(xmlParseStatusOutOfMemory);
-	}
+  if (!contents)
+  {
+    file.close();
+    return make_parse_result(xmlParseStatusOutOfMemory);
+  }
 
-	// read file in memory
-	size_t read_size = (size_t)file.rawRead(contents, size);
-	file.close();
+  // read file in memory
+  size_t read_size = (size_t)file.rawRead(contents, size);
+  file.close();
 
-	if(read_size != size)
-	{
-		EsXmlMemory::deallocate(contents);
-		return make_parse_result(xmlParseStatusIoError);
-	}
+  if(read_size != size)
+  {
+    EsXmlMemory::deallocate(contents);
+    return make_parse_result(xmlParseStatusIoError);
+  }
 
-	return doc.loadBufferInplaceOwn(contents, size, options, encoding);
+  return doc.loadBufferInplaceOwn(contents, size, options, encoding);
 }
 
 EsXmlParseResult EsXmlDocument::loadFile(const EsString& path, unsigned int options, EsXmlEncoding encoding)
 {
-	reset();
-	EsFile file(path, static_cast<ulong>(EsFileFlag::Read)|static_cast<ulong>(EsFileFlag::Exclusive));
-	if( file.open() )
-		return load_file_impl(*this, file, options, encoding);
-	else
-		EsException::ThrowOsError( file.recentErrorGet() );
+  reset();
+  EsFile file(path, static_cast<ulong>(EsFileFlag::Read)|static_cast<ulong>(EsFileFlag::Exclusive));
+  if( file.open() )
+    return load_file_impl(*this, file, options, encoding);
+  else
+    EsException::ThrowOsError( file.recentErrorGet() );
 
-	// pacify compiler
-	return make_parse_result( xmlParseStatusFileNotFound );
+  // pacify compiler
+  return make_parse_result( xmlParseStatusFileNotFound );
 }
 //---------------------------------------------------------------------------
 
@@ -3653,7 +3653,7 @@ m_file(file)
 
 void EsXmlWriterFile::write(const void* data, size_t size)
 {
-	m_file.rawWrite(data, size);
+  m_file.rawWrite(data, size);
 }
 //---------------------------------------------------------------------------
 
@@ -3664,7 +3664,7 @@ m_str(str)
 
 void EsXmlWriterByteString::write(const void* data, size_t size)
 {
-	m_str += EsByteString(static_cast<EsByteString::const_pointer>(data), size);
+  m_str += EsByteString(static_cast<EsByteString::const_pointer>(data), size);
 }
 //---------------------------------------------------------------------------
 
@@ -3675,7 +3675,7 @@ m_buff(buff)
 
 void EsXmlWriterBinBuffer::write(const void* data, size_t size)
 {
-	m_buff.append(size, static_cast<const esU8*>(data));
+  m_buff.append(size, static_cast<const esU8*>(data));
 }
 //---------------------------------------------------------------------------
 
@@ -4042,7 +4042,7 @@ EsString::const_pointer EsXmlNode::nameGet() const
 
 EsXmlNodeType EsXmlNode::typeGet() const
 {
-	return _root ? static_cast<EsXmlNodeType>((_root->header & xml_memory_page_type_mask) + 1) : xmlNodeNull;
+  return _root ? static_cast<EsXmlNodeType>((_root->header & xml_memory_page_type_mask) + 1) : xmlNodeNull;
 }
 
 EsString::const_pointer EsXmlNode::valueGet() const
@@ -4055,7 +4055,7 @@ EsXmlNode EsXmlNode::childGet(EsString::const_pointer name_) const
   if (!_root) return EsXmlNode();
 
   for (EsXmlNodeStruct* i = _root->first_child; i; i = i->next_sibling)
-		if (i->name && strequal(name_, i->name)) return EsXmlNode(i);
+    if (i->name && strequal(name_, i->name)) return EsXmlNode(i);
 
   return EsXmlNode();
 }
@@ -4065,7 +4065,7 @@ EsXmlAttribute EsXmlNode::attributeGet(EsString::const_pointer name_) const
   if (!_root) return EsXmlAttribute();
 
   for (EsXmlAttributeStruct* i = _root->first_attribute; i; i = i->next_attribute)
-		if (i->name && strequal(name_, i->name))
+    if (i->name && strequal(name_, i->name))
       return EsXmlAttribute(i);
 
   return EsXmlAttribute();
@@ -4139,7 +4139,7 @@ EsString::const_pointer EsXmlNode::childValueGet() const
 
 EsString::const_pointer EsXmlNode::childValueGet(EsString::const_pointer name_) const
 {
-	return childGet(name_).childValueGet();
+  return childGet(name_).childValueGet();
 }
 
 EsXmlAttribute EsXmlNode::firstAttributeGet() const
@@ -4297,7 +4297,7 @@ EsXmlAttribute EsXmlNode::attributeCopyPrepend(const EsXmlAttribute& proto)
 {
   if (!proto) return EsXmlAttribute();
 
-	EsXmlAttribute result = attributePrepend(proto.nameGet());
+  EsXmlAttribute result = attributePrepend(proto.nameGet());
   result.valueSet(proto.valueGet());
 
   return result;
@@ -4307,7 +4307,7 @@ EsXmlAttribute EsXmlNode::attributeCopyInsertAfter(const EsXmlAttribute& proto, 
 {
   if (!proto) return EsXmlAttribute();
 
-	EsXmlAttribute result = attributeInsertAfter(proto.nameGet(), attr);
+  EsXmlAttribute result = attributeInsertAfter(proto.nameGet(), attr);
   result.valueSet(proto.valueGet());
 
   return result;
@@ -4317,7 +4317,7 @@ EsXmlAttribute EsXmlNode::attributeCopyInsertBefore(const EsXmlAttribute& proto,
 {
   if (!proto) return EsXmlAttribute();
 
-	EsXmlAttribute result = attributeInsertBefore(proto.nameGet(), attr);
+  EsXmlAttribute result = attributeInsertBefore(proto.nameGet(), attr);
   result.valueSet(proto.valueGet());
 
   return result;
@@ -4465,7 +4465,7 @@ EsXmlNode EsXmlNode::childCopyPrepend(const EsXmlNode& proto)
 
 EsXmlNode EsXmlNode::childCopyInsertAfter(const EsXmlNode& proto, const EsXmlNode& node)
 {
-	EsXmlNode result = childInsertAfter(proto.typeGet(), node);
+  EsXmlNode result = childInsertAfter(proto.typeGet(), node);
 
   if (result) recursive_copy_skip(result, proto, result);
 
@@ -4474,7 +4474,7 @@ EsXmlNode EsXmlNode::childCopyInsertAfter(const EsXmlNode& proto, const EsXmlNod
 
 EsXmlNode EsXmlNode::childCopyInsertBefore(const EsXmlNode& proto, const EsXmlNode& node)
 {
-	EsXmlNode result = childInsertBefore(proto.typeGet(), node);
+  EsXmlNode result = childInsertBefore(proto.typeGet(), node);
 
   if (result) recursive_copy_skip(result, proto, result);
 
@@ -4483,7 +4483,7 @@ EsXmlNode EsXmlNode::childCopyInsertBefore(const EsXmlNode& proto, const EsXmlNo
 
 bool EsXmlNode::attributeRemove(EsString::const_pointer name_)
 {
-	return attributeRemove(attributeGet(name_));
+  return attributeRemove(attributeGet(name_));
 }
 
 bool EsXmlNode::attributeRemove(const EsXmlAttribute& a)
@@ -4510,7 +4510,7 @@ bool EsXmlNode::attributeRemove(const EsXmlAttribute& a)
 
 bool EsXmlNode::childRemove(EsString::const_pointer name_)
 {
-	return childRemove(childGet(name_));
+  return childRemove(childGet(name_));
 }
 
 bool EsXmlNode::childRemove(const EsXmlNode& n)
@@ -4568,10 +4568,10 @@ EsXmlNode EsXmlNode::childFindByAttribute(EsString::const_pointer name_, EsStrin
   if (!_root) return EsXmlNode();
 
   for (EsXmlNodeStruct* i = _root->first_child; i; i = i->next_sibling)
-		if (i->name && strequal(name_, i->name))
+    if (i->name && strequal(name_, i->name))
     {
       for (EsXmlAttributeStruct* a = i->first_attribute; a; a = a->next_attribute)
-				if (a->name && strequal(attr_name, a->name) && strequal(attr_value, a->value ? a->value : esT("")))
+        if (a->name && strequal(attr_name, a->name) && strequal(attr_value, a->value ? a->value : esT("")))
           return EsXmlNode(i);
     }
 
@@ -4584,7 +4584,7 @@ EsXmlNode EsXmlNode::childFindByAttribute(EsString::const_pointer attr_name, EsS
 
   for (EsXmlNodeStruct* i = _root->first_child; i; i = i->next_sibling)
     for (EsXmlAttributeStruct* a = i->first_attribute; a; a = a->next_attribute)
-			if (a->name && strequal(attr_name, a->name) && strequal(attr_value, a->value ? a->value : esT("")))
+      if (a->name && strequal(attr_name, a->name) && strequal(attr_value, a->value ? a->value : esT("")))
         return EsXmlNode(i);
 
   return EsXmlNode();
@@ -4739,14 +4739,14 @@ ptrdiff_t EsXmlNode::offsetDebugGet() const
     return 0;
 
   case xmlNodeElement:
-	case xmlNodeDocDecl:
+  case xmlNodeDocDecl:
   case xmlNodeProcInstr:
     return (_root->header & xml_memory_page_name_allocated_mask) ? -1 : _root->name - buffer;
 
   case xmlNodePcdata:
   case xmlNodeCdata:
   case xmlNodeComment:
-	case xmlNodeDoctype:
+  case xmlNodeDoctype:
     return (_root->header & xml_memory_page_value_allocated_mask) ? -1 : _root->value - buffer;
 
   default:
@@ -5186,26 +5186,26 @@ EsXmlParseResult::operator bool() const
 
 EsString::const_pointer EsXmlParseResult::descriptionGet() const
 {
-	switch (status)
-	{
-	case xmlParseStatusOk: return esT("No error");
-	case xmlParseStatusFileNotFound: return esT("File was not found");
-	case xmlParseStatusIoError: return esT("Error reading from file/stream");
-	case xmlParseStatusOutOfMemory: return esT("Could not allocate memory");
-	case xmlParseStatusInternalError: return esT("Internal error occurred");
-	case xmlParseStatusUnrecognizedTag: return esT("Could not determine tag type");
-	case xmlParseStatusBadProcInstr: return esT("Error parsing document declaration/processing instruction");
-	case xmlParseStatusBadComment: return esT("Error parsing comment");
-	case xmlParseStatusBadCdata: return esT("Error parsing CDATA section");
-	case xmlParseStatusBadDoctype: return esT("Error parsing document type declaration");
-	case xmlParseStatusBadPcdata: return esT("Error parsing PCDATA section");
-	case xmlParseStatusBadStartElement: return esT("Error parsing start element tag");
-	case xmlParseStatusBadAttribute: return esT("Error parsing element attribute");
-	case xmlParseStatusBadEndElement: return esT("Error parsing end element tag");
-	case xmlParseStatusEndElementMismatch: return esT("Start-end tags mismatch");
-	case xmlParseStatusAppendInvalidRoot: return esT("Unable to append nodes: root is not an element or document");
-	case xmlParseStatusNoDocumentElement: return esT("No document element found");
-	default: return esT("Unknown error");
+  switch (status)
+  {
+  case xmlParseStatusOk: return esT("No error");
+  case xmlParseStatusFileNotFound: return esT("File was not found");
+  case xmlParseStatusIoError: return esT("Error reading from file/stream");
+  case xmlParseStatusOutOfMemory: return esT("Could not allocate memory");
+  case xmlParseStatusInternalError: return esT("Internal error occurred");
+  case xmlParseStatusUnrecognizedTag: return esT("Could not determine tag type");
+  case xmlParseStatusBadProcInstr: return esT("Error parsing document declaration/processing instruction");
+  case xmlParseStatusBadComment: return esT("Error parsing comment");
+  case xmlParseStatusBadCdata: return esT("Error parsing CDATA section");
+  case xmlParseStatusBadDoctype: return esT("Error parsing document type declaration");
+  case xmlParseStatusBadPcdata: return esT("Error parsing PCDATA section");
+  case xmlParseStatusBadStartElement: return esT("Error parsing start element tag");
+  case xmlParseStatusBadAttribute: return esT("Error parsing element attribute");
+  case xmlParseStatusBadEndElement: return esT("Error parsing end element tag");
+  case xmlParseStatusEndElementMismatch: return esT("Start-end tags mismatch");
+  case xmlParseStatusAppendInvalidRoot: return esT("Unable to append nodes: root is not an element or document");
+  case xmlParseStatusNoDocumentElement: return esT("No document element found");
+  default: return esT("Unknown error");
   }
 }
 
@@ -5235,10 +5235,10 @@ void EsXmlDocument::reset(const EsXmlDocument& proto)
 
 void EsXmlDocument::create()
 {
-	ES_ASSERT(!_root);
+  ES_ASSERT(!_root);
 
   // initialize sentinel page
-	ES_COMPILE_TIME_ASSERT(sizeof(EsXmlMemoryPage) + sizeof(EsXmlDocumentStruct) + xml_memory_page_alignment <= sizeof(_memory), xmlMemoryAlignmentCheck);
+  ES_COMPILE_TIME_ASSERT(sizeof(EsXmlMemoryPage) + sizeof(EsXmlDocumentStruct) + xml_memory_page_alignment <= sizeof(_memory), xmlMemoryAlignmentCheck);
 
   // align upwards to page boundary
   void* page_memory = reinterpret_cast<void*>((reinterpret_cast<uintptr_t>(_memory) + (xml_memory_page_alignment - 1)) & ~(xml_memory_page_alignment - 1));
@@ -5269,7 +5269,7 @@ void EsXmlDocument::destroy()
   }
 
   // destroy extra buffers (note: no need to destroy linked list nodes, they're allocated using document allocator)
-	for (EsXmlExtraBuffer* extra = static_cast<EsXmlDocumentStruct*>(_root)->extra_buffers; extra; extra = extra->next)
+  for (EsXmlExtraBuffer* extra = static_cast<EsXmlDocumentStruct*>(_root)->extra_buffers; extra; extra = extra->next)
   {
     if (extra->buffer) EsXmlMemory::deallocate(extra->buffer);
   }
@@ -5280,7 +5280,7 @@ void EsXmlDocument::destroy()
 
       for (EsXmlMemoryPage* page = root_page->next; page; )
       {
-					EsXmlMemoryPage* next = page->next;
+          EsXmlMemoryPage* next = page->next;
 
           EsXmlAllocator::deallocate_page(page);
 
@@ -5292,14 +5292,14 @@ void EsXmlDocument::destroy()
 
 EsXmlParseResult EsXmlDocument::load(const EsString& contents, unsigned int options)
 {
-	// Force native encoding (skip autodetection)
+  // Force native encoding (skip autodetection)
 #if !defined(ES_USE_NARROW_ES_CHAR)
-	EsXmlEncoding encoding = xmlEncodingWchar;
+  EsXmlEncoding encoding = xmlEncodingWchar;
 #else
-	EsXmlEncoding encoding = xmlEncodingUtf8;
+  EsXmlEncoding encoding = xmlEncodingUtf8;
 #endif
 
-	return loadBuffer(contents.c_str(), contents.size() * sizeof(EsString::value_type), options, encoding);
+  return loadBuffer(contents.c_str(), contents.size() * sizeof(EsString::value_type), options, encoding);
 }
 
 EsXmlParseResult EsXmlDocument::loadBuffer(const void* contents, size_t size, unsigned int options, EsXmlEncoding encoding)
@@ -5320,14 +5320,14 @@ EsXmlParseResult EsXmlDocument::loadBufferInplaceOwn(void* contents, size_t size
 {
   reset();
 
-	return load_buffer_impl(static_cast<EsXmlDocumentStruct*>(_root), _root, contents, size, options, encoding, true, true, &_buffer);
+  return load_buffer_impl(static_cast<EsXmlDocumentStruct*>(_root), _root, contents, size, options, encoding, true, true, &_buffer);
 }
 
 void EsXmlDocument::save(EsXmlWriterIntf& writer, const EsString& indent, unsigned int flags, EsXmlEncoding encoding) const
 {
-	EsXmlBufferedWriter buffered_writer(writer, encoding);
+  EsXmlBufferedWriter buffered_writer(writer, encoding);
 
-	if ((flags & xmlFormatWriteBom) && encoding != xmlEncodingLatin1)
+  if ((flags & xmlFormatWriteBom) && encoding != xmlEncodingLatin1)
   {
     // BOM always represents the codepoint U+FEFF, so just write it in native encoding
   #if !defined(ES_USE_NARROW_ES_CHAR)
@@ -5338,7 +5338,7 @@ void EsXmlDocument::save(EsXmlWriterIntf& writer, const EsString& indent, unsign
   #endif
   }
 
-	if (!(flags & xmlFormatNoDocDecl) && !has_declaration(*this))
+  if (!(flags & xmlFormatNoDocDecl) && !has_declaration(*this))
   {
     buffered_writer.write(esT("<?xml version=\"1.0\""));
     if (encoding == xmlEncodingLatin1) buffered_writer.write(esT(" encoding=\"ISO-8859-1\""));
@@ -5351,13 +5351,13 @@ void EsXmlDocument::save(EsXmlWriterIntf& writer, const EsString& indent, unsign
 
 EsXmlNode EsXmlDocument::elementGet() const
 {
-	ES_ASSERT(_root);
+  ES_ASSERT(_root);
 
-	for (EsXmlNodeStruct* i = _root->first_child; i; i = i->next_sibling)
-		if ((i->header & xml_memory_page_type_mask) + 1 == xmlNodeElement)
-			return EsXmlNode(i);
+  for (EsXmlNodeStruct* i = _root->first_child; i; i = i->next_sibling)
+    if ((i->header & xml_memory_page_type_mask) + 1 == xmlNodeElement)
+      return EsXmlNode(i);
 
-	return EsXmlNode();
+  return EsXmlNode();
 }
 
 #if (defined(_MSC_VER) || defined(__ICC))
@@ -5649,7 +5649,7 @@ struct xpath_memory_block
 
 class xpath_allocator
 {
-	xpath_memory_block* _root;
+  xpath_memory_block* _root;
   size_t _root_size;
 
 public:
@@ -5657,7 +5657,7 @@ public:
   jmp_buf* error_handler;
 #endif
 
-	xpath_allocator(xpath_memory_block* root, size_t root_size = 0): _root(root), _root_size(root_size)
+  xpath_allocator(xpath_memory_block* root, size_t root_size = 0): _root(root), _root_size(root_size)
   {
   #ifdef PUGIXML_NO_EXCEPTIONS
     error_handler = 0;
@@ -5861,7 +5861,7 @@ class EsXmlXpathString
 
   static EsString::pointer duplicate_string(EsString::const_pointer string, xpath_allocator* alloc)
   {
-		return duplicate_string(string, strlength(string), alloc);
+    return duplicate_string(string, strlength(string), alloc);
   }
 
 public:
@@ -5904,8 +5904,8 @@ public:
     else
     {
       // need to make heap copy
-			size_t target_length = strlength(_buffer);
-			size_t source_length = strlength(o._buffer);
+      size_t target_length = strlength(_buffer);
+      size_t source_length = strlength(o._buffer);
       size_t result_length = target_length + source_length;
 
       // allocate new buffer
@@ -5932,7 +5932,7 @@ public:
 
   size_t length() const
   {
-		return strlength(_buffer);
+    return strlength(_buffer);
   }
 
   EsString::pointer data(xpath_allocator* alloc)
@@ -5954,12 +5954,12 @@ public:
 
   bool operator==(const EsXmlXpathString& o) const
   {
-		return strequal(_buffer, o._buffer);
+    return strequal(_buffer, o._buffer);
   }
 
   bool operator!=(const EsXmlXpathString& o) const
   {
-		return !strequal(_buffer, o._buffer);
+    return !strequal(_buffer, o._buffer);
   }
 
   bool uses_heap() const
@@ -6002,11 +6002,11 @@ EsString::value_type tolower_ascii(EsString::value_type ch)
 
 EsXmlXpathString string_value(const EsXmlXpathNode& na, xpath_allocator* alloc)
 {
-	if (na.attributeGet())
-		return xpath_string_const(na.attributeGet().valueGet());
+  if (na.attributeGet())
+    return xpath_string_const(na.attributeGet().valueGet());
   else
   {
-		const EsXmlNode& n = na.nodeGet();
+    const EsXmlNode& n = na.nodeGet();
 
     switch (n.typeGet())
     {
@@ -6016,7 +6016,7 @@ EsXmlXpathString string_value(const EsXmlXpathNode& na, xpath_allocator* alloc)
     case xmlNodeProcInstr:
       return xpath_string_const(n.valueGet());
 
-		case xmlNodeDocument:
+    case xmlNodeDocument:
     case xmlNodeElement:
     {
       EsXmlXpathString result;
@@ -6099,7 +6099,7 @@ bool node_is_ancestor(EsXmlNode parent, EsXmlNode node)
 
 const void* document_order(const EsXmlXpathNode& xnode)
 {
-	EsXmlNodeStruct* node = xnode.nodeGet().internalObjectGet();
+  EsXmlNodeStruct* node = xnode.nodeGet().internalObjectGet();
 
   if (node)
   {
@@ -6108,7 +6108,7 @@ const void* document_order(const EsXmlXpathNode& xnode)
     return 0;
   }
 
-	EsXmlAttributeStruct* attr = xnode.attributeGet().internalObjectGet();
+  EsXmlAttributeStruct* attr = xnode.attributeGet().internalObjectGet();
 
   if (attr)
   {
@@ -6131,17 +6131,17 @@ struct document_order_comparator
     if (lo && ro) return lo < ro;
 
     // slow comparison
-		EsXmlNode ln = lhs.nodeGet(), rn = rhs.nodeGet();
+    EsXmlNode ln = lhs.nodeGet(), rn = rhs.nodeGet();
 
     // compare attributes
-		if (lhs.attributeGet() && rhs.attributeGet())
+    if (lhs.attributeGet() && rhs.attributeGet())
     {
       // shared parent
       if (lhs.parentGet() == rhs.parentGet())
       {
         // determine sibling order
-				for (EsXmlAttribute a = lhs.attributeGet(); a; a = a.nextAttributeGet())
-					if (a == rhs.attributeGet())
+        for (EsXmlAttribute a = lhs.attributeGet(); a; a = a.nextAttributeGet())
+          if (a == rhs.attributeGet())
             return true;
 
         return false;
@@ -6151,14 +6151,14 @@ struct document_order_comparator
       ln = lhs.parentGet();
       rn = rhs.parentGet();
     }
-		else if (lhs.attributeGet())
+    else if (lhs.attributeGet())
     {
       // attributes go after the parent element
-			if (lhs.parentGet() == rhs.nodeGet()) return false;
+      if (lhs.parentGet() == rhs.nodeGet()) return false;
 
       ln = lhs.parentGet();
     }
-		else if (rhs.attributeGet())
+    else if (rhs.attributeGet())
     {
       // attributes go after the parent element
       if (rhs.parentGet() == lhs.nodeGet()) return true;
@@ -6179,7 +6179,7 @@ struct duplicate_comparator
 {
   bool operator()(const EsXmlXpathNode& lhs, const EsXmlXpathNode& rhs) const
   {
-		if (lhs.attributeGet()) return rhs.attributeGet() ? lhs.attributeGet() < rhs.attributeGet() : true;
+    if (lhs.attributeGet()) return rhs.attributeGet() ? lhs.attributeGet() < rhs.attributeGet() : true;
     else return rhs.attributeGet() ? false : lhs.nodeGet() < rhs.nodeGet();
   }
 };
@@ -6200,8 +6200,8 @@ double gen_nan()
 EsString::const_pointer convert_number_to_string_special(double value)
 {
 #if defined(PUGI__MSVC_CRT_VERSION) || defined(__BORLANDC__)
-	if (esFinite(value)) return (value == 0) ? esT("0") : 0;
-	if (esIsNan(value)) return esT("NaN");
+  if (esFinite(value)) return (value == 0) ? esT("0") : 0;
+  if (esIsNan(value)) return esT("NaN");
   return value > 0 ? esT("Infinity") : esT("-Infinity");
 #elif defined(fpclassify) && defined(FP_NAN) && defined(FP_INFINITE) && defined(FP_ZERO)
   switch (fpclassify(value))
@@ -6437,21 +6437,21 @@ EsString::const_pointer qualified_name(const EsXmlXpathNode& node)
 EsString::const_pointer local_name(const EsXmlXpathNode& node)
 {
   EsString::const_pointer name = qualified_name(node);
-	EsString::const_pointer p = find_char(name, ':');
+  EsString::const_pointer p = find_char(name, ':');
 
-	return p ? p + 1 : name;
+  return p ? p + 1 : name;
 }
 
 struct namespace_uri_predicate
 {
-	EsString::const_pointer prefix;
-	size_t prefix_length;
+  EsString::const_pointer prefix;
+  size_t prefix_length;
 
-	namespace_uri_predicate(EsString::const_pointer name)
-	{
-		EsString::const_pointer pos = find_char(name, ':');
+  namespace_uri_predicate(EsString::const_pointer name)
+  {
+    EsString::const_pointer pos = find_char(name, ':');
 
-		prefix = pos ? name : 0;
+    prefix = pos ? name : 0;
     prefix_length = pos ? static_cast<size_t>(pos - name) : 0;
   }
 
@@ -6461,7 +6461,7 @@ struct namespace_uri_predicate
 
     if (!starts_with(name, esT("xmlns"))) return false;
 
-		return prefix ? name[5] == ':' && strequalrange(name + 6, prefix, prefix_length) : name[5] == 0;
+    return prefix ? name[5] == ':' && strequalrange(name + 6, prefix, prefix_length) : name[5] == 0;
   }
 };
 
@@ -6494,7 +6494,7 @@ EsString::const_pointer namespace_uri(const EsXmlAttribute& attr, const EsXmlNod
 
   while (p)
   {
-		EsXmlAttribute a = p.attributeFind(pred);
+    EsXmlAttribute a = p.attributeFind(pred);
 
     if (a) return a.valueGet();
 
@@ -6642,7 +6642,7 @@ EsXmlXpathVariable* new_xpath_variable(EsXmlXpathValueType type, EsString::const
   case xpathTypeNodeSet:
     return new_xpath_variable<xpath_variable_node_set>(name);
 
-	case xpathTypeNumber:
+  case xpathTypeNumber:
     return new_xpath_variable<xpath_variable_number>(name);
 
   case xpathTypeString:
@@ -6916,7 +6916,7 @@ struct xpath_lexer_string
   {
     size_t length = static_cast<size_t>(end - begin);
 
-		return strequalrange(other, begin, length);
+    return strequalrange(other, begin, length);
   }
 };
 
@@ -7229,64 +7229,64 @@ public:
 enum ast_type_t
 {
   ast_unknown,
-  ast_op_or,						// left or right
-  ast_op_and,						// left and right
-  ast_op_equal,					// left = right
-  ast_op_not_equal,				// left != right
-  ast_op_less,					// left < right
-  ast_op_greater,					// left > right
-  ast_op_less_or_equal,			// left <= right
-  ast_op_greater_or_equal,		// left >= right
-  ast_op_add,						// left + right
-  ast_op_subtract,				// left - right
-  ast_op_multiply,				// left * right
-  ast_op_divide,					// left / right
-  ast_op_mod,						// left % right
-  ast_op_negate,					// left - right
-  ast_op_union,					// left | right
-  ast_predicate,					// apply predicate to set; next points to next predicate
-  ast_filter,						// select * from left where right
-  ast_filter_posinv,				// select * from left where right; proximity position invariant
-  ast_string_constant,			// string constant
-  ast_number_constant,			// number constant
-  ast_variable,					// variable
-  ast_func_last,					// last()
-  ast_func_position,				// position()
-  ast_func_count,					// count(left)
-  ast_func_id,					// id(left)
-  ast_func_local_name_0,			// local-nameGet()
-  ast_func_local_name_1,			// local-name(left)
-  ast_func_namespace_uri_0,		// namespace-uri()
-  ast_func_namespace_uri_1,		// namespace-uri(left)
-  ast_func_name_0,				// nameGet()
-  ast_func_name_1,				// name(left)
-  ast_func_string_0,				// string()
-  ast_func_string_1,				// string(left)
-  ast_func_concat,				// concat(left, right, siblings)
-  ast_func_starts_with,			// starts_with(left, right)
-  ast_func_contains,				// contains(left, right)
-  ast_func_substring_before,		// substring-before(left, right)
-  ast_func_substring_after,		// substring-after(left, right)
-  ast_func_substring_2,			// substring(left, right)
-  ast_func_substring_3,			// substring(left, right, third)
-  ast_func_string_length_0,		// string-length()
-  ast_func_string_length_1,		// string-length(left)
-  ast_func_normalize_space_0,		// normalize-space()
-  ast_func_normalize_space_1,		// normalize-space(left)
-  ast_func_translate,				// translate(left, right, third)
-  ast_func_boolean,				// boolean(left)
-  ast_func_not,					// not(left)
-  ast_func_true,					// true()
-  ast_func_false,					// false()
-  ast_func_lang,					// lang(left)
-  ast_func_number_0,				// number()
-  ast_func_number_1,				// number(left)
-  ast_func_sum,					// sum(left)
-  ast_func_floor,					// floor(left)
-  ast_func_ceiling,				// ceiling(left)
-  ast_func_round,					// round(left)
-  ast_step,						// process set left with step
-  ast_step_root					// select root node
+  ast_op_or,            // left or right
+  ast_op_and,            // left and right
+  ast_op_equal,          // left = right
+  ast_op_not_equal,        // left != right
+  ast_op_less,          // left < right
+  ast_op_greater,          // left > right
+  ast_op_less_or_equal,      // left <= right
+  ast_op_greater_or_equal,    // left >= right
+  ast_op_add,            // left + right
+  ast_op_subtract,        // left - right
+  ast_op_multiply,        // left * right
+  ast_op_divide,          // left / right
+  ast_op_mod,            // left % right
+  ast_op_negate,          // left - right
+  ast_op_union,          // left | right
+  ast_predicate,          // apply predicate to set; next points to next predicate
+  ast_filter,            // select * from left where right
+  ast_filter_posinv,        // select * from left where right; proximity position invariant
+  ast_string_constant,      // string constant
+  ast_number_constant,      // number constant
+  ast_variable,          // variable
+  ast_func_last,          // last()
+  ast_func_position,        // position()
+  ast_func_count,          // count(left)
+  ast_func_id,          // id(left)
+  ast_func_local_name_0,      // local-nameGet()
+  ast_func_local_name_1,      // local-name(left)
+  ast_func_namespace_uri_0,    // namespace-uri()
+  ast_func_namespace_uri_1,    // namespace-uri(left)
+  ast_func_name_0,        // nameGet()
+  ast_func_name_1,        // name(left)
+  ast_func_string_0,        // string()
+  ast_func_string_1,        // string(left)
+  ast_func_concat,        // concat(left, right, siblings)
+  ast_func_starts_with,      // starts_with(left, right)
+  ast_func_contains,        // contains(left, right)
+  ast_func_substring_before,    // substring-before(left, right)
+  ast_func_substring_after,    // substring-after(left, right)
+  ast_func_substring_2,      // substring(left, right)
+  ast_func_substring_3,      // substring(left, right, third)
+  ast_func_string_length_0,    // string-length()
+  ast_func_string_length_1,    // string-length(left)
+  ast_func_normalize_space_0,    // normalize-space()
+  ast_func_normalize_space_1,    // normalize-space(left)
+  ast_func_translate,        // translate(left, right, third)
+  ast_func_boolean,        // boolean(left)
+  ast_func_not,          // not(left)
+  ast_func_true,          // true()
+  ast_func_false,          // false()
+  ast_func_lang,          // lang(left)
+  ast_func_number_0,        // number()
+  ast_func_number_1,        // number(left)
+  ast_func_sum,          // sum(left)
+  ast_func_floor,          // floor(left)
+  ast_func_ceiling,        // ceiling(left)
+  ast_func_round,          // round(left)
+  ast_step,            // process set left with step
+  ast_step_root          // select root node
 };
 
 enum axis_t
@@ -7598,12 +7598,12 @@ private:
       break;
 
     case nodetest_type_comment:
-			if (n.typeGet() == xmlNodeComment)
+      if (n.typeGet() == xmlNodeComment)
         ns.push_back(n, alloc);
       break;
 
     case nodetest_type_text:
-			if (n.typeGet() == xmlNodePcdata || n.typeGet() == xmlNodeCdata)
+      if (n.typeGet() == xmlNodePcdata || n.typeGet() == xmlNodeCdata)
         ns.push_back(n, alloc);
       break;
 
@@ -7736,7 +7736,7 @@ private:
       for (;;)
       {
         if (cur.lastChildGet())
-					cur = cur.lastChildGet();
+          cur = cur.lastChildGet();
         else
         {
           // leaf node, can't be ancestor
@@ -7755,7 +7755,7 @@ private:
             }
             while (!cur.previousSiblingGet());
 
-						cur = cur.previousSiblingGet();
+            cur = cur.previousSiblingGet();
 
             if (!cur) break;
           }
@@ -7842,13 +7842,13 @@ private:
       for (;;)
       {
         if (cur.firstChildGet())
-					cur = cur.firstChildGet();
+          cur = cur.firstChildGet();
         else if (cur.nextSiblingGet())
           cur = cur.nextSiblingGet();
         else
         {
           while (cur && !cur.nextSiblingGet()) cur = cur.parentGet();
-					cur = cur.nextSiblingGet();
+          cur = cur.nextSiblingGet();
 
           if (!cur) break;
         }
@@ -7900,8 +7900,8 @@ private:
         // in general, all axes generate elements in a particular order, but there is no order guarantee if axis is applied to two nodes
         if (axis != axis_self && size != 0) ns.set_type(EsXmlXpathNodeSet::type_unsorted);
 
-				if (it->nodeGet())
-					step_fill(ns, it->nodeGet(), stack.result, v);
+        if (it->nodeGet())
+          step_fill(ns, it->nodeGet(), stack.result, v);
         else if (attributes)
           step_fill(ns, it->attributeGet(), it->parentGet(), stack.result, v);
 
@@ -8031,15 +8031,15 @@ public:
 
     case ast_func_lang:
     {
-			if (c.n.attributeGet()) return false;
+      if (c.n.attributeGet()) return false;
 
       xpath_allocator_capture cr(stack.result);
 
       EsXmlXpathString lang = _left->eval_string(c, stack);
 
-			for (EsXmlNode n = c.n.nodeGet(); n; n = n.parentGet())
+      for (EsXmlNode n = c.n.nodeGet(); n; n = n.parentGet())
       {
-				EsXmlAttribute a = n.attributeGet(esT("xml:lang"));
+        EsXmlAttribute a = n.attributeGet(esT("xml:lang"));
 
         if (a)
         {
@@ -8598,7 +8598,7 @@ public:
 
       ns.set_type(EsXmlXpathNodeSet::type_sorted);
 
-			if (c.n.nodeGet()) ns.push_back(c.n.nodeGet().rootGet(), stack.result);
+      if (c.n.nodeGet()) ns.push_back(c.n.nodeGet().rootGet(), stack.result);
       else if (c.n.attributeGet()) ns.push_back(c.n.parentGet().rootGet(), stack.result);
 
       return ns;
@@ -8953,14 +8953,14 @@ struct xpath_parser
       xpath_lexer_string name = _lexer.contents();
 
       if (!_variables)
-				throw_error(esT("Unknown variable: variable set is not provided"));
+        throw_error(esT("Unknown variable: variable set is not provided"));
 
       EsXmlXpathVariable* var = get_variable_scratch(_scratch, _variables, name.begin, name.end);
 
       if (!var)
-				throw_error(esT("Unknown variable: variable set does not contain the given name"));
+        throw_error(esT("Unknown variable: variable set does not contain the given name"));
 
-			_lexer.next();
+      _lexer.next();
 
       return new (alloc_node()) xpath_ast_node(ast_variable, var->typeGet(), var);
     }
@@ -9013,17 +9013,17 @@ struct xpath_parser
       xpath_ast_node* last_arg = 0;
 
       if (_lexer.current() != lex_open_brace)
-				throw_error(esT("Unrecognized function call"));
-			_lexer.next();
+        throw_error(esT("Unrecognized function call"));
+      _lexer.next();
 
-			if (_lexer.current() != lex_close_brace)
-				args[argc++] = parse_expression();
+      if (_lexer.current() != lex_close_brace)
+        args[argc++] = parse_expression();
 
-			while (_lexer.current() != lex_close_brace)
-			{
-				if (_lexer.current() != lex_comma)
-					throw_error(esT("No comma between function arguments"));
-				_lexer.next();
+      while (_lexer.current() != lex_close_brace)
+      {
+        if (_lexer.current() != lex_comma)
+          throw_error(esT("No comma between function arguments"));
+        _lexer.next();
 
         xpath_ast_node* n = parse_expression();
 
@@ -9040,7 +9040,7 @@ struct xpath_parser
     }
 
     default:
-			throw_error(esT("Unrecognizable primary expression"));
+      throw_error(esT("Unrecognizable primary expression"));
 
       return 0;
     }
@@ -9059,13 +9059,13 @@ struct xpath_parser
 
       xpath_ast_node* expr = parse_expression();
 
-			if (n->rettype() != xpathTypeNodeSet) throw_error(esT("Predicate has to be applied to node set"));
+      if (n->rettype() != xpathTypeNodeSet) throw_error(esT("Predicate has to be applied to node set"));
 
-			bool posinv = expr->rettype() != xpathTypeNumber && expr->is_posinv();
+      bool posinv = expr->rettype() != xpathTypeNumber && expr->is_posinv();
 
-			n = new (alloc_node()) xpath_ast_node(posinv ? ast_filter_posinv : ast_filter, xpathTypeNodeSet, n, expr);
+      n = new (alloc_node()) xpath_ast_node(posinv ? ast_filter_posinv : ast_filter, xpathTypeNodeSet, n, expr);
 
-			if (_lexer.current() != lex_close_square_brace)
+      if (_lexer.current() != lex_close_square_brace)
         throw_error(esT("Unmatched square brace"));
 
       _lexer.next();
@@ -9120,7 +9120,7 @@ struct xpath_parser
       if (_lexer.current() == lex_double_colon)
       {
         // parse axis name
-				if (axis_specified) throw_error(esT("Two axis specifiers in one step"));
+        if (axis_specified) throw_error(esT("Two axis specifiers in one step"));
 
         axis = parse_axis_name(nt_name, axis_specified);
 
@@ -9163,7 +9163,7 @@ struct xpath_parser
           else if (nt_name == esT("processing-instruction"))
           {
             if (_lexer.current() != lex_quoted_string)
-							throw_error(esT("Only literals are allowed as arguments to processing-instruction()"));
+              throw_error(esT("Only literals are allowed as arguments to processing-instruction()"));
 
             nt_type = nodetest_pi;
             nt_name = _lexer.contents();
@@ -9274,9 +9274,9 @@ struct xpath_parser
   }
 
   // PathExpr ::= LocationPath
-  //				| FilterExpr
-  //				| FilterExpr '/' RelativeLocationPath
-  //				| FilterExpr '//' RelativeLocationPath
+  //        | FilterExpr
+  //        | FilterExpr '/' RelativeLocationPath
+  //        | FilterExpr '//' RelativeLocationPath
   // UnionExpr ::= PathExpr | UnionExpr '|' PathExpr
   // UnaryExpr ::= UnionExpr | '-' UnaryExpr
   xpath_ast_node* parse_path_or_unary_expression()
@@ -9438,20 +9438,20 @@ struct xpath_parser
   // OrExpr ::= AndExpr | OrExpr 'or' AndExpr
   // AndExpr ::= EqualityExpr | AndExpr 'and' EqualityExpr
   // EqualityExpr ::= RelationalExpr
-  //					| EqualityExpr '=' RelationalExpr
-  //					| EqualityExpr '!=' RelationalExpr
+  //          | EqualityExpr '=' RelationalExpr
+  //          | EqualityExpr '!=' RelationalExpr
   // RelationalExpr ::= AdditiveExpr
-  //					  | RelationalExpr '<' AdditiveExpr
-  //					  | RelationalExpr '>' AdditiveExpr
-  //					  | RelationalExpr '<=' AdditiveExpr
-  //					  | RelationalExpr '>=' AdditiveExpr
+  //            | RelationalExpr '<' AdditiveExpr
+  //            | RelationalExpr '>' AdditiveExpr
+  //            | RelationalExpr '<=' AdditiveExpr
+  //            | RelationalExpr '>=' AdditiveExpr
   // AdditiveExpr ::= MultiplicativeExpr
-  //					| AdditiveExpr '+' MultiplicativeExpr
-  //					| AdditiveExpr '-' MultiplicativeExpr
+  //          | AdditiveExpr '+' MultiplicativeExpr
+  //          | AdditiveExpr '-' MultiplicativeExpr
   // MultiplicativeExpr ::= UnaryExpr
-  //						  | MultiplicativeExpr '*' UnaryExpr
-  //						  | MultiplicativeExpr 'div' UnaryExpr
-  //						  | MultiplicativeExpr 'mod' UnaryExpr
+  //              | MultiplicativeExpr '*' UnaryExpr
+  //              | MultiplicativeExpr 'div' UnaryExpr
+  //              | MultiplicativeExpr 'mod' UnaryExpr
   xpath_ast_node* parse_expression()
   {
     return parse_expression_rec(parse_path_or_unary_expression(), 0);
@@ -9468,7 +9468,7 @@ struct xpath_parser
     if (_lexer.current() != lex_eof)
     {
       // there are still unparsed tokens left, error
-			throw_error(esT("Incorrect query"));
+      throw_error(esT("Incorrect query"));
     }
 
     return result;
@@ -9508,7 +9508,7 @@ struct xpath_query_impl
   }
 
   xpath_ast_node* root;
-	xpath_allocator alloc;
+  xpath_allocator alloc;
   xpath_memory_block block;
 };
 
@@ -9524,12 +9524,12 @@ EsXmlXpathString evaluate_string_impl(xpath_query_impl* impl, const EsXmlXpathNo
 EsXmlXpathException::EsXmlXpathException(const EsXmlXpathParseResult& result):
 EsException(0, EsException::severityGeneric, EsException::facilityEsXml, result.error)
 {
-	ES_ASSERT(result.error);
+  ES_ASSERT(result.error);
 }
 
 void EsXmlXpathException::Throw(const EsXmlXpathParseResult& result)
 {
-	throw EsXmlXpathException(result);
+  throw EsXmlXpathException(result);
 }
 
 EsXmlXpathNode::EsXmlXpathNode()
@@ -9714,7 +9714,7 @@ EsXmlXpathParseResult::operator bool() const
 
 EsString::const_pointer EsXmlXpathParseResult::descriptionGet() const
 {
-	return error ? error : esT("No error");
+  return error ? error : esT("No error");
 }
 
 EsXmlXpathVariable::EsXmlXpathVariable(): _type(xpathTypeNone), _next(0)
@@ -9856,8 +9856,8 @@ EsXmlXpathVariable* EsXmlXpathVariableSet::add(EsString::const_pointer name, EsX
 
   // look for existing variable
   for (EsXmlXpathVariable* var = _data[hash]; var; var = var->_next)
-		if (strequal(var->nameGet(), name))
-			return var->typeGet() == type ? var : 0;
+    if (strequal(var->nameGet(), name))
+      return var->typeGet() == type ? var : 0;
 
   // add new variable
   EsXmlXpathVariable* result = new_xpath_variable(type, name);
@@ -9881,13 +9881,13 @@ bool EsXmlXpathVariableSet::set(EsString::const_pointer name, bool value)
 
 bool EsXmlXpathVariableSet::set(EsString::const_pointer name, double value)
 {
-	EsXmlXpathVariable* var = add(name, xpathTypeNumber);
+  EsXmlXpathVariable* var = add(name, xpathTypeNumber);
   return var ? var->set(value) : false;
 }
 
 bool EsXmlXpathVariableSet::set(EsString::const_pointer name, EsString::const_pointer value)
 {
-	EsXmlXpathVariable* var = add(name, xpathTypeString);
+  EsXmlXpathVariable* var = add(name, xpathTypeString);
   return var ? var->set(value) : false;
 }
 
@@ -9917,7 +9917,7 @@ EsXmlXpathQuery::EsXmlXpathQuery(EsString::const_pointer query, EsXmlXpathVariab
   }
   else
   {
-		buffer_holder impl_holder(qimpl, xpath_query_impl::destroy);
+    buffer_holder impl_holder(qimpl, xpath_query_impl::destroy);
 
     qimpl->root = xpath_parser::parse(query, variables, &qimpl->alloc, &_result);
 
@@ -9972,7 +9972,7 @@ size_t EsXmlXpathQuery::asString(EsString::pointer buffer, size_t capacity, cons
 {
   xpath_stack_data sd;
 
-	EsXmlXpathString r = evaluate_string_impl(static_cast<xpath_query_impl*>(_impl), n, sd);
+  EsXmlXpathString r = evaluate_string_impl(static_cast<xpath_query_impl*>(_impl), n, sd);
 
   size_t full_size = r.length() + 1;
 
@@ -9994,7 +9994,7 @@ EsXmlXpathNodeSet EsXmlXpathQuery::asNodeSet(const EsXmlXpathNode& n) const
 
   xpath_ast_node* root = static_cast<xpath_query_impl*>(_impl)->root;
 
-	if (root->rettype() != xpathTypeNodeSet)
+  if (root->rettype() != xpathTypeNodeSet)
   {
     EsXmlXpathParseResult res;
     res.error = esT("Expression does not evaluate to node set");
@@ -10038,28 +10038,28 @@ EsXmlXpathNode EsXmlNode::singleNodeSelect(EsString::const_pointer query, EsXmlX
 EsXmlXpathNode EsXmlNode::singleNodeSelect(const EsXmlXpathQuery& query) const
 {
   EsXmlXpathNodeSet s = query.asNodeSet(*this);
-	return s.empty() ? EsXmlXpathNode() : s.first();
+  return s.empty() ? EsXmlXpathNode() : s.first();
 }
 
 EsXmlXpathNodeSet EsXmlNode::nodesSelect(EsString::const_pointer query, EsXmlXpathVariableSet* variables) const
 {
-	EsXmlXpathQuery q(query, variables);
-	return nodesSelect(q);
+  EsXmlXpathQuery q(query, variables);
+  return nodesSelect(q);
 }
 
 EsXmlXpathNodeSet EsXmlNode::nodesSelect(const EsXmlXpathQuery& query) const
 {
-	return query.asNodeSet(*this);
+  return query.asNodeSet(*this);
 }
 #endif // #ifndef ES_XML_NO_XPATH
 
 #ifdef __BORLANDC__
-#	pragma option pop
+#  pragma option pop
 #endif
 
 // Intel C++ does not properly keep warning state for function templates,
 // so popping warning state at the end of translation unit leads to warnings in the middle.
 #if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
-#	pragma warning(pop)
+#  pragma warning(pop)
 #endif
 

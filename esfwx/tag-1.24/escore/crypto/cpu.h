@@ -64,23 +64,23 @@
 
 // Applies to both X86/X32/X64 and ARM32/ARM64
 #if defined(CRYPTOPP_LLVM_CLANG_VERSION) || defined(CRYPTOPP_APPLE_CLANG_VERSION) || defined(CRYPTOPP_CLANG_INTEGRATED_ASSEMBLER)
-	#define NEW_LINE "\n"
-	#define INTEL_PREFIX ".intel_syntax;"
-	#define INTEL_NOPREFIX ".intel_syntax;"
-	#define ATT_PREFIX ".att_syntax;"
-	#define ATT_NOPREFIX ".att_syntax;"
+  #define NEW_LINE "\n"
+  #define INTEL_PREFIX ".intel_syntax;"
+  #define INTEL_NOPREFIX ".intel_syntax;"
+  #define ATT_PREFIX ".att_syntax;"
+  #define ATT_NOPREFIX ".att_syntax;"
 #elif defined(__GNUC__)
-	#define NEW_LINE
-	#define INTEL_PREFIX ".intel_syntax prefix;"
-	#define INTEL_NOPREFIX ".intel_syntax noprefix;"
-	#define ATT_PREFIX ".att_syntax prefix;"
-	#define ATT_NOPREFIX ".att_syntax noprefix;"
+  #define NEW_LINE
+  #define INTEL_PREFIX ".intel_syntax prefix;"
+  #define INTEL_NOPREFIX ".intel_syntax noprefix;"
+  #define ATT_PREFIX ".att_syntax prefix;"
+  #define ATT_NOPREFIX ".att_syntax noprefix;"
 #else
-	#define NEW_LINE
-	#define INTEL_PREFIX
-	#define INTEL_NOPREFIX
-	#define ATT_PREFIX
-	#define ATT_NOPREFIX
+  #define NEW_LINE
+  #define INTEL_PREFIX
+  #define INTEL_NOPREFIX
+  #define ATT_PREFIX
+  #define ATT_NOPREFIX
 #endif
 
 #ifdef CRYPTOPP_GENERATE_X64_MASM
@@ -130,11 +130,11 @@ CRYPTOPP_DLL bool CRYPTOPP_API CpuId(word32 input, word32 output[4]);
 inline bool HasMMX()
 {
 #if CRYPTOPP_BOOL_X64
-	return true;
+  return true;
 #else
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasMMX;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasMMX;
 #endif
 }
 
@@ -145,11 +145,11 @@ inline bool HasMMX()
 inline bool HasISSE()
 {
 #if CRYPTOPP_BOOL_X64
-	return true;
+  return true;
 #else
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasISSE;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasISSE;
 #endif
 }
 
@@ -160,11 +160,11 @@ inline bool HasISSE()
 inline bool HasSSE2()
 {
 #if CRYPTOPP_BOOL_X64
-	return true;
+  return true;
 #else
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasSSE2;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasSSE2;
 #endif
 }
 
@@ -174,9 +174,9 @@ inline bool HasSSE2()
 //! \note Some Clang compilers incorrectly omit SSSE3 even though its native to the processor.
 inline bool HasSSSE3()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasSSSE3;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasSSSE3;
 }
 
 //! \brief Determines SSE4 availability
@@ -184,9 +184,9 @@ inline bool HasSSSE3()
 //! \details HasSSE4() is a runtime check performed using CPUID which requires both SSE4.1 and SSE4.2
 inline bool HasSSE4()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasSSE4;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasSSE4;
 }
 
 //! \brief Determines AES-NI availability
@@ -194,9 +194,9 @@ inline bool HasSSE4()
 //! \details HasAESNI() is a runtime check performed using CPUID
 inline bool HasAESNI()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasAESNI;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasAESNI;
 }
 
 //! \brief Determines Carryless Multiply availability
@@ -204,9 +204,9 @@ inline bool HasAESNI()
 //! \details HasCLMUL() is a runtime check performed using CPUID
 inline bool HasCLMUL()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasCLMUL;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasCLMUL;
 }
 
 //! \brief Determines if the CPU is an Intel P4
@@ -214,9 +214,9 @@ inline bool HasCLMUL()
 //! \details IsP4() is a runtime check performed using CPUID
 inline bool IsP4()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_isP4;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_isP4;
 }
 
 //! \brief Determines RDRAND availability
@@ -224,9 +224,9 @@ inline bool IsP4()
 //! \details HasRDRAND() is a runtime check performed using CPUID
 inline bool HasRDRAND()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasRDRAND;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasRDRAND;
 }
 
 //! \brief Determines RDSEED availability
@@ -234,9 +234,9 @@ inline bool HasRDRAND()
 //! \details HasRDSEED() is a runtime check performed using CPUID
 inline bool HasRDSEED()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasRDSEED;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasRDSEED;
 }
 
 //! \brief Determines Padlock RNG availability
@@ -244,9 +244,9 @@ inline bool HasRDSEED()
 //! \details HasPadlockRNG() is a runtime check performed using CPUID
 inline bool HasPadlockRNG()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasPadlockRNG;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasPadlockRNG;
 }
 
 //! \brief Determines Padlock ACE availability
@@ -254,9 +254,9 @@ inline bool HasPadlockRNG()
 //! \details HasPadlockACE() is a runtime check performed using CPUID
 inline bool HasPadlockACE()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasPadlockACE;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasPadlockACE;
 }
 
 //! \brief Determines Padlock ACE2 availability
@@ -264,9 +264,9 @@ inline bool HasPadlockACE()
 //! \details HasPadlockACE2() is a runtime check performed using CPUID
 inline bool HasPadlockACE2()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasPadlockACE2;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasPadlockACE2;
 }
 
 //! \brief Determines Padlock PHE availability
@@ -274,9 +274,9 @@ inline bool HasPadlockACE2()
 //! \details HasPadlockPHE() is a runtime check performed using CPUID
 inline bool HasPadlockPHE()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasPadlockPHE;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasPadlockPHE;
 }
 
 //! \brief Determines Padlock PMM availability
@@ -284,9 +284,9 @@ inline bool HasPadlockPHE()
 //! \details HasPadlockPMM() is a runtime check performed using CPUID
 inline bool HasPadlockPMM()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_hasPadlockPMM;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_hasPadlockPMM;
 }
 
 //! \brief Provides the cache line size
@@ -298,9 +298,9 @@ inline bool HasPadlockPMM()
 //!   processor equivalent is a privileged instruction, so a compile time value is returned.
 inline int GetCacheLineSize()
 {
-	if (!g_x86DetectionDone)
-		DetectX86Features();
-	return g_cacheLineSize;
+  if (!g_x86DetectionDone)
+    DetectX86Features();
+  return g_cacheLineSize;
 }
 
 #elif (CRYPTOPP_BOOL_ARM32 || CRYPTOPP_BOOL_ARM64)
@@ -317,9 +317,9 @@ void CRYPTOPP_API DetectArmFeatures();
 //!   (64-bit). Also see ARM's <tt>__ARM_NEON</tt> preprocessor macro.
 inline bool HasNEON()
 {
-	if (!g_ArmDetectionDone)
-		DetectArmFeatures();
-	return g_hasNEON;
+  if (!g_ArmDetectionDone)
+    DetectArmFeatures();
+  return g_hasNEON;
 }
 
 //! \brief Determine if an ARM processor provides Polynomial Multiplication (long)
@@ -330,9 +330,9 @@ inline bool HasNEON()
 //!   <tt>-arch arm64</tt>. Also see ARM's <tt>__ARM_FEATURE_CRYPTO</tt> preprocessor macro.
 inline bool HasPMULL()
 {
-	if (!g_ArmDetectionDone)
-		DetectArmFeatures();
-	return g_hasPMULL;
+  if (!g_ArmDetectionDone)
+    DetectArmFeatures();
+  return g_hasPMULL;
 }
 
 //! \brief Determine if an ARM processor has CRC32 available
@@ -345,9 +345,9 @@ inline bool HasPMULL()
 //!   <tt>-arch arm64</tt>. Also see ARM's <tt>__ARM_FEATURE_CRC32</tt> preprocessor macro.
 inline bool HasCRC32()
 {
-	if (!g_ArmDetectionDone)
-		DetectArmFeatures();
-	return g_hasCRC32;
+  if (!g_ArmDetectionDone)
+    DetectArmFeatures();
+  return g_hasCRC32;
 }
 
 //! \brief Determine if an ARM processor has AES available
@@ -360,9 +360,9 @@ inline bool HasCRC32()
 //!   <tt>-arch arm64</tt>. Also see ARM's <tt>__ARM_FEATURE_CRYPTO</tt> preprocessor macro.
 inline bool HasAES()
 {
-	if (!g_ArmDetectionDone)
-		DetectArmFeatures();
-	return g_hasAES;
+  if (!g_ArmDetectionDone)
+    DetectArmFeatures();
+  return g_hasAES;
 }
 
 //! \brief Determine if an ARM processor has SHA1 available
@@ -375,9 +375,9 @@ inline bool HasAES()
 //!   <tt>-arch arm64</tt>. Also see ARM's <tt>__ARM_FEATURE_CRYPTO</tt> preprocessor macro.
 inline bool HasSHA1()
 {
-	if (!g_ArmDetectionDone)
-		DetectArmFeatures();
-	return g_hasSHA1;
+  if (!g_ArmDetectionDone)
+    DetectArmFeatures();
+  return g_hasSHA1;
 }
 
 //! \brief Determine if an ARM processor has SHA2 available
@@ -390,9 +390,9 @@ inline bool HasSHA1()
 //!   <tt>-arch arm64</tt>. Also see ARM's <tt>__ARM_FEATURE_CRYPTO</tt> preprocessor macro.
 inline bool HasSHA2()
 {
-	if (!g_ArmDetectionDone)
-		DetectArmFeatures();
-	return g_hasSHA2;
+  if (!g_ArmDetectionDone)
+    DetectArmFeatures();
+  return g_hasSHA2;
 }
 
 //! \brief Provides the cache line size at runtime
@@ -401,14 +401,14 @@ inline bool HasSHA2()
 //!   The runtime instructions to query the processor are privileged.
 inline int GetCacheLineSize()
 {
-	return CRYPTOPP_L1_CACHE_LINE_SIZE;
+  return CRYPTOPP_L1_CACHE_LINE_SIZE;
 }
 
 #else
 
 inline int GetCacheLineSize()
 {
-	return CRYPTOPP_L1_CACHE_LINE_SIZE;
+  return CRYPTOPP_L1_CACHE_LINE_SIZE;
 }
 
 #endif  // X86/X32/X64 and ARM
@@ -418,43 +418,43 @@ inline int GetCacheLineSize()
 #if CRYPTOPP_BOOL_X86 || CRYPTOPP_BOOL_X32 || CRYPTOPP_BOOL_X64
 
 #ifdef CRYPTOPP_GENERATE_X64_MASM
-	#define AS1(x) x*newline*
-	#define AS2(x, y) x, y*newline*
-	#define AS3(x, y, z) x, y, z*newline*
-	#define ASS(x, y, a, b, c, d) x, y, a*64+b*16+c*4+d*newline*
-	#define ASL(x) label##x:*newline*
-	#define ASJ(x, y, z) x label##y*newline*
-	#define ASC(x, y) x label##y*newline*
-	#define AS_HEX(y) 0##y##h
+  #define AS1(x) x*newline*
+  #define AS2(x, y) x, y*newline*
+  #define AS3(x, y, z) x, y, z*newline*
+  #define ASS(x, y, a, b, c, d) x, y, a*64+b*16+c*4+d*newline*
+  #define ASL(x) label##x:*newline*
+  #define ASJ(x, y, z) x label##y*newline*
+  #define ASC(x, y) x label##y*newline*
+  #define AS_HEX(y) 0##y##h
 #elif defined(_MSC_VER) || (defined(_WIN32) && defined(__BORLANDC__))
-	#define CRYPTOPP_MS_STYLE_INLINE_ASSEMBLY
-	#define AS1(x) __asm {x}
-	#define AS2(x, y) __asm {x, y}
-	#define AS3(x, y, z) __asm {x, y, z}
-	#define ASS(x, y, a, b, c, d) __asm {x, y, (a)*64+(b)*16+(c)*4+(d)}
-	#define ASL(x) __asm {label##x:}
-	#define ASJ(x, y, z) __asm {x label##y}
-	#define ASC(x, y) __asm {x label##y}
-	#define CRYPTOPP_NAKED __declspec(naked)
-	#define AS_HEX(y) 0x##y
+  #define CRYPTOPP_MS_STYLE_INLINE_ASSEMBLY
+  #define AS1(x) __asm {x}
+  #define AS2(x, y) __asm {x, y}
+  #define AS3(x, y, z) __asm {x, y, z}
+  #define ASS(x, y, a, b, c, d) __asm {x, y, (a)*64+(b)*16+(c)*4+(d)}
+  #define ASL(x) __asm {label##x:}
+  #define ASJ(x, y, z) __asm {x label##y}
+  #define ASC(x, y) __asm {x label##y}
+  #define CRYPTOPP_NAKED __declspec(naked)
+  #define AS_HEX(y) 0x##y
 #else
-	#define CRYPTOPP_GNU_STYLE_INLINE_ASSEMBLY
+  #define CRYPTOPP_GNU_STYLE_INLINE_ASSEMBLY
 
-	// define these in two steps to allow arguments to be expanded
-	#define GNU_AS1(x) #x ";" NEW_LINE
-	#define GNU_AS2(x, y) #x ", " #y ";" NEW_LINE
-	#define GNU_AS3(x, y, z) #x ", " #y ", " #z ";" NEW_LINE
-	#define GNU_ASL(x) "\n" #x ":" NEW_LINE
-	#define GNU_ASJ(x, y, z) #x " " #y #z ";" NEW_LINE
-	#define AS1(x) GNU_AS1(x)
-	#define AS2(x, y) GNU_AS2(x, y)
-	#define AS3(x, y, z) GNU_AS3(x, y, z)
-	#define ASS(x, y, a, b, c, d) #x ", " #y ", " #a "*64+" #b "*16+" #c "*4+" #d ";"
-	#define ASL(x) GNU_ASL(x)
-	#define ASJ(x, y, z) GNU_ASJ(x, y, z)
-	#define ASC(x, y) #x " " #y ";"
-	#define CRYPTOPP_NAKED
-	#define AS_HEX(y) 0x##y
+  // define these in two steps to allow arguments to be expanded
+  #define GNU_AS1(x) #x ";" NEW_LINE
+  #define GNU_AS2(x, y) #x ", " #y ";" NEW_LINE
+  #define GNU_AS3(x, y, z) #x ", " #y ", " #z ";" NEW_LINE
+  #define GNU_ASL(x) "\n" #x ":" NEW_LINE
+  #define GNU_ASJ(x, y, z) #x " " #y #z ";" NEW_LINE
+  #define AS1(x) GNU_AS1(x)
+  #define AS2(x, y) GNU_AS2(x, y)
+  #define AS3(x, y, z) GNU_AS3(x, y, z)
+  #define ASS(x, y, a, b, c, d) #x ", " #y ", " #a "*64+" #b "*16+" #c "*4+" #d ";"
+  #define ASL(x) GNU_ASL(x)
+  #define ASJ(x, y, z) GNU_ASJ(x, y, z)
+  #define ASC(x, y) #x " " #y ";"
+  #define CRYPTOPP_NAKED
+  #define AS_HEX(y) 0x##y
 #endif
 
 #define IF0(y)
@@ -471,124 +471,124 @@ inline int GetCacheLineSize()
 #endif
 
 #if CRYPTOPP_BOOL_X86
-	#define AS_REG_1 ecx
-	#define AS_REG_2 edx
-	#define AS_REG_3 esi
-	#define AS_REG_4 edi
-	#define AS_REG_5 eax
-	#define AS_REG_6 ebx
-	#define AS_REG_7 ebp
-	#define AS_REG_1d ecx
-	#define AS_REG_2d edx
-	#define AS_REG_3d esi
-	#define AS_REG_4d edi
-	#define AS_REG_5d eax
-	#define AS_REG_6d ebx
-	#define AS_REG_7d ebp
-	#define WORD_SZ 4
-	#define WORD_REG(x)	e##x
-	#define WORD_PTR DWORD PTR
-	#define AS_PUSH_IF86(x) AS1(push e##x)
-	#define AS_POP_IF86(x) AS1(pop e##x)
-	#define AS_JCXZ jecxz
+  #define AS_REG_1 ecx
+  #define AS_REG_2 edx
+  #define AS_REG_3 esi
+  #define AS_REG_4 edi
+  #define AS_REG_5 eax
+  #define AS_REG_6 ebx
+  #define AS_REG_7 ebp
+  #define AS_REG_1d ecx
+  #define AS_REG_2d edx
+  #define AS_REG_3d esi
+  #define AS_REG_4d edi
+  #define AS_REG_5d eax
+  #define AS_REG_6d ebx
+  #define AS_REG_7d ebp
+  #define WORD_SZ 4
+  #define WORD_REG(x)  e##x
+  #define WORD_PTR DWORD PTR
+  #define AS_PUSH_IF86(x) AS1(push e##x)
+  #define AS_POP_IF86(x) AS1(pop e##x)
+  #define AS_JCXZ jecxz
 #elif CRYPTOPP_BOOL_X32
-	#define AS_REG_1 ecx
-	#define AS_REG_2 edx
-	#define AS_REG_3 r8d
-	#define AS_REG_4 r9d
-	#define AS_REG_5 eax
-	#define AS_REG_6 r10d
-	#define AS_REG_7 r11d
-	#define AS_REG_1d ecx
-	#define AS_REG_2d edx
-	#define AS_REG_3d r8d
-	#define AS_REG_4d r9d
-	#define AS_REG_5d eax
-	#define AS_REG_6d r10d
-	#define AS_REG_7d r11d
-	#define WORD_SZ 4
-	#define WORD_REG(x)	e##x
-	#define WORD_PTR DWORD PTR
-	#define AS_PUSH_IF86(x) AS1(push r##x)
-	#define AS_POP_IF86(x) AS1(pop r##x)
-	#define AS_JCXZ jecxz
+  #define AS_REG_1 ecx
+  #define AS_REG_2 edx
+  #define AS_REG_3 r8d
+  #define AS_REG_4 r9d
+  #define AS_REG_5 eax
+  #define AS_REG_6 r10d
+  #define AS_REG_7 r11d
+  #define AS_REG_1d ecx
+  #define AS_REG_2d edx
+  #define AS_REG_3d r8d
+  #define AS_REG_4d r9d
+  #define AS_REG_5d eax
+  #define AS_REG_6d r10d
+  #define AS_REG_7d r11d
+  #define WORD_SZ 4
+  #define WORD_REG(x)  e##x
+  #define WORD_PTR DWORD PTR
+  #define AS_PUSH_IF86(x) AS1(push r##x)
+  #define AS_POP_IF86(x) AS1(pop r##x)
+  #define AS_JCXZ jecxz
 #elif CRYPTOPP_BOOL_X64
-	#ifdef CRYPTOPP_GENERATE_X64_MASM
-		#define AS_REG_1 rcx
-		#define AS_REG_2 rdx
-		#define AS_REG_3 r8
-		#define AS_REG_4 r9
-		#define AS_REG_5 rax
-		#define AS_REG_6 r10
-		#define AS_REG_7 r11
-		#define AS_REG_1d ecx
-		#define AS_REG_2d edx
-		#define AS_REG_3d r8d
-		#define AS_REG_4d r9d
-		#define AS_REG_5d eax
-		#define AS_REG_6d r10d
-		#define AS_REG_7d r11d
-	#else
-		#define AS_REG_1 rdi
-		#define AS_REG_2 rsi
-		#define AS_REG_3 rdx
-		#define AS_REG_4 rcx
-		#define AS_REG_5 r8
-		#define AS_REG_6 r9
-		#define AS_REG_7 r10
-		#define AS_REG_1d edi
-		#define AS_REG_2d esi
-		#define AS_REG_3d edx
-		#define AS_REG_4d ecx
-		#define AS_REG_5d r8d
-		#define AS_REG_6d r9d
-		#define AS_REG_7d r10d
-	#endif
-	#define WORD_SZ 8
-	#define WORD_REG(x)	r##x
-	#define WORD_PTR QWORD PTR
-	#define AS_PUSH_IF86(x)
-	#define AS_POP_IF86(x)
-	#define AS_JCXZ jrcxz
+  #ifdef CRYPTOPP_GENERATE_X64_MASM
+    #define AS_REG_1 rcx
+    #define AS_REG_2 rdx
+    #define AS_REG_3 r8
+    #define AS_REG_4 r9
+    #define AS_REG_5 rax
+    #define AS_REG_6 r10
+    #define AS_REG_7 r11
+    #define AS_REG_1d ecx
+    #define AS_REG_2d edx
+    #define AS_REG_3d r8d
+    #define AS_REG_4d r9d
+    #define AS_REG_5d eax
+    #define AS_REG_6d r10d
+    #define AS_REG_7d r11d
+  #else
+    #define AS_REG_1 rdi
+    #define AS_REG_2 rsi
+    #define AS_REG_3 rdx
+    #define AS_REG_4 rcx
+    #define AS_REG_5 r8
+    #define AS_REG_6 r9
+    #define AS_REG_7 r10
+    #define AS_REG_1d edi
+    #define AS_REG_2d esi
+    #define AS_REG_3d edx
+    #define AS_REG_4d ecx
+    #define AS_REG_5d r8d
+    #define AS_REG_6d r9d
+    #define AS_REG_7d r10d
+  #endif
+  #define WORD_SZ 8
+  #define WORD_REG(x)  r##x
+  #define WORD_PTR QWORD PTR
+  #define AS_PUSH_IF86(x)
+  #define AS_POP_IF86(x)
+  #define AS_JCXZ jrcxz
 #endif
 
 // helper macro for stream cipher output
 #define AS_XMM_OUTPUT4(labelPrefix, inputPtr, outputPtr, x0, x1, x2, x3, t, p0, p1, p2, p3, increment)\
-	AS2(	test	inputPtr, inputPtr)\
-	ASC(	jz,		labelPrefix##3)\
-	AS2(	test	inputPtr, 15)\
-	ASC(	jnz,	labelPrefix##7)\
-	AS2(	pxor	xmm##x0, [inputPtr+p0*16])\
-	AS2(	pxor	xmm##x1, [inputPtr+p1*16])\
-	AS2(	pxor	xmm##x2, [inputPtr+p2*16])\
-	AS2(	pxor	xmm##x3, [inputPtr+p3*16])\
-	AS2(	add		inputPtr, increment*16)\
-	ASC(	jmp,	labelPrefix##3)\
-	ASL(labelPrefix##7)\
-	AS2(	movdqu	xmm##t, [inputPtr+p0*16])\
-	AS2(	pxor	xmm##x0, xmm##t)\
-	AS2(	movdqu	xmm##t, [inputPtr+p1*16])\
-	AS2(	pxor	xmm##x1, xmm##t)\
-	AS2(	movdqu	xmm##t, [inputPtr+p2*16])\
-	AS2(	pxor	xmm##x2, xmm##t)\
-	AS2(	movdqu	xmm##t, [inputPtr+p3*16])\
-	AS2(	pxor	xmm##x3, xmm##t)\
-	AS2(	add		inputPtr, increment*16)\
-	ASL(labelPrefix##3)\
-	AS2(	test	outputPtr, 15)\
-	ASC(	jnz,	labelPrefix##8)\
-	AS2(	movdqa	[outputPtr+p0*16], xmm##x0)\
-	AS2(	movdqa	[outputPtr+p1*16], xmm##x1)\
-	AS2(	movdqa	[outputPtr+p2*16], xmm##x2)\
-	AS2(	movdqa	[outputPtr+p3*16], xmm##x3)\
-	ASC(	jmp,	labelPrefix##9)\
-	ASL(labelPrefix##8)\
-	AS2(	movdqu	[outputPtr+p0*16], xmm##x0)\
-	AS2(	movdqu	[outputPtr+p1*16], xmm##x1)\
-	AS2(	movdqu	[outputPtr+p2*16], xmm##x2)\
-	AS2(	movdqu	[outputPtr+p3*16], xmm##x3)\
-	ASL(labelPrefix##9)\
-	AS2(	add		outputPtr, increment*16)
+  AS2(  test  inputPtr, inputPtr)\
+  ASC(  jz,    labelPrefix##3)\
+  AS2(  test  inputPtr, 15)\
+  ASC(  jnz,  labelPrefix##7)\
+  AS2(  pxor  xmm##x0, [inputPtr+p0*16])\
+  AS2(  pxor  xmm##x1, [inputPtr+p1*16])\
+  AS2(  pxor  xmm##x2, [inputPtr+p2*16])\
+  AS2(  pxor  xmm##x3, [inputPtr+p3*16])\
+  AS2(  add    inputPtr, increment*16)\
+  ASC(  jmp,  labelPrefix##3)\
+  ASL(labelPrefix##7)\
+  AS2(  movdqu  xmm##t, [inputPtr+p0*16])\
+  AS2(  pxor  xmm##x0, xmm##t)\
+  AS2(  movdqu  xmm##t, [inputPtr+p1*16])\
+  AS2(  pxor  xmm##x1, xmm##t)\
+  AS2(  movdqu  xmm##t, [inputPtr+p2*16])\
+  AS2(  pxor  xmm##x2, xmm##t)\
+  AS2(  movdqu  xmm##t, [inputPtr+p3*16])\
+  AS2(  pxor  xmm##x3, xmm##t)\
+  AS2(  add    inputPtr, increment*16)\
+  ASL(labelPrefix##3)\
+  AS2(  test  outputPtr, 15)\
+  ASC(  jnz,  labelPrefix##8)\
+  AS2(  movdqa  [outputPtr+p0*16], xmm##x0)\
+  AS2(  movdqa  [outputPtr+p1*16], xmm##x1)\
+  AS2(  movdqa  [outputPtr+p2*16], xmm##x2)\
+  AS2(  movdqa  [outputPtr+p3*16], xmm##x3)\
+  ASC(  jmp,  labelPrefix##9)\
+  ASL(labelPrefix##8)\
+  AS2(  movdqu  [outputPtr+p0*16], xmm##x0)\
+  AS2(  movdqu  [outputPtr+p1*16], xmm##x1)\
+  AS2(  movdqu  [outputPtr+p2*16], xmm##x2)\
+  AS2(  movdqu  [outputPtr+p3*16], xmm##x3)\
+  ASL(labelPrefix##9)\
+  AS2(  add    outputPtr, increment*16)
 
 #endif  //  X86/X32/X64
 

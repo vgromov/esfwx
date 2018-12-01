@@ -9,18 +9,18 @@ protected:
   EsMathWindow();
 
 public:
-	/// Reflection declaration
-	///
-	ES_DECL_REFLECTED_CLASS_BASE( EsMathWindow )
+  /// Reflection declaration
+  ///
+  ES_DECL_REFLECTED_CLASS_BASE( EsMathWindow )
   ES_DECL_ATTR_HANDLING_STD
 
   /// Generate window values of N samples, and return it as EsMathRealArray object
-	ES_DECL_REFLECTED_CONST_METHOD1(EsVariant, generate, cr_EsVariant);
+  ES_DECL_REFLECTED_CONST_METHOD1(EsVariant, generate, cr_EsVariant);
 
   /// Generate normalized window values of N samples, and return it as EsMathRealArray object
   /// Values get normalized to window function integral
   ///
-	ES_DECL_REFLECTED_CONST_METHOD1(EsVariant, generateNormalized, cr_EsVariant);
+  ES_DECL_REFLECTED_CONST_METHOD1(EsVariant, generateNormalized, cr_EsVariant);
 
 protected:
   ulong cachePrepare(cr_EsVariant cnt) const;
@@ -44,7 +44,7 @@ public:
   /// Reflected stuff
   ///
 
-	ES_DECL_REFLECTED_CLASS( EsMathWindowBartlettHann, EsMathWindow )
+  ES_DECL_REFLECTED_CLASS( EsMathWindowBartlettHann, EsMathWindow )
 
   // EsBaseIntf implementation
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
@@ -65,7 +65,7 @@ public:
   /// Reflected stuff
   ///
 
-	ES_DECL_REFLECTED_CLASS( EsMathWindowBlackman, EsMathWindow )
+  ES_DECL_REFLECTED_CLASS( EsMathWindowBlackman, EsMathWindow )
 
   // EsBaseIntf implementation
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
@@ -86,7 +86,7 @@ public:
   /// Reflected stuff
   ///
 
-	ES_DECL_REFLECTED_CLASS( EsMathWindowBlackmanHarris, EsMathWindow )
+  ES_DECL_REFLECTED_CLASS( EsMathWindowBlackmanHarris, EsMathWindow )
 
   // EsBaseIntf implementation
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
@@ -107,7 +107,7 @@ public:
   /// Reflected stuff
   ///
 
-	ES_DECL_REFLECTED_CLASS( EsMathWindowFlatTop, EsMathWindow )
+  ES_DECL_REFLECTED_CLASS( EsMathWindowFlatTop, EsMathWindow )
 
   // EsBaseIntf implementation
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
@@ -130,7 +130,7 @@ public:
   /// Reflected stuff
   ///
 
-	ES_DECL_REFLECTED_CLASS( EsMathWindowGaussian, EsMathWindow )
+  ES_DECL_REFLECTED_CLASS( EsMathWindowGaussian, EsMathWindow )
 
   // EsBaseIntf implementation
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
@@ -166,7 +166,7 @@ public:
   /// Reflected stuff
   ///
 
-	ES_DECL_REFLECTED_CLASS( EsMathWindowHamming, EsMathWindow )
+  ES_DECL_REFLECTED_CLASS( EsMathWindowHamming, EsMathWindow )
 
   // EsBaseIntf implementation
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
@@ -187,7 +187,7 @@ public:
   /// Reflected stuff
   ///
 
-	ES_DECL_REFLECTED_CLASS( EsMathWindowHann, EsMathWindow )
+  ES_DECL_REFLECTED_CLASS( EsMathWindowHann, EsMathWindow )
 
   // EsBaseIntf implementation
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
@@ -208,7 +208,7 @@ public:
   /// Reflected stuff
   ///
 
-	ES_DECL_REFLECTED_CLASS( EsMathWindowNuttall, EsMathWindow )
+  ES_DECL_REFLECTED_CLASS( EsMathWindowNuttall, EsMathWindow )
 
   // EsBaseIntf implementation
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }

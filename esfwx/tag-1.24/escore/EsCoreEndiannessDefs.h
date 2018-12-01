@@ -28,10 +28,10 @@
  * defined the BOOST_ENDIAN macro.
  */
 
-#define ES_ENDIAN_UNDEFINED	0
-#define ES_LITTLE_ENDIAN		1
-#define ES_BIG_ENDIAN				2
-#define ES_PDP_ENDIAN				3
+#define ES_ENDIAN_UNDEFINED  0
+#define ES_LITTLE_ENDIAN    1
+#define ES_BIG_ENDIAN        2
+#define ES_PDP_ENDIAN        3
 
 // Special cases come first:
 //

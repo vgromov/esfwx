@@ -46,7 +46,7 @@
 class EsRegExImplPcre : public EsRegEx::Impl
 {
 public:
-	EsRegExImplPcre() :
+  EsRegExImplPcre() :
   m_reCode(nullptr),
   m_reMatch(nullptr),
   m_matchGroupCount(0),
@@ -56,10 +56,10 @@ public:
   m_matched(false),
   m_beg(nullptr),
   m_end(nullptr)
-	{}
+  {}
 
-	virtual ~EsRegExImplPcre()
-	{
+  virtual ~EsRegExImplPcre()
+  {
     matchReset(nullptr);
     codeReset(nullptr);
   }
@@ -124,8 +124,8 @@ public:
     );
   }
 
-	virtual inline bool compile(const EsString& pattern, ulong flags) ES_OVERRIDE
-	{
+  virtual inline bool compile(const EsString& pattern, ulong flags) ES_OVERRIDE
+  {
     int errorCode = 0;
     PCRE2_SIZE errorOffs = 0;
     codeReset(
@@ -150,8 +150,8 @@ public:
 
     m_compiled = true;
 
-		return m_compiled;
-	}
+    return m_compiled;
+  }
 
   void internalMatch(ulong flags) const
   {
@@ -214,8 +214,8 @@ public:
     }
   }
 
-	virtual inline bool matchGet(ulong& start, ulong& len, ulong subExprIdx) const ES_OVERRIDE
-	{
+  virtual inline bool matchGet(ulong& start, ulong& len, ulong subExprIdx) const ES_OVERRIDE
+  {
     if( m_matched && subExprIdx < m_matchGroupCount+1 )
     {
       ES_ASSERT(m_ovector);
@@ -232,23 +232,23 @@ public:
     }
 
     return false;
-	}
+  }
 
-	virtual inline ulong matchCountGet() const ES_OVERRIDE
-	{
+  virtual inline ulong matchCountGet() const ES_OVERRIDE
+  {
     if( m_matched )
       return m_matchGroupCount+1;
 
-		return 0;
-	}
+    return 0;
+  }
 
-	virtual inline bool isOk() const ES_OVERRIDE
-	{
-		return m_compiled;
-	}
+  virtual inline bool isOk() const ES_OVERRIDE
+  {
+    return m_compiled;
+  }
 
-	virtual inline bool matches(const EsString& text, ulong offs, ulong flags) const ES_OVERRIDE
-	{
+  virtual inline bool matches(const EsString& text, ulong offs, ulong flags) const ES_OVERRIDE
+  {
     ES_ASSERT(m_compiled);
 
     m_matched = false;
@@ -256,20 +256,20 @@ public:
     m_ovectorCnt = 0;
 
     size_t len = text.size();
-		if( offs < len )
-		{
+    if( offs < len )
+    {
       m_beg = text.data();
       m_end = m_beg + len;
       m_beg += offs;
 
       internalMatch(flags);
-		}
+    }
 
-		return m_matched;
-	}
+    return m_matched;
+  }
 
-	virtual inline EsString replace(const EsString& text, ulong offs, const EsString& replacement, ulong flags) const ES_OVERRIDE
-	{
+  virtual inline EsString replace(const EsString& text, ulong offs, const EsString& replacement, ulong flags) const ES_OVERRIDE
+  {
 //    ES_DEBUG_TRACE(
 //      esT("EsRegEx.pcre.replace(text='%s', offs=%d, replacement='%s', flags=%d)"),
 //      text,
@@ -279,8 +279,8 @@ public:
 //    );
     ES_ASSERT(m_compiled);
 
-		if( offs < text.size() )
-		{
+    if( offs < text.size() )
+    {
       ES_ASSERT(m_reCode);
 
       if( !m_reMatch )
@@ -381,10 +381,10 @@ public:
       result.resize(outlen); //< Make sure we have proper character length after real replacement
 
       return result;
-		}
+    }
 
-		return EsString::null();
-	}
+    return EsString::null();
+  }
 
   // option translation helper
   static inline uint32_t flagsToCompileOptions(ulong flags)

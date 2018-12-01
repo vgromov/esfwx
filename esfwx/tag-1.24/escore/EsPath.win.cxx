@@ -1,67 +1,67 @@
 long EsPath::isExisting(const EsString& obj)
 {
-	long result = 0;
+  long result = 0;
 
-	esU32 dw = ::GetFileAttributes(obj.c_str());
-	if( INVALID_FILE_ATTRIBUTES == dw )
-	{
-		ulong error = EsUtilities::osErrorCodeGet();
-		// handle non expected errors, like not enough ACL to access file|folder, etc
-		if(	ERROR_FILE_NOT_FOUND != error &&
-				ERROR_PATH_NOT_FOUND != error )
-			EsException::ThrowOsError(error);
-	}
-	else
-		result = (dw & FILE_ATTRIBUTE_DIRECTORY) ? 2 : 1;
+  esU32 dw = ::GetFileAttributes(obj.c_str());
+  if( INVALID_FILE_ATTRIBUTES == dw )
+  {
+    ulong error = EsUtilities::osErrorCodeGet();
+    // handle non expected errors, like not enough ACL to access file|folder, etc
+    if(  ERROR_FILE_NOT_FOUND != error &&
+        ERROR_PATH_NOT_FOUND != error )
+      EsException::ThrowOsError(error);
+  }
+  else
+    result = (dw & FILE_ATTRIBUTE_DIRECTORY) ? 2 : 1;
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 EsString EsPath::cwdGet()
 {
-	EsString result;
+  EsString result;
 
-	result.resize(MAX_PATH);
-	esU32 cnt = ::GetCurrentDirectory(
+  result.resize(MAX_PATH);
+  esU32 cnt = ::GetCurrentDirectory(
     static_cast<DWORD>(result.size()-1), 
     const_cast<EsString::pointer>(result.c_str())
   );
-	if( 0 < cnt )
-		result.resize(cnt);
-	else
-		EsException::ThrowOsError( EsUtilities::osErrorCodeGet() );
+  if( 0 < cnt )
+    result.resize(cnt);
+  else
+    EsException::ThrowOsError( EsUtilities::osErrorCodeGet() );
 
-	return result;
+  return result;
 }
 //---------------------------------------------------------------------------
 
 // set current working directory
 void EsPath::cwdSet(const EsString& cwd)
 {
-	if( !SetCurrentDirectory(cwd.c_str()) )
-		EsException::ThrowOsError( EsUtilities::osErrorCodeGet() );
+  if( !SetCurrentDirectory(cwd.c_str()) )
+    EsException::ThrowOsError( EsUtilities::osErrorCodeGet() );
 }
 //---------------------------------------------------------------------------
 
 void EsPath::directoryCreate(const EsString& path)
 {
-	if( !::CreateDirectory(path.c_str(), 0) )
-		EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
+  if( !::CreateDirectory(path.c_str(), 0) )
+    EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
 }
 //---------------------------------------------------------------------------
 
 void EsPath::fileRemove(const EsString& path)
 {
-	if( !::DeleteFile(path.c_str()) )
-		EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
+  if( !::DeleteFile(path.c_str()) )
+    EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
 }
 //---------------------------------------------------------------------------
 
 void EsPath::dirRemove(const EsString& path)
 {
-	if( !::RemoveDirectory(path.c_str()) )
-		EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
+  if( !::RemoveDirectory(path.c_str()) )
+    EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
 }
 //---------------------------------------------------------------------------
 
@@ -137,8 +137,8 @@ EsString EsPath::stdPublicDownloadsGet()
 
 EsString EsPath::stdSysRootGet()
 {
-	const EsStringIndexedMap& env = EsUtilities::environmentVarsListGet();
-	return env.valueGet(esT("SystemRoot")).asString();
+  const EsStringIndexedMap& env = EsUtilities::environmentVarsListGet();
+  return env.valueGet(esT("SystemRoot")).asString();
 }
 //---------------------------------------------------------------------------
 

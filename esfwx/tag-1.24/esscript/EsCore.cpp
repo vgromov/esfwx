@@ -12,56 +12,56 @@
 //---------------------------------------------------------------------------
 
 ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsCore, NO_CLASS_DESCR)
-	// global logging wrappers
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logInfo, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logInfo, void_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logDebug, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logDebug, void_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logWarning, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logWarning, void_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logError, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
-	ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logError, void_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  // global logging wrappers
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logInfo, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logInfo, void_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logDebug, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logDebug, void_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logWarning, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logWarning, void_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logError, void_ClassCall_cr_EsString, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsCore, logError, void_ClassCall_cr_EsString_cr_EsVariant, NO_METHOD_DESCR)
 ES_DECL_REFLECTED_SERVICES_INFO_END
 
 // global logging wrappers
 void EsCore::logInfo(cr_EsString msg)
 {
-	EsUtilities::logInfo(msg);
+  EsUtilities::logInfo(msg);
 }
 
 void EsCore::logInfo(cr_EsString msg, cr_EsVariant val)
 {
-	EsUtilities::logInfo(msg, val);
+  EsUtilities::logInfo(msg, val);
 }
 
 void EsCore::logDebug(cr_EsString msg)
 {
-	EsUtilities::logDebug(msg);
+  EsUtilities::logDebug(msg);
 }
 
 void EsCore::logDebug(cr_EsString msg, cr_EsVariant val)
 {
-	EsUtilities::logDebug(msg, val);
+  EsUtilities::logDebug(msg, val);
 }
 
 void EsCore::logWarning(cr_EsString msg)
 {
-	EsUtilities::logWarning(msg);
+  EsUtilities::logWarning(msg);
 }
 
 void EsCore::logWarning(cr_EsString msg, cr_EsVariant val)
 {
-	EsUtilities::logWarning(msg, val);
+  EsUtilities::logWarning(msg, val);
 }
 
 void EsCore::logError(cr_EsString msg)
 {
-	EsUtilities::logError(msg);
+  EsUtilities::logError(msg);
 }
 
 void EsCore::logError(cr_EsString msg, cr_EsVariant val)
 {
-	EsUtilities::logError(msg, val);
+  EsUtilities::logError(msg, val);
 }
 
 //---------------------------------------------------------------------------
