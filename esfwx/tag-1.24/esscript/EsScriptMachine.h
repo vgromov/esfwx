@@ -304,11 +304,7 @@ public:
 	/// Scripting host services proxy class singleton instance access
 	inline EsReflectedClassIntf::Ptr hostGet() ES_NOTHROW
   {
-    return EsReflectedClassIntf::Ptr(
-      &m_host,
-      false,
-      false
-    );
+    return m_host.asWeakReference();
   }
 
 	/// Execution control

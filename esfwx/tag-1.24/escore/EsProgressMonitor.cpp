@@ -366,7 +366,7 @@ void EsProgressMonitorTask::internalThisStateChangeNotify()
     };
 
 		m_monitor->viewEventPost(
-      evtTaskStateChanged, 
+      evtTaskStateChanged,
       payload
     );
 	}
@@ -387,10 +387,10 @@ void EsProgressMonitorTask::onChildStateChanged(int newState)
 			bool anyPulsing = false;
 			for(ulong idx = 0; idx < m_children.countGet() && !anyPulsing; ++idx)
 			{
-				EsProgressMonitorTask* task =
-					reinterpret_cast<EsProgressMonitorTask*>( m_children.valueGet(idx).asPointer() );
+				EsProgressMonitorTaskIntf::Ptr task = m_children.valueGet(idx).asExistingObject();
 				ES_ASSERT(task);
-				anyPulsing = statePulsing == task->m_state;
+
+				anyPulsing = task->isPulsing();
 			}
 
 			if( !anyPulsing )
@@ -404,10 +404,10 @@ void EsProgressMonitorTask::onChildStateChanged(int newState)
 			bool allComplete = true;
 			for(ulong idx = 0; idx < m_children.countGet() && allComplete; ++idx)
 			{
-				EsProgressMonitorTask* task =
-					reinterpret_cast<EsProgressMonitorTask*>( m_children.valueGet(idx).asPointer() );
+				EsProgressMonitorTaskIntf::Ptr task = m_children.valueGet(idx).asExistingObject();
 				ES_ASSERT(task);
-				allComplete = stateComplete == task->m_state;
+
+				allComplete = task->isComplete();
 			}
 
 			if( allComplete )

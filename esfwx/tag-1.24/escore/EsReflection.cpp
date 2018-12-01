@@ -119,7 +119,7 @@ EsAttributesIntf::Ptr EsAttributes::attributeSet(const EsString& name, const EsV
       m_contents.nameGet()
     );
 
-	return EsAttributesIntf::Ptr(this, false, false);
+	return asBaseIntfPtrDirectWeak();
 }
 //---------------------------------------------------------------------------
 
@@ -127,7 +127,7 @@ EsAttributesIntf::Ptr EsAttributes::attributeAdd(const EsString& name, const EsV
 {
 	m_contents.itemAdd(name, val);
 
-	return EsAttributesIntf::Ptr(this, false, false);
+	return asBaseIntfPtrDirectWeak();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -465,8 +465,7 @@ EsVariant EsMethodInfo::call(EsBaseIntf* obj, const EsVariant& params) const
 
 	EsVariant result;
 
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS || \
-    ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC
+#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
 	// cast to properly aligned interface pointer, if it's reflected interface method.
 	if( !m_iid.empty() )
 	{

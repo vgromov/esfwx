@@ -154,8 +154,8 @@ m_template(true)
 {
 }
 
-EsScriptSymbolTable::EsScriptSymbolTable(const EsScriptSymbolTable& src, EsScriptObjectIntf* parent/* = 0*/)
-: m_contents( EsStringIndexedMap::ContainerWithoutInterlock)
+EsScriptSymbolTable::EsScriptSymbolTable(const EsScriptSymbolTable& src, EsScriptObjectIntf* parent/* = 0*/) :
+m_contents( EsStringIndexedMap::ContainerWithoutInterlock)
 {
 	clone(src, parent);
 }
@@ -263,18 +263,10 @@ void EsScriptSymbolTable::symbolTemplateAdd(const EsString& name, ulong flags,
     );
 
 	// Add slot with empty accessor
-	EsVariant::Array v
-#ifdef ES_MODERN_CPP
-  = {
+	EsVariant::Array v = {
     EsScriptValAccessorIntf::Ptr(),
 		flags
   };
-#else
-  ;
-  v.reserve(2);
-  v.push_back( EsScriptValAccessorIntf::Ptr() );
-  v.push_back( flags );
-#endif
 
 	m_contents.itemAdd(
     name,
@@ -309,18 +301,10 @@ EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::symbolNonTemplateAdd(const EsS
 
 void EsScriptSymbolTable::accessorAdd(const EsScriptValAccessorIntf::Ptr& acc)
 {
-	EsVariant::Array v
-#ifdef ES_MODERN_CPP
-  = {
+	EsVariant::Array v = {
 	  acc,
 		acc->flagsGet()
   };
-#else
-  ;
-  v.reserve(2);
-  v.push_back(acc);
-  v.push_back(acc->flagsGet());
-#endif
 
 	m_contents.itemAdd(
     acc->nameGet(),

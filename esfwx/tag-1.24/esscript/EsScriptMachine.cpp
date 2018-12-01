@@ -136,7 +136,7 @@ m_destroying(false)
 
   m_ctxScriptThis = EsScriptContext::create(this);
 
-	reset();
+  reset();
 }
 // ---------------------------------------------------------------------------
 
