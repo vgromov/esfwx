@@ -132,26 +132,6 @@ int main(int argc, char **argv)
 
   int result = 0;
 
-  EsScriptSymbolTable stbl(false);
-  ulong flags = EsScriptSymbolFlag::BuiltIn | EsScriptSymbolFlag::ReadOnly;
-
-  int idx = 0;
-  while(idx < 100)
-  {
-    EsChannelIoIntf::Ptr chnl = EsChannelIoFactory::channelCreate(
-      esT("EsChannelIoUart")
-    );
-
-    stbl.symbolNonTemplateAdd(
-      esT("val"),
-      chnl,
-      flags
-    );
-
-    stbl.reset();
-    ++idx;
-  }
-
   ES_DEBUG_TRACE(esT("EsCriticalSection size: %d"), sizeof(EsCriticalSection));
   ES_DEBUG_TRACE(esT("EsString size: %d"), sizeof(EsString));
   ES_DEBUG_TRACE(esT("EsVariant size: %d"), sizeof(EsVariant));

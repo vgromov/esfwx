@@ -40,7 +40,10 @@ m_attrs(
 }
 
 // Non-dynamic constructor
-EsEnumeration::EsEnumeration(const EsString& enumTypeName, EsEnumerationNonDynamic ES_UNUSED(dummy)) ES_NOTHROW :
+EsEnumeration::EsEnumeration(
+  const EsString& enumTypeName, 
+  ES_UNUSED(EsEnumerationNonDynamic dummy)
+) ES_NOTHROW :
 m_contents(enumTypeName),
 m_attrs(
   EsAttributes::create(

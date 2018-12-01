@@ -123,10 +123,10 @@ TEST(EsStringTest, CulturalFormattingExtra) {
   ASSERT_TRUE(esT("d MMMM yyyy 'г.' H:mm:ss") == str);
 
   str = EsLocale::timeAmGet(loc);
-  ASSERT_TRUE(esTU("ДП") == str);
+  ASSERT_TRUE(esT("ДП") == str);
 
   str = EsLocale::timePmGet(loc);
-  ASSERT_TRUE(esTU("ПП") == str);
+  ASSERT_TRUE(esT("ПП") == str);
 }
 
 TEST(EsStringTest, CulturalFormattingMoney) {

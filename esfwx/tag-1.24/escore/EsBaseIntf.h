@@ -321,7 +321,7 @@ protected:
 //
 // UID0-3 four 4-byte parts of iterface's GUID
 #define ES_DECL_INTF_BEGIN1( UID0, UID1, UID2, UID3, InterfaceName ) \
-struct ES_ABSTRACT InterfaceName \
+class ES_ABSTRACT InterfaceName \
 { \
 public: \
   enum { uid0 = 0x ## UID0, uid1 = 0x ## UID1, uid2 = 0x ## UID2, uid3 = 0x ## UID3 }; \
@@ -329,7 +329,7 @@ public: \
 
 // UID0-3 four 4-byte parts of iterface's GUID
 #define ES_DECL_INTF_BEGIN2( UID0, UID1, UID2, UID3, InterfaceName1, InterfaceName2 ) \
-struct ES_ABSTRACT InterfaceName1 : public InterfaceName2 \
+class ES_ABSTRACT InterfaceName1 : public InterfaceName2 \
 { \
 public: \
   enum { uid0 = 0x ## UID0, uid1 = 0x ## UID1, uid2 = 0x ## UID2, uid3 = 0x ## UID3 }; \

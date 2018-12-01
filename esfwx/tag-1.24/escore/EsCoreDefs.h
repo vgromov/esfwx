@@ -364,7 +364,7 @@
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC
 # define ES_UNUSED(x) x __attribute__((unused))
 #elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-# define ES_UNUSED(x) _Pragma("warning(suppress: 4100)") x
+# define ES_UNUSED(x) __pragma(warning(suppress: 4100)) x
 #else
 # define ES_UNUSED(x) x
 #endif
