@@ -916,7 +916,7 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
         m_csScope->stackPop()->get()
       );
 
-#ifdef ES_DEBUG
+#if defined(ES_DEBUG) && defined(ESSCRIPT_CONTEXT_DOCALL_TRACE)
     const EsString& paramsStr = EsScriptMachine::traceVariant(params);
     ES_DEBUG_TRACE(esT("doCall: %s(%s)"), name, paramsStr);
 #endif
