@@ -898,8 +898,6 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
   ES_ASSERT(paramsCount <= m_csScope->stackSizeGet());
 
   EsVariant::Array params;
-  params.reserve(paramsCount);
-
   try
   {
     // For explicit handling of iVsvcCall preserve the deepest stack parameter for
@@ -910,15 +908,23 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
       --paramsCount;
     }
 
+    params.resize(paramsCount);
+
     // Extract parameters from the stack and prepare them to the form acceptable for C++ calls
     for(ulong idx = 0; idx < paramsCount; ++idx)
-      params.insert(
-        params.begin(),
-        m_csScope->stackPop()->get()
-      );
+    {
+      EsScriptValAccessorIntf::Ptr popped = m_csScope->stackPop();
+      ES_ASSERT( popped );
 
-    ESSCRIPT_MACHINE_CALL_TRACE3(
-      esT("doCall: %s(%s)"),
+      params[paramsCount-1-idx] = popped->get();
+    }
+
+    ESSCRIPT_MACHINE_CALL_TRACE4(
+      esT("doCall:%s:%s(%s)"),
+      EsVariant(
+        EsScriptInstruction::getOpcodeString(opcode),
+        EsVariant::ACCEPT_STRING
+      ),
       name,
       EsScriptMachine::traceVariant(params)
     )
@@ -960,7 +966,11 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
           // Emulate This pointer for the variant service calls
           // by supplying variant accessor itself as the first parameter
           //
-          params.insert(params.begin(), acc);
+          params.insert(
+            params.begin(),
+            acc
+          );
+
           doVariantServiceCall(
             name,
             params,

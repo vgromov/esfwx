@@ -82,8 +82,9 @@ m_name(name)
   m_dynamic = true;
 
   ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
-  ESSCRIPT_VALACCESS_TRACE4(
-    esT("EsScriptValAccessor (%s %p) created with '%s'"),
+  ESSCRIPT_VALACCESS_TRACE5(
+    esT("%s:(%s %p) created with '%s'"),
+    classNameGet(),
     m_name,
     EsVariant(
       this,
@@ -95,8 +96,9 @@ m_name(name)
 
 EsScriptValAccessor::~EsScriptValAccessor()
 {
-  ESSCRIPT_VALACCESS_TRACE4(
-    esT("EsScriptValAccessor (%s %p) deleted (had '%s')"),
+  ESSCRIPT_VALACCESS_TRACE5(
+    esT("%s:(%s %p) deleted (had '%s')"),
+    classNameGet(),
     m_name,
     EsVariant(
       this,
@@ -110,8 +112,9 @@ EsScriptValAccessor::~EsScriptValAccessor()
 // interface impl
 ES_IMPL_INTF_METHOD(EsVariant&, EsScriptValAccessor::get)()
 {
-  ESSCRIPT_MACHINE_TRACE3(
-    esT("EsScriptValAccessor %s::get()='%s'"),
+  ESSCRIPT_MACHINE_TRACE4(
+    esT("%s:%s::get()='%s'"),
+    classNameGet(),
     m_name,
     EsScriptMachine::traceVariant(m_val)
   )
@@ -127,7 +130,9 @@ ES_IMPL_INTF_METHOD(void, EsScriptValAccessor::set)(const EsVariant& val)
   if( isReadOnly() )
     EsScriptException::ThrowPerformingOperationOnReadOnly(esT("set"));
 
-  ESSCRIPT_MACHINE_TRACE4(esT("EsScriptValAccessor %s::set('%s') (was '%s')"),
+  ESSCRIPT_MACHINE_TRACE5(
+    esT("%s:%s::set('%s') (was '%s')"),
+    classNameGet(),
     m_name,
     EsScriptMachine::traceVariant(val),
     EsScriptMachine::traceVariant(m_val)
@@ -143,7 +148,8 @@ ES_IMPL_INTF_METHOD(void, EsScriptValAccessor::set)(const EsVariant& val)
 ES_IMPL_INTF_METHOD(EsString, EsScriptValAccessor::trace)() const
 {
   return EsString::format(
-    esT("EsScriptValAccessor '%s' has '%s'"),
+    esT("%s:'%s'=>'%s'"),
+    classNameGet(),
     m_name,
     EsScriptMachine::traceVariant(m_val)
   );

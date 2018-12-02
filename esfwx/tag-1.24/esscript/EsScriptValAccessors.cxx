@@ -25,7 +25,7 @@ public:
   // interface impl
   ES_DECL_INTF_METHOD(EsVariant&, get)();
   ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW { return true; }
-  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val);  
+  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val);
   ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW { return true; }
   ES_DECL_INTF_METHOD(EsString, trace)() const;
   ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW { return false; }
@@ -53,15 +53,15 @@ protected:
   {
     return EsScriptValAccessorIntf::Ptr(new EsScriptTmpValAccessor(val));
   }
-  
+
 public:
   virtual ~EsScriptTmpValAccessor();
 
   // EsBaseIntf override
   //
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW
-  { 
-    return classNameGet(); 
+  {
+    return classNameGet();
   }
 
   // interface impl
@@ -185,8 +185,9 @@ m_val(val)
 {
   m_dynamic = true;
   ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
-  ESSCRIPT_VALACCESS_TRACE3(
-    esT("EsScriptTmpValAccessor (%p) created with '%s'"), 
+  ESSCRIPT_VALACCESS_TRACE4(
+    esT("%s:(%p) created with '%s'"),
+    classNameGet(),
     EsVariant(
       this,
       EsVariant::ACCEPT_POINTER
@@ -197,8 +198,9 @@ m_val(val)
 
 EsScriptTmpValAccessor::~EsScriptTmpValAccessor()
 {
-  ESSCRIPT_VALACCESS_TRACE3(
-    esT("EsScriptTmpValAccessor (%p) deleted (had '%s')"), 
+  ESSCRIPT_VALACCESS_TRACE4(
+    esT("%s:(%p) deleted (had '%s')"),
+    classNameGet(),
     EsVariant(
       this,
       EsVariant::ACCEPT_POINTER
@@ -209,8 +211,9 @@ EsScriptTmpValAccessor::~EsScriptTmpValAccessor()
 
 ES_IMPL_INTF_METHOD(EsVariant&, EsScriptTmpValAccessor::get)()
 {
-  ESSCRIPT_VALACCESS_TRACE2(
-    esT("EsScriptTmpValAccessor::get()='%s'"), 
+  ESSCRIPT_VALACCESS_TRACE3(
+    esT("%s::get()='%s'"),
+    classNameGet(),
     EsScriptMachine::traceVariant(m_val)
   )
 
@@ -220,9 +223,10 @@ ES_IMPL_INTF_METHOD(EsVariant&, EsScriptTmpValAccessor::get)()
 ES_IMPL_INTF_METHOD(void, EsScriptTmpValAccessor::set)(const EsVariant& val)
 {
   ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
-  ESSCRIPT_VALACCESS_TRACE3(
-    esT("EsScriptTmpValAccessor::set='%s', (had '%s')"), 
-    EsScriptMachine::traceVariant(val), 
+  ESSCRIPT_VALACCESS_TRACE4(
+    esT("%s::set='%s', (had '%s')"),
+    classNameGet(),
+    EsScriptMachine::traceVariant(val),
     EsScriptMachine::traceVariant(m_val)
   )
 
@@ -238,7 +242,8 @@ ES_IMPL_INTF_METHOD(void, EsScriptTmpValAccessor::set)(const EsVariant& val)
 ES_IMPL_INTF_METHOD(EsString, EsScriptTmpValAccessor::trace)() const
 {
   return EsString::format(
-    esT("EsScriptTmpValAccessor has'%s'"),
+    esT("s:has'%s'"),
+   	classNameGet(),
     EsScriptMachine::traceVariant(m_val)
   );
 }
@@ -253,8 +258,9 @@ EsItemAccessor::EsItemAccessor(const EsScriptValAccessorIntf::Ptr& valAcc, const
   m_valAcc = valAcc;
   m_idxExprAcc = idxExprAcc;
 
-  ESSCRIPT_VALACCESS_TRACE2(
-    esT("EsItemAccessor (%p) created"), 
+  ESSCRIPT_VALACCESS_TRACE3(
+    esT("%s:(%p) created"),
+   	classNameGet(),
     EsVariant(
       this,
       EsVariant::ACCEPT_POINTER
@@ -264,8 +270,9 @@ EsItemAccessor::EsItemAccessor(const EsScriptValAccessorIntf::Ptr& valAcc, const
 
 EsItemAccessor::~EsItemAccessor()
 {
-  ESSCRIPT_VALACCESS_TRACE3(
-    esT("EsItemAccessor (%p) deleted, (had '%s')"),
+  ESSCRIPT_VALACCESS_TRACE4(
+    esT("%s:(%p) deleted, (had '%s')"),
+    classNameGet(),
     EsVariant(
       this,
       EsVariant::ACCEPT_POINTER
@@ -282,8 +289,9 @@ ES_IMPL_INTF_METHOD(EsVariant&, EsItemAccessor::get)()
 
   m_valCache = val.itemGet(idx);
 
-  ESSCRIPT_VALACCESS_TRACE3(
-    esT("EsItemAccessor::get()['%s'] returns '%s'"),
+  ESSCRIPT_VALACCESS_TRACE4(
+    esT("%s::get()['%s'] returns '%s'"),
+    classNameGet(),
     EsScriptMachine::traceVariant(idx),
     EsScriptMachine::traceVariant(m_valCache)
   )
@@ -302,8 +310,9 @@ ES_IMPL_INTF_METHOD(void, EsItemAccessor::set)(const EsVariant& val)
   if( !v.isObject() && m_valAcc->getReturnsTemporary() )
     m_valAcc->set(v);
 
-  ESSCRIPT_VALACCESS_TRACE3(
-    esT("EsItemAccessor::set('%s')['%s']"),
+  ESSCRIPT_VALACCESS_TRACE4(
+    esT("%s::set('%s')['%s']"),
+    classNameGet(),
     EsScriptMachine::traceVariant(val),
     EsScriptMachine::traceVariant(idx)
   )
@@ -316,7 +325,8 @@ ES_IMPL_INTF_METHOD(EsString, EsItemAccessor::trace)() const
   const EsVariant& item = val.itemGet( idx );
 
   return EsString::format(
-    esT("EsItemAccessor ['%s'] = '%s'"),
+    esT("%s['%s'] = '%s'"),
+    classNameGet(),
     EsScriptMachine::traceVariant(idx),
     EsScriptMachine::traceVariant(item)
   );
@@ -331,8 +341,9 @@ m_idx(0)
   m_dynamic = true;
   m_valAcc = valAcc;
 
-  ESSCRIPT_VALACCESS_TRACE2(
-    esT("EsAutoItemAccessor (%p) created"), 
+  ESSCRIPT_VALACCESS_TRACE3(
+    esT("%s:(%p) created"),
+    classNameGet(),
     EsVariant(
       this,
       EsVariant::ACCEPT_POINTER
@@ -342,8 +353,9 @@ m_idx(0)
 
 EsAutoItemAccessor::~EsAutoItemAccessor()
 {
-  ESSCRIPT_VALACCESS_TRACE3(
-    esT("EsAutoItemAccessor (%p) deleted, (had '%s')"),
+  ESSCRIPT_VALACCESS_TRACE4(
+    esT("%s:(%p) deleted, (had '%s')"),
+    classNameGet(),
     EsVariant(
       this,
       EsVariant::ACCEPT_POINTER
@@ -359,8 +371,9 @@ ES_IMPL_INTF_METHOD(EsVariant&, EsAutoItemAccessor::get)()
 
   m_valCache = m_valAcc->get().itemGet( m_idx++ );
 
-  ESSCRIPT_VALACCESS_TRACE3(
-    esT("EsAutoItemAccessor::get()['%d'] returns '%s'"),
+  ESSCRIPT_VALACCESS_TRACE4(
+    esT("%s::get()['%d'] returns '%s'"),
+    classNameGet(),
     m_idx,
     EsScriptMachine::traceVariant(m_valCache)
   )
@@ -371,7 +384,9 @@ ES_IMPL_INTF_METHOD(EsVariant&, EsAutoItemAccessor::get)()
 ES_IMPL_INTF_METHOD(void, EsAutoItemAccessor::set)(const EsVariant& val)
 {
   ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
-  EsScriptException::Throw(esT("Setting auto indexed item is not supported"));
+  EsScriptException::Throw(
+    esT("Setting auto indexed item is not supported")
+  );
 }
 
 ES_IMPL_INTF_METHOD(bool, EsAutoItemAccessor::isOk)() const ES_NOTHROW
@@ -389,13 +404,17 @@ ES_IMPL_INTF_METHOD(EsString, EsAutoItemAccessor::trace)() const
   {
     const EsVariant& item = m_valAcc->get().itemGet( m_idx );
     return EsString::format(
-      esT("EsAutoItemAccessor ['%d']='%s'"), 
+      esT("%s:['%d']='%s'"),
+      classNameGet(),
       m_idx,
       EsScriptMachine::traceVariant(item)
     );
   }
 
-  return esT("EsAutoItemAccessor is nok!");
+  return EsString::format(
+    esT("%s:NOK!"),
+    classNameGet()
+  );
 }
 
 // properties
@@ -413,8 +432,9 @@ m_instr(instr)
   m_objAcc = objAcc;
   m_propName = propName;
 
-  ESSCRIPT_VALACCESS_TRACE3(
-    esT("EsPropertyAccessor (%p) $'%s' created"),
+  ESSCRIPT_VALACCESS_TRACE4(
+    esT("%s:(%p) $'%s' created"),
+    classNameGet(),
     EsVariant(
       this,
       EsVariant::ACCEPT_POINTER
@@ -425,8 +445,9 @@ m_instr(instr)
 
 EsPropertyAccessor::~EsPropertyAccessor()
 {
-  ESSCRIPT_VALACCESS_TRACE4(
-    esT("EsPropertyAccessor (%p) $'%s' deleted, (had '%s')"),
+  ESSCRIPT_VALACCESS_TRACE5(
+    esT("%s:(%p) $'%s' deleted, (had '%s')"),
+    classNameGet(),
     EsVariant(
       this,
       EsVariant::ACCEPT_POINTER
@@ -476,8 +497,9 @@ ES_IMPL_INTF_METHOD(EsVariant&, EsPropertyAccessor::get)()
   else
     m_valCache = obj->propertyGet(m_propName);
 
-  ESSCRIPT_VALACCESS_TRACE4(
-    esT("EsPropertyAccessor::get()('%s$%s') returns '%s'"),
+  ESSCRIPT_VALACCESS_TRACE5(
+    esT("%s::get()('%s$%s') returns '%s'"),
+    classNameGet(),
     obj->typeNameGet(),
     m_propName,
     EsScriptMachine::traceVariant(m_valCache)
@@ -502,8 +524,9 @@ ES_IMPL_INTF_METHOD(void, EsPropertyAccessor::set)(const EsVariant& val)
   else
      obj->propertySet(m_propName, val);
 
-  ESSCRIPT_VALACCESS_TRACE4(
-    esT("EsPropertyAccessor::set()('%s$%s', '%s'"),
+  ESSCRIPT_VALACCESS_TRACE5(
+    esT("%s::set()('%s$%s', '%s'"),
+    classNameGet(),
     obj->typeNameGet(),
     m_propName,
     EsScriptMachine::traceVariant(val)
@@ -516,7 +539,8 @@ ES_IMPL_INTF_METHOD(EsString, EsPropertyAccessor::trace)() const
   const EsVariant& result = obj->propertyGet(m_propName);
 
   return EsString::format(
-    esT("EsPropertyAccessor '%s$%s' = '%s'"),
+    esT("%s:'%s$%s' = '%s'"),
+    classNameGet(),
     obj->typeNameGet(),
     m_propName,
     EsScriptMachine::traceVariant(result)
