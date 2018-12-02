@@ -19,7 +19,7 @@ ES_COMPILE_TIME_ASSERT(sizeof(ulong) >= sizeof(esI32), _EsScriptCompiledBinary_u
 //---------------------------------------------------------------------------
 
 #define ES_MODERN_VER_START esT("1.23")
-//--------------------------------------------------------------------------- 
+//---------------------------------------------------------------------------
 
 // Binary block writer helper implementation
 //
@@ -32,7 +32,7 @@ m_size(0)
   m_owner.m_activeBlock = this;
   m_owner.typeWrite(type);
   // append block size placeholder
-  m_owner.m_buff.append(sizeof(esU32), reinterpret_cast<const esU8*>(&m_size));
+  m_owner.m_buff.append(sizeof(esU32), reinterpret_cast<EsBinBuffer::const_pointer>(&m_size));
   // remember block starting position
   m_start = static_cast<ulong>(m_owner.m_buff.size());
 }
@@ -92,7 +92,7 @@ void EsScriptCompiledBinaryWriter::typeWrite(long type)
   //
   m_buff.append(
     EsScriptCompiledBinary::typeFieldSize,
-    reinterpret_cast<const esU8*>(&type)
+    reinterpret_cast<EsBinBuffer::const_pointer>(&type)
   );
 }
 //---------------------------------------------------------------------------
@@ -103,15 +103,21 @@ void EsScriptCompiledBinaryWriter::stringWrite(const EsString& str)
   EsScriptCompiledBinaryBlockWriter block(*this, EsVariant::VAR_STRING);
 
   // write string length. NB! in chars, not bytes
-  const EsBinBuffer& ustr = EsStr::toByteString(str, EsString::UTF8);
+  const EsByteString& ustr = EsString::toUtf8(str);
 
   checkReserveEnough(
     static_cast<ulong>(ustr.size()+sizeof(esU32))
   );
   esU32 tmp = static_cast<esU32>(ustr.size());
 
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
-  m_buff.append(ustr);
+  m_buff.append(
+    sizeof(tmp),
+    reinterpret_cast<EsBinBuffer::const_pointer>(&tmp)
+  );
+  m_buff.append(
+    tmp,
+    reinterpret_cast<EsBinBuffer::const_pointer>(ustr.data())
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -120,7 +126,7 @@ void EsScriptCompiledBinaryWriter::stringArrayWrite(const EsStringArray& a, long
   EsScriptCompiledBinaryBlockWriter block(*this, (binaryTypeNone == customType) ? EsVariant::VAR_STRING_COLLECTION : customType);
 
   esU32 tmp = static_cast<esU32>(a.size());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for(size_t idx = 0; idx < tmp; ++idx)
     stringWrite( a[idx] );
@@ -132,7 +138,7 @@ void EsScriptCompiledBinaryWriter::variantCollectionWrite(const EsVariant& c)
   EsScriptCompiledBinaryBlockWriter block(*this, EsVariant::VAR_VARIANT_COLLECTION);
 
   esU32 tmp = c.countGet();
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for(ulong idx = 0; idx < tmp; ++idx)
     variantWrite( c.itemGet(idx) );
@@ -148,7 +154,7 @@ void EsScriptCompiledBinaryWriter::attributesWrite(const EsAttributesIntf::Ptr& 
     a = attrs->allNamesGet();
 
   tmp = static_cast<esU32>(a.size());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
   if( !a.empty() )
   {
     esU8 interlocked = attrs->isInterlocked() ? 1 : 0;
@@ -222,38 +228,38 @@ void EsScriptCompiledBinaryWriter::variantWrite(const EsVariant& var)
   case EsVariant::VAR_UINT:
     {
       esU32 tmp = var.asULong(m_machine.loc());
-      m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+      m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
     }
     break;
   case EsVariant::VAR_INT:
     {
       esI32 tmp = var.asLong(m_machine.loc());
-      m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+      m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
     }
     break;
   case EsVariant::VAR_UINT64:
     {
       esU64 tmp = var.asULLong(m_machine.loc());
-      m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+      m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
     }
     break;
   case EsVariant::VAR_INT64:
     {
       esI64 tmp = var.asLLong(m_machine.loc());
-      m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+      m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
     }
     break;
   case EsVariant::VAR_DOUBLE:
     {
       double tmp = var.asDouble(m_machine.loc());
-      m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+      m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
     }
     break;
   case EsVariant::VAR_BIN_BUFFER:
     {
       EsBinBuffer buff = var.asBinBuffer();
       esU32 tmp = static_cast<esU32>(buff.size());
-      m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+      m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
       m_buff.append(buff);
     }
     break;
@@ -280,7 +286,7 @@ void EsScriptCompiledBinaryWriter::binaryLinksWrite()
   EsScriptCompiledBinaryBlockWriter block(*this, binaryTypeLinks);
 
   esU32 tmp = static_cast<esU32>(m_machine.m_links.size());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for( EsScriptBinaryLinks::const_iterator cit = m_machine.m_links.begin(); cit != m_machine.m_links.end(); ++cit )
     stringWrite( (*cit).first );
@@ -293,7 +299,7 @@ void EsScriptCompiledBinaryWriter::externWrite(const EsString& name)
 
   esU32 flags = m_machine.m_externs.symbolFlagsGet(name);
   // store extern flags
-  m_buff.append(sizeof(flags), reinterpret_cast<const esU8*>(&flags));
+  m_buff.append(sizeof(flags), reinterpret_cast<EsBinBuffer::const_pointer>(&flags));
 
   // store extern name
   stringWrite( name );
@@ -307,7 +313,7 @@ void EsScriptCompiledBinaryWriter::externsWrite()
   const EsStringArray& syms = m_machine.m_externs.allSymbolNamesGet(false);
 
   esU32 tmp = static_cast<esU32>(syms.size());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for( size_t idx = 0; idx < syms.size(); ++idx )
   {
@@ -334,7 +340,7 @@ void EsScriptCompiledBinaryWriter::constantsWrite()
   const EsStringArray& syms = m_machine.m_consts.allSymbolNamesGet(false);
 
   esU32 tmp = static_cast<esU32>(syms.size());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for( size_t idx = 0; idx < syms.size(); ++idx )
   {
@@ -369,30 +375,30 @@ void EsScriptCompiledBinaryWriter::instructionWrite(const EsScriptInstruction& i
   EsScriptCompiledBinaryBlockWriter block(*this, binaryTypeInstruction);
 
   esU32 tmp = instruction.opcode();
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   ulong mask = instruction.payloadMask();
   tmp = mask;
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   if( !instruction.isEmptyPayload() )
   {
     if( mask & EsScriptInstruction::Payload0 )
     {
       tmp = instruction.raw0get();
-      m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+      m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
     }
 
     if( mask & EsScriptInstruction::Payload1 )
     {
       tmp = instruction.raw1get();
-      m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+      m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
     }
 
     if( mask & EsScriptInstruction::Payload2 )
     {
       tmp = instruction.raw2get();
-      m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+      m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
     }
 
     if( mask & EsScriptInstruction::Payload3 )
@@ -412,7 +418,7 @@ void EsScriptCompiledBinaryWriter::instructionsWrite(const EsScriptInstructions&
   EsScriptCompiledBinaryBlockWriter block(*this, binaryTypeInstructions);
 
   esU32 tmp = static_cast<esU32>(instructions.size());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for( EsScriptInstructions::const_iterator cit = instructions.begin();  cit != instructions.end(); ++cit )
     instructionWrite( (*cit) );
@@ -424,16 +430,16 @@ void EsScriptCompiledBinaryWriter::tryCatchBlockWrite(const EsScriptTryCatchBloc
   EsScriptCompiledBinaryBlockWriter block(*this, binaryTypeTryCatchBlock);
 
   esU32 tmp = tryCatch.tryStart();
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   tmp = tryCatch.tryEnd();
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   tmp = tryCatch.catchStart();
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   tmp = tryCatch.catchEnd();
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 }
 //---------------------------------------------------------------------------
 
@@ -442,7 +448,7 @@ void EsScriptCompiledBinaryWriter::tryCatchBlocksWrite(const EsScriptTryCatchBlo
   EsScriptCompiledBinaryBlockWriter block(*this, binaryTypeTryCatchBlocks);
 
   esU32 tmp = static_cast<esU32>(tryCatchBlocks.size());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for( EsScriptTryCatchBlocks::const_iterator cit = tryCatchBlocks.begin();  cit != tryCatchBlocks.end(); ++cit )
     tryCatchBlockWrite( (*cit) );
@@ -520,7 +526,7 @@ void EsScriptCompiledBinaryWriter::codeSectionsWrite(const EsScriptMethodMapPtr&
   esU32 cnt = 0;
   if( methods )
     cnt = static_cast<esU32>(methods->size());
-  m_buff.append(sizeof(cnt), reinterpret_cast<const esU8*>(&cnt));
+  m_buff.append(sizeof(cnt), reinterpret_cast<EsBinBuffer::const_pointer>(&cnt));
 
   if( methods )
   {
@@ -587,7 +593,7 @@ void EsScriptCompiledBinaryWriter::fieldsWrite(const EsScriptObjectIntf::Ptr& me
   const EsStringIndexedMap& m = metaclass->thisFieldsMapGet();
 
   esU32 tmp = static_cast<esU32>(m.countGet());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for(ulong idx = 0; idx < tmp; ++idx)
   {
@@ -614,7 +620,7 @@ void EsScriptCompiledBinaryWriter::propertiesWrite(const EsScriptObjectIntf::Ptr
   EsScriptCompiledBinaryBlockWriter block(*this, binaryTypeProperties);
 
   esU32 tmp = props ? props->countGet() : 0;
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   if(props)
   {
@@ -676,7 +682,7 @@ void EsScriptCompiledBinaryWriter::metaclassesWrite()
   EsScriptCompiledBinaryBlockWriter block(*this, binaryTypeMetaclasses);
 
   esU32 tmp = static_cast<esU32>(metaclasses.size());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for(size_t idx = 0; idx < metaclasses.size(); ++idx)
   {
@@ -713,7 +719,7 @@ void EsScriptCompiledBinaryWriter::enumAttributesWrite(const EsEnumerationIntf::
   const EsStringArray& a = r->attributeNamesGet();
 
   esU32 tmp = static_cast<esU32>(a.size());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for(size_t idx = 0; idx < tmp; ++idx)
   {
@@ -740,7 +746,7 @@ void EsScriptCompiledBinaryWriter::enumWrite(const EsEnumerationIntf::Ptr& enu)
   enumAttributesWrite(enu);
 
   esU32 tmp = static_cast<esU32>(syms.size());
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for(ulong idx = 0; idx < tmp; ++ idx)
     enumItemWrite(
@@ -756,7 +762,7 @@ void EsScriptCompiledBinaryWriter::enumsWrite()
   EsScriptCompiledBinaryBlockWriter block(*this, binaryTypeEnums);
 
   esU32 tmp = m_machine.m_enumsMap.countGet();
-  m_buff.append(sizeof(tmp), reinterpret_cast<const esU8*>(&tmp));
+  m_buff.append(sizeof(tmp), reinterpret_cast<EsBinBuffer::const_pointer>(&tmp));
 
   for( ulong idx = 0; idx < tmp; ++idx )
     enumWrite(
@@ -900,20 +906,24 @@ long EsScriptCompiledBinaryReader::typeRead(long expectedType /*= binaryTypeNone
 
 EsString EsScriptCompiledBinaryReader::internalStringRead()
 {
-  EsBinBuffer ustr;
   esU32 tmp;
   // read block size in bytes
   chunkRead(&tmp, sizeof(tmp));
+  ES_ASSERT(tmp);
   // read string length. NB! in chars, not bytes
   chunkRead(&tmp, sizeof(tmp));
-
   if( tmp )
   {
-    ustr.resize(tmp);
-    chunkRead(&ustr[0], tmp);
+    EsByteString bstr(tmp, '\0');
+    chunkRead(
+      &bstr[0],
+      tmp
+    );
+
+    return EsString::fromUtf8(bstr);
   }
 
-  return EsStr::fromByteString(ustr, EsString::UTF8);
+  return EsString::null();
 }
 //---------------------------------------------------------------------------
 
@@ -1116,7 +1126,7 @@ EsAttributesIntf::Ptr EsScriptCompiledBinaryReader::attributesRead()
     if( //< Modern attribute read
       EsUtilities::versionStrCompare(
         compilerVersionGet(),
-        ES_MODERN_VER_START 
+        ES_MODERN_VER_START
       ) != EsString::cmpLess
     )
       chunkRead( &interlocked, sizeof(interlocked) );
@@ -1817,7 +1827,7 @@ void EsScriptCompiledBinaryReader::headerRead()
     EsUtilities::versionStrCompare(
       compilerVersionGet(),
       ES_MODERN_VER_START
-    ) != EsString::cmpLess 
+    ) != EsString::cmpLess
   )
   {
     typeRead(EsVariant::VAR_OBJECT);

@@ -4,6 +4,7 @@
 #include "EsVar.h"
 #include "EsScriptMachine.h"
 #include "EsScriptThreadContext.h"
+#include "EsScriptMachineTrace.hxx"
 
 // Static linking under BCC - use dependencies ordering for modules
 // and static objects initialization
@@ -160,13 +161,13 @@ EsString EsScriptMachine::traceVariant(const EsVariant& v)
       EsScriptValAccessorIntf::Ptr acc = obj;
       if(acc)
         return EsString::format(
-          esT("object '%s'='%s'"),
+          esT("accobj:'%s'=>'%s'"),
           acc->typeNameGet(),
           acc->trace()
         );
       else
         return EsString::format(
-          esT("object '%s'"),
+          esT("obj:'%s'"),
           obj->typeNameGet()
         );
     }
@@ -177,16 +178,23 @@ EsString EsScriptMachine::traceVariant(const EsVariant& v)
   {
     EsString str;
     for(ulong idx = 0; idx < v.countGet(); ++idx)
+    {
+      const EsVariant& item = v[idx];
       str += EsString::format(
-        esT("[%d]='%s';"),
+        esT("[%d]=>'%s';"),
         idx,
-        traceVariant(v.itemGet(idx))
+        traceVariant(item)
       );
+    }
 
     return str;
   }
   else if(!v.isEmpty())
-    return v.asString();
+    return EsString::format(
+      esT("(%s):'%s'"),
+      v.kindGet(),
+      v.asString()
+    );
   else
     return esT("null");
 }
@@ -447,7 +455,10 @@ void EsScriptMachine::externEnumDeclare(const EsString& name)
   {
     m_externs.symbolTemplateAdd(name, flags);
 
-    ESSCRIPT_MACHINE_TRACE2(esT("An external enum '%s' declared"), name.c_str())
+    ESSCRIPT_MACHINE_TRACE2(
+      esT("An external enum '%s' declared"),
+      name
+    )
   }
   else
   {
@@ -473,7 +484,7 @@ void EsScriptMachine::externMetaclassDeclare(const EsString& name)
   {
     m_externs.symbolTemplateAdd(name, flags);
 
-    ESSCRIPT_MACHINE_TRACE2(esT("An external object '%s' declared"), name.c_str())
+    ESSCRIPT_MACHINE_TRACE2(esT("An external object '%s' declared"), name)
   }
   else
   {
@@ -521,9 +532,9 @@ EsScriptValAccessorIntf::Ptr EsScriptMachine::constDeclare(const EsString& name,
   );
 
   ESSCRIPT_MACHINE_TRACE3(
-    esT("Constant '%s'='%s' created"),
-    name.c_str(),
-    traceVariant(val).c_str()
+    esT("constdecl:'%s'=>'%s'"),
+    name,
+    traceVariant(val)
   )
 
   return result;
@@ -607,9 +618,9 @@ void EsScriptMachine::addMethodToMap(const EsString& mapName, EsScriptMethodMapP
 
   ESSCRIPT_MACHINE_TRACE4(
     esT("Method '%s', taking %d parameters, added to the script's namespace or object '%s'"),
-    method->nameGet().c_str(),
+    method->nameGet(),
     method->inputParametersCntGet(),
-    mapName.c_str()
+    mapName
   )
 }
 // ---------------------------------------------------------------------------
@@ -622,9 +633,9 @@ void EsScriptMachine::deleteMethodFromMap(const EsString& mapName, EsScriptMetho
 
     ESSCRIPT_MACHINE_TRACE4(
       esT("Method '%s', taking %d parameters, removed from the script's namespace or object '%s'"),
-      key.nameGet().c_str(),
+      key.nameGet(),
       key.parametersCountGet(),
-      mapName.c_str()
+      mapName
     )
   }
 }
@@ -1002,7 +1013,7 @@ void EsScriptMachine::registerMetaclass(const EsScriptObjectIntf::Ptr& metaclass
 
   ESSCRIPT_MACHINE_TRACE2(
     esT("Metaclass '%s' declaration added to script machine"),
-    name.c_str()
+    name
   )
 }
 //---------------------------------------------------------------------------

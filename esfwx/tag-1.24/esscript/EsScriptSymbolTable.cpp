@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "EsScriptSymbolTable.h"
+#include "EsScriptMachineTrace.hxx"
 
 // Static linking under BCC - use dependencies ordering for modules
 // and static objects initialization

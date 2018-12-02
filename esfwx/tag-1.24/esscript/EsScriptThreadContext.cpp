@@ -3,6 +3,7 @@
 
 #include "EsVar.h"
 #include "EsScriptThreadContext.h"
+#include "EsScriptMachineTrace.hxx"
 
 // Static linking under BCC - use dependencies ordering for modules
 // and static objects initialization
@@ -916,10 +917,11 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
         m_csScope->stackPop()->get()
       );
 
-#if defined(ES_DEBUG) && defined(ESSCRIPT_CONTEXT_DOCALL_TRACE)
-    const EsString& paramsStr = EsScriptMachine::traceVariant(params);
-    ES_DEBUG_TRACE(esT("doCall: %s(%s)"), name, paramsStr);
-#endif
+    ESSCRIPT_MACHINE_CALL_TRACE3(
+      esT("doCall: %s(%s)"),
+      name,
+      EsScriptMachine::traceVariant(params)
+    )
 
     EsVariant callResult;
     switch(opcode)
@@ -1791,7 +1793,7 @@ m_old(m_this.m_csScope)
 
   ESSCRIPT_MACHINE_CALL_TRACE2(
     esT("EsScriptCodeSectionScope::EsScriptCodeSectionScope: code '%s' pushed"),
-    m_code->nameGet().c_str()
+    m_code->nameGet()
   )
 
   if(m_code->isStartup())
@@ -1805,7 +1807,7 @@ EsScriptCodeSectionScope::~EsScriptCodeSectionScope()
 {
   ESSCRIPT_MACHINE_CALL_TRACE2(
     esT("EsScriptCodeSectionScope::~EsScriptCodeSectionScope(): code '%s' popped"),
-    m_code->nameGet().c_str()
+    m_code->nameGet()
   )
 
   m_this.m_csScope = m_old;
@@ -1838,7 +1840,10 @@ const EsScriptCodeSectionScope* EsScriptCodeSectionScope::topScopeGet() const ES
 
 void EsScriptCodeSectionScope::stackSnapshotPush()
 {
-  ESSCRIPT_MACHINE_CALL_TRACE2(esT("code '%s' stack snapshot taken"), m_code->nameGet().c_str())
+  ESSCRIPT_MACHINE_CALL_TRACE2(
+    esT("code '%s' stack snapshot taken"),
+    m_code->nameGet()
+  )
 
   EsScriptDataStack::Ptr ptr(
     new EsScriptDataStack(m_stack)
@@ -1854,7 +1859,10 @@ void EsScriptCodeSectionScope::stackSnapshotPop()
 {
   ES_ASSERT( !m_snapshots.empty() );
 
-  ESSCRIPT_MACHINE_CALL_TRACE2(esT("code '%s' stack snapshot restored"), m_code->nameGet().c_str())
+  ESSCRIPT_MACHINE_CALL_TRACE2(
+    esT("code '%s' stack snapshot restored"),
+    m_code->nameGet()
+  )
 
   m_stack = *m_snapshots.back().get();
   m_snapshots.pop_back();
