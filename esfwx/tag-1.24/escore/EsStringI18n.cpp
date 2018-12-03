@@ -331,8 +331,18 @@ const EsString::Array& EsStringI18n::availableLocalesGet()
   if( !m_isDefault )
   {
     const EsString& dl = defaultLocaleGet();
-    if( !dl.empty() && m_availableLocales.end() == std::find(m_availableLocales.begin(), m_availableLocales.end(), dl) )
-      m_availableLocales.insert(m_availableLocales.begin(), dl);
+    if(
+      !dl.empty() &&
+      m_availableLocales.end() == std::find(
+        m_availableLocales.begin(),
+        m_availableLocales.end(),
+        dl
+      )
+    )
+      m_availableLocales.insert(
+        m_availableLocales.begin(),
+        dl
+      );
   }
 
   return m_availableLocales;

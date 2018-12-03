@@ -2009,11 +2009,11 @@ private: //< Data:
 
     /// Used for storing of all numerics
     ///
-    long long m_llong;
+    llong m_llong;
 
     /// Used for storing of all unsigned numerics and characters
     ///
-    unsigned long long m_ullong;
+    ullong m_ullong;
 
     /// Used for storing of all floating point values
     ///
@@ -2022,18 +2022,22 @@ private: //< Data:
     /// Used for storing of string data, mapped to EsString
     ///
     esU8 m_string[ sizeof(EsString) ];
+    EsString* m_sptr;
 
     /// Used for storing of string data, mapped to EsBinBuffer
     ///
     esU8 m_binBuffer[ sizeof(EsBinBuffer) ];
+    EsBinBuffer* m_bbptr;
 
     /// Used for storing of string data, mapped to EsString and EsBinBuffer
     ///
     esU8 m_stringCollection[ sizeof(EsString::Array) ];
+    EsString::Array* m_saptr;
 
     /// Used for storing the vector of variants
     ///
     esU8 m_variantCollection[ sizeof(EsVariant::Array) ];
+    EsVariant::Array* m_vaptr;
 
   } m_value;
 

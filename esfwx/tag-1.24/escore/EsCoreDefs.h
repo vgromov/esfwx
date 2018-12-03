@@ -458,8 +458,8 @@ inline void ES_DELETE(T*& ptr)
 # elif ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_GNUC && ES_OS == ES_OS_WINDOWS
 #   include <fstream>
 #   define ES_DEBUG_TRACE_INIT     do{ std::ofstream of("dbgdump.txt", std::ios_base::out|std::ios_base::binary|std::ios_base::trunc); } while(0);
-#   define ES_DEBUG_TRACE(...)     do{ const EsString& traceStr = EsString(EsString::format(__VA_ARGS__) + esT("\n")); const EsByteString& bstr = EsString::toUtf8(traceStr); std::ofstream of("dbgdump.txt", std::ios_base::out|std::ios_base::binary|std::ios_base::app); of << bstr; } while(0)
-#   define ES_DEBUG_TRACE_RAW(...) do{ char _tmpdbg[256]; snprintf(_tmpdbg, 255, __VA_ARGS__); _tmpdbg[255] = 0; OutputDebugStringA(_tmpdbg); } while(0)
+#   define ES_DEBUG_TRACE(...)     try{ const EsString& traceStr = EsString(EsString::format(__VA_ARGS__) + esT("\n")); const EsByteString& bstr = EsString::toUtf8(traceStr); std::ofstream of("dbgdump.txt", std::ios_base::out|std::ios_base::binary|std::ios_base::app); of << bstr; }catch(...){}
+#   define ES_DEBUG_TRACE_RAW(...) ((void)0)
 #   define USE_MEMLEAK_DETECTION   0
 # else
 #   define ES_DEBUG_TRACE_INIT      ((void)0)

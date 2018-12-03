@@ -898,6 +898,7 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
   ES_ASSERT(paramsCount <= m_csScope->stackSizeGet());
 
   EsVariant::Array params;
+  params.reserve(paramsCount);
   try
   {
     // For explicit handling of iVsvcCall preserve the deepest stack parameter for
@@ -908,15 +909,16 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
       --paramsCount;
     }
 
-    params.resize(paramsCount);
-
     // Extract parameters from the stack and prepare them to the form acceptable for C++ calls
     for(ulong idx = 0; idx < paramsCount; ++idx)
     {
       EsScriptValAccessorIntf::Ptr popped = m_csScope->stackPop();
       ES_ASSERT( popped );
 
-      params[paramsCount-1-idx] = popped->get();
+      params.insert(
+        params.begin(),
+        popped->get()
+      );
     }
 
     ESSCRIPT_MACHINE_CALL_TRACE4(
@@ -971,6 +973,11 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
             acc
           );
 
+          ESSCRIPT_MACHINE_CALL_TRACE2(
+            esT("...iMethodCall as varsvc:(%s)"),
+            EsScriptMachine::traceVariant(params)
+          )
+
           doVariantServiceCall(
             name,
             params,
@@ -1011,6 +1018,11 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
         m_csScope->stackPop()
       );
 
+      ESSCRIPT_MACHINE_CALL_TRACE2(
+        esT("...:(%s)"),
+        EsScriptMachine::traceVariant(params)
+      )
+
       doVariantServiceCall(
         name,
         params,
@@ -1028,8 +1040,8 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
   }
   catch(const EsException& ex)
   {
-    ES_DEBUG_TRACE(
-      esT("void EsScriptThreadContext::doCall(const EsScriptInstruction& instr) - catch(const EsException& ex)")
+    ESSCRIPT_MACHINE_CALL_TRACE1(
+      esT("catch(const EsException& ex)")
     );
 
     m_activeCode->resultPop();

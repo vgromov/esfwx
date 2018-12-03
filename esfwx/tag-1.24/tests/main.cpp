@@ -132,6 +132,34 @@ int main(int argc, char **argv)
 
   int result = 0;
 
+  EsVariant vss = esVT("strt");
+  EsVariant vs0 = esVT("00strtest00");
+  EsVariant vdt = EsDateTime::toVariant(
+    EsDateTime::now()
+  );
+  EsVariant vs1 = esVT("11strtest11");
+
+  EsVariant::Array va;
+  va.reserve(8);
+
+  va.insert(
+    va.begin(),
+    vdt
+  );
+  va.insert(
+    va.begin(),
+    vss
+  );
+  va.insert(
+    va.begin(),
+    vs0
+  );
+  va.insert(
+    va.begin(),
+    vs1
+  );
+  const EsString& trace = EsScriptMachine::traceVariant(va);
+
   ES_DEBUG_TRACE(esT("EsCriticalSection size: %d"), sizeof(EsCriticalSection));
   ES_DEBUG_TRACE(esT("EsString size: %d"), sizeof(EsString));
   ES_DEBUG_TRACE(esT("EsVariant size: %d"), sizeof(EsVariant));
