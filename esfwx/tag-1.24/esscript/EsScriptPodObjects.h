@@ -66,14 +66,18 @@ protected: \
   m_moniker(*this) \
   { m_size = sizeof(DataType); } \
   static EsScriptObjectIntf::Ptr createMetaclass(const EsScriptContext::Ptr& ctx) \
-  { return EsScriptObjectIntf::Ptr( new ES_CONCAT(EsScript_, DataType) (ctx, ofMetaclass|ofPOD, EsScriptObjectDataBufferPtr(), \
-      EsAttributesIntf::Ptr()) ); } \
+  { std::unique_ptr<ES_CONCAT(EsScript_, DataType)> ptr( \
+      new ES_CONCAT(EsScript_, DataType) (ctx, ofMetaclass|ofPOD, nullptr, nullptr) \
+    ); ES_ASSERT(ptr); \
+    return ptr.release()->asBaseIntfPtrDirect(); \
+  } \
   ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, objectCreate)(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const ES_OVERRIDE \
-  { EsScriptObjectIntf::Ptr result( new ES_CONCAT(EsScript_, DataType) (m_ctx, m_flags & ~ofMetaclass, buff, \
-      m_attrsClass ) ); \
-    ES_ASSERT(result); \
+  { std::unique_ptr<ES_CONCAT(EsScript_, DataType)> ptr( \
+      new ES_CONCAT(EsScript_, DataType) (m_ctx, m_flags & ~ofMetaclass, buff, m_attrsClass) \
+    ); ES_ASSERT(ptr); \
     ESSCRIPT_OBJECT_TRACE2(esT("New instance of '%s' object type created"), m_typeName.c_str()) \
-    return result; } \
+    return ptr.release()->asBaseIntfPtrDirect(); \
+  } \
   ES_DECL_INTF_METHOD(void, internalUpdateLayout)(ulong offs) ES_OVERRIDE { \
     internalOffsetSet(offs); } \
   ES_DECL_INTF_METHOD(bool, internalBinBufferSet)(EsBinBuffer::const_pointer& pos, EsBinBuffer::const_pointer end) ES_OVERRIDE; \

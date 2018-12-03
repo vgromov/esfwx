@@ -27,8 +27,18 @@ protected:
   static EsScriptObjectIntf::Ptr createMetaclass(const EsScriptContext::Ptr& ctx, bool trueFalse)
   {
     EsScriptMethodMapPtr scopedMethods( new EsScriptMethodMap );
-    return EsScriptObjectIntf::Ptr(new EsScriptIfBranchObject(ctx, ofMetaclass|ofIfBranch, scopedMethods,
-      EsScriptObjectDataBufferPtr(), trueFalse));
+    std::unique_ptr<EsScriptIfBranchObject> ptr(
+      new EsScriptIfBranchObject(
+        ctx,
+        ofMetaclass|ofIfBranch,
+        scopedMethods,
+        nullptr,
+        trueFalse
+      )
+    );
+    ES_ASSERT(ptr);
+
+    return ptr.release()->asBaseIntfPtrDirect();
   }
 
   // base class overrides
@@ -36,18 +46,35 @@ protected:
   // create instance of script object from its metaclass instance
   ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, objectCreate)(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const
   {
-    EsScriptIfBranchObject* obj = new EsScriptIfBranchObject(m_ctx, (m_flags & ~ofMetaclass)|ofNeedUpdateLayout,
-      m_methods, buff, m_true);
-    ES_ASSERT(obj);
+    std::unique_ptr<EsScriptIfBranchObject> ptr(
+      new EsScriptIfBranchObject(
+        m_ctx,
+        (m_flags & ~ofMetaclass)|ofNeedUpdateLayout,
+        m_methods,
+        buff,
+        m_true
+      )
+    );
+    ES_ASSERT(ptr);
 
     // copy properties (actually, all instances, declared in metaclass, got shared)
-    obj->m_propsMap = m_propsMap;
+    ptr->m_propsMap = m_propsMap;
 
     // clone member variables
     if( m_memberVars )
-      obj->m_memberVars = EsScriptSymbolTable::Ptr(new EsScriptSymbolTable(*m_memberVars.get(), 0));
+    {
+      EsScriptSymbolTable::Ptr vars(
+        new EsScriptSymbolTable(
+          *m_memberVars.get(),
+          nullptr
+        )
+      );
+      ES_ASSERT(vars);
 
-    return EsScriptObjectIntf::Ptr(obj);
+      ptr->m_memberVars = vars;
+    }
+
+    return ptr.release()->asBaseIntfPtrDirect();
   }
 
   // format branch type name, take nesting into account
@@ -105,13 +132,17 @@ EsScriptObjectIntf::Ptr EsScriptIfObject::createMetaclass(const EsScriptContext:
     new EsScriptIfObject(
       ctx,
       ofMetaclass|ofIf,
-      EsScriptObjectDataBufferPtr(),
-      EsScriptCodeSection::Ptr()
+      nullptr,
+      nullptr
     )
   );
   ES_ASSERT(tmp.get());
   // install expression code section
-  EsScriptCodeSection::Ptr expr = EsScriptCodeSection::create(esT("condition"), EsString::nullArray(), tmp.get());
+  EsScriptCodeSection::Ptr expr = EsScriptCodeSection::create(
+    esT("condition"),
+    EsString::nullArray(),
+    tmp.get()
+  );
   ES_ASSERT(expr);
   tmp->m_expr = expr;
   EsScriptObjectIntf::Ptr result = tmp.release()->asBaseIntfPtrDirect();
@@ -128,12 +159,18 @@ EsScriptObjectIntf::Ptr EsScriptIfObject::createMetaclass(const EsScriptContext:
 // create instance of script object from its metaclass instance. that's what gets performed on calling NEW ScriptObject in script
 ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptIfObject::objectCreate)(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const
 {
-  EsScriptObjectIntf::Ptr result( new EsScriptIfObject(m_ctx, (m_flags & ~ofMetaclass) | ofNeedUpdateLayout,
-    buff, m_expr) );
+  std::unique_ptr<EsScriptIfObject> result(
+    new EsScriptIfObject(
+      m_ctx,
+      (m_flags & ~ofMetaclass) | ofNeedUpdateLayout,
+      buff,
+      m_expr
+    )
+  );
   ES_ASSERT(result);
 
   ESSCRIPT_OBJECT_TRACE2(esT("New instance of '%s' object type created"), m_typeName.c_str() )
-  return result;
+  return result.release()->asBaseIntfPtrDirect();
 }
 
 int EsScriptIfObject::internalExprEvaluate()
@@ -260,8 +297,14 @@ ES_IMPL_INTF_METHOD(void, EsScriptIfObject::internalUpdateLayout)(ulong offs)
 {
   ES_ASSERT(!isMetaclass());
 
-  ESSCRIPT_OBJECT_TRACE4(esT("internalUpdateLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"),
-    typeNameGet().c_str(), offs, (m_flags & ofNeedUpdateLayout) ? esT("set") : esT("not set"))
+  ESSCRIPT_OBJECT_TRACE4(
+    esT("internalUpdateLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"),
+    typeNameGet(),
+    offs,
+    (m_flags & ofNeedUpdateLayout) ?
+      esVT("set") :
+      esVT("not set")
+  )
 
   int prevExprValue = m_exprValue;
   if( m_flags & ofNeedUpdateLayout )

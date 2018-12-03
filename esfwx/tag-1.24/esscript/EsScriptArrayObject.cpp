@@ -18,10 +18,22 @@ ES_DECL_CLASS_INFO_DERIVED_BEGIN(EsScriptArrayObject, EsScriptObject, NO_CLASS_D
   ES_DECL_REFLECTED_METHOD_INFO_STD(EsScriptArrayObject, itemSet, void_Call_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
 ES_DECL_CLASS_INFO_END
 
-EsScriptArrayObject::EsScriptArrayObject(const EsScriptContext::Ptr& ctx, esU32 flags, const EsScriptObjectDataBufferPtr& buff,
-  const EsScriptCodeSection::Ptr& sizeExpr, const EsScriptObjectIntf::Ptr& itemMetaclass) :
-EsScriptObject(esT("array of ") + itemMetaclass->typeNameGet(), EsScriptObjectIntf::Ptr(), EsScriptMethodMapPtr(), ctx, flags,
-  buff, EsAttributesIntf::Ptr()),
+EsScriptArrayObject::EsScriptArrayObject(
+  const EsScriptContext::Ptr& ctx,
+  esU32 flags,
+  const EsScriptObjectDataBufferPtr& buff,
+  const EsScriptCodeSection::Ptr& sizeExpr,
+  const EsScriptObjectIntf::Ptr& itemMetaclass
+) :
+EsScriptObject(
+  esT("array of ") + itemMetaclass->typeNameGet(),
+  nullptr,
+  nullptr,
+  ctx,
+  flags,
+  buff,
+  nullptr
+),
 m_expr(sizeExpr),
 m_itemMetaclass(itemMetaclass),
 m_subscriptionInitialized(false),
@@ -130,21 +142,34 @@ void EsScriptArrayObject::itemSet(const EsVariant& idx, const EsVariant& item)
 // create instance of script object from its metaclass instance. that's what gets performed on calling NEW ScriptObject in script
 ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptArrayObject::objectCreate)(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const
 {
-  EsScriptObjectIntf::Ptr result( new EsScriptArrayObject(m_ctx, (m_flags & ~ofMetaclass) | ofNeedUpdateLayout,
-    buff, m_expr, m_itemMetaclass) );
+  std::unique_ptr<EsScriptArrayObject> result(
+    new EsScriptArrayObject(
+      m_ctx,
+      (m_flags & ~ofMetaclass) | ofNeedUpdateLayout,
+      buff,
+      m_expr,
+      m_itemMetaclass
+    )
+  );
   ES_ASSERT(result);
 
-  ESSCRIPT_OBJECT_TRACE3(esT("New instance of '%s of %s' object type created"), m_typeName.c_str(), m_itemMetaclass->typeNameGet().c_str() )
-  return result;
+  ESSCRIPT_OBJECT_TRACE3(
+    esT("New instance of '%s of %s' object type created"),
+    m_typeName,
+    m_itemMetaclass->typeNameGet()
+  )
+  return result.release()->asBaseIntfPtrDirect();
 }
 
 ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::setParent)(EsScriptObjectIntf* parent)
 {
   EsScriptObject::setParent(parent);
   // in instance mode initialize update subscription, if any
-  if( parent &&
-      !isMetaclass() &&
-      isFinal() )
+  if(
+    parent &&
+    !isMetaclass() &&
+    isFinal()
+  )
     initializeUpdateSubscription();
 }
 
@@ -238,8 +263,14 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::internalUpdateLayout)(ulong offs)
 {
   ES_ASSERT(!isMetaclass());
 
-  ESSCRIPT_OBJECT_TRACE4(esT("internalUpdateLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"),
-    typeNameGet().c_str(), offs, (m_flags & ofNeedUpdateLayout) ? esT("set") : esT("not set"))
+  ESSCRIPT_OBJECT_TRACE4(
+    esT("internalUpdateLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"),
+    typeNameGet(),
+    offs,
+    (m_flags & ofNeedUpdateLayout) ?
+      esVT("set") :
+      esVT("not set")
+  )
 
   ulong localSize = 0;
   size_t cnt = m_arr.size();

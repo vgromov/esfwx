@@ -485,14 +485,14 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::objectCreate)(
   bool splitCtx
 ) const
 {
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::objectCreate {"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE2(esT("%s::objectCreate {"), typeNameGet())
   EsScriptContext::Ptr ctx = m_ctx;
   if(splitCtx)
     ctx = EsScriptContext::create(m_ctx->vm());
 
   EsScriptObject* obj = nullptr;
 
-  EsScriptObjectIntf::Ptr result(
+  std::unique_ptr<EsScriptObject> result(
     obj = new EsScriptObject(
       m_typeName,
       m_ancestor ?
@@ -526,10 +526,10 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::objectCreate)(
   if(obj->ancestorGet() )
     obj->ancestorGet()->setParent(obj);
 
-  ESSCRIPT_OBJECT_TRACE2(esT("New instance of '%s' object type created"), m_typeName.c_str())
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::objectCreate }"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE2(esT("New instance of '%s' object type created"), m_typeName)
+  ESSCRIPT_OBJECT_TRACE2(esT("%s::objectCreate }"), typeNameGet())
 
-  return result;
+  return result.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -866,7 +866,7 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::internalClone)(
   )
 
   // 1) create new instance of ourselves && all ancestors hierarchy
-  const EsScriptObjectIntf::Ptr& result = objectCreate(
+  EsScriptObjectIntf::Ptr result = objectCreate(
     buff,
     splitCtx
   );
@@ -900,7 +900,7 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::internalClone)(
   // 3) seal object instance after internal cloning
   result->seal();
 
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::internalClone }"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE2(esT("%s::internalClone }"), typeNameGet())
 
   return result;
 }
@@ -1011,7 +1011,11 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::clone)() const
     needApplyFixups = true;
 
   // perform internal clone of the object instance
-  EsScriptObjectIntf::Ptr result = internalClone(0, buff, true);
+  EsScriptObjectIntf::Ptr result = internalClone(
+    nullptr,
+    buff,
+    true
+  );
   if( result )
   {
     // initiate memory layout update on newly cloned object
