@@ -145,7 +145,8 @@ TEST(EsStringTest, CulturalFormattingMoney) {
   oss << std::put_money(1234567.46);
   EsString str1 = oss.str();
 
-  EXPECT_TRUE(str1 == str);
+  EXPECT_TRUE( oss.good() );
+  EXPECT_TRUE( str1 == str );
 
   str += EsLocale::moneySymbolGet(loc);
 
