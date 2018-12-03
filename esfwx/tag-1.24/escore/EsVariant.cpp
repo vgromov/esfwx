@@ -113,21 +113,21 @@ m_type(VAR_INT)
 }
 //---------------------------------------------------------------------------
 
-EsVariant::EsVariant(long long n) ES_NOTHROW :
+EsVariant::EsVariant(llong n) ES_NOTHROW :
 m_type(VAR_INT64)
 {
   m_value.m_llong = n;
 }
 //---------------------------------------------------------------------------
 
-EsVariant::EsVariant(unsigned long n) ES_NOTHROW :
+EsVariant::EsVariant(ulong n) ES_NOTHROW :
 m_type(VAR_UINT)
 {
   m_value.m_ullong = n;
 }
 //---------------------------------------------------------------------------
 
-EsVariant::EsVariant(unsigned long long n) ES_NOTHROW :
+EsVariant::EsVariant(ullong n) ES_NOTHROW :
 m_type(VAR_UINT64)
 {
   m_value.m_ullong = n;
@@ -151,7 +151,7 @@ m_type(VAR_UINT)
 EsVariant::EsVariant(esU8 b) ES_NOTHROW:
 m_type(VAR_BYTE)
 {
-  m_value.m_ullong = static_cast<unsigned long long>(b);
+  m_value.m_ullong = static_cast<ullong>(b);
 }
 //---------------------------------------------------------------------------
 
@@ -160,14 +160,14 @@ m_type(VAR_CHAR)
 {
 #if !defined(ES_USE_NARROW_ES_CHAR)
 # if 2 == ES_CHAR_SIZE
-    m_value.m_ullong = static_cast<unsigned long long>( static_cast<unsigned short>(c) );
+    m_value.m_ullong = static_cast<ullong>( static_cast<unsigned short>(c) );
 # elif 4 == ES_CHAR_SIZE
-    m_value.m_ullong = static_cast<unsigned long long>( static_cast<unsigned long>(c) );
+    m_value.m_ullong = static_cast<ullong>( static_cast<ullong>(c) );
 # else
 #   error Unsupported|unknown ES_CHAR_SIZE!
 # endif
 #else
-    m_value.m_ullong = static_cast<unsigned long long>( static_cast<unsigned char>(c) );
+    m_value.m_ullong = static_cast<ullong>( static_cast<unsigned char>(c) );
 #endif
 }
 //---------------------------------------------------------------------------
@@ -182,18 +182,24 @@ m_type(VAR_DOUBLE)
 EsVariant::EsVariant(EsString::const_pointer p, EsVariant::AcceptStringType) :
 m_type(VAR_STRING)
 {
-  new((void*)&m_value) EsString(p);
+  m_value.m_sptr = new EsString;
+
+  if( nullptr != p )
+    m_value.m_sptr->assign(p);
 }
 //---------------------------------------------------------------------------
 
 EsVariant::EsVariant(EsString::const_pointer p, unsigned len, EsVariant::AcceptStringType) :
 m_type(VAR_STRING)
 {
-  new((void*)&m_value) EsString(p, len);
+  m_value.m_sptr = new EsString;
+
+  if( nullptr != p && 0 != len )
+    m_value.m_sptr->assign(p, len);
 }
 //---------------------------------------------------------------------------
 
-EsVariant::EsVariant(const esU8* p, unsigned len)  :
+EsVariant::EsVariant(EsBinBuffer::const_pointer p, unsigned len)  :
 m_type(VAR_BIN_BUFFER)
 {
   new((void*)&m_value) EsBinBuffer(p, p+len);
@@ -210,7 +216,7 @@ m_type(VAR_BIN_BUFFER)
 EsVariant::EsVariant(const EsString& s) :
 m_type(VAR_STRING)
 {
-  new((void*)&m_value) EsString(s);
+  m_value.m_sptr = new EsString(s);
 }
 //---------------------------------------------------------------------------
 
@@ -300,7 +306,7 @@ void EsVariant::doCleanup() ES_NOTHROW
   switch( m_type )
   {
   case VAR_STRING:
-    doInterpretAsString().~EsString();
+    ES_DELETE(m_value.m_sptr);
     break;
   case VAR_BIN_BUFFER:
     doInterpretAsBinBuffer().~EsBinBuffer();
@@ -320,6 +326,18 @@ void EsVariant::doCleanup() ES_NOTHROW
 }
 //---------------------------------------------------------------------------
 
+bool EsVariant::doSetType(Type type) ES_NOTHROW
+{
+  if( m_type == type )
+    return false;
+
+  doCleanup();
+  m_type = type;
+
+  return true;
+}
+//---------------------------------------------------------------------------
+
 void EsVariant::setEmpty() ES_NOTHROW
 {
   doSetType(VAR_EMPTY);
@@ -328,19 +346,31 @@ void EsVariant::setEmpty() ES_NOTHROW
 
 void EsVariant::setToNull(Type type)
 {
-  doSetType(type == (Type)-1 ? m_type : type); // this will always clear the data
+  bool wasCleaned = doSetType(type);
   switch( m_type )
   {
   case VAR_EMPTY:
     break;
   case VAR_STRING:
-    new(m_value.m_string) EsString;
+    if( wasCleaned )
+    {
+      m_value.m_sptr = new EsString;
+      ES_ASSERT(m_value.m_sptr);
+    }
+    else
+      doInterpretAsString().clear();
     break;
   case VAR_BIN_BUFFER:
-    new(m_value.m_binBuffer) EsBinBuffer;
+    if( wasCleaned )
+      new(m_value.m_binBuffer) EsBinBuffer;
+    else
+      doInterpretAsBinBuffer().clear();
     break;
   case VAR_STRING_COLLECTION:
-    new(m_value.m_stringCollection) EsStringArray;
+    if( wasCleaned )
+      new(m_value.m_stringCollection) EsStringArray;
+    else
+      doInterpretAsStringCollection().clear();
     break;
   case VAR_DOUBLE:
     m_value.m_double = 0.0;
@@ -349,8 +379,13 @@ void EsVariant::setToNull(Type type)
     releaseObject();
     break;
   case VAR_VARIANT_COLLECTION:
-    new(m_value.m_variantCollection) EsVariantArray;
-    doInterpretAsVariantCollection().reserve(defVarCollectionSize);
+    if( wasCleaned )
+    {
+      new(m_value.m_variantCollection) EsVariantArray;
+      doInterpretAsVariantCollection().reserve(defVarCollectionSize);
+    }
+    else
+      doInterpretAsVariantCollection().clear();
     break;
   default:
     m_value.m_llong = 0; // this surely nullifies all the value types
@@ -401,6 +436,7 @@ bool EsVariant::isIndexed() const
   }
   return false;
 }
+//---------------------------------------------------------------------------
 
 ulong EsVariant::countGet() const
 {
@@ -432,8 +468,10 @@ ulong EsVariant::countGet() const
     EsException::ThrowCannotIndexItem();
     ES_FAIL;
   }
+
   return 0; // we are never here
 }
+//---------------------------------------------------------------------------
 
 void EsVariant::countSet(ulong newCount)
 {
@@ -463,6 +501,7 @@ void EsVariant::countSet(ulong newCount)
     ES_FAIL;
   }
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator=(double f)
 {
@@ -470,49 +509,55 @@ EsVariant& EsVariant::operator=(double f)
   m_value.m_double = f;
   return *this;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator=(const EsString::value_type* s)
 {
-  doSetType(VAR_STRING);
-  new((void*)&m_value) EsString(s);
+  if( doSetType(VAR_STRING) ) //< We were cleaned-up
+  {
+    m_value.m_sptr = new EsString(s);
+    ES_ASSERT(m_value.m_sptr);
+  }
+  else
+    m_value.m_sptr->assign(s);
+
   return *this;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator=(const EsString& s)
 {
   if( m_type == VAR_STRING )
-    doInterpretAsString() = s;
-  else
   {
-    doSetType(VAR_STRING); // have to call DoSetType ...
-    new((void*)&m_value) EsString(s);
+    doInterpretAsString() = s;
+    return *this;
   }
-  return *this;
+  else
+    return operator=( s.data() );
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator=(const EsString::Array& c)
 {
-  if( m_type == VAR_STRING_COLLECTION )
-    doInterpretAsStringCollection() = c;
-  else
-  {
-    doSetType(VAR_STRING_COLLECTION); // have to call DoSetType ...
+  if( doSetType(VAR_STRING_COLLECTION) ) //< have to call DoSetType ...
     new((void*)&m_value) EsString::Array(c);
-  }
+  else
+    doInterpretAsStringCollection() = c;
+
   return *this;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator=(const EsVariant::Array& c)
 {
-  if( m_type == VAR_VARIANT_COLLECTION )
-    doInterpretAsVariantCollection() = c;
-  else
-  {
-    doSetType(VAR_VARIANT_COLLECTION); // have to call DoSetType ...
+  if( doSetType(VAR_VARIANT_COLLECTION) ) // have to call DoSetType ...
     new((void*)&m_value) EsVariant::Array(c);
-  }
+  else
+    doInterpretAsVariantCollection() = c;
+
   return *this;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator=(const EsBaseIntf::Ptr& obj)
 {
@@ -523,6 +568,7 @@ EsVariant& EsVariant::operator=(const EsBaseIntf::Ptr& obj)
     m_value.m_intf.m_ptr->incRef();
   return *this;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator=(const void* ptr)
 {
@@ -530,6 +576,7 @@ EsVariant& EsVariant::operator=(const void* ptr)
   m_value.m_pointer = const_cast<void*>(ptr);
   return *this;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator=(const EsVariant& other)
 {
@@ -552,49 +599,59 @@ EsVariant& EsVariant::operator=(const EsVariant& other)
   }
   return *this;
 }
+//---------------------------------------------------------------------------
 
 void EsVariant::assignBinBuffer(const EsBinBuffer& v)
 {
   if( v.empty() )
-    assign(0, 0);
+    assign(
+      nullptr,
+      0
+    );
   else
-    assign(&v[0], v.size());
+    assign(
+      v.data(),
+      v.size()
+    );
 }
+//---------------------------------------------------------------------------
 
-void EsVariant::assign(const esU8* v, size_t len)
+void EsVariant::assign(EsBinBuffer::const_pointer v, size_t len)
 {
-  if( m_type == VAR_BIN_BUFFER )
-    doInterpretAsBinBuffer().assign(v, v+len);
-  else
-  {
-    doSetType(VAR_BIN_BUFFER); // have to call doSetType
+  if( doSetType(VAR_BIN_BUFFER) )
     new((void*)&m_value) EsBinBuffer(
       v,
       v+len
     );
-  }
-}
-
-void EsVariant::assignString(const EsString::value_type* v, size_t len)
-{
-  if( m_type == VAR_STRING )
-    doInterpretAsString().assign(v, len);
   else
-  {
-    doSetType(VAR_STRING); // have to call DoSetType
-    new((void*)&m_value) EsString(
+    doInterpretAsBinBuffer().assign(
       v,
-      len
+      v+len
     );
-  }
 }
+//---------------------------------------------------------------------------
+
+void EsVariant::assignString(EsString::const_pointer v, size_t len)
+{
+  bool wasCleaned = doSetType(VAR_STRING); // have to call DoSetType
+
+  if( wasCleaned )
+    m_value.m_sptr = new EsString;
+  ES_ASSERT(m_value.m_sptr);
+
+  doInterpretAsString().assign(
+    v,
+    len
+  );
+}
+//---------------------------------------------------------------------------
 
 bool EsVariant::asBool(const std::locale& loc /*= EsLocale::locale()*/) const
 {
   switch( m_type )
   {
   case VAR_CHAR:
-    return m_value.m_llong != (long long)'0' && m_value.m_llong != 0; // either '0' or '\0'
+    return m_value.m_llong != (llong)'0' && m_value.m_llong != 0; // either '0' or '\0'
   case VAR_BOOL:
   case VAR_BYTE:
   case VAR_INT:
@@ -632,6 +689,7 @@ bool EsVariant::asBool(const std::locale& loc /*= EsLocale::locale()*/) const
   ES_ASSERT(m_type == VAR_EMPTY);
   return false; // by convention, VAR_EMPTY.asBool is false
 }
+//---------------------------------------------------------------------------
 
 static EsVariant doGetClientValueIfPresent(const EsVariant* self, const EsString& str)
 {
@@ -663,6 +721,7 @@ static EsVariant doGetClientValueIfPresent(const EsVariant* self, const EsString
   ES_FAIL; //< We're never here
   return EsVariant::null();
 }
+//---------------------------------------------------------------------------
 
 EsString::value_type EsVariant::asChar(const std::locale& loc/* = EsLocale::locale()*/) const
 {
@@ -677,7 +736,7 @@ EsString::value_type EsVariant::asChar(const std::locale& loc/* = EsLocale::loca
   case VAR_UINT:
   case VAR_UINT64:
     {
-      long long val = m_value.m_llong;
+      llong val = m_value.m_llong;
       if( val < sc_ES_CHAR_MIN || val > sc_ES_CHAR_MAX ) // cover both signed and unsigned
       {
         EsString str = EsString::fromInt64(val, 10, loc);
@@ -751,6 +810,7 @@ EsString::value_type EsVariant::asChar(const std::locale& loc/* = EsLocale::loca
   ES_FAIL;
   return esT('\0'); // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
 
 esU8 EsVariant::asByte(const std::locale& loc /*= EsLocale::locale()*/) const
 {
@@ -800,7 +860,7 @@ esU8 EsVariant::asByte(const std::locale& loc /*= EsLocale::locale()*/) const
   case VAR_STRING:
     {
       const EsString& str = doInterpretAsString();
-      unsigned long val = EsString::toULong(str, 0, loc);
+      ullong val = EsString::toULong(str, 0, loc);
       if( val < 256 )
         return static_cast<esU8>(val);
       else
@@ -830,6 +890,7 @@ esU8 EsVariant::asByte(const std::locale& loc /*= EsLocale::locale()*/) const
   ES_FAIL;
   return (esU8)'\0'; // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
 
 esU32 EsVariant::asInternalDWord(const std::locale& loc /*= EsLocale::locale()*/) const
 {
@@ -862,9 +923,9 @@ esU32 EsVariant::asInternalDWord(const std::locale& loc /*= EsLocale::locale()*/
           );
           ES_FAIL;
         }
-        return (unsigned)(long)val; // not (unsigned long)!
+        return (unsigned)(long)val; // not (ullong)!
       }
-      if( val > std::numeric_limits<unsigned long>::max() )
+      if( val > std::numeric_limits<ullong>::max() )
       {
         EsException::Throw(
           _("Could not convert '%f.0' to double word"),
@@ -892,7 +953,7 @@ esU32 EsVariant::asInternalDWord(const std::locale& loc /*= EsLocale::locale()*/
   case VAR_STRING:
     {
       const EsString& str = doInterpretAsString();
-      unsigned long val = EsString::toULong(str, 0, loc);
+      ullong val = EsString::toULong(str, 0, loc);
       return static_cast<esU32>(val);
     }
   case VAR_OBJECT:
@@ -913,13 +974,14 @@ esU32 EsVariant::asInternalDWord(const std::locale& loc /*= EsLocale::locale()*/
   ES_FAIL;
   return 0; // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
 
 esU64 EsVariant::asInternalQWord(const std::locale& loc /*= EsLocale::locale()*/) const
 {
   switch( m_type )
   {
   case VAR_POINTER:
-    if(sizeof(unsigned long long) != sizeof(void*))
+    if(sizeof(ullong) != sizeof(void*))
       EsException::ThrowNotSupportedForThisType();
   case VAR_BOOL:
     ES_ASSERT(m_value.m_ullong <= 1);
@@ -939,7 +1001,7 @@ esU64 EsVariant::asInternalQWord(const std::locale& loc /*= EsLocale::locale()*/
       double val = EsUtilities::round0(m_value.m_double);
       if( val < 0.0 )
       {
-        if( val < static_cast<double>(std::numeric_limits<long long>::min()) )
+        if( val < static_cast<double>(std::numeric_limits<llong>::min()) )
         {
           EsException::Throw(
             esT("Could not convert '%f.0' to quad word"),
@@ -947,9 +1009,9 @@ esU64 EsVariant::asInternalQWord(const std::locale& loc /*= EsLocale::locale()*/
           );
           ES_FAIL;
         }
-        return static_cast<unsigned long long>(static_cast<long long>(val)); // not (unsigned long long)!
+        return static_cast<ullong>(static_cast<llong>(val)); // not (ullong)!
       }
-      if( val > static_cast<double>(std::numeric_limits<unsigned long long>::max()) )
+      if( val > static_cast<double>(std::numeric_limits<ullong>::max()) )
       {
         EsException::Throw(
           esT("Could not convert '%f.0' to quad word"),
@@ -957,7 +1019,7 @@ esU64 EsVariant::asInternalQWord(const std::locale& loc /*= EsLocale::locale()*/
         );
         ES_FAIL;
       }
-      return static_cast<unsigned long long>(val);
+      return static_cast<ullong>(val);
     }
   case VAR_BIN_BUFFER:
     {
@@ -977,7 +1039,7 @@ esU64 EsVariant::asInternalQWord(const std::locale& loc /*= EsLocale::locale()*/
   case VAR_STRING:
     {
       const EsString& str = doInterpretAsString();
-      unsigned long long val = EsString::toUInt64(str, 0, loc);
+      ullong val = EsString::toUInt64(str, 0, loc);
       return val;
     }
   case VAR_OBJECT:
@@ -998,6 +1060,7 @@ esU64 EsVariant::asInternalQWord(const std::locale& loc /*= EsLocale::locale()*/
   ES_FAIL;
   return 0; // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
 
 long EsVariant::asLong(const std::locale& loc /*= EsLocale::locale()*/) const
 {
@@ -1078,8 +1141,9 @@ long EsVariant::asLong(const std::locale& loc /*= EsLocale::locale()*/) const
   ES_FAIL;
   return 0; // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
 
-long long EsVariant::asLLong(const std::locale& loc /*= EsLocale::locale()*/) const
+llong EsVariant::asLLong(const std::locale& loc /*= EsLocale::locale()*/) const
 {
   switch( m_type )
   {
@@ -1106,7 +1170,7 @@ long long EsVariant::asLLong(const std::locale& loc /*= EsLocale::locale()*/) co
   case VAR_DOUBLE:
     {
       double val = EsUtilities::round0(m_value.m_double);
-      if( val < static_cast<double>(std::numeric_limits<long long>::min()) || val > static_cast<double>(std::numeric_limits<long long>::max()) )
+      if( val < static_cast<double>(std::numeric_limits<llong>::min()) || val > static_cast<double>(std::numeric_limits<llong>::max()) )
       {
         EsException::Throw(
           esT("Could not convert '%.0f' to 64 bit signed integer"),
@@ -1114,7 +1178,7 @@ long long EsVariant::asLLong(const std::locale& loc /*= EsLocale::locale()*/) co
         );
         ES_FAIL;
       }
-      return static_cast<long long>(val);
+      return static_cast<llong>(val);
     }
   case VAR_BIN_BUFFER:
     {
@@ -1127,7 +1191,7 @@ long long EsVariant::asLLong(const std::locale& loc /*= EsLocale::locale()*/) co
         );
         ES_FAIL;
       }
-      long long val = 0;
+      llong val = 0;
       memcpy(&val, &buff[0], buff.size());
       return val;
     }
@@ -1154,18 +1218,19 @@ long long EsVariant::asLLong(const std::locale& loc /*= EsLocale::locale()*/) co
   ES_FAIL;
   return 0; // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
 
-unsigned long EsVariant::asULong(const std::locale& loc /*= EsLocale::locale()*/) const
+ulong EsVariant::asULong(const std::locale& loc /*= EsLocale::locale()*/) const
 {
   switch( m_type )
   {
   case VAR_POINTER:
-    if( sizeof(unsigned long) != sizeof(void*) )
+    if( sizeof(ullong) != sizeof(void*) )
       EsException::ThrowNotSupportedForThisType();
   case VAR_BOOL:
     ES_ASSERT(m_value.m_ullong <= 1);
   case VAR_UINT64:
-    ES_ASSERT( m_value.m_ullong <= std::numeric_limits<unsigned long>::max() );
+    ES_ASSERT( m_value.m_ullong <= std::numeric_limits<ullong>::max() );
   case VAR_BYTE:
   case VAR_CHAR:
   case VAR_UINT:
@@ -1185,7 +1250,7 @@ unsigned long EsVariant::asULong(const std::locale& loc /*= EsLocale::locale()*/
   case VAR_DOUBLE:
     {
       double val = EsUtilities::round0(m_value.m_double);
-      if( val < 0.0 || val > (double)std::numeric_limits<unsigned long>::max() )
+      if( val < 0.0 || val > (double)std::numeric_limits<ullong>::max() )
       {
         EsException::Throw(
           _("Could not convert '%.0f' to unsigned integer"),
@@ -1233,13 +1298,14 @@ unsigned long EsVariant::asULong(const std::locale& loc /*= EsLocale::locale()*/
   ES_FAIL;
   return 0uL; // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
 
-unsigned long long EsVariant::asULLong(const std::locale& loc /*= EsLocale::locale()*/) const
+ullong EsVariant::asULLong(const std::locale& loc /*= EsLocale::locale()*/) const
 {
   switch( m_type )
   {
   case VAR_POINTER:
-    if( sizeof(unsigned long long) != sizeof(void*) )
+    if( sizeof(ullong) != sizeof(void*) )
       EsException::ThrowNotSupportedForThisType();
   case VAR_BOOL:
     ES_ASSERT(m_value.m_ullong <= 1);
@@ -1263,7 +1329,7 @@ unsigned long long EsVariant::asULLong(const std::locale& loc /*= EsLocale::loca
   case VAR_DOUBLE:
     {
       double val = EsUtilities::round0(m_value.m_double);
-      if( val < 0.0 || val > (double)std::numeric_limits<unsigned long long>::max() )
+      if( val < 0.0 || val > (double)std::numeric_limits<ullong>::max() )
       {
         EsException::Throw(
           esT("Could not convert '%.0f' to 64 bit unsigned integer"),
@@ -1271,7 +1337,7 @@ unsigned long long EsVariant::asULLong(const std::locale& loc /*= EsLocale::loca
         );
         ES_FAIL;
       }
-      return static_cast<unsigned long long>(val);
+      return static_cast<ullong>(val);
     }
   case VAR_BIN_BUFFER:
     {
@@ -1284,7 +1350,8 @@ unsigned long long EsVariant::asULLong(const std::locale& loc /*= EsLocale::loca
         );
         ES_FAIL;
       }
-      unsigned long long val = 0;
+
+      ullong val = 0;
       memcpy(&val, &buff[0], buff.size());
       return val;
     }
@@ -1311,6 +1378,7 @@ unsigned long long EsVariant::asULLong(const std::locale& loc /*= EsLocale::loca
   ES_FAIL;
   return 0ULL; // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
 
 double EsVariant::asDouble(const std::locale& loc /*= EsLocale::locale()*/) const
 {
@@ -1370,11 +1438,12 @@ double EsVariant::asDouble(const std::locale& loc /*= EsLocale::locale()*/) cons
   ES_FAIL;
   return 0.0; // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
 
 EsBinBuffer EsVariant::asBinBuffer() const
 {
-  ES_COMPILE_TIME_ASSERT(sizeof(long) == sizeof(unsigned long), longSizeEqUlongSize);
-  ES_COMPILE_TIME_ASSERT(sizeof(long long) == sizeof(unsigned long long), llongSizeEqUllongSize);
+  ES_COMPILE_TIME_ASSERT(sizeof(long) == sizeof(ulong), longSizeEqUlongSize);
+  ES_COMPILE_TIME_ASSERT(sizeof(llong) == sizeof(ullong), llongSizeEqUllongSize);
 
   EsBinBuffer result;
   switch( m_type )
@@ -1391,7 +1460,7 @@ EsBinBuffer EsVariant::asBinBuffer() const
     break;
   case VAR_INT64:
   case VAR_UINT64: // we assume int64 and uint64 are of the same size
-    result.assign(reinterpret_cast<const esU8*>(&m_value.m_llong), reinterpret_cast<const esU8*>(&m_value.m_llong) + sizeof(long long));
+    result.assign(reinterpret_cast<const esU8*>(&m_value.m_llong), reinterpret_cast<const esU8*>(&m_value.m_llong) + sizeof(ullong));
     break;
   case VAR_DOUBLE:
     result.assign(reinterpret_cast<const esU8*>(&m_value.m_double), reinterpret_cast<const esU8*>(&m_value.m_double) + sizeof(double));
@@ -1435,6 +1504,7 @@ EsBinBuffer EsVariant::asBinBuffer() const
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsString EsVariant::asString(const std::locale& loc /*= EsLocale::locale()*/) const
 {
@@ -1486,7 +1556,10 @@ EsString EsVariant::asString(const std::locale& loc /*= EsLocale::locale()*/) co
       break;
     }
   case VAR_STRING_COLLECTION:
-    result = EsString::fromStringArray(doInterpretAsStringCollection(), esT(";"));
+    result = EsString::fromStringArray(
+      doInterpretAsStringCollection(),
+      esT(";")
+    );
     break;
   case VAR_VARIANT_COLLECTION:
     {
@@ -1500,6 +1573,7 @@ EsString EsVariant::asString(const std::locale& loc /*= EsLocale::locale()*/) co
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsString EsVariant::asString(unsigned mask, const std::locale& loc /*= EsLocale::locale()*/) const
 {
@@ -1507,22 +1581,37 @@ EsString EsVariant::asString(unsigned mask, const std::locale& loc /*= EsLocale:
   switch( m_type )
   {
   case VAR_CHAR:
-    result = EsString::toString( EsString(1, static_cast<EsString::value_type>(m_value.m_ullong)) );
+    result = EsString::toString(
+      EsString(
+        1,
+        static_cast<EsString::value_type>(m_value.m_ullong)
+      )
+    );
     break;
   case VAR_BIN_BUFFER:
-    result = EsString::toString( EsString::binToHex(doInterpretAsBinBuffer()), mask );
+    result = EsString::toString(
+      EsString::binToHex(
+        doInterpretAsBinBuffer()
+      ),
+      mask
+    );
     break;
   default:
-    result = EsString::toString(asString(loc), mask);
+    result = EsString::toString(
+      asString(loc),
+      mask
+    );
     break;
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsString EsVariant::asEscapedString(const std::locale& loc /*= EsLocale::locale()*/) const
 {
   return asString(0, loc);
 }
+//---------------------------------------------------------------------------
 
 EsString::Array EsVariant::asStringCollection(const std::locale& loc /*= EsLocale::locale()*/) const
 {
@@ -1552,6 +1641,7 @@ EsString::Array EsVariant::asStringCollection(const std::locale& loc /*= EsLocal
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsVariant::Array EsVariant::asVariantCollection() const
 {
@@ -1578,6 +1668,7 @@ EsVariant::Array EsVariant::asVariantCollection() const
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsBaseIntf::Ptr EsVariant::asObject()
 {
@@ -1598,6 +1689,7 @@ EsBaseIntf::Ptr EsVariant::asObject()
   ES_FAIL;
   return EsBaseIntf::Ptr(); // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
 
 EsBaseIntf::Ptr EsVariant::asExistingObject()
 {
@@ -1609,6 +1701,7 @@ EsBaseIntf::Ptr EsVariant::asExistingObject()
   }
   return obj;
 }
+//---------------------------------------------------------------------------
 
 void* EsVariant::asPointer()
 {
@@ -1628,8 +1721,77 @@ void* EsVariant::asPointer()
     break;
   }
   ES_FAIL;
-  return 0; // we are never here, pacify compilers in debug mode
+  return nullptr; // we are never here, pacify compilers in debug mode
 }
+//---------------------------------------------------------------------------
+
+void EsVariant::doAssignToEmpty(const EsVariant& other)
+{
+  ES_ASSERT(m_type == VAR_EMPTY);
+  switch( other.m_type )
+  {
+  case VAR_EMPTY:
+    m_type = other.m_type;
+    break;
+  case VAR_DOUBLE:
+    m_value.m_double = other.m_value.m_double; // This will work for all the other types, including VAR_EMPTY
+    m_type = other.m_type;
+    break;
+  case VAR_STRING:
+    doAssignToEmpty(
+      other.doInterpretAsString()
+    );
+    break;
+  case VAR_BIN_BUFFER:
+    doAssignEsBinBufferToEmpty(
+      other.doInterpretAsBinBuffer()
+    );
+    break;
+  case VAR_STRING_COLLECTION:
+    doAssignToEmpty(
+      other.doInterpretAsStringCollection()
+    );
+    break;
+  case VAR_VARIANT_COLLECTION:
+    doAssignToEmpty(
+      other.doInterpretAsVariantCollection()
+    );
+    break;
+  case VAR_OBJECT:
+    doAssignToEmpty(
+      other.m_value.m_intf.m_ptr,
+      other.m_value.m_intf.m_own
+    );
+    break;
+  default:
+    m_value.m_ullong = other.m_value.m_ullong; // This will work for all the other types
+    m_type = other.m_type;
+    break;
+  }
+}
+//---------------------------------------------------------------------------
+
+void EsVariant::doAssignToEmpty(EsString::const_pointer s)
+{
+  ES_ASSERT(m_type == VAR_EMPTY);
+  m_type = VAR_STRING;
+
+  m_value.m_sptr = new EsString;
+  if( nullptr != s )
+    m_value.m_sptr->assign(s);
+}
+//---------------------------------------------------------------------------
+
+void EsVariant::doAssignToEmpty(const EsString& s)
+{
+  ES_ASSERT(m_type == VAR_EMPTY);
+  m_type = VAR_STRING;
+
+  m_value.m_sptr = new EsString;
+  if( !s.empty() )
+    m_value.m_sptr->assign(s);
+}
+//---------------------------------------------------------------------------
 
 void EsVariant::swap(EsVariant& other) ES_NOTHROW
 {
@@ -1665,6 +1827,7 @@ void EsVariant::swap(EsVariant& other) ES_NOTHROW
   if( fixupOtherBB )
     other.doInterpretAsBinBuffer().localStorageFixup();
 }
+//---------------------------------------------------------------------------
 
 void EsVariant::internalMove(EsVariant& other) ES_NOTHROW
 {
@@ -1682,20 +1845,23 @@ void EsVariant::internalMove(EsVariant& other) ES_NOTHROW
 
   other.m_type = VAR_EMPTY;
 }
+//---------------------------------------------------------------------------
 
 void EsVariant::move(EsVariant& other) ES_NOTHROW
 {
   if(this == &other)
     return;
 
-  doCleanup();
+  setToNull(other.typeGet());
   internalMove(other);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::pow(const EsVariant& val, const std::locale& loc /*= EsLocale::locale()*/) const
 {
   return esPow(asDouble(loc), val.asDouble(loc));
 }
+//---------------------------------------------------------------------------
 
 void EsVariant::indexAdjust(long& index, ulong count)
 {
@@ -1710,6 +1876,7 @@ void EsVariant::indexAdjust(long& index, ulong count)
   if( index < 0 )
     index += signedCount;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::itemGet(const EsVariant& idx) const
 {
@@ -1786,6 +1953,7 @@ EsVariant EsVariant::itemGet(const EsVariant& idx) const
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 void EsVariant::itemSet(const EsVariant& index, const EsVariant& value, const std::locale& loc /*= EsLocale::locale()*/)
 {
@@ -1858,6 +2026,7 @@ void EsVariant::itemSet(const EsVariant& index, const EsVariant& value, const st
     }
   }
 }
+//---------------------------------------------------------------------------
 
 void EsVariant::itemDelete(const EsVariant& index)
 {
@@ -1938,6 +2107,7 @@ void EsVariant::itemDelete(const EsVariant& index)
     }
   }
 }
+//---------------------------------------------------------------------------
 
 long EsVariant::sliceAdjust(long& from, long& to, ulong count)
 {
@@ -1967,6 +2137,7 @@ long EsVariant::sliceAdjust(long& from, long& to, ulong count)
 
   return size;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::sliceGet(long from, long to) const
 {
@@ -2052,6 +2223,7 @@ EsVariant EsVariant::sliceGet(long from, long to) const
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 //void EsVariant::SetSlice(int from, int to, const EsVariant& values)
 //{
@@ -2171,6 +2343,7 @@ static int doCompareObjects(const EsVariant& v1, const EsVariant& v2, bool equal
   // both are NULL objects
   return 0;
 }
+//---------------------------------------------------------------------------
 
 bool EsVariant::operator==(const EsVariant& v) const
 {
@@ -2206,6 +2379,7 @@ bool EsVariant::operator==(const EsVariant& v) const
     return asString() == v.asString();
   }
 }
+//---------------------------------------------------------------------------
 
 template <typename Vect>
 static bool doVectorLess(const Vect& left, const Vect& right)
@@ -2219,6 +2393,7 @@ static bool doVectorLess(const Vect& left, const Vect& right)
   }
   return left.size() < right.size();
 }
+//---------------------------------------------------------------------------
 
 bool EsVariant::operator<(const EsVariant& v) const
 {
@@ -2253,6 +2428,7 @@ bool EsVariant::operator<(const EsVariant& v) const
     return asString() < v.asString();
   }
 }
+//---------------------------------------------------------------------------
 
 bool EsVariant::operator>(const EsVariant& v) const
 {
@@ -2286,6 +2462,7 @@ bool EsVariant::operator>(const EsVariant& v) const
     return asString() > v.asString();
   }
 }
+//---------------------------------------------------------------------------
 
 enum DoAndOrXorEnum
 {
@@ -2327,6 +2504,7 @@ static void doAndOrXorOnBuffers(EsVariant& result, const EsVariant& v1, const Es
       *it |= (unsigned char)*otherIt;
   }
 }
+//---------------------------------------------------------------------------
 
 static void doAndOrXorOnObjects(EsVariant& result, const EsVariant& v1, const EsVariant& v2, DoAndOrXorEnum andOrXor)
 {
@@ -2355,6 +2533,7 @@ static void doAndOrXorOnObjects(EsVariant& result, const EsVariant& v1, const Es
     result |= val2;
   }
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator|(const EsVariant& v) const
 {
@@ -2383,17 +2562,18 @@ EsVariant EsVariant::operator|(const EsVariant& v) const
     result.doAssignToEmpty(static_cast<long>(asInternalDWord() | v.asInternalDWord()));
     break;
   case VAR_UINT:
-    result.doAssignToEmpty(static_cast<unsigned long>(asInternalDWord() | v.asInternalDWord()));
+    result.doAssignToEmpty(static_cast<ullong>(asInternalDWord() | v.asInternalDWord()));
     break;
   case VAR_INT64:
-    result.doAssignToEmpty(static_cast<long long>(asInternalQWord() | v.asInternalQWord()));
+    result.doAssignToEmpty(static_cast<llong>(asInternalQWord() | v.asInternalQWord()));
     break;
   default: // also will throw No Value for VAR_EMPTY...
-    result.doAssignToEmpty(static_cast<unsigned long long>(asInternalQWord() | v.asInternalQWord()));
+    result.doAssignToEmpty(static_cast<ullong>(asInternalQWord() | v.asInternalQWord()));
     break;
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator&(const EsVariant& v) const
 {
@@ -2422,17 +2602,18 @@ EsVariant EsVariant::operator&(const EsVariant& v) const
     result.doAssignToEmpty(static_cast<long>(asInternalDWord() & v.asInternalDWord())); // and make it back signed
     break;
   case VAR_UINT:
-    result.doAssignToEmpty(static_cast<unsigned long>(asInternalDWord() & v.asInternalDWord()));
+    result.doAssignToEmpty(static_cast<ullong>(asInternalDWord() & v.asInternalDWord()));
     break;
   case VAR_INT64:
-    result.doAssignToEmpty(static_cast<long long>(asInternalQWord() & v.asInternalQWord())); // and make it back signed
+    result.doAssignToEmpty(static_cast<llong>(asInternalQWord() & v.asInternalQWord())); // and make it back signed
     break;
   default: // will throw No Value for VAR_EMPTY...
-    result.doAssignToEmpty(static_cast<unsigned long long>(asInternalQWord() & v.asInternalQWord()));
+    result.doAssignToEmpty(static_cast<ullong>(asInternalQWord() & v.asInternalQWord()));
     break;
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator^(const EsVariant& v) const
 {
@@ -2462,17 +2643,18 @@ EsVariant EsVariant::operator^(const EsVariant& v) const
     result.doAssignToEmpty(static_cast<long>(asInternalDWord() ^ v.asInternalDWord())); // and make it a signed type
     break;
   case VAR_UINT:
-    result.doAssignToEmpty(static_cast<unsigned long>(asInternalDWord() ^ v.asInternalDWord())); // and make it a signed type
+    result.doAssignToEmpty(static_cast<ullong>(asInternalDWord() ^ v.asInternalDWord())); // and make it a signed type
     break;
   case VAR_INT64:
-    result.doAssignToEmpty(static_cast<long long>(asInternalQWord() ^ v.asInternalQWord())); // and make it a signed type
+    result.doAssignToEmpty(static_cast<llong>(asInternalQWord() ^ v.asInternalQWord())); // and make it a signed type
     break;
   default: // also will throw No Value for VAR_EMPTY...
-    result.doAssignToEmpty(static_cast<unsigned long long>(asInternalQWord() ^ v.asInternalQWord()));
+    result.doAssignToEmpty(static_cast<ullong>(asInternalQWord() ^ v.asInternalQWord()));
     break;
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator~() const
 {
@@ -2491,10 +2673,10 @@ EsVariant EsVariant::operator~() const
     result.doAssignToEmpty(static_cast<long>(~asInternalDWord()));
     break;
   case VAR_UINT:
-    result.doAssignToEmpty(static_cast<unsigned long>(~asInternalDWord()));
+    result.doAssignToEmpty(static_cast<ullong>(~asInternalDWord()));
     break;
   case VAR_INT64:
-    result.doAssignToEmpty(static_cast<long long>(~asInternalQWord()));
+    result.doAssignToEmpty(static_cast<llong>(~asInternalQWord()));
     break;
   case VAR_BYTE:
     result.doAssignToEmpty((esU8)~asByte());
@@ -2503,11 +2685,12 @@ EsVariant EsVariant::operator~() const
     result.doAssignToEmpty((EsString::value_type)~asChar());
     break;
   default: // VAR_UINT64, all the others....
-    result.doAssignToEmpty(static_cast<unsigned long long>(~asInternalQWord()));
+    result.doAssignToEmpty(static_cast<ullong>(~asInternalQWord()));
     break;
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator!() const
 {
@@ -2523,6 +2706,7 @@ EsVariant EsVariant::operator!() const
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator-() const
 {
@@ -2547,6 +2731,7 @@ EsVariant EsVariant::operator-() const
     result.doAssignToEmpty(-asDouble());
   return result;
 }
+//---------------------------------------------------------------------------
 
 static EsVariant doReturnTyped(double result, EsVariant::Type type1, EsVariant::Type type2)
 {
@@ -2574,11 +2759,11 @@ static EsVariant doReturnTyped(double result, EsVariant::Type type1, EsVariant::
       return (int)result;
     break;
   case EsVariant::VAR_UINT64:
-    if( result >= 0.0 && result <= (double)std::numeric_limits<unsigned long long>::max() )
+    if( result >= 0.0 && result <= (double)std::numeric_limits<ullong>::max() )
       return (unsigned)result;
     break;
   case EsVariant::VAR_INT64:
-    if( result >= (double)std::numeric_limits<long long>::min() && result <= (double)std::numeric_limits<long long>::max() )
+    if( result >= (double)std::numeric_limits<llong>::min() && result <= (double)std::numeric_limits<llong>::max() )
       return (int)result;
     break;
   default:
@@ -2586,6 +2771,7 @@ static EsVariant doReturnTyped(double result, EsVariant::Type type1, EsVariant::
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator+(const EsVariant& v) const
 {
@@ -2654,6 +2840,7 @@ EsVariant EsVariant::operator+(const EsVariant& v) const
   double result = asDouble() + v.asDouble();
   return doReturnTyped(result, m_type, v.m_type);
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator+=(const EsVariant& v)
 {
@@ -2704,6 +2891,7 @@ EsVariant& EsVariant::operator+=(const EsVariant& v)
   }
   return *this;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator-(const EsVariant& v) const
 {
@@ -2717,6 +2905,7 @@ EsVariant EsVariant::operator-(const EsVariant& v) const
   double result = asDouble() - v.asDouble();
   return doReturnTyped(result, m_type, v.m_type);
 }
+//---------------------------------------------------------------------------
 
 // Works around a flaw in Visual C++ implementation of remove() from algorithm header.
 //
@@ -2727,6 +2916,7 @@ void doEfficientRemoveIfPresent(Container& c, const T& v)
   if( it != c.end() )
     c.erase(it);
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator-=(const EsVariant& v)
 {
@@ -2775,6 +2965,7 @@ EsVariant& EsVariant::operator-=(const EsVariant& v)
   }
   return *this;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator*(const EsVariant& v) const
 {
@@ -2844,6 +3035,7 @@ EsVariant EsVariant::operator*(const EsVariant& v) const
   double result = asDouble() * v.asDouble();
   return doReturnTyped(result, m_type, v.m_type);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator/(const EsVariant& v) const
 {
@@ -2864,6 +3056,7 @@ EsVariant EsVariant::operator/(const EsVariant& v) const
   double result = asDouble() / divisor;
   return doReturnTyped(result, m_type, v.m_type);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator%(const EsVariant& v) const
 {
@@ -2901,6 +3094,7 @@ EsVariant EsVariant::operator%(const EsVariant& v) const
       return asLong() % val;
   }
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator*=(const EsVariant& v)
 {
@@ -2913,6 +3107,7 @@ EsVariant& EsVariant::operator*=(const EsVariant& v)
 
   return *this = *this * v;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator/=(const EsVariant& v)
 {
@@ -2925,58 +3120,67 @@ EsVariant& EsVariant::operator/=(const EsVariant& v)
 
   return *this = *this / v;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator%=(const EsVariant& v)
 {
   return *this = *this % v;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator>>=(const EsVariant& v)
 {
   return *this = *this >> v;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator<<=(const EsVariant& v)
 {
   return *this = *this << v;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator|=(const EsVariant& v)
 {
   return *this = *this | v;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator&=(const EsVariant& v)
 {
   return *this = *this & v;
 }
+//---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator^=(const EsVariant& v)
 {
   return *this = *this ^ v;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator<<(const EsVariant& v) const
 {
   // this operator is assuming the positive second argument,
   // so the behavior depends only on the first arg
-  unsigned long val = v.asULong();
+  ullong val = v.asULong();
   if( m_type == VAR_UINT || m_type == VAR_UINT64 || m_type == VAR_BYTE )
     return asULLong() << val;
   else
     return asLLong() << val;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::operator>>(const EsVariant& v) const
 {
   // this operator is assuming the positive second argument,
   // so the behavior depends only on the first arg
-  unsigned long val = v.asULong();
+  ullong val = v.asULong();
   if( m_type == VAR_UINT || m_type == VAR_UINT64 || m_type == VAR_BYTE )
     return asULLong() >> val;
   else
     return asLLong() >> val;
 }
+//---------------------------------------------------------------------------
 
 const EsString::value_type OPERATOR_AUTOINCREMENT_STRING[] = esT("++");
 
@@ -3030,7 +3234,7 @@ EsVariant& EsVariant::operator++()
     ++m_value.m_ullong;
     break;
   case VAR_INT64:
-    if( m_value.m_llong == std::numeric_limits<long long>::max() )
+    if( m_value.m_llong == std::numeric_limits<llong>::max() )
     {
       EsException::ThrowOverflowInOperation(OPERATOR_AUTOINCREMENT_STRING);
       ES_FAIL;
@@ -3038,7 +3242,7 @@ EsVariant& EsVariant::operator++()
     ++m_value.m_llong;
     break;
   case VAR_UINT64:
-    if( m_value.m_ullong == std::numeric_limits<unsigned long long>::max() )
+    if( m_value.m_ullong == std::numeric_limits<ullong>::max() )
     {
       EsException::ThrowOverflowInOperation(OPERATOR_AUTOINCREMENT_STRING);
       ES_FAIL;
@@ -3052,8 +3256,10 @@ EsVariant& EsVariant::operator++()
     EsException::ThrowNotSupportedForThisType();
     ES_FAIL;
   }
+
   return *this;
 }
+//---------------------------------------------------------------------------
 
 const EsString::value_type OPERATOR_AUTODECREMENT_STRING[] = esT("--");
 
@@ -3087,7 +3293,7 @@ EsVariant& EsVariant::operator--()
     --m_value.m_llong;
     break;
   case VAR_INT64:
-    if( m_value.m_llong == std::numeric_limits<long long>::min() )
+    if( m_value.m_llong == std::numeric_limits<llong>::min() )
     {
       EsException::ThrowUnderflowInOperation(OPERATOR_AUTODECREMENT_STRING);
       ES_FAIL;
@@ -3103,13 +3309,15 @@ EsVariant& EsVariant::operator--()
   }
   return *this;
 }
+//---------------------------------------------------------------------------
 
-EsVariant& EsVariant::doSetInt(long long value, Type type) ES_NOTHROW
+EsVariant& EsVariant::doSetInt(llong value, Type type) ES_NOTHROW
 {
   doSetType(type);
   m_value.m_llong = value;
   return *this;
 }
+//---------------------------------------------------------------------------
 
 bool EsVariant::has(const EsVariant& v) const
 {
@@ -3510,7 +3718,6 @@ void EsVariant::reverse()
   }
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 // Get our contents as reflected object intf ptr, performing
@@ -3568,6 +3775,7 @@ bool EsVariant::isKindOf(const EsString& type) const
 
   return false;
 }
+//---------------------------------------------------------------------------
 
 bool EsVariant::hasMethod(const EsString& mangledName) const
 {
@@ -3578,6 +3786,7 @@ bool EsVariant::hasMethod(const EsString& mangledName) const
 
   return false;
 }
+//---------------------------------------------------------------------------
 
 bool EsVariant::hasMethod(const EsString& name, ulong paramsCnt) const
 {
@@ -3588,6 +3797,7 @@ bool EsVariant::hasMethod(const EsString& name, ulong paramsCnt) const
 
   return false;
 }
+//---------------------------------------------------------------------------
 
 bool EsVariant::hasProperty(const EsString& name) const
 {
@@ -3598,6 +3808,7 @@ bool EsVariant::hasProperty(const EsString& name) const
 
   return false;
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::call(const EsString& method)
 {
@@ -3606,6 +3817,7 @@ EsVariant EsVariant::call(const EsString& method)
 
   return ro->call(method);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0)
 {
@@ -3614,6 +3826,7 @@ EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0)
 
   return ro->call(method, arg0);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0, const EsVariant& arg1)
 {
@@ -3622,6 +3835,7 @@ EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0, const E
 
   return ro->call(method, arg0, arg1);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2)
 {
@@ -3630,6 +3844,7 @@ EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0, const E
 
   return ro->call(method, arg0, arg1, arg2);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3)
 {
@@ -3638,6 +3853,7 @@ EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0, const E
 
   return ro->call(method, arg0, arg1, arg2, arg3);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4)
 {
@@ -3646,6 +3862,7 @@ EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0, const E
 
   return ro->call(method, arg0, arg1, arg2, arg3, arg4);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5)
 {
@@ -3654,6 +3871,7 @@ EsVariant EsVariant::call(const EsString& method, const EsVariant& arg0, const E
 
   return ro->call(method, arg0, arg1, arg2, arg3, arg4, arg5);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::classCall(const EsString& method)
 {
@@ -3662,6 +3880,7 @@ EsVariant EsVariant::classCall(const EsString& method)
 
   return ro->classCall(method);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0)
 {
@@ -3670,6 +3889,7 @@ EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0)
 
   return ro->classCall(method, arg0);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0, const EsVariant& arg1)
 {
@@ -3678,6 +3898,7 @@ EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0, co
 
   return ro->classCall(method, arg0, arg1);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2)
 {
@@ -3686,6 +3907,7 @@ EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0, co
 
   return ro->classCall(method, arg0, arg1, arg2);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3)
 {
@@ -3694,6 +3916,7 @@ EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0, co
 
   return ro->classCall(method, arg0, arg1, arg2, arg3);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4)
 {
@@ -3702,6 +3925,7 @@ EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0, co
 
   return ro->classCall(method, arg0, arg1, arg2, arg3, arg4);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5)
 {
@@ -3710,6 +3934,7 @@ EsVariant EsVariant::classCall(const EsString& method, const EsVariant& arg0, co
 
   return ro->classCall(method, arg0, arg1, arg2, arg3, arg4, arg5);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::propertyGet(const EsString& property) const
 {
@@ -3718,6 +3943,7 @@ EsVariant EsVariant::propertyGet(const EsString& property) const
 
   return ro->propertyGet(property);
 }
+//---------------------------------------------------------------------------
 
 void EsVariant::propertySet(const EsString& property, const EsVariant& val)
 {
@@ -3726,6 +3952,7 @@ void EsVariant::propertySet(const EsString& property, const EsVariant& val)
 
   ro->propertySet(property, val);
 }
+//---------------------------------------------------------------------------
 
 EsVariant EsVariant::fieldGet(const EsString& field) const
 {

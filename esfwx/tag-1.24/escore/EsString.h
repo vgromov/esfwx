@@ -169,17 +169,17 @@ public:
 
   // Append
   inline EsString& append(size_t cnt, EsString::value_type ch) { m_str.append(cnt, ch); m_hashInvalid = true; return *this; }
-  inline EsString& append(EsString::const_pointer src) { m_str.append(src); m_hashInvalid = true; return *this; }
-  inline EsString& append(EsString::const_pointer src, size_t cnt) { m_str.append(src, cnt); m_hashInvalid = true; return *this; }
+  inline EsString& append(EsString::const_pointer src) { if(nullptr == src) return *this; m_str.append(src); m_hashInvalid = true; return *this; }
+  inline EsString& append(EsString::const_pointer src, size_t cnt) { if(nullptr == src || 0 == cnt) return *this; m_str.append(src, cnt); m_hashInvalid = true; return *this; }
   inline EsString& append(const EsString& src) { m_str.append(src.m_str); m_hashInvalid = true; return *this; }
-  inline EsString& append(EsString::const_pointer beg, EsString::const_pointer end) { m_str.append(beg, end); m_hashInvalid = true; return *this; }
+  inline EsString& append(EsString::const_pointer beg, EsString::const_pointer end) { if(nullptr == beg || end <= beg) return *this; m_str.append(beg, end); m_hashInvalid = true; return *this; }
   inline EsString& append(EsString::const_iterator beg, EsString::const_iterator end) { m_str.append(beg, end); m_hashInvalid = true; return *this; }
 
   // Insert
   inline EsString& insert(size_t pos, const EsString& str) { m_str.insert(pos, str.m_str); m_hashInvalid = true; return *this; }
   inline EsString& insert(size_t pos, const EsString& str, size_t subpos, size_t sublen) { m_str.insert(pos, str.m_str, subpos, sublen); m_hashInvalid = true; return *this; }
-  inline EsString& insert(size_t pos, EsString::const_pointer s) { m_str.insert(pos, s); m_hashInvalid = true; return *this; }
-  inline EsString& insert(size_t pos, EsString::const_pointer s, size_t n) { m_str.insert(pos, s, n); m_hashInvalid = true; return *this; }
+  inline EsString& insert(size_t pos, EsString::const_pointer s) { if(nullptr == s) return *this; m_str.insert(pos, s); m_hashInvalid = true; return *this; }
+  inline EsString& insert(size_t pos, EsString::const_pointer s, size_t n) { if(nullptr == s || 0 == n) return *this; m_str.insert(pos, s, n); m_hashInvalid = true; return *this; }
   inline EsString& insert(size_t pos, size_t n, EsString::value_type c) { m_str.insert(pos, n, c); m_hashInvalid = true; return *this; }
   inline void insert(EsString::iterator p, size_t n, EsString::value_type c) { m_str.insert(p, n, c); m_hashInvalid = true; }
   inline EsString::iterator insert(EsString::iterator p, char c) { m_hashInvalid = true; return m_str.insert(p, c); }
@@ -192,10 +192,10 @@ public:
   // Assignment
   inline EsString& assign(const EsBasicStringT& src) { m_str = src; m_hashInvalid = true; return *this; }
   inline EsString& assign(const EsString& src) { m_str = src.m_str; m_hashInvalid = src.m_hashInvalid; m_hash = src.m_hash; return *this; }
-  inline EsString& assign(EsString::const_pointer src) { m_str = src; m_hashInvalid = true; return *this; }
-  inline EsString& assign(EsString::const_pointer src, size_t len) { m_str.assign(src, len); m_hashInvalid = true; return *this; }
+  inline EsString& assign(EsString::const_pointer src) { if(nullptr == src) { clear(); return *this; } m_str = src; m_hashInvalid = true; return *this; }
+  inline EsString& assign(EsString::const_pointer src, size_t len) { if(nullptr == src || 0 == len) { clear(); return *this; } m_str.assign(src, len); m_hashInvalid = true; return *this; }
   inline EsString& assign(EsString::const_iterator beg, EsString::const_iterator end) { m_str.assign(beg, end); m_hashInvalid = true; return *this; }
-  inline EsString& assign(EsString::const_pointer beg, EsString::const_pointer end) { m_str.assign(beg, end); m_hashInvalid = true; return *this; }
+  inline EsString& assign(EsString::const_pointer beg, EsString::const_pointer end) { if(nullptr == beg || end <= beg) { clear(); return *this; } m_str.assign(beg, end); m_hashInvalid = true; return *this; }
   template<typename IteratorT>
   inline EsString& assign(IteratorT beg, IteratorT end) { m_str.assign(beg, end); m_hashInvalid = true; return *this; }
   // Indexed access

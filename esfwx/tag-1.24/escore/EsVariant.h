@@ -87,32 +87,32 @@ public:
   ///
   EsVariant(long n)  ES_NOTHROW;
 
-  /// Construct the value of type long long and with the value specified.
+  /// Construct the value of type llong and with the value specified.
   ///
   /// PRECONDITION: None
   ///
   /// POSTCONDITION: The object is built. The type is set to VAR_INT64.
   /// The value is set to one given.
   ///
-  EsVariant(long long n) ES_NOTHROW;
+  EsVariant(llong n) ES_NOTHROW;
 
-  /// Construct the value of type unsigned long and with the value specified.
+  /// Construct the value of type ulong and with the value specified.
   ///
   /// PRECONDITION: None
   ///
   /// POSTCONDITION: The object is built. The type is set to VAR_UINT.
   /// The value is set to one given.
   ///
-  EsVariant(unsigned long n) ES_NOTHROW;
+  EsVariant(ulong n) ES_NOTHROW;
 
-  /// Construct the value of type unsigned long long and with the value specified.
+  /// Construct the value of type ullong and with the value specified.
   ///
   /// PRECONDITION: None
   ///
   /// POSTCONDITION: The object is built. The type is set to VAR_UINT64.
   /// The value is set to one given.
   ///
-  EsVariant(unsigned long long n) ES_NOTHROW;
+  EsVariant(ullong n) ES_NOTHROW;
 
   /// Construct the value of type int and with the value specified.
   ///
@@ -170,18 +170,15 @@ public:
   EsVariant(EsString::const_pointer p, AcceptStringType);
   EsVariant(EsString::const_pointer p, unsigned len, AcceptStringType);
 
-  /// Construct the value of type byte string,
+  /// Construct the value of type bin buffer,
   /// and with the value specified as the constant pointer with length.
-  /// Note this is the way to create a variant of type VAR_BIN_BUFFER
-  /// with the non-copy constructor. This is because the implementation
-  /// with EsString might be the same as one of EsBinBuffer.
   ///
   /// PRECONDITION: None
   ///
   /// POSTCONDITION: The object is built. The type is set to VAR_BIN_BUFFER.
   /// The value is set to one given.
   ///
-  EsVariant(const esU8* p, unsigned len);
+  EsVariant(EsBinBuffer::const_pointer, unsigned len);
 
   /// Construct the value of type binary buffer,
   ///
@@ -440,7 +437,10 @@ public: /// Assignment operators:
   ///
   EsVariant& operator=(esU8 b)
   {
-    return doSetInt(b, VAR_BYTE);
+    return doSetInt(
+      b,
+      VAR_BYTE
+    );
   }
 
   /// Assignment operator that takes variable of type char.
@@ -454,14 +454,14 @@ public: /// Assignment operators:
   {
 #if !defined(ES_USE_NARROW_ES_CHAR)
 # if 2 == ES_CHAR_SIZE
-    return doSetInt(static_cast<long long>( static_cast<unsigned short>(c) ), VAR_CHAR);
+    return doSetInt(static_cast<llong>( static_cast<unsigned short>(c) ), VAR_CHAR);
 # elif 4 == ES_CHAR_SIZE
-    return doSetInt(static_cast<long long>( static_cast<unsigned long>(c) ), VAR_CHAR);
+    return doSetInt(static_cast<llong>( static_cast<ulong>(c) ), VAR_CHAR);
 # else
 #   error Unsupported|unknown ES_CHAR_SIZE!
 # endif
 #else
-    return doSetInt(static_cast<long long>( static_cast<unsigned char>(c) ), VAR_CHAR);
+    return doSetInt(static_cast<llong>( static_cast<unsigned char>(c) ), VAR_CHAR);
 #endif
   }
 
@@ -474,7 +474,10 @@ public: /// Assignment operators:
   ///
   EsVariant& operator=(int n)
   {
-    return doSetInt(n, VAR_INT);
+    return doSetInt(
+      n,
+      VAR_INT
+    );
   }
 
   /// Assignment operator that takes variable of type unsigned int.
@@ -486,7 +489,10 @@ public: /// Assignment operators:
   ///
   EsVariant& operator=(unsigned n)
   {
-    return doSetInt(n, VAR_UINT);
+    return doSetInt(
+      n,
+      VAR_UINT
+    );
   }
 
   /// Assignment operator that takes variable of type long.
@@ -498,43 +504,55 @@ public: /// Assignment operators:
   ///
   EsVariant& operator=(long n)
   {
-    return doSetInt(n, VAR_INT);
+    return doSetInt(
+      n,
+      VAR_INT
+    );
   }
 
-  /// Assignment operator that takes variable of type unsigned long.
+  /// Assignment operator that takes variable of type ulong.
   ///
   /// PRECONDITION: None
   ///
   /// POSTCONDITION: The previous value is discarded.
   /// The new value of type VAR_UINT is assigned.
   ///
-  EsVariant& operator=(unsigned long n)
+  EsVariant& operator=(ulong n)
   {
-    return doSetInt(n, VAR_UINT);
+    return doSetInt(
+      n,
+      VAR_UINT
+    );
   }
 
-  /// Assignment operator that takes variable of type long long.
+  /// Assignment operator that takes variable of type llong.
   ///
   /// PRECONDITION: None
   ///
   /// POSTCONDITION: The previous value is discarded.
   /// The new value of type VAR_INT64 is assigned.
   ///
-  EsVariant& operator=(long long n)
+  EsVariant& operator=(llong n)
   {
-    return doSetInt(n, VAR_INT64);
+    return doSetInt(
+      n,
+      VAR_INT64
+    );
   }
 
-  /// Assignment operator that takes variable of type unsigned long long.
+  /// Assignment operator that takes variable of type ullong.
   ///
   /// PRECONDITION: None
   ///
   /// POSTCONDITION: The previous value is discarded.
   /// The new value of type VAR_UINT is assigned.
   ///
-  EsVariant& operator=(unsigned long long n)
+  EsVariant& operator=(ullong n)
   {
-    return doSetInt(n, VAR_UINT64);
+    return doSetInt(
+      n,
+      VAR_UINT64
+    );
   }
 
   /// Assignment operator that takes variable of type double.
@@ -554,7 +572,7 @@ public: /// Assignment operators:
   /// POSTCONDITION: The previous value is discarded.
   /// The new value of type VAR_STRING is assigned.
   ///
-  EsVariant& operator=(const EsString::value_type* p);
+  EsVariant& operator=(EsString::const_pointer p);
 
   /// Assignment operator that takes variable of type string.
   ///
@@ -622,7 +640,7 @@ public: /// Assignment operators:
   /// The new value has type VAR_BIN_BUFFER, and value specified
   /// with pointer and length.
   ///
-  void assign(const esU8* v, size_t len);
+  void assign(EsBinBuffer::const_pointer v, size_t len);
 
   /// Assign the string to the variant type.
   ///
@@ -632,7 +650,7 @@ public: /// Assignment operators:
   /// The new value has type VAR_STRING, and value specified
   /// with pointer and length.
   ///
-  void assignString(const EsString::value_type* v, size_t len);
+  void assignString(EsString::const_pointer v, size_t len);
 
   /// Assignment operator that takes variable of type EsBaseIntf.
   /// Variant will take ref-counted ownership of the object
@@ -766,7 +784,7 @@ public: /// Conversion services:
   ///
   inline unsigned asUInt(const std::locale& loc = EsLocale::locale()) const
   {
-    //ES_COMPILE_TIME_ASSERT(sizeof(unsigned) == sizeof(unsigned long), UnsignedSizeEqUnsignedLongSize); // Careful with architectures where sizes of int and long do not match
+    //ES_COMPILE_TIME_ASSERT(sizeof(unsigned) == sizeof(ulong), UnsignedSizeEqUnsignedLongSize); // Careful with architectures where sizes of int and long do not match
     return static_cast<unsigned>( asULong(loc) );
   }
 
@@ -784,11 +802,11 @@ public: /// Conversion services:
   ///
   long asLong(const std::locale& loc = EsLocale::locale()) const;
 
-  /// Interpret the variant value as unsigned long integer type, if possible.
+  /// Interpret the variant value as ulong integer type, if possible.
   /// The type of the value should allow conversion
-  /// of it into unsigned long integer. The numeric type has to fit within
+  /// of it into ulong integer. The numeric type has to fit within
   /// the range of integer, and the string has to be the valid
-  /// string representation of unsigned long integer.
+  /// string representation of ulong integer.
   ///
   /// PRECONDITION: The conversion should be possible.
   /// Bad conversion can be thrown in cases the type is incompatible
@@ -796,13 +814,13 @@ public: /// Conversion services:
   ///
   /// POSTCONDITION: Unsigned long integer representation of the value is returned.
   ///
-  unsigned long asULong(const std::locale& loc = EsLocale::locale()) const;
+  ulong asULong(const std::locale& loc = EsLocale::locale()) const;
 
-  /// Interpret the variant value as long long integer type, if possible.
+  /// Interpret the variant value as llong integer type, if possible.
   /// The type of the value should allow conversion
-  /// of it into long long integer. The numeric type has to fit within
+  /// of it into llong integer. The numeric type has to fit within
   /// the range of integer, and the string has to be the valid
-  /// string representation of long long integer.
+  /// string representation of llong integer.
   ///
   /// PRECONDITION: The conversion should be possible.
   /// Bad conversion can be thrown in cases the type is incompatible
@@ -810,21 +828,21 @@ public: /// Conversion services:
   ///
   /// POSTCONDITION: Long long integer representation of the value is returned.
   ///
-  long long asLLong(const std::locale& loc = EsLocale::locale()) const;
+  llong asLLong(const std::locale& loc = EsLocale::locale()) const;
 
-  /// Interpret the variant value as unsigned long long integer type, if possible.
+  /// Interpret the variant value as ullong integer type, if possible.
   /// The type of the value should allow conversion
-  /// of it into unsigned long long integer. The numeric type has to fit within
+  /// of it into ullong integer. The numeric type has to fit within
   /// the range of integer, and the string has to be the valid
-  /// string representation of unsigned long long integer.
+  /// string representation of ullong integer.
   ///
   /// PRECONDITION: The conversion should be possible.
   /// Bad conversion can be thrown in cases the type is incompatible
   /// or the range is bad.
   ///
-  /// POSTCONDITION: Unsigned long long integer representation of the value is returned.
+  /// POSTCONDITION: Unsigned llong integer representation of the value is returned.
   ///
-  unsigned long long asULLong(const std::locale& loc = EsLocale::locale()) const;
+  ullong asULLong(const std::locale& loc = EsLocale::locale()) const;
 
   /// Interpret the variant value as double precision floating point, if possible.
   /// The type of the value should allow conversion
@@ -1559,7 +1577,7 @@ private: ///< Services:
   ///
   /// POSTCONDITION: The variant is initialized with the value and type given.
   ///
-  EsVariant& doSetInt(long long value, Type type) ES_NOTHROW;
+  EsVariant& doSetInt(llong value, Type type) ES_NOTHROW;
 
 public: ///< Semi-public services that has to be used carefully:
   /// Interpret the internals of the variant as bool.
@@ -1639,7 +1657,9 @@ public: ///< Semi-public services that has to be used carefully:
   inline EsString& doInterpretAsString() ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_STRING);
-    return *reinterpret_cast<EsString*>(&m_value);
+    ES_ASSERT(m_value.m_sptr);
+
+    return *m_value.m_sptr;
   }
 
   /// Interpret the internals of the variant as constant standard string.
@@ -1653,7 +1673,9 @@ public: ///< Semi-public services that has to be used carefully:
   inline const EsString& doInterpretAsString() const ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_STRING);
-    return *reinterpret_cast<const EsString*>(&m_value);
+    ES_ASSERT(m_value.m_sptr);
+
+    return *m_value.m_sptr;
   }
 
   /// Interpret the internals of the variant as byte string.
@@ -1782,14 +1804,14 @@ public: ///< Semi-public services that has to be used carefully:
     m_type = VAR_CHAR;
 #if !defined(ES_USE_NARROW_ES_CHAR)
 # if 2 == ES_CHAR_SIZE
-    m_value.m_ullong = static_cast<unsigned long long>( static_cast<unsigned short>(c) );
+    m_value.m_ullong = static_cast<ullong>( static_cast<unsigned short>(c) );
 # elif 4 == ES_CHAR_SIZE
-    m_value.m_ullong = static_cast<unsigned long long>( static_cast<unsigned long>(c) );
+    m_value.m_ullong = static_cast<ullong>( static_cast<ulong>(c) );
 # else
 #   error Unsupported|unknown ES_CHAR_SIZE!
 # endif
 #else
-    m_value.m_ullong = static_cast<unsigned long long>( static_cast<unsigned char>(c) );
+    m_value.m_ullong = static_cast<ullong>( static_cast<unsigned char>(c) );
 #endif
   }
 
@@ -1826,21 +1848,21 @@ public: ///< Semi-public services that has to be used carefully:
     m_value.m_llong = n;
   }
 
-  inline void doAssignToEmpty(unsigned long n) ES_NOTHROW
+  inline void doAssignToEmpty(ulong n) ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_EMPTY);
     m_type = VAR_UINT;
     m_value.m_ullong = n;
   }
 
-  inline void doAssignToEmpty(long long n) ES_NOTHROW
+  inline void doAssignToEmpty(llong n) ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_EMPTY);
     m_type = VAR_INT64;
     m_value.m_llong = n;
   }
 
-  inline void doAssignToEmpty(unsigned long long n) ES_NOTHROW
+  inline void doAssignToEmpty(ullong n) ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_EMPTY);
     m_type = VAR_UINT64;
@@ -1854,24 +1876,14 @@ public: ///< Semi-public services that has to be used carefully:
     m_value.m_double = f;
   }
 
-  inline void doAssignToEmpty(const EsString::value_type* s)
-  {
-    ES_ASSERT(m_type == VAR_EMPTY);
-    m_type = VAR_STRING;
-    new((void*)&m_value) EsString(s);
-  }
-
-  inline void doAssignToEmpty(const EsString& s)
-  {
-    ES_ASSERT(m_type == VAR_EMPTY);
-    m_type = VAR_STRING;
-    new((void*)&m_value) EsString(s);
-  }
+  void doAssignToEmpty(EsString::const_pointer s);
+  void doAssignToEmpty(const EsString& s);
 
   inline void doAssignToEmpty(const EsString::Array& s)
   {
     ES_ASSERT(m_type == VAR_EMPTY);
     m_type = VAR_STRING_COLLECTION;
+
     new((void*)&m_value) EsString::Array(s);
   }
 
@@ -1882,39 +1894,7 @@ public: ///< Semi-public services that has to be used carefully:
     new((void*)&m_value) EsVariant::Array(s);
   }
 
-  void doAssignToEmpty(const EsVariant& other)
-  {
-    ES_ASSERT(m_type == VAR_EMPTY);
-    switch ( other.m_type )
-    {
-    case VAR_EMPTY:
-      m_type = other.m_type;
-      break;
-    case VAR_DOUBLE:
-      m_value.m_double = other.m_value.m_double; // This will work for all the other types, including VAR_EMPTY
-      m_type = other.m_type;
-      break;
-    case VAR_STRING:
-      doAssignToEmpty(other.doInterpretAsString());
-      break;
-    case VAR_BIN_BUFFER:
-      doAssignEsBinBufferToEmpty(other.doInterpretAsBinBuffer());
-      break;
-    case VAR_STRING_COLLECTION:
-      doAssignToEmpty(other.doInterpretAsStringCollection());
-      break;
-    case VAR_VARIANT_COLLECTION:
-      doAssignToEmpty(other.doInterpretAsVariantCollection());
-      break;
-    case VAR_OBJECT:
-      doAssignToEmpty(other.m_value.m_intf.m_ptr, other.m_value.m_intf.m_own);
-      break;
-    default:
-      m_value.m_ullong = other.m_value.m_ullong; // This will work for all the other types
-      m_type = other.m_type;
-      break;
-    }
-  }
+  void doAssignToEmpty(const EsVariant& other);
 
   inline void doAssignEsBinBufferToEmpty(const EsBinBuffer& v)
   {
@@ -1970,23 +1950,17 @@ public:
   static EsString dump(const EsVariant& v);
 
 private: //< Private methods:
-  /// Set the type of the variant, private.
-  ///
-  /// PRECONDITION: None
-  ///
-  /// POSTCONDITION: Type of the variant becomes the one given, the previous value
-  /// is discarded. If the new type is string, the string is not created.
-  ///
-  inline void doSetType(Type type) ES_NOTHROW
-  {
-    doCleanup();
-    m_type = type;
-  }
+  /// Set the type of the variant.
+  /// If setting new type requires current value to be cleaned-up, do it,
+  /// and return true. Otherwise, retain current contents, and return false.
+  bool doSetType(Type type) ES_NOTHROW;
 
-  /// release object interface and nullify object interface pointer
+  /// Release object interface and nullify object interface pointer
   void releaseObject() ES_NOTHROW;
+
   /// Cleanup variant contents
   void doCleanup() ES_NOTHROW;
+
   /// Internal contents move services
   void internalMove(EsVariant& other) ES_NOTHROW;
 
@@ -2019,25 +1993,25 @@ private: //< Data:
     ///
     double m_double;
 
-    /// Used for storing of string data, mapped to EsString
+    /// Used for storing of EsString data
+    /// NB! As soon as our implementation is std::basic_string - based, we're not in
+    /// charge of whether intrinsic small cache implementation is there, let alone
+    /// it's not public, so we may not rely on extremely optimized
+    /// bulk object move semantics here.
     ///
-    esU8 m_string[ sizeof(EsString) ];
     EsString* m_sptr;
 
     /// Used for storing of string data, mapped to EsBinBuffer
     ///
-    esU8 m_binBuffer[ sizeof(EsBinBuffer) ];
-    EsBinBuffer* m_bbptr;
+    EsBinBuffer::value_type m_binBuffer[ sizeof(EsBinBuffer) ];
 
     /// Used for storing of string data, mapped to EsString and EsBinBuffer
     ///
-    esU8 m_stringCollection[ sizeof(EsString::Array) ];
-    EsString::Array* m_saptr;
+    EsBinBuffer::value_type m_stringCollection[ sizeof(EsString::Array) ];
 
     /// Used for storing the vector of variants
     ///
-    esU8 m_variantCollection[ sizeof(EsVariant::Array) ];
-    EsVariant::Array* m_vaptr;
+    EsBinBuffer::value_type m_variantCollection[ sizeof(EsVariant::Array) ];
 
   } m_value;
 
