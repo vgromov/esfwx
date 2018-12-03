@@ -297,7 +297,7 @@ void EsVariant::releaseObject() ES_NOTHROW
   ES_ASSERT(VAR_OBJECT == m_type);
   if( m_value.m_intf.m_ptr && m_value.m_intf.m_own )
     m_value.m_intf.m_ptr->decRef();
-  m_value.m_intf.m_ptr = 0;
+  m_value.m_intf.m_ptr = nullptr;
 }
 //---------------------------------------------------------------------------
 
@@ -376,7 +376,8 @@ void EsVariant::setToNull(Type type)
     m_value.m_double = 0.0;
     break;
   case VAR_OBJECT:
-    releaseObject();
+    if( !wasCleaned )
+      releaseObject();
     break;
   case VAR_VARIANT_COLLECTION:
     if( wasCleaned )

@@ -43,7 +43,6 @@ static EsString binRootGet()
   return fpath;
 }
 
-
 // test includes
 #include "testEsOsInfo.cc"
 #include "testEsRegEx.cc"
