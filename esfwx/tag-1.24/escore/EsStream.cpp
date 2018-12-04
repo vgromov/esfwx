@@ -53,7 +53,6 @@ ObjectReadScope::~ObjectReadScope()
   m_stream.m_objReadScope = m_oldScope;
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 EsStream::
@@ -73,7 +72,6 @@ FieldsReadScope::~FieldsReadScope()
     m_stream.fieldsReadEnd(m_obj);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 EsStream::
@@ -93,7 +91,6 @@ PropertiesReadScope::~PropertiesReadScope()
     m_stream.propertiesReadEnd(m_obj);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 EsStream::
@@ -333,7 +330,7 @@ void EsStream::internalStateReset()
   m_block = m_ctx;
 
   // Reset root object iterator, just in case
-  m_rootObjIt = 0;
+  m_rootObjIt = nullptr;
 }
 //---------------------------------------------------------------------------
 
@@ -585,14 +582,27 @@ ulong EsStream::rootVersionGet() const
 
 EsReflectedClassIntf::Ptr EsStream::doObjectCreate(const EsString& typeName) const
 {
-  if( m_factory && m_factory->hasMethod( EsMethodInfoKeyT(1, esT("objectCreate")) ) )
-    return m_factory->call(esT("objectCreate"), typeName).asExistingObject();
+  if(
+    m_factory &&
+    m_factory->hasMethod(
+      EsMethodInfoKeyT(
+        1,
+        esT("objectCreate")
+      )
+    )
+  )
+    return m_factory->call(
+      esT("objectCreate"),
+      typeName
+    ).asExistingObject();
   else
   {
     const EsClassInfo* info = EsClassInfo::classInfoGet(typeName, true);
     ES_ASSERT(info);
 
-    return info->classCall(EsStdNames::reflectedCtr()).asExistingObject();
+    return info->classCall(
+      EsStdNames::reflectedCtr()
+    ).asExistingObject();
   }
 }
 //---------------------------------------------------------------------------

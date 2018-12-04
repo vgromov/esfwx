@@ -181,10 +181,6 @@ m_hashInvalid(true)
 //---------------------------------------------------------------------------
 #endif
 
-EsString::~EsString() ES_NOTHROW
-{}
-//---------------------------------------------------------------------------
-
 // string hash value access with on-demand hash recalculation
 esU64 EsString::hashGet() const ES_NOTHROW
 {

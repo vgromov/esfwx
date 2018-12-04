@@ -13,11 +13,9 @@ public:
   ES_DECL_REFLECTED_CLASS(EsStreamXml, EsStream)
   virtual ~EsStreamXml();
 
-  static EsStreamIntf::Ptr create(ulong flags, const EsString& src = EsString::null(),
-    const EsBaseIntfPtr& factory = EsBaseIntfPtr());
+  static EsStreamIntf::Ptr create(ulong flags, const EsString& src = EsString::null(), const EsBaseIntfPtr& factory = nullptr);
 
-  static EsStreamIntf::Ptr create(ulong flags, ulong version,
-    const EsString& src = EsString::null(), const EsBaseIntfPtr& factory = EsBaseIntfPtr());
+  static EsStreamIntf::Ptr create(ulong flags, ulong version, const EsString& src = EsString::null(), const EsBaseIntfPtr& factory = nullptr);
 
   // EsBaseIntf implementation
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }

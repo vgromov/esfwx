@@ -85,22 +85,22 @@ public: \
 
 #define ES_DECL_REFLECTED_CLASS_BASE( ClassName ) \
   ES_DECL_REFLECTED_CLASS_BASE_CUSTOM( ClassName ) \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD2(EsVariant, callClassMethod, cr_EsString, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, callMethod, cr_EsString, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_METHOD1(EsVariant, call, cr_EsString); \
-  ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, call, cr_EsString, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_METHOD3(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_METHOD4(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_METHOD5(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_METHOD6(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_METHOD7(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, classCall, cr_EsString); \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD2(EsVariant, classCall, cr_EsString, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD3(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD4(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD5(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD6(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant); \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD7(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant);
+  ES_DECL_REFLECTED_INTF_CONST_METHOD2(EsVariant, callClassMethod, cr_EsString, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, callMethod, cr_EsString, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_METHOD1(EsVariant, call, cr_EsString) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, call, cr_EsString, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_METHOD3(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_METHOD4(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_METHOD5(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_METHOD6(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_METHOD7(EsVariant, call, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, classCall, cr_EsString) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD2(EsVariant, classCall, cr_EsString, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD3(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD4(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD5(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD6(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE; \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD7(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
 
 #define ES_DECL_ATTR_HANDLING_STD \
   ES_DECL_INTF_METHOD(void, attributesAssign)(const EsAttributesIntf::Ptr& attrs) ES_OVERRIDE \

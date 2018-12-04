@@ -39,9 +39,7 @@ enum {
   EsStreamBinaryHeader_SZE        = sizeof(EsStreamBinaryHeader),
   EsStreamBinaryBlockHeader_SZE   = sizeof(EsStreamBinaryBlockHeader),
 };
-
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN(EsStreamBinary, EsStream, NO_CLASS_DESCR)
@@ -64,19 +62,27 @@ EsStream(flags, version, factory)
 
 EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, ulong version)
 {
-  return create(flags, 0, EsVariant::null(), EsBaseIntfPtr());
+  return create(
+    flags,
+    0,
+    EsVariant::null(),
+    nullptr
+  );
 }
 //---------------------------------------------------------------------------
 
-EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, const EsVariant& src,
-    const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
+EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, const EsVariant& src, const EsBaseIntfPtr& factory /*= nullptr*/)
 {
-  return create(flags, 0, src, factory);
+  return create(
+    flags,
+    0,
+    src,
+    factory
+  );
 }
 //---------------------------------------------------------------------------
 
-EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, ulong version, const EsVariant& src,
-    const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
+EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, ulong version, const EsVariant& src, const EsBaseIntfPtr& factory /*= nullptr*/)
 {
   std::unique_ptr<EsStreamBinary> p(new EsStreamBinary(flags, version, src, factory));
   ES_ASSERT(p.get());
@@ -86,10 +92,18 @@ EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, ulong version, const EsVar
 
 EsStreamBinary::~EsStreamBinary()
 {
-  if( (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write)) ==
-        (m_flags & (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write))) &&
-      ( !EsPath::fileExists(m_file, EsString::null()) ||
-        (m_flags & flagDirty) )
+  if(
+    (
+      (as_<ulong>(EsStreamFlag::File)|as_<ulong>(EsStreamFlag::Write)) ==
+        (m_flags & (as_<ulong>(EsStreamFlag::File)|as_<ulong>(EsStreamFlag::Write)))
+    ) &&
+    (
+      !EsPath::fileExists(
+        m_file,
+        EsString::null()
+      ) ||
+      (m_flags & flagDirty)
+    )
   )
   {
     // do not allow anything to throw from destructor
@@ -116,9 +130,9 @@ void EsStreamBinary::set_key(const EsString& key)
   m_key = key;
 
   if( m_key.empty() )
-    m_flags &= ~static_cast<ulong>(EsStreamFlag::Encrypted);
+    m_flags &= ~as_<ulong>(EsStreamFlag::Encrypted);
   else
-    m_flags |= static_cast<ulong>(EsStreamFlag::Encrypted);
+    m_flags |= as_<ulong>(EsStreamFlag::Encrypted);
 }
 //---------------------------------------------------------------------------
 
@@ -127,7 +141,7 @@ void EsStreamBinary::init(const EsVariant& src, ulong version)
   if( src.isEmpty() )
     return;
 
-  if( m_flags & static_cast<ulong>(EsStreamFlag::File) )
+  if( m_flags & as_<ulong>(EsStreamFlag::File) )
   {
     if( !EsPath::fileExists( src.asString(), EsString::null() ) )
     {
@@ -138,7 +152,7 @@ void EsStreamBinary::init(const EsVariant& src, ulong version)
 
     EsFile file(
       src.asString(),
-      static_cast<ulong>(EsFileFlag::Read)
+      as_<ulong>(EsFileFlag::Read)
     );
 
     EsBinBuffer bb;
@@ -170,7 +184,7 @@ bool EsStreamBinary::internalFileSave(const EsString& fname) const
   EsBinBuffer bb;
   generate(bb);
 
-  EsFile file(fname, static_cast<ulong>(EsFileFlag::Write));
+  EsFile file(fname, as_<ulong>(EsFileFlag::Write));
 
   if( file.open() )
     return bb.size() == file.writeAllAsBinBuffer(bb);
@@ -273,8 +287,8 @@ void EsStreamBinary::parse(const EsBinBuffer& bb)
 
   ulong pos = 0;
   blockParse(
-    data, 
-    pos, 
+    data,
+    pos,
     static_cast<ulong>(data.size())
   );
 }
@@ -380,8 +394,8 @@ static IntT numericRead(const EsBinBuffer& data, ulong& pos, ulong end)
 {
   ulong sze = sizeof(IntT);
   dataSpaceCheck(
-    pos, 
-    end, 
+    pos,
+    end,
     sze
   );
 

@@ -113,8 +113,8 @@ protected:
   }
 
 protected:
-  bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  bool m_dynamic;               ///< true if instance is dynamically allocated
+  volatile bool m_destroying;   ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 
@@ -196,8 +196,8 @@ protected:
   }
 
 protected:
-  bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  bool m_dynamic;               ///< true if instance is dynamically allocated
+  volatile bool m_destroying;   ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 
@@ -283,7 +283,7 @@ protected:
 
 protected:
   bool m_dynamic;      ///< true if instance is dynamically allocated
-  bool m_destroying;
+  volatile bool m_destroying;
 };
 //---------------------------------------------------------------------------
 
@@ -369,8 +369,8 @@ protected:
   }
 
 protected:
-  bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  bool m_dynamic;               ///< true if instance is dynamically allocated
+  volatile bool m_destroying;   ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 
@@ -461,8 +461,8 @@ protected:
   }
 
 protected:
-  bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  bool m_dynamic;               ///< true if instance is dynamically allocated
+  volatile bool m_destroying;   ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 
@@ -556,8 +556,8 @@ protected:
   }
 
 protected:
-  bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  bool m_dynamic;               ///< true if instance is dynamically allocated
+  volatile bool m_destroying;   ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 
@@ -656,8 +656,8 @@ protected:
 
 protected:
   EsAtomicInteger m_rc;
-  bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  bool m_dynamic;               ///< true if instance is dynamically allocated
+  volatile bool m_destroying;   ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 
@@ -756,8 +756,8 @@ protected:
 
 protected:
   EsAtomicInteger m_rc;
-  bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  bool m_dynamic;             ///< true if instance is dynamically allocated
+  volatile bool m_destroying; ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 
@@ -864,8 +864,8 @@ protected:
 
 protected:
   EsAtomicInteger m_rc;
-  bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  bool m_dynamic;               ///< true if instance is dynamically allocated
+  volatile bool m_destroying;   ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 
@@ -981,7 +981,7 @@ protected:
 protected:
   EsAtomicInteger m_rc;
   bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  volatile bool m_destroying;    ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 
@@ -1104,8 +1104,8 @@ protected:
 
 protected:
   EsAtomicInteger m_rc;
-  bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  bool m_dynamic;               ///< true if instance is dynamically allocated
+  volatile bool m_destroying;   ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 
@@ -1236,8 +1236,8 @@ protected:
 
 protected:
   EsAtomicInteger m_rc;
-  bool m_dynamic;         ///< true if instance is dynamically allocated
-  bool m_destroying;    ///< true if instance is being destroyed
+  bool m_dynamic;                 ///< true if instance is dynamically allocated
+  volatile bool m_destroying;     ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
 

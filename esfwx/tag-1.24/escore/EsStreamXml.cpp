@@ -34,17 +34,30 @@ EsStream(flags, version, factory)
 //---------------------------------------------------------------------------
 
 EsStreamIntf::Ptr EsStreamXml::create(ulong flags, const EsString& src /*= EsString::null()*/,
-    const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
+    const EsBaseIntfPtr& factory /*= nullptr*/)
 {
-  return create(flags, 0, src, factory);
+  return create(
+    flags,
+    0,
+    src,
+    factory
+  );
 }
 //---------------------------------------------------------------------------
 
 EsStreamIntf::Ptr EsStreamXml::create(ulong flags, ulong version, const EsString& src /*= EsString::null()*/,
-    const EsBaseIntfPtr& factory /*= EsBaseIntfPtr()*/)
+    const EsBaseIntfPtr& factory /*= nullptr*/)
 {
-  std::unique_ptr<EsStreamXml> p(new EsStreamXml(flags, version, src, factory));
+  std::unique_ptr<EsStreamXml> p(
+    new EsStreamXml(
+      flags,
+      version,
+      src,
+      factory
+    )
+  );
   ES_ASSERT(p.get());
+
   return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
@@ -71,7 +84,7 @@ EsStreamXml::~EsStreamXml()
     {}
 
     m_flags &= ~flagDirty;
-   }
+  }
 }
 //---------------------------------------------------------------------------
 

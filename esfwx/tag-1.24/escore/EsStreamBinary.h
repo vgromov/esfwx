@@ -14,11 +14,9 @@ public:
 
   static EsStreamIntf::Ptr create(ulong flags, ulong version);
 
-  static EsStreamIntf::Ptr create(ulong flags, const EsVariant& src,
-    const EsBaseIntfPtr& factory = EsBaseIntfPtr());
+  static EsStreamIntf::Ptr create(ulong flags, const EsVariant& src, const EsBaseIntfPtr& factory = nullptr);
 
-  static EsStreamIntf::Ptr create(ulong flags, ulong version,
-    const EsVariant& src, const EsBaseIntfPtr& factory = EsBaseIntfPtr());
+  static EsStreamIntf::Ptr create(ulong flags, ulong version, const EsVariant& src, const EsBaseIntfPtr& factory = nullptr);
 
   // EsBaseIntf implementation
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }

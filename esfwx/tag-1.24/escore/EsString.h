@@ -98,8 +98,6 @@ public:
   EsString(const EsWideString32& src, const EsByteString& conv = nullByteString());
 #endif
 
-  ~EsString() ES_NOTHROW;
-
   /// String hash value access with on-demand hash recalculation
   esU64 hashGet() const ES_NOTHROW;
   inline bool isValidHash() const ES_NOTHROW { return !m_hashInvalid; }
