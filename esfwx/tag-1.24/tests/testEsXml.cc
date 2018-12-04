@@ -20,11 +20,7 @@ protected:
 
   void TearDown()
   {
-    try{
     streamw.reset();
-    }
-    catch(...)
-    {}
   }
 
   void stringsSetup()
