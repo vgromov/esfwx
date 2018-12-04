@@ -465,8 +465,7 @@ EsVariant EsMethodInfo::call(EsBaseIntf* obj, const EsVariant& params) const
 
   EsVariant result;
 
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS || \
-  (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS && ES_OS == ES_OS_LINUX)
+#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
   // cast to properly aligned interface pointer, if it's reflected interface method.
   if( !m_iid.empty() )
   {
