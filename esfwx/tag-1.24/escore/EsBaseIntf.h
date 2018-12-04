@@ -281,7 +281,7 @@ public:
     if( this == &src ) // if we're not assigning ouselves to ourselves
       return;
 
-//    EsCriticalSectionLocker locksrc( src.m_cs );
+// REM    EsCriticalSectionLocker locksrc( src.m_cs );
     m_intf = src.m_intf;
     m_own = src.m_own;
 
@@ -295,8 +295,8 @@ public:
     if( this == &src ) // if we're not assigning ouselves to ourselves
       return *this;
 
-//    EsCriticalSectionLocker locksrc( src.m_cs );
-//    EsCriticalSectionLocker lock( m_cs );
+// REM   EsCriticalSectionLocker locksrc( src.m_cs );
+// REM   EsCriticalSectionLocker lock( m_cs );
     resetNonInterlocked( src.m_intf, src.m_own );
     src.m_intf = nullptr;
     src.m_own = false;
