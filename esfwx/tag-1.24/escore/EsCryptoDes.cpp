@@ -13,6 +13,11 @@
 //---------------------------------------------------------------------------
 
 #ifdef ES_USE_CRYPTO
+# ifdef ES_USE_CRYPTO_DEBUG_TRACE
+#   define ES_CRYPTODES_DEBUG_TRACE ES_DEBUG_TRACE
+# else
+#   define ES_CRYPTODES_DEBUG_TRACE(...) ((void)0)
+# endif
 
 //---------------------------------------------------------------------------
 
@@ -314,7 +319,7 @@ void EsCryptoDes::encode(EsBinBuffer& dest, const EsBinBuffer& src) const
 {
   if( !m_key1.empty() && !m_key2.empty() )
   {
-    ES_DEBUG_TRACE(
+    ES_CRYPTODES_DEBUG_TRACE(
       esT("DES EDE3 encoder selected for processing")
     );
 
@@ -325,7 +330,7 @@ void EsCryptoDes::encode(EsBinBuffer& dest, const EsBinBuffer& src) const
   }
   else if( !m_key1.empty() )
   {
-    ES_DEBUG_TRACE(
+    ES_CRYPTODES_DEBUG_TRACE(
       esT("DES EDE2 encoder selected for processing")
     );
 
@@ -336,7 +341,7 @@ void EsCryptoDes::encode(EsBinBuffer& dest, const EsBinBuffer& src) const
   }
   else
   {
-    ES_DEBUG_TRACE(
+    ES_CRYPTODES_DEBUG_TRACE(
       esT("DES encoder selected for processing")
     );
 
@@ -352,7 +357,7 @@ void EsCryptoDes::decode(EsBinBuffer& dest, const EsBinBuffer& src) const
 {
   if( !m_key1.empty() && !m_key2.empty() )
   {
-    ES_DEBUG_TRACE(
+    ES_CRYPTODES_DEBUG_TRACE(
       esT("DES EDE3 decoder selected for processing")
     );
 
@@ -363,7 +368,7 @@ void EsCryptoDes::decode(EsBinBuffer& dest, const EsBinBuffer& src) const
   }
   else if( !m_key1.empty() )
   {
-    ES_DEBUG_TRACE(
+    ES_CRYPTODES_DEBUG_TRACE(
       esT("DES EDE2 decoder selected for processing")
     );
 
@@ -374,7 +379,7 @@ void EsCryptoDes::decode(EsBinBuffer& dest, const EsBinBuffer& src) const
   }
   else
   {
-    ES_DEBUG_TRACE(
+    ES_CRYPTODES_DEBUG_TRACE(
       esT("DES decoder selected for processing")
     );
 

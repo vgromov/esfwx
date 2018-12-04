@@ -13,7 +13,11 @@
 //---------------------------------------------------------------------------
 
 #ifdef ES_USE_CRYPTO
-
+# ifdef ES_USE_CRYPTO_DEBUG_TRACE
+#   define ES_CRYPTOAES_DEBUG_TRACE ES_DEBUG_TRACE
+# else
+#   define ES_CRYPTOAES_DEBUG_TRACE(...) ((void)0)
+# endif
 //---------------------------------------------------------------------------
 
 ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsCryptoAes, NO_CLASS_DESCR)
@@ -57,7 +61,7 @@ void EsCryptoAes::keySet(const EsBinBuffer& key)
   if( sze > CryptoPP::AES::MAX_KEYLENGTH )
     sze = CryptoPP::AES::MAX_KEYLENGTH;
 
-  ES_DEBUG_TRACE(
+  ES_CRYPTOAES_DEBUG_TRACE(
     esT("AES codec key length %d was selected"),
     sze
   );

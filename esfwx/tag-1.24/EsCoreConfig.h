@@ -23,6 +23,8 @@
 
 #define ES_USE_CRYPTO_LEGACY
 
+//#define ES_USE_CRYPTO_DEBUG_TRACE
+
 /// Regex engine configuration
 ///
 #define ES_USE_REGEX

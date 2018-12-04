@@ -2674,7 +2674,7 @@ EsVariant EsVariant::operator~() const
     result.doAssignToEmpty(static_cast<long>(~asInternalDWord()));
     break;
   case VAR_UINT:
-    result.doAssignToEmpty(static_cast<ullong>(~asInternalDWord()));
+    result.doAssignToEmpty(static_cast<ulong>(~asInternalDWord()));
     break;
   case VAR_INT64:
     result.doAssignToEmpty(static_cast<llong>(~asInternalQWord()));
