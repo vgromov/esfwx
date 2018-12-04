@@ -23,26 +23,32 @@
 
 #define ES_IMPL_POD_OBJECT_REFLECTION_END(DataType) \
   ES_DECL_CLASS_INFO_END \
-  void EsScript_## DataType ::set_value(const EsVariant& val) \
-  { validate(val); m_moniker.set_value( To_ ## DataType(val) ); } \
-  EsVariant EsScript_## DataType ::get_value() const \
-  { return From_ ## DataType( m_moniker.get_value() ); } \
-  EsString EsScript_## DataType ::asString() const \
-  { return get_value().asString(); } \
-  EsVariant EsScript_## DataType ::add(const EsVariant& other) const \
-  { return get_value() + other; } \
-  EsVariant EsScript_## DataType ::subtract(const EsVariant& other) const \
-  { return get_value() - other; } \
-  EsVariant EsScript_## DataType ::multiply(const EsVariant& other) const \
-  { return get_value() * other; } \
-  EsVariant EsScript_## DataType ::divide(const EsVariant& other) const \
-  { return get_value() / other; } \
-  EsVariant EsScript_## DataType ::compare(const EsVariant& other) const \
-  { const EsVariant& tmp = get_value(); return (tmp < other) ? static_cast<long>(-1) : ((tmp > other) ? static_cast<long>(1) : static_cast<long>(0)); } \
-  ES_IMPL_INTF_METHOD(bool, EsScript_## DataType ::internalBinBufferSet)(EsBinBuffer::const_pointer& pos, EsBinBuffer::const_pointer end) { \
-    return m_moniker.internalBinBufferSet(pos, end); } \
-  void EsScript_## DataType ::validate(const EsVariant& val) const \
-  { EsScriptObject::validate(val); Check_ ## DataType ## _Range(val); }
+  ES_CONCAT(EsScript_, DataType)::ES_CONCAT(EsScript_, DataType)(const EsScriptContext::Ptr& ctx, esU32 flags, const EsScriptObjectDataBufferPtr& buff, const EsAttributesIntf::Ptr& classAttrs) : \
+  EsScriptObject(ES_STRINGIZE(DataType), nullptr, nullptr, ctx, flags, buff, classAttrs ), \
+  m_moniker(*this) { m_size = sizeof(DataType); } \
+  EsScriptObjectIntf::Ptr ES_CONCAT(EsScript_, DataType)::createMetaclass(const EsScriptContext::Ptr& ctx) \
+  { std::unique_ptr<ES_CONCAT(EsScript_, DataType)> ptr( \
+      new ES_CONCAT(EsScript_, DataType) (ctx, ofMetaclass|ofPOD, nullptr, nullptr) \
+    ); ES_ASSERT(ptr); \
+    return ptr.release()->asBaseIntfPtrDirect(); \
+  } \
+  EsScriptObjectIntf::Ptr ES_CONCAT(EsScript_, DataType)::objectCreate(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const \
+  { std::unique_ptr<ES_CONCAT(EsScript_, DataType)> ptr( \
+      new ES_CONCAT(EsScript_, DataType) (m_ctx, m_flags & ~ofMetaclass, buff, m_attrsClass) \
+    ); ES_ASSERT(ptr); \
+    ESSCRIPT_OBJECT_TRACE2(esT("New instance of '%s' object type created"), m_typeName) \
+    return ptr.release()->asBaseIntfPtrDirect(); \
+  } \
+  void ES_CONCAT(EsScript_, DataType)::set_value(const EsVariant& val) { validate(val); m_moniker.set_value( To_ ## DataType(val) ); } \
+  EsVariant ES_CONCAT(EsScript_, DataType)::get_value() const { return From_ ## DataType( m_moniker.get_value() ); } \
+  EsString ES_CONCAT(EsScript_, DataType)::asString() const { return get_value().asString(); } \
+  EsVariant ES_CONCAT(EsScript_, DataType)::add(const EsVariant& other) const { return get_value() + other; } \
+  EsVariant ES_CONCAT(EsScript_, DataType)::subtract(const EsVariant& other) const { return get_value() - other; } \
+  EsVariant ES_CONCAT(EsScript_, DataType)::multiply(const EsVariant& other) const { return get_value() * other; } \
+  EsVariant ES_CONCAT(EsScript_, DataType)::divide(const EsVariant& other) const { return get_value() / other; } \
+  EsVariant ES_CONCAT(EsScript_, DataType)::compare(const EsVariant& other) const { const EsVariant& tmp = get_value(); return (tmp < other) ? static_cast<long>(-1) : ((tmp > other) ? static_cast<long>(1) : static_cast<long>(0)); } \
+  bool ES_CONCAT(EsScript_, DataType)::internalBinBufferSet(EsBinBuffer::const_pointer& pos, EsBinBuffer::const_pointer end) { return m_moniker.internalBinBufferSet(pos, end); } \
+  void ES_CONCAT(EsScript_, DataType)::validate(const EsVariant& val) const { EsScriptObject::validate(val); Check_ ## DataType ## _Range(val); }
 
 #define ES_IMPL_POD_OBJECT(DataType) \
   ES_IMPL_POD_OBJECT_REFLECTION_START(DataType) \

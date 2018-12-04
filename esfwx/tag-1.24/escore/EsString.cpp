@@ -103,7 +103,7 @@ m_hashInvalid(true)
       "UTF-16LE"
 # elif ES_ENDIAN == ES_BIG_ENDIAN
       "UTF-16BE"
-# endif    
+# endif
     ) : conv
   );
   ES_ASSERT(theConv);
@@ -126,7 +126,7 @@ m_hashInvalid(true)
       "UTF-16LE"
 # elif ES_ENDIAN == ES_BIG_ENDIAN
       "UTF-16BE"
-# endif        
+# endif
     ) : conv
   );
   ES_ASSERT(theConv);
@@ -148,7 +148,7 @@ m_hashInvalid(true)
       "UTF-32LE"
 # elif ES_ENDIAN == ES_BIG_ENDIAN
       "UTF-32BE"
-# endif  
+# endif
     ) : conv
   );
   ES_ASSERT(theConv);
@@ -171,7 +171,7 @@ m_hashInvalid(true)
       "UTF-32LE"
 # elif ES_ENDIAN == ES_BIG_ENDIAN
       "UTF-32BE"
-# endif    
+# endif
     ) : conv
   );
   ES_ASSERT(theConv);
@@ -219,15 +219,6 @@ void EsString::swap(EsString& other) ES_NOTHROW
   bool tmpInvalid = m_hashInvalid;
   m_hashInvalid = other.m_hashInvalid;
   other.m_hashInvalid = tmpInvalid;
-}
-//---------------------------------------------------------------------------
-
-void EsString::move(EsString& other) ES_NOTHROW
-{
-  ES_ASSERT(this != &other);
-  m_str.swap(other.m_str);
-  m_hash = other.m_hash;
-  m_hashInvalid = other.m_hashInvalid;
 }
 //---------------------------------------------------------------------------
 
@@ -955,9 +946,9 @@ EsString EsString::formatV(const std::locale& loc, EsString::const_pointer fmt, 
 
       result += oss.str();
     }
-    else if( 
+    else if(
       re.matchGet(matchStart, matchLen, fmtPercent) &&
-      matchLen 
+      matchLen
     )
     {
       // append string prefix to the result
@@ -971,7 +962,7 @@ EsString EsString::formatV(const std::locale& loc, EsString::const_pointer fmt, 
       pos += matchLen;
     }
 
-    re.set_offset( 
+    re.set_offset(
       static_cast<ulong>(pos-beg)
     );
   }
@@ -1492,7 +1483,7 @@ EsString EsString::toString(const EsString& src, ulong flags)
         appendEscape(result, c);
       break;
     default:
-      if( 
+      if(
         (c < 0x20) ||                     // We know what we do, do not use is** function here!
         (((flags & StrEscapeNonAscii) != 0) && (c > 0x7Fu))
       )
@@ -1500,12 +1491,12 @@ EsString EsString::toString(const EsString& src, ulong flags)
         if( (flags & StrXML) != 0 )
         {
           if( (flags & StrNoCEscape) != 0 )
-            result.append( 
-              format(esT("&#%u;"), 
+            result.append(
+              format(esT("&#%u;"),
                 static_cast<unsigned long>(
-                  static_cast<long>(c) 
+                  static_cast<long>(c)
                 )
-              ) 
+              )
             );
           else
             appendHexEscape(result, c);
@@ -1526,7 +1517,7 @@ EsString EsString::toString(const EsString& src, ulong flags)
             else
               result += c;
           }
-          else 
+          else
             result += c;
         }
       }

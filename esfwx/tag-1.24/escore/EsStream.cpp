@@ -115,7 +115,6 @@ ItemsReadScope::~ItemsReadScope()
     m_stream.itemsReadEnd(m_var);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 // write
@@ -146,7 +145,6 @@ ObjectWriteScope::~ObjectWriteScope()
   m_stream.m_objWriteScope = m_oldScope;
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 EsStream::
@@ -180,7 +178,6 @@ PropertiesWriteScope::~PropertiesWriteScope()
   m_stream.propertiesWriteEnd(m_obj);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 EsStream::
@@ -200,7 +197,6 @@ ItemsWriteScope::~ItemsWriteScope()
     m_stream.itemsWriteEnd(m_var);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 // reflection class info declaration
@@ -237,7 +233,6 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsStream, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_INTF_METHOD_INFO(EsStream, EsStreamIntf, nextRootObjectLocate, bool_Call, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_INTF_METHOD_INFO(EsStream, EsStreamIntf, rootObjectTypeNameGet, EsString_CallConst, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_INTF_METHOD_INFO(EsStream, EsStreamIntf, rootObjectTypeEntryLocate, bool_Call_cr_EsString_bool, NO_METHOD_DESCR)
-  ES_DECL_REFLECTED_INTF_METHOD_INFO(EsStream, EsStreamIntf, asString, EsString_CallConst, NO_METHOD_DESCR)
   // Reflected specific object component streaming, to augment custom stream writers & readers
   ES_DECL_REFLECTED_METHOD_INFO(EsStream, fieldsReadReflected, fieldsRead, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO(EsStream, propertiesReadReflected, propertiesRead, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
@@ -246,6 +241,7 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsStream, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO(EsStream, propertiesWriteReflected, propertiesWrite, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO(EsStream, itemsWriteReflected, itemsWrite, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_METHOD_INFO(EsStream, fromStreamReflected, fromStream, void_Call_cr_EsBaseIntfPtr, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_METHOD_INFO(EsStream, asStringReflected, asString, EsString_CallConst, NO_METHOD_DESCR)
   // reflected properties
   //
   ES_DECL_PROP_INFO_RO(EsStream, empty, bool, esT("Stream is empty"), NO_PROPERTY_DESCR)
@@ -254,12 +250,12 @@ ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 
 EsStream::EsStream(ulong flags, ulong version, const EsBaseIntfPtr& factory) :
-m_objReadScope(0),
-m_objWriteScope(0),
+m_objReadScope(nullptr),
+m_objWriteScope(nullptr),
 m_flags(flags),
-m_ctx(0),
-m_block(0),
-m_rootObjIt(0)
+m_ctx(nullptr),
+m_block(nullptr),
+m_rootObjIt(nullptr)
 {
   m_dynamic = true;
   m_factory = factory;
@@ -409,6 +405,12 @@ void EsStream::fromStreamReflected(const EsBaseIntf::Ptr& other)
   EsStreamIntf::Ptr stream = other;
 
   fromStream(stream);
+}
+//---------------------------------------------------------------------------
+
+EsString EsStream::asStringReflected() const
+{
+  return asString();
 }
 //---------------------------------------------------------------------------
 

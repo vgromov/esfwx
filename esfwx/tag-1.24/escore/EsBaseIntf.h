@@ -274,7 +274,7 @@ public:
     return *this;
   }
 
-#ifdef ES_MODERN_CPP
+/*#ifdef ES_MODERN_CPP
 
   // C11 move from other instance of the same interface pointer type
   inline EsIntfPtr( EsIntfPtr<IntfT>&& src ) ES_NOTHROW
@@ -301,7 +301,7 @@ public:
 
     return *this;
   }
-#endif
+#endif*/
 
 private:
   inline void clean() ES_NOTHROW

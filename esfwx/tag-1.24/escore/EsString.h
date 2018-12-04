@@ -119,7 +119,6 @@ public:
   inline iterator erase( iterator it ) { return m_str.erase(it); }
   inline void erase(size_t pos, size_t count = EsString::npos) { m_str.erase(pos, count); }
   void swap(EsString& other) ES_NOTHROW;
-  void move(EsString& other) ES_NOTHROW;
 
   /// Search
   size_t find(value_type ch, size_t offs = 0) const;
@@ -417,22 +416,6 @@ public:
   static const EsString& asterisk() ES_NOTHROW;
   static const EsString& trimSymbolsDef() ES_NOTHROW;
   static const EsString& space() ES_NOTHROW;
-
-#ifdef ES_MODERN_CPP
-  // Modern C++ stuff
-  //
-  // Move constructor
-  EsString(EsString&& src) ES_NOTHROW : m_hashInvalid(true)
-  {
-    move(src);
-  }
-  // Move assignment
-  EsString& operator =(EsString&& src) ES_NOTHROW
-  {
-    move(src);
-    return *this;
-  }
-#endif
 
   /// Platform-specific stuff
   ///

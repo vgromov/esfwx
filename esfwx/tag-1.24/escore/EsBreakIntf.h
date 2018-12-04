@@ -16,9 +16,9 @@ private: \
   class ES_INTF_IMPL1_NON_RC(EsBreakIntfImpl, EsBreakIntf) \
   public: \
   EsBreakIntfImpl( const HostClass& host ) ES_NOTHROW : m_host(host) {} \
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGet(); } \
-  ES_DECL_INTF_METHOD(bool, isBreaking)() const { return const_cast<HostClass&>(m_host).checkForStopping(0); } \
-  ES_DECL_INTF_METHOD(bool, isBreaking)(ulong ms) const { return const_cast<HostClass&>(m_host).checkForStopping(ms); } \
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGet(); } \
+  ES_DECL_INTF_METHOD(bool, isBreaking)() const ES_OVERRIDE { return const_cast<HostClass&>(m_host).checkForStopping(0); } \
+  ES_DECL_INTF_METHOD(bool, isBreaking)(ulong ms) const ES_OVERRIDE { return const_cast<HostClass&>(m_host).checkForStopping(ms); } \
   protected: \
   const HostClass& m_host; }; \
 friend class EsBreakIntfImpl; \

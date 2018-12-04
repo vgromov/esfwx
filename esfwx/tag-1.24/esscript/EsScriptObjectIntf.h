@@ -24,7 +24,7 @@ protected:
   bool m_continue;
   bool m_enumerateFields;
   bool m_allHierarchy;
-  
+
 private:
   EsScriptObjectTraverserBase() ES_REMOVEDECL;
   EsScriptObjectTraverserBase(const EsScriptObjectTraverserBase&) ES_REMOVEDECL;
@@ -36,10 +36,10 @@ class ESSCRIPT_CLASS EsScriptObjectTopDownHierarchyTraverser : public EsScriptOb
 public:
   EsScriptObjectTopDownHierarchyTraverser(const EsScriptObjectIntf* obj, bool enumerateFields, bool allHierarchy) ES_NOTHROW;
   void traverse() ES_NOTHROW;
-  
+
 protected:
   void doEnterAncestor(const EsScriptObjectIntf* obj) ES_NOTHROW;
-  
+
 private:
   EsScriptObjectTopDownHierarchyTraverser() ES_REMOVEDECL;
   EsScriptObjectTopDownHierarchyTraverser(const EsScriptObjectTopDownHierarchyTraverser&) ES_REMOVEDECL;
@@ -97,9 +97,9 @@ public:
   //
   // seal object instance
   ES_DECL_INTF_METHOD(void, seal)() ES_NOTHROW = 0;
-  // create instance of script object. 
+  // create instance of script object.
   ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, objectCreate)(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const = 0;
-  // internal-usage object cloning 
+  // internal-usage object cloning
   ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, internalClone)(EsScriptObjectIntf* parent, const EsScriptObjectDataBufferPtr& buff, bool splitCtx = false) const = 0;
   // Direct access object data buffer
   ES_DECL_INTF_METHOD(EsScriptObjectDataBuffer::Ptr, internalBuffAccess)() ES_NOTHROW = 0;
@@ -117,7 +117,7 @@ public:
   ES_DECL_INTF_METHOD(void, addMetaclassAttribute)(const EsString& name, const EsVariant& val) = 0;
   ES_DECL_INTF_METHOD(void, addInstanceAttribute)(const EsString& name, const EsVariant& val) = 0;
   // add field object to the script object
-  ES_DECL_INTF_METHOD(void, fieldAdd)(const EsString& name, const EsScriptObjectIntf::Ptr& field, 
+  ES_DECL_INTF_METHOD(void, fieldAdd)(const EsString& name, const EsScriptObjectIntf::Ptr& field,
     const EsAttributesIntf::Ptr& attrs, const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr()) = 0;
   // add conditional field object to the script object. conditionals are special unnamed fields to augment dynamic object layout
   ES_DECL_INTF_METHOD(void, fieldConditionalAdd)(const EsScriptObjectIntf::Ptr& field, const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr()) = 0;
@@ -131,7 +131,7 @@ public:
   // return array of owned fields only
   ES_DECL_INTF_METHOD(const  EsStringIndexedMap&, thisFieldsMapGet)() const ES_NOTHROW = 0;
   // return name of the field by its index in internal collection
-  ES_DECL_INTF_METHOD(const EsString&, thisFieldNameGet)(ulong idx) const = 0;  
+  ES_DECL_INTF_METHOD(const EsString&, thisFieldNameGet)(ulong idx) const = 0;
   // access this field node by its index
   ES_DECL_INTF_METHOD(const EsVariant&, thisFieldGet)(ulong idx) const = 0;
   // read-only access to object's flags
@@ -157,7 +157,7 @@ public:
   // internal binary buffer assignment helper
   ES_DECL_INTF_METHOD(bool, internalBinBufferSet)(EsBinBuffer::const_pointer& pos, EsBinBuffer::const_pointer end) = 0;
   // member variables manipulation
-  ES_DECL_INTF_METHOD(void, variableDeclare)(const EsString& name, 
+  ES_DECL_INTF_METHOD(void, variableDeclare)(const EsString& name,
     const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr()) = 0;
   // access _this_ only variables
   ES_DECL_INTF_METHOD(EsScriptSymbolTable::Ptr, thisVariablesGet)() const ES_NOTHROW = 0;
@@ -194,10 +194,10 @@ public:
   ES_DECL_INTF_METHOD(bool, isInvalid)() const ES_NOTHROW = 0;
   // Return true if this object and all its parents are invalid
   ES_DECL_INTF_METHOD(bool, isAllInvalid)() const ES_NOTHROW = 0;
-  // return object item type name. has meaning for arrays only, 
+  // return object item type name. has meaning for arrays only,
   // other objects will return the same value, as typeNameGet does
   ES_DECL_INTF_METHOD(EsString, itemTypeNameGet)() const ES_NOTHROW = 0;
-  // get script object's parent. 
+  // get script object's parent.
   ES_DECL_INTF_METHOD(EsScriptObjectIntf*, parentGet)() const ES_NOTHROW = 0;
   // return root object for this object
   ES_DECL_INTF_METHOD(const EsScriptObjectIntf*, getRootObject)() const ES_NOTHROW = 0;
@@ -233,7 +233,7 @@ public:
   // if called from metaclass, new (default values used) object instance is created.
   // may be called from the root objects (parent=NULL) only.
   ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, clone)() const = 0;
-  // find named field in this object or one of its ancestors. 
+  // find named field in this object or one of its ancestors.
   // if field is not found, the empty pointer is returned
   ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, fieldFind)(const EsString& name) const ES_NOTHROW = 0;
   // check if field exists

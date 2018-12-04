@@ -817,11 +817,7 @@ const EsScriptSymbolTable& EsScriptMachine::vars() const ES_NOTHROW
 EsScriptCodeSection::Ptr EsScriptMachine::globalMethodGet(const EsMethodInfoKeyT& key, bool doThrow /*= true*/) const
 {
   if( !m_globalMethods )
-#ifdef ES_MODERN_CPP
     return nullptr;
-#else
-    return EsScriptCodeSection::Ptr();
-#endif
 
   // find if method signature exists in script method table
   EsScriptMethodMap::const_iterator cit = m_globalMethods->find(key);
@@ -837,11 +833,7 @@ EsScriptCodeSection::Ptr EsScriptMachine::globalMethodGet(const EsMethodInfoKeyT
       )
     );
 
-#ifdef ES_MODERN_CPP
-    return nullptr;
-#else
-    return EsScriptCodeSection::Ptr();
-#endif
+  return nullptr;
 }
 //---------------------------------------------------------------------------
 

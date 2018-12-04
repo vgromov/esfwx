@@ -198,7 +198,7 @@ public:
     m_keys.reserve(32);
   }
 
-  virtual bool objectProcess(const EsScriptObjectIntf* obj) ES_NOTHROW
+  virtual bool objectProcess(const EsScriptObjectIntf* obj) ES_NOTHROW ES_OVERRIDE
   {
     ES_ASSERT(obj);
 
@@ -239,7 +239,7 @@ public:
   m_key(key)
   {}
 
-  virtual bool objectProcess(const EsScriptObjectIntf* obj) ES_NOTHROW
+  virtual bool objectProcess(const EsScriptObjectIntf* obj) ES_NOTHROW ES_OVERRIDE
   {
     ES_ASSERT(obj);
     EsScriptMethodMapPtr methods = obj->thisScriptedMethodsGet();
@@ -278,7 +278,7 @@ public:
   m_name(name)
   {}
 
-  virtual bool objectProcess(const EsScriptObjectIntf* obj) ES_NOTHROW
+  virtual bool objectProcess(const EsScriptObjectIntf* obj) ES_NOTHROW ES_OVERRIDE
   {
     ES_ASSERT(obj);
     EsStringIndexedMap::Ptr props = obj->thisPropertiesMapGet();
@@ -370,7 +370,7 @@ EsScriptObject::EsScriptObject(
 m_ctx(ctx),
 m_methods(methods),
 m_ancestor(ancestor),
-m_parent(0),
+m_parent(nullptr),
 m_typeName(typeName),
 m_flags(flags),
 m_data(buff),
@@ -380,11 +380,11 @@ m_size(0),
 m_offs(-1)
 {
   m_dynamic = true;
-#if defined(DEBUG) && defined(ESSCRIPT_OBJECT_USE_TRACE)
+#if defined(ES_DEBUG) && defined(ESSCRIPT_OBJECT_USE_TRACE)
   if( m_ancestor )
-    ESSCRIPT_OBJECT_TRACE3( esT("Object '%s extends %s' constructor called"), m_typeName.c_str(), m_ancestor->typeNameGet().c_str() )
+    ESSCRIPT_OBJECT_TRACE3( esT("Object '%s extends %s' constructor called"), m_typeName, m_ancestor->typeNameGet() )
   else
-    ESSCRIPT_OBJECT_TRACE2( esT("Object '%s' constructor called"), m_typeName.c_str() )
+    ESSCRIPT_OBJECT_TRACE2( esT("Object '%s' constructor called"), m_typeName )
 #endif
 }
 //---------------------------------------------------------------------------
@@ -396,8 +396,13 @@ void EsScriptObject::destroy() ES_NOTHROW
 
   m_destroying = true;
 
-  ESSCRIPT_OBJECT_TRACE3(esT("'%s' destroy called in '%s' mode"), m_typeName.c_str(),
-    isMetaclass() ? esT("metaclass") : esT("instance") )
+  ESSCRIPT_OBJECT_TRACE3(
+    esT("'%s' destroy called in '%s' mode"),
+    m_typeName,
+    isMetaclass() ?
+      esT("metaclass") :
+      esT("instance")
+  )
 
   if( m_methods && !isPOD() && !isConditional() && !isArray() )
   {
@@ -422,7 +427,10 @@ void EsScriptObject::destroy() ES_NOTHROW
         this
       );
 
-      ESSCRIPT_OBJECT_TRACE2(esT("Object '%s' scripted destructor called"), m_typeName.c_str())
+      ESSCRIPT_OBJECT_TRACE2(
+        esT("Object '%s' scripted destructor called"),
+        m_typeName
+      )
     }
 
     m_methods.reset();
@@ -436,7 +444,7 @@ EsScriptObject::~EsScriptObject()
 {
   ESSCRIPT_OBJECT_TRACE3(
     esT("'%s' destructor called in '%s' mode"),
-    m_typeName.c_str(),
+    m_typeName,
     isMetaclass() ?
       esT("metaclass") :
       esT("instance")
@@ -485,7 +493,11 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::objectCreate)(
   bool splitCtx
 ) const
 {
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::objectCreate {"), typeNameGet())
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("%s::objectCreate {"),
+    typeNameGet()
+  )
+
   EsScriptContext::Ptr ctx = m_ctx;
   if(splitCtx)
     ctx = EsScriptContext::create(m_ctx->vm());
@@ -526,8 +538,14 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::objectCreate)(
   if(obj->ancestorGet() )
     obj->ancestorGet()->setParent(obj);
 
-  ESSCRIPT_OBJECT_TRACE2(esT("New instance of '%s' object type created"), m_typeName)
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::objectCreate }"), typeNameGet())
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("New instance of '%s' object type created"),
+    m_typeName
+  )
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("%s::objectCreate }"),
+    typeNameGet()
+  )
 
   return result.release()->asBaseIntfPtrDirect();
 }

@@ -5,7 +5,7 @@
 //
 ES_DECL_INTF_BEGIN2(288D7781, 38564AFD, A2D82982, B74F43FD, EsScriptDebugInfoIntf, EsBaseIntf)
   ES_DECL_INTF_METHOD(ulong, lineGet)() const = 0;
-  ES_DECL_INTF_METHOD(ulong, columnGet)() const = 0;  
+  ES_DECL_INTF_METHOD(ulong, columnGet)() const = 0;
   ES_DECL_INTF_METHOD(cr_EsString, fileGet)() const = 0;
   ES_DECL_INTF_METHOD(EsString, asString)() const = 0;
 ES_DECL_INTF_END
@@ -26,14 +26,14 @@ public:
 
   /// EsBaseIntf
   ///
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return esT("EsScriptDebugInfo"); }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// EsScriptDebugInfoIntf implementation
   ///
-  ES_DECL_INTF_METHOD(ulong, lineGet)() const ES_NOTHROW { return m_line; }
-  ES_DECL_INTF_METHOD(ulong, columnGet)() const ES_NOTHROW { return m_col; }
-  ES_DECL_INTF_METHOD(cr_EsString, fileGet)() const ES_NOTHROW { return m_file; }
-  ES_DECL_INTF_METHOD(EsString, asString)() const;
+  ES_DECL_INTF_METHOD(ulong, lineGet)() const ES_NOTHROW  ES_OVERRIDE { return m_line; }
+  ES_DECL_INTF_METHOD(ulong, columnGet)() const ES_NOTHROW ES_OVERRIDE { return m_col; }
+  ES_DECL_INTF_METHOD(cr_EsString, fileGet)() const ES_NOTHROW ES_OVERRIDE { return m_file; }
+  ES_DECL_INTF_METHOD(EsString, asString)() const ES_OVERRIDE;
 
 protected:
   ulong m_line;

@@ -51,10 +51,15 @@ EsStreamIntf::Ptr EsStreamXml::create(ulong flags, ulong version, const EsString
 
 EsStreamXml::~EsStreamXml()
 {
-  if( (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write)) == (m_flags & (static_cast<ulong>(EsStreamFlag::File)|static_cast<ulong>(EsStreamFlag::Write))) &&
-      ( !EsPath::fileExists(m_file, EsString::null()) ||
-        (m_flags & flagDirty)
-      )
+  if(
+    (
+      as_<ulong>(EsStreamFlag::File)|as_<ulong>(EsStreamFlag::Write)) ==
+        (m_flags & (as_<ulong>(EsStreamFlag::File)|as_<ulong>(EsStreamFlag::Write))
+    ) &&
+    (
+      !EsPath::fileExists(m_file, EsString::null()) ||
+      (m_flags & flagDirty)
+    )
   )
   {
     // do not allow anything to throw from destructor

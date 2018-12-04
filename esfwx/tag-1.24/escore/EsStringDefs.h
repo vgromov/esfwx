@@ -93,7 +93,7 @@
 #   define esTU                 esT16
 # elif 4 == ES_CHAR_SIZE
 #   define esTU                 esT32
-#endif
+# endif
 #else
 # if 2 == ES_CHAR_SIZE
 #   define ES_STRINGIZE         ES_STRINGIZE16

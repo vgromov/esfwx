@@ -59,27 +59,10 @@ class ES_INTF_IMPL_DERIVED( ES_CONCAT(EsScript_, DataType), EsScriptObject) \
 protected: \
   typedef EsScriptPodValMoniker< DataType, ES_CONCAT(EsScript_, DataType) > DataMonikerT; \
   FRIEND_DATA_MONIKER_T; \
-  ES_CONCAT(EsScript_, DataType) (const EsScriptContext::Ptr& ctx, esU32 flags, const EsScriptObjectDataBufferPtr& buff, \
-    const EsAttributesIntf::Ptr& classAttrs) : \
-  EsScriptObject(ES_STRINGIZE(DataType), EsScriptObjectIntf::Ptr(), EsScriptMethodMapPtr(), ctx, flags, buff, \
-    classAttrs ), \
-  m_moniker(*this) \
-  { m_size = sizeof(DataType); } \
-  static EsScriptObjectIntf::Ptr createMetaclass(const EsScriptContext::Ptr& ctx) \
-  { std::unique_ptr<ES_CONCAT(EsScript_, DataType)> ptr( \
-      new ES_CONCAT(EsScript_, DataType) (ctx, ofMetaclass|ofPOD, nullptr, nullptr) \
-    ); ES_ASSERT(ptr); \
-    return ptr.release()->asBaseIntfPtrDirect(); \
-  } \
-  ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, objectCreate)(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const ES_OVERRIDE \
-  { std::unique_ptr<ES_CONCAT(EsScript_, DataType)> ptr( \
-      new ES_CONCAT(EsScript_, DataType) (m_ctx, m_flags & ~ofMetaclass, buff, m_attrsClass) \
-    ); ES_ASSERT(ptr); \
-    ESSCRIPT_OBJECT_TRACE2(esT("New instance of '%s' object type created"), m_typeName.c_str()) \
-    return ptr.release()->asBaseIntfPtrDirect(); \
-  } \
-  ES_DECL_INTF_METHOD(void, internalUpdateLayout)(ulong offs) ES_OVERRIDE { \
-    internalOffsetSet(offs); } \
+  ES_CONCAT(EsScript_, DataType)(const EsScriptContext::Ptr& ctx, esU32 flags, const EsScriptObjectDataBufferPtr& buff, const EsAttributesIntf::Ptr& classAttrs); \
+  static EsScriptObjectIntf::Ptr createMetaclass(const EsScriptContext::Ptr& ctx); \
+  ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, objectCreate)(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const ES_OVERRIDE; \
+  ES_DECL_INTF_METHOD(void, internalUpdateLayout)(ulong offs) ES_OVERRIDE { internalOffsetSet(offs); } \
   ES_DECL_INTF_METHOD(bool, internalBinBufferSet)(EsBinBuffer::const_pointer& pos, EsBinBuffer::const_pointer end) ES_OVERRIDE; \
   virtual void validate(const EsVariant& val) const ES_OVERRIDE; \
 public: \

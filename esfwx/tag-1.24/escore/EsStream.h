@@ -202,7 +202,7 @@ protected:
     EsStream& m_stream;
     const EsReflectedClassIntf::Ptr& m_obj;
     bool m_readWasStarted;
-    
+
   private:
     FieldsReadScope();
     FieldsReadScope(const FieldsReadScope&);
@@ -228,7 +228,7 @@ protected:
     PropertiesReadScope& operator=(const PropertiesReadScope&);
   };
   friend class PropertiesReadScope;
-  
+
   class ItemsReadScope
   {
   public:
@@ -252,7 +252,7 @@ protected:
   };
   friend class ItemsReadScope;
 
-  class ObjectWriteScope  
+  class ObjectWriteScope
   {
   public:
     ObjectWriteScope(EsStream& stream, const EsReflectedClassIntf::Ptr& obj);
@@ -263,14 +263,14 @@ protected:
     ObjectWriteScope* m_oldScope;
     const EsReflectedClassIntf::Ptr& m_obj;
     bool m_customWriting;
-    
+
   private:
     ObjectWriteScope();
     ObjectWriteScope(const ObjectWriteScope&);
     ObjectWriteScope& operator=(const ObjectWriteScope&);
   };
   friend class ObjectWriteScope;
-  
+
   class FieldsWriteScope
   {
   public:
@@ -280,7 +280,7 @@ protected:
   protected:
     EsStream& m_stream;
     const EsReflectedClassIntf::Ptr& m_obj;
-        
+
   private:
     FieldsWriteScope();
     FieldsWriteScope(const FieldsWriteScope&);
@@ -316,14 +316,14 @@ protected:
     EsStream& m_stream;
     const EsVariant& m_var;
     bool m_writeWasStarted;
-        
+
   private:
     ItemsWriteScope();
     ItemsWriteScope(const ItemsWriteScope&);
     ItemsWriteScope& operator=(const ItemsWriteScope&);
   };
   friend class ItemsWriteScope;
-    
+
 protected:
   EsStream(ulong flags, ulong version, const EsBaseIntfPtr& factory);
 
@@ -333,39 +333,38 @@ public:
 
   /// EsStreamIntf implementation && reflection declaration
   ///
-  ES_DECL_REFLECTED_INTF_METHOD0(EsBaseIntfPtr, objectCreate);
-  ES_DECL_REFLECTED_INTF_METHOD1(void, objectRead, cr_EsBaseIntfPtr);
-  ES_DECL_REFLECTED_INTF_METHOD1(void, objectWrite, cr_EsBaseIntfPtr);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isEmpty);
-  ES_DECL_REFLECTED_INTF_METHOD0(void, rewind);
-  ES_DECL_REFLECTED_INTF_METHOD0(void, reset);
-  ES_DECL_REFLECTED_INTF_METHOD1(void, reset, ulong);
-  ES_DECL_REFLECTED_INTF_METHOD1(bool, contextOpenCreate, cr_EsString);
-  ES_DECL_REFLECTED_INTF_METHOD2(bool, contextOpenCreate, cr_EsString, ulong);
-  ES_DECL_REFLECTED_INTF_METHOD1(bool, contextOpenExisting, cr_EsString);
-  ES_DECL_REFLECTED_INTF_METHOD0(void, contextCurrentClose);
-  ES_DECL_REFLECTED_INTF_METHOD1(void, contextRemove, cr_EsString);
-  ES_DECL_REFLECTED_INTF_METHOD0(void, contextCurrentReset);
-  ES_DECL_REFLECTED_INTF_METHOD1(void, contextCurrentReset, ulong);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, contextCurrentNameGet);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, contextCurrentIsEmpty);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, contextCurrentVersionGet);
-  ES_DECL_REFLECTED_INTF_METHOD1(void, contextCurrentVersionSet, ulong);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, rootVersionGet);
-  ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, valueRead, cr_EsString, cr_EsVariant);
-  ES_DECL_REFLECTED_INTF_METHOD2(void, valueReadObject, cr_EsString, cr_EsBaseIntfPtr);
-  ES_DECL_REFLECTED_INTF_METHOD2(void, valueWrite, cr_EsString, cr_EsVariant);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, valueExists, cr_EsString);
-  ES_DECL_REFLECTED_INTF_METHOD1(void, valueRemove, cr_EsString);
-  ES_DECL_REFLECTED_INTF_METHOD0(bool, firstRootObjectLocate);
-  ES_DECL_REFLECTED_INTF_METHOD0(bool, nextRootObjectLocate);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, rootObjectTypeNameGet);
-  ES_DECL_REFLECTED_INTF_METHOD2(bool, rootObjectTypeEntryLocate, cr_EsString, bool);
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, asString) = 0;
-  ES_DECL_REFLECTED_INTF_METHOD1(void, valueWrite, cr_EsVariant);
-  ES_DECL_REFLECTED_INTF_METHOD0(EsVariant, valueRead);
-  ES_DECL_INTF_METHOD(void, factorySet)(const EsBaseIntfPtr& factory) { m_factory = factory; }
-  ES_DECL_INTF_METHOD(void, fromStream)(const EsStreamIntf::Ptr& other);
+  ES_DECL_REFLECTED_INTF_METHOD0(EsBaseIntfPtr, objectCreate) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(void, objectRead, cr_EsBaseIntfPtr) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(void, objectWrite, cr_EsBaseIntfPtr) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isEmpty) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD0(void, rewind) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD0(void, reset) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(void, reset, ulong) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(bool, contextOpenCreate, cr_EsString) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD2(bool, contextOpenCreate, cr_EsString, ulong) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(bool, contextOpenExisting, cr_EsString) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD0(void, contextCurrentClose) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(void, contextRemove, cr_EsString) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD0(void, contextCurrentReset) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(void, contextCurrentReset, ulong) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, contextCurrentNameGet) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, contextCurrentIsEmpty) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, contextCurrentVersionGet) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(void, contextCurrentVersionSet, ulong) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, rootVersionGet) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD2(EsVariant, valueRead, cr_EsString, cr_EsVariant) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD2(void, valueReadObject, cr_EsString, cr_EsBaseIntfPtr) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD2(void, valueWrite, cr_EsString, cr_EsVariant) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, valueExists, cr_EsString) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(void, valueRemove, cr_EsString) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD0(bool, firstRootObjectLocate) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD0(bool, nextRootObjectLocate) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsString, rootObjectTypeNameGet) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD2(bool, rootObjectTypeEntryLocate, cr_EsString, bool) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD1(void, valueWrite, cr_EsVariant) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD0(EsVariant, valueRead) ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(void, factorySet)(const EsBaseIntfPtr& factory) ES_OVERRIDE { m_factory = factory; }
+  ES_DECL_INTF_METHOD(void, fromStream)(const EsStreamIntf::Ptr& other) ES_OVERRIDE;
 
   /// Reflected object component streaming, to augment custom stream writers & readers
   ES_DECL_REFLECTED_METHOD1(void, fieldsReadReflected, cr_EsBaseIntfPtr);
@@ -375,6 +374,7 @@ public:
   ES_DECL_REFLECTED_METHOD1(void, propertiesWriteReflected, cr_EsBaseIntfPtr);
   ES_DECL_REFLECTED_METHOD1(void, itemsWriteReflected, cr_EsBaseIntfPtr);
   ES_DECL_REFLECTED_METHOD1(void, fromStreamReflected, cr_EsBaseIntfPtr);
+  ES_DECL_REFLECTED_CONST_METHOD0(EsString, asStringReflected);
 
   /// Reflected properties
   ///
@@ -389,7 +389,7 @@ public:
 protected:
   /// Stream Model helpers
   void rootInit(ulong version);
-   void internalRewind();
+  void internalRewind();
   void internalStateReset();
   EsString objectBlockTypeNameGet(EsStreamBlock* bobj) const;
 
