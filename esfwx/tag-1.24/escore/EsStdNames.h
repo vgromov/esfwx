@@ -38,6 +38,7 @@ ESCORE_FUNC( const EsString&, value() ES_NOTHROW );
 ESCORE_FUNC( const EsString&, version() ES_NOTHROW );
 ESCORE_FUNC( const EsString&, label() ES_NOTHROW );
 ESCORE_FUNC( const EsString&, buffer() ES_NOTHROW);
+ESCORE_FUNC( const EsString&, null() ES_NOTHROW );
 }
 
 #endif // _es_std_names_h_

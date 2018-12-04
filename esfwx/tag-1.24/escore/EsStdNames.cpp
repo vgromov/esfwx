@@ -199,3 +199,10 @@ const EsString& EsStdNames::buffer() ES_NOTHROW
   return s_buffer;
 }
 //---------------------------------------------------------------------------
+
+const EsString& EsStdNames::null() ES_NOTHROW
+{
+  static const EsString s_buffer(esT("null"), EsString::doHashInit);
+  return s_buffer;
+}
+//---------------------------------------------------------------------------

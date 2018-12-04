@@ -53,7 +53,11 @@ public:
     if( m_updateSubscribers.end() == std::find(m_updateSubscribers.begin(), m_updateSubscribers.end(), subscriber) )
     {
       m_updateSubscribers.push_back(subscriber);
-      ESSCRIPT_OBJECT_TRACE3(esT("Update subscriber '%s' added to value accesor '%s'"), subscriber->typeNameGet().c_str(), m_name.c_str())
+      ESSCRIPT_OBJECT_TRACE3(
+        esT("Update subscriber '%s' added to value accesor '%s'"),
+        subscriber->typeNameGet(),
+        m_name
+      )
     }
   }
 

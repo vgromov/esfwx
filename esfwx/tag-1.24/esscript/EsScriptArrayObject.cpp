@@ -203,7 +203,11 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::initializeUpdateSubscription)()
 
   ES_ASSERT( !isMetaclass() );
   // set-up subscription to the update notifications
-  ESSCRIPT_OBJECT_TRACE3(esT("initializeUpdateSubscription called for '%s' of '%s'"), typeNameGet().c_str(), m_itemMetaclass->typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE3(
+    esT("initializeUpdateSubscription called for '%s' of '%s'"),
+    typeNameGet(),
+    m_itemMetaclass->typeNameGet()
+  )
   const EsString::Array& fldDependencies = m_expr->thisFieldDependenciesGet();
   for( size_t idx = 0; idx < fldDependencies.size(); ++idx )
   {

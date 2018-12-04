@@ -169,7 +169,10 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptIfObject::objectCreate)(con
   );
   ES_ASSERT(result);
 
-  ESSCRIPT_OBJECT_TRACE2(esT("New instance of '%s' object type created"), m_typeName.c_str() )
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("New instance of '%s' object type created"),
+    m_typeName
+  )
   return result.release()->asBaseIntfPtrDirect();
 }
 
@@ -210,7 +213,10 @@ ES_IMPL_INTF_METHOD(void, EsScriptIfObject::initializeUpdateSubscription)()
 
   // set-up subscription to the update notifications
   ES_ASSERT( !isMetaclass() );
-  ESSCRIPT_OBJECT_TRACE2(esT("initializeUpdateSubscription called for '%s'"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("initializeUpdateSubscription called for '%s'"),
+    typeNameGet()
+  )
   const EsString::Array& fldDependencies = m_expr->thisFieldDependenciesGet();
   for( size_t idx = 0; idx < fldDependencies.size(); ++idx )
   {

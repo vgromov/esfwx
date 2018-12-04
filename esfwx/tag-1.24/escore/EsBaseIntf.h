@@ -274,12 +274,14 @@ public:
     return *this;
   }
 
-/*#ifdef ES_MODERN_CPP
-
+#ifdef ES_MODERN_CPP
   // C11 move from other instance of the same interface pointer type
   inline EsIntfPtr( EsIntfPtr<IntfT>&& src ) ES_NOTHROW
   {
-    EsCriticalSectionLocker locksrc( src.m_cs );
+    if( this == &src ) // if we're not assigning ouselves to ourselves
+      return;
+
+//    EsCriticalSectionLocker locksrc( src.m_cs );
     m_intf = src.m_intf;
     m_own = src.m_own;
 
@@ -290,18 +292,18 @@ public:
   // Move sematics assign from other instance of the same interface pointer type
   inline EsIntfPtr<IntfT>& operator= ( EsIntfPtr<IntfT>&& src ) ES_NOTHROW
   {
-    if( this != &src ) // if we're not assigning ouselves to ourselves
-    {
-      EsCriticalSectionLocker locksrc( src.m_cs );
-      EsCriticalSectionLocker lock( m_cs );
-      resetNonInterlocked( src.m_intf, src.m_own );
-      src.m_intf = nullptr;
-      src.m_own = false;
-    }
+    if( this == &src ) // if we're not assigning ouselves to ourselves
+      return *this;
+
+//    EsCriticalSectionLocker locksrc( src.m_cs );
+//    EsCriticalSectionLocker lock( m_cs );
+    resetNonInterlocked( src.m_intf, src.m_own );
+    src.m_intf = nullptr;
+    src.m_own = false;
 
     return *this;
   }
-#endif*/
+#endif
 
 private:
   inline void clean() ES_NOTHROW

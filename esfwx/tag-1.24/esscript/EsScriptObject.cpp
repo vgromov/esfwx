@@ -382,9 +382,20 @@ m_offs(-1)
   m_dynamic = true;
 #if defined(ES_DEBUG) && defined(ESSCRIPT_OBJECT_USE_TRACE)
   if( m_ancestor )
-    ESSCRIPT_OBJECT_TRACE3( esT("Object '%s extends %s' constructor called"), m_typeName, m_ancestor->typeNameGet() )
+  {
+    ESSCRIPT_OBJECT_TRACE3(
+      esT("Object '%s extends %s' constructor called"),
+      m_typeName,
+      m_ancestor->typeNameGet()
+    )
+  }
   else
-    ESSCRIPT_OBJECT_TRACE2( esT("Object '%s' constructor called"), m_typeName )
+  {
+    ESSCRIPT_OBJECT_TRACE2(
+      esT("Object '%s' constructor called"),
+      m_typeName
+    )
+  }
 #endif
 }
 //---------------------------------------------------------------------------
@@ -400,8 +411,8 @@ void EsScriptObject::destroy() ES_NOTHROW
     esT("'%s' destroy called in '%s' mode"),
     m_typeName,
     isMetaclass() ?
-      esT("metaclass") :
-      esT("instance")
+      esVT("metaclass") :
+      esVT("instance")
   )
 
   if( m_methods && !isPOD() && !isConditional() && !isArray() )
@@ -446,8 +457,8 @@ EsScriptObject::~EsScriptObject()
     esT("'%s' destructor called in '%s' mode"),
     m_typeName,
     isMetaclass() ?
-      esT("metaclass") :
-      esT("instance")
+      esVT("metaclass") :
+      esVT("instance")
   )
 
   // unparent and cleanup own fields
@@ -778,7 +789,10 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::fieldAdd)(
   const EsScriptDebugInfoIntf::Ptr& dbg
 )
 {
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::fieldAdd {"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("%s::fieldAdd {"),
+    typeNameGet()
+  )
 
   ES_ASSERT(!name.empty());
   ES_ASSERT(field);
@@ -825,16 +839,28 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::fieldAdd)(
 
   field->setParent(this);
 
-  ESSCRIPT_OBJECT_TRACE4(esT("Field '%s' added to script object '%s' instance in '%s' mode"),
-    name.c_str(), typeNameGet().c_str(), isMetaclass() ? esT("metaclass") : esT("instance"))
+  ESSCRIPT_OBJECT_TRACE4(
+    esT("Field '%s' added to script object '%s' instance in '%s' mode"),
+    name,
+    typeNameGet(),
+    isMetaclass() ?
+      esVT("metaclass") :
+      esVT("instance")
+  )
 
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::fieldAdd }"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("%s::fieldAdd }"),
+    typeNameGet()
+  )
 }
 //---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(void, EsScriptObject::seal)() ES_NOTHROW
 {
-  ESSCRIPT_OBJECT_TRACE2(esT("Object %s is sealed"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("Object %s is sealed"),
+    typeNameGet()
+  )
   m_flags |= ofFinal;
 }
 //---------------------------------------------------------------------------
@@ -843,7 +869,10 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::seal)() ES_NOTHROW
 ES_IMPL_INTF_METHOD(void, EsScriptObject::fieldConditionalAdd)(const EsScriptObjectIntf::Ptr& field,
                                                     const EsScriptDebugInfoIntf::Ptr& dbg)
 {
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::fieldConditionalAdd {"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("%s::fieldConditionalAdd {"),
+    typeNameGet()
+  )
 
   ES_ASSERT(field);
   ES_ASSERT(field->isConditional());
@@ -861,10 +890,18 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::fieldConditionalAdd)(const EsScriptObj
 
   field->setParent( this );
 
-  ESSCRIPT_OBJECT_TRACE4(esT("Conditional field '%s' added to script object '%s' instance in '%s' mode"),
-    field->typeNameGet().c_str(), typeNameGet().c_str(), (m_flags & ofMetaclass) ? esT("metaclass") : esT("instance"))
-
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::fieldConditionalAdd }"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE4(
+    esT("Conditional field '%s' added to script object '%s' instance in '%s' mode"),
+    field->typeNameGet(),
+    typeNameGet(),
+    (m_flags & ofMetaclass) ?
+      esVT("metaclass") :
+      esVT("instance")
+  )
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("%s::fieldConditionalAdd }"),
+    typeNameGet()
+  )
 }
 //---------------------------------------------------------------------------
 
@@ -874,13 +911,16 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::internalClone)(
   bool splitCtx
 ) const
 {
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::internalClone {"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("%s::internalClone {"),
+    typeNameGet()
+  )
   ESSCRIPT_OBJECT_TRACE3(
     esT("internalClone called for '%s', split exec. context '%s'"),
-    typeNameGet().c_str(),
+    typeNameGet(),
     splitCtx ?
-      esT("yes") :
-      esT("no")
+      esVT("yes") :
+      esVT("no")
   )
 
   // 1) create new instance of ourselves && all ancestors hierarchy
@@ -918,7 +958,10 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::internalClone)(
   // 3) seal object instance after internal cloning
   result->seal();
 
-  ESSCRIPT_OBJECT_TRACE2(esT("%s::internalClone }"), typeNameGet())
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("%s::internalClone }"),
+    typeNameGet()
+  )
 
   return result;
 }
@@ -945,9 +988,13 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf*, EsScriptObject::topNonProxyGet)() ES_NO
     Parent = This->parentGet();
   }
 
-  ESSCRIPT_OBJECT_TRACE3(esT("topNonProxyGet for '%s' returned '%s'"),
-    typeNameGet().c_str(),
-    (0 == This) ? esT("null") : This->typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE3(
+    esT("topNonProxyGet for '%s' returned '%s'"),
+    typeNameGet(),
+    (nullptr == This) ?
+      EsStdNames::null() :
+      This->typeNameGet()
+    )
 
   return This;
 }
@@ -1002,10 +1049,15 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::setParent)(EsScriptObjectIntf* parent)
     m_ctx = pa->m_ctx;
   }
 
-  ESSCRIPT_OBJECT_TRACE5(esT("Parent %p is set for '%s' (%p) in '%s' mode"),
-    (void*)parent,
-    typeNameGet().c_str(), (void*)this,
-    isMetaclass() ? esT("metaclass") : esT("instance") )
+  ESSCRIPT_OBJECT_TRACE5(
+    esT("Parent %p is set for '%s' (%p) in '%s' mode"),
+    EsVariant((void*)parent, EsVariant::ACCEPT_POINTER),
+    typeNameGet(),
+    EsVariant((void*)this, EsVariant::ACCEPT_POINTER),
+    isMetaclass() ?
+      esVT("metaclass") :
+      esVT("instance")
+  )
 }
 //---------------------------------------------------------------------------
 
@@ -1014,10 +1066,15 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::setParent)(EsScriptObjectIntf* parent)
 // may be called from the root objects (parent=NULL) only.
 ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::clone)() const
 {
-  ESSCRIPT_OBJECT_TRACE2(esT("clone called for '%s'"), typeNameGet().c_str())
+  ESSCRIPT_OBJECT_TRACE2(
+    esT("clone called for '%s'"),
+    typeNameGet()
+  )
   if( !isMetaclass() && !isRoot() )
-    EsScriptException::Throw(esT("'clone' method may be called only for the root objects"),
-      m_ctx->vm()->currentDebugInfoGet());
+    EsScriptException::Throw(
+      esT("'clone' method may be called only for the root objects"),
+      m_ctx->vm()->currentDebugInfoGet()
+    );
 
   // create shared data buffer instance
   bool needApplyFixups = false;
@@ -1101,11 +1158,11 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateFieldsLayout)(ulong offs
 {
   ESSCRIPT_OBJECT_TRACE4(
     esT("internalUpdateFieldsLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"),
-    m_typeName.c_str(),
+    m_typeName,
     offs,
     (m_flags & ofNeedUpdateLayout) ?
-      esT("set") :
-      esT("not set")
+      esVT("set") :
+      esVT("not set")
   )
 
   if(
@@ -1123,7 +1180,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateFieldsLayout)(ulong offs
       ESSCRIPT_OBJECT_TRACE3(
         esT("calling internalUpdateLayout(%d) on filed '%s'"),
         offs+localSize,
-        m_fieldsMap.nameGet(idx).c_str()
+        m_fieldsMap.nameGet(idx)
       )
 
       field->internalUpdateLayout(offs+localSize);
@@ -1154,11 +1211,11 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::internalUpdateLayout)(ulong offs)
 
   ESSCRIPT_OBJECT_TRACE4(
     esT("internalUpdateLayout called for '%s' with offs=%d, ofNeedUpdateLayout is %s"),
-    m_typeName.c_str(),
+    m_typeName,
     offs,
     (m_flags & ofNeedUpdateLayout) ?
-      esT("set") :
-      esT("not set")
+      esVT("set") :
+      esVT("not set")
   )
 
   if(
@@ -1243,7 +1300,12 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::internalOffsetSet)(long offs)
       sizeGet()
     );
 
-  ESSCRIPT_OBJECT_TRACE4(esT("%s::internalOffsetSet( from %d to %d )"), m_typeName.c_str(), m_offs, offs)
+  ESSCRIPT_OBJECT_TRACE4(
+    esT("%s::internalOffsetSet( from %d to %d )"),
+    m_typeName,
+    m_offs,
+    offs
+  )
 
   m_offs = offs;
 }
@@ -1256,7 +1318,11 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::updateSubscriberAdd)(EsScriptObjectInt
   if( m_updateSubscribers.end() == std::find(m_updateSubscribers.begin(), m_updateSubscribers.end(), subscriber) )
   {
     m_updateSubscribers.push_back(subscriber);
-    ESSCRIPT_OBJECT_TRACE3(esT("Update subscriber '%s' added to '%s'"), subscriber->typeNameGet().c_str(), m_typeName.c_str())
+    ESSCRIPT_OBJECT_TRACE3(
+      esT("Update subscriber '%s' added to '%s'"),
+      subscriber->typeNameGet(),
+      m_typeName
+    )
   }
 }
 //---------------------------------------------------------------------------
@@ -1279,8 +1345,11 @@ ES_IMPL_INTF_METHOD(bool, EsScriptObject::isAllInvalid)() const ES_NOTHROW
 // internal layout invalidation
 ES_IMPL_INTF_METHOD(void, EsScriptObject::internalInvalidateLayout)(bool propagate)
 {
-  ESSCRIPT_OBJECT_TRACE3(esT("%s::internalInvalidateLayout(%s) called"), typeNameGet().c_str(),
-    EsString::booleanStringGet(propagate).c_str())
+  ESSCRIPT_OBJECT_TRACE3(
+    esT("%s::internalInvalidateLayout(%s) called"),
+    typeNameGet(),
+    EsString::booleanStringGet(propagate)
+  )
   // set invalid layout flags for this object and all its parents,
   // if propagation is set to true
   m_flags |= ofNeedUpdateLayout;
@@ -1409,11 +1478,11 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::fieldFind)(const Es
 
   ESSCRIPT_OBJECT_TRACE4(
     esT("'%s' fieldFind('%s') returned %s"),
-    typeNameGet().c_str(),
-    name.c_str(),
+    typeNameGet(),
+    name,
     (result ?
-      esT("field object") :
-      esT("null")
+      esVT("field object") :
+      esVT("null")
     )
   )
 
@@ -2543,11 +2612,11 @@ const EsVariant& EsScriptObjectFieldFastFinder::resultGet() ES_NOTHROW
 
   ESSCRIPT_OBJECT_TRACE4(
     esT("Field '%s' fast search, called for '%s', returned %s"),
-    m_name.c_str(),
-    m_startObj->typeNameGet().c_str(),
+    m_name,
+    m_startObj->typeNameGet(),
     (m_result.isEmpty() ?
-      esT("null") :
-      esT("field node")
+      esVT("null") :
+      esVT("field node")
     )
   )
 
@@ -2588,11 +2657,11 @@ EsScriptValAccessorIntf::Ptr EsScriptObjectVarFastFinder::resultGet() ES_NOTHROW
 
   ESSCRIPT_OBJECT_TRACE4(
     esT("Var '%s' fast search, called for '%s', returned %s"),
-    m_name.c_str(),
-    m_startObj->typeNameGet().c_str(),
+    m_name,
+    m_startObj->typeNameGet(),
     (m_found ?
-      esT("var accessor") :
-      esT("null")
+      esVT("var accessor") :
+      esVT("null")
     )
   )
 
@@ -2642,12 +2711,12 @@ EsScriptCodeSection::Ptr EsScriptObjectMethodFastFinder::resultGet() ES_NOTHROW
 
   ESSCRIPT_OBJECT_TRACE5(
     esT("Method '%s[%d]' fast search, called for '%s', returned %s"),
-    m_key.nameGet().c_str(),
+    m_key.nameGet(),
     m_key.parametersCountGet(),
-    m_startObj->typeNameGet().c_str(),
+    m_startObj->typeNameGet(),
     (m_result ?
-      esT("code section") :
-      esT("null")
+      esVT("code section") :
+      esVT("null")
     )
   )
 
@@ -2690,11 +2759,11 @@ bool EsScriptObjectPropFastFinder::found() ES_NOTHROW
 
   ESSCRIPT_OBJECT_TRACE4(
     esT("Property '%s' fast search, called for '%s', returned %s"),
-    m_name.c_str(),
-    m_startObj->typeNameGet().c_str(),
+    m_name,
+    m_startObj->typeNameGet(),
     (m_result ?
-      esT("found") :
-      esT("not found")
+      esVT("found") :
+      esVT("not found")
     )
   )
 
