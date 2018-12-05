@@ -26,15 +26,15 @@ typedef void (*_cproxyT)(EsVariant&, const EsMethodT&, const EsVariant& params);
 
 EsAttributesIntf::Ptr EsAttributes::create(const EsString& ownerName, bool interlocked) ES_NOTHROW
 {
-  std::unique_ptr<EsAttributes> p(
+  std::unique_ptr<EsAttributes> ptr(
     new EsAttributes(
       ownerName,
       interlocked
     )
   );
-  ES_ASSERT(p.get());
+  ES_ASSERT(ptr);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return ptr.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -52,16 +52,16 @@ EsString EsAttributes::typeNameGet() const ES_NOTHROW
 /// EsAttributesIntf implementation
 EsAttributesIntf::Ptr EsAttributes::clone() const
 {
-  std::unique_ptr<EsAttributes> p(
+  std::unique_ptr<EsAttributes> ptr(
     new EsAttributes(
       m_contents.nameGet(),
       m_contents.isInterlocked()
     )
   );
-  ES_ASSERT(p.get());
+  ES_ASSERT(ptr);
 
-  p->m_contents = m_contents;
-  return p.release()->asBaseIntfPtrDirect();
+  ptr->m_contents = m_contents;
+  return ptr.release()->asBaseIntfPtrDirect();
 
 }
 //---------------------------------------------------------------------------
@@ -200,7 +200,6 @@ EsString EsMethodInfoKeyT::asString() const
   );
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 // signature strings map
@@ -698,7 +697,7 @@ void EsPropertyInfo::reset(EsBase* obj) const
 {
   if( defaultExists() )
     set(
-      obj, 
+      obj,
       defaultGet()
     );
   else
@@ -1333,11 +1332,11 @@ EsVariant EsClassInfo::classCall(const EsString& name) const
 {
   const EsMethodInfo& info = classMethodInfoGet(
     EsMethodInfoKeyT(
-      0, 
+      0,
       name
     )
   );
-  
+
   return info.classCall(EsVariant::null());
 }
 
@@ -1345,7 +1344,7 @@ EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1) 
 {
   const EsMethodInfo& info = classMethodInfoGet(
     EsMethodInfoKeyT(
-      1, 
+      1,
       name
     )
   );
@@ -1359,7 +1358,7 @@ EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, 
 {
   const EsMethodInfo& info = classMethodInfoGet(
     EsMethodInfoKeyT(
-      2, 
+      2,
       name
     )
   );

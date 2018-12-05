@@ -54,7 +54,7 @@ size_t wcrtomb(char* s, wchar_t wc, mbstate_t* st)
 # endif
 #endif
 
-#define NOMINMAX
+// REM #define NOMINMAX
 #include "iconv/iconv.c"
 #include "iconv/localcharset.c"
 

@@ -1,10 +1,7 @@
 //#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-# define ES_INTERNAL_THIS_CAST( Intf )        dynamic_cast<Intf*>(this)
-# define ES_INTERNAL_THIS_CONSTCAST( Intf )   dynamic_cast<const Intf*>(this)
-//#else
-//# define ES_INTERNAL_THIS_CAST( Intf )        reinterpret_cast<Intf*>(reinterpret_cast<esU8*>(this) + ES_CONCAT(offs, Intf))
-//# define ES_INTERNAL_THIS_CONSTCAST( Intf )   reinterpret_cast<const Intf*>(reinterpret_cast<const esU8*>(this) + ES_CONCAT(offs, Intf))
-//#endif
+#define ES_INTERNAL_THIS_CAST( Intf )         dynamic_cast<Intf*>(this)
+#define ES_INTERNAL_THIS_CONSTCAST( Intf )    dynamic_cast<const Intf*>(this)
+//---------------------------------------------------------------------------
 
 /// Helper macros for base interface refcount trace
 ///
@@ -15,6 +12,32 @@
 #  define ES_TRACE_BASEINTF_INCREF
 #  define ES_TRACE_BASEINTF_DECREF
 #endif
+//---------------------------------------------------------------------------
+
+template <typename IntfT>
+IntfT* EsBase::asIntfT(bool doIncref /*= true*/) ES_NOTHROW
+{
+  return reinterpret_cast<IntfT*>(
+    asBaseIntf()->requestIntf(
+      EsIID::fromIntf<IntfT>(),
+      doIncref
+    )
+  );
+}
+//---------------------------------------------------------------------------
+
+template <typename IntfT>
+const IntfT* EsBase::asIntfT(bool doIncref /*= true*/) const ES_NOTHROW //< Contness handling
+{
+  return reinterpret_cast<const IntfT*>(
+    const_cast<EsBaseIntf*>(asBaseIntf())->requestIntf(
+      EsIID::fromIntf<IntfT>(),
+      doIncref
+    )
+  );
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 // helper templated call type caster, primarily for Borland calls resolution stuff
 template <typename BaseCallT>
@@ -31,6 +54,7 @@ inline EsMemberCallT EsCastCallToMember(BaseCallT in) ES_NOTHROW
   return caster.m_out;
 }
 //---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 /// EsBaseImpl template classes, may implement Intf1T, Intf2T, Intf3T,
 /// Intf4T, Intf5T, and EsBaseIntf interfaces,
@@ -46,12 +70,6 @@ public:
   /// and void call to ThisT method
   typedef EsBaseImpl0<FinalImplT> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsEsBaseIntf = 0
-  };
 
 public:
   EsBaseImpl0() ES_NOTHROW :
@@ -136,13 +154,6 @@ public:
   /// and void call to ThisT method
   typedef EsBaseImpl1<FinalImplT, Intf1T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = 0,
-    offsEsBaseIntf = sizeof(Intf1T)
-  };
 
 public:
   EsBaseImpl1() ES_NOTHROW :
@@ -229,14 +240,6 @@ public:
   /// and void call to ThisT method
   typedef EsBaseImpl2<FinalImplT, Intf1T, Intf2T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = 0,
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsEsBaseIntf = offsIntf2T+sizeof(Intf1T)
-  };
 
 public:
   EsBaseImpl2()  ES_NOTHROW :
@@ -326,15 +329,6 @@ public:
   typedef EsBaseImpl3<FinalImplT, Intf1T, Intf2T, Intf3T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
 
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = 0,
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsEsBaseIntf = offsIntf3T+sizeof(Intf3T)
-  };
-
 public:
   EsBaseImpl3() ES_NOTHROW :
   m_dynamic(false)
@@ -422,16 +416,6 @@ public:
   /// and void call to ThisT method
   typedef EsBaseImpl4<FinalImplT, Intf1T, Intf2T, Intf3T, Intf4T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = 0,
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsIntf4T = offsIntf3T+sizeof(Intf3T)
-    offsEsBaseIntf = offsIntf4T+sizeof(Intf4T)
-  };
 
 public:
   EsBaseImpl4() ES_NOTHROW :
@@ -524,17 +508,6 @@ public:
   /// and void call to ThisT method
   typedef EsBaseImpl5<FinalImplT, Intf1T, Intf2T, Intf3T, Intf4T, Intf5T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = 0,
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsIntf4T = offsIntf3T+sizeof(Intf3T)
-    offsIntf5T = offsIntf4T+sizeof(Intf4T)
-    offsEsBaseIntf = offsIntf5T+sizeof(Intf5T)
-  };
 
 public:
   EsBaseImpl5() ES_NOTHROW :
@@ -637,12 +610,6 @@ public:
   typedef EsBaseImplRc0<FinalImplT> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
 
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsEsBaseIntf = 0
-  };
-
 public:
   EsBaseImplRc0() ES_NOTHROW :
   m_rc(1),
@@ -738,13 +705,6 @@ public:
   /// and void call to ThisT method
   typedef EsBaseImplRc1<FinalImplT, Intf1T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = 0,
-    offsEsBaseIntf = offsIntf1T+sizeof(Intf1T)
-  };
 
 public:
   EsBaseImplRc1() ES_NOTHROW :
@@ -848,14 +808,6 @@ public:
   /// and void call to ThisT method
   typedef EsBaseImplRc2<FinalImplT, Intf1T, Intf2T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = 0,
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsEsBaseIntf = offsIntf2T+sizeof(Intf2T)
-  };
 
 public:
   EsBaseImplRc2() ES_NOTHROW :
@@ -966,15 +918,6 @@ public:
   /// and void call to ThisT method
   typedef EsBaseImplRc3<FinalImplT, Intf1T, Intf2T, Intf3T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = 0,
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsEsBaseIntf = offsIntf3T+sizeof(Intf3T)
-  };
 
 public:
   EsBaseImplRc3() ES_NOTHROW :
@@ -1092,16 +1035,6 @@ public:
   /// and void call to ThisT method
   typedef EsBaseImplRc4<FinalImplT, Intf1T, Intf2T, Intf3T, Intf4T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = 0,
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsIntf4T = offsIntf3T+sizeof(Intf3T),
-    offsEsBaseIntf = offsIntf4T+sizeof(Intf4T)
-  };
 
 public:
   EsBaseImplRc4() ES_NOTHROW :
@@ -1226,17 +1159,6 @@ public:
   /// and void call to ThisT method
   typedef EsBaseImplRc5<FinalImplT, Intf1T, Intf2T, Intf3T, Intf4T, Intf5T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = 0,
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsIntf4T = offsIntf3T+sizeof(Intf3T),
-    offsIntf5T = offsIntf4T+sizeof(Intf4T),
-    offsEsBaseIntf = offsIntf5T+sizeof(Intf5T)
-  };
 
 public:
   EsBaseImplRc5() ES_NOTHROW :
@@ -1372,12 +1294,6 @@ public:
   typedef EsDerivedImpl1<DerivedT, BaseImplT, Intf1T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
 
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = sizeof(BaseImplT),
-  };
-
 public:
   EsDerivedImpl1() ES_NOTHROW :
   BaseImplT()
@@ -1418,13 +1334,6 @@ public:
   /// and void call to ThisT method
   typedef EsDerivedImpl2<DerivedT, BaseImplT, Intf1T, Intf2T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = sizeof(BaseImplT),
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-  };
 
 public:
   EsDerivedImpl2() ES_NOTHROW :
@@ -1471,14 +1380,6 @@ public:
   /// and void call to ThisT method
   typedef EsDerivedImpl3<DerivedT, BaseImplT, Intf1T, Intf2T, Intf3T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = sizeof(BaseImplT),
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-  };
 
 public:
   EsDerivedImpl3() ES_NOTHROW :
@@ -1527,15 +1428,6 @@ public:
   /// and void call to ThisT method
   typedef EsDerivedImpl4<DerivedT, BaseImplT, Intf1T, Intf2T, Intf3T, Intf4T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = sizeof(BaseImplT),
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsIntf4T = offsIntf3T+sizeof(Intf3T),
-  };
 
 public:
   EsDerivedImpl4() ES_NOTHROW :
@@ -1586,16 +1478,6 @@ public:
   /// and void call to ThisT method
   typedef EsDerivedImpl5<DerivedT, BaseImplT, Intf1T, Intf2T, Intf3T, Intf4T, Intf5T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = sizeof(BaseImplT),
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsIntf4T = offsIntf3T+sizeof(Intf3T),
-    offsIntf5T = offsIntf4T+sizeof(Intf4T),
-  };
 
 public:
   EsDerivedImpl5() ES_NOTHROW :
@@ -1652,12 +1534,6 @@ public:
   typedef EsDerivedImplRc1<DerivedT, BaseImplT, Intf1T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
 
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = sizeof(BaseImplT),
-  };
-
 public:
   EsDerivedImplRc1() ES_NOTHROW :
   BaseImplT()
@@ -1698,13 +1574,6 @@ public:
   /// and void call to ThisT method
   typedef EsDerivedImplRc2<DerivedT, BaseImplT, Intf1T, Intf2T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = sizeof(BaseImplT),
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-  };
 
 public:
   EsDerivedImplRc2() ES_NOTHROW :
@@ -1753,14 +1622,6 @@ public:
   /// and void call to ThisT method
   typedef EsDerivedImplRc3<DerivedT, BaseImplT, Intf1T, Intf2T, Intf3T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = sizeof(BaseImplT),
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-  };
 
 public:
   EsDerivedImplRc3() ES_NOTHROW :
@@ -1816,15 +1677,6 @@ public:
   /// and void call to ThisT method
   typedef EsDerivedImplRc4<DerivedT, BaseImplT, Intf1T, Intf2T, Intf3T, Intf4T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = sizeof(BaseImplT),
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsIntf4T = offsIntf3T+sizeof(Intf3T),
-  };
 
 public:
   EsDerivedImplRc4() ES_NOTHROW :
@@ -1887,16 +1739,6 @@ public:
   /// and void call to ThisT method
   typedef EsDerivedImplRc5<DerivedT, BaseImplT, Intf1T, Intf2T, Intf3T, Intf4T, Intf5T> ThisT;
   typedef void (ThisT:: *EsBaseImplCallT)(void);
-
-private:
-  /// Values that represent internal interface offsets.
-  enum {
-    offsIntf1T = sizeof(BaseImplT),
-    offsIntf2T = offsIntf1T+sizeof(Intf1T),
-    offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsIntf4T = offsIntf3T+sizeof(Intf3T),
-    offsIntf5T = offsIntf4T+sizeof(Intf4T),
-  };
 
 public:
   EsDerivedImplRc5() ES_NOTHROW :

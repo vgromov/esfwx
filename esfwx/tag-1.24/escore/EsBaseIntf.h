@@ -336,25 +336,10 @@ public:
   /// Perform typed intfptr request with optional incref control
   ///
   template <typename IntfT>
-  inline IntfT* asIntfT(bool doIncref = true) ES_NOTHROW
-  {
-    return reinterpret_cast<IntfT*>(
-      asBaseIntf()->requestIntf(
-        EsIID::fromIntf<IntfT>(),
-        doIncref
-      )
-    );
-  }
+  IntfT* asIntfT(bool doIncref = true) ES_NOTHROW;
+
   template <typename IntfT>
-  inline const IntfT* asIntfT(bool doIncref = true) const ES_NOTHROW //< Contness handling
-  {
-    return reinterpret_cast<const IntfT*>(
-      const_cast<EsBaseIntf*>(asBaseIntf())->requestIntf(
-        EsIID::fromIntf<IntfT>(),
-        doIncref
-      )
-    );
-  }
+  const IntfT* asIntfT(bool doIncref = true) const ES_NOTHROW; //< Contness handling
 };
 //---------------------------------------------------------------------------
 
