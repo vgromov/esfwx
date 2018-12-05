@@ -123,10 +123,11 @@ EsScript::~EsScript()
 }
 //---------------------------------------------------------------------------
 
-EsScriptIntf::Ptr EsScript::create(const EsScriptIntf::Ptr& master /*= EsScriptIntf::Ptr()*/)
+EsScriptIntf::Ptr EsScript::create(const EsScriptIntf::Ptr& master /*= nullptr*/)
 {
   std::unique_ptr<EsScript> p(new EsScript(master));
-  ES_ASSERT(p.get());
+  ES_ASSERT(p);
+
   return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
@@ -226,7 +227,9 @@ void EsScript::set_master(const EsBaseIntfPtr& master)
   EsScriptIntf::Ptr s = master;
   EsScriptIntf::Ptr weakMaster(
     s.get(),
-    false, false);
+    false,
+    false
+  );
 
   m_master = weakMaster;
 }
@@ -886,7 +889,6 @@ EsVariant EsScript::callMethod(cr_EsString name, cr_EsVariant params)
   );
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 EsVariant EsScript::call(const EsString& name)
