@@ -11,6 +11,14 @@ set(tests_SRCS
 		main.cpp
 		)
 
+# Add backward.cpp - pretty stack backtrace printer
+if(LINUX)
+set(tests_SRCS
+		${tests_SRCS}
+		backward-cpp/backward.cpp
+		)
+endif()
+
 # targets
 set(staticMarker "")
 if( NOT BUILD_SHARED_LIBS )

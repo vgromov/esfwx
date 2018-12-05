@@ -5,6 +5,11 @@
 #include <esscript/esscript.h>
 #pragma hdrstop
 
+#if ES_OS == ES_OS_LINUX
+# define BACKWARD_HAS_BFD 1
+# include "backward-cpp/backward.hpp"
+#endif
+
 #include <sstream>
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
