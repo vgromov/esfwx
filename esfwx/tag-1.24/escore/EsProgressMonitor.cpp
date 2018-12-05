@@ -317,26 +317,26 @@ EsString EsProgressMonitorTask::progressTextGet() const
 EsProgressMonitorTask* EsProgressMonitorTask::asTask(const EsProgressMonitorTaskIntf::Ptr& ptask)
 {
   ES_ASSERT(ptask);
-  EsProgressMonitorTaskIntf* pintf = ptask.get();
-  void* pbase = pintf->requestIntf(
-      EsIID::fromIntf<EsBaseIntf>(),
-      false
-    );
-  ES_ASSERT(pbase);
 
-  return reinterpret_cast<EsProgressMonitorTask*>(pbase);
+  EsProgressMonitorTask* pimpl = reinterpret_cast<EsProgressMonitorTask*>(
+    ptask->implementorGet()
+  );
+  ES_ASSERT(pimpl);
+
+  return pimpl;
 }
 //---------------------------------------------------------------------------
 
 EsProgressMonitor* EsProgressMonitorTask::asMonitor(const EsProgressMonitorIntf::Ptr& pmon)
 {
   ES_ASSERT(pmon);
-  EsProgressMonitorIntf* pintf = pmon.get();
-  void* pbase =
-    pintf->requestIntf(EsIID::fromIntf<EsBaseIntf>(), false);
-  ES_ASSERT(pbase);
 
-  return reinterpret_cast<EsProgressMonitor*>(pbase);
+  EsProgressMonitor* pimpl = reinterpret_cast<EsProgressMonitor*>(
+    pmon->implementorGet()
+  );
+  ES_ASSERT(pimpl);
+
+  return pimpl;
 }
 //---------------------------------------------------------------------------
 
@@ -635,7 +635,8 @@ EsVariant EsProgressMonitorTask::completionGet() const
       for(ulong idx = 0; idx < cnt; ++idx)
       {
         EsProgressMonitorTask* task = reinterpret_cast<EsProgressMonitorTask*>(
-          m_children.valueGet(idx).asPointer());
+          m_children.valueGet(idx).asPointer()
+        );
         ES_ASSERT(task);
 
         total += task->completionGet().asDouble();
@@ -683,7 +684,8 @@ void EsProgressMonitorTask::internalMonitorSet(const EsProgressMonitorIntf::Ptr&
   for( ulong idx = 0; idx < m_children.countGet(); ++idx )
   {
     EsProgressMonitorTask* child = reinterpret_cast<EsProgressMonitorTask*>(
-      m_children.valueGet(idx).asPointer());
+      m_children.valueGet(idx).asPointer()
+    );
     ES_ASSERT(child);
 
     child->internalMonitorSet( mon );

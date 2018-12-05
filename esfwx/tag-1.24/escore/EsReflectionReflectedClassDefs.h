@@ -3,7 +3,7 @@
 
 // reflected class declaration macro
 //
-#define ES_THISBASE_CAST  asBaseIntf()
+#define ES_THISBASE_CAST  this
 
 // declares this class the first one, implementing EsReflectedClassIntf in
 // the inheritance chain. if not, use ES_DECL_REFLECTED_CLASS instead
@@ -14,12 +14,9 @@ public: \
   ES_DECL_INTF_METHOD(const EsClassInfo&, classInfoGet)() const ES_NOTHROW ES_OVERRIDE { return ClassName ::classInfoGetStatic(); } \
   ES_DECL_INTF_METHOD(EsMetaclassIntf::Ptr, metaGet)() const ES_NOTHROW ES_OVERRIDE { return EsMetaclass::instance(); } \
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classInfoGet().nameGet(); } \
-  ES_DECL_INTF_METHOD(bool, isKindOf)(const EsReflectedClassIntf::Ptr& other) const ES_NOTHROW ES_OVERRIDE \
-  { if( other ) return classInfoGet().isKindOf( other->classInfoGet() ); return false; } \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, isKindOf, cr_EsString) ES_NOTHROW ES_OVERRIDE \
-  { return classInfoGet().isKindOf(p1); } \
-  ES_DECL_INTF_METHOD(bool, isKindOf)(const EsClassInfo& other) const ES_NOTHROW ES_OVERRIDE \
-  { return classInfoGet().isKindOf(other); } \
+  ES_DECL_INTF_METHOD(bool, isKindOf)(const EsReflectedClassIntf::Ptr& other) const ES_NOTHROW ES_OVERRIDE { if( other ) return classInfoGet().isKindOf( other->classInfoGet() ); return false; } \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, isKindOf, cr_EsString) ES_NOTHROW ES_OVERRIDE { return classInfoGet().isKindOf(p1); } \
+  ES_DECL_INTF_METHOD(bool, isKindOf)(const EsClassInfo& other) const ES_NOTHROW ES_OVERRIDE { return classInfoGet().isKindOf(other); } \
   ES_DECL_REFLECTED_INTF_METHOD1(void, copyFrom, cr_EsBaseIntfPtr) ES_OVERRIDE \
   { EsReflectedClassIntf::Ptr obj = p1; ES_ASSERT(obj); \
     if( isKindOf(obj) ) { const EsStringArray& propNames = persistentPropertyNamesGet(); \
@@ -28,30 +25,16 @@ public: \
       propertySet(prop, obj->propertyGet(prop)); } \
     } else EsException::Throw(esT("Could not copy from object of different type")); \
   } \
-   ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsBaseIntfPtr, asWeakReference) ES_NOTHROW ES_OVERRIDE \
-  { return const_cast<ThisClassT*>(this)->asBaseIntfPtrDirectWeak(); } \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isIndexed) ES_NOTHROW ES_OVERRIDE \
-  { return classInfoGet().isIndexed(); } \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isScripted) ES_NOTHROW ES_OVERRIDE \
-  { return false; } \
-  ES_DECL_INTF_METHOD(EsString::Array, propertyNamesGet)() const ES_NOTHROW ES_OVERRIDE \
-  { return classInfoGet().propertyNamesGet(); } \
-  ES_DECL_INTF_METHOD(EsString::Array, persistentPropertyNamesGet)() const ES_NOTHROW ES_OVERRIDE \
-  { return classInfoGet().persistentPropertyNamesGet(); } \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, hasProperty, cr_EsString) ES_NOTHROW ES_OVERRIDE \
-  { return classInfoGet().hasProperty(p1); } \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, propertyCanRead, cr_EsString) ES_OVERRIDE \
-  { const EsPropertyInfo& info = classInfoGet().propertyInfoGet(p1); \
-    return info.canRead(); } \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, propertyCanWrite, cr_EsString) ES_OVERRIDE \
-  { const EsPropertyInfo& info = classInfoGet().propertyInfoGet(p1); \
-    return info.canWrite(); } \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, propertyGet, cr_EsString) ES_OVERRIDE \
-  { const EsPropertyInfo& info = classInfoGet().propertyInfoGet(p1); \
-    return info.get( ES_THISBASE_CAST ); } \
-  ES_DECL_REFLECTED_INTF_METHOD2(void, propertySet, cr_EsString, cr_EsVariant) ES_OVERRIDE \
-  { const EsPropertyInfo& info = classInfoGet().propertyInfoGet(p1); \
-    return info.set( ES_THISBASE_CAST, p2); } \
+   ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsBaseIntfPtr, asWeakReference) ES_NOTHROW ES_OVERRIDE { return const_cast<ThisClassT*>(this)->asBaseIntfPtrDirectWeak(); } \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isIndexed) ES_NOTHROW ES_OVERRIDE { return classInfoGet().isIndexed(); } \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isScripted) ES_NOTHROW ES_OVERRIDE { return false; } \
+  ES_DECL_INTF_METHOD(EsString::Array, propertyNamesGet)() const ES_NOTHROW ES_OVERRIDE { return classInfoGet().propertyNamesGet(); } \
+  ES_DECL_INTF_METHOD(EsString::Array, persistentPropertyNamesGet)() const ES_NOTHROW ES_OVERRIDE { return classInfoGet().persistentPropertyNamesGet(); } \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, hasProperty, cr_EsString) ES_NOTHROW ES_OVERRIDE { return classInfoGet().hasProperty(p1); } \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, propertyCanRead, cr_EsString) ES_OVERRIDE { const EsPropertyInfo& info = classInfoGet().propertyInfoGet(p1); return info.canRead(); } \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, propertyCanWrite, cr_EsString) ES_OVERRIDE { const EsPropertyInfo& info = classInfoGet().propertyInfoGet(p1); return info.canWrite(); } \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, propertyGet, cr_EsString) ES_OVERRIDE { const EsPropertyInfo& info = classInfoGet().propertyInfoGet(p1); return info.get( ES_THISBASE_CAST ); } \
+  ES_DECL_REFLECTED_INTF_METHOD2(void, propertySet, cr_EsString, cr_EsVariant) ES_OVERRIDE { const EsPropertyInfo& info = classInfoGet().propertyInfoGet(p1); return info.set( ES_THISBASE_CAST, p2); } \
   ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsStringArray, propertyAttributeNamesGet, cr_EsString) ES_OVERRIDE \
   { EsStringArray result; const EsPropertyInfo& info = classInfoGet().propertyInfoGet(p1); \
     EsAttributesIntf::Ptr attrs = info.attributesAccess(); if( attrs ) { result = attrs->allNamesGet(); } \
@@ -70,10 +53,8 @@ public: \
   ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsString, propertyDescriptionGet, cr_EsString) ES_OVERRIDE \
   { const EsPropertyInfo& info = classInfoGet().propertyInfoGet(p1); \
     return info.descriptionGet(); } \
-  ES_DECL_INTF_METHOD(bool, hasMethod)(const EsMethodInfoKeyT& key) const ES_NOTHROW ES_OVERRIDE \
-  { return classInfoGet().hasMethod(key); } \
-  ES_DECL_INTF_METHOD(bool, hasClassMethod)(const EsMethodInfoKeyT& key) const ES_NOTHROW ES_OVERRIDE \
-  { return classInfoGet().hasClassMethod(key); } \
+  ES_DECL_INTF_METHOD(bool, hasMethod)(const EsMethodInfoKeyT& key) const ES_NOTHROW ES_OVERRIDE { return classInfoGet().hasMethod(key); } \
+  ES_DECL_INTF_METHOD(bool, hasClassMethod)(const EsMethodInfoKeyT& key) const ES_NOTHROW ES_OVERRIDE { return classInfoGet().hasClassMethod(key); } \
   ES_DECL_PROPERTY_RO(type, EsString) \
   ES_DECL_PROPERTY_RO(attributeNames, EsStringArray) \
   ES_DECL_REFLECTED_CONST_METHOD1(EsVariant, attribute, cr_EsString); \
@@ -103,14 +84,10 @@ public: \
   ES_DECL_REFLECTED_INTF_CONST_METHOD7(EsVariant, classCall, cr_EsString, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant, cr_EsVariant) ES_OVERRIDE;
 
 #define ES_DECL_ATTR_HANDLING_STD \
-  ES_DECL_INTF_METHOD(void, attributesAssign)(const EsAttributesIntf::Ptr& attrs) ES_OVERRIDE \
-  { const_cast<EsClassInfo&>(classInfoGet()).attributesAssign(attrs); } \
-  ES_DECL_INTF_METHOD(void, attributeAdd)(const EsString& name, const EsVariant& val = EsVariant::null()) ES_OVERRIDE \
-  { const_cast<EsClassInfo&>(classInfoGet()).attributeAdd(name, val); } \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, hasAttribute, cr_EsString) ES_NOTHROW ES_OVERRIDE \
-  { return classInfoGet().attributesAccess()->attributeExists(p1); } \
-  ES_DECL_INTF_METHOD(EsString::Array, attributeNamesGet)() const ES_NOTHROW ES_OVERRIDE \
-  { return classInfoGet().attributesAccess()->allNamesGet(); } \
+  ES_DECL_INTF_METHOD(void, attributesAssign)(const EsAttributesIntf::Ptr& attrs) ES_OVERRIDE { const_cast<EsClassInfo&>(classInfoGet()).attributesAssign(attrs); } \
+  ES_DECL_INTF_METHOD(void, attributeAdd)(const EsString& name, const EsVariant& val = EsVariant::null()) ES_OVERRIDE { const_cast<EsClassInfo&>(classInfoGet()).attributeAdd(name, val); } \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, hasAttribute, cr_EsString) ES_NOTHROW ES_OVERRIDE { return classInfoGet().attributesAccess()->attributeExists(p1); } \
+  ES_DECL_INTF_METHOD(EsString::Array, attributeNamesGet)() const ES_NOTHROW ES_OVERRIDE { return classInfoGet().attributesAccess()->allNamesGet(); } \
   ES_DECL_REFLECTED_INTF_CONST_METHOD1(EsVariant, attributeGet, cr_EsString) ES_OVERRIDE \
   { EsAttributesIntf::Ptr attrs = classInfoGet().attributesAccess(); \
     if( !attrs->attributeExists(p1) ) EsException::ThrowAttributeDoesNotExist(p1, typeNameGet()); \

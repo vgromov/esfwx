@@ -508,16 +508,24 @@ llong EsTimeSpan::get_allMilliseconds() const
 }
 //---------------------------------------------------------------------------
 
+static EsTimeSpan* timeSpanPtrFromObj(const EsReflectedClassIntf::Ptr& obj)
+{
+  if(obj && obj->isKindOf(EsTimeSpan::classNameGetStatic()))
+    return ES_INTFPTR_TO_OBJECTPTR(obj, EsTimeSpan);
+
+  return nullptr;
+}
+//---------------------------------------------------------------------------
+
 esDT EsTimeSpan::fromVariant(const EsVariant& var)
 {
   if( var.isObject() )
   {
-    EsReflectedClassIntf::Ptr o = var.asExistingObject();
-    EsTimeSpan* dt = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
-    if(dt)
-      return static_cast<esDT>(*dt);
+    EsTimeSpan* dts = timeSpanPtrFromObj(var.asExistingObject());
+    if(dts)
+      return static_cast<esDT>(*dts);
 
-    EsException::Throw(esT("Could not convert variant to esDT value"));
+    EsException::Throw(esT("Could not convert variant to EsTimeSpan value"));
   }
   else
     return var.asLLong();
@@ -536,9 +544,8 @@ EsVariant EsTimeSpan::compare(cr_EsVariant spanOrLlong) const
 {
   if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
   {
-    EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
-    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
-    if( dts )
+    EsTimeSpan* dts = timeSpanPtrFromObj(spanOrLlong.asExistingObject());
+    if(dts)
       return cmp(dts);
   }
   else
@@ -558,8 +565,7 @@ EsVariant EsTimeSpan::add(cr_EsVariant spanOrLlong) const
   checkComposed();
   if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
   {
-    EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
-    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
+    EsTimeSpan* dts = timeSpanPtrFromObj(spanOrLlong.asExistingObject());
     if(dts)
       return create(m_dt + static_cast<esDT>(*dts));
   }
@@ -576,8 +582,7 @@ EsVariant EsTimeSpan::subtract(cr_EsVariant spanOrLlong) const
   checkComposed();
   if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
   {
-    EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
-    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
+    EsTimeSpan* dts = timeSpanPtrFromObj(spanOrLlong.asExistingObject());
     if(dts)
       return create(m_dt - static_cast<esDT>(*dts));
   }
@@ -913,12 +918,20 @@ EsDateTime::operator esDT () const
 }
 //---------------------------------------------------------------------------
 
+static EsDateTime* dateTimePtrFromObj(const EsReflectedClassIntf::Ptr& obj)
+{
+  if(obj && obj->isKindOf(EsDateTime::classNameGetStatic()))
+    return ES_INTFPTR_TO_OBJECTPTR(obj, EsDateTime);
+
+  return nullptr;
+}
+//---------------------------------------------------------------------------
+
 esDT EsDateTime::fromVariant(const EsVariant& var)
 {
   if( var.isObject() )
   {
-    EsReflectedClassIntf::Ptr o = var.asExistingObject();
-    EsDateTime* dt = ES_INTFPTR_TO_OBJECTPTR(o, EsDateTime);
+    EsDateTime* dt = dateTimePtrFromObj(var.asExistingObject());
     if(dt)
       return static_cast<esDT>(*dt);
 
@@ -1174,8 +1187,7 @@ EsVariant EsDateTime::compare(cr_EsVariant otherDt) const
 {
   if( otherDt.isObject() && !otherDt.isEmpty() )
   {
-    EsReflectedClassIntf::Ptr o = otherDt.asExistingObject();
-    EsDateTime* dt = ES_INTFPTR_TO_OBJECTPTR(o, EsDateTime);
+    EsDateTime* dt = dateTimePtrFromObj(otherDt.asExistingObject());
     if( dt )
       return cmp(dt);
   }
@@ -1191,8 +1203,7 @@ EsVariant  EsDateTime::add(cr_EsVariant spanOrLlong) const
   checkComposed();
   if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
   {
-    EsReflectedClassIntf::Ptr o = spanOrLlong.asExistingObject();
-    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
+    EsTimeSpan* dts = timeSpanPtrFromObj(spanOrLlong.asExistingObject());
     if(dts)
       return create(m_dt + static_cast<esDT>(*dts));
   }
@@ -1210,15 +1221,14 @@ EsVariant  EsDateTime::subtract(cr_EsVariant spanOrDtOrLlong) const
   checkComposed();
   if( spanOrDtOrLlong.isObject() && !spanOrDtOrLlong.isEmpty() )
   {
-    EsReflectedClassIntf::Ptr o = spanOrDtOrLlong.asExistingObject();
     // try span
-    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR(o, EsTimeSpan);
+    EsTimeSpan* dts = timeSpanPtrFromObj(spanOrDtOrLlong.asExistingObject());
     if(dts)
       return create(m_dt - static_cast<esDT>(*dts));
     else
     {
       // try date time - should return span object then
-      EsDateTime* dt = ES_INTFPTR_TO_OBJECTPTR(o, EsDateTime);
+      EsDateTime* dt = dateTimePtrFromObj(spanOrDtOrLlong.asExistingObject());
       if( dt )
         return EsTimeSpan::create(m_dt - static_cast<esDT>(*dt));
     }

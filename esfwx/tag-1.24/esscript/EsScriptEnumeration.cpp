@@ -13,3 +13,19 @@
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN( EsScriptEnumeration, EsEnumeration, NO_CLASS_DESCR )
 ES_DECL_CLASS_INFO_END
+//---------------------------------------------------------------------------
+
+EsEnumerationIntf::Ptr EsScriptEnumeration::create(EsScriptMachine& machine, const EsString& enumTypeName)
+{
+  std::unique_ptr<EsScriptEnumeration> ptr(
+    new EsScriptEnumeration(
+      machine,
+      enumTypeName
+    )
+  );
+  ES_ASSERT(ptr);
+
+  return ptr.release()->asBaseIntfPtrDirect();
+}
+//---------------------------------------------------------------------------
+

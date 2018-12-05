@@ -8,7 +8,7 @@ class EsFtdiDriver;
 
 /// FTDI device interface specification
 ///
-ES_DECL_INTF_BEGIN2(80FC64D2, 701F41E0, 9C40C863, 9FCE8569, EsFtdiDeviceIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(80FC64D2, 701F41E0, 9C40C863, 9FCE8569, EsFtdiDeviceIntf)
 
 public:
   /// FTDI device handle type
@@ -97,7 +97,7 @@ ES_DECL_INTF_END
 ///
 
 /// MPSSE GPIO Interface
-ES_DECL_INTF_BEGIN2(4D5C3287, BD344EC6, B36DC77E, 7F1DDD74, EsFtdiMpsseGpioIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(4D5C3287, BD344EC6, B36DC77E, 7F1DDD74, EsFtdiMpsseGpioIntf)
 
   /// Configure direction and initial state of GPIO pins. Must be called at least once
   /// before reading from GPIO
@@ -115,7 +115,7 @@ ES_DECL_INTF_END
 
 /// MPSSE I2C
 ///
-ES_DECL_INTF_BEGIN2(18BB3BFD, 27B14C6F, 9D2FC802, 5905B6C3, EsFtdiMpsseI2cIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(18BB3BFD, 27B14C6F, 9D2FC802, 5905B6C3, EsFtdiMpsseI2cIntf)
 
 public:
   // Standard I2C clock rates
@@ -209,7 +209,7 @@ ES_DECL_INTF_END
 //---------------------------------------------------------------------------
 
 /// MPSSE SPI
-ES_DECL_INTF_BEGIN2(1B289726, 3CA74A3A, B96E0A15, D840639C, EsFtdiMpsseSpiIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(1B289726, 3CA74A3A, B96E0A15, D840639C, EsFtdiMpsseSpiIntf)
 
 public:
   /// SPI data capture and polarity control

@@ -3,7 +3,7 @@
 
 /// Event handler interface declaration, EsEventHandlerIntf
 ///
-ES_DECL_INTF_BEGIN2( 8BDC7BDC, 13534891, 94B1BF5D, 8E847C10, EsEventHandlerIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( 8BDC7BDC, 13534891, 94B1BF5D, 8E847C10, EsEventHandlerIntf)
 
   /// Common services
   ///

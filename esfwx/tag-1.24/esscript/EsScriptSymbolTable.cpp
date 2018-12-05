@@ -18,12 +18,19 @@ class ES_INTF_IMPL1(EsScriptValAccessor, EsScriptValAccessorIntf)
 protected:
   // friend-only functionality
   EsScriptValAccessor(const EsString& name, const EsVariant& var, ulong flags, EsScriptObjectIntf* parent);
-  static EsScriptValAccessorIntf::Ptr create(const EsString& name, const EsVariant& var, ulong flags, EsScriptObjectIntf* parent/* = 0*/)
+  static EsScriptValAccessorIntf::Ptr create(const EsString& name, const EsVariant& var, ulong flags, EsScriptObjectIntf* parent)
   {
-    EsScriptValAccessorIntf::Ptr ptr(new EsScriptValAccessor(name, var, flags, parent));
+    std::unique_ptr<EsScriptValAccessor> ptr(
+      new EsScriptValAccessor(
+        name, 
+        var, 
+        flags, 
+        parent
+      )
+    );
     ES_ASSERT(ptr);
 
-    return ptr;
+    return ptr.release()->asBaseIntfPtrDirect();
   }
 
 public:
@@ -289,7 +296,7 @@ void EsScriptSymbolTable::symbolTemplateAdd(const EsString& name, ulong flags,
 }
 
 EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::symbolNonTemplateAdd(const EsString& name, const EsVariant& val, ulong flags,
-                                    const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/)
+                                    const EsScriptDebugInfoIntf::Ptr& dbg /*= nullptr*/)
 {
   checkNonTemplateOperation();
   if( m_contents.itemExists(name) )
@@ -410,7 +417,12 @@ void EsScriptSymbolTable::symbolValSetIgnoreReadOnly(const EsString& name, const
 
 EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::valAccessorCreate(const EsString& name, const EsVariant& val, ulong flags)
 {
-  return EsScriptValAccessor::create(name, val, flags, 0);
+  return EsScriptValAccessor::create(
+    name, 
+    val, 
+    flags, 
+    nullptr
+  );
 }
 
 // internal services

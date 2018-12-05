@@ -11,7 +11,7 @@ class EsProtocolIoMonitorProxy;
 // may be any reflected class, implementing the same named services, as ones, declared by the native interface.
 // idGet string is _any_ string, uniquely identifying the protocol instance which posts its messages to monitor
 //
-ES_DECL_INTF_BEGIN2( 733DCDE0, 5BB242ab, A9DBDABE, C167FA8A, EsProtocolIoMonitorIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( 733DCDE0, 5BB242ab, A9DBDABE, C167FA8A, EsProtocolIoMonitorIntf )
   ES_DECL_INTF_METHOD(void, protocolFrameSent)(const EsString& idGet, const EsBinBuffer& frameData) = 0;
   ES_DECL_INTF_METHOD(void, protocolFrameSendingFailed)(const EsString& idGet, const EsString& error) = 0;
   ES_DECL_INTF_METHOD(void, protocolFrameReceived)(const EsString& idGet, const EsBinBuffer& frameData) = 0;
@@ -52,7 +52,7 @@ public:
 
 // ekosfera rpc master interface definition
 //
-ES_DECL_INTF_BEGIN2( E10F84C7, 3C384C34, 8064F310, BB8B2B51, EsRpcMasterIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( E10F84C7, 3C384C34, 8064F310, BB8B2B51, EsRpcMasterIntf )
   // unique id string
   ES_DECL_INTF_METHOD(EsString, idGet)() const = 0;
   // lock|unlock

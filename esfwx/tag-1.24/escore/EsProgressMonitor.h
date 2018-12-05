@@ -23,7 +23,7 @@ enum EsProgressMonitorEventId
 
 /// Progress monitor task interface
 ///
-ES_DECL_INTF_BEGIN2( C9D5F372, 2EDF4904, 928FE50A, C4306020, EsProgressMonitorTaskIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( C9D5F372, 2EDF4904, 928FE50A, C4306020, EsProgressMonitorTaskIntf )
 
 protected:
   /// Progress monitor task state.
@@ -97,7 +97,7 @@ ES_DECL_INTF_END
 
 /// Progress monitor interface
 ///
-ES_DECL_INTF_BEGIN2( 99860C17, 23CE478A, BC91CCE4, B706483D, EsProgressMonitorIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( 99860C17, 23CE478A, BC91CCE4, B706483D, EsProgressMonitorIntf )
 
   /// Return view event category
   ES_DECL_INTF_METHOD(const EsString&, eventCategoryGet)() const = 0;

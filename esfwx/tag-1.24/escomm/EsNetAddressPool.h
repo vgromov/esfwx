@@ -3,7 +3,7 @@
 
 /// Address pool interface specification
 ///
-ES_DECL_INTF_BEGIN2( 36974FAC, CF5D4F69, 85D2EFD8, 8E6EBA15, EsNetAddressPoolIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( 36974FAC, CF5D4F69, 85D2EFD8, 8E6EBA15, EsNetAddressPoolIntf )
 
   /// Initialize pool, effectively resetting it
   ES_DECL_INTF_METHOD(void, initialize)() = 0;

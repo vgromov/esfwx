@@ -1,7 +1,7 @@
 #ifndef _es_script_main_h_
 #define _es_script_main_h_
 
-ES_DECL_INTF_BEGIN2(D558F74B, 4D8A4b21, A441FB9E, D5F74C32, EsScriptIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(D558F74B, 4D8A4b21, A441FB9E, D5F74C32, EsScriptIntf)
 
   /// Include paths manipulation
   ES_DECL_INTF_METHOD(void, includePathAdd)(const EsString& path, bool doThrow = true) = 0;

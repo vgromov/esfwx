@@ -11,128 +11,128 @@ class EsMethodInfoKeyT;
 class EsClassInfo;
 
 #define ES_REFLECTED_PROPERTIES_RESET \
-  classInfoGetStatic().resetAllProperties(this->asBaseIntf())
+  classInfoGetStatic().resetAllProperties(this)
 
 // reflected type aliasing. reflected type names must be single word without spaces
-typedef const EsString&        cr_EsString;
-#define To_EsString(var)      (var).asString()
-#define To_cr_EsString(var)   (var).asString()
-#define From_EsString(s)      (s)
-#define From_cr_EsString(s)    (s)
+typedef const EsString&         cr_EsString;
+#define To_EsString(var)        (var).asString()
+#define To_cr_EsString(var)     (var).asString()
+#define From_EsString(s)        (s)
+#define From_cr_EsString(s)     (s)
 
 typedef const EsString::Array& cr_EsStringArray;
 #define To_EsStringArray(var)  (var).asStringCollection()
 #define To_cr_EsStringArray(var) (var).asStringCollection()
 #define From_EsStringArray(a)  (a)
 
-#define To_p_void(var)        (var).asPointer()
-#define To_cp_void(var)        (var).asPointer()
-#define From_p_void(p)        EsVariant(p, EsVariant::ACCEPT_POINTER)
+#define To_p_void(var)          (var).asPointer()
+#define To_cp_void(var)         (var).asPointer()
+#define From_p_void(p)          EsVariant(p, EsVariant::ACCEPT_POINTER)
 
-#define To_long(var)          (var).asLong()
-#define To_cr_long(var)        (var).asLong()
-#define From_long(l)          (l)
+#define To_long(var)            (var).asLong()
+#define To_cr_long(var)         (var).asLong()
+#define From_long(l)            (l)
 
-#define To_ulong(var)          (var).asULong()
-#define To_cr_ulong(var)      (var).asULong()
-#define From_ulong(u)          (u)
+#define To_ulong(var)           (var).asULong()
+#define To_cr_ulong(var)        (var).asULong()
+#define From_ulong(u)           (u)
 
-#define To_llong(var)          (var).asLLong()
-#define To_cr_llong(var)      (var).asLLong()
-#define From_llong(ll)        (ll)
+#define To_llong(var)           (var).asLLong()
+#define To_cr_llong(var)        (var).asLLong()
+#define From_llong(ll)          (ll)
 
-#define To_ullong(var)        (var).asULLong()
-#define To_cr_ullong(var)      (var).asULLong()
-#define From_ullong(ull)      (ull)
+#define To_ullong(var)          (var).asULLong()
+#define To_cr_ullong(var)       (var).asULLong()
+#define From_ullong(ull)        (ull)
 
-#define To_double(var)        (var).asDouble()
-#define To_cr_double(var)      (var).asDouble()
-#define From_double(d)        (d)
+#define To_double(var)          (var).asDouble()
+#define To_cr_double(var)       (var).asDouble()
+#define From_double(d)          (d)
 
-#define To_bool(var)          (var).asBool()
-#define To_cr_bool(var)        (var).asBool()
-#define From_bool(b)          (b)
+#define To_bool(var)            (var).asBool()
+#define To_cr_bool(var)         (var).asBool()
+#define From_bool(b)            EsVariant(b) //< Explicit ctor from bool
 
-#define To_byte(var)          (var).asByte()
-#define To_cr_byte(var)        (var).asByte()
-#define From_byte(b)          (b)
+#define To_byte(var)            (var).asByte()
+#define To_cr_byte(var)         (var).asByte()
+#define From_byte(b)            EsVariant(static_cast<esU8>(b))     //< Explicit ctor from byte
 
-typedef EsBaseIntf::Ptr        EsBaseIntfPtr;
-typedef const EsBaseIntfPtr&  cr_EsBaseIntfPtr;
-#define To_EsBaseIntfPtr(var)  (var).asObject()
+typedef EsBaseIntf::Ptr         EsBaseIntfPtr;
+typedef const EsBaseIntfPtr&    cr_EsBaseIntfPtr;
+#define To_EsBaseIntfPtr(var)   (var).asObject()
 #define To_cr_EsBaseIntfPtr(var) (var).asObject()
-#define From_EsBaseIntfPtr(ip) (ip)
+#define From_EsBaseIntfPtr(ip)  (ip)
 
-typedef const EsBinBuffer&    cr_EsBinBuffer;
-#define To_cr_EsBinBuffer(var) (var).asBinBuffer()
-#define From_EsBinBuffer(bb)  (bb)
+typedef const EsBinBuffer&      cr_EsBinBuffer;
+#define To_cr_EsBinBuffer(var)  (var).asBinBuffer()
+#define From_EsBinBuffer(bb)    (bb)
 
 // dummy define for variant-to variant casts
-typedef const EsVariant&      cr_EsVariant;
-#define To_EsVariant(var)      (var)
-#define To_cr_EsVariant(var)  (var)
-#define From_EsVariant(v)      (v)
-#define From_cr_EsVariant(v)  (v)
+typedef const EsVariant&        cr_EsVariant;
+#define To_EsVariant(var)       (var)
+#define To_cr_EsVariant(var)    (var)
+#define From_EsVariant(v)       (v)
+#define From_cr_EsVariant(v)    (v)
 
 // misc stubs
-#define From_double(d)        (d)
-#define From_int(i)            (i)
+#define From_double(d)          (d)
+#define From_int(i)             (i)
 
 // RPC reflection stubs
-#define To_esU8(var)          (var).asByte()
-#define From_esU8(u)          (u)
-#define To_esI8(var)          static_cast<esI8>((var).asInt())
-#define From_esI8(i)          static_cast<int>(i)
-#define To_esU16(var)          static_cast<esU16>((var).asULong())
-#define From_esU16(u)          static_cast<ulong>(u)
-#define To_WORD                To_esU16
-#define To_esI16(var)          static_cast<esI16>((var).asLong())
-#define From_esI16(i)          static_cast<int>(i)
-#define To_esU32(var)          (var).asULong()
-#define From_esU32(u)          (u)
-#define To_esI32(var)          (var).asLong()
-#define From_esI32(i)          (i)
-#define To_esU64(var)          (var).asULLong()
-#define From_esU64(u)          (u)
-#define To_esI64(var)          (var).asLLong()
-#define From_esI64(i)          (i)
-#define To_esF(var)            static_cast<esF>((var).asDouble())
-#define From_esF(f)            static_cast<double>(f)
-#define To_esD(var)            static_cast<esD>((var).asDouble())
-#define From_esD(d)            static_cast<double>(d)
-#define To_esBL(var)          static_cast<esBL>((var).asBool() == true)
-#define From_esBL(b)          static_cast<bool>((b) == TRUE)
-#define To_esDT(var)          EsDateTime::fromVariant(var)
-#define From_esDT(dt)          EsDateTime::toVariant(dt)
-#define To_esBA(var)          static_cast<esBA>((var).asBinBuffer())
-#define From_esBA(ba)          EsBinBuffer(ba)
+#define To_esU8(var)            (var).asByte()
+#define From_esU8(u)            EsVariant(u) //< Due to explicit contruction from esU8
+#define To_esI8(var)            static_cast<esI8>((var).asInt())
+#define From_esI8(i)            static_cast<int>(i)
+#define To_esU16(var)           static_cast<esU16>((var).asULong())
+#define From_esU16(u)           static_cast<ulong>(u)
+#define To_WORD                 To_esU16
+#define To_esI16(var)           static_cast<esI16>((var).asLong())
+#define From_esI16(i)           static_cast<int>(i)
+#define To_esU32(var)           (var).asULong()
+#define From_esU32(u)           (u)
+#define To_esI32(var)           (var).asLong()
+#define From_esI32(i)           (i)
+#define To_esU64(var)           (var).asULLong()
+#define From_esU64(u)           (u)
+#define To_esI64(var)           (var).asLLong()
+#define From_esI64(i)           (i)
+#define To_esF(var)             static_cast<esF>((var).asDouble())
+#define From_esF(f)             static_cast<double>(f)
+#define To_esD(var)             static_cast<esD>((var).asDouble())
+#define From_esD(d)             static_cast<double>(d)
+#define To_esBL(var)            static_cast<esBL>((var).asBool() == true)
+#define From_esBL(b)            EsVariant(static_cast<bool>((b) == TRUE)) //< Due to explicit construction from bool
+#define To_esDT(var)            EsDateTime::fromVariant(var)
+#define From_esDT(dt)           EsDateTime::toVariant(dt)
+#define To_esBA(var)            static_cast<esBA>((var).asBinBuffer())
+#define From_esBA(ba)           EsBinBuffer(ba)
 // RPC return types stubs (for EsRpcServices thread-safe wrappers, namely for esBA safe copying on return)
 #define esU8_TS                 esU8
-#define esI8_TS                esI8
-#define esU16_TS              esU16
-#define esI16_TS               esI16
-#define esU32_TS              esU32
-#define esI32_TS               esI32
-#define esU64_TS              esU64
-#define esI64_TS               esI64
-#define esF_TS                 esF
-#define esD_TS                 esD
-#define esBL_TS                esBL
-#define esDT_TS                esDT
-#define esBA_TS                EsBinBuffer
-#define To_TS_TYPE(x)          x ##_TS
+#define esI8_TS                 esI8
+#define esU16_TS                esU16
+#define esI16_TS                esI16
+#define esU32_TS                esU32
+#define esI32_TS                esI32
+#define esU64_TS                esU64
+#define esI64_TS                esI64
+#define esF_TS                  esF
+#define esD_TS                  esD
+#define esBL_TS                 esBL
+#define esDT_TS                 esDT
+#define esBA_TS                 EsBinBuffer
+#define To_TS_TYPE(x)           x ##_TS
 // POD reflection type standard range checks
-#define Check_esU8_Range(var)  EsNumericCheck::checkRangeUInteger(0, std::numeric_limits<uint8_t>::max(), var.asULong())
-#define Check_esI8_Range(var)  EsNumericCheck::checkRangeInteger(std::numeric_limits<int8_t>::min(), std::numeric_limits<int8_t>::max(), var.asLong())
-#define Check_esU16_Range(var)   EsNumericCheck::checkRangeUInteger(0, std::numeric_limits<uint16_t>::max(), var.asULong())
+#define Check_esU8_Range(var)   EsNumericCheck::checkRangeUInteger(0, std::numeric_limits<uint8_t>::max(), var.asULong())
+#define Check_esI8_Range(var)   EsNumericCheck::checkRangeInteger(std::numeric_limits<int8_t>::min(), std::numeric_limits<int8_t>::max(), var.asLong())
+#define Check_esU16_Range(var)  EsNumericCheck::checkRangeUInteger(0, std::numeric_limits<uint16_t>::max(), var.asULong())
 #define Check_esI16_Range(var)  EsNumericCheck::checkRangeInteger(std::numeric_limits<int16_t>::min(), std::numeric_limits<int16_t>::max(), var.asLong())
 #define Check_esU32_Range(var)  EsNumericCheck::checkRangeUInteger(0, std::numeric_limits<uint32_t>::max(), var.asULong())
 #define Check_esI32_Range(var)  EsNumericCheck::checkRangeInteger(std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max(), var.asLong())
 #define Check_esU64_Range(var)  EsNumericCheck::checkRangeULLInteger(0UL, std::numeric_limits<uint64_t>::max(), var.asULLong())
 #define Check_esI64_Range(var)  EsNumericCheck::checkRangeLLInteger(std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max(), var.asLLong())
-#define Check_esDT_Range      Check_esI64_Range
-#define Check_esF_Range(var)  EsNumericCheck::checkRangeFloat(-std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), var.asDouble())
-#define Check_esD_Range(var)  EsNumericCheck::checkRangeFloat(-std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), var.asDouble())
+#define Check_esDT_Range        Check_esI64_Range
+#define Check_esF_Range(var)    EsNumericCheck::checkRangeFloat(-std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), var.asDouble())
+#define Check_esD_Range(var)    EsNumericCheck::checkRangeFloat(-std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), var.asDouble())
 
 // reflection helpers
 //
@@ -141,7 +141,7 @@ typedef const EsVariant&      cr_EsVariant;
 
 /// Metaclass services interface declaration
 ///
-ES_DECL_INTF_BEGIN2( 364770DE, FD234A83, 8DD78971, 90410D5C, EsMetaclassIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( 364770DE, FD234A83, 8DD78971, 90410D5C, EsMetaclassIntf )
   /// Inheritance access
   ///
   /// Return names of objects, acessible via reflection interfaces
@@ -226,7 +226,7 @@ ES_DECL_INTF_END
 
 /// Attributes container interface and its implementation
 ///
-ES_DECL_INTF_BEGIN2(1072B084, AD7E4AD7, 8A468399, FF6FDFBB, EsAttributesIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(1072B084, AD7E4AD7, 8A468399, FF6FDFBB, EsAttributesIntf)
   ES_DECL_INTF_METHOD(EsAttributesIntf::Ptr, clone)() const = 0;
   ES_DECL_INTF_METHOD(const EsString&, ownerNameGet)() const ES_NOTHROW = 0;
   ES_DECL_INTF_METHOD(void, clearAll)() ES_NOTHROW = 0;
@@ -270,7 +270,7 @@ public:
   ES_DECL_INTF_METHOD(bool, attributeExists)(const EsString& name) const ES_NOTHROW ES_OVERRIDE;
   ES_DECL_INTF_METHOD(EsAttributesIntf::Ptr, attributeAdd)(const EsString& name, const EsVariant& val) ES_OVERRIDE;
   ES_DECL_INTF_METHOD(bool, isEmpty)() const ES_NOTHROW ES_OVERRIDE { return m_contents.isEmpty(); }
-   ES_DECL_INTF_METHOD(bool, isInterlocked)() const ES_NOTHROW ES_OVERRIDE { return m_contents.isInterlocked(); }
+  ES_DECL_INTF_METHOD(bool, isInterlocked)() const ES_NOTHROW ES_OVERRIDE { return m_contents.isInterlocked(); }
 
 protected:
   EsStringIndexedMap m_contents;
@@ -285,7 +285,7 @@ private:
 
 /// EsReflectedClassIntf declaration - core of reflection API
 ///
-ES_DECL_INTF_BEGIN2( 97C0CB8C, 421B4ef5, A85E85C3, 107B1948, EsReflectedClassIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( 97C0CB8C, 421B4ef5, A85E85C3, 107B1948, EsReflectedClassIntf )
   /// Reflection interface methods
   ///
   ES_DECL_INTF_METHOD(const EsClassInfo&, classInfoGet)() const ES_NOTHROW = 0;
@@ -470,8 +470,7 @@ public:
   EsString fqNameGet() const;
 
   /// Parse FQ name into ClassName, MethodName, ParamCount, and Signature
-  static void fqNameParse(const EsString& fqName, EsString& className, bool& isClassMethod,
-    EsString& methodName, ulong& paramCount, EsString& signature);
+  static void fqNameParse(const EsString& fqName, EsString& className, bool& isClassMethod, EsString& methodName, ulong& paramCount, EsString& signature);
 
   /// Parse FQ name and try to obtain corresponding method info record
   static const EsMethodInfo* infoFromFqNameGet(const EsString& fqName, bool doThrow, bool allHierarchy = true);
@@ -480,7 +479,7 @@ public:
   ///
 
   /// Object member function caller
-  EsVariant call(EsBaseIntf* obj, const EsVariant& params) const;
+  EsVariant call(EsBase* obj, const EsVariant& params) const;
 
   /// Class function caller
   EsVariant classCall(const EsVariant& params) const;
@@ -540,10 +539,10 @@ public:
   inline EsAttributesIntf::Ptr attributesAccess() ES_NOTHROW { return m_attrs; }
   inline const EsAttributesIntf::Ptr attributesAccess() const ES_NOTHROW { return m_attrs; }
   // generic value access
-  EsVariant get(const EsBaseIntf* obj) const;
-  void set(EsBaseIntf* obj, const EsVariant& val) const;
+  EsVariant get(const EsBase* obj) const;
+  void set(EsBase* obj, const EsVariant& val) const;
   // reset property value to default, if there is one. if property has no default, exception is thrown
-  void reset(EsBaseIntf* obj) const;
+  void reset(EsBase* obj) const;
 
 private:
   // prohibited services
@@ -624,10 +623,10 @@ public:
   EsString::Array fqMethodNamesGet(bool allHierarchy = true) const ES_NOTHROW;
 
   /// Property services simplified
-  EsVariant propertyGet(EsBaseIntf* obj, const EsString& name) const;
-  void propertySet(EsBaseIntf* obj, const EsString& name, const EsVariant& val) const;
-  void propertyReset(EsBaseIntf* obj, const EsString& name) const;
-  void resetAllProperties(EsBaseIntf* obj) const;
+  EsVariant propertyGet(EsBase* obj, const EsString& name) const;
+  void propertySet(EsBase* obj, const EsString& name, const EsVariant& val) const;
+  void propertyReset(EsBase* obj, const EsString& name) const;
+  void resetAllProperties(EsBase* obj) const;
 
   /// Generic checks
   ///
@@ -638,14 +637,14 @@ public:
   bool isIndexed() const ES_NOTHROW;
 
   /// Method services simplified
-  EsVariant call(EsBaseIntf* obj, const EsString& name) const;
-  EsVariant call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1) const;
-  EsVariant call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2) const;
-  EsVariant call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3) const;
-  EsVariant call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4) const;
-  EsVariant call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5) const;
-  EsVariant call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5, const EsVariant& param6) const;
-  EsVariant callMethod(EsBaseIntf* obj, const EsString& name, const EsVariant& params) const;
+  EsVariant call(EsBase* obj, const EsString& name) const;
+  EsVariant call(EsBase* obj, const EsString& name, const EsVariant& param1) const;
+  EsVariant call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2) const;
+  EsVariant call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3) const;
+  EsVariant call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4) const;
+  EsVariant call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5) const;
+  EsVariant call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5, const EsVariant& param6) const;
+  EsVariant callMethod(EsBase* obj, const EsString& name, const EsVariant& params) const;
   EsVariant classCall(const EsString& name) const;
   EsVariant classCall(const EsString& name, const EsVariant& param1) const;
   EsVariant classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2) const;

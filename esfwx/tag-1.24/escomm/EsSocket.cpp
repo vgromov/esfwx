@@ -273,13 +273,8 @@ EsSocketAddr* EsSocketAddr::fromVariant(const EsVariant& in)
   if( in.isObject() )
   {
     EsReflectedClassIntf::Ptr obj  = in.asObject();
-    if( obj && obj->isKindOf(esT("EsSocketAddr")) )
-    {
-      EsBaseIntfPtr base = obj;
-      ES_ASSERT(base);
-
-      return reinterpret_cast<EsSocketAddr*>( base.get() );
-    }
+    if( obj && obj->isKindOf(classNameGetStatic()) )
+      return ES_INTFPTR_TO_OBJECTPTR(obj, EsSocketAddr);
   }
 
   return nullptr;

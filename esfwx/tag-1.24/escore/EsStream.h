@@ -3,7 +3,7 @@
 
 /// Stream interface
 ///
-ES_DECL_INTF_BEGIN2(B07715A1, 5FB749AC, ADC74A9B, 3B36E662, EsStreamIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(B07715A1, 5FB749AC, ADC74A9B, 3B36E662, EsStreamIntf)
 
   /// Stream emptiness check
   ES_DECL_INTF_METHOD(bool, isEmpty)() const = 0;

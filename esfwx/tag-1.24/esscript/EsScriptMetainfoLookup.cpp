@@ -244,7 +244,7 @@ EsScriptMachine* EsScriptMetainfoLookup::vm() const
 
   EsScriptMachine* pvm = reinterpret_cast<EsScriptMachine*>(
     refl->call(esT("scriptMachineGet")).asPointer()
-    );
+  );
   ES_ASSERT(pvm);
 
   return pvm;

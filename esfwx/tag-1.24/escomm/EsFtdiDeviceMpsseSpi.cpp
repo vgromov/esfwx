@@ -66,6 +66,7 @@ EsBaseIntf::Ptr EsFtdiDeviceMpsseSpi::create(EsFtdiDriver& owner, const EsFtdiDr
       node
     )
   );
+  ES_ASSERT(ptr);
 
   return ptr.release()->asBaseIntfPtrDirect();
 }

@@ -47,7 +47,7 @@ public:
   ES_DECL_REFLECTED_CLASS( EsMathWindowBartlettHann, EsMathWindow )
 
   // EsBaseIntf implementation
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// Default constructor.
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
@@ -68,7 +68,7 @@ public:
   ES_DECL_REFLECTED_CLASS( EsMathWindowBlackman, EsMathWindow )
 
   // EsBaseIntf implementation
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// Default constructor.
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
@@ -89,7 +89,7 @@ public:
   ES_DECL_REFLECTED_CLASS( EsMathWindowBlackmanHarris, EsMathWindow )
 
   // EsBaseIntf implementation
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
   
   /// Default constructor.
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
@@ -110,7 +110,7 @@ public:
   ES_DECL_REFLECTED_CLASS( EsMathWindowFlatTop, EsMathWindow )
 
   // EsBaseIntf implementation
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// Default constructor.
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
@@ -133,7 +133,7 @@ public:
   ES_DECL_REFLECTED_CLASS( EsMathWindowGaussian, EsMathWindow )
 
   // EsBaseIntf implementation
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// Default constructor.
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
@@ -169,7 +169,7 @@ public:
   ES_DECL_REFLECTED_CLASS( EsMathWindowHamming, EsMathWindow )
 
   // EsBaseIntf implementation
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// Default constructor.
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
@@ -190,7 +190,7 @@ public:
   ES_DECL_REFLECTED_CLASS( EsMathWindowHann, EsMathWindow )
 
   // EsBaseIntf implementation
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// Default constructor.
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
@@ -211,7 +211,7 @@ public:
   ES_DECL_REFLECTED_CLASS( EsMathWindowNuttall, EsMathWindow )
 
   // EsBaseIntf implementation
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW { return classNameGetStatic(); }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// Default constructor.
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);

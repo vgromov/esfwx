@@ -17,7 +17,7 @@ namespace EsScriptSymbolFlag
 // special value accessor objects, used internally to provide transparent item|field|property access
 // in lhs and rhs expressions
 //
-ES_DECL_INTF_BEGIN2(35E7B5D4, D6D8400f, BA799EED, CC38B82E, EsScriptValAccessorIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(35E7B5D4, D6D8400f, BA799EED, CC38B82E, EsScriptValAccessorIntf)
   // checks, flags
   ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW = 0;
   ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW = 0;

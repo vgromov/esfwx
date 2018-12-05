@@ -80,13 +80,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::binBufferSet)(const EsBinBuffer& 
     false
   );
   ES_ASSERT(tmp);
-  EsScriptArrayObject* pa =
-    reinterpret_cast<EsScriptArrayObject*>(
-      tmp->requestIntf(
-        EsIID::fromIntf<EsBaseIntf>(),
-        false
-      )
-    );
+  EsScriptArrayObject* pa = reinterpret_cast<EsScriptArrayObject*>( tmp->implementorGet() );
   ES_ASSERT(pa);
 
   try

@@ -800,7 +800,7 @@ void EsScriptThreadContext::doObjectMethodCall(
   if( methodInfo ) //< Simple reflected class
   {
     result = methodInfo->call(
-      obj->asWeakReference().get(),
+      obj->implementorGet(),
       params
     );
     return;

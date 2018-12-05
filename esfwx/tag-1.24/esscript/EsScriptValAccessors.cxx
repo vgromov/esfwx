@@ -10,14 +10,22 @@ protected:
   EsItemAccessor(const EsScriptValAccessorIntf::Ptr& valAcc, const EsScriptValAccessorIntf::Ptr& idxExprAcc);
   static EsScriptValAccessorIntf::Ptr create(const EsScriptValAccessorIntf::Ptr& valAcc, const EsScriptValAccessorIntf::Ptr& idxExprAcc)
   {
-    return EsScriptValAccessorIntf::Ptr(new EsItemAccessor(valAcc, idxExprAcc));
+     std::unique_ptr<EsItemAccessor> ptr(
+        new EsItemAccessor(
+          valAcc, 
+          idxExprAcc
+        )
+     );
+     ES_ASSERT(ptr);
+
+     return ptr.release()->asBaseIntfPtrDirect();
   }
 
 public:
   virtual ~EsItemAccessor();
   // EsBaseIntf override
   //
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return classNameGet();
   }
@@ -51,7 +59,12 @@ protected:
   EsScriptTmpValAccessor(const EsVariant& val);
   static EsScriptValAccessorIntf::Ptr create(const EsVariant& val)
   {
-    return EsScriptValAccessorIntf::Ptr(new EsScriptTmpValAccessor(val));
+    std::unique_ptr<EsScriptTmpValAccessor> ptr(
+      new EsScriptTmpValAccessor(val)
+    );
+    ES_ASSERT(ptr);
+
+    return ptr.release()->asBaseIntfPtrDirect();
   }
 
 public:
@@ -59,7 +72,7 @@ public:
 
   // EsBaseIntf override
   //
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return classNameGet();
   }
@@ -92,7 +105,12 @@ protected:
   EsAutoItemAccessor(const EsScriptValAccessorIntf::Ptr& valAcc);
   static EsScriptValAccessorIntf::Ptr create(const EsScriptValAccessorIntf::Ptr& valAcc)
   {
-    return EsScriptValAccessorIntf::Ptr(new EsAutoItemAccessor(valAcc));
+    std::unique_ptr<EsAutoItemAccessor> ptr(
+      new EsAutoItemAccessor(valAcc)
+    );
+    ES_ASSERT(ptr);
+
+    return ptr.release()->asBaseIntfPtrDirect();
   }
 
 public:
@@ -100,7 +118,7 @@ public:
 
   // EsBaseIntf override
   //
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return classNameGet();
   }
@@ -133,10 +151,17 @@ class ES_INTF_IMPL1(EsPropertyAccessor, EsScriptValAccessorIntf)
 protected:
   // friend-only functionality
   EsPropertyAccessor(const EsScriptValAccessorIntf::Ptr& objAcc, const EsScriptInstruction& instr);
-  static EsScriptValAccessorIntf::Ptr create(const EsScriptValAccessorIntf::Ptr& objAcc,
-    const EsScriptInstruction& instr)
+  static EsScriptValAccessorIntf::Ptr create(const EsScriptValAccessorIntf::Ptr& objAcc, const EsScriptInstruction& instr)
   {
-    return EsScriptValAccessorIntf::Ptr(new EsPropertyAccessor(objAcc, instr));
+    std::unique_ptr<EsPropertyAccessor> ptr(
+      new EsPropertyAccessor(
+        objAcc, 
+        instr
+      )
+    );
+    ES_ASSERT(ptr);
+
+    return ptr.release()->asBaseIntfPtrDirect();
   }
 
 public:
@@ -144,7 +169,7 @@ public:
 
   // EsBaseIntf override
   //
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return classNameGet();
   }
@@ -177,6 +202,8 @@ protected:
 
   friend class EsScriptThreadContext;
 };
+//-------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------
 
 // temporary accessor impl
 //
@@ -491,7 +518,7 @@ ES_IMPL_INTF_METHOD(EsVariant&, EsPropertyAccessor::get)()
   if( info )
   {
     m_valCache = info->get(
-      obj->asWeakReference().get()
+      obj->implementorGet()
     );
   }
   else
@@ -517,7 +544,7 @@ ES_IMPL_INTF_METHOD(void, EsPropertyAccessor::set)(const EsVariant& val)
   if( info )
   {
     info->set(
-      obj->asWeakReference().get(),
+      obj->implementorGet(),
       val
     );
   }

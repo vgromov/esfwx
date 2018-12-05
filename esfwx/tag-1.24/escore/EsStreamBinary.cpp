@@ -84,8 +84,16 @@ EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, const EsVariant& src, cons
 
 EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, ulong version, const EsVariant& src, const EsBaseIntfPtr& factory /*= nullptr*/)
 {
-  std::unique_ptr<EsStreamBinary> p(new EsStreamBinary(flags, version, src, factory));
-  ES_ASSERT(p.get());
+  std::unique_ptr<EsStreamBinary> p(
+    new EsStreamBinary(
+      flags, 
+      version, 
+      src, 
+      factory
+    )
+  );
+  ES_ASSERT(p);
+  
   return p.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
@@ -474,12 +482,15 @@ static EsVariant varPODread(const EsBinBuffer& data, ulong& pos, ulong end, ulon
   switch( type )
   {
   case EsVariant::VAR_BOOL:
-    return 0 != numericRead<esU8>(data, pos, end);
+    return EsVariant( static_cast<bool>(0 != numericRead<esU8>(data, pos, end))); //< Due to explicit ctor
   case EsVariant::VAR_BYTE:
-    return numericRead<esU8>(data, pos, end);
+    return EsVariant( numericRead<esU8>(data, pos, end) ); //< Due to explicit ctor
   case EsVariant::VAR_CHAR:
-    return static_cast< EsString::value_type >(
-      numericRead<esU32>(data, pos, end)
+    return EsVariant(
+      static_cast< EsString::value_type >(
+        numericRead<esU32>(data, pos, end)
+      ),
+      EsVariant::ACCEPT_CHAR
     );
   case EsVariant::VAR_UINT:
     return numericRead<esU32>(data, pos, end);

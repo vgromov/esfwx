@@ -318,53 +318,97 @@ protected:
   IntfT* m_intf;
   bool m_own;
 };
+//---------------------------------------------------------------------------
 
-// interface declaration helper macro
-//
-// UID0-3 four 4-byte parts of iterface's GUID
-#define ES_DECL_INTF_BEGIN1( UID0, UID1, UID2, UID3, InterfaceName ) \
-class ES_ABSTRACT InterfaceName \
+/// Generic implicit base for all Esxxx classes hierarchy
+///
+class EsBaseIntf; ///< Forward decl
+class EsBase
+{
+public:
+  virtual ~EsBase() {}
+
+  /// To be implemented in templated implementor classes, see EsBaseIntfImpl.hxx
+  ///
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW = 0;
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW = 0;
+
+  /// Perform typed intfptr request with optional incref control
+  ///
+  template <typename IntfT>
+  inline IntfT* asIntfT(bool doIncref = true) ES_NOTHROW
+  {
+    return reinterpret_cast<IntfT*>(
+      asBaseIntf()->requestIntf(
+        EsIID::fromIntf<IntfT>(),
+        doIncref
+      )
+    );
+  }
+  template <typename IntfT>
+  inline const IntfT* asIntfT(bool doIncref = true) const ES_NOTHROW //< Contness handling
+  {
+    return reinterpret_cast<const IntfT*>(
+      const_cast<EsBaseIntf*>(asBaseIntf())->requestIntf(
+        EsIID::fromIntf<IntfT>(),
+        doIncref
+      )
+    );
+  }
+};
+//---------------------------------------------------------------------------
+
+/// Interface declaration helper macro
+///
+
+/// UID0-3 four 4-byte parts of iterface's GUID
+#define ES_DECL_INTF_BEGIN( UID0, UID1, UID2, UID3, InterfaceName ) \
+class ES_ABSTRACT InterfaceName : virtual public EsBaseIntf \
 { \
 public: \
   enum { uid0 = 0x ## UID0, uid1 = 0x ## UID1, uid2 = 0x ## UID2, uid3 = 0x ## UID3 }; \
   typedef EsIntfPtr<InterfaceName> Ptr;
 
-// UID0-3 four 4-byte parts of iterface's GUID
-#define ES_DECL_INTF_BEGIN2( UID0, UID1, UID2, UID3, InterfaceName1, InterfaceName2 ) \
-class ES_ABSTRACT InterfaceName1 : public InterfaceName2 \
-{ \
-public: \
-  enum { uid0 = 0x ## UID0, uid1 = 0x ## UID1, uid2 = 0x ## UID2, uid3 = 0x ## UID3 }; \
-  typedef EsIntfPtr<InterfaceName1> Ptr;
-
 #define ES_DECL_INTF_END };
 
-/// base interface definition. this class must be the base class
+/// Base interface definition. this class must be the base class
 /// for any interface used throughout the framework, to allow
 /// kina COM-QueryInterface feature impementation. NB! interface implementation
 /// used here is not refcounted, so beware.
 ///
-ES_DECL_INTF_BEGIN1( 61233F3D, 2A86471d, B73DAE05, 51A4E46C, EsBaseIntf )
-  /// analog to COM's query interface method. if requested interface is not supported,
+class ES_ABSTRACT EsBaseIntf
+{
+public:
+  enum { uid0 = 0x61233F3D, uid1 = 0x2A86471D, uid2 = 0xB73DAE05, uid3 = 0x51A4E46C };
+  typedef EsIntfPtr<EsBaseIntf> Ptr;
+
+  /// Analog to COM's query interface method. if requested interface is not supported,
   /// return NULL pointer, otherwise, return properly cast requested interface pointer,
   /// wrapped in void pointer.
   /// @param  incref if set (default), object is incref-ed, otherwise, refcount is left as-is
   ///
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW = 0;
-  // basic EKOSF RTTI support
+  ES_DECL_INTF_METHOD(void*, requestIntf)(const EsIID& iid, bool incref = true) ES_NOTHROW = 0;
+
+  /// Basic ESFWX RTTI support
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW = 0;
   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW = 0;
   ES_DECL_INTF_METHOD(bool, is)(const EsString& name) const ES_NOTHROW = 0;
-  // refcount support
+
+  /// Refcount support
   ES_DECL_INTF_METHOD(void, incRef)() ES_NOTHROW = 0;
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW = 0;
   ES_DECL_INTF_METHOD(size_t, refGet)() const ES_NOTHROW = 0;
-  // special deletion method
+
+  /// Special deletion method
   ES_DECL_INTF_METHOD(void, destroy)() ES_NOTHROW = 0;
-ES_DECL_INTF_END
+
+  /// Access to interface implementor's object instance
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW = 0;
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW = 0;
+};
 
 /// Generic member service call type
-typedef void (EsBaseIntf:: *EsMemberCallT)(void);
+typedef void (EsBase:: *EsMemberCallT)(void);
 /// Generic class service call type
 typedef void (*EsClassCallT)(void);
 
@@ -533,20 +577,6 @@ inline bool EsIntfPtr< IntfT >::operator== (const EsIntfPtr< OtherIntfT >& _2) c
           p1.get() == p2.get();
 }
 
-#ifdef ES_CLANG
-template< typename IntfPtrT, typename ObjT >
-inline ObjT* objFromBaseIntf(IntfPtrT iptr) ES_NOTHROW
-{
-  return (
-    (iptr && iptr->typeNameGet() == ObjT::classNameGetStatic()) ?
-      static_cast<ObjT*>( iptr.get() ) :
-      nullptr
-  );
-}
-
-# define ES_INTFPTR_TO_OBJECTPTR(IntfPtr, ObjT) objFromBaseIntf< decltype(IntfPtr), ObjT>(IntfPtr)
-#else
-# define ES_INTFPTR_TO_OBJECTPTR(IntfPtr, ObjT) dynamic_cast<ObjT*>(IntfPtr.get())
-#endif
+#define ES_INTFPTR_TO_OBJECTPTR(IntfPtr, ObjT) reinterpret_cast<ObjT*>(IntfPtr->implementorGet())
 
 #endif // _base_intf_h_

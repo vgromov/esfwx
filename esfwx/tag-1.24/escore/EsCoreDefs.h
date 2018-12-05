@@ -24,7 +24,7 @@
 /// Use our embedded locale implementation by default
 ///
 #if !defined(ES_USE_EMBEDDED_LOCALE_IMPL)
-# define ES_USE_EMBEDDED_LOCALE_IMPL 1
+# define ES_USE_EMBEDDED_LOCALE_IMPL    1
 #endif
 
 /// OS - specific macros
@@ -32,37 +32,37 @@
 /// Posix compatible OS flag
 /// ES_POSIX_COMPAT
 /// Supported OSes
-#define ES_OS_UNDEFINED      0
-#define ES_OS_WINDOWS        1
-#define ES_OS_MAC           2
-#define ES_OS_IOS           3
-#define ES_OS_ANDROID        4
-#define ES_OS_LINUX         5
-#define ES_OS_UNIX          6
+#define ES_OS_UNDEFINED                 0
+#define ES_OS_WINDOWS                   1
+#define ES_OS_MAC                       2
+#define ES_OS_IOS                       3
+#define ES_OS_ANDROID                   4
+#define ES_OS_LINUX                     5
+#define ES_OS_UNIX                      6
 
 #if defined(__WINDOWS__) || defined(__WIN32__) || _WIN32 || _WIN64
-#  define ES_OS              ES_OS_WINDOWS
+#  define ES_OS                         ES_OS_WINDOWS
 #elif defined(__APPLE__)
 # include "TargetConditionals.h"
 # if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-#   define ES_OS            ES_OS_IOS
+#   define ES_OS                        ES_OS_IOS
 #   define ES_IS_MOBILE_OS
 # else
-#   define ES_OS            ES_OS_MAC
+#   define ES_OS                        ES_OS_MAC
 # endif
 # define ES_POSIX_COMPAT
 #elif defined(__ANDROID__)
-#  define ES_OS              ES_OS_ANDROID
+#  define ES_OS                         ES_OS_ANDROID
 # define ES_IS_MOBILE_OS
 # define ES_POSIX_COMPAT
 #elif defined(linux) || defined(__LINUX__) || defined(__linux__) || defined(__linux)
-# define ES_OS              ES_OS_LINUX
+# define ES_OS                          ES_OS_LINUX
 # define ES_POSIX_COMPAT
 #elif defined(unix) || defined(__UNIX__) || defined(__unix__) || defined(__unix)
-# define ES_OS              ES_OS_UNIX
+# define ES_OS                          ES_OS_UNIX
 # define ES_POSIX_COMPAT
 #else
-#  define ES_OS              ES_OS_UNDEFINED
+#  define ES_OS                         ES_OS_UNDEFINED
 #endif
 
 #if ES_OS == ES_OS_UNDEFINED
@@ -73,23 +73,23 @@
 //
 #define ES_COMPILER_VENDOR_UNDEFINED    0
 #define ES_COMPILER_VENDOR_BORLAND      1
-#define ES_COMPILER_VENDOR_MS            2
+#define ES_COMPILER_VENDOR_MS           2
 #define ES_COMPILER_VENDOR_INTEL        3
-#define ES_COMPILER_VENDOR_GNUC          4
+#define ES_COMPILER_VENDOR_GNUC         4
 #define ES_COMPILER_VENDOR_DIGITALMARS  5
 
 #if defined(__BORLANDC__)
-#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_BORLAND
-#elif defined(_MSC_VER)
-#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_MS
-#elif defined(__INTEL_COMPILER)
-#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_INTEL
-#elif defined(__GNUC__)
-#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_GNUC
-#elif defined(__DMC__)
-#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_DIGITALMARS
-#else
-#  define ES_COMPILER_VENDOR    ES_COMPILER_VENDOR_UNDEFINED
+#  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_BORLAND
+#elif defined(_MSC_VER)                 
+#  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_MS
+#elif defined(__INTEL_COMPILER)         
+#  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_INTEL
+#elif defined(__GNUC__)                 
+#  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_GNUC
+#elif defined(__DMC__)                  
+#  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_DIGITALMARS
+#else                                   
+#  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_UNDEFINED
 #endif
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_UNDEFINED
@@ -266,12 +266,12 @@
 
 #if ES_OS == ES_OS_WINDOWS
 # include <tchar.h>
-#  include <stdlib.h>
-#  include <stdio.h>
+# include <stdlib.h>
+# include <stdio.h>
 
 // Prevent winsock.h to be included from windows.h, we use winsock2.h internally in comm, no need to spoil defs and structs there
 # define _WINSOCKAPI_
-#  include <windows.h>
+# include <windows.h>
   // Undef wingdi's GetObject macro, to prevent clash with FMX headers GetObject object member service(s)
 # undef GetObject
 #elif defined(ES_POSIX_COMPAT)

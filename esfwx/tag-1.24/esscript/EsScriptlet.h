@@ -3,7 +3,7 @@
 
 #if (1 == ES_USE_COMPILER_IMPLEMENTATION)
 
-ES_DECL_INTF_BEGIN2(36900B67, 337F4DF5, 86257376, 454CB972, EsScriptletIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(36900B67, 337F4DF5, 86257376, 454CB972, EsScriptletIntf)
   ES_DECL_INTF_METHOD(bool, isOrphan)() const = 0;
   ES_DECL_INTF_METHOD(bool, isCompiled)() const = 0;
   ES_DECL_INTF_METHOD(const EsString&, nameGet)() const = 0;

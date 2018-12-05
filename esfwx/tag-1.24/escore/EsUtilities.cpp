@@ -131,8 +131,12 @@ EsString EsUtilities::GUIDtoStr(const GUID& guid, bool canonical /*= false*/)
   }
   else
   {
-     EsString result;
-    EsString::binToHex(reinterpret_cast<const esU8*>(&guid), sizeof(GUID), result);
+    EsString result;
+    EsString::binToHex(
+      reinterpret_cast<const esU8*>(&guid), 
+      sizeof(GUID), 
+      result
+    );
 
     return result;
   }

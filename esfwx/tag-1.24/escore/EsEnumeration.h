@@ -2,7 +2,7 @@
 #define _es_enumeration_h_
 
 // enumeration API interface
-ES_DECL_INTF_BEGIN2( CBDD7DC0, F0A0473C, 86947623, B263AB77, EsEnumerationIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN( CBDD7DC0, F0A0473C, 86947623, B263AB77, EsEnumerationIntf)
   // items insertion
   ES_DECL_INTF_METHOD(void, itemAdd)(const EsString& symbol, const EsVariant& val, const EsString& label) = 0;
   // enumeration may represent itself as an idexed object, as values collection
@@ -89,7 +89,7 @@ protected: \
   EnumerationName(const EsString& enumTypeName) : EsEnumeration(enumTypeName, EsEnumeration::enumerationNonDynamic) { itemsInit(); } \
 public: \
   ES_DECL_REFLECTED_CLASS(EnumerationName, EsEnumeration) \
-  virtual EsString typeNameGet() const ES_NOTHROW ES_OVERRIDE { return m_contents.nameGet(); } \
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return m_contents.nameGet(); } \
   static EsEnumerationIntf::Ptr instanceGet() ES_NOTHROW; \
   ES_DECL_REFLECTED_CLASS_METHOD0(EsVariant, instance) ES_NOTHROW; \
 private: \

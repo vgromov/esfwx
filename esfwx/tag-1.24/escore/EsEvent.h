@@ -3,7 +3,7 @@
 
 /// Platform - independent event interface
 ///
-ES_DECL_INTF_BEGIN2(DCE08408, 15314CD7, A0755C21, 6A0185E9, EsEventIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(DCE08408, 15314CD7, A0755C21, 6A0185E9, EsEventIntf)
   ES_DECL_INTF_METHOD(const EsDateTime&, timestampGet)() const = 0;
   ES_DECL_INTF_METHOD(const EsString&, categoryGet)() const = 0;
   ES_DECL_INTF_METHOD(ulong, idGet)() const = 0;

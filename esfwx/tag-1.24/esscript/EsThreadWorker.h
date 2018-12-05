@@ -11,7 +11,7 @@
 /// thread was externally stopped.
 /// onThreadExit - executed in thread context, after all working cycles are over
 ///
-ES_DECL_INTF_BEGIN2( E5A769EF, 29FF4FAE, 9CC5C1AE, 567F0F46, EsThreadWorkerIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( E5A769EF, 29FF4FAE, 9CC5C1AE, 567F0F46, EsThreadWorkerIntf )
 
   /// Control services
   ///

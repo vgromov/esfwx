@@ -15,7 +15,7 @@
 namespace EsReflectionCallProxies {
 
 /// Member method call proxy function pointer
-typedef void (*_proxyT)(EsVariant&, EsBaseIntf*, const EsMethodT&, const EsVariant& params);
+typedef void (*_proxyT)(EsVariant&, EsBase*, const EsMethodT&, const EsVariant& params);
 
 /// Class method call proxy function pointer
 typedef void (*_cproxyT)(EsVariant&, const EsMethodT&, const EsVariant& params);
@@ -443,7 +443,7 @@ void EsMethodInfo::checkParamsCount(const EsVariant& params) const
 #include "EsReflectionDefClassCalls.hxx"
 
 // object member function caller
-EsVariant EsMethodInfo::call(EsBaseIntf* obj, const EsVariant& params) const
+EsVariant EsMethodInfo::call(EsBase* obj, const EsVariant& params) const
 {
   // assert it's normal method
   if( isClassMethod() )
@@ -464,22 +464,25 @@ EsVariant EsMethodInfo::call(EsBaseIntf* obj, const EsVariant& params) const
   checkParamsCount(params);
 
   EsVariant result;
-
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
   // cast to properly aligned interface pointer, if it's reflected interface method.
   if( !m_iid.empty() )
   {
-    obj = (EsBaseIntf*)obj->requestIntf(
+    EsBaseIntf* intf = obj->asBaseIntf();
+    ES_ASSERT(intf);
+
+    void* intfptr = intf->requestIntf(
       m_iid,
       false
     );
-    ES_ASSERT(obj);
+    ES_ASSERT(intfptr);
+
+    obj = reinterpret_cast<EsBase*>(intfptr);
   }
-#endif
 
   // Call member jump table
   ES_ASSERT(m_signature > invalidSignature);
   ES_ASSERT(m_signature < methodSignaturesEnd);
+
   EsReflectionCallProxies::sc_memberProxies[m_signature](
     result,
     obj,
@@ -590,7 +593,6 @@ const EsMethodInfo* EsMethodInfo::infoFromFqNameGet(const EsString& fqName, bool
   return result;
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 // prop info name comparison predicate
@@ -603,8 +605,8 @@ struct PropertyInfoNameIs
   const EsString& m_name;
 };
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
+
 // EsPropertyInfo implementation
 //
 EsPropertyInfo::EsPropertyInfo(
@@ -667,7 +669,7 @@ bool EsPropertyInfo::isPersistent() const ES_NOTHROW
 //---------------------------------------------------------------------------
 
 // generic value access
-EsVariant EsPropertyInfo::get(const EsBaseIntf* obj) const
+EsVariant EsPropertyInfo::get(const EsBase* obj) const
 {
   if( !obj )
     EsException::Throw(esT("Cannot get property without an object"));
@@ -681,7 +683,7 @@ EsVariant EsPropertyInfo::get(const EsBaseIntf* obj) const
 }
 //---------------------------------------------------------------------------
 
-void EsPropertyInfo::set(EsBaseIntf* obj, const EsVariant& val) const
+void EsPropertyInfo::set(EsBase* obj, const EsVariant& val) const
 {
   if( !obj )
     EsException::Throw(esT("Cannot set property without an object"));
@@ -692,10 +694,13 @@ void EsPropertyInfo::set(EsBaseIntf* obj, const EsVariant& val) const
 //---------------------------------------------------------------------------
 
 // reset property value to default, if there is one. if property has no default, exception is thrown
-void EsPropertyInfo::reset(EsBaseIntf* obj) const
+void EsPropertyInfo::reset(EsBase* obj) const
 {
   if( defaultExists() )
-    set(obj, defaultGet());
+    set(
+      obj, 
+      defaultGet()
+    );
   else
     EsException::Throw(
       esT("Property '%s.%s' does not have default value"),
@@ -766,8 +771,8 @@ bool EsPropertyInfo::validate(const EsVariant &val, bool doThrow/* = false*/) co
   return true;
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
+
 // Class info metaclass implementation
 //
 EsClassInfo::EsClassInfo(const EsString& name, const EsString& descr, const EsClassInfo* ancestor) ES_NOTHROW :
@@ -883,9 +888,6 @@ bool EsClassInfo::isKindOf(const EsString& name) const ES_NOTHROW
 }
 //---------------------------------------------------------------------------
 
-// Reflected information access
-//
-// property names enumeration helper
 void EsClassInfo::appendPropertyNames(EsString::Array& out, bool onlyPersistent, bool allHierarchy) const
 {
   if( allHierarchy && m_ancestor )
@@ -1139,25 +1141,25 @@ const EsMethodInfo& EsClassInfo::classMethodInfoGet(const EsMethodInfoKeyT& key,
 //---------------------------------------------------------------------------
 
 // property services simplified
-EsVariant EsClassInfo::propertyGet(EsBaseIntf* obj, const EsString& name) const
+EsVariant EsClassInfo::propertyGet(EsBase* obj, const EsString& name) const
 {
   const EsPropertyInfo& info = propertyInfoGet(name);
   return info.get(obj);
 }
 
-void EsClassInfo::propertySet(EsBaseIntf* obj, const EsString& name, const EsVariant& val) const
+void EsClassInfo::propertySet(EsBase* obj, const EsString& name, const EsVariant& val) const
 {
   const EsPropertyInfo& info = propertyInfoGet(name);
   info.set(obj, val);
 }
 
-void EsClassInfo::propertyReset(EsBaseIntf* obj, const EsString& name) const
+void EsClassInfo::propertyReset(EsBase* obj, const EsString& name) const
 {
   const EsPropertyInfo& info = propertyInfoGet(name);
   return info.reset(obj);
 }
 
-void EsClassInfo::resetAllProperties(EsBaseIntf* obj) const
+void EsClassInfo::resetAllProperties(EsBase* obj) const
 {
   const PropertyInfosT& allProps = propertyInfosGet();
   for(PropertyInfosT::const_iterator cit = allProps.begin(); cit != allProps.end(); ++cit)
@@ -1195,13 +1197,13 @@ bool EsClassInfo::isIndexed() const ES_NOTHROW
 }
 
 // method services simplified
-EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name) const
+EsVariant EsClassInfo::call(EsBase* obj, const EsString& name) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(0, name));
   return info.call(obj, EsVariant::null());
 }
 
-EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1) const
+EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1) const
 {
   const EsMethodInfo& info = methodInfoGet(
     EsMethodInfoKeyT(
@@ -1219,7 +1221,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
   );
 }
 
-EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2) const
+EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(2, name));
   EsVariant::Array params;
@@ -1234,7 +1236,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
   );
 }
 
-EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3) const
+EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(3, name));
   EsVariant::Array params;
@@ -1250,7 +1252,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
   );
 }
 
-EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4) const
+EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(4, name));
   EsVariant::Array params;
@@ -1267,7 +1269,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
   );
 }
 
-EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5) const
+EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(5, name));
   EsVariant::Array params;
@@ -1285,7 +1287,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
   );
 }
 
-EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5, const EsVariant& param6) const
+EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5, const EsVariant& param6) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(6, name));
   EsVariant::Array params;
@@ -1304,7 +1306,7 @@ EsVariant EsClassInfo::call(EsBaseIntf* obj, const EsString& name, const EsVaria
   );
 }
 
-EsVariant EsClassInfo::callMethod(EsBaseIntf* obj, const EsString& name, const EsVariant& params) const
+EsVariant EsClassInfo::callMethod(EsBase* obj, const EsString& name, const EsVariant& params) const
 {
   ulong paramsCount = params.isEmpty() ?
     0 :
@@ -1329,13 +1331,24 @@ EsVariant EsClassInfo::callMethod(EsBaseIntf* obj, const EsString& name, const E
 
 EsVariant EsClassInfo::classCall(const EsString& name) const
 {
-  const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(0, name));
+  const EsMethodInfo& info = classMethodInfoGet(
+    EsMethodInfoKeyT(
+      0, 
+      name
+    )
+  );
+  
   return info.classCall(EsVariant::null());
 }
 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1) const
 {
-  const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(1, name));
+  const EsMethodInfo& info = classMethodInfoGet(
+    EsMethodInfoKeyT(
+      1, 
+      name
+    )
+  );
   EsVariant::Array params;
   params.push_back(param1);
 
@@ -1344,7 +1357,12 @@ EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1) 
 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2) const
 {
-  const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(2, name));
+  const EsMethodInfo& info = classMethodInfoGet(
+    EsMethodInfoKeyT(
+      2, 
+      name
+    )
+  );
   EsVariant::Array params;
   params.reserve(2);
 

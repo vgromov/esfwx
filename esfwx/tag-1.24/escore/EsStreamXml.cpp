@@ -56,7 +56,7 @@ EsStreamIntf::Ptr EsStreamXml::create(ulong flags, ulong version, const EsString
       factory
     )
   );
-  ES_ASSERT(p.get());
+  ES_ASSERT(p);
 
   return p.release()->asBaseIntfPtrDirect();
 }

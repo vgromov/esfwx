@@ -3,7 +3,7 @@
 
 /// Associative container key => value interface
 ///
-ES_DECL_INTF_BEGIN2( 84A3CB81, 27A940EF, 8B29486E, FA9BE1A7, EsAssocContainerIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( 84A3CB81, 27A940EF, 8B29486E, FA9BE1A7, EsAssocContainerIntf)
 
   /// Assoc. collection api
   ///

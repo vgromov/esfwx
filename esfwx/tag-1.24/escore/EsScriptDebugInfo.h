@@ -3,7 +3,7 @@
 
 // script debug information interface and its implementations class
 //
-ES_DECL_INTF_BEGIN2(288D7781, 38564AFD, A2D82982, B74F43FD, EsScriptDebugInfoIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN(288D7781, 38564AFD, A2D82982, B74F43FD, EsScriptDebugInfoIntf)
   ES_DECL_INTF_METHOD(ulong, lineGet)() const = 0;
   ES_DECL_INTF_METHOD(ulong, columnGet)() const = 0;
   ES_DECL_INTF_METHOD(cr_EsString, fileGet)() const = 0;

@@ -42,7 +42,7 @@ static void GEN_SIG0(RetVal, ClassCall ##_proxy)(EsVariant& _ret, const EsMethod
   _ret = From_ ## RetVal( (( GEN_SIG0(RetVal, ClassCall_T) )method.m_classMethod)()); }
 #define  REFL_CLASS_METHOD_ENTRY1( RetVal, Param1 ) \
 static void GEN_SIG1(RetVal, ClassCall, Param1 ##_proxy)(EsVariant& _ret, const EsMethodT& method, const EsVariant& params) { \
-  _ret = From_ ## RetVal( (( GEN_SIG1(RetVal, ClassCall, Param1 ##_T) )method.m_classMethod)(To_## Param1 (params.itemGet(0)))); }
+  _ret = From_ ## RetVal( (( GEN_SIG1(RetVal, ClassCall, Param1 ##_T) )method.m_classMethod)(To_## Param1 (params[0]))); }
 #define  REFL_CLASS_METHOD_ENTRY2( RetVal, Param1, Param2 ) \
 static void GEN_SIG2(RetVal, ClassCall, Param1, Param2 ##_proxy)(EsVariant& _ret, const EsMethodT& method, const EsVariant& params) { \
   const EsVariant::Array& aparams = params.asVariantCollection(); \

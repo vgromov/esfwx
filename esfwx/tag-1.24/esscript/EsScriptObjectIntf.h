@@ -84,7 +84,7 @@ private:
 
 /// Script object interface definition
 ///
-ES_DECL_INTF_BEGIN2( 0682FC7E, 05CE43FA, B30D7199, A5FBEBF0, EsScriptObjectIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN( 0682FC7E, 05CE43FA, B30D7199, A5FBEBF0, EsScriptObjectIntf)
 public:
   // object container types
   typedef std::vector<EsScriptObjectIntf::Ptr> ObjectsVector;

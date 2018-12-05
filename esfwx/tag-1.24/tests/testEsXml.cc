@@ -165,7 +165,8 @@ protected:
       static_cast<ulong>(EsStreamFlag::Read)|
       static_cast<ulong>(EsStreamFlag::Write)|
       static_cast<ulong>(EsStreamFlag::File)|
-      static_cast<ulong>(EsStreamFlag::NonStrictFields),
+      static_cast<ulong>(EsStreamFlag::NonStrictFields)|
+      static_cast<ulong>(EsStreamFlag::NonStrictProperties),
       xmlFile
     );
 

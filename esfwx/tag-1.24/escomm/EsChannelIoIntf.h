@@ -5,7 +5,7 @@
 // may be any reflected class, implementing the same named services, as ones declared in an interface.
 // idGet string is _any_ string, uniquely identifying the channel instance which posts its messages to monitor
 // 
-ES_DECL_INTF_BEGIN2( E78A80DC, 86194C4F, 9E2E4078, B5A22EF2, EsChannelIoMonitorIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( E78A80DC, 86194C4F, 9E2E4078, B5A22EF2, EsChannelIoMonitorIntf )
   ES_DECL_INTF_METHOD(void, channelOpened)(const EsString& idGet) = 0;
   ES_DECL_INTF_METHOD(void, channelClosed)(const EsString& idGet) = 0;
   ES_DECL_INTF_METHOD(void, channelBytesReceived)(const EsString& idGet, const EsBinBuffer& data) = 0;
@@ -18,7 +18,7 @@ ES_DECL_INTF_END
 
 // io channel abstraction interface
 //
-ES_DECL_INTF_BEGIN2( 1D0C5F74, 516046BE, B9D71D76, 6BEC48B9, EsChannelIoIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( 1D0C5F74, 516046BE, B9D71D76, 6BEC48B9, EsChannelIoIntf )
   // channel unique id string
   ES_DECL_INTF_METHOD(EsString, idGet)() const = 0;
   // monitor interface access.
@@ -46,7 +46,7 @@ ES_DECL_INTF_BEGIN2( 1D0C5F74, 516046BE, B9D71D76, 6BEC48B9, EsChannelIoIntf, Es
 ES_DECL_INTF_END
 
 // device power control && mode configuration (normal, programming) 
-ES_DECL_INTF_BEGIN2( D07C82FB, 202842C4, B3086B99, FACA18CA, EsPowerCtlIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( D07C82FB, 202842C4, B3086B99, FACA18CA, EsPowerCtlIntf )
   // remove|set device power
   ES_DECL_INTF_METHOD(void, devicePowerSet)(bool powerOn) = 0;
   ES_DECL_INTF_METHOD(bool, devicePowerGet)() const = 0;
@@ -56,7 +56,7 @@ ES_DECL_INTF_BEGIN2( D07C82FB, 202842C4, B3086B99, FACA18CA, EsPowerCtlIntf, EsB
 ES_DECL_INTF_END
 
 // io channel with rate change control
-ES_DECL_INTF_BEGIN2( D630E44E, 04F14F24, 917F950D, DA53560E, EsRateCtlIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( D630E44E, 04F14F24, 917F950D, DA53560E, EsRateCtlIntf )
   // rate change support
   ES_DECL_INTF_METHOD(bool, isRateSupported)(ulong rate) const = 0;
   ES_DECL_INTF_METHOD(EsVariant, supportedRatesGet)() const = 0;

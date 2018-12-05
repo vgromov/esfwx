@@ -3,7 +3,7 @@
 
 // operation break check abstraction interface
 //
-ES_DECL_INTF_BEGIN2( 377F1490, 6CC9485b, 85D53F47, BE758A56, EsBreakIntf, EsBaseIntf )
+ES_DECL_INTF_BEGIN( 377F1490, 6CC9485b, 85D53F47, BE758A56, EsBreakIntf )
   // return true if break is signalled
   ES_DECL_INTF_METHOD(bool, isBreaking)() const = 0;
   // return true if break is signalled during ms wait

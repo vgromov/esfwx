@@ -24,7 +24,7 @@ public:
 
   /// EsBaseIntf implementation
   ///
-   ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE { return classNameGetStatic(); }
 
   /// EsFtdiDeviceIntf overrides
   ///

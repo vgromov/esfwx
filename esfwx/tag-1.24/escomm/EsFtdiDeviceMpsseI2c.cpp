@@ -73,7 +73,6 @@ bool EsFtdiDeviceMpsseI2c::open()
   return false;
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 void EsFtdiDeviceMpsseI2c::clockRateSet(esU32 rate)

@@ -189,7 +189,7 @@ protected:
 
     const EsPath& xmlTest = EsPath::create(
       EsPath::stdDocsGet(),
-      esT("EL3C_CalibrationSession_new3"),
+      esT("EL3C_CalibrationSession_new2"),
       esT("xml")
     );
 

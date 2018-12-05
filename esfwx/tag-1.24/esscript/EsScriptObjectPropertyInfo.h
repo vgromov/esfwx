@@ -2,7 +2,7 @@
 #define _es_script_object_property_info_h_
 
 // script object property info interface definition
-ES_DECL_INTF_BEGIN2( D4118B76, B38F4A15, AB4BE98F, D0E7CF37, EsScriptObjectPropertyInfoIntf, EsBaseIntf)
+ES_DECL_INTF_BEGIN( D4118B76, B38F4A15, AB4BE98F, D0E7CF37, EsScriptObjectPropertyInfoIntf)
 protected:  
   // assign instance attributes pointer
   ES_DECL_INTF_METHOD(EsAttributesIntf::Ptr, internalAttrsAccess)() const = 0;

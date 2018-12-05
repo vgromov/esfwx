@@ -10,10 +10,7 @@ protected:
   { 
     m_dynamic = true; 
   }
-  static EsEnumerationIntf::Ptr create(EsScriptMachine& machine, const EsString& enumTypeName)
-  {
-    return EsEnumerationIntf::Ptr( new EsScriptEnumeration(machine, enumTypeName) );
-  }
+  static EsEnumerationIntf::Ptr create(EsScriptMachine& machine, const EsString& enumTypeName);
 
 public:
   ES_DECL_REFLECTED_CLASS(EsScriptEnumeration, EsEnumeration)

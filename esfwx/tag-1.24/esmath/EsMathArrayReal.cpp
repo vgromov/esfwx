@@ -169,13 +169,8 @@ EsMathArrayReal* EsMathArrayReal::fromVariant(const EsVariant& in)
   if( in.isObject() )
   {
     EsReflectedClassIntf::Ptr obj  = in.asObject();
-    if( obj && obj->isKindOf(esT("EsMathArrayReal")) )
-    {
-      EsBaseIntfPtr base = obj;
-      ES_ASSERT(base);
-
-      return reinterpret_cast<EsMathArrayReal*>( base.get() );
-    }
+    if( obj && obj->isKindOf(classNameGetStatic()) )
+      return ES_INTFPTR_TO_OBJECTPTR(obj, EsMathArrayReal);
   }
 
   return nullptr;

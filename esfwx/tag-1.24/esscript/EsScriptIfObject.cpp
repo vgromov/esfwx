@@ -78,7 +78,7 @@ protected:
   }
 
   // format branch type name, take nesting into account
-  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     if(m_parent)
     {
@@ -115,10 +115,8 @@ ES_DECL_CLASS_INFO_END
 ES_DECL_CLASS_INFO_DERIVED_BEGIN(EsScriptIfObject, EsScriptObject, NO_CLASS_DESCR)
 ES_DECL_CLASS_INFO_END
 
-EsScriptIfObject::EsScriptIfObject(const EsScriptContext::Ptr& ctx, esU32 flags, const EsScriptObjectDataBufferPtr& buff,
-  const EsScriptCodeSection::Ptr& expr) :
-EsScriptObject(esT("if"), EsScriptObjectIntf::Ptr(), EsScriptMethodMapPtr(), ctx, flags, buff,
-               EsAttributesIntf::Ptr()),
+EsScriptIfObject::EsScriptIfObject(const EsScriptContext::Ptr& ctx, esU32 flags, const EsScriptObjectDataBufferPtr& buff, const EsScriptCodeSection::Ptr& expr) :
+EsScriptObject(esT("if"), nullptr, nullptr, ctx, flags, buff, nullptr),
 m_expr(expr),
 m_exprValue(-1),
 m_subscriptionInitialized(false)
@@ -136,21 +134,32 @@ EsScriptObjectIntf::Ptr EsScriptIfObject::createMetaclass(const EsScriptContext:
       nullptr
     )
   );
-  ES_ASSERT(tmp.get());
+  ES_ASSERT(tmp);
+
+  EsScriptObjectIntf::Ptr result = tmp->asBaseIntfPtrDirect();
+  ES_ASSERT(result);
+
   // install expression code section
   EsScriptCodeSection::Ptr expr = EsScriptCodeSection::create(
     esT("condition"),
     EsString::nullArray(),
-    tmp.get()
+    result.get()
   );
   ES_ASSERT(expr);
   tmp->m_expr = expr;
-  EsScriptObjectIntf::Ptr result = tmp.release()->asBaseIntfPtrDirect();
+  tmp.release();
 
   // add branches
-  EsScriptObjectIntf::Ptr branch = EsScriptIfBranchObject::createMetaclass(ctx, true);
+  EsScriptObjectIntf::Ptr branch = EsScriptIfBranchObject::createMetaclass(
+    ctx, 
+    true
+  );
   result->fieldConditionalAdd(branch);
-  branch = EsScriptIfBranchObject::createMetaclass(ctx, false);
+  
+  branch = EsScriptIfBranchObject::createMetaclass(
+    ctx, 
+    false
+  );
   result->fieldConditionalAdd(branch);
 
   return result;
@@ -190,17 +199,21 @@ int EsScriptIfObject::internalExprEvaluate()
     exprThis
   );
   ES_ASSERT(result);
+
   return result->get().asBool() ? 1 : 0;
 }
 
 ES_IMPL_INTF_METHOD(void, EsScriptIfObject::setParent)(EsScriptObjectIntf* parent)
 {
   EsScriptObject::setParent(parent);
+
   // in instance initialize update subscription, if any, but
   // only after conditional's internalClone call is complete
-  if( parent &&
-      !isMetaclass() &&
-      isFinal() )
+  if( 
+    parent &&
+    !isMetaclass() &&
+    isFinal() 
+  )
     initializeUpdateSubscription();
 }
 
@@ -274,7 +287,7 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptIfObject::conditionalBranch
       return fldFalse;
   }
 
-  return 0;
+  return nullptr;
 }
 
 // internal layout invalidation
@@ -286,13 +299,15 @@ ES_IMPL_INTF_METHOD(void, EsScriptIfObject::internalInvalidateLayout)(bool propa
   EsScriptObjectIntf::Ptr fldTrue = m_fieldsMap.valueGet(0).asExistingObject();
   EsScriptObjectIntf::Ptr fldFalse = m_fieldsMap.valueGet(1).asExistingObject();
 
-  if( fldTrue &&
+  if( 
+    fldTrue &&
     !fldTrue->isInvalid()
   )
     fldTrue->internalInvalidateLayout(false);
 
-  if( fldFalse &&
-      !fldFalse->isInvalid()
+  if( 
+    fldFalse &&
+    !fldFalse->isInvalid()
   )
     fldFalse->internalInvalidateLayout(false);
 
@@ -329,13 +344,9 @@ ES_IMPL_INTF_METHOD(void, EsScriptIfObject::internalUpdateLayout)(ulong offs)
     if( prevExprValue != m_exprValue ||
         static_cast<ulong>(m_offs) != offs )
     {
-      EsScriptIfBranchObject* obj =
-        reinterpret_cast<EsScriptIfBranchObject*>(
-          branch->requestIntf(
-            EsIID::fromIntf<EsBaseIntf>(),
-            false
-          )
-        );
+      EsScriptIfBranchObject* obj = reinterpret_cast<EsScriptIfBranchObject*>(
+        branch->implementorGet()
+      );
       ES_ASSERT(obj);
       obj->invalidateFieldOffsets();
     }

@@ -1,16 +1,16 @@
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-# define ES_INTERNAL_THIS_CAST( Intf )        static_cast<Intf*>(this)
-# define ES_INTERNAL_THIS_CONSTCAST( Intf )   static_cast<const Intf*>(this)
-#else
-# define ES_INTERNAL_THIS_CAST( Intf )        reinterpret_cast<Intf*>(reinterpret_cast<esU8*>(this) + ES_CONCAT(offs, Intf))
-# define ES_INTERNAL_THIS_CONSTCAST( Intf )   reinterpret_cast<const Intf*>(reinterpret_cast<const esU8*>(this) + ES_CONCAT(offs, Intf))
-#endif
+//#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
+# define ES_INTERNAL_THIS_CAST( Intf )        dynamic_cast<Intf*>(this)
+# define ES_INTERNAL_THIS_CONSTCAST( Intf )   dynamic_cast<const Intf*>(this)
+//#else
+//# define ES_INTERNAL_THIS_CAST( Intf )        reinterpret_cast<Intf*>(reinterpret_cast<esU8*>(this) + ES_CONCAT(offs, Intf))
+//# define ES_INTERNAL_THIS_CONSTCAST( Intf )   reinterpret_cast<const Intf*>(reinterpret_cast<const esU8*>(this) + ES_CONCAT(offs, Intf))
+//#endif
 
 /// Helper macros for base interface refcount trace
 ///
 #ifdef ES_USE_TRACE_BASEINTF_REFCNT
-#  define ES_TRACE_BASEINTF_INCREF             ES_DEBUG_TRACE(esT("'%s' before incRef(%d)"), typeNameGet().c_str(), (EsAtomicInteger)m_rc );
-#  define ES_TRACE_BASEINTF_DECREF             ES_DEBUG_TRACE(esT("'%s' before decRef(%d)"), typeNameGet().c_str(), (EsAtomicInteger)m_rc );
+#  define ES_TRACE_BASEINTF_INCREF             ES_DEBUG_TRACE(esT("'%s' before incRef(%d)"), typeNameGet(), (EsAtomicInteger)m_rc );
+#  define ES_TRACE_BASEINTF_DECREF             ES_DEBUG_TRACE(esT("'%s' before decRef(%d)"), typeNameGet(), (EsAtomicInteger)m_rc );
 #else
 #  define ES_TRACE_BASEINTF_INCREF
 #  define ES_TRACE_BASEINTF_DECREF
@@ -39,7 +39,7 @@ inline EsMemberCallT EsCastCallToMember(BaseCallT in) ES_NOTHROW
 /// for static class name functions access
 ///
 template <typename FinalImplT>
-class EsBaseImpl0 : public EsBaseIntf
+class EsBaseImpl0 : public EsBase, public EsBaseIntf
 {
 public:
   /// Defines an alias representing this type.
@@ -58,7 +58,7 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImpl0() ES_NOTHROW {}
+  //virtual ~EsBaseImpl0() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -88,11 +88,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -119,7 +129,7 @@ protected:
 //---------------------------------------------------------------------------
 
 template <typename FinalImplT, typename Intf1T >
-class EsBaseImpl1 : public EsBaseIntf, public Intf1T
+class EsBaseImpl1 : public EsBase, virtual public EsBaseIntf, public Intf1T
 {
 public:
   /// Defines an alias representing this type.
@@ -130,8 +140,8 @@ public:
 private:
   /// Values that represent internal interface offsets.
   enum {
-    offsEsBaseIntf = 0,
-    offsIntf1T = sizeof(EsBaseIntf),
+    offsIntf1T = 0,
+    offsEsBaseIntf = sizeof(Intf1T)
   };
 
 public:
@@ -139,7 +149,7 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImpl1() ES_NOTHROW {}
+  //virtual ~EsBaseImpl1() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -171,11 +181,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -202,7 +222,7 @@ protected:
 //---------------------------------------------------------------------------
 
 template <typename FinalImplT, typename Intf1T, typename Intf2T >
-class EsBaseImpl2 : public EsBaseIntf, public Intf1T, public Intf2T
+class EsBaseImpl2 : public EsBase, virtual public EsBaseIntf, public Intf1T, public Intf2T
 {
 public:
   /// Defines an alias representing this type.
@@ -213,9 +233,9 @@ public:
 private:
   /// Values that represent internal interface offsets.
   enum {
-    offsEsBaseIntf = 0,
-    offsIntf1T = sizeof(EsBaseIntf),
+    offsIntf1T = 0,
     offsIntf2T = offsIntf1T+sizeof(Intf1T),
+    offsEsBaseIntf = offsIntf2T+sizeof(Intf1T)
   };
 
 public:
@@ -223,7 +243,7 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImpl2() ES_NOTHROW {}
+  //virtual ~EsBaseImpl2() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -257,11 +277,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -288,7 +318,7 @@ protected:
 //---------------------------------------------------------------------------
 
 template <typename FinalImplT, typename Intf1T, typename Intf2T, typename Intf3T >
-class EsBaseImpl3 : public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T
+class EsBaseImpl3 : public EsBase, virtual public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T
 {
 public:
   /// Defines an alias representing this type.
@@ -299,10 +329,10 @@ public:
 private:
   /// Values that represent internal interface offsets.
   enum {
-     offsEsBaseIntf = 0,
-    offsIntf1T = sizeof(EsBaseIntf),
+    offsIntf1T = 0,
     offsIntf2T = offsIntf1T+sizeof(Intf1T),
     offsIntf3T = offsIntf2T+sizeof(Intf2T),
+    offsEsBaseIntf = offsIntf3T+sizeof(Intf3T)
   };
 
 public:
@@ -344,11 +374,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -375,7 +415,7 @@ protected:
 //---------------------------------------------------------------------------
 
 template <typename FinalImplT, typename Intf1T, typename Intf2T, typename Intf3T, typename Intf4T>
-class EsBaseImpl4 : public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T, public Intf4T
+class EsBaseImpl4 : public EsBase, virtual public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T, public Intf4T
 {
 public:
   /// Defines an alias representing this type.
@@ -386,11 +426,11 @@ public:
 private:
   /// Values that represent internal interface offsets.
   enum {
-     offsEsBaseIntf = 0,
-    offsIntf1T = sizeof(EsBaseIntf),
+    offsIntf1T = 0,
     offsIntf2T = offsIntf1T+sizeof(Intf1T),
     offsIntf3T = offsIntf2T+sizeof(Intf2T),
     offsIntf4T = offsIntf3T+sizeof(Intf3T)
+    offsEsBaseIntf = offsIntf4T+sizeof(Intf4T)
   };
 
 public:
@@ -436,11 +476,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -467,7 +517,7 @@ protected:
 //---------------------------------------------------------------------------
 
 template <typename FinalImplT, typename Intf1T, typename Intf2T, typename Intf3T, typename Intf4T, typename Intf5T >
-class EsBaseImpl5 : public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T, public Intf4T, public Intf5T
+class EsBaseImpl5 : public EsBase, virtual public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T, public Intf4T, public Intf5T
 {
 public:
   /// Defines an alias representing this type.
@@ -478,12 +528,12 @@ public:
 private:
   /// Values that represent internal interface offsets.
   enum {
-    offsEsBaseIntf = 0,
-    offsIntf1T = sizeof(EsBaseIntf),
+    offsIntf1T = 0,
     offsIntf2T = offsIntf1T+sizeof(Intf1T),
     offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsIntf4T = offsIntf3T+sizeof(Intf3T),
+    offsIntf4T = offsIntf3T+sizeof(Intf3T)
     offsIntf5T = offsIntf4T+sizeof(Intf4T)
+    offsEsBaseIntf = offsIntf5T+sizeof(Intf5T)
   };
 
 public:
@@ -531,11 +581,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -560,7 +620,6 @@ protected:
   volatile bool m_destroying;   ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 /// EsBaseImplRc template classes, may implement Intf1T, Intf2T, Intf3T,
@@ -570,7 +629,7 @@ protected:
 /// for static class name functions access
 ///
 template <typename FinalImplT>
-class EsBaseImplRc0 : public EsBaseIntf
+class EsBaseImplRc0 : public EsBase, public EsBaseIntf
 {
 public:
   /// Defines an alias representing this type.
@@ -630,11 +689,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -662,7 +731,7 @@ protected:
 //---------------------------------------------------------------------------
 
 template <typename FinalImplT, typename Intf1T >
-class EsBaseImplRc1 : public EsBaseIntf, public Intf1T
+class EsBaseImplRc1 : public EsBase, virtual public EsBaseIntf, public Intf1T
 {
 public:
   /// Defines an alias representing this type.
@@ -673,8 +742,8 @@ public:
 private:
   /// Values that represent internal interface offsets.
   enum {
-    offsEsBaseIntf = 0,
-    offsIntf1T = sizeof(EsBaseIntf),
+    offsIntf1T = 0,
+    offsEsBaseIntf = offsIntf1T+sizeof(Intf1T)
   };
 
 public:
@@ -730,11 +799,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -762,7 +841,7 @@ protected:
 //---------------------------------------------------------------------------
 
 template <typename FinalImplT, typename Intf1T, typename Intf2T >
-class EsBaseImplRc2 : public EsBaseIntf, public Intf1T, public Intf2T
+class EsBaseImplRc2 : public EsBase, virtual public EsBaseIntf, public Intf1T, public Intf2T
 {
 public:
   /// Defines an alias representing this type.
@@ -773,9 +852,9 @@ public:
 private:
   /// Values that represent internal interface offsets.
   enum {
-    offsEsBaseIntf = 0,
-    offsIntf1T = sizeof(EsBaseIntf),
+    offsIntf1T = 0,
     offsIntf2T = offsIntf1T+sizeof(Intf1T),
+    offsEsBaseIntf = offsIntf2T+sizeof(Intf2T)
   };
 
 public:
@@ -838,11 +917,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -870,7 +959,7 @@ protected:
 //---------------------------------------------------------------------------
 
 template <typename FinalImplT, typename Intf1T, typename Intf2T, typename Intf3T >
-class EsBaseImplRc3 : public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T
+class EsBaseImplRc3 : public EsBase, virtual public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T
 {
 public:
   /// Defines an alias representing this type.
@@ -881,10 +970,10 @@ public:
 private:
   /// Values that represent internal interface offsets.
   enum {
-    offsEsBaseIntf = 0,
-    offsIntf1T = sizeof(EsBaseIntf),
+    offsIntf1T = 0,
     offsIntf2T = offsIntf1T+sizeof(Intf1T),
     offsIntf3T = offsIntf2T+sizeof(Intf2T),
+    offsEsBaseIntf = offsIntf3T+sizeof(Intf3T)
   };
 
 public:
@@ -954,11 +1043,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -986,7 +1085,7 @@ protected:
 //---------------------------------------------------------------------------
 
 template <typename FinalImplT, typename Intf1T, typename Intf2T, typename Intf3T, typename Intf4T>
-class EsBaseImplRc4 : public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T, public Intf4T
+class EsBaseImplRc4 : public EsBase, virtual public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T, public Intf4T
 {
 public:
   /// Defines an alias representing this type.
@@ -997,11 +1096,11 @@ public:
 private:
   /// Values that represent internal interface offsets.
   enum {
-    offsEsBaseIntf = 0,
-    offsIntf1T = sizeof(EsBaseIntf),
+    offsIntf1T = 0,
     offsIntf2T = offsIntf1T+sizeof(Intf1T),
     offsIntf3T = offsIntf2T+sizeof(Intf2T),
-    offsIntf4T = offsIntf3T+sizeof(Intf3T)
+    offsIntf4T = offsIntf3T+sizeof(Intf3T),
+    offsEsBaseIntf = offsIntf4T+sizeof(Intf4T)
   };
 
 public:
@@ -1078,11 +1177,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -1110,7 +1219,7 @@ protected:
 //---------------------------------------------------------------------------
 
 template <typename FinalImplT, typename Intf1T, typename Intf2T, typename Intf3T, typename Intf4T, typename Intf5T >
-class EsBaseImplRc5 : public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T, public Intf4T, public Intf5T
+class EsBaseImplRc5 : public EsBase, virtual public EsBaseIntf, public Intf1T, public Intf2T, public Intf3T, public Intf4T, public Intf5T
 {
 public:
   /// Defines an alias representing this type.
@@ -1121,12 +1230,12 @@ public:
 private:
   /// Values that represent internal interface offsets.
   enum {
-     offsEsBaseIntf = 0,
-    offsIntf1T = sizeof(EsBaseIntf),
+    offsIntf1T = 0,
     offsIntf2T = offsIntf1T+sizeof(Intf1T),
     offsIntf3T = offsIntf2T+sizeof(Intf2T),
     offsIntf4T = offsIntf3T+sizeof(Intf3T),
-    offsIntf5T = offsIntf4T+sizeof(Intf4T)
+    offsIntf5T = offsIntf4T+sizeof(Intf4T),
+    offsEsBaseIntf = offsIntf5T+sizeof(Intf5T)
   };
 
 public:
@@ -1210,11 +1319,21 @@ public:
 
     return nullptr;
   }
-  EsBaseIntf* asBaseIntf() ES_NOTHROW
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+
+  virtual EsBaseIntf* asBaseIntf() ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CAST(EsBaseIntf);
   }
-  const EsBaseIntf* asBaseIntf() const ES_NOTHROW
+
+  virtual const EsBaseIntf* asBaseIntf() const ES_NOTHROW ES_OVERRIDE
   {
     return ES_INTERNAL_THIS_CONSTCAST(EsBaseIntf);
   }
@@ -1240,12 +1359,10 @@ protected:
   volatile bool m_destroying;     ///< true if instance is being destroyed
 };
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 /// Additional Interface implementation in derived class helpers
 ///
-
 template < typename DerivedT, typename BaseImplT, typename Intf1T >
 class EsDerivedImpl1 : public BaseImplT, public Intf1T
 {
@@ -1522,7 +1639,6 @@ public:
   }
 };
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 /// Refcounted additional interface implementation template classes

@@ -537,17 +537,24 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::objectCreate)(
   obj->m_propsMap = m_propsMap;
 
   // clone member variables
-  if( m_memberVars )
-    obj->m_memberVars = EsScriptSymbolTable::Ptr(
+  if(m_memberVars)
+  {
+    EsScriptSymbolTable::Ptr varsCloned(
       new EsScriptSymbolTable(
         *m_memberVars.get(),
-        obj
+        obj->asIntfT<EsScriptObjectIntf>(false) //< Cast obj to EsScriptObjectIntf, do not incref
       )
     );
+    ES_ASSERT(varsCloned);
+
+    obj->m_memberVars = varsCloned;
+  }
 
   // at this moment, all hierarhy of ancestors, including its fields, already created
   if(obj->ancestorGet() )
-    obj->ancestorGet()->setParent(obj);
+    obj->ancestorGet()->setParent(
+      obj->asIntfT<EsScriptObjectIntf>(false) //< Cast obj to EsScriptObjectIntf, do not incref
+    );
 
   ESSCRIPT_OBJECT_TRACE2(
     esT("New instance of '%s' object type created"),
@@ -837,7 +844,9 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::fieldAdd)(
       newFnode[0]
     );
 
-  field->setParent(this);
+  field->setParent(
+    asIntfT<EsScriptObjectIntf>(false) //< Cast this to EsScriptObjectIntf, do not incref
+  );
 
   ESSCRIPT_OBJECT_TRACE4(
     esT("Field '%s' added to script object '%s' instance in '%s' mode"),
@@ -888,7 +897,9 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::fieldConditionalAdd)(const EsScriptObj
   // add conditional field to the special separate array for fast access
   m_conditionals.push_back(field);
 
-  field->setParent( this );
+  field->setParent(
+    asIntfT<EsScriptObjectIntf>(false) //< Cast to EsScriptObjectIntf, do not incref 
+  );
 
   ESSCRIPT_OBJECT_TRACE4(
     esT("Conditional field '%s' added to script object '%s' instance in '%s' mode"),
@@ -1037,13 +1048,9 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::setParent)(EsScriptObjectIntf* parent)
   // use parent's execution context
   if( parent )
   {
-    EsScriptObject* pa =
-      reinterpret_cast<EsScriptObject*>(
-        parent->requestIntf(
-          EsIID::fromIntf<EsBaseIntf>(),
-          false
-        )
-      );
+    EsScriptObject* pa = reinterpret_cast<EsScriptObject*>(
+      parent->implementorGet()
+    );
     ES_ASSERT(pa);
 
     m_ctx = pa->m_ctx;
@@ -1107,15 +1114,10 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::clone)() const
 EsBaseIntfPtr EsScriptObject::reflectedClone() const
 {
   EsReflectedClassIntf::Ptr clone = m_ctx->vm()->objectCreate(typeNameGet());
-  EsScriptObjectIntf* i = reinterpret_cast<EsScriptObjectIntf*>(
-    const_cast<EsScriptObject*>(this)->requestIntf(
-      EsIID::fromIntf<EsScriptObjectIntf>(),
-      false
-    )
-  );
-  ES_ASSERT(i);
-  EsScriptObjectIntf::Ptr This(i, false, false);
-  clone->copyFrom(This);
+  EsScriptObjectIntf::Ptr thisWeakRef = const_cast<EsScriptObject*>(this)->asBaseIntfPtrDirectWeak();
+  ES_ASSERT(thisWeakRef);
+
+  clone->copyFrom(thisWeakRef);
 
   return clone;
 }
@@ -1132,13 +1134,7 @@ void EsScriptObject::useContextOf(const EsBaseIntf::Ptr& other)
 
   if( sobj )
   {
-    EsScriptObject* pobj =
-      reinterpret_cast<EsScriptObject*>(
-        sobj->requestIntf(
-          EsIID::fromIntf<EsBaseIntf>(),
-          false
-        )
-      );
+    EsScriptObject* pobj = ES_INTFPTR_TO_OBJECTPTR(sobj, EsScriptObject);
     ES_ASSERT(pobj);
 
     m_ctx->linkTo( pobj->m_ctx );
@@ -1372,7 +1368,10 @@ ES_IMPL_INTF_METHOD(EsMethodInfoKeysT, EsScriptObject::scriptedMethodKeysGet)(bo
   EsMethodInfoKeysT result;
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectMethodKeysCollector collector(this, allHierarchy);
+    EsScriptObjectMethodKeysCollector collector(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      allHierarchy
+    );
     collector.traverse();
     result = collector.resultGet();
   }
@@ -1426,7 +1425,10 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::binBufferSet)(const EsBinBuffer& buff)
   for(size_t idx = 0; idx < vars.size(); ++idx)
   {
     const EsString& varName = vars[idx];
-    EsScriptValAccessorIntf::Ptr var = variableFind(varName, false);
+    EsScriptValAccessorIntf::Ptr var = variableFind(
+      varName, 
+      false
+    );
     if( var )
       tmp->variableSet(varName, var->get());
   }
@@ -1448,7 +1450,11 @@ ES_IMPL_INTF_METHOD(EsScriptCodeSection::Ptr, EsScriptObject::findScriptedMethod
   if( isPOD() || isArray() || isIf() )
     return EsScriptCodeSection::Ptr();
 
-  EsScriptObjectMethodFinder finder(this, key, allHierarchy);
+  EsScriptObjectMethodFinder finder(
+    asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref 
+    key, 
+    allHierarchy
+  );
   finder.traverse();
 
   return finder.resultGet();
@@ -1460,7 +1466,10 @@ EsVariant EsScriptObject::fnodeFind(const EsString& name) const ES_NOTHROW
 {
   if( !isPOD() && !isArray() )
   {
-    EsScriptObjectFieldFinder finder(this, name);
+    EsScriptObjectFieldFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      name
+    );
     finder.traverse();
     return finder.resultGet();
   }
@@ -1495,7 +1504,9 @@ ES_IMPL_INTF_METHOD(EsStringArray, EsScriptObject::fieldNamesGet)() const ES_NOT
 {
   if( !isPOD() && !isArray() )
   {
-    EsScriptObjectFieldNamesCollector collector(this);
+    EsScriptObjectFieldNamesCollector collector(
+      asIntfT<EsScriptObjectIntf>(false) //< Cast this to EsScriptObjectIntf, do not incref
+    );
     collector.traverse();
     return collector.resultGet();
   }
@@ -1665,7 +1676,10 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::copyFrom)(cr_EsBaseIntfPtr p1)
       else
       {
         if( isPOD() )
-          propertySet( EsStdNames::value(), other->propertyGet(EsStdNames::value()) );
+          propertySet( 
+            EsStdNames::value(), 
+            other->propertyGet(EsStdNames::value()) 
+          );
         else if( isArray() )
         {
           for(int idx = 0; idx < call(EsStdNames::countGet()).asInt(); ++idx )
@@ -1742,7 +1756,10 @@ ES_IMPL_INTF_METHOD(EsString::Array, EsScriptObject::propertyNamesGet)() const E
 
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropNamesCollector collector(this, false);
+    EsScriptObjectPropNamesCollector collector(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      false
+    );
     collector.traverse();
 
     const EsString::Array& scripted = collector.resultGet();
@@ -1759,7 +1776,10 @@ ES_IMPL_INTF_METHOD(EsString::Array, EsScriptObject::persistentPropertyNamesGet)
 
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropNamesCollector collector(this, true);
+    EsScriptObjectPropNamesCollector collector(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      true
+    );
     collector.traverse();
 
     const EsString::Array& scripted = collector.resultGet();
@@ -1775,7 +1795,10 @@ ES_IMPL_INTF_METHOD(bool, EsScriptObject::hasProperty)(const EsString& name) con
   if( !classInfoGet().hasProperty(name) &&
       !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropertyFinder finder(this, name);
+    EsScriptObjectPropertyFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      name
+    );
     finder.traverse();
 
     return finder.resultGet();
@@ -1791,7 +1814,10 @@ ES_IMPL_INTF_METHOD(bool, EsScriptObject::propertyCanRead)(const EsString& name)
   if( !classInfoGet().hasProperty(name) &&
     !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropertyFinder finder(this, name);
+    EsScriptObjectPropertyFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      name
+    );
     finder.traverse();
     prop = finder.resultGet();
   }
@@ -1819,7 +1845,10 @@ ES_IMPL_INTF_METHOD(bool, EsScriptObject::propertyCanWrite)(const EsString& name
   if( !classInfoGet().hasProperty(name) &&
     !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropertyFinder finder(this, name);
+    EsScriptObjectPropertyFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      name
+    );
     finder.traverse();
     prop = finder.resultGet();
   }
@@ -1847,7 +1876,10 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::propertyGet)(const EsString& name
   EsScriptObjectPropertyInfoIntf::Ptr prop;
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropertyFinder finder(this, name);
+    EsScriptObjectPropertyFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      name
+    );
     finder.traverse();
     prop = finder.resultGet();
   }
@@ -1867,7 +1899,9 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::propertyGet)(const EsString& name
         m_ctx->vm()->currentDebugInfoGet()
       );
 
-    result = info->get( asBaseIntf() );
+    result = info->get(  
+      this
+    );
   }
 
   return result;
@@ -1879,7 +1913,10 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::propertySet)(const EsString& name, con
   EsScriptObjectPropertyInfoIntf::Ptr prop;
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropertyFinder finder(this, name);
+    EsScriptObjectPropertyFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      name
+    );
     finder.traverse();
     prop = finder.resultGet();
   }
@@ -1893,9 +1930,16 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::propertySet)(const EsString& name, con
   {
     const EsPropertyInfo* info = classInfoGet().propertyInfoFind(name);
     if( !info )
-      EsScriptException::ThrowPropertyIsNotDeclared(name, typeNameGet(), m_ctx->vm()->currentDebugInfoGet());
+      EsScriptException::ThrowPropertyIsNotDeclared(
+        name, 
+        typeNameGet(), 
+        m_ctx->vm()->currentDebugInfoGet()
+      );
 
-    info->set( asBaseIntf(), val);
+    info->set( 
+      this, 
+      val
+    );
   }
 }
 //---------------------------------------------------------------------------
@@ -1961,7 +2005,10 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::callMethod)(const EsString& name,
 
   const EsMethodInfo* info = classInfoGet().methodInfoFind(key);
   if( info )
-    return info->call(asBaseIntf(), params);
+    return info->call(
+      this, 
+      params
+    );
 
   EsScriptException::Throw(
     EsString::format(
@@ -1986,19 +2033,13 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name)
     EsVariant::null()
   );
 }
+//---------------------------------------------------------------------------
 
 ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const EsVariant& param1)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
     param1
   };
-
-#else
-  EsVariant::Array params;
-
-  params.push_back(param1);
-#endif
 
   return callMethod(
     name,
@@ -2009,19 +2050,10 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const
 
 ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const EsVariant& param1, const EsVariant& param2)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
     param1,
     param2
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(2);
-
-  params.push_back(param1);
-  params.push_back(param2);
-#endif
 
   return callMethod(
     name,
@@ -2032,21 +2064,11 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const
 
 ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
     param1,
     param2,
     param3
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(3);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
-#endif
 
   return callMethod(
     name,
@@ -2057,23 +2079,12 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const
 
 ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
     param1,
     param2,
     param3,
     param4
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(4);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
-  params.push_back(param4);
-#endif
 
   return callMethod(
     name,
@@ -2084,7 +2095,6 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const
 
 ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
     param1,
     param2,
@@ -2092,17 +2102,6 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const
     param4,
     param5
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(5);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
-  params.push_back(param4);
-  params.push_back(param5);
-#endif
 
   return callMethod(
     name,
@@ -2113,7 +2112,6 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const
 
 ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5, const EsVariant& param6)
 {
-#ifdef ES_MODERN_CPP
   EsVariant::Array params = {
     param1,
     param2,
@@ -2122,18 +2120,6 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::call)(const EsString& name, const
     param5,
     param6
   };
-
-#else
-  EsVariant::Array params;
-  params.reserve(6);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
-  params.push_back(param4);
-  params.push_back(param5);
-  params.push_back(param6);
-#endif
 
   return callMethod(
     name,
@@ -2277,13 +2263,21 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::variableDeclare)(const EsString& name,
     EsScriptException::ThrowPodObjectMayNotContainFieldsVarsOrProps(typeNameGet(), dbg);
 
   // check for fields or vars with such name
-  EsScriptObjectFieldFastFinder ffinder(this, name);
-  EsScriptObjectVarFastFinder vfinder(this, name);
+  EsScriptObjectFieldFastFinder ffinder(
+    asIntfT<EsScriptObjectIntf>(false), //< Cast to EsScriptObjectIntf, non incref-ed
+    name
+  );
+  EsScriptObjectVarFastFinder vfinder(
+    asIntfT<EsScriptObjectIntf>(false), //< Cast to EsScriptObjectIntf, non incref-ed 
+    name
+  );
   if( ffinder.found() || vfinder.found() )
     EsScriptException::ThrowFieldOrVarAlreadyDeclared(name, typeNameGet(), dbg);
 
   if( !m_memberVars )
-    m_memberVars = EsScriptSymbolTable::Ptr(new EsScriptSymbolTable(false));
+    m_memberVars = EsScriptSymbolTable::Ptr(
+      new EsScriptSymbolTable(false)
+    );
 
   m_memberVars->symbolTemplateAdd(name, EsScriptSymbolFlag::None, dbg);
 }
@@ -2336,7 +2330,10 @@ ES_IMPL_INTF_METHOD(EsScriptValAccessorIntf::Ptr, EsScriptObject::variableFind)(
   EsScriptValAccessorIntf::Ptr result;
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectVariableFinder varFinder(this, name);
+    EsScriptObjectVariableFinder varFinder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      name
+    );
     varFinder.traverse();
     result = varFinder.resultGet();
     if( !varFinder.found() && doThrow )
@@ -2355,7 +2352,10 @@ ES_IMPL_INTF_METHOD(bool, EsScriptObject::hasVariable)(const EsString& name) con
 {
    if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectVariableFinder varFinder(this, name);
+    EsScriptObjectVariableFinder varFinder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+      name
+    );
     varFinder.traverse();
 
     return varFinder.found();
@@ -2369,7 +2369,9 @@ ES_IMPL_INTF_METHOD(EsStringArray, EsScriptObject::varNamesGet)() const ES_NOTHR
 {
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectVarNamesCollector collector(this);
+    EsScriptObjectVarNamesCollector collector(
+      asIntfT<EsScriptObjectIntf>(false) //< Cast this to EsScriptObjectIntf, do not incref
+    );
     collector.traverse();
     return collector.resultGet();
   }
@@ -2418,7 +2420,10 @@ void EsScriptObject::propertyDeclare(const EsString& name, const EsAttributesInt
   if( isPOD() || isArray() || isIf() )
     EsScriptException::ThrowPodObjectMayNotContainFieldsVarsOrProps(typeName, m_ctx->vm()->currentDebugInfoGet());
 
-  EsScriptObjectPropFastFinder ffinder(this, name);
+  EsScriptObjectPropFastFinder ffinder(
+    asIntfT<EsScriptObjectIntf>(false), //< Cast to EsScriptObjectIntf, non incref-ed
+    name
+  );
   if( ffinder.found() )
     EsScriptException::ThrowPropertyAlreadyDeclared(name, typeName, m_ctx->vm()->currentDebugInfoGet());
 
@@ -2452,7 +2457,10 @@ EsStringArray EsScriptObject::propertyAttributeNamesGet(cr_EsString propName) co
   EsScriptObjectPropertyInfoIntf::Ptr prop;
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropertyFinder finder(this, propName);
+    EsScriptObjectPropertyFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast to EsScriptObjectIntf, non incref-ed
+      propName
+    );
     finder.traverse();
     prop = finder.resultGet();
   }
@@ -2463,7 +2471,12 @@ EsStringArray EsScriptObject::propertyAttributeNamesGet(cr_EsString propName) co
   {
     const EsPropertyInfo* info = classInfoGet().propertyInfoFind(propName);
     if( !info )
-      EsScriptException::ThrowPropertyIsNotDeclared(propName, typeNameGet(), m_ctx->vm()->currentDebugInfoGet());
+      EsScriptException::ThrowPropertyIsNotDeclared(
+        propName, 
+        typeNameGet(), 
+        m_ctx->vm()->currentDebugInfoGet()
+      );
+
     EsAttributesIntf::Ptr attrs = info->attributesAccess();
     if( attrs )
       result = attrs->allNamesGet();
@@ -2477,7 +2490,10 @@ bool EsScriptObject::propertyHasAttribute(cr_EsString propName, cr_EsString attr
   EsScriptObjectPropertyInfoIntf::Ptr prop;
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropertyFinder finder(this, propName);
+    EsScriptObjectPropertyFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast to EsScriptObjectIntf, non incref-ed
+      propName
+    );
     finder.traverse();
     prop = finder.resultGet();
   }
@@ -2488,7 +2504,11 @@ bool EsScriptObject::propertyHasAttribute(cr_EsString propName, cr_EsString attr
   {
     const EsPropertyInfo* info = classInfoGet().propertyInfoFind(propName);
     if( !info )
-      EsScriptException::ThrowPropertyIsNotDeclared(propName, typeNameGet(), m_ctx->vm()->currentDebugInfoGet());
+      EsScriptException::ThrowPropertyIsNotDeclared(
+        propName, 
+        typeNameGet(), 
+        m_ctx->vm()->currentDebugInfoGet()
+      );
     EsAttributesIntf::Ptr attrs = info->attributesAccess();
     if( attrs )
       return attrs->attributeExists(attrName);
@@ -2502,7 +2522,10 @@ EsVariant EsScriptObject::propertyAttributeGet(cr_EsString propName, cr_EsString
   EsScriptObjectPropertyInfoIntf::Ptr prop;
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropertyFinder finder(this, propName);
+    EsScriptObjectPropertyFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast to EsScriptObjectIntf, non incref-ed
+      propName
+    );
     finder.traverse();
     prop = finder.resultGet();
   }
@@ -2513,7 +2536,11 @@ EsVariant EsScriptObject::propertyAttributeGet(cr_EsString propName, cr_EsString
   {
     const EsPropertyInfo* info = classInfoGet().propertyInfoFind(propName);
     if( !info )
-      EsScriptException::ThrowPropertyIsNotDeclared(propName, typeNameGet(), m_ctx->vm()->currentDebugInfoGet());
+      EsScriptException::ThrowPropertyIsNotDeclared(
+        propName, 
+        typeNameGet(),
+        m_ctx->vm()->currentDebugInfoGet()
+      );
     EsAttributesIntf::Ptr attrs = info->attributesAccess();
     if( attrs )
       return attrs->attributeGet(attrName);
@@ -2527,7 +2554,10 @@ EsString EsScriptObject::propertyLabelGet(cr_EsString propName) const
   EsScriptObjectPropertyInfoIntf::Ptr prop;
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropertyFinder finder(this, propName);
+    EsScriptObjectPropertyFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast to EsScriptObjectIntf, non incref-ed
+      propName
+    );
     finder.traverse();
     prop = finder.resultGet();
   }
@@ -2541,7 +2571,11 @@ EsString EsScriptObject::propertyLabelGet(cr_EsString propName) const
   {
     const EsPropertyInfo* info = classInfoGet().propertyInfoFind(propName);
     if( !info )
-      EsScriptException::ThrowPropertyIsNotDeclared(propName, typeNameGet(), m_ctx->vm()->currentDebugInfoGet());
+      EsScriptException::ThrowPropertyIsNotDeclared(
+        propName, 
+        typeNameGet(), 
+        m_ctx->vm()->currentDebugInfoGet()
+      );
 
     return info->labelGet();
   }
@@ -2555,7 +2589,10 @@ EsString EsScriptObject::propertyDescriptionGet(cr_EsString propName) const
   EsScriptObjectPropertyInfoIntf::Ptr prop;
   if( !isPOD() && !isArray() && !isIf() )
   {
-    EsScriptObjectPropertyFinder finder(this, propName);
+    EsScriptObjectPropertyFinder finder(
+      asIntfT<EsScriptObjectIntf>(false), //< Cast to EsScriptObjectIntf, non incref-ed
+      propName
+    );
     finder.traverse();
     prop = finder.resultGet();
   }
