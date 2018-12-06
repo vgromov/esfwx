@@ -126,10 +126,10 @@
 //
 #ifdef ES_I18N
 # define esTranslationGet(x)    EsStringI18n::translate( x )
-#  define _(x)                    EsStringI18n::translate( esT(x) ).c_str()
+# define _(x)                   EsStringI18n::translate( esT(x) ).c_str()
 #else
 # define esTranslationGet(x)    x
-#  define _(x)                    esT(x)
+# define _(x)                   esT(x)
 #endif
 
 // Misc commonly used sting macros

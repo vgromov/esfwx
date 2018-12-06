@@ -21,13 +21,17 @@ m_file(file)
 
 EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(ulong line, ulong col, const EsString& file) ES_NOTHROW
 {
-  return EsScriptDebugInfoIntf::Ptr( 
+  std::unique_ptr<EsScriptDebugInfo> ptr(
     new EsScriptDebugInfo(
-      line, 
-      col, 
+      line,
+      col,
       file
-    ) 
+    )
   );
+  ES_ASSERT(ptr);
+
+  ptr->m_dynamic = true;
+  return ptr.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
 
@@ -49,12 +53,10 @@ EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(const EsString& input, EsSt
   }
   ulong col = 1 + ( (pos > start) ? static_cast<ulong>(pos-start) : 0);
 
-  return EsScriptDebugInfoIntf::Ptr( 
-    new EsScriptDebugInfo(
-      line, 
-      col, 
-      file
-    ) 
+  return create(
+    line,
+    col,
+    file
   );
 }
 //---------------------------------------------------------------------------

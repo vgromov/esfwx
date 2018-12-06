@@ -268,8 +268,8 @@ protected:
 
 // rpc master methods
 EsRpcMaster::EsRpcMaster() :
-m_ioStateProxy(0),
-m_monitorProxy(0)
+m_ioStateProxy(nullptr),
+m_monitorProxy(nullptr)
 {
   m_ioStateProxy = new EsStdIoStateProxy(*this);
   m_monitorProxy = new EsProtocolIoMonitorProxy(*this);
@@ -281,7 +281,7 @@ EsRpcMasterIntf::Ptr EsRpcMaster::create()
 {
   std::unique_ptr<EsRpcMaster> master( new EsRpcMaster );
   ES_ASSERT( master.get() );
-   master->m_dynamic = true;
+  master->m_dynamic = true;
 
   return master.release()->asBaseIntfPtrDirect();
 }

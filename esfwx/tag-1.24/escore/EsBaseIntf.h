@@ -9,40 +9,56 @@
 #define ES_IMPL_INTF_METHOD(Retval, MethodName) \
   Retval MethodName
 
-// interface unique ID structure
+/// Interface unique ID lightweight structure
 struct EsIID
 {
-  // data members
+  /// Data members
   esU32 id0, id1, id2, id3;
-  // constructors
+
+  /// Constructors
   inline EsIID() ES_NOTHROW : id0(0), id1(0), id2(0), id3(0) {}
   inline EsIID(const EsIID& other) ES_NOTHROW : id0(other.id0), id1(other.id1), id2(other.id2), id3(other.id3) {}
   inline EsIID(esU32 _0, esU32 _1, esU32 _2, esU32 _3) ES_NOTHROW : id0(_0), id1(_1), id2(_2), id3(_3) {}
 
-  // copy operator
+  /// Copy operator
   inline EsIID& operator=( const EsIID& other ) ES_NOTHROW
   {
     id0 = other.id0; id1 = other.id1; id2 = other.id2; id3 = other.id3;
     return *this;
   }
 
-  // templated EsIID generator
+  /// Templated EsIID generator
   template <typename IntfT>
   static inline EsIID fromIntf() ES_NOTHROW
   {
     return EsIID(IntfT::uid0, IntfT::uid1, IntfT::uid2, IntfT::uid3);
   }
 
-  // check EsIID for emptyness
+  /// Check EsIID for emptyness
   inline bool empty() const ES_NOTHROW
   {
     return id0 == 0 && id1 == 0 && id2 == 0 && id3 == 0;
   }
 
-  // EsIID equality check
+  /// EsIID equality check
   inline bool operator== (const EsIID& other) const ES_NOTHROW
   {
     return id0 == other.id0 && id1 == other.id1 && id2 == other.id2 && id3 == other.id3;
+  }
+
+  /// Type conversion to GUID
+  inline operator GUID () const ES_NOTHROW
+  {
+    GUID result;
+    ES_COMPILE_TIME_ASSERT(sizeof(GUID) == (sizeof(EsIID)), _sizeofGUID_equalto_sizeofIID);
+
+    memcpy(
+      &result,
+      this,
+      sizeof(EsIID)
+    );
+
+    return result;
   }
 };
 

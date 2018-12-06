@@ -56,7 +56,7 @@ ES_DECL_CLASS_INFO_END
 
 EsEventHandler::EsEventHandler(bool sync, const EsString& categories /*= EsString::s_null*/) :
 m_isSync(sync),
-m_sub(0)
+m_sub(nullptr)
 {
   m_dynamic = true;
   if( m_isSync )
@@ -80,7 +80,7 @@ EsEventHandler::~EsEventHandler()
 EsBaseIntfPtr EsEventHandler::createSync(cr_EsBaseIntfPtr handler)
 {
   std::unique_ptr<EsEventHandler> tmp(new EsEventHandler(true));
-  ES_ASSERT(tmp.get());
+  ES_ASSERT(tmp);
   tmp->set_handler(handler);
   return tmp.release()->asBaseIntfPtrDirect();
 }
@@ -88,7 +88,7 @@ EsBaseIntfPtr EsEventHandler::createSync(cr_EsBaseIntfPtr handler)
 EsBaseIntfPtr EsEventHandler::createAsync(cr_EsBaseIntfPtr handler)
 {
   std::unique_ptr<EsEventHandler> tmp(new EsEventHandler(false));
-  ES_ASSERT(tmp.get());
+  ES_ASSERT(tmp);
   tmp->set_handler(handler);
   return tmp.release()->asBaseIntfPtrDirect();
 }
@@ -96,7 +96,7 @@ EsBaseIntfPtr EsEventHandler::createAsync(cr_EsBaseIntfPtr handler)
 EsBaseIntfPtr EsEventHandler::createSync(cr_EsBaseIntfPtr handler, cr_EsString cats)
 {
   std::unique_ptr<EsEventHandler> tmp(new EsEventHandler(true, cats));
-  ES_ASSERT(tmp.get());
+  ES_ASSERT(tmp);
   tmp->set_handler(handler);
   return tmp.release()->asBaseIntfPtrDirect();
 }
@@ -104,7 +104,7 @@ EsBaseIntfPtr EsEventHandler::createSync(cr_EsBaseIntfPtr handler, cr_EsString c
 EsBaseIntfPtr EsEventHandler::createAsync(cr_EsBaseIntfPtr handler, cr_EsString cats)
 {
   std::unique_ptr<EsEventHandler> tmp(new EsEventHandler(false, cats));
-  ES_ASSERT(tmp.get());
+  ES_ASSERT(tmp);
   tmp->set_handler(handler);
   return tmp.release()->asBaseIntfPtrDirect();
 }

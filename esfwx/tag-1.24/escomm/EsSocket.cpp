@@ -487,13 +487,9 @@ bool EsSocketAddr::operator<(const EsSocketAddr& other) const
 
 EsBaseIntfPtr EsSocketAddr::clone() const
 {
-#ifdef ES_MODERN_CPP
-  std::unique_ptr<EsSocketAddr> p = std::make_unique<EsSocketAddr>(*this);
-#else
   std::unique_ptr<EsSocketAddr> p( new EsSocketAddr(*this) );
-#endif
+  ES_ASSERT(p);
 
-  ES_ASSERT(p.get());
   p->m_dynamic = true;
 
   return p.release()->asBaseIntfPtrDirect();

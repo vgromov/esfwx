@@ -136,7 +136,7 @@ EsScriptObjectIntf::Ptr EsScriptIfObject::createMetaclass(const EsScriptContext:
   );
   ES_ASSERT(tmp);
 
-  EsScriptObjectIntf::Ptr result = tmp->asBaseIntfPtrDirect();
+  EsScriptObjectIntf::Ptr result = tmp.release()->asBaseIntfPtrDirect();
   ES_ASSERT(result);
 
   // install expression code section
@@ -146,8 +146,7 @@ EsScriptObjectIntf::Ptr EsScriptIfObject::createMetaclass(const EsScriptContext:
     result.get()
   );
   ES_ASSERT(expr);
-  tmp->m_expr = expr;
-  tmp.release();
+  reinterpret_cast<EsScriptIfObject*>(result->implementorGet())->m_expr = expr;
 
   // add branches
   EsScriptObjectIntf::Ptr branch = EsScriptIfBranchObject::createMetaclass(

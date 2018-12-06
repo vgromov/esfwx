@@ -231,7 +231,6 @@ void EsThread::startSuspendedCheck()
   pausedCheck();
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 // EsThreadStateProxy helper implementation
 //
@@ -260,11 +259,14 @@ bool EsThreadStateProxy::isBreaking(ulong ms) const
 
 EsBaseIntf::Ptr EsThread::threadStateProxyGet()
 {
-  std::unique_ptr<EsThreadStateProxy> proxy( new EsThreadStateProxy(*this) );
+  std::unique_ptr<EsThreadStateProxy> proxy( 
+    new EsThreadStateProxy(*this) 
+  );
+  ES_ASSERT(proxy);
+  
   return proxy.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 #ifndef ES_THREAD_ENTER

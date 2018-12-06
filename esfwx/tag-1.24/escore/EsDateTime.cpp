@@ -124,7 +124,7 @@ m_msecs(0)
 EsBaseIntfPtr EsTimeSpan::create(esDT dt)
 {
   std::unique_ptr<EsTimeSpan> p( new EsTimeSpan(dt) );
-  ES_ASSERT(p.get());
+  ES_ASSERT(p);
   p->m_dynamic = true;
 
   return p.release()->asBaseIntfPtrDirect();
@@ -798,7 +798,7 @@ const EsDateTime& EsDateTime::null()
 EsBaseIntfPtr EsDateTime::create(esDT dt)
 {
   std::unique_ptr<EsDateTime> p( new EsDateTime(dt) );
-  ES_ASSERT(p.get());
+  ES_ASSERT(p);
   p->m_dynamic = true;
 
   return p.release()->asBaseIntfPtrDirect();

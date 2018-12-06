@@ -166,10 +166,15 @@ EsThreadWorker::~EsThreadWorker()
 //---------------------------------------------------------------------------
 
 EsThreadWorkerIntf::Ptr EsThreadWorker::create(bool weakWorkerRef /*= true*/,
-  const EsBaseIntfPtr& worker /*= EsBaseIntfPtr()*/)
+  const EsBaseIntfPtr& worker /*= nullptr*/)
 {
-  std::unique_ptr<EsThreadWorker> tmp( new EsThreadWorker(weakWorkerRef) );
-
+  std::unique_ptr<EsThreadWorker> tmp( 
+    new EsThreadWorker(
+      weakWorkerRef
+    ) 
+  );
+  ES_ASSERT(tmp);
+  
   if( worker )
     tmp->workerSet(worker);
 

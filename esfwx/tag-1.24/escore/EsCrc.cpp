@@ -627,7 +627,7 @@ EsBaseIntfPtr EsCRC32_IEEE802_3::NEW(cr_EsBinBuffer buff, esU32 initalSum)
 
 EsBaseIntfPtr EsCRC32_IEEE802_3::NEW(cr_EsBinBuffer buff, esU32 initalSum, ulong from, ulong to)
 {
-  std::unique_ptr<EsCRC32_IEEE802_3> p(new EsCRC32_IEEE802_3(nullptr, 0, initalSum));
+  std::unique_ptr<EsCRC32_IEEE802_3> p( new EsCRC32_IEEE802_3(nullptr, 0, initalSum) );
   ES_ASSERT(p);
   p->m_dynamic = true;
 

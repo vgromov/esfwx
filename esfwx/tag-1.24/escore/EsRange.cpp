@@ -67,9 +67,17 @@ bool EsRange::has(const EsVariant& val) const
 // ctor
 EsVariant EsRange::NEW(const EsVariant& min, const EsVariant& isStrictMin, const EsVariant& max, const EsVariant& isStrictMax)
 {
-  EsReflectedClassIntf::Ptr range(new EsRange(min, isStrictMin.asBool(), max, isStrictMax.asBool()));
+  std::unique_ptr<EsRange> range(
+    new EsRange(
+      min, 
+      isStrictMin.asBool(), 
+      max, 
+      isStrictMax.asBool()
+    )
+  );
   ES_ASSERT(range);
-  return range;
+  
+  return range.release()->asBaseIntfPtrDirect();
 }
 
 // non-standard constructors
@@ -77,36 +85,68 @@ EsVariant EsRange::createMinExcl(const EsVariant& min)
 {
   ES_ASSERT(!min.isEmpty());
 
-  EsReflectedClassIntf::Ptr range(new EsRange(min, true, EsVariant::null(), false));
+  std::unique_ptr<EsRange> range(
+    new EsRange(
+      min, 
+      true, 
+      EsVariant::null(), 
+      false
+    )
+  );
   ES_ASSERT(range);
-  return range;
+  
+  return range.release()->asBaseIntfPtrDirect();
 }
 
 EsVariant EsRange::createMinIncl(const EsVariant& min)
 {
   ES_ASSERT(!min.isEmpty());
 
-  EsReflectedClassIntf::Ptr range(new EsRange(min, false, EsVariant::null(), false));
+  std::unique_ptr<EsRange> range(
+    new EsRange(
+      min, 
+      false, 
+      EsVariant::null(), 
+      false
+    )
+  );
   ES_ASSERT(range);
-  return range;
+  
+  return range.release()->asBaseIntfPtrDirect();
 }
 
 EsVariant EsRange::createMaxExcl(const EsVariant& max)
 {
   ES_ASSERT(!max.isEmpty());
 
-  EsReflectedClassIntf::Ptr range(new EsRange(EsVariant::null(), false, max, true));
+  std::unique_ptr<EsRange> range(
+    new EsRange(
+      EsVariant::null(), 
+      false, 
+      max, 
+      true
+    )
+  );
   ES_ASSERT(range);
-  return range;
+  
+  return range.release()->asBaseIntfPtrDirect();
 }
 
 EsVariant EsRange::createMaxIncl(const EsVariant& max)
 {
   ES_ASSERT(!max.isEmpty());
 
-  EsReflectedClassIntf::Ptr range(new EsRange(EsVariant::null(), false, max, false));
+  std::unique_ptr<EsRange> range(
+    new EsRange(
+      EsVariant::null(), 
+      false, 
+      max, 
+      false
+    )
+  );
   ES_ASSERT(range);
-  return range;
+  
+  return range.release()->asBaseIntfPtrDirect();
 }
 
 void EsRange::minMaxComplianceCheck(const EsVariant& min, const EsVariant& max, bool incl /*= false*/)
@@ -128,9 +168,17 @@ EsVariant EsRange::createMinExclMaxExcl(const EsVariant& min, const EsVariant& m
 
   minMaxComplianceCheck(min, max);
 
-  EsReflectedClassIntf::Ptr range(new EsRange(min, true, max, true));
+  std::unique_ptr<EsRange> range(
+    new EsRange(
+      min, 
+      true, 
+      max, 
+      true
+    )
+  );
   ES_ASSERT(range);
-  return range;
+  
+  return range.release()->asBaseIntfPtrDirect();
 }
 
 EsVariant EsRange::createMinInclMaxIncl(const EsVariant& min, const EsVariant& max)
@@ -140,9 +188,17 @@ EsVariant EsRange::createMinInclMaxIncl(const EsVariant& min, const EsVariant& m
 
   minMaxComplianceCheck(min, max, true);
 
-  EsReflectedClassIntf::Ptr range(new EsRange(min, false, max, false));
+  std::unique_ptr<EsRange> range(
+    new EsRange(
+      min, 
+      false, 
+      max, 
+      false
+    )
+  );
   ES_ASSERT(range);
-  return range;
+  
+  return range.release()->asBaseIntfPtrDirect();
 }
 
 EsVariant EsRange::createMinExclMaxIncl(const EsVariant& min, const EsVariant& max)
@@ -152,9 +208,17 @@ EsVariant EsRange::createMinExclMaxIncl(const EsVariant& min, const EsVariant& m
 
   minMaxComplianceCheck(min, max, true);
 
-  EsReflectedClassIntf::Ptr range(new EsRange(min, true, max, false));
+  std::unique_ptr<EsRange> range(
+    new EsRange(
+      min, 
+      true, 
+      max, 
+      false
+    )
+  );
   ES_ASSERT(range);
-  return range;
+  
+  return range.release()->asBaseIntfPtrDirect();
 }
 
 EsVariant EsRange::createMinInclMaxExcl(const EsVariant& min, const EsVariant& max)
@@ -164,9 +228,17 @@ EsVariant EsRange::createMinInclMaxExcl(const EsVariant& min, const EsVariant& m
 
   minMaxComplianceCheck(min, max, true);
 
-  EsReflectedClassIntf::Ptr range(new EsRange(min, false, max, true));
+  std::unique_ptr<EsRange> range(
+    new EsRange(
+      min, 
+      false, 
+      max, 
+      true
+    )
+  );
   ES_ASSERT(range);
-  return range;
+  
+  return range.release()->asBaseIntfPtrDirect();
 }
 
 // properties

@@ -3602,12 +3602,6 @@ static EsXmlParseResult load_file_impl(EsXmlDocument& doc, EsFile& file, unsigne
   EsXmlParseStatus size_status = xmlParseStatusOk;
   size_t size = (size_t)file.get_length();
 
-  if(size_status != xmlParseStatusOk)
-  {
-    file.close();
-    return make_parse_result(size_status);
-  }
-
   // allocate buffer for the whole file
   char* contents = static_cast<char*>(EsXmlMemory::allocate(size > 0 ? size : 1));
 

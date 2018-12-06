@@ -20,7 +20,13 @@ m_val(val)
 
 EsAssocContainerNode::Ptr EsAssocContainerNode::create(EsAssocContainer& owner, const EsVariant& key, const EsVariant& val)
 {
-  return EsAssocContainerNode::Ptr(new EsAssocContainerNode(owner, key, val));
+  return EsAssocContainerNode::Ptr(
+    new EsAssocContainerNode(
+      owner, 
+      key, 
+      val
+    )
+  );
 }
 
 // reflection class info declaration

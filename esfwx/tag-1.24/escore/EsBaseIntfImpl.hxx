@@ -331,7 +331,8 @@ public:
 
 public:
   EsBaseImpl3() ES_NOTHROW :
-  m_dynamic(false)
+  m_dynamic(false),
+  m_destroying(false)
   {}
   virtual ~EsBaseImpl3() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE

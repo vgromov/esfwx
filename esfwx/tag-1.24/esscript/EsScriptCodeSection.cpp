@@ -58,7 +58,8 @@ m_tryActive(false)
 }
 //---------------------------------------------------------------------------
 
-EsScriptTryCatchBlock::EsScriptTryCatchBlock(const EsScriptTryCatchBlock& other) ES_NOTHROW
+EsScriptTryCatchBlock::EsScriptTryCatchBlock(const EsScriptTryCatchBlock& other) ES_NOTHROW :
+m_tryActive(false)
 {
   this->operator=(other);
 }
@@ -340,7 +341,7 @@ EsScriptCodeSection::Ptr EsScriptCodeSection::create(const EsString& name, const
 {
   ES_ASSERT(!name.empty());
   ES_ASSERT(metaclass);
-  EsScriptCodeSection::Ptr result(new EsScriptCodeSection(name, metaclass));
+  EsScriptCodeSection::Ptr result( new EsScriptCodeSection(name, metaclass) );
   ES_ASSERT(result);
 
   for( size_t idx = 0; idx < params.size(); ++idx )

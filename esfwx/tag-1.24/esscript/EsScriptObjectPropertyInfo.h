@@ -63,9 +63,18 @@ public:
     const EsString& writerName
   )
   {
-    EsScriptObjectPropertyInfoIntf::Ptr result(  new EsScriptObjectPropertyInfo(name, attrs, parent,  readerName, writerName) );
+    std::unique_ptr<EsScriptObjectPropertyInfo> result(  
+      new EsScriptObjectPropertyInfo(
+        name, 
+        attrs, 
+        parent,  
+        readerName, 
+        writerName
+      ) 
+    );
     ES_ASSERT(result);
-    return result;
+    
+    return result.release()->asBaseIntfPtrDirect();
   }
   
 protected:

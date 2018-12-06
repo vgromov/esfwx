@@ -513,13 +513,11 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::objectCreate)(
   if(splitCtx)
     ctx = EsScriptContext::create(m_ctx->vm());
 
-  EsScriptObject* obj = nullptr;
-
   std::unique_ptr<EsScriptObject> result(
-    obj = new EsScriptObject(
+    new EsScriptObject(
       m_typeName,
       m_ancestor ?
-      m_ancestor->internalClone(
+        m_ancestor->internalClone(
           nullptr,
           buff
         ) :
@@ -534,7 +532,7 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::objectCreate)(
   ES_ASSERT(result);
 
   // copy properties (actually, all instances, declared in metaclass, got shared)
-  obj->m_propsMap = m_propsMap;
+  result->m_propsMap = m_propsMap;
 
   // clone member variables
   if(m_memberVars)
@@ -542,18 +540,18 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::objectCreate)(
     EsScriptSymbolTable::Ptr varsCloned(
       new EsScriptSymbolTable(
         *m_memberVars.get(),
-        obj->asIntfT<EsScriptObjectIntf>(false) //< Cast obj to EsScriptObjectIntf, do not incref
+        result->asIntfT<EsScriptObjectIntf>(false) //< Cast obj to EsScriptObjectIntf, do not incref
       )
     );
     ES_ASSERT(varsCloned);
 
-    obj->m_memberVars = varsCloned;
+    result->m_memberVars = varsCloned;
   }
 
   // at this moment, all hierarhy of ancestors, including its fields, already created
-  if(obj->ancestorGet() )
-    obj->ancestorGet()->setParent(
-      obj->asIntfT<EsScriptObjectIntf>(false) //< Cast obj to EsScriptObjectIntf, do not incref
+  if(result->ancestorGet() )
+    result->ancestorGet()->setParent(
+      result->asIntfT<EsScriptObjectIntf>(false) //< Cast obj to EsScriptObjectIntf, do not incref
     );
 
   ESSCRIPT_OBJECT_TRACE2(
@@ -2263,12 +2261,13 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::variableDeclare)(const EsString& name,
     EsScriptException::ThrowPodObjectMayNotContainFieldsVarsOrProps(typeNameGet(), dbg);
 
   // check for fields or vars with such name
+  EsScriptObjectIntf* iobj = asIntfT<EsScriptObjectIntf>(false); //< Cast to EsScriptObjectIntf, non incref-ed
   EsScriptObjectFieldFastFinder ffinder(
-    asIntfT<EsScriptObjectIntf>(false), //< Cast to EsScriptObjectIntf, non incref-ed
+    iobj,
     name
   );
   EsScriptObjectVarFastFinder vfinder(
-    asIntfT<EsScriptObjectIntf>(false), //< Cast to EsScriptObjectIntf, non incref-ed 
+    iobj,
     name
   );
   if( ffinder.found() || vfinder.found() )

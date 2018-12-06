@@ -57,7 +57,9 @@ EsBaseIntf::Ptr EsFtdiDeviceMpsseI2c::create(EsFtdiDriver& owner, const EsFtdiDr
       node
     )
   );
+  ES_ASSERT(ptr);
 
+  ptr->m_dynamic = true;
   return ptr.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
@@ -134,7 +136,7 @@ bool EsFtdiDeviceMpsseI2c::i2cChannelInit( esU32 rate, esU32 opts )
 {
   if( !mpsseChannelInit(
       rate
-    ) 
+    )
   )
     return false;
 
@@ -301,9 +303,9 @@ bool EsFtdiDeviceMpsseI2c::i2cRead8bitsAndGiveAck(esU8& data, bool doAck)
   esU32 noOfBytes = 0;
 
   ES_ASSERT( !m_tmpBuff.empty() );
-  
+
   // Set direction
-  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;//< MPSSE command 
+  m_tmpBuff[noOfBytes++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;//< MPSSE command
   m_tmpBuff[noOfBytes++] = MPSSE::VALUE_SCLLOW_SDALOW;      //< Value
   m_tmpBuff[noOfBytes++] = MPSSE::DIRECTION_SCLOUT_SDAIN;   //< Direction
 
@@ -359,10 +361,10 @@ bool EsFtdiDeviceMpsseI2c::i2cRead8bitsAndGiveAck(esU8& data, bool doAck)
     )
   )
     return false;
-    
+
   if( noOfBytes != noOfBytesTransferred )
     return false;
-  
+
   if( !ftRead(
       m_tmpBuff.data(),
       1,
@@ -373,7 +375,7 @@ bool EsFtdiDeviceMpsseI2c::i2cRead8bitsAndGiveAck(esU8& data, bool doAck)
 
   if( 1 != noOfBytesTransferred )
     return false;
-    
+
   data = m_tmpBuff[0];
 
   return true;
@@ -468,7 +470,7 @@ bool EsFtdiDeviceMpsseI2c::i2cStop()
     m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
     m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
   }
-  
+
   // SCL high, SDA low
   for(int j=0; j < MPSSE::STOP_DURATION_2; ++j)
   {
@@ -484,7 +486,7 @@ bool EsFtdiDeviceMpsseI2c::i2cStop()
     m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
     m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
   }
-  
+
   m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
   m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
   m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLIN_SDAIN; // Tristate the SCL & SDA pins
@@ -531,10 +533,10 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceRead(esU16 addr, EsBinBuffer::pointer buffer
   bool ack = true;
   if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER)
     return i2cFastRead(
-      addr, 
-      buffer, 
-      sizeToTransfer, 
-      sizeTransferred, 
+      addr,
+      buffer,
+      sizeToTransfer,
+      sizeTransferred,
       ack,
       opts
     );
@@ -559,20 +561,20 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceRead(esU16 addr, EsBinBuffer::pointer buffer
     m_stat = EsFtdiDeviceIntf::FT_DEVICE_NOT_FOUND;
     return false;
   }
-    
+
   for(sizeTransferred = 0; sizeTransferred < sizeToTransfer; ++sizeTransferred)
   {
     // Read byte to buffer & give ACK (or nACK if it is last byte and
     // I2C_TRANSFER_OPTIONS_NACK_LAST_BYTE is set)
     if( !i2cRead8bitsAndGiveAck(
         buffer[sizeTransferred],
-        (sizeTransferred < (sizeToTransfer-1)) ? 
+        (sizeTransferred < (sizeToTransfer-1)) ?
           true :
-          ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NACK_LAST_BYTE) ? 
+          ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NACK_LAST_BYTE) ?
             false :
             true
           )
-      ) 
+      )
     )
       return false;
   }
@@ -594,11 +596,11 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceWrite(esU16 addr, EsBinBuffer::const_pointer
   bool ack = true;
   if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER)
     return i2cFastWrite(
-      addr, 
-      buffer, 
-      sizeToTransfer, 
-      sizeTransferred, 
-      ack, 
+      addr,
+      buffer,
+      sizeToTransfer,
+      sizeTransferred,
+      ack,
       opts
     );
 
@@ -628,7 +630,7 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceWrite(esU16 addr, EsBinBuffer::const_pointer
     m_stat = EsFtdiDeviceIntf::FT_DEVICE_NOT_FOUND;
     return false;
   }
-    
+
   // Loop until sizeToTransfer
   for(sizeTransferred = 0; sizeTransferred < sizeToTransfer; ++sizeTransferred)
   {
@@ -639,7 +641,7 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceWrite(esU16 addr, EsBinBuffer::const_pointer
       )
     )
       return false;
-      
+
     if( ack )
     {
       // Add bit in opts to return with error if device nAcked while being written to
@@ -650,7 +652,7 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceWrite(esU16 addr, EsBinBuffer::const_pointer
       }
     }
   }
-  
+
   if( sizeTransferred != sizeToTransfer )
   {
     m_stat = EsFtdiDeviceIntf::FT_IO_ERROR;
@@ -665,8 +667,8 @@ bool EsFtdiDeviceMpsseI2c::i2cDeviceWrite(esU16 addr, EsBinBuffer::const_pointer
 }
 //---------------------------------------------------------------------------
 
-bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer buffer, 
-  esU32 sizeToTransfer, esU32& sizeTransferred, bool& ack, esU32 opts 
+bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer buffer,
+  esU32 sizeToTransfer, esU32& sizeTransferred, bool& ack, esU32 opts
 )
 {
   esU32 bitsToTransfer;
@@ -689,7 +691,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
       11 :
       0
   )/*for address byte*/
-  + ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT) ? 
+  + ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT) ?
       ((MPSSE::START_DURATION_1+MPSSE::START_DURATION_2+1)*3) :
       0
   ) /* size required for START */
@@ -716,7 +718,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
       m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
       m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
     }
-    
+
     /* SCL high, SDA low */
     for(esU32 j = 0; j < MPSSE::START_DURATION_2; ++j)
     {
@@ -724,7 +726,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
       m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
       m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
     }
-    
+
     /*SCL low, SDA low */
     m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
     m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
@@ -755,7 +757,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
     /* Command to get ACK bit */
     m_tmpBuff[cnt++] = MPSSE::CMD_DATA_IN_BITS_POS_EDGE;/* MPSSE command */
     m_tmpBuff[cnt++] = MPSSE::DATA_SIZE_1BIT; /* Read only one bit */
-    
+
     bitsToRead++;
   }
 
@@ -763,20 +765,20 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
   esU32 j = 0;
   while( j < bitsToTransfer )
   {
-    esU8 bitsInThisTransfer = ((bitsToTransfer-j)>8) ? 
+    esU8 bitsInThisTransfer = ((bitsToTransfer-j)>8) ?
       8 :
       static_cast<esU8>(bitsToTransfer-j);
-      
+
     /*set direction*/
     m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;/* MPSSE command */
     m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDAHIGH; /*Value*/
     m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT; /*Direction*/
 
     /* Command to write 8bits */
-    bitsInThisTransfer = ((bitsToTransfer-j)>8) ? 
+    bitsInThisTransfer = ((bitsToTransfer-j)>8) ?
       8 :
      static_cast<esU8>(bitsToTransfer-j);
-      
+
     m_tmpBuff[cnt++]= MPSSE::CMD_DATA_OUT_BITS_NEG_EDGE;/* MPSSE command */
     m_tmpBuff[cnt++]= bitsInThisTransfer - 1;
     m_tmpBuff[cnt++] = buffer[j/8];
@@ -809,7 +811,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
       m_tmpBuff[cnt++] = MPSSE::VALUE_SCLLOW_SDALOW;
       m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
     }
-    
+
     /* SCL high, SDA low */
     for( j = 0; j < MPSSE::STOP_DURATION_2; ++j)
     {
@@ -817,7 +819,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
       m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
       m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
     }
-    
+
     /* SCL high, SDA high */
     for( j = 0; j < MPSSE::STOP_DURATION_3; ++j)
     {
@@ -825,7 +827,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
       m_tmpBuff[cnt++]=MPSSE::VALUE_SCLHIGH_SDAHIGH;
       m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLOUT_SDAOUT;
     }
-    
+
     m_tmpBuff[cnt++]=MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
     m_tmpBuff[cnt++]=MPSSE::VALUE_SCLHIGH_SDAHIGH;
     m_tmpBuff[cnt++]=MPSSE::DIRECTION_SCLIN_SDAIN; /* Tristate the SCL & SDA pins */
@@ -848,7 +850,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
     esU8 addrAck = 0;
     if( !ftRead(
         &addrAck,
-        1, 
+        1,
         &transferred
       )
     )
@@ -862,7 +864,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
   {
     if( m_tmpBuff.size() < sizeToTransfer )
       m_tmpBuff.resize(sizeToTransfer);
-  
+
     if( !ftRead(
         m_tmpBuff.data(),
         sizeToTransfer,
@@ -884,7 +886,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
         }
 
         ++transferred;
-      }  
+      }
     }
   }
 
@@ -892,8 +894,8 @@ bool EsFtdiDeviceMpsseI2c::i2cFastWrite(esU16 addr, EsBinBuffer::const_pointer b
 }
 //---------------------------------------------------------------------------
 
-bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer, 
-  esU32 sizeToTransfer, esU32& sizeTransferred, 
+bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
+  esU32 sizeToTransfer, esU32& sizeTransferred,
   bool& ack, esU32 opts
 )
 {
@@ -908,25 +910,25 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
   }
 
   esU32 bytesToTransfer =
-    (bitsToTransfer > 0) ? 
+    (bitsToTransfer > 0) ?
       (
         ((bitsToTransfer / 8) == 0) ?
           1 :
           (bitsToTransfer/8)
-      ) : 
+      ) :
       0;
 
   /* Calculate size of required buffer */
   esU32 sizeTotal = (bytesToTransfer*12) /* the size of data itself */
-    + ( (!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS)) ? 
+    + ( (!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS)) ?
           11 :
           0
       )/* for address byte*/
-    + ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT) ? 
+    + ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT) ?
         ((MPSSE::START_DURATION_1+MPSSE::START_DURATION_2+1)*3) :
         0
       ) /* size required for START */
-    + ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_STOP_BIT) ? 
+    + ((opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_STOP_BIT) ?
         ((MPSSE::STOP_DURATION_1+MPSSE::STOP_DURATION_2+MPSSE::STOP_DURATION_3+1)*3) :
         0
       ) /* size for STOP */
@@ -937,7 +939,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
   /* Allocate buffers */
   if( m_tmpBuff.size() < sizeTotal )
     m_tmpBuff.resize( sizeTotal );
-    
+
   esU32 cnt = 0;
   /* Write START bit */
   if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_START_BIT)
@@ -994,7 +996,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
   esU32 j = 0;
   while( j < bitsToTransfer)
   {
-    esU32 bitsInThisTransfer = ((bitsToTransfer - j) > 8) ? 
+    esU32 bitsInThisTransfer = ((bitsToTransfer - j) > 8) ?
       8 :
       (bitsToTransfer-j);
 
@@ -1075,7 +1077,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
       }
 /// NACK_GLITCH_WORKAROUND end
     }
-    
+
     j += bitsInThisTransfer;
   }
   sizeTransferred = j;
@@ -1098,7 +1100,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
       m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDALOW;
       m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
     }
-    
+
     /* SCL high, SDA high */
     for( j = 0; j < MPSSE::STOP_DURATION_3; ++j )
     {
@@ -1106,7 +1108,7 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
       m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
       m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLOUT_SDAOUT;
     }
-    
+
     m_tmpBuff[cnt++] = MPSSE::CMD_SET_DATA_BITS_LOWBYTE;
     m_tmpBuff[cnt++] = MPSSE::VALUE_SCLHIGH_SDAHIGH;
     m_tmpBuff[cnt++] = MPSSE::DIRECTION_SCLIN_SDAIN; /* Tristate the SCL & SDA pins */
@@ -1117,20 +1119,20 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
       m_tmpBuff.data(),
       cnt,
       &transferred
-    ) 
+    )
   )
     return false;
-    
+
   if( transferred != cnt )
     return false;
-    
+
   // Read the address ack bit
   if(!(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_NO_ADDRESS))
   {
     esU8 addrAck;
     if( !ftRead(
         &addrAck,
-        1, 
+        1,
         &transferred
       )
     )
@@ -1143,8 +1145,8 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
   if(opts & EsFtdiMpsseI2cIntf::TRANSFER_OPTIONS_FAST_TRANSFER_BYTES)
   {
     if( !ftRead(
-        buffer, 
-        bytesToTransfer, 
+        buffer,
+        bytesToTransfer,
         &transferred
       )
     )
@@ -1156,12 +1158,12 @@ bool EsFtdiDeviceMpsseI2c::i2cFastRead(esU16 addr, EsBinBuffer::pointer buffer,
   {
     if( !ftRead(
         buffer,
-        bytesToTransfer+1, 
+        bytesToTransfer+1,
         &transferred
       )
     )
       return false;
-    
+
     return (bytesToTransfer+1) == transferred;
   }
 }
@@ -1181,7 +1183,7 @@ esU32 EsFtdiDeviceMpsseI2c::write(esU16 devAddr, EsBinBuffer::const_pointer src,
     src,
     len,
     ret,
-    opts    
+    opts
   );
 
   return ret;
@@ -1258,7 +1260,7 @@ bool EsFtdiDeviceMpsseI2c::GPIOwrite(esU8 val, esU8 dir)
   checkOpenChannel(esT("GPIO write"));
 
   return mpsseGpioWrite(
-    val, 
+    val,
     dir
   );
 }

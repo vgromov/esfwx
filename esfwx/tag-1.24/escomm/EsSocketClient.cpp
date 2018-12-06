@@ -203,13 +203,8 @@ m_cli(*this)
 
 EsVariant EsSocketClientReflected::NEW(cr_EsVariant socketType)
 {
-#ifdef ES_MODERN_CPP
-  std::unique_ptr<EsSocketClientReflected> cli = std::make_unique<EsSocketClientReflected>();
-#else
   std::unique_ptr<EsSocketClientReflected> cli( new EsSocketClientReflected );
-#endif
-
-  ES_ASSERT( cli.get() );
+  ES_ASSERT( cli);
 
   cli->set_socketType(
     socketType.asULong()

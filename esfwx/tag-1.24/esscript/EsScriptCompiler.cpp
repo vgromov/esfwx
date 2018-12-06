@@ -1004,7 +1004,8 @@ PARSER_CONTEXT_CUSTOM_IMPL_BEGIN(
             m_doLogErrors
           )
         );
-
+        ES_ASSERT(tmp);
+        
         return true;
       }
     PARSER_CONTEXT_PARSE_ERROR_HANDLER_END

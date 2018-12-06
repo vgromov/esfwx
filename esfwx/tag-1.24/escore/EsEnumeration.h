@@ -133,7 +133,7 @@ private: \
 #define ES_DECL_ENUMERATION_INFO_INTERNAL( EnumerationName, Descr ) \
   EsEnumerationIntf::Ptr EnumerationName ::instanceGet() ES_NOTHROW { \
   static EnumerationName s_instance(ES_STRINGIZE(EnumerationName)); \
-  return s_instance.asBaseIntfPtrDirect(); \
+  return s_instance.asBaseIntfPtrDirectWeak(); \
 } \
 EsVariant EnumerationName::instance() ES_NOTHROW { \
   return instanceGet(); } \

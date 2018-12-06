@@ -6,6 +6,7 @@ m_stop(0, 1),
 m_stopped(1, 1),
 m_errorCode(0),
 m_stack(stack),
+m_priority(as_<long>(EsThreadPriority::Default)),
 m_id(EsThreadIdNone),
 m_thread(0)
 {}

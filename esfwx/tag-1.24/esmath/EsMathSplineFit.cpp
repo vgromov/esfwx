@@ -357,6 +357,8 @@ void EsMathSplineFit::tableGet(EsMathSplineTable& out) const
 EsBaseIntfPtr EsMathSplineFit::NEW()
 {
   std::unique_ptr<EsMathSplineFit> f( new EsMathSplineFit );
+  ES_ASSERT(f);
+  
   f->m_dynamic = true;
   return f.release()->asBaseIntfPtrDirect();
 }
@@ -553,8 +555,8 @@ EsVariant EsMathSplineFit::get_rangeX() const
 {
   EsVariant::Array result(2);
 
-  result[1] = m_xmin;
-  result[2] = m_xmax;
+  result[0] = m_xmin;
+  result[1] = m_xmax;
 
   return result;
 }

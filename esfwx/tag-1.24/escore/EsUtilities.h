@@ -64,30 +64,6 @@ ES_DECL_REFLECTED_SERVICES_END
 }
 //---------------------------------------------------------------------------
 
-/// Additional Core types definitions
-///
-#if (ES_OS_LINUX == ES_OS) || (ES_OS_LINUX == ES_OS)
-/// GUID data compatibility declaration for non-Windows OSes
-struct EsGUID
-{
-  uint32_t Data1;
-  uint16_t Data2;
-  uint16_t Data3;
-  uint8_t Data4[ 8 ];
-
-  static const EsGUID& null() ES_NOTHROW;
-};
-typedef EsGUID GUID;
-
-# ifndef GUID_NULL
-#   define GUID_NULL EsGUID::null()
-# endif
-
-ES_COMPILE_TIME_ASSERT(sizeof(EsGUID) == 16, _EsGUID_size_is_equal_to_16_bytes_);
-
-#endif
-//---------------------------------------------------------------------------
-
 /// Core utility functions and templates
 ///
 namespace EsUtilities
@@ -388,22 +364,22 @@ ESCORE_FUNC( bool, areEqualFloats(double _1, double _2, size_t maxUlps = 1) ES_N
 ESCORE_FUNC( bool, areEqualFloats(float _1, float _2, size_t maxUlps = 1) ES_NOTHROW );
 //---------------------------------------------------------------------------
 
-/// Try to parse string argument as a vestion string 
+/// Try to parse string argument as a vestion string
 /// (AKA major[sep]minor<[sep]build><[sep]revision>),
 /// and return processed parts as variant collection
 /// If string is not recognizable as version string, return an empty variant
-/// 
+///
 ESCORE_FUNC( EsVariant, versionStrParse(const EsString& str) );
 //---------------------------------------------------------------------------
 
 /// Version string (AKA major[sep]minor<[sep]build><[sep]revision>) comparison
-/// As of convention, return EsString::cmpLess, if _1 < _2 
+/// As of convention, return EsString::cmpLess, if _1 < _2
 /// EsString::cmpEqual, if _1 == _2
 /// EsString::greater otherwise
 /// If either of string may not be recognized as a version string, throw an exception
-/// NB! By convention, non-existing version string members are considered 0, so, 
+/// NB! By convention, non-existing version string members are considered 0, so,
 /// if, say str1 is 1.2 and str2 is 1.2.0.0, they are considered equal.
-/// 
+///
 ESCORE_FUNC( long, versionStrCompare(const EsString& _1, const EsString& _2) );
 //---------------------------------------------------------------------------
 

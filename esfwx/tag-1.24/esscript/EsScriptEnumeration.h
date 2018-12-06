@@ -7,9 +7,7 @@ protected:
   EsScriptEnumeration(EsScriptMachine& machine, const EsString& enumTypeName) : 
   EsEnumeration(enumTypeName),
   m_machine(machine) 
-  { 
-    m_dynamic = true; 
-  }
+  {}
   static EsEnumerationIntf::Ptr create(EsScriptMachine& machine, const EsString& enumTypeName);
 
 public:

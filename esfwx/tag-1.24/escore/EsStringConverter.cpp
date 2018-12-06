@@ -108,8 +108,12 @@ EsStringConverter::Ptr EsStringConverter::convGet(const EsByteString& to, const 
 
       if( s_convs.end() == it )
       {
-        Ptr convp;
-        convp.reset( new EsStringConverter(to, from) );
+        Ptr convp(
+          new EsStringConverter(
+            to, 
+            from
+          ) 
+        );
 
         s_convs[ key ] = convp;
         return convp;

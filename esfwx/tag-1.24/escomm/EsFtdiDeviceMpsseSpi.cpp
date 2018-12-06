@@ -68,6 +68,7 @@ EsBaseIntf::Ptr EsFtdiDeviceMpsseSpi::create(EsFtdiDriver& owner, const EsFtdiDr
   );
   ES_ASSERT(ptr);
 
+  ptr->m_dynamic = true;
   return ptr.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
@@ -204,10 +205,10 @@ bool EsFtdiDeviceMpsseSpi::spiToggleCS(bool state)
     (int)value
   );
 
-  if((state && !activeLow) || (!state && activeLow))
+  if(state != activeLow)
     value = oldValue | value; /* set the CS line high */
 
-  if((state && activeLow) || (!state && !activeLow))
+  if(state == activeLow)
     value = oldValue & ~value;/* set the CS line low */
 
   m_currentPinState = static_cast<esU16>((static_cast<esU16>(value)<<8) | direction);/*save  dirn & value*/
@@ -367,7 +368,7 @@ bool EsFtdiDeviceMpsseSpi::spiWrite(EsBinBuffer::const_pointer buffer,
         bitsToTransfer = static_cast<esU8>(sizeToTransfer - sizeTransferred);
 
       esU8 byte = buffer[(sizeTransferred+1)/8];
-      if( 
+      if(
         !spiWrite8bits(
           byte,
           static_cast<esU8>(bitsToTransfer)

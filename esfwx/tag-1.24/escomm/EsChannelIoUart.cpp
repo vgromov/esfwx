@@ -369,9 +369,10 @@ EsVariant EsChannelIoUart::enumerate(const EsVariant& includeBusyPorts, const Es
     EsUartInfo::Ptr info = infos[idx];
     if( info && !info->isEmpty() )
     {
-      if( usbOnly.isEmpty() ||
+      if( 
+        usbOnly.isEmpty() ||
         !usbOnly.asBool() ||
-        (usbOnly.asBool() && info->isUSBdevice())
+        info->isUSBdevice()
       )
       {
         EsVariant item(EsVariant::VAR_VARIANT_COLLECTION);

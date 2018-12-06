@@ -43,7 +43,8 @@ ES_DECL_CLASS_INFO_END
 class EsMathPolyFitSolver
 {
 public:
-  EsMathPolyFitSolver()
+  EsMathPolyFitSolver() :
+  m_info(0)
   {}
   
   void build(const EsMathArrayReal& x, const EsMathArrayReal& y,
@@ -281,6 +282,8 @@ void EsMathPolyFit::reset()
 EsBaseIntfPtr EsMathPolyFit::NEW()
 {
   std::unique_ptr<EsMathPolyFit> f( new EsMathPolyFit );
+  ES_ASSERT(f);
+  
   f->m_dynamic = true;
   return f.release()->asBaseIntfPtrDirect();
 }
@@ -402,8 +405,8 @@ EsVariant EsMathPolyFit::get_rangeX() const
 {
   EsVariant::Array result(2);
 
-  result[1] = m_xmin;
-  result[2] = m_xmax;
+  result[0] = m_xmin;
+  result[1] = m_xmax;
 
   return result;
 }

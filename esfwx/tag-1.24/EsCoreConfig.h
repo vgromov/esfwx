@@ -44,6 +44,9 @@
 /// Uncomment to output debug trace information for EsStream internal operations
 //#define ES_USE_STREAM_TRACE
 
+/// Uncommend to output C++ reflected method call trace
+#define ES_USE_REFLECTED_CALL_TRACE
+
 #endif // _es_core_config_h_
 
 

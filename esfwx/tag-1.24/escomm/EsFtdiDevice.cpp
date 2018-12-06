@@ -82,7 +82,6 @@ m_stat( FT_OK ),
 m_cfgClockRate(1000000),
 m_cfgLatencyTimer( EsFtdiDeviceIntf::LATENCY_DEF )
 {
-  m_dynamic = true;
 }
 //---------------------------------------------------------------------------
 
@@ -93,7 +92,6 @@ m_stat( FT_OK ),
 m_cfgClockRate(1000000),
 m_cfgLatencyTimer( EsFtdiDeviceIntf::LATENCY_DEF )
 {
-  m_dynamic = true;
 }
 //---------------------------------------------------------------------------
 
@@ -105,7 +103,9 @@ EsBaseIntf::Ptr EsFtdiDevice::create(EsFtdiDriver& owner, const EsFtdiDriver::FT
       node
     )
   );
+  ES_ASSERT(ptr);
 
+  ptr->m_dynamic = true;
   return ptr.release()->asBaseIntfPtrDirect();
 }
 //---------------------------------------------------------------------------
@@ -401,7 +401,7 @@ bool EsFtdiDevice::mpsseClockSet(esU32 clock)
         (unsigned)val
       );
 
-      if( 
+      if(
         !ftWrite(
           &val,
           1,
@@ -421,7 +421,7 @@ bool EsFtdiDevice::mpsseClockSet(esU32 clock)
         (unsigned)val
       );
 
-      if( 
+      if(
         !ftWrite(
           &val,
           1,

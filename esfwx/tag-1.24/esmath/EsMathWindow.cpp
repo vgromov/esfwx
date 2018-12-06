@@ -340,7 +340,7 @@ void EsMathWindowGaussian::doGenerate() const
       esT("Minimum node count for Gaussian window calculation must not be less than 8")
     );
 
-  if( m_alpha > cnt/8 )
+  if( m_alpha > static_cast<double>(cnt/8) )
     m_alpha = static_cast<double>(cnt/8);
 
   double sig = static_cast<double>(cnt-1)/(2.* m_alpha);

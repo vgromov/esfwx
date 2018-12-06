@@ -35,7 +35,7 @@ TEST(EsThreadTest, Basics) {
 class EsThreadTest2 : public EsThread
 {
 public:
-  EsThreadTest2() : EsThread() { m_sub.categoryAdd(esT("thread-test2")); }
+  EsThreadTest2() : EsThread(), m_idx(0) { m_sub.categoryAdd(esT("thread-test2")); }
   int idxGet() const { return m_idx; }
 
 protected:

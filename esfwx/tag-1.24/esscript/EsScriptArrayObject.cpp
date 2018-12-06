@@ -54,7 +54,8 @@ EsScriptObjectIntf::Ptr EsScriptArrayObject::createMetaclass(const EsScriptConte
       itemMetaclass
     )
   );
-  ES_ASSERT(tmp.get());
+  ES_ASSERT(tmp);
+  
   // install expression code section
   const EsScriptCodeSection::Ptr& expr = EsScriptCodeSection::create(
     esT("size"),

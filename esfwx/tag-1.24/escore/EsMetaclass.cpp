@@ -413,7 +413,7 @@ EsStringArray EsMetaclass::enumerationNamesGet() const
 {
   EsStringArray objs = objectNamesGet();
 
-  std::remove_if(
+  auto newEnd = std::remove_if(
     objs.begin(),
     objs.end(),
     [this](const EsString& obj) -> bool {
@@ -422,6 +422,11 @@ EsStringArray EsMetaclass::enumerationNamesGet() const
         EsEnumeration::classNameGetStatic()
       );
     }
+  );
+
+  objs.erase(
+    newEnd,
+    objs.end()
   );
 
   return objs;

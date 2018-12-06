@@ -165,38 +165,10 @@ EsString EsScriptMachine::traceVariant(const EsVariant& v)
           acc->typeNameGet(),
           acc->trace()
         );
-      else
-        return EsString::format(
-          esT("obj:'%s'"),
-          obj->typeNameGet()
-        );
     }
-    else
-      return esT("null object");
   }
-  else if(v.isCollection())
-  {
-    EsString str;
-    for(ulong idx = 0; idx < v.countGet(); ++idx)
-    {
-      const EsVariant& item = v[idx];
-      str += EsString::format(
-        esT("[%d]=>'%s';"),
-        idx,
-        traceVariant(item)
-      );
-    }
 
-    return str;
-  }
-  else if(!v.isEmpty())
-    return EsString::format(
-      esT("(%s):'%s'"),
-      v.kindGet(),
-      v.asString()
-    );
-  else
-    return esT("null");
+  return v.trace();
 }
 //---------------------------------------------------------------------------
 
@@ -224,8 +196,7 @@ void EsScriptMachine::debuggerInstructionTrace(EsScriptInstructions::const_itera
     return;
 
   EsCriticalSectionLocker lock(m_csDbg);
-  if( m_dbg )
-    m_dbg->onInstruction(instr);
+  m_dbg->onInstruction(instr);
 }
 //---------------------------------------------------------------------------
 
@@ -1064,7 +1035,7 @@ EsScriptObjectIntf::Ptr EsScriptMachine::metaclassDeclare(const EsString &name, 
   EsScriptMethodMapPtr methods;
   methods.reset(new EsScriptMethodMap);
 
-  EsScriptObjectIntf::Ptr metaclass(
+  std::unique_ptr<EsScriptObject> ptr(
     new EsScriptObject(
       name,
       baseMetaclass,
@@ -1078,6 +1049,10 @@ EsScriptObjectIntf::Ptr EsScriptMachine::metaclassDeclare(const EsString &name, 
       )
     )
   );
+  ES_ASSERT(ptr);
+
+  EsScriptObjectIntf::Ptr metaclass = ptr.release()->asBaseIntfPtrDirect();
+  ES_ASSERT(metaclass);
 
   // register metaclass
   registerMetaclass(metaclass);

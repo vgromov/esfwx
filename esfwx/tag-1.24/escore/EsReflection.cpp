@@ -12,6 +12,12 @@
 #endif
 //---------------------------------------------------------------------------
 
+#ifdef ES_USE_REFLECTED_CALL_TRACE
+# define ES_REFLECTED_CALL_TRACE ES_DEBUG_TRACE
+#else
+# define ES_REFLECTED_CALL_TRACE(...) ((void)0)
+#endif
+
 namespace EsReflectionCallProxies {
 
 /// Member method call proxy function pointer
@@ -33,6 +39,7 @@ EsAttributesIntf::Ptr EsAttributes::create(const EsString& ownerName, bool inter
     )
   );
   ES_ASSERT(ptr);
+  ptr->m_dynamic = true;
 
   return ptr.release()->asBaseIntfPtrDirect();
 }
@@ -60,6 +67,7 @@ EsAttributesIntf::Ptr EsAttributes::clone() const
   );
   ES_ASSERT(ptr);
 
+  ptr->m_dynamic = true;
   ptr->m_contents = m_contents;
   return ptr.release()->asBaseIntfPtrDirect();
 
@@ -234,7 +242,6 @@ void EsMethodInfo::SigStringsT::init()
 #include "EsReflectionDefSigStrings.hxx"
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 // Method info implementation
 //
@@ -387,7 +394,6 @@ EsString EsMethodInfo::fqNameGet() const
     (m_owner.nameGet() + esT(".") + mangledNameGet() + esT("|") + signatureStringGet());
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 // Caller methods
@@ -463,9 +469,11 @@ EsVariant EsMethodInfo::call(EsBase* obj, const EsVariant& params) const
   checkParamsCount(params);
 
   EsVariant result;
+
   // cast to properly aligned interface pointer, if it's reflected interface method.
   if( !m_iid.empty() )
   {
+#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
     EsBaseIntf* intf = obj->asBaseIntf();
     ES_ASSERT(intf);
 
@@ -476,17 +484,35 @@ EsVariant EsMethodInfo::call(EsBase* obj, const EsVariant& params) const
     ES_ASSERT(intfptr);
 
     obj = reinterpret_cast<EsBase*>(intfptr);
+#else
+    obj = obj->asBaseIntf()->implementorGet();
+#endif
   }
 
   // Call member jump table
   ES_ASSERT(m_signature > invalidSignature);
   ES_ASSERT(m_signature < methodSignaturesEnd);
 
+  ES_REFLECTED_CALL_TRACE(
+    esT("%s(iid:%s) EsMethodInfo::call %s(%s)"),
+    m_owner.nameGet(),
+    (!m_iid.empty()) ?
+      EsUtilities::GUIDtoStr(m_iid, true) :
+      EsString::null(),
+    m_name,
+    params.trace()
+  );
+
   EsReflectionCallProxies::sc_memberProxies[m_signature](
     result,
     obj,
     m_method,
     params
+  );
+
+  ES_REFLECTED_CALL_TRACE(
+    esT("  ret:%s"),
+    result.trace()
   );
 
   return result;
@@ -671,11 +697,21 @@ bool EsPropertyInfo::isPersistent() const ES_NOTHROW
 EsVariant EsPropertyInfo::get(const EsBase* obj) const
 {
   if( !obj )
-    EsException::Throw(esT("Cannot get property without an object"));
+    EsException::Throw(
+      esT("Cannot get property '%s::%s' without an object"),
+      m_owner.nameGet(),
+      m_name
+    );
+
+  if( !canRead() )
+    EsException::Throw(
+      esT("Property '%s::%s' is not readable"),
+      m_owner.nameGet(),
+      m_name
+    );
 
   EsVariant result;
-
-  // generate property getters
+  // generate property getter call
   #include "EsReflectionDefGetters.hxx"
 
   return result;
@@ -685,9 +721,20 @@ EsVariant EsPropertyInfo::get(const EsBase* obj) const
 void EsPropertyInfo::set(EsBase* obj, const EsVariant& val) const
 {
   if( !obj )
-    EsException::Throw(esT("Cannot set property without an object"));
+    EsException::Throw(
+      esT("Cannot set property '%s::%s' without an object"),
+      m_owner.nameGet(),
+      m_name
+    );
 
-  // generate setters
+  if( !canWrite() )
+    EsException::Throw(
+      esT("Property '%s::%s' is not writeable"),
+      m_owner.nameGet(),
+      m_name
+    );
+
+  // generate property setter call
   #include "EsReflectionDefSetters.hxx"
 }
 //---------------------------------------------------------------------------
@@ -702,7 +749,7 @@ void EsPropertyInfo::reset(EsBase* obj) const
     );
   else
     EsException::Throw(
-      esT("Property '%s.%s' does not have default value"),
+      esT("Property '%s::%s' does not have default value"),
       m_owner.nameGet(),
       nameGet()
     );
@@ -883,7 +930,7 @@ bool EsClassInfo::isKindOf(const EsString& name) const ES_NOTHROW
   if( help.isEmpty() )
     return m_name;
   else
-    return esTranslationGet(help.asString().c_str());
+    return esTranslationGet(help.asString());
 }
 //---------------------------------------------------------------------------
 

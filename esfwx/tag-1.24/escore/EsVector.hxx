@@ -625,7 +625,11 @@ bool EsVector<T>::operator< (const EsVector<T>& other) const ES_NOTHROW
   else if( m_size == other.m_size )
   {
     if( m_size )
-      return -1 == memcmp(m_ptr, other.m_ptr, sizeof(value_type)*m_size);
+      return 0 > memcmp(
+        m_ptr, 
+        other.m_ptr, 
+        sizeof(value_type)*m_size
+      );
   }
 
   return false;

@@ -10,21 +10,22 @@ public:
   ///
   enum Type
   {
-    VAR_EMPTY,              // No value in the variant
-    VAR_BOOL,               // Variant has Boolean value
-    VAR_BYTE,               // Variant has Byte value
-    VAR_CHAR,               // Variant has Character value
-    VAR_UINT,               // Variant has unsigned integer value. Its conversion rate is smaller than INT, not like in C
-    VAR_INT,                // Variant has integer value
-    VAR_UINT64,             // Variant has unsigned 64-bit integer value. Its conversion rate is smaller than INT, not like in C
-    VAR_INT64,              // Variant has 64-bit integer value
-    VAR_DOUBLE,             // Variant has double value
-    VAR_BIN_BUFFER,          // Variant has the binary buffer
-    VAR_STRING,             // Variant has string value
-    VAR_STRING_COLLECTION,  // Variant has string collection value
-    VAR_POINTER,            // Variant has generic pointer
-    VAR_OBJECT,              // Variant has an base interface of object
-    VAR_VARIANT_COLLECTION  // Array of any type of elements, array of variants
+    VAR_EMPTY,              ///< No value in the variant
+    VAR_BOOL,               ///< Variant has Boolean value
+    VAR_BYTE,               ///< Variant has Byte value
+    VAR_CHAR,               ///< Variant has Character value
+    VAR_UINT,               ///< Variant has unsigned integer value. Its conversion rate is smaller than INT, not like in C
+    VAR_INT,                ///< Variant has integer value
+    VAR_UINT64,             ///< Variant has unsigned 64-bit integer value. Its conversion rate is smaller than INT, not like in C
+    VAR_INT64,              ///< Variant has 64-bit integer value
+    VAR_DOUBLE,             ///< Variant has double value
+    VAR_BIN_BUFFER,         ///< Variant has the binary buffer
+    VAR_STRING,             ///< Variant has string value
+    VAR_STRING_COLLECTION,  ///< Variant has string collection value
+    VAR_POINTER,            ///< Variant has generic pointer
+    VAR_OBJECT,             ///< Variant has an base interface of object
+    VAR_VARIANT_COLLECTION, ///< Array of any type of elements, array of variants
+    TypeInvalid = -1        ///< Specific 'Invalid' value, must bew the last     
   };
 
   /// Tag that allows telling string constructor from the binary buffer constructor.
@@ -1017,7 +1018,7 @@ public: /// Conversion services:
   ///
   /// POSTCONDITION: Type of the variant becomes one given, with null value.
   ///
-  void setToNull(Type type = (Type)-1);
+  void setToNull(Type type = TypeInvalid);
 
   /// Efficiently swap the value with the given value.
   ///
@@ -1567,6 +1568,9 @@ public: /// Conversion services:
 
   /// Field access proxy
   EsVariant fieldGet(const EsString& field) const;
+
+  /// Variant contents debug trace
+  EsString trace() const ES_NOTHROW;
 
 private: ///< Services:
   /// Internal assignment service that constructs integer-based variant value

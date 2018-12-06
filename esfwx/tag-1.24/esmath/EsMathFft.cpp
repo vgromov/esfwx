@@ -29,7 +29,7 @@ void EsMathFft::transform(const EsMathArrayReal& in, EsMathArrayComplex& out)
 EsVariant EsMathFft::transformReal( cr_EsVariant in )
 {
   std::unique_ptr<EsMathArrayComplex> out( new EsMathArrayComplex );
-  ES_ASSERT(out.get());
+  ES_ASSERT(out);
   out->m_dynamic = true;
 
   EsMathArrayReal sig;

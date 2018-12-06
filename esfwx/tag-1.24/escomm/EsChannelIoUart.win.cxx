@@ -327,17 +327,17 @@ ES_IMPL_INTF_METHOD(bool, EsChannelIoUart::isOpen)() const
 
 esU32 EsChannelIoUart::internalPutBytes(const esU8* data, esU32 len, esU32 tmo)
 {
-  bool timeout = false;
   const esU8* pos = data;
   const esU8* end = data+len;
 
   if( m_com != 0 )
   {
     resetError();
-    while( !timeout &&
-          !checkLogLastError() &&
-          !internalIsBreaking() &&
-          pos < end )
+    while( 
+      !checkLogLastError() &&
+      !internalIsBreaking() &&
+      pos < end 
+    )
     {
       DWORD result = 0;
       // EsThread::Yield();

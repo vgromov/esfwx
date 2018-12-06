@@ -89,6 +89,7 @@ EsString EsVariant::dump(const EsVariant& v)
 EsVariant::EsVariant() ES_NOTHROW :
 m_type(VAR_EMPTY)
 {
+  m_value.m_ullong = 0;
 }
 //---------------------------------------------------------------------------
 
@@ -344,7 +345,7 @@ void EsVariant::setEmpty() ES_NOTHROW
 }
 //---------------------------------------------------------------------------
 
-void EsVariant::setToNull(Type type)
+void EsVariant::setToNull(Type type /*= TypeInvalid*/)
 {
   bool wasCleaned = doSetType(type);
   switch( m_type )
@@ -3964,6 +3965,53 @@ EsVariant EsVariant::fieldGet(const EsString& field) const
     return ro->call(esT("fieldGet"), field);
 
   return EsVariant::null();
+}
+//---------------------------------------------------------------------------
+
+EsString EsVariant::trace() const ES_NOTHROW
+{
+  try
+  {
+    if(isObject())
+    {
+      EsBaseIntfPtr obj = asObject();
+      if(obj)
+        return EsString::format(
+          esT("obj:'%s'"),
+          obj->typeNameGet()
+        );
+      else
+        return esT("null object");
+    }
+    else if(isCollection())
+    {
+      EsString str;
+      for(ulong idx = 0; idx < countGet(); ++idx)
+      {
+        const EsVariant& item = itemGet(idx);
+        str += EsString::format(
+          esT("[%d]=>'%s';"),
+          idx,
+          item.trace()
+        );
+      }
+
+      return str;
+    }
+    else if(!isEmpty())
+      return EsString::format(
+        esT("(%s):'%s'"),
+        kindGet(),
+        asString()
+      );
+    else
+      return esT("null");
+  }
+  catch(...)
+  {
+  }
+
+  return esT("???");
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

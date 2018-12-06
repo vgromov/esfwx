@@ -216,7 +216,7 @@ ulong EsEnumeration::valueIndexGet(cr_EsVariant val) const
   return 0;
 }
 
-ES_IMPL_INTF_METHOD(EsStringArray, EsEnumeration::labelsGet)() const ES_NOTHROW
+EsStringArray EsEnumeration::labelsGet() const ES_NOTHROW
 {
   EsStringArray result;
   result.reserve(m_contents.countGet());
@@ -226,7 +226,7 @@ ES_IMPL_INTF_METHOD(EsStringArray, EsEnumeration::labelsGet)() const ES_NOTHROW
   return result;
 }
 
-ES_IMPL_INTF_METHOD(EsVariant, EsEnumeration::valuesGet)() const ES_NOTHROW
+EsVariant EsEnumeration::valuesGet() const ES_NOTHROW
 {
   EsVariant result(EsVariant::VAR_VARIANT_COLLECTION);
   for(ulong idx = 0; idx < m_contents.countGet(); ++idx )

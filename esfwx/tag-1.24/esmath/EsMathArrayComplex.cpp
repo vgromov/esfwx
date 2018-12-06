@@ -127,8 +127,8 @@ void EsMathArrayComplex::copy(const EsMathArrayComplex& src)
 EsBaseIntfPtr EsMathArrayComplex::clone() const
 {
   std::unique_ptr<EsMathArrayComplex> p( new EsMathArrayComplex(*this) );
-
-  ES_ASSERT(p.get());
+  ES_ASSERT(p);
+  
   p->m_dynamic = true;
 
   return p.release()->asBaseIntfPtrDirect();
@@ -138,8 +138,8 @@ EsBaseIntfPtr EsMathArrayComplex::clone() const
 EsBaseIntfPtr EsMathArrayComplex::NEW()
 {
   std::unique_ptr<EsMathArrayComplex> p( new EsMathArrayComplex );
-
-  ES_ASSERT(p.get());
+  ES_ASSERT(p);
+  
   p->m_dynamic = true;
 
   return p.release()->asBaseIntfPtrDirect();
@@ -149,8 +149,8 @@ EsBaseIntfPtr EsMathArrayComplex::NEW()
 EsBaseIntfPtr EsMathArrayComplex::NEW(cr_EsVariant src)
 {
   std::unique_ptr<EsMathArrayComplex> p( new EsMathArrayComplex );
-
-   ES_ASSERT(p.get());
+  ES_ASSERT(p);
+  
   p->m_dynamic = true;
   p->set_items(src);
 

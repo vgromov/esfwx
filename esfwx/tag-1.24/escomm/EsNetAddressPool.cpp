@@ -92,7 +92,8 @@ ulong EsNetAddressPool::get_count() const
 EsBaseIntfPtr EsNetAddressPool::NEW()
 {
   std::unique_ptr<EsNetAddressPool> tmp( new EsNetAddressPool );
-   tmp->m_dynamic = true;
+  ES_ASSERT(tmp);
+  tmp->m_dynamic = true;
 
   return tmp.release()->asBaseIntfPtrDirect();
 }

@@ -43,7 +43,7 @@ m_accum(0)
 EsBaseIntfPtr EsMathDelayLine::NEW( cr_EsVariant length )
 {
   std::unique_ptr<EsMathDelayLine> p(new EsMathDelayLine(length.asULong()));
-  ES_ASSERT(p.get());
+  ES_ASSERT(p);
   p->m_dynamic = true;
 
   return p.release()->asBaseIntfPtrDirect();
@@ -232,7 +232,7 @@ m_minimaxReset( true )
 EsBaseIntfPtr EsMathDelayLineEx::NEW( cr_EsVariant length )
 {
   std::unique_ptr<EsMathDelayLineEx> p(new EsMathDelayLineEx(length.asULong()));
-  ES_ASSERT(p.get());
+  ES_ASSERT(p);
   p->m_dynamic = true;
 
   return p.release()->asBaseIntfPtrDirect();

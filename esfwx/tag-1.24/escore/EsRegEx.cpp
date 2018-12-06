@@ -83,7 +83,7 @@ EsRegEx::~EsRegEx()
 EsVariant EsRegEx::NEW()
 {
   std::unique_ptr<EsRegEx> obj( new EsRegEx() );
-  ES_ASSERT(obj.get());
+  ES_ASSERT(obj);
   obj->m_dynamic = true;
   return obj.release()->asBaseIntfPtrDirect();
 }
@@ -91,7 +91,7 @@ EsVariant EsRegEx::NEW()
 EsVariant EsRegEx::NEW( cr_EsString patt, ulong flags )
 {
   std::unique_ptr<EsRegEx> obj( new EsRegEx(patt, flags) );
-  ES_ASSERT(obj.get());
+  ES_ASSERT(obj);
   obj->m_dynamic = true;
   return obj.release()->asBaseIntfPtrDirect();
 }

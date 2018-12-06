@@ -1303,13 +1303,9 @@ m_srv(*this)
 
 EsVariant EsSocketServerReflected::NEW(ulong type)
 {
-#ifdef ES_MODERN_CPP
-  std::unique_ptr<EsSocketServer> p = std::make_unique<EsSocketServer>();
-#else
   std::unique_ptr<EsSocketServer> p( new EsSocketServer );
-#endif
 
-  ES_ASSERT(p.get());
+  ES_ASSERT(p);
   p->m_dynamic = true;
 
   p->set_socketType(type);

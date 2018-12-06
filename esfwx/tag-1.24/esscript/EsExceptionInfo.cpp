@@ -37,20 +37,46 @@ m_dbg(dbg)
 EsReflectedClassIntf::Ptr EsExceptionInfo::create(ulong severity, ulong facility, ulong code, const EsString& reason, 
     const EsVariant& data /*= EsVariant::s_null*/, const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/)
 {
-  return EsReflectedClassIntf::Ptr( new EsExceptionInfo(severity, facility, code, reason, data, dbg) );
+  std::unique_ptr<EsExceptionInfo> ptr(
+    new EsExceptionInfo(
+      severity, 
+      facility, 
+      code, 
+      reason, 
+      data, 
+      dbg
+    )
+  );
+  ES_ASSERT(ptr);
+  
+  return ptr.release()->asBaseIntfPtrDirect();
 }
 
 EsReflectedClassIntf::Ptr EsExceptionInfo::create(const EsException& ex, const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/)
 {
-  return create(ex.severityGet(), ex.facilityGet(), ex.codeGet(), ex.messageGet(), ex.dataGet(), dbg);
+  return create(
+    ex.severityGet(), 
+    ex.facilityGet(), 
+    ex.codeGet(), 
+    ex.messageGet(), 
+    ex.dataGet(), 
+    dbg
+  );
 }
 
-EsReflectedClassIntf::Ptr EsExceptionInfo::create(const std::exception& ex, const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/,  
+EsReflectedClassIntf::Ptr EsExceptionInfo::create(const std::exception& ex, const EsScriptDebugInfoIntf::Ptr& dbg /*= nullptr*/,  
   const EsVariant& data /*= EsVariant::s_null*/)
 {
   const EsString& reason = EsString::fromUtf8(ex.what());
-  return EsReflectedClassIntf::Ptr( new EsExceptionInfo(EsException::severityGeneric,
-    EsException::facilityEsCommon, 0, reason, EsVariant::null(), dbg) );
+  
+  return create(
+    EsException::severityGeneric,
+    EsException::facilityEsCommon, 
+    0, 
+    reason, 
+    EsVariant::null(), 
+    dbg  
+  );
 }
 
 ulong EsExceptionInfo::get_severity() const

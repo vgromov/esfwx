@@ -469,8 +469,7 @@ EsString EsScript::absoluteFileNameGet(
       {
         EsString include = searchPaths[idx];
         EsString::value_type sepCheck = include[include.size()-1];
-        if( EsPath::c_nativeSeparator != sepCheck &&
-            EsPath::c_nativeSeparator != sepCheck )
+        if( EsPath::c_nativeSeparator != sepCheck )
           include += EsPath::c_nativeSeparator;
         include += prefixDir;
 
@@ -593,22 +592,37 @@ ES_IMPL_INTF_METHOD(void, EsScript::reset)()
 
 ES_IMPL_INTF_METHOD(EsScriptletIntf::Ptr, EsScript::scriptletCreate)(const EsString& name, const EsString& src, const EsString& args /*= EsString::null()*/)
 {
-  EsScriptletIntf::Ptr scl( new EsScriptlet(m_machine, name, src, args) );
+  std::unique_ptr<EsScriptlet> scl( 
+    new EsScriptlet(
+      m_machine, 
+      name, 
+      src, 
+      args
+    ) 
+  );
   ES_ASSERT(scl);
 
   if( EsStringIndexedMap::npos == m_scriptlets.itemFind(scl->nameGet()) )
   {
-    m_scriptlets.itemAdd(scl->nameGet(), scl);
-    return scl;
+    m_scriptlets.itemAdd(
+      scl->nameGet(), 
+      scl
+    );
+    
+    return scl.release()->asBaseIntfPtrDirect();
   }
 
-  return EsScriptletIntf::Ptr();
+  return nullptr;
 }
 //---------------------------------------------------------------------------
 
 EsBaseIntfPtr EsScript::scriptletCreateReflected(cr_EsString name, cr_EsString src, cr_EsString args)
 {
-  return scriptletCreate(name, src, args);
+  return scriptletCreate(
+    name, 
+    src, 
+    args
+  );
 }
 //---------------------------------------------------------------------------
 

@@ -240,7 +240,16 @@ public:
   EsScriptCodeSection::Ptr clone( EsScriptObjectIntf* This, const EsVariant& params ) const
   {
     checkTemplateOperation();
-    return Ptr(new EsScriptCodeSection(*this, This, params));
+    EsScriptCodeSection::Ptr result(
+      new EsScriptCodeSection(
+        *this, 
+        This, 
+        params
+      )
+    );
+    ES_ASSERT(result);
+    
+    return result;
   }
 
   void thisFieldDependencyAdd(const EsString& fieldName)

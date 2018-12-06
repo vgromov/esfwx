@@ -66,12 +66,17 @@ static void filterAndSort(EsStringArray& arr, const EsString& filter)
 {
   if( !filter.empty() )
   {
-    std::remove_if(
+    auto newEnd = std::remove_if(
       arr.begin(),
       arr.end(),
       [filter](const EsString& val) -> bool {
         return 0 != val.find(filter);
       }
+    );
+
+    arr.erase(
+      newEnd,
+      arr.end()
     );
   }
 
@@ -143,24 +148,34 @@ static void fqNamesToReadables(EsStringArray& fqNames)
 
 static void nonStaticRemove(EsStringArray& fqNames)
 {
-  std::remove_if(
+  auto newEnd = std::remove_if(
     fqNames.begin(),
     fqNames.end(),
     [](const EsString& fqName) -> bool {
       return EsString::npos != fqName.find(esT("."));
     }
   );
+
+  fqNames.erase(
+    newEnd,
+    fqNames.end()
+  );
 }
 //--------------------------------------------------------------------------------
 
 static void staticRemove(EsStringArray& fqNames)
 {
-  std::remove_if(
+  auto newEnd = std::remove_if(
     fqNames.begin(),
     fqNames.end(),
     [](const EsString& fqName) -> bool {
       return EsString::npos != fqName.find(esT("::"));
     }
+  );
+
+  fqNames.erase(
+    newEnd,
+    fqNames.end()
   );
 }
 //--------------------------------------------------------------------------------

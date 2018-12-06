@@ -104,6 +104,7 @@ EsFile::~EsFile()
 EsBaseIntfPtr EsFile::NEW()
 {
   std::unique_ptr<EsFile> f( new EsFile );
+  ES_ASSERT(f);
   f->m_dynamic = true;
   return f.release()->asBaseIntfPtrDirect();
 }
@@ -112,6 +113,7 @@ EsBaseIntfPtr EsFile::NEW()
 EsBaseIntfPtr EsFile::NEW(cr_EsString fileName, ulong flags)
 {
   std::unique_ptr<EsFile> f( new EsFile(fileName, flags) );
+  ES_ASSERT(f);
   f->m_dynamic = true;
   return f.release()->asBaseIntfPtrDirect();
 }

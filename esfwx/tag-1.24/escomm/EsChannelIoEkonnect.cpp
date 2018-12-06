@@ -675,16 +675,15 @@ ES_IMPL_INTF_METHOD(bool, EsChannelIoEkonnect::isOpen)() const
 
 esU32 EsChannelIoEkonnect::internalPutBytes(const esU8* data, esU32 len, esU32 tmo)
 {
-  bool timeout = false;
   const esU8* pos = data;
   const esU8* end = data+len;
 
   if( m_io )
   {
-    while( !timeout &&
-            checkLogStatus() &&
-            !internalIsBreaking() &&
-            pos < end
+    while( 
+      checkLogStatus() &&
+      !internalIsBreaking() &&
+      pos < end
     )
     {
       esU32 result = 0;
