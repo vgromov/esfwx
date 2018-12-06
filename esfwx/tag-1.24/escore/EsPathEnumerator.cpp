@@ -127,7 +127,7 @@ EsBaseIntfPtr EsPathEnumeratorHelper::NEW(cr_EsBaseIntfPtr owner)
   std::unique_ptr<EsPathEnumeratorHelper> enu( new EsPathEnumeratorHelper(owner) );
   ES_ASSERT(enu);
   
-  return enu.release()->asBaseIntfPtrDirect();
+  return enu.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

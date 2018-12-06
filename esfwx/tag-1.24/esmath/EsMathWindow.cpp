@@ -85,7 +85,7 @@ EsBaseIntfPtr EsMathWindowBartlettHann::NEW()
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -128,7 +128,7 @@ EsBaseIntfPtr EsMathWindowBlackman::NEW()
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -186,7 +186,7 @@ EsBaseIntfPtr EsMathWindowBlackmanHarris::NEW()
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -239,7 +239,7 @@ EsBaseIntfPtr EsMathWindowFlatTop::NEW()
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -303,7 +303,7 @@ EsBaseIntfPtr EsMathWindowGaussian::NEW()
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -372,7 +372,7 @@ EsBaseIntfPtr EsMathWindowHamming::NEW()
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -413,7 +413,7 @@ EsBaseIntfPtr EsMathWindowHann::NEW()
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -456,7 +456,7 @@ EsBaseIntfPtr EsMathWindowNuttall::NEW()
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

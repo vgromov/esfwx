@@ -25,7 +25,7 @@ EsEnumerationIntf::Ptr EsScriptEnumeration::create(EsScriptMachine& machine, con
   );
   ES_ASSERT(ptr);
 
-  return ptr.release()->asBaseIntfPtrDirect();
+  return ptr.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

@@ -563,7 +563,7 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::objectCreate)(
     typeNameGet()
   )
 
-  return result.release()->asBaseIntfPtrDirect();
+  return result.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -1112,7 +1112,7 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptObject::clone)() const
 EsBaseIntfPtr EsScriptObject::reflectedClone() const
 {
   EsReflectedClassIntf::Ptr clone = m_ctx->vm()->objectCreate(typeNameGet());
-  EsScriptObjectIntf::Ptr thisWeakRef = const_cast<EsScriptObject*>(this)->asBaseIntfPtrDirectWeak();
+  EsScriptObjectIntf::Ptr thisWeakRef = const_cast<EsScriptObject*>(this)->asBaseIntfPtrWeak();
   ES_ASSERT(thisWeakRef);
 
   clone->copyFrom(thisWeakRef);
@@ -1735,7 +1735,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::copyFrom)(cr_EsBaseIntfPtr p1)
 
 ES_IMPL_INTF_METHOD(EsBaseIntfPtr, EsScriptObject::asWeakReference)() const ES_NOTHROW
 {
-  return const_cast<EsScriptObject*>(this)->asBaseIntfPtrDirectWeak();
+  return const_cast<EsScriptObject*>(this)->asBaseIntfPtrWeak();
 }
 //---------------------------------------------------------------------------
 

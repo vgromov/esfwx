@@ -38,7 +38,7 @@ protected:
     );
     ES_ASSERT(ptr);
 
-    return ptr.release()->asBaseIntfPtrDirect();
+    return ptr.release()->asBaseIntfPtr();
   }
 
   // base class overrides
@@ -74,7 +74,7 @@ protected:
       ptr->m_memberVars = vars;
     }
 
-    return ptr.release()->asBaseIntfPtrDirect();
+    return ptr.release()->asBaseIntfPtr();
   }
 
   // format branch type name, take nesting into account
@@ -136,7 +136,7 @@ EsScriptObjectIntf::Ptr EsScriptIfObject::createMetaclass(const EsScriptContext:
   );
   ES_ASSERT(tmp);
 
-  EsScriptObjectIntf::Ptr result = tmp.release()->asBaseIntfPtrDirect();
+  EsScriptObjectIntf::Ptr result = tmp.release()->asBaseIntfPtr();
   ES_ASSERT(result);
 
   // install expression code section
@@ -181,7 +181,7 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptIfObject::objectCreate)(con
     esT("New instance of '%s' object type created"),
     m_typeName
   )
-  return result.release()->asBaseIntfPtrDirect();
+  return result.release()->asBaseIntfPtr();
 }
 
 int EsScriptIfObject::internalExprEvaluate()

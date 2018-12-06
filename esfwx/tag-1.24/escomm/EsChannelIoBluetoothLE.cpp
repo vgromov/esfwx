@@ -56,7 +56,7 @@ EsBaseIntfPtr EsChannelIoBluetoothLE::NEW()
   std::unique_ptr<EsChannelIoBluetoothLE> chnl( new EsChannelIoBluetoothLE() );
   ES_ASSERT(chnl.get());
    chnl->m_dynamic = true;
-  return chnl.release()->asBaseIntfPtrDirect();
+  return chnl.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

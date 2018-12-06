@@ -128,7 +128,7 @@ EsScriptIntf::Ptr EsScript::create(const EsScriptIntf::Ptr& master /*= nullptr*/
   std::unique_ptr<EsScript> p(new EsScript(master));
   ES_ASSERT(p);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -609,7 +609,7 @@ ES_IMPL_INTF_METHOD(EsScriptletIntf::Ptr, EsScript::scriptletCreate)(const EsStr
       scl
     );
     
-    return scl.release()->asBaseIntfPtrDirect();
+    return scl.release()->asBaseIntfPtr();
   }
 
   return nullptr;

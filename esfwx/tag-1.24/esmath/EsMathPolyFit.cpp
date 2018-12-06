@@ -285,7 +285,7 @@ EsBaseIntfPtr EsMathPolyFit::NEW()
   ES_ASSERT(f);
   
   f->m_dynamic = true;
-  return f.release()->asBaseIntfPtrDirect();
+  return f.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

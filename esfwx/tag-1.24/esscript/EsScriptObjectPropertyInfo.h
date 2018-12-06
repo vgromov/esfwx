@@ -74,7 +74,7 @@ public:
     );
     ES_ASSERT(result);
     
-    return result.release()->asBaseIntfPtrDirect();
+    return result.release()->asBaseIntfPtr();
   }
   
 protected:

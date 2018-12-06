@@ -46,7 +46,7 @@ EsBaseIntfPtr EsMathDelayLine::NEW( cr_EsVariant length )
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -235,7 +235,7 @@ EsBaseIntfPtr EsMathDelayLineEx::NEW( cr_EsVariant length )
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

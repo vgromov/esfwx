@@ -25,7 +25,7 @@ public: \
       propertySet(prop, obj->propertyGet(prop)); } \
     } else EsException::Throw(esT("Could not copy from object of different type")); \
   } \
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsBaseIntfPtr, asWeakReference) ES_NOTHROW ES_OVERRIDE { return const_cast<ThisClassT*>(this)->asBaseIntfPtrDirectWeak(); } \
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(EsBaseIntfPtr, asWeakReference) ES_NOTHROW ES_OVERRIDE { return const_cast<ThisClassT*>(this)->asBaseIntfPtrWeak(); } \
   ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isIndexed) ES_NOTHROW ES_OVERRIDE { return classInfoGet().isIndexed(); } \
   ES_DECL_REFLECTED_INTF_CONST_METHOD0(bool, isScripted) ES_NOTHROW ES_OVERRIDE { return false; } \
   ES_DECL_INTF_METHOD(EsString::Array, propertyNamesGet)() const ES_NOTHROW ES_OVERRIDE { return classInfoGet().propertyNamesGet(); } \

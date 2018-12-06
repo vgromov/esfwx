@@ -130,7 +130,7 @@ EsBaseIntfPtr EsChannelIoSocketServer::NEW()
 
   chnl->m_dynamic = true;
 
-  return chnl.release()->asBaseIntfPtrDirect();
+  return chnl.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

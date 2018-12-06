@@ -178,7 +178,7 @@ EsThreadWorkerIntf::Ptr EsThreadWorker::create(bool weakWorkerRef /*= true*/,
   if( worker )
     tmp->workerSet(worker);
 
-  return tmp.release()->asBaseIntfPtrDirect();
+  return tmp.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

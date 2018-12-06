@@ -126,7 +126,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -135,7 +135,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -212,7 +212,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -221,7 +221,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -300,7 +300,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -309,7 +309,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -389,7 +389,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -398,7 +398,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -481,7 +481,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -490,7 +490,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -575,7 +575,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -584,7 +584,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -677,7 +677,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -686,7 +686,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -780,7 +780,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -789,7 +789,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -890,7 +890,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -899,7 +899,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -1007,7 +1007,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -1016,7 +1016,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -1131,7 +1131,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -1140,7 +1140,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }
@@ -1262,7 +1262,7 @@ public:
   }
 
   /// Return weak reference to this object itself
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirectWeak() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtrWeak() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf(), false, false );
   }
@@ -1271,7 +1271,7 @@ protected:
   /// return EsBaseIntf::Ptr, NB! non-incremented, so restrict usage to derived classes
   /// construction time only
   ///
-  inline EsBaseIntf::Ptr asBaseIntfPtrDirect() ES_NOTHROW
+  inline EsBaseIntf::Ptr asBaseIntfPtr() ES_NOTHROW
   {
     return EsBaseIntf::Ptr( asBaseIntf() );
   }

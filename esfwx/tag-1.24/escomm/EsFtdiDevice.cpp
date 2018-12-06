@@ -106,7 +106,7 @@ EsBaseIntf::Ptr EsFtdiDevice::create(EsFtdiDriver& owner, const EsFtdiDriver::FT
   ES_ASSERT(ptr);
 
   ptr->m_dynamic = true;
-  return ptr.release()->asBaseIntfPtrDirect();
+  return ptr.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

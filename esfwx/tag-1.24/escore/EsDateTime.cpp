@@ -127,7 +127,7 @@ EsBaseIntfPtr EsTimeSpan::create(esDT dt)
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -801,7 +801,7 @@ EsBaseIntfPtr EsDateTime::create(esDT dt)
   ES_ASSERT(p);
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

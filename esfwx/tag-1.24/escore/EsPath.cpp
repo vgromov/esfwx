@@ -164,7 +164,7 @@ EsBaseIntfPtr EsPath::createReflected(const EsString& path, const EsString& file
   std::unique_ptr<EsPath> p( new EsPath( EsPath::create(path, fileName, fileExt) ) );
   ES_ASSERT(p);
   p->m_dynamic = true;
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -173,7 +173,7 @@ EsBaseIntfPtr EsPath::createFromPathReflected(const EsString& path)
   std::unique_ptr<EsPath> p( new EsPath( EsPath::createFromPath(path) ) );
   ES_ASSERT(p);
   p->m_dynamic = true;
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -182,7 +182,7 @@ EsBaseIntfPtr EsPath::createFromFilePathReflected(const EsString& filePath)
   std::unique_ptr<EsPath> p( new EsPath( EsPath::createFromFilePath(filePath) ) );
   ES_ASSERT(p);
   p->m_dynamic = true;
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

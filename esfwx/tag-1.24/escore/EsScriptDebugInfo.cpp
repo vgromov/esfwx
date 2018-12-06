@@ -31,7 +31,7 @@ EsScriptDebugInfoIntf::Ptr EsScriptDebugInfo::create(ulong line, ulong col, cons
   ES_ASSERT(ptr);
 
   ptr->m_dynamic = true;
-  return ptr.release()->asBaseIntfPtrDirect();
+  return ptr.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

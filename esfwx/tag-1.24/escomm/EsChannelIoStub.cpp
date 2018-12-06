@@ -56,7 +56,7 @@ EsBaseIntfPtr EsChannelIoStub::NEW()
   ES_ASSERT(chnl.get());
   chnl->m_dynamic = true;
 
-  return chnl.release()->asBaseIntfPtrDirect();
+  return chnl.release()->asBaseIntfPtr();
 }
 
 void EsChannelIoStub::set_monitor(const EsBaseIntfPtr& monitor)

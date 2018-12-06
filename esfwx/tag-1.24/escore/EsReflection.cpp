@@ -41,7 +41,7 @@ EsAttributesIntf::Ptr EsAttributes::create(const EsString& ownerName, bool inter
   ES_ASSERT(ptr);
   ptr->m_dynamic = true;
 
-  return ptr.release()->asBaseIntfPtrDirect();
+  return ptr.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ EsAttributesIntf::Ptr EsAttributes::clone() const
 
   ptr->m_dynamic = true;
   ptr->m_contents = m_contents;
-  return ptr.release()->asBaseIntfPtrDirect();
+  return ptr.release()->asBaseIntfPtr();
 
 }
 //---------------------------------------------------------------------------
@@ -127,7 +127,7 @@ EsAttributesIntf::Ptr EsAttributes::attributeSet(const EsString& name, const EsV
       m_contents.nameGet()
     );
 
-  return asBaseIntfPtrDirectWeak();
+  return asBaseIntfPtrWeak();
 }
 //---------------------------------------------------------------------------
 
@@ -135,7 +135,7 @@ EsAttributesIntf::Ptr EsAttributes::attributeAdd(const EsString& name, const EsV
 {
   m_contents.itemAdd(name, val);
 
-  return asBaseIntfPtrDirectWeak();
+  return asBaseIntfPtrWeak();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

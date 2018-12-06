@@ -303,7 +303,7 @@ EsBaseIntfPtr EsMathSpline::NEW()
 {
   std::unique_ptr<EsMathSpline> f( new EsMathSpline );
   f->m_dynamic = true;
-  return f.release()->asBaseIntfPtrDirect();
+  return f.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

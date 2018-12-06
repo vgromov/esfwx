@@ -48,7 +48,7 @@ EsBaseIntfPtr EsScriptMetainfoLookup::NEW(cr_EsBaseIntfPtr meta)
 
   tmp->m_dynamic = true;
 
-  return tmp.release()->asBaseIntfPtrDirect();
+  return tmp.release()->asBaseIntfPtr();
 }
 //--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------

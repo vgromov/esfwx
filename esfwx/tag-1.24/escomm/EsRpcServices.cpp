@@ -283,7 +283,7 @@ EsRpcMasterIntf::Ptr EsRpcMaster::create()
   ES_ASSERT( master.get() );
   master->m_dynamic = true;
 
-  return master.release()->asBaseIntfPtrDirect();
+  return master.release()->asBaseIntfPtr();
 }
 
 EsRpcMaster::~EsRpcMaster()

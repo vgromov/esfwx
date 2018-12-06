@@ -94,7 +94,7 @@ EsStreamIntf::Ptr EsStreamBinary::create(ulong flags, ulong version, const EsVar
   );
   ES_ASSERT(p);
   
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

@@ -37,7 +37,7 @@ EsVariant EsMathFft::transformReal( cr_EsVariant in )
 
   transform(sig, *out.get());
 
-  return out.release()->asBaseIntfPtrDirect();
+  return out.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

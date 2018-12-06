@@ -492,7 +492,7 @@ EsBaseIntfPtr EsSocketAddr::clone() const
 
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -559,7 +559,7 @@ EsVariant EsSocketAddr::NEW()
   ES_ASSERT(p.get());
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -613,7 +613,7 @@ EsVariant EsSocketAddr::NEW(cr_EsVariant vtype, cr_EsVariant vaddr, cr_EsVariant
   ES_ASSERT(p.get());
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

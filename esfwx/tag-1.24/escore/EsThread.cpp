@@ -264,7 +264,7 @@ EsBaseIntf::Ptr EsThread::threadStateProxyGet()
   );
   ES_ASSERT(proxy);
   
-  return proxy.release()->asBaseIntfPtrDirect();
+  return proxy.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

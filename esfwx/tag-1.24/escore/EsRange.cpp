@@ -77,7 +77,7 @@ EsVariant EsRange::NEW(const EsVariant& min, const EsVariant& isStrictMin, const
   );
   ES_ASSERT(range);
   
-  return range.release()->asBaseIntfPtrDirect();
+  return range.release()->asBaseIntfPtr();
 }
 
 // non-standard constructors
@@ -95,7 +95,7 @@ EsVariant EsRange::createMinExcl(const EsVariant& min)
   );
   ES_ASSERT(range);
   
-  return range.release()->asBaseIntfPtrDirect();
+  return range.release()->asBaseIntfPtr();
 }
 
 EsVariant EsRange::createMinIncl(const EsVariant& min)
@@ -112,7 +112,7 @@ EsVariant EsRange::createMinIncl(const EsVariant& min)
   );
   ES_ASSERT(range);
   
-  return range.release()->asBaseIntfPtrDirect();
+  return range.release()->asBaseIntfPtr();
 }
 
 EsVariant EsRange::createMaxExcl(const EsVariant& max)
@@ -129,7 +129,7 @@ EsVariant EsRange::createMaxExcl(const EsVariant& max)
   );
   ES_ASSERT(range);
   
-  return range.release()->asBaseIntfPtrDirect();
+  return range.release()->asBaseIntfPtr();
 }
 
 EsVariant EsRange::createMaxIncl(const EsVariant& max)
@@ -146,7 +146,7 @@ EsVariant EsRange::createMaxIncl(const EsVariant& max)
   );
   ES_ASSERT(range);
   
-  return range.release()->asBaseIntfPtrDirect();
+  return range.release()->asBaseIntfPtr();
 }
 
 void EsRange::minMaxComplianceCheck(const EsVariant& min, const EsVariant& max, bool incl /*= false*/)
@@ -178,7 +178,7 @@ EsVariant EsRange::createMinExclMaxExcl(const EsVariant& min, const EsVariant& m
   );
   ES_ASSERT(range);
   
-  return range.release()->asBaseIntfPtrDirect();
+  return range.release()->asBaseIntfPtr();
 }
 
 EsVariant EsRange::createMinInclMaxIncl(const EsVariant& min, const EsVariant& max)
@@ -198,7 +198,7 @@ EsVariant EsRange::createMinInclMaxIncl(const EsVariant& min, const EsVariant& m
   );
   ES_ASSERT(range);
   
-  return range.release()->asBaseIntfPtrDirect();
+  return range.release()->asBaseIntfPtr();
 }
 
 EsVariant EsRange::createMinExclMaxIncl(const EsVariant& min, const EsVariant& max)
@@ -218,7 +218,7 @@ EsVariant EsRange::createMinExclMaxIncl(const EsVariant& min, const EsVariant& m
   );
   ES_ASSERT(range);
   
-  return range.release()->asBaseIntfPtrDirect();
+  return range.release()->asBaseIntfPtr();
 }
 
 EsVariant EsRange::createMinInclMaxExcl(const EsVariant& min, const EsVariant& max)
@@ -238,7 +238,7 @@ EsVariant EsRange::createMinInclMaxExcl(const EsVariant& min, const EsVariant& m
   );
   ES_ASSERT(range);
   
-  return range.release()->asBaseIntfPtrDirect();
+  return range.release()->asBaseIntfPtr();
 }
 
 // properties

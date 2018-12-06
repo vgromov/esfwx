@@ -602,7 +602,7 @@ EsBaseIntfPtr EsMathArrayReal::clone() const
   
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -618,7 +618,7 @@ EsBaseIntfPtr EsMathArrayReal::baseIntfPtrCreate(cr_EsVariant src, EsMathArrayRe
   if( outp )
     *outp = p.get();
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -649,7 +649,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromU8buffer(const EsBinBuffer& src)
   p->m_dynamic = true;
   fromBuffer<esU8>(p.get(), src, true);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -661,7 +661,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromI8buffer(const EsBinBuffer& src)
   p->m_dynamic = true;
   fromBuffer<esI8>(p.get(), src, true);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -673,7 +673,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromU16buffer(const EsBinBuffer& src)
   p->m_dynamic = true;
   fromBuffer<esU16>(p.get(), src, true);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -685,7 +685,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromI16buffer(const EsBinBuffer& src)
   p->m_dynamic = true;
   fromBuffer<esI16>(p.get(), src, true);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -697,7 +697,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromU32buffer(const EsBinBuffer& src)
   p->m_dynamic = true;
   fromBuffer<esU32>(p.get(), src, true);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -709,7 +709,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromI32buffer(const EsBinBuffer& src)
   p->m_dynamic = true;
   fromBuffer<esI32>(p.get(), src, true);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -721,7 +721,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromFloatBuffer(const EsBinBuffer& src)
   p->m_dynamic = true;
   fromBuffer<float>(p.get(), src, true);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -733,7 +733,7 @@ EsBaseIntfPtr EsMathArrayReal::newFromDoubleBuffer(const EsBinBuffer& src)
   p->m_dynamic = true;
   fromBuffer<double>(p.get(), src, true);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -796,7 +796,7 @@ EsVariant EsMathArrayReal::add(const EsVariant& v)
 
     EsMathArrayReal* clone = nullptr;
     EsBaseIntfPtr result = baseIntfPtrCreate(
-      asBaseIntfPtrDirectWeak(),
+      asBaseIntfPtrWeak(),
       &clone
     );
 
@@ -818,7 +818,7 @@ EsVariant EsMathArrayReal::add(const EsVariant& v)
 
     EsMathArrayReal* clone = nullptr;
     EsBaseIntfPtr result = baseIntfPtrCreate(
-      asBaseIntfPtrDirectWeak(),
+      asBaseIntfPtrWeak(),
       &clone
     );
 
@@ -880,7 +880,7 @@ EsVariant EsMathArrayReal::subtract(const EsVariant& v)
 
     EsMathArrayReal* clone = nullptr;
     EsBaseIntfPtr result = baseIntfPtrCreate(
-      asBaseIntfPtrDirectWeak(),
+      asBaseIntfPtrWeak(),
       &clone
     );
 
@@ -902,7 +902,7 @@ EsVariant EsMathArrayReal::subtract(const EsVariant& v)
 
     EsMathArrayReal* clone = nullptr;
     EsBaseIntfPtr result = baseIntfPtrCreate(
-      asBaseIntfPtrDirectWeak(),
+      asBaseIntfPtrWeak(),
       &clone
     );
 
@@ -964,7 +964,7 @@ EsVariant EsMathArrayReal::multiply(const EsVariant& v)
 
     EsMathArrayReal* clone = nullptr;
     EsBaseIntfPtr result = baseIntfPtrCreate(
-      asBaseIntfPtrDirectWeak(),
+      asBaseIntfPtrWeak(),
       &clone
     );
 
@@ -986,7 +986,7 @@ EsVariant EsMathArrayReal::multiply(const EsVariant& v)
 
     EsMathArrayReal* clone = nullptr;
     EsBaseIntfPtr result = baseIntfPtrCreate(
-      asBaseIntfPtrDirectWeak(),
+      asBaseIntfPtrWeak(),
       &clone
     );
 
@@ -1055,7 +1055,7 @@ EsVariant EsMathArrayReal::divide(const EsVariant& v)
 
     EsMathArrayReal* clone = nullptr;
     EsBaseIntfPtr result = baseIntfPtrCreate(
-      asBaseIntfPtrDirectWeak(),
+      asBaseIntfPtrWeak(),
       &clone
     );
 
@@ -1077,7 +1077,7 @@ EsVariant EsMathArrayReal::divide(const EsVariant& v)
 
     EsMathArrayReal* clone = nullptr;
     EsBaseIntfPtr result = baseIntfPtrCreate(
-      asBaseIntfPtrDirectWeak(),
+      asBaseIntfPtrWeak(),
       &clone
     );
 

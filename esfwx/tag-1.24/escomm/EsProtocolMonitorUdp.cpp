@@ -22,7 +22,7 @@ EsProtocolIoMonitorIntf::Ptr EsProtocolMonitorUdp::create(const EsString& target
   std::unique_ptr<EsProtocolMonitorUdp> tmp(new EsProtocolMonitorUdp(target, targetPort));
   tmp->m_dynamic = true;
 
-  return tmp.release()->asBaseIntfPtrDirect();
+  return tmp.release()->asBaseIntfPtr();
 }
 
 EsProtocolMonitorUdp::EsProtocolMonitorUdp(const EsString& target, unsigned short targetPort) :

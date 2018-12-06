@@ -65,7 +65,7 @@ EsScriptObjectIntf::Ptr EsScriptArrayObject::createMetaclass(const EsScriptConte
 
   ES_ASSERT(expr);
   tmp->m_expr = expr;
-  return tmp.release()->asBaseIntfPtrDirect();
+  return tmp.release()->asBaseIntfPtr();
 }
 
 ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::binBufferSet)(const EsBinBuffer& buff)
@@ -153,7 +153,7 @@ ES_IMPL_INTF_METHOD(EsScriptObjectIntf::Ptr, EsScriptArrayObject::objectCreate)(
     m_typeName,
     m_itemMetaclass->typeNameGet()
   )
-  return result.release()->asBaseIntfPtrDirect();
+  return result.release()->asBaseIntfPtr();
 }
 
 ES_IMPL_INTF_METHOD(void, EsScriptArrayObject::setParent)(EsScriptObjectIntf* parent)

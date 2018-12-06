@@ -45,17 +45,19 @@ EsStringIndexedMap::EsStringIndexedMap(const EsStringIndexedMap& src, EsStringIn
 
 EsStringIndexedMap::~EsStringIndexedMap() ES_NOTHROW
 {
-  EsCriticalSectionPtrLocker lock(m_cs);
+  { //< Separate scope for locker - prevent m_cs.reset from being called under locked conditions
+    EsCriticalSectionPtrLocker lock(m_cs);
 
-  // Do not allow anything to escape from dtor
-  try
-  {
-    m_m.clear();
-    m_v.clear();
+    // Do not allow anything to escape from dtor
+    try
+    {
+      m_m.clear();
+      m_v.clear();
+    }
+    catch(...)
+    {}
   }
-  catch(...)
-  {}
-
+  
   m_cs.reset();
 }
 

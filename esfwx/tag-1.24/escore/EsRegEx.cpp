@@ -85,7 +85,7 @@ EsVariant EsRegEx::NEW()
   std::unique_ptr<EsRegEx> obj( new EsRegEx() );
   ES_ASSERT(obj);
   obj->m_dynamic = true;
-  return obj.release()->asBaseIntfPtrDirect();
+  return obj.release()->asBaseIntfPtr();
 }
 
 EsVariant EsRegEx::NEW( cr_EsString patt, ulong flags )
@@ -93,7 +93,7 @@ EsVariant EsRegEx::NEW( cr_EsString patt, ulong flags )
   std::unique_ptr<EsRegEx> obj( new EsRegEx(patt, flags) );
   ES_ASSERT(obj);
   obj->m_dynamic = true;
-  return obj.release()->asBaseIntfPtrDirect();
+  return obj.release()->asBaseIntfPtr();
 }
 
 //regex services

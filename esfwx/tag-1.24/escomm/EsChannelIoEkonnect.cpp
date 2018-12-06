@@ -94,7 +94,7 @@ EsBaseIntfPtr EsChannelIoEkonnect::NEW()
 
   chnl->m_dynamic = true;
 
-  return chnl.release()->asBaseIntfPtrDirect();
+  return chnl.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

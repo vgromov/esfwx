@@ -49,7 +49,7 @@ EsReflectedClassIntf::Ptr EsExceptionInfo::create(ulong severity, ulong facility
   );
   ES_ASSERT(ptr);
   
-  return ptr.release()->asBaseIntfPtrDirect();
+  return ptr.release()->asBaseIntfPtr();
 }
 
 EsReflectedClassIntf::Ptr EsExceptionInfo::create(const EsException& ex, const EsScriptDebugInfoIntf::Ptr& dbg /*= EsScriptDebugInfoIntf::Ptr()*/)

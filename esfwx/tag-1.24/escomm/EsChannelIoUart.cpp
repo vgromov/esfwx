@@ -72,10 +72,10 @@ ES_DECL_CLASS_INFO_END
 //
 EsBaseIntfPtr EsChannelIoUart::NEW()
 {
-  std::unique_ptr<EsChannelIoUart> chnl( new EsChannelIoUart() );
-  ES_ASSERT(chnl.get());
-   chnl->m_dynamic = true;
-  return chnl.release()->asBaseIntfPtrDirect();
+  std::unique_ptr<EsChannelIoUart> chnl( new EsChannelIoUart );
+  ES_ASSERT(chnl);
+  chnl->m_dynamic = true;
+  return chnl.release()->asBaseIntfPtr();
 }
 
 EsChannelIoUart::~EsChannelIoUart()

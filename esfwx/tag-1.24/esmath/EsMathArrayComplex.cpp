@@ -131,7 +131,7 @@ EsBaseIntfPtr EsMathArrayComplex::clone() const
   
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -142,7 +142,7 @@ EsBaseIntfPtr EsMathArrayComplex::NEW()
   
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -154,7 +154,7 @@ EsBaseIntfPtr EsMathArrayComplex::NEW(cr_EsVariant src)
   p->m_dynamic = true;
   p->set_items(src);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

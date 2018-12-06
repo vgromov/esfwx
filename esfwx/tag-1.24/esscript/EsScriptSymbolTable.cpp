@@ -30,7 +30,7 @@ protected:
     );
     ES_ASSERT(ptr);
 
-    return ptr.release()->asBaseIntfPtrDirect();
+    return ptr.release()->asBaseIntfPtr();
   }
 
 public:

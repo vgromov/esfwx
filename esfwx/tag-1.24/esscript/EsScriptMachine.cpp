@@ -1051,7 +1051,7 @@ EsScriptObjectIntf::Ptr EsScriptMachine::metaclassDeclare(const EsString &name, 
   );
   ES_ASSERT(ptr);
 
-  EsScriptObjectIntf::Ptr metaclass = ptr.release()->asBaseIntfPtrDirect();
+  EsScriptObjectIntf::Ptr metaclass = ptr.release()->asBaseIntfPtr();
   ES_ASSERT(metaclass);
 
   // register metaclass

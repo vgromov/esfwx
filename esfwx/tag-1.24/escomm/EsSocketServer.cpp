@@ -1310,7 +1310,7 @@ EsVariant EsSocketServerReflected::NEW(ulong type)
 
   p->set_socketType(type);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

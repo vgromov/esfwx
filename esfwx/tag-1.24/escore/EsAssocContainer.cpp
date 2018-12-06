@@ -79,7 +79,7 @@ EsAssocContainerIntf::Ptr EsAssocContainer::create(EsBaseIntf* owner /*= nullptr
   std::unique_ptr<EsAssocContainer> tmp(new EsAssocContainer(owner));
   tmp->m_dynamic = true;
 
-  return tmp.release()->asBaseIntfPtrDirect();
+  return tmp.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -138,7 +138,7 @@ EsBaseIntfPtr EsAssocContainer::clone() const
   ES_ASSERT(stream);
 
   stream->objectWrite(
-    const_cast<EsAssocContainer*>(this)->asBaseIntfPtrDirectWeak()
+    const_cast<EsAssocContainer*>(this)->asBaseIntfPtrWeak()
   );
 
   EsAssocContainerIntf::Ptr result = create(

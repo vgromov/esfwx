@@ -95,6 +95,6 @@ EsBaseIntfPtr EsNetAddressPool::NEW()
   ES_ASSERT(tmp);
   tmp->m_dynamic = true;
 
-  return tmp.release()->asBaseIntfPtrDirect();
+  return tmp.release()->asBaseIntfPtr();
 }
 

@@ -77,7 +77,7 @@ EsProgressMonitorTaskIntf::Ptr EsProgressMonitorTask::create(const EsString& id,
   std::unique_ptr<EsProgressMonitorTask> t( new EsProgressMonitorTask(id, text, range, val) );
   ES_ASSERT(t);
   
-  return t.release()->asBaseIntfPtrDirect();
+  return t.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -908,7 +908,7 @@ EsProgressMonitorIntf::Ptr EsProgressMonitor::create(const EsString& id)
   std::unique_ptr<EsProgressMonitor> m( new EsProgressMonitor(id) );
   ES_ASSERT(m);
   
-  return m.release()->asBaseIntfPtrDirect();
+  return m.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

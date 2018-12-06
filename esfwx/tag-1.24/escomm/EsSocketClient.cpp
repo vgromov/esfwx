@@ -211,7 +211,7 @@ EsVariant EsSocketClientReflected::NEW(cr_EsVariant socketType)
   );
   cli->m_dynamic = true;
 
-  return cli.release()->asBaseIntfPtrDirect();
+  return cli.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

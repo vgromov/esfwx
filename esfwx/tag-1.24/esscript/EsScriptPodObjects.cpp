@@ -30,14 +30,14 @@
   { std::unique_ptr<ES_CONCAT(EsScript_, DataType)> ptr( \
       new ES_CONCAT(EsScript_, DataType) (ctx, ofMetaclass|ofPOD, nullptr, nullptr) \
     ); ES_ASSERT(ptr); \
-    return ptr.release()->asBaseIntfPtrDirect(); \
+    return ptr.release()->asBaseIntfPtr(); \
   } \
   EsScriptObjectIntf::Ptr ES_CONCAT(EsScript_, DataType)::objectCreate(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const \
   { std::unique_ptr<ES_CONCAT(EsScript_, DataType)> ptr( \
       new ES_CONCAT(EsScript_, DataType) (m_ctx, m_flags & ~ofMetaclass, buff, m_attrsClass) \
     ); ES_ASSERT(ptr); \
     ESSCRIPT_OBJECT_TRACE2(esT("New instance of '%s' object type created"), m_typeName) \
-    return ptr.release()->asBaseIntfPtrDirect(); \
+    return ptr.release()->asBaseIntfPtr(); \
   } \
   void ES_CONCAT(EsScript_, DataType)::set_value(const EsVariant& val) { validate(val); m_moniker.set_value( To_ ## DataType(val) ); } \
   EsVariant ES_CONCAT(EsScript_, DataType)::get_value() const { return From_ ## DataType( m_moniker.get_value() ); } \

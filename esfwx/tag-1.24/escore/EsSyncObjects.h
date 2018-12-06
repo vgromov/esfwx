@@ -130,6 +130,11 @@ private:
 };
 //---------------------------------------------------------------------------
 
+/// NB! This locker does not have an ownership over critical section pointer object,
+/// so be extremely cautious not to reset cs pointer _before_ unlocking it.
+/// Use an extra {} scope to assure locker deallocation, and use cs.reset() outside
+/// the scope, afterwards
+///
 class ESCORE_CLASS EsCriticalSectionPtrLocker
 {
 public:

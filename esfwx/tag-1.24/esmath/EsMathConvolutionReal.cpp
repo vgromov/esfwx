@@ -170,7 +170,7 @@ EsBaseIntfPtr EsMathConvolutionReal::NEW()
   ES_ASSERT(p.get());
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -181,7 +181,7 @@ EsBaseIntfPtr EsMathConvolutionReal::NEW(cr_EsVariant filter)
   p->m_dynamic = true;
   p->set_filter(filter);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -193,7 +193,7 @@ EsBaseIntfPtr EsMathConvolutionReal::NEW(cr_EsVariant filter, ulong flags)
   p->set_filter(filter);
   p->set_flags(flags);
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
@@ -228,7 +228,7 @@ EsVariant EsMathConvolutionReal::process(cr_EsVariant in) const
   if( needFree )
     delete sig;
 
-  return out.release()->asBaseIntfPtrDirect();
+  return out.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 

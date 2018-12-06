@@ -141,7 +141,7 @@ EsVariant EsStringTokenizer::NEW(cr_EsString str, cr_EsString separators)
   std::unique_ptr<EsStringTokenizer> obj( new EsStringTokenizer(str, separators) );
   ES_ASSERT(obj.get());
   obj->m_dynamic = true;
-  return obj.release()->asBaseIntfPtrDirect();
+  return obj.release()->asBaseIntfPtr();
 }
 
 void EsStringTokenizer::rewind()

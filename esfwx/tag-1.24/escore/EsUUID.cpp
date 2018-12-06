@@ -48,7 +48,7 @@ EsBaseIntfPtr EsUUID::create(const GUID& uuid/* = EsUUID::null()*/)
   ES_ASSERT(p.get());
   p->m_dynamic = true;
 
-  return p.release()->asBaseIntfPtrDirect();
+  return p.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
 
