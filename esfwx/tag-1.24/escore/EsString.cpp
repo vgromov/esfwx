@@ -181,7 +181,26 @@ m_hashInvalid(true)
 //---------------------------------------------------------------------------
 #endif
 
-// string hash value access with on-demand hash recalculation
+#ifdef ES_MODERN_CPP
+EsString::EsString(EsString&& other) ES_NOTHROW :
+m_hash(other.m_hash),
+m_hashInvalid(other.m_hashInvalid)
+{
+  m_str.operator=(other.m_str);
+}
+//---------------------------------------------------------------------------
+
+EsString& EsString::operator=(EsString&& other) ES_NOTHROW
+{
+  m_str.operator=(other.m_str);
+  m_hash = other.m_hash;
+  m_hashInvalid = other.m_hashInvalid;
+
+  return *this;
+}
+//---------------------------------------------------------------------------
+#endif
+
 esU64 EsString::hashGet() const ES_NOTHROW
 {
   if( m_hashInvalid )

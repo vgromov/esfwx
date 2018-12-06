@@ -98,6 +98,14 @@ public:
   EsString(const EsWideString32& src, const EsByteString& conv = nullByteString());
 #endif
 
+#ifdef ES_MODERN_CPP
+  /// Constructor with move semantics
+  EsString(EsString&& other) ES_NOTHROW;
+
+  /// Move assignment
+  EsString& operator=(EsString&& other) ES_NOTHROW;
+#endif
+
   /// String hash value access with on-demand hash recalculation
   esU64 hashGet() const ES_NOTHROW;
   inline bool isValidHash() const ES_NOTHROW { return !m_hashInvalid; }
