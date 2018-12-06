@@ -12,7 +12,7 @@ set(tests_SRCS
 		)
 
 # Add backward.cpp - pretty stack backtrace printer
-if(LINUX)
+if(UNIX AND NOT WIN32)
 set(tests_SRCS
 		${tests_SRCS}
 		backward-cpp/backward.cpp

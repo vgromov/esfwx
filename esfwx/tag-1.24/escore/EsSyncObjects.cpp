@@ -69,12 +69,10 @@ EsCriticalSectionPtrLocker::~EsCriticalSectionPtrLocker()
     m_obj->leave();
 }
 //---------------------------------------------------------------------------
-
-
 //---------------------------------------------------------------------------
+
 // Semaphore
 //
-
 EsSemaphore::Result EsSemaphore::wait()
 {
   return wait(ES_INFINITE);

@@ -20,7 +20,7 @@ enum EsScriptOperatorIds {
   opidNot,      // !a
   // binary operators
   //
-  // access  
+  // access
   opidFldAcc,    // a.b
   opidPropAcc,  // a$b
   opidVsvcAcc,  // a#b
@@ -36,7 +36,7 @@ enum EsScriptOperatorIds {
   opidAdd,      // a+b
   opidSub,      // a-b
   opidMul,      // a*b
-  opidDiv,      // a/b  
+  opidDiv,      // a/b
   opidMod,      // a%b
   // logical
   opidLogOr,    // a||b
@@ -110,8 +110,8 @@ enum EsScriptInstructionOpcode {
   iLoadAttributeVal,              // perform access to variable's attribute value
   iLoadThisAttributeVal,          // perform access to attribute value using implicit 'this' pointer
   iJump,                          // jump, param contains jump opcode + extra info, which is jump type (relative or absolute), followed by instruction offset
-  iJumpFalse,                      // jump if false, param contains jump opcode + extra info, meaning is the same as iJump    
-  iJumpTrue,                      // jump if true, param contains jump opcode + extra info, meaning is the same as iJump  
+  iJumpFalse,                      // jump if false, param contains jump opcode + extra info, meaning is the same as iJump
+  iJumpTrue,                      // jump if true, param contains jump opcode + extra info, meaning is the same as iJump
   iThrow,                          // exception throw instruction
   iRethrow,                        // caught exception re-throw instruction
   iEnterTryCatch,                  // enter try-catch block scope
@@ -166,8 +166,8 @@ public:
 public:
   /// Default constructor - creates invalid empty instruction
   EsScriptInstruction() ES_NOTHROW :
-    m_opcode(iInvalid),
-    m_payloadMask(PayloadNone)
+  m_opcode(iInvalid),
+  m_payloadMask(PayloadNone)
   {}
 
   /// Check if instruction is valid
@@ -202,43 +202,43 @@ public:
   inline EsVarType variableTypeGet() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload0);
-    return m_varType;
+    return m_payload0.m_varType;
   }
 
   inline EsMemberRefType memberRefTypeGet() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload0);
-    return m_refType;
+    return m_payload0.m_refType;
   }
 
   inline EsIvalType immValTypeGet() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload0);
-    return m_ivalType;
+    return m_payload0.m_ivalType;
   }
 
   inline EsScriptOperatorIds operatorIdGet() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload0);
-    return m_opId;
+    return m_payload0.m_opId;
   }
 
   inline EsJumpOpcode jumpOpcodeGet() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload0);
-    return m_jmpId;
+    return m_payload0.m_jmpId;
   }
 
   inline long argsCountGet() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload0);
-    return m_argscnt;
+    return m_payload0.m_argscnt;
   }
 
   inline ulong tryCatchIdxGet() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload0);
-    return m_tryCatchIdx;
+    return m_payload0.m_tryCatchIdx;
   }
 
   /// Optional parameter 1 read-only access
@@ -246,19 +246,19 @@ public:
   inline long jumpOffsGet() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload1);
-    return m_jmpOffs;
+    return m_payload1.m_jmpOffs;
   }
 
   inline bool isCallAsStmt() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload1);
-    return m_asStmt;
+    return m_payload1.m_asStmt;
   }
 
   inline ulong immValArgsCnt() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload1);
-    return m_ivalArgsCnt;
+    return m_payload1.m_ivalArgsCnt;
   }
 
   /// Optional parameter 2 read-only access
@@ -266,7 +266,7 @@ public:
   inline bool isPostfixOp() const ES_NOTHROW
   {
     ES_ASSERT(m_payloadMask & Payload2);
-    return m_isPostfix;
+    return m_payload2.m_isPostfix;
   }
 
   /// Optional parameter 3 rea-only access
@@ -317,19 +317,19 @@ public:
   inline esU32 raw0get() const ES_NOTHROW
   {
     ES_ASSERT( m_payloadMask & Payload0 );
-    return m_raw0;
+    return m_payload0.m_raw0;
   }
 
   inline esU32 raw1get() const ES_NOTHROW
   {
     ES_ASSERT( m_payloadMask & Payload1 );
-    return m_raw1;
+    return m_payload1.m_raw1;
   }
 
   inline esU32 raw2get() const ES_NOTHROW
   {
     ES_ASSERT( m_payloadMask & Payload2 );
-    return m_raw2;
+    return m_payload2.m_raw2;
   }
 
   // Opcode setter
@@ -352,56 +352,56 @@ public:
   //
   inline EsScriptInstruction& variableTypeSet(EsVarType type) ES_NOTHROW
   {
-    m_varType = type;
+    m_payload0.m_varType = type;
     m_payloadMask |= Payload0;
     return *this;
   }
 
   inline EsScriptInstruction& memberRefTypeSet(EsMemberRefType type) ES_NOTHROW
   {
-    m_refType = type;
+    m_payload0.m_refType = type;
     m_payloadMask |= Payload0;
     return *this;
   }
 
   inline EsScriptInstruction& immValTypeSet(EsIvalType type) ES_NOTHROW
   {
-    m_ivalType = type;
+    m_payload0.m_ivalType = type;
     m_payloadMask |= Payload0;
     return *this;
   }
 
   inline EsScriptInstruction& operatorIdSet(EsScriptOperatorIds opId) ES_NOTHROW
   {
-    m_opId = opId;
+    m_payload0.m_opId = opId;
     m_payloadMask |= Payload0;
     return *this;
   }
 
   inline EsScriptInstruction& jumpOpcodeSet(EsJumpOpcode jmpId) ES_NOTHROW
   {
-    m_jmpId = jmpId;
+    m_payload0.m_jmpId = jmpId;
     m_payloadMask |= Payload0;
     return *this;
   }
 
   inline EsScriptInstruction& argsCountSet( long argscnt) ES_NOTHROW
   {
-    m_argscnt = argscnt;
+    m_payload0.m_argscnt = argscnt;
     m_payloadMask |= Payload0;
     return *this;
   }
 
   inline EsScriptInstruction& tryCatchIdxSet(ulong idx) ES_NOTHROW
   {
-    m_tryCatchIdx = idx;
+    m_payload0.m_tryCatchIdx = idx;
     m_payloadMask |= Payload0;
     return *this;
   }
 
   inline void raw0set( esU32 val ) ES_NOTHROW
   {
-    m_raw0 = val;
+    m_payload0.m_raw0 = val;
     m_payloadMask |= Payload0;
   }
 
@@ -409,28 +409,28 @@ public:
   //
   inline EsScriptInstruction& jumpOffsSet( long jmpOffs) ES_NOTHROW
   {
-    m_jmpOffs = jmpOffs;
+    m_payload1.m_jmpOffs = jmpOffs;
     m_payloadMask |= Payload1;
     return *this;
   }
 
   inline EsScriptInstruction& callAsStmtSet(bool asStmt) ES_NOTHROW
   {
-    m_asStmt = asStmt;
+    m_payload1.m_asStmt = asStmt;
     m_payloadMask |= Payload1;
     return *this;
   }
 
   inline EsScriptInstruction& immValArgsCntSet(ulong argscnt) ES_NOTHROW
   {
-    m_ivalArgsCnt = argscnt;
+    m_payload1.m_ivalArgsCnt = argscnt;
     m_payloadMask |= Payload1;
     return *this;
   }
 
   inline void raw1set( esU32 val ) ES_NOTHROW
   {
-    m_raw1 = val;
+    m_payload1.m_raw1 = val;
     m_payloadMask |= Payload1;
   }
 
@@ -438,14 +438,14 @@ public:
   //
   inline EsScriptInstruction& isPostfixSet(bool isPostfix) ES_NOTHROW
   {
-    m_isPostfix = isPostfix;
+    m_payload2.m_isPostfix = isPostfix;
     m_payloadMask |= Payload2;
     return *this;
   }
 
   inline void raw2set( esU32 val ) ES_NOTHROW
   {
-    m_raw2 = val;
+    m_payload2.m_raw2 = val;
     m_payloadMask |= Payload2;
   }
 
@@ -482,7 +482,8 @@ protected:
     long m_argscnt;
     ulong m_tryCatchIdx;
     esU32 m_raw0;
-  };
+
+  } m_payload0;
 
   // Optional param 1
   union {
@@ -490,16 +491,18 @@ protected:
     bool m_asStmt;
     ulong m_ivalArgsCnt;
     esU32 m_raw1;
-  };
+
+  } m_payload1;
 
   // Optional param 2
   union
   {
     bool m_isPostfix;
     esU32 m_raw2;
-  };
 
-  // Optional param 3 - name (at 0), or qualified name (at 0), with namespaces, from most immediate (next to name, at 1), to most top (at last idx)
+  } m_payload2;
+
+  // Optional payload 3 - name (at 0), or qualified name (at 0), with namespaces, from most immediate (next to name, at 1), to most top (at last idx)
   EsString::Array m_qname;
 
   // Optional debug information
