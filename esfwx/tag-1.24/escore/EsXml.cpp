@@ -24,7 +24,6 @@
  * Copyright (C) 2003, by Kristen Wegner (kristen@tima.net)
  */
 
-#include <stdint.h>
 // For placement new
 #include <new>
 

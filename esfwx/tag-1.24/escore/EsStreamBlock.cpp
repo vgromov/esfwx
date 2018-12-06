@@ -80,7 +80,6 @@ const EsString& EsStreamBlock::label()
   return s_label;
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 EsStreamBlock::EsStreamBlock(EsStreamBlock* parent, ulong id, const EsString& name) :

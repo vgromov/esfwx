@@ -80,15 +80,15 @@
 
 #if defined(__BORLANDC__)
 #  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_BORLAND
-#elif defined(_MSC_VER)                 
+#elif defined(_MSC_VER)
 #  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_MS
-#elif defined(__INTEL_COMPILER)         
+#elif defined(__INTEL_COMPILER)
 #  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_INTEL
-#elif defined(__GNUC__)                 
+#elif defined(__GNUC__)
 #  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_GNUC
-#elif defined(__DMC__)                  
+#elif defined(__DMC__)
 #  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_DIGITALMARS
-#else                                   
+#else
 #  define ES_COMPILER_VENDOR            ES_COMPILER_VENDOR_UNDEFINED
 #endif
 
@@ -257,6 +257,8 @@
 /// OS-specific includes,
 /// standard OS includes
 ///
+#include <cstdint>
+
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 # ifdef __cplusplus
 #   include <System.hpp>
@@ -292,8 +294,8 @@
 # endif
 #  include <unistd.h>
 #  include <stdlib.h>
-# include <stdio.h>
-# include <errno.h>
+#  include <stdio.h>
+#  include <errno.h>
 #  include <time.h>
 #  include <pthread.h>
 #  include <semaphore.h>
@@ -350,9 +352,6 @@
 
 // Chars, Strings confiduration & defines
 #include "EsStringDefs.h"
-
-// Other RTL configuration & defines
-#include "EsCoreRtlDefs.h"
 
 // Misc defines
 //
@@ -420,7 +419,7 @@ inline void ES_DELETE(T*& ptr)
 #ifndef NDEBUG
 #  include <assert.h>
 #  define ES_ASSERT( x )    assert( x )
-# define ES_FAIL          ES_ASSERT( 0 )
+# define ES_FAIL            ES_ASSERT( 0 )
 #  define ES_FAIL_MSG( x )  ES_ASSERT( 0 == (x) )
 #else
 #  define ES_ASSERT( x )
@@ -441,6 +440,9 @@ inline void ES_DELETE(T*& ptr)
 #  define ES_COMPILE_TIME_ASSERT(expr, msg) typedef _es_debug_ns_::EsCompileTimeAssert< (bool)(expr) >::triggerT ES_CONCAT4(COMPILE_TIME_ASSERTION_, __LINE__, _, msg)
 # endif
 #endif
+
+// RTL configuration, extra types, defines
+#include "EsCoreRtlDefs.h"
 
 // Debugging trace stuff
 //
