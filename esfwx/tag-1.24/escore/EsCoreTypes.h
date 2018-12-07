@@ -10,15 +10,15 @@ typedef void*                  p_void;
 typedef const void*            cp_void;
 typedef const long&            cr_long;
 typedef unsigned long          ulong;
-typedef const ulong&          cr_ulong;
+typedef const ulong&           cr_ulong;
 typedef long long              llong;
-typedef const llong&          cr_llong;
-typedef unsigned long long    ullong;
+typedef const llong&           cr_llong;
+typedef unsigned long long     ullong;
 typedef const ullong&          cr_ullong;
 typedef const double&          cr_double;
 typedef const bool&            cr_bool;
-typedef unsigned char         byte;
-typedef const byte&           cr_byte;
+typedef unsigned char          byte;
+typedef const byte&            cr_byte;
 
 #endif // __cplusplus
 

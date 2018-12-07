@@ -1,44 +1,47 @@
 #ifndef _es_sync_objects_h_
 #define _es_sync_objects_h_
 
-// multi-thread syncronization primitives and helper classes
-//
-// thread id type
-//
+/// @file EsSyncObjects.h
+/// Multi-thread syncronization primitives and helper classes
+///
+/// Thread id type
+///
 #if ES_OS == ES_OS_WINDOWS
-  typedef DWORD EsThreadId;
-#  define EsThreadIdNone ((EsThreadId)-1)
-# define ES_INFINITE     INFINITE
+  typedef DWORD           EsThreadId;
+# define EsThreadIdNone   static_cast<EsThreadId>(-1)
+# define ES_INFINITE      INFINITE
 #elif defined(ES_POSIX_COMPAT)
-  typedef llong EsThreadId;
-#  define EsThreadIdNone ((EsThreadId)-1)
-# define ES_INFINITE     ((ulong)-1)
+  typedef uintptr_t       EsThreadId;
+# define EsThreadIdNone   static_cast<EsThreadId>(-1)
+# define ES_INFINITE      static_cast<ulong>(-1)
 #endif
 //---------------------------------------------------------------------------
 
-// mutex
-//
+/// Mutex class
+///
 class ESCORE_CLASS EsMutex
 {
 public:
+  /// Mutex types
   enum Type {
     typeDefault,
     typeRecursive
   };
 
+  /// Mutex operation results
   enum Result {
-    resultOk = 0,            // operation completed successfully
-    resultInvalid,          // mutex hasn't been initialized
-    resultDeadlock,          // mutex is already locked by the calling thread
-    resultBusy,              // mutex is already locked by another thread
-    resultAlreadyUnlocked,  // attempt to unlock a mutex which is not locked
-    resultTimeout,          // lock(ms) has timed out
-    resultError              // any other error
+    resultOk = 0,             ///< operation completed successfully
+    resultInvalid,            ///< mutex hasn't been initialized
+    resultDeadlock,           ///< mutex is already locked by the calling thread
+    resultBusy,               ///< mutex is already locked by another thread
+    resultAlreadyUnlocked,    ///< attempt to unlock a mutex which is not locked
+    resultTimeout,            ///< lock(ms) has timed out
+    resultError               ///< any other error
   };
 
 public:
   EsMutex(Type type = typeDefault);
-  ~EsMutex();
+  ~EsMutex() ES_NOTHROW;
 
   // validity check
   bool isOk() const;
@@ -55,15 +58,22 @@ private:
 private:
   Type m_type;
   EsThreadId m_owningThreadId;
+
 #if ES_OS == ES_OS_WINDOWS
+
   HANDLE m_mx;
+
 #elif defined(ES_POSIX_COMPAT)
+
   pthread_mutexattr_t m_mxAttrs;
-  pthread_mutex_t m_mx;
+  std::unique_ptr<pthread_mutex_t> m_mx;
+
 #endif
 };
 //---------------------------------------------------------------------------
 
+/// Scoped mutex locker helper class
+///
 class ESCORE_CLASS EsMutexLocker
 {
 public:
@@ -83,8 +93,10 @@ private:
 };
 //---------------------------------------------------------------------------
 
-// critcal section
-//
+/// Critcal section.
+/// For paltforms, which lack native support for critical secions,
+/// an internal mutex is used for CS implementation
+///
 class ESCORE_CLASS EsCriticalSection
 {
 public:
@@ -113,6 +125,8 @@ private:
 };
 //---------------------------------------------------------------------------
 
+/// Scoped critical section locker helper class
+///
 class ESCORE_CLASS EsCriticalSectionLocker
 {
 public:
@@ -152,19 +166,20 @@ private:
 };
 //---------------------------------------------------------------------------
 
-// semaphore
-//
+/// Semaphore class
+///
 class ESCORE_CLASS EsSemaphore
 {
 public:
+  /// Semaphore operation results
   enum Result
   {
-    resultOk = 0,
-    resultInvalid,         // semaphore hasn't been initialized successfully
-    resultBusy,            // returned by tryWait() if wait() would block
-    resultTimeout,         // returned by waitTimeout()
-    resultOverflow,        // post() would increase counter past the max
-    resultError
+    resultOk = 0,          ///< AOK status
+    resultInvalid,         ///< semaphore hasn't been initialized successfully
+    resultBusy,            ///< returned by tryWait() if wait() would block
+    resultTimeout,         ///< returned by waitTimeout()
+    resultOverflow,        ///< post() would increase counter past the max
+    resultError            ///< Any other error
   };
 
 public:
@@ -203,10 +218,10 @@ private:
   int lockDec();
 # if ES_OS == ES_OS_MAC
   static sem_t* semaphoreInit( ulong initVal, const char* fmt, void* This, char* nameBuff );
-  static void semaphoreUninit( sem_t* sem, const char* nameBuff );
+  static void semaphoreUninit( sem_t* sem, const char* nameBuff ) ES_NOTHROW;
 # else
   static sem_t* semaphoreInit( ulong initVal );
-  static void semaphoreUninit( sem_t* sem );
+  static void semaphoreUninit( sem_t* sem ) ES_NOTHROW;
 # endif
 #endif
 
@@ -216,6 +231,8 @@ private:
   HANDLE m_sem;
 
 #elif defined(ES_POSIX_COMPAT)
+
+  EsMutex m_mx;
 
 # if ES_OS == ES_OS_MAC
 
@@ -228,7 +245,6 @@ private:
 
   sem_t* m_semLock;
   sem_t* m_semFree;
-  EsMutex m_mx;
   ulong m_cnt;
   ulong m_maxCnt;
 

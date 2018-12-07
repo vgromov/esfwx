@@ -1033,17 +1033,23 @@ EsVariant EsScriptCompiledBinaryReader::variantRead()
     {
       esU32 tmp;
       chunkRead(&tmp, sizeof(tmp));
-      result = tmp;
+
       switch(type)
       {
       case EsVariant::VAR_BOOL:
-        result = result.asBool(m_machine.loc());
+        result = EsVariant(static_cast<bool>(0 != tmp));
         break;
       case EsVariant::VAR_BYTE:
-        result = result.asByte(m_machine.loc());
+        result = EsVariant(static_cast<esU8>(tmp));
         break;
       case EsVariant::VAR_CHAR:
-        result = result.asChar(m_machine.loc());
+        result = EsVariant(
+          static_cast<EsString::value_type>(tmp),
+          EsVariant::ACCEPT_CHAR
+        );
+        break;
+      default:
+        result = tmp;
         break;
       }
     }
@@ -1129,7 +1135,10 @@ EsAttributesIntf::Ptr EsScriptCompiledBinaryReader::attributesRead()
         ES_MODERN_VER_START
       ) != EsString::cmpLess
     )
-      chunkRead( &interlocked, sizeof(interlocked) );
+      chunkRead(
+        &interlocked,
+        sizeof(interlocked)
+      );
 
     result = EsAttributes::create(
       stringRead(),
@@ -1248,7 +1257,11 @@ EsScriptDebugInfoIntf::Ptr EsScriptCompiledBinaryReader::debugInfoRead()
     ulong line = variantRead().asULong();
     ulong col = variantRead().asULong();
     const EsString& file = stringRead();
-    result = EsScriptDebugInfo::create(line, col, file);
+    result = EsScriptDebugInfo::create(
+      line,
+      col,
+      file
+    );
   }
   else // skip entire block
     m_pos += tmp;
@@ -1339,7 +1352,7 @@ void EsScriptCompiledBinaryReader::instructionRead(const EsScriptCodeSection::Pt
           );
         else if( iLogicCheck == opcode )
         {
-          instr.jumpOffsSet( joRel );
+          instr.jumpOpcodeSet( joRel );
           instr.jumpOffsSet( payload.asLong() ); //< Logic check shortcut offset
         }
         else
@@ -1349,7 +1362,7 @@ void EsScriptCompiledBinaryReader::instructionRead(const EsScriptCodeSection::Pt
       }
     }
   }
-  else
+  else //< Modern instruction load
   {
     EsScriptInstruction& instr = cs->instructionAdd(
       static_cast<EsScriptInstructionOpcode>(tmp)

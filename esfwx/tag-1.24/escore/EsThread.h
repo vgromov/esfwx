@@ -113,7 +113,7 @@ private:
 # define ES_THREADCALL
   typedef void* ResultT;
   typedef void* ParamT;
-  static EsThreadId pthreadIdGet(pthread_t* thread);
+  static EsThreadId pthreadIdGet(const pthread_t& thread) ES_NOTHROW;
   static void onThreadExit(EsThread::ResultT result);
 #endif
 
@@ -152,7 +152,7 @@ protected:
 #if ES_OS == ES_OS_WINDOWS
   HANDLE m_thread;
 #elif defined(ES_POSIX_COMPAT)
-  pthread_attr_t m_threadAttr;
+  std::unique_ptr<pthread_attr_t> m_threadAttr;
   pthread_t m_thread;
 #endif
 

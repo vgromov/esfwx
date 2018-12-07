@@ -121,6 +121,7 @@ const EsString::const_pointer c_opStrings[iOpcodesCount] = {
   esT("iEnterTryCatch"),
 };
 //---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 // get opcode string representation
 EsString::const_pointer EsScriptInstruction::getOpcodeString( EsScriptInstructionOpcode opcode ) ES_NOTHROW

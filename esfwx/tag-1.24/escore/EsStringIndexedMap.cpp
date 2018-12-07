@@ -45,20 +45,16 @@ EsStringIndexedMap::EsStringIndexedMap(const EsStringIndexedMap& src, EsStringIn
 
 EsStringIndexedMap::~EsStringIndexedMap() ES_NOTHROW
 {
-  { //< Separate scope for locker - prevent m_cs.reset from being called under locked conditions
-    EsCriticalSectionPtrLocker lock(m_cs);
+  EsCriticalSectionPtrLocker lock(m_cs);
 
-    // Do not allow anything to escape from dtor
-    try
-    {
-      m_m.clear();
-      m_v.clear();
-    }
-    catch(...)
-    {}
+  // Do not allow anything to escape from dtor
+  try
+  {
+    m_m.clear();
+    m_v.clear();
   }
-  
-  m_cs.reset();
+  catch(...)
+  {}
 }
 
 // internal helpers
@@ -199,8 +195,8 @@ ulong EsStringIndexedMap::itemAdd(const EsString& name, const EsVariant& payload
   {
     result = internalFind(name);
     EsNumericCheck::checkRangeUInteger(
-      0, 
-      static_cast<ulong>(m_v.size()), 
+      0,
+      static_cast<ulong>(m_v.size()),
       static_cast<ulong>(result)
     );
 
@@ -225,8 +221,8 @@ void EsStringIndexedMap::itemDelete(ulong idx)
 {
   EsCriticalSectionPtrLocker lock(m_cs);
   EsNumericCheck::checkRangeUInteger(
-    0, 
-    static_cast<ulong>(m_v.size()), 
+    0,
+    static_cast<ulong>(m_v.size()),
     static_cast<ulong>(idx)
   );
   internalDelete(idx);
@@ -295,8 +291,8 @@ const EsString& EsStringIndexedMap::nameGet(ulong idx) const
 {
   EsCriticalSectionPtrLocker lock(m_cs);
   EsNumericCheck::checkRangeUInteger(
-    0, 
-    static_cast<ulong>(m_v.size()), 
+    0,
+    static_cast<ulong>(m_v.size()),
     static_cast<ulong>(idx)
   );
   return m_v[idx]->m_name;
@@ -344,8 +340,8 @@ const EsVariant& EsStringIndexedMap::valueGet(ulong idx) const
 {
   EsCriticalSectionPtrLocker lock(m_cs);
   EsNumericCheck::checkRangeUInteger(
-    0, 
-    static_cast<ulong>(m_v.size()), 
+    0,
+    static_cast<ulong>(m_v.size()),
     static_cast<ulong>(idx)
   );
   return m_v[idx]->m_payload;
@@ -355,8 +351,8 @@ void EsStringIndexedMap::valueSet(ulong idx, const EsVariant& val)
 {
   EsCriticalSectionPtrLocker lock(m_cs);
   EsNumericCheck::checkRangeUInteger(
-    0, 
-    static_cast<ulong>(m_v.size()), 
+    0,
+    static_cast<ulong>(m_v.size()),
     static_cast<ulong>(idx)
   );
   m_v[idx]->m_payload = val;

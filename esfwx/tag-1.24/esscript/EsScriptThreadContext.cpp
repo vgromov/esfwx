@@ -884,6 +884,8 @@ void EsScriptThreadContext::doCallGlobalMethod(
 
 void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
 {
+  ES_ASSERT(m_csScope);
+
   EsScriptInstructionOpcode opcode = instr.opcode();
 
   ulong paramsCount = instr.argsCountGet();
@@ -892,10 +894,6 @@ void EsScriptThreadContext::doCall(const EsScriptInstruction& instr)
   EsString targetNamespace;
   if( 1 < instr.qnameGet().size() )
     targetNamespace = instr.qnameGet()[1];
-
-  // check func parameters count
-  ES_ASSERT(m_csScope);
-  ES_ASSERT(paramsCount <= m_csScope->stackSizeGet());
 
   EsVariant::Array params;
   params.reserve(paramsCount);

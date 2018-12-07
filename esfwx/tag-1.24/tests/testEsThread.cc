@@ -14,7 +14,7 @@ protected:
       ++m_idx;
 
     return 0;
-  }  
+  }
 
 protected:
   volatile int m_idx;
@@ -47,7 +47,10 @@ protected:
       EsEventIntf::Ptr evt = m_sub.eventReceive();
       if( evt && 4444 == evt->idGet() )
       {
-        evt = EsEvent::create(esT("from-tread2"), 123);
+        evt = EsEvent::create(
+          esT("from-tread2"),
+          123
+        );
         EsEventDispatcher::eventPost(evt);
         break;
       }
@@ -56,7 +59,7 @@ protected:
     }
 
     return 0;
-  }  
+  }
 
 protected:
   volatile int m_idx;
@@ -95,7 +98,7 @@ TEST(EsThreadTest, EventDispatch) {
 
     if( sub2.isFinal() )
       break;
-    
+
     if( loop > 100 )
     {
       loop = 0;

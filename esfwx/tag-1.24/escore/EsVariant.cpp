@@ -1295,7 +1295,7 @@ ulong EsVariant::asULong(const std::locale& loc /*= EsLocale::locale()*/) const
   default:
     ;
   }
-  ES_ASSERT(m_type == VAR_EMPTY);
+
   EsException::ThrowNoValue();
   ES_FAIL;
   return 0uL; // we are never here, pacify compilers in debug mode
@@ -1375,7 +1375,7 @@ ullong EsVariant::asULLong(const std::locale& loc /*= EsLocale::locale()*/) cons
   default:
     ;
   }
-  ES_ASSERT(m_type == VAR_EMPTY);
+
   EsException::ThrowNoValue();
   ES_FAIL;
   return 0ULL; // we are never here, pacify compilers in debug mode
@@ -1435,7 +1435,7 @@ double EsVariant::asDouble(const std::locale& loc /*= EsLocale::locale()*/) cons
   default:
     ;
   }
-  ES_ASSERT(m_type == VAR_EMPTY);
+
   EsException::ThrowNoValue();
   ES_FAIL;
   return 0.0; // we are never here, pacify compilers in debug mode

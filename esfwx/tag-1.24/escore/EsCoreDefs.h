@@ -289,27 +289,27 @@
 #     endif
 #   endif // __cplusplus
 # endif
-# if ESCOMPILER_VENDOR_GCC == ES_COMPILER_VENDOR
-#   define _BSD_SOURCE //< Ensure we wiil gettimeofday in time.h
-# endif
-#  include <unistd.h>
-#  include <stdlib.h>
-#  include <stdio.h>
-#  include <errno.h>
-#  include <time.h>
-#  include <pthread.h>
-#  include <semaphore.h>
-#  if ES_OS == ES_OS_MAC
-#       define ES_PMUTEX_NO_ROBUST
-#    define ES_PTHREAD_NO_TIMEDLOCK
-#    define ES_PTHREAD_NO_PRIO
-#       define ES_PTHREAD_NO_YIELD
+#   if ESCOMPILER_VENDOR_GCC == ES_COMPILER_VENDOR
+#     define _BSD_SOURCE //< Ensure we will gettimeofday in time.h
+#   endif
+#   include <unistd.h>
+#   include <stdlib.h>
+#   include <stdio.h>
+#   include <errno.h>
+#   include <time.h>
+#   include <pthread.h>
+#   include <semaphore.h>
+#   if ES_OS == ES_OS_MAC
+#     define ES_PMUTEX_NO_ROBUST
+#     define ES_PTHREAD_NO_TIMEDLOCK
+#     define ES_PTHREAD_NO_PRIO
+#     define ES_PTHREAD_NO_YIELD
 #   elif ES_OS == ES_OS_ANDROID
-#       define ES_PMUTEX_NO_ROBUST
-#    define ES_PTHREAD_NO_TIMEDLOCK
-#    define ES_PTHREAD_NO_PRIO
-#       define ES_PTHREAD_NO_YIELD
-#  endif
+#     define ES_PMUTEX_NO_ROBUST
+#     define ES_PTHREAD_NO_TIMEDLOCK
+#     define ES_PTHREAD_NO_PRIO
+#     define ES_PTHREAD_NO_YIELD
+#   endif
 # if ES_OS == ES_OS_ANDROID && ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 // undefine some macros(ed) errno-s, as soon as
 // these are re-declared as consts in ECC system headers

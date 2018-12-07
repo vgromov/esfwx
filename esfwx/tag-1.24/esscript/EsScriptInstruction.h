@@ -352,6 +352,7 @@ public:
   //
   inline EsScriptInstruction& variableTypeSet(EsVarType type) ES_NOTHROW
   {
+    payloadReset(m_payload0);
     m_payload0.m_varType = type;
     m_payloadMask |= Payload0;
     return *this;
@@ -359,6 +360,7 @@ public:
 
   inline EsScriptInstruction& memberRefTypeSet(EsMemberRefType type) ES_NOTHROW
   {
+    payloadReset(m_payload0);
     m_payload0.m_refType = type;
     m_payloadMask |= Payload0;
     return *this;
@@ -366,6 +368,7 @@ public:
 
   inline EsScriptInstruction& immValTypeSet(EsIvalType type) ES_NOTHROW
   {
+    payloadReset(m_payload0);
     m_payload0.m_ivalType = type;
     m_payloadMask |= Payload0;
     return *this;
@@ -373,6 +376,7 @@ public:
 
   inline EsScriptInstruction& operatorIdSet(EsScriptOperatorIds opId) ES_NOTHROW
   {
+    payloadReset(m_payload0);
     m_payload0.m_opId = opId;
     m_payloadMask |= Payload0;
     return *this;
@@ -380,6 +384,7 @@ public:
 
   inline EsScriptInstruction& jumpOpcodeSet(EsJumpOpcode jmpId) ES_NOTHROW
   {
+    payloadReset(m_payload0);
     m_payload0.m_jmpId = jmpId;
     m_payloadMask |= Payload0;
     return *this;
@@ -387,6 +392,7 @@ public:
 
   inline EsScriptInstruction& argsCountSet( long argscnt) ES_NOTHROW
   {
+    payloadReset(m_payload0);
     m_payload0.m_argscnt = argscnt;
     m_payloadMask |= Payload0;
     return *this;
@@ -394,6 +400,7 @@ public:
 
   inline EsScriptInstruction& tryCatchIdxSet(ulong idx) ES_NOTHROW
   {
+    payloadReset(m_payload0);
     m_payload0.m_tryCatchIdx = idx;
     m_payloadMask |= Payload0;
     return *this;
@@ -401,6 +408,7 @@ public:
 
   inline void raw0set( esU32 val ) ES_NOTHROW
   {
+    payloadReset(m_payload0);
     m_payload0.m_raw0 = val;
     m_payloadMask |= Payload0;
   }
@@ -409,6 +417,7 @@ public:
   //
   inline EsScriptInstruction& jumpOffsSet( long jmpOffs) ES_NOTHROW
   {
+    payloadReset(m_payload1);
     m_payload1.m_jmpOffs = jmpOffs;
     m_payloadMask |= Payload1;
     return *this;
@@ -416,6 +425,7 @@ public:
 
   inline EsScriptInstruction& callAsStmtSet(bool asStmt) ES_NOTHROW
   {
+    payloadReset(m_payload1);
     m_payload1.m_asStmt = asStmt;
     m_payloadMask |= Payload1;
     return *this;
@@ -423,6 +433,7 @@ public:
 
   inline EsScriptInstruction& immValArgsCntSet(ulong argscnt) ES_NOTHROW
   {
+    payloadReset(m_payload1);
     m_payload1.m_ivalArgsCnt = argscnt;
     m_payloadMask |= Payload1;
     return *this;
@@ -430,6 +441,7 @@ public:
 
   inline void raw1set( esU32 val ) ES_NOTHROW
   {
+    payloadReset(m_payload1);
     m_payload1.m_raw1 = val;
     m_payloadMask |= Payload1;
   }
@@ -438,6 +450,7 @@ public:
   //
   inline EsScriptInstruction& isPostfixSet(bool isPostfix) ES_NOTHROW
   {
+    payloadReset(m_payload2);
     m_payload2.m_isPostfix = isPostfix;
     m_payloadMask |= Payload2;
     return *this;
@@ -445,6 +458,7 @@ public:
 
   inline void raw2set( esU32 val ) ES_NOTHROW
   {
+    payloadReset(m_payload2);
     m_payload2.m_raw2 = val;
     m_payloadMask |= Payload2;
   }
@@ -466,6 +480,17 @@ public:
       m_qname[0] = name;
     m_payloadMask |= Payload3;
     return *this;
+  }
+
+private:
+  template <typename PayloadT>
+  static void payloadReset(PayloadT& payload) ES_NOTHROW
+  {
+    memset(
+      &payload,
+      0,
+      sizeof(PayloadT)
+    );
   }
 
 protected:

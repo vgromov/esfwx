@@ -56,6 +56,8 @@ static EsString binRootGet()
 #include "testEsReflection.cc"
 #include "testEsDateTime.cc"
 #include "testEsString.cc"
+#include "testEsSyncObjects.cc"
+#include "testEsThread.cc"
 #include "testEsCryptoDesLegacy.cc"
 
 #ifdef ES_USE_CRYPTO
@@ -71,8 +73,6 @@ static EsString binRootGet()
 
 #include "testEsXml.cc"
 #include "testEsStreamBinary.cc"
-#include "testEsSyncObjects.cc"
-#include "testEsThread.cc"
 
 // Uncomment to repeat each script profiling test ES_SCRIPT_REPEAT_CNT times
 //

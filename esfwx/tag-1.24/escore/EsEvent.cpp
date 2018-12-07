@@ -1,6 +1,6 @@
 #include "escorepch.h"
 #pragma hdrstop
- 
+
 #include "EsEvent.h"
 
 // Static linking under BCC - use dependencies ordering for modules
@@ -39,15 +39,25 @@ m_payload(payload)
 
 EsEventIntf::Ptr EsEvent::create(const EsString& category, ulong id, const EsVariant& payload /*= EsVariant::s_null*/)
 {
-  EsEventIntf::Ptr evt(new EsEvent(category, id, payload));
+  std::unique_ptr<EsEvent> evt(
+    new EsEvent(
+      category,
+      id,
+      payload
+    )
+  );
   ES_ASSERT(evt);
 
-  return evt;
+  return evt.release()->asBaseIntfPtr();
 }
 
 EsEventIntf::Ptr EsEvent::create(ulong id, const EsVariant& payload /*= EsVariant::s_null*/)
 {
-  return EsEvent::create(esT("generic"), id, payload);
+  return EsEvent::create(
+    esT("generic"),
+    id,
+    payload
+  );
 }
 
   // reflected CTORs
@@ -55,13 +65,21 @@ EsEventIntf::Ptr EsEvent::create(ulong id, const EsVariant& payload /*= EsVarian
   // create empty event with category and id
 EsBaseIntfPtr  EsEvent::NEW(cr_EsString category, ulong id)
 {
-  return create(category, id, EsVariant::null());
+  return create(
+    category,
+    id,
+    EsVariant::null()
+  );
 }
 
 // create event with category, id, and payload
 EsBaseIntfPtr EsEvent::NEW(cr_EsString category, ulong id, cr_EsVariant payload)
 {
-  return create(category, id, payload);
+  return create(
+    category,
+    id,
+    payload
+  );
 }
 
 // event interface implementation
