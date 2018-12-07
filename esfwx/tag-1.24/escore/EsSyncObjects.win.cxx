@@ -80,7 +80,6 @@ EsMutex::Result EsMutex::unlock()
   return resultOk;
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 // Critical section
 //
@@ -90,7 +89,7 @@ EsCriticalSection::EsCriticalSection()
 }
 //---------------------------------------------------------------------------
 
-EsCriticalSection::~EsCriticalSection()
+EsCriticalSection::~EsCriticalSection() ES_NOTHROW
 {
   ::DeleteCriticalSection(&m_cs);
 }
@@ -113,7 +112,6 @@ void EsCriticalSection::leave()
   ::LeaveCriticalSection(&m_cs);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 // Semaphore
 //
@@ -137,7 +135,7 @@ m_sem(0)
 }
 //---------------------------------------------------------------------------
 
-EsSemaphore::~EsSemaphore()
+EsSemaphore::~EsSemaphore() ES_NOTHROW
 {
   if( m_sem )
   {

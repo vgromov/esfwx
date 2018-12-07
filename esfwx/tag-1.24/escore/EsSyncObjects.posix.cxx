@@ -8,21 +8,33 @@ m_owningThreadId(0)
   );
 
   EsThread::checkPthreadError(
-    pthread_mutexattr_setpshared(&m_mxAttrs, PTHREAD_PROCESS_PRIVATE)
+    pthread_mutexattr_setpshared(
+      &m_mxAttrs,
+      PTHREAD_PROCESS_PRIVATE
+    )
   );
 
   if( typeDefault == type  )
     EsThread::checkPthreadError(
-      pthread_mutexattr_settype(&m_mxAttrs, PTHREAD_MUTEX_NORMAL)
+      pthread_mutexattr_settype(
+        &m_mxAttrs,
+        PTHREAD_MUTEX_NORMAL
+      )
     );
   else // create recursive mutex
     EsThread::checkPthreadError(
-      pthread_mutexattr_settype(&m_mxAttrs, PTHREAD_MUTEX_RECURSIVE)
+      pthread_mutexattr_settype(
+        &m_mxAttrs,
+        PTHREAD_MUTEX_RECURSIVE
+      )
     );
 
 #ifndef ES_PMUTEX_NO_ROBUST
   EsThread::checkPthreadError(
-    pthread_mutexattr_setrobust(&m_mxAttrs, PTHREAD_MUTEX_ROBUST)
+    pthread_mutexattr_setrobust(
+      &m_mxAttrs,
+      PTHREAD_MUTEX_ROBUST
+    )
   );
 #endif
 
@@ -45,7 +57,17 @@ EsMutex::~EsMutex() ES_NOTHROW
 #ifdef ES_DEBUG
   int err =
 #endif
+  pthread_mutex_lock(m_mx.get());
+
+#ifdef ES_DEBUG
+  ES_DEBUG_TRACE(esT("pthread_mutex_lock returned: %d"), err);
+#endif
+
+#ifdef ES_DEBUG
+  err =
+#endif
   pthread_mutex_destroy(m_mx.get());
+
 #ifdef ES_DEBUG
   ES_DEBUG_TRACE(esT("pthread_mutex_destroy returned: %d"), err);
 #endif
@@ -53,10 +75,13 @@ EsMutex::~EsMutex() ES_NOTHROW
 #ifdef ES_DEBUG
   err =
 #endif
+
   pthread_mutexattr_destroy(&m_mxAttrs);
+
 #ifdef ES_DEBUG
   ES_DEBUG_TRACE(esT("pthread_mutexattr_destroy returned: %d"), err);
 #endif
+
   }
   catch(...)
   {}
@@ -184,7 +209,7 @@ m_cs(EsMutex::typeRecursive)
 {}
 //---------------------------------------------------------------------------
 
-EsCriticalSection::~EsCriticalSection()
+EsCriticalSection::~EsCriticalSection() ES_NOTHROW
 {}
 //---------------------------------------------------------------------------
 
@@ -370,7 +395,7 @@ m_maxCnt(0)
 }
 //---------------------------------------------------------------------------
 
-EsSemaphore::~EsSemaphore()
+EsSemaphore::~EsSemaphore() ES_NOTHROW
 {
   EsMutexLocker lock(m_mx);
 

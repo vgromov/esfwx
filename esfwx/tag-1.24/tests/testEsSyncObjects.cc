@@ -6,9 +6,9 @@ TEST(EsSyncObjectTest, Basics) {
   EsCriticalSection m_cs;
 
   {
-  EsCriticalSectionLocker lock(m_cs);
+    EsCriticalSectionLocker lock(m_cs);
 
-  EXPECT_TRUE(m_cs.tryEnter());
+    EXPECT_TRUE(m_cs.tryEnter());
   }
 
   EXPECT_TRUE(m_cs.tryEnter());

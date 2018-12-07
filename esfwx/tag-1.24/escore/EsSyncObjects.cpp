@@ -33,7 +33,7 @@ m_ok(false)
 }
 //---------------------------------------------------------------------------
 
-EsMutexLocker::~EsMutexLocker()
+EsMutexLocker::~EsMutexLocker() ES_NOTHROW
 {
   if( m_ok )
     m_mx.unlock();
@@ -48,7 +48,7 @@ m_obj(obj)
 }
 //---------------------------------------------------------------------------
 
-EsCriticalSectionLocker::~EsCriticalSectionLocker()
+EsCriticalSectionLocker::~EsCriticalSectionLocker() ES_NOTHROW
 {
   m_obj.leave();
 }
@@ -63,7 +63,7 @@ EsCriticalSectionPtrLocker::EsCriticalSectionPtrLocker( EsCriticalSection::Ptr& 
 }
 //---------------------------------------------------------------------------
 
-EsCriticalSectionPtrLocker::~EsCriticalSectionPtrLocker()
+EsCriticalSectionPtrLocker::~EsCriticalSectionPtrLocker() ES_NOTHROW
 {
   if( m_obj )
     m_obj->leave();

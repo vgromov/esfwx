@@ -78,7 +78,7 @@ class ESCORE_CLASS EsMutexLocker
 {
 public:
   EsMutexLocker(EsMutex& mx);
-  ~EsMutexLocker();
+  ~EsMutexLocker() ES_NOTHROW;
   bool isOk() const { return m_ok; }
 
 private:
@@ -104,7 +104,7 @@ public:
 
 public:
   EsCriticalSection();
-  ~EsCriticalSection();
+  ~EsCriticalSection() ES_NOTHROW;
 
   void enter();
   bool tryEnter();
@@ -131,7 +131,7 @@ class ESCORE_CLASS EsCriticalSectionLocker
 {
 public:
   EsCriticalSectionLocker(EsCriticalSection& obj);
-  ~EsCriticalSectionLocker();
+  ~EsCriticalSectionLocker() ES_NOTHROW;
 
 private:
   // prohibited functionality
@@ -153,7 +153,7 @@ class ESCORE_CLASS EsCriticalSectionPtrLocker
 {
 public:
   EsCriticalSectionPtrLocker( EsCriticalSection::Ptr& obj );
-  ~EsCriticalSectionPtrLocker();
+  ~EsCriticalSectionPtrLocker() ES_NOTHROW;
 
 private:
   // prohibited functionality
@@ -188,7 +188,7 @@ public:
   /// is no upper limit, if maxcount is 1 the semaphore behaves as a mutex
   ///
   EsSemaphore( ulong initialCount = 0, ulong maxCount = 0 );
-  ~EsSemaphore();
+  ~EsSemaphore() ES_NOTHROW;
 
   /// Validity check
   bool isOk() const;
