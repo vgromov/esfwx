@@ -1,11 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
 project(esmath)
 
-# component version definitions
-set(component_DESCRIPTION_STRING "ESFWX Math Library")
-set(component_INTERNAL_NAME "esmath")
-set(component_ORIGINAL_NAME "esmath.dll")
-set(component_BUILD_NUM	1)	
+include(esmath.config.cmake)
 
 # component version file generation
 #
@@ -85,7 +81,11 @@ if( NOT BUILD_SHARED_LIBS )
 	set(staticMarker "_s")
 endif()
 set(targetName "esmathLib${staticMarker}")
-set(${targetName} esmath_${binarySuffix}${compilerVersion}${staticMarker}	CACHE STRING "" FORCE)
+set(${targetName} "esmath_${ESMATH_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker}" CACHE INTERNAL "" FORCE)
+message(
+  STATUS
+  "esmath targetName=>${targetName}:${${targetName}}"
+)
 
 SPECIFY_PRECOMPILED_HEADER("esmathpch.h" "EsMathMain.cpp" esmath_SRCS)
 SPECIFY_HEADER_FILES(esmath_SRCS headerExtensions)

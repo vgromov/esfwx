@@ -1,68 +1,3 @@
-# toolset suffixes
-set(compilerVersion "")
-set(binarySuffix "")
-if(MSVC)
-  set(binarySuffix vc)
-  if(1200 EQUAL ${MSVC_VERSION})
-    set(compilerVersion "60")
-  elseif(1300 EQUAL ${MSVC_VERSION})
-    set(compilerVersion "70")
-  elseif(1310 EQUAL ${MSVC_VERSION})
-    set(compilerVersion "71")
-  elseif(1400 EQUAL ${MSVC_VERSION})
-    set(compilerVersion "80")
-  elseif(1500 EQUAL ${MSVC_VERSION})
-    set(compilerVersion "90")
-  elseif(1600 EQUAL ${MSVC_VERSION})
-    set(compilerVersion "100")
-  elseif(1700 EQUAL ${MSVC_VERSION})
-    set(compilerVersion "110")
-  elseif(1800 EQUAL ${MSVC_VERSION})
-    set(compilerVersion "120")
-  elseif(1900 EQUAL ${MSVC_VERSION})
-    set(compilerVersion "140")
-  elseif( (1910 LESS_EQUAL ${MSVC_VERSION}) AND (1920 GREATER ${MSVC_VERSION}) )
-    set(compilerVersion "141")
-  elseif(1920 LESS_EQUAL ${MSVC_VERSION})
-    set(compilerVersion "150")
-  endif()
-elseif(BORLAND)
-  set(binarySuffix ecc)
-  set(compilerVersion ${CMAKE_CXX_COMPILER_VERSION})
-else()
-  set(binarySuffix ${CMAKE_CXX_COMPILER_ID})
-  set(compilerVersion ${CMAKE_CXX_COMPILER_VERSION})
-endif()
-
-# set-up 'system' compiler-specific variable(s)
-set(COMPILER_VERSION ${compilerVersion} CACHE STRING "")
-message(STATUS "COMPILER_VERSION => ${COMPILER_VERSION}")
-
-# set-up project-wide runtime linking type variable
-set(ES_RUNTIME "static" CACHE STIRNG "")
-message(STATUS "ES_RUNTIME => ${ES_RUNTIME}")
-
-# header extensions
-set(headerExtensions .h .hpp .hxx .ipp .xpm .cxx .hmxz .def .inc .cc .pot .ru_RU.po .en_EN.po)
-
-# Use UTF-8 source charset, to augment proper string literal encoding in GCC environment
-if(CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finput-charset=UTF-8")
-  message(STATUS "GCC CMAKE_CXX_FLAGS => ${CMAKE_CXX_FLAGS}")
-endif()
-
-# modern CPP requirement macro
-MACRO(ES_REQUIRE_MODERNCPP)
-  if(CMAKE_VERSION VERSION_LESS "3.1")
-    if( CMAKE_COMPILER_IS_GNUCXX )
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-      message(STATUS "ES_REQUIRE_MODERNCPP GCC CMAKE_CXX_FLAGS => ${CMAKE_CXX_FLAGS}")
-    endif()
-  else()
-    set(CMAKE_CXX_STANDARD 14)
-    message(STATUS "ES_REQUIRE_MODERNCPP CMAKE_CXX_STANDARD => ${CMAKE_CXX_STANDARD}")
-  endif()
-ENDMACRO(ES_REQUIRE_MODERNCPP)
 
 # precompiled header macro
 MACRO(SPECIFY_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar)
@@ -126,8 +61,8 @@ ENDMACRO(PLUGIN_TARGET_FINALIZE)
 # localization integration macros
 MACRO(I18N_ADD i18nComponent i18nFiles i18nBinaryRoot)
 	# copy from cache
-	set(tmpLanguages ${i18nLanguages})
-	set(tmpComponents ${i18nComponents})
+	set(tmpLanguages ${ESI18N_LANGUAGES})
+	set(tmpComponents ${ESI18N_DOMAINS})
 	# find if we already registered component
 	list(FIND tmpComponents "${i18nComponent}" tmp)
 	if( -1 EQUAL ${tmp} )
@@ -139,9 +74,9 @@ MACRO(I18N_ADD i18nComponent i18nFiles i18nBinaryRoot)
 	# analyse incoming i18n files list
 	foreach(f ${${i18nFiles}})
 		set(lang "")
-		if("${f}" MATCHES "${poPattern}")
+		if("${f}" MATCHES "${ESI18N_PO_PATTERN}")
 			string(REGEX REPLACE
-							"${poPattern}" "\\1"
+							"${ESI18N_PO_PATTERN}" "\\1"
 							lang "${f}")
 			if( lang )
 				list(FIND tmpLanguages ${lang} tmp)
@@ -157,30 +92,42 @@ MACRO(I18N_ADD i18nComponent i18nFiles i18nBinaryRoot)
 		endif()
 	endforeach()
 	# update cache
-	set(i18nLanguages ${tmpLanguages} CACHE STRING "" FORCE)
-	set(i18nComponents ${tmpComponents} CACHE STRING "" FORCE)
+	set(ESI18N_LANGUAGES ${tmpLanguages} CACHE STRING "" FORCE)
+	set(ESI18N_DOMAINS ${tmpComponents} CACHE STRING "" FORCE)
 ENDMACRO(I18N_ADD)
 
 MACRO(I18N_TRACE)
-	message("languages: ${i18nLanguages}")
-	message("components: ${i18nComponents}")
-	foreach(comp ${i18nComponents})
-		message("${comp}_BinRoot: ${${comp}_BinRoot}")
-		foreach(lang ${i18nLanguages})
-			message("${comp}${lang} files: ${${comp}${lang}}")
+	message(
+    STATUS
+    "I18N languages: ${ESI18N_LANGUAGES}"
+  )
+	message(
+    STATUS
+    "I18N components: ${ESI18N_DOMAINS}"
+  )
+	foreach(comp ${ESI18N_DOMAINS})
+		message(
+      STATUS 
+      "I18N ${comp}_BinRoot: ${${comp}_BinRoot}"
+    )
+		foreach(lang ${ESI18N_LANGUAGES})
+			message(
+        STATUS
+        "I18N ${comp}${lang} files: ${${comp}${lang}}"
+      )
 		endforeach()
 	endforeach()
 ENDMACRO(I18N_TRACE)
 
 MACRO(I18N_RESET)
-	foreach(comp ${i18nComponents})
+	foreach(comp ${ESI18N_DOMAINS})
 		unset("${comp}_BinRoot" CACHE)
-		foreach(lang ${i18nLanguages})
+		foreach(lang ${ESI18N_LANGUAGES})
 			unset("${comp}${lang}" CACHE)
 		endforeach()
 	endforeach()
-	set(i18nLanguages "" CACHE STRING "" FORCE)
-	set(i18nComponents "" CACHE STRING "" FORCE)
+	set(ESI18N_LANGUAGES "" CACHE INTERNAL "" FORCE)
+	set(ESI18N_DOMAINS "" CACHE INTERNAL "" FORCE)
 ENDMACRO(I18N_RESET)
 
 MACRO(LIST_TO_STRING outVar listVar)
@@ -247,64 +194,3 @@ foreach(pk ${pluginNamesAndKeys})
 					)
 endforeach()
 ENDMACRO(SCRIPTLET_ENCRYPTION_TARGET_ADD)
-
-MACRO(ES_RUNTIME_LINKING_SETUP)
-  message(STATUS
-    "ES_RUNTIME_LINKING_SETUP: Setting up C++ Runtime Linking"
-  )
-
-  if(BUILD_SHARED_LIBS)
-    set(ES_RUNTIME "dynamic")
-    message(STATUS
-      "Forcing ES_RUNTIME to " ${ES_RUNTIME} " for BUILD_SHARED_LIBS==1"
-    )
-  else()
-    if("${ES_RUNTIME}" STREQUAL "")
-      set(ES_RUNTIME "static")
-      message(STATUS
-        "Defaulting ES_RUNTIME to " ${ES_RUNTIME}
-      )
-    endif()
-  endif()
-
-  if(MSVC)
-    # Set compiler options.
-    set(variables
-      CMAKE_C_FLAGS_DEBUG
-      CMAKE_C_FLAGS_MINSIZEREL
-      CMAKE_C_FLAGS_RELEASE
-      CMAKE_C_FLAGS_RELWITHDEBINFO
-      CMAKE_CXX_FLAGS_DEBUG
-      CMAKE_CXX_FLAGS_MINSIZEREL
-      CMAKE_CXX_FLAGS_RELEASE
-      CMAKE_CXX_FLAGS_RELWITHDEBINFO
-    )
-
-    if(${ES_RUNTIME} STREQUAL "static")
-      message(STATUS
-        "MSVC -> Forcing use of statically-linked runtime."
-      )
-      foreach(variable ${variables})
-        if(${variable} MATCHES "/MD")
-          string(REGEX REPLACE "/MD" "/MT" ${variable} "${${variable}}")
-        endif()
-      endforeach()
-    else()
-      message(STATUS
-        "MSVC -> Forcing use of dynamically-linked runtime."
-      )
-      foreach(variable ${variables})
-        if(${variable} MATCHES "/MT")
-          string(REGEX REPLACE "/MT" "/MD" ${variable} "${${variable}}")
-        endif()
-      endforeach()
-    endif()
-  elseif(CMAKE_COMPILER_IS_GNUCXX)
-    if(${ES_RUNTIME} STREQUAL "static")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++")
-    endif()
-    message(STATUS
-      "GNUCXX -> Linking against libstdc++ runtime:" ${CMAKE_CXX_FLAGS}
-    )
-  endif()
-ENDMACRO()

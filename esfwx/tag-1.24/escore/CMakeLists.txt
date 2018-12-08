@@ -1,25 +1,28 @@
 cmake_minimum_required(VERSION 3.11)
 project(escore)
 
-# component version definitions
-set(component_DESCRIPTION_STRING "ESFWX Core Library")
-set(component_INTERNAL_NAME "escore")
-set(component_ORIGINAL_NAME "escore.dll")
-set(component_BUILD_NUM 1)
+include(escore.config.cmake)
+
+# escore configuration header generation
+#
+configure_file (
+  "${PROJECT_SOURCE_DIR}/EsCoreConfig.h.in"
+  "${ES_PROJECT_ROOT}/EsCoreConfig.h"
+)
 
 # component version file generation
 #
 configure_file (
   "${PROJECT_SOURCE_DIR}/build.h.in"
   "${PROJECT_SOURCE_DIR}/build.h"
-  )
+)
 
 # optional resource version file generation
 #
 configure_file (
   "${PROJECT_SOURCE_DIR}/res/version.rc.in"
   "${PROJECT_SOURCE_DIR}/res/version.rc"
-  )
+)
 
 # documentation generator file
 #
@@ -228,11 +231,15 @@ source_group(res FILES ${escore_RES})
 
 # targets
 set(staticMarker "")
-if( NOT BUILD_SHARED_LIBS )
+if( NOT ES_BUILD_SHARED_LIBS )
   set(staticMarker "_s")
 endif()
 set(targetName "escoreLib${staticMarker}")
-set(${targetName} escore_${binarySuffix}${compilerVersion}${staticMarker} CACHE STRING "" FORCE)
+set(${targetName} "escore_${ESCORE_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker}" CACHE INTERNAL "" FORCE)
+message(
+  STATUS
+  "escore targetName=>${targetName}:${${targetName}}"
+)
 
 SPECIFY_PRECOMPILED_HEADER("escorepch.h" "EsCoreMain.cpp" escore_SRCS)
 SPECIFY_HEADER_FILES(escore_SRCS headerExtensions)
@@ -245,7 +252,7 @@ add_library(${${targetName}}
 
 if(WIN32)
   if(CMAKE_COMPILER_IS_GNUCXX)
-    target_link_libraries( ${${targetName}} version )
+    target_link_libraries( ${${targetName}} version winmm rpcrt4)
   else()
     target_link_libraries( ${${targetName}} )
   endif()
@@ -256,7 +263,7 @@ endif()
 # customize target properties
 #
 # export preprocessor defines for dll
-if( BUILD_SHARED_LIBS )
+if( ES_BUILD_SHARED_LIBS )
   set_target_properties(${${targetName}}
     PROPERTIES
       COMPILE_DEFINITIONS "${dynamicLinkPreprocessorDefines}"

@@ -8,7 +8,7 @@
 # define ES_COMM_USE_FTDI
 #endif
 
-#define ES_COMM_USE_CHANNEL_STUB
+/* #undef ES_COMM_USE_CHANNEL_STUB */
 #define ES_COMM_USE_CHANNEL_UART
 
 #define ES_COMM_USE_ANCIENT_PC_DELAY
@@ -17,28 +17,23 @@
 # define ES_COMM_USE_CHANNEL_EKONNECT
 #endif
 
-//#define ES_COMM_USE_SOCKETS
+#define ES_COMM_USE_SOCKETS
 
 #ifdef ES_COMM_USE_SOCKETS
 
 #ifndef __APPLE__
-# define ES_COMM_USE_BLUETOOTH
+/* #undef ES_COMM_USE_BLUETOOTH */
 # if defined(_WIN32_WINNT) && _WIN32_WINNT >= _WINNT_WIN32_WINNT_WIN8
-#   define ES_COMM_USE_BLUETOOTH_LE
+/* #undef ES_COMM_USE_BLUETOOTH_LE */
 # endif
 #endif
 
 #ifndef __APPLE__
 # define ES_COMM_USE_CHANNEL_IO_SOCKET
-# define ES_COMM_USE_CHANNEL_BLUETOOTH
+/* #undef ES_COMM_USE_CHANNEL_BLUETOOTH */
 # if defined(_WIN32_WINNT) && _WIN32_WINNT >= _WINNT_WIN32_WINNT_WIN8
-#   define ES_COMM_USE_CHANNEL_BLUETOOTH_LE
+/* #undef ES_COMM_USE_CHANNEL_BLUETOOTH_LE */
 # endif
 #endif
-
-#endif // ES_COMM_USE_SOCKETS
-
-// RPC services
-#define ES_COMM_USE_RPC
 
 #endif // _es_comm_config_h_

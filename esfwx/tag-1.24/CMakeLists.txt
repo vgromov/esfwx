@@ -2,16 +2,12 @@
 cmake_minimum_required(VERSION 3.11)
 project(framework)
 
-set(ESFWX_STANDALONE_BUILD 0 CACHE BOOL "Build framework components as part of some project (Default - 0), or as stand-alone (1)")
+include(${PROJECT_BINARY_DIR}/escmake/escommon.defs.cmake)
+# Must be placed here, after escommon.defs, but before other stuff
+include(esfwx.config.cmake)
 
-# framework version definitions
-set(frameworkVendor	 "ECO-Electronics" CACHE INTERNAL "")
-set(frameworkVendorShort "ECO-E" CACHE INTERNAL "")
-set(framework		 "ECO-E Framework" CACHE INTERNAL "")
-set(frameworkCopyright	 "Copyright 2009-2018" CACHE INTERNAL "")
-set(framework_VER_MAJOR	 1 CACHE INTERNAL "")
-set(framework_VER_MINOR	 24 CACHE INTERNAL "")
-set(framework_BUILD_NUM	 0 CACHE INTERNAL "")
+include(${PROJECT_BINARY_DIR}/escmake/escompiler.defs.cmake)
+include(${PROJECT_BINARY_DIR}/escmake/eslinker.defs.cmake)
 
 # framework version file generation
 #
@@ -22,30 +18,13 @@ configure_file (
 
 # build framework components in standalone mode
 # otherwise, host project defines which components to build
-if( ESFWX_STANDALONE_BUILD )
-  set(BUILD_SHARED_LIBS 0 CACHE BOOL "Build shared framework libraries (Default - 0 i.e. static)")
-
+if( ESFWXCONFIG_STANDALONE_BUILD )
+  
+  # ESFWX-specific macros
   include(esframework-macros.cmake)
-  ES_REQUIRE_MODERNCPP()
-
-  if(WIN32)
-    # use UNICODE under MSWINDOWS
-    add_definitions(-DUNICODE -D_UNICODE)
-  endif()
-
-	if(MSVC)
-    # suppress msvc security warnings, assign explicit compiler version for wxWidgets
-    set(CMAKE_CXX_FLAGS
-      "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS -DwxMSVC_VERSION=${COMPILER_VERSION}"
-    )
-  endif()
-
-  # set-up runtime library linkage
-  ES_RUNTIME_LINKING_SETUP()
 
 	# global directories
-	get_filename_component(root ${PROJECT_BINARY_DIR}/bin REALPATH)
-	set(binaryRoot ${root} CACHE PATH "Build binary root" FORCE)
+	set(binaryRoot ${ES_PROJECT_ROOT}/bin CACHE INTERNAL "Build binary root")
 	set(EXECUTABLE_OUTPUT_PATH ${binaryRoot})
 	set(LIBRARY_OUTPUT_PATH ${binaryRoot})
   set(escore_CONFIG_DIR	${PROJECT_SOURCE_DIR} CACHE INTERNAL "escore configuration directory" FORCE)
@@ -62,11 +41,6 @@ if( ESFWX_STANDALONE_BUILD )
 	set(CMAKE_INCLUDE_CURRENT_DIR ON)
 	# reset i18n aggregation variables
 	I18N_RESET()
-	# localization integration variables
-	set(i18nLanguages "" CACHE INTERNAL "" FORCE)
-	set(i18nComponents "" CACHE INTERNAL "" FORCE)
-	set(poPattern ".+[.]([a-z][a-z]_[A-Z][A-Z])[.]po" CACHE INTERNAL "" FORCE)
-
 	include_directories(	${PROJECT_SOURCE_DIR}
 												${PROJECT_SOURCE_DIR}/compatibility-headers
 												${PROJECT_SOURCE_DIR}/external
@@ -82,4 +56,6 @@ if( ESFWX_STANDALONE_BUILD )
 	# tests
 	#
 	add_subdirectory(tests)
+  
+  I18N_TRACE()
  endif()

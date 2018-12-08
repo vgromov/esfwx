@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.11)
 project(escomm)
 
-# component version definitions
-set(component_DESCRIPTION_STRING "ESFWX Communication Library")
-set(component_INTERNAL_NAME "escomm")
-set(component_ORIGINAL_NAME "escomm.dll")
-set(component_BUILD_NUM	1)	
+include(escomm.config.cmake)
+
+# escomm configuration header generation
+#
+configure_file (
+  "${PROJECT_SOURCE_DIR}/EsCommConfig.h.in"
+  "${ES_PROJECT_ROOT}/EsCommConfig.h"
+)
 
 # component version file generation
 #
@@ -144,15 +147,11 @@ set(escomm_SRCS
 						)					
 						
 set(escomm_c_shared_SRCS
-						#../external/esfwxe/commintf.c
 						../external/esfwxe/commintf.h
-						#../external/esfwxe/crc.c
 						../external/esfwxe/crc.h
 						crcConfig.h
-						#../external/esfwxe/protocols/proprietary/protocolEkosf.c
 						../external/esfwxe/protocols/proprietary/protocolEkosf.h
 						../external/esfwxe/remoteProcCall.h
-						#../external/esfwxe/utils.c
 						../external/esfwxe/utils.h
 						)
 source_group(c-shared FILES ${escomm_c_shared_SRCS})
@@ -164,11 +163,15 @@ source_group(res FILES ${escomm_RES})
 
 # targets
 set(staticMarker "")
-if( NOT BUILD_SHARED_LIBS )
+if( NOT ES_BUILD_SHARED_LIBS )
 	set(staticMarker "_s")
 endif()
 set(targetName "escommLib${staticMarker}")
-set(${targetName} escomm_${binarySuffix}${compilerVersion}${staticMarker}	CACHE STRING "" FORCE)
+set(${targetName} "escomm_${ESCOMM_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker}" CACHE INTERNAL "" FORCE)
+message(
+  STATUS
+  "escomm targetName=>${targetName}:${${targetName}}"
+)
 
 SPECIFY_PRECOMPILED_HEADER("escommpch.h" "EsCommMain.cpp" escomm_SRCS)
 SPECIFY_HEADER_FILES(escomm_SRCS headerExtensions)
@@ -186,25 +189,9 @@ target_link_libraries(${${targetName}}
 # customize target properties
 #
 # export preprocessor defines for dll
-if( BUILD_SHARED_LIBS )
+if( ES_BUILD_SHARED_LIBS )
 	set_target_properties(${${targetName}} PROPERTIES 
 						COMPILE_DEFINITIONS "${dynamicLinkPreprocessorDefines}"
 						DEFINE_SYMBOL ESCOMM_EXPORTS)
-						
-# set-up crc-ed dll generation
-	# set(${targetName}Crc "D29084FC")
-	# get_target_property(targetDll ${${targetName}} LOCATION)
-	# set(targetDll_crced ${targetDll}_crced)
-	# set(${targetName}_crced ${${targetName}}_crced CACHE STRING "" FORCE)
-	# add_custom_target(${${targetName}_crced}
-		# COMMAND ${CMAKE_COMMAND} -E copy
-						# ${targetDll} 
-						# ${targetDll_crced}
-		# COMMAND ${binaryRoot}/../3rd-parties/CrcTrim.exe
-						# ${targetDll_crced}
-						# ${${targetName}Crc}
-					# )
-	# add_dependencies(${${targetName}_crced} ${${targetName}})
-	# set_target_properties(${${targetName}_crced} PROPERTIES
-						# FOLDER setup )					
+			
 endif()
