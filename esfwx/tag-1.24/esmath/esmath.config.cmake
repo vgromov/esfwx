@@ -1,7 +1,7 @@
 # component version definitions
 set(component_DESCRIPTION_STRING "ESFWX Math Library")
 set(component_INTERNAL_NAME "esmath")
-set(component_ORIGINAL_NAME "esmath.dll")
+set(component_ORIGINAL_NAME "esmath")
 set(component_BUILD_NUM	1)
 
 # Set-up ESMATH binary version naming

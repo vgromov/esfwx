@@ -1,7 +1,7 @@
 # Component version definitions
 set(component_DESCRIPTION_STRING "ESFWX Communication Library")
 set(component_INTERNAL_NAME "escomm")
-set(component_ORIGINAL_NAME "escomm.dll")
+set(component_ORIGINAL_NAME "escomm")
 set(component_BUILD_NUM	1)
 
 #  Comm components configuration

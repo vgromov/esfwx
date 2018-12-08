@@ -1,32 +1,35 @@
 cmake_minimum_required(VERSION 3.11)
 project(esscript)
 
-# component version definitions
-set(component_DESCRIPTION_STRING "ESFWX Script Library")
-set(component_INTERNAL_NAME "esscript")
-set(component_ORIGINAL_NAME "esscript.dll")
-set(component_BUILD_NUM	3)	
+include(esscript.config.cmake)
+
+# Generate configuration header file
+#
+configure_file (
+  "${PROJECT_SOURCE_DIR}/EsScriptConfig.h.in"
+  "${ES_PROJECT_ROOT}/EsScriptConfig.h"
+)
 
 # component version file generation
 #
 configure_file (
   "${PROJECT_SOURCE_DIR}/build.h.in"
   "${PROJECT_SOURCE_DIR}/build.h"
-  )
+)
 	
 # optional resource version file generation
 #
 configure_file (
   "${PROJECT_SOURCE_DIR}/res/version.rc.in"
   "${PROJECT_SOURCE_DIR}/res/version.rc"
-  )
+)
 
 # documentation generator file  
 #
 configure_file (
   "${PROJECT_SOURCE_DIR}/Doxyfile.in"
   "${PROJECT_SOURCE_DIR}/Doxyfile"
-  )
+)
   
 # Explicitly use new XXX_ROOT policy
 cmake_policy(SET CMP0074 NEW)  
@@ -145,7 +148,11 @@ if( NOT BUILD_SHARED_LIBS )
 	set(staticMarker "_s")
 endif()
 set(targetName "esscriptLib${staticMarker}")
-set(${targetName} esscript_${binarySuffix}${compilerVersion}${staticMarker} CACHE STRING "" FORCE)
+set(${targetName} "esscript_${ESSCRIPT_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker}" CACHE INTERNAL "" FORCE)
+message(
+  STATUS
+  "esscript targetName=>${targetName}:${${targetName}}"
+)
 
 SPECIFY_PRECOMPILED_HEADER("esscriptpch.h" "EsScriptMain.cpp" esscript_SRCS)
 SPECIFY_HEADER_FILES(esscript_SRCS headerExtensions)
