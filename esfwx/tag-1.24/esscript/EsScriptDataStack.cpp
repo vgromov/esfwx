@@ -25,7 +25,7 @@ void EsScriptDataStack::trace() const
 {
   ES_DEBUG_TRACE(esT("data stack trace:"));
   for( size_t idx = 0; idx < m_data.size(); ++idx )
-    ES_DEBUG_TRACE(esT("\t[%d]='%s'"), m_data.size()-1-idx, m_data[m_data.size()-1-idx]->trace().c_str());
+    ES_DEBUG_TRACE(esT("\t[%d]='%s'"), m_data.size()-1-idx, m_data[m_data.size()-1-idx]->trace());
 }
 # define EsScriptDataStack_TRACE trace();
 #  define ESSCRIPT_DATASTACK_TRACE1(a)                  ES_DEBUG_TRACE(a);

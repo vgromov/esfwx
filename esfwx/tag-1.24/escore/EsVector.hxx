@@ -379,11 +379,23 @@ void EsVector<T>::internalReserve(typename EsVector<T>::size_type capacity) ES_N
       doCopySptr = true;
       m_ptr = 0;
     }
-    m_ptr = (pointer)realloc(m_ptr, sizeof(value_type)*capacity);
-    ES_ASSERT(m_ptr);
+    pointer newptr = reinterpret_cast<pointer>(
+      realloc(
+        m_ptr, 
+        sizeof(value_type)*capacity
+      )
+    );
+    if(!newptr)
+      return;
+
+    m_ptr = newptr;
     // copy valuable contents of the m_sptr once
     if( doCopySptr && m_size )
-      memcpy(m_ptr, m_sptr, sizeof(value_type)*m_size);
+      memcpy(
+        m_ptr, 
+        m_sptr, 
+        sizeof(value_type)*m_size
+      );
 
     m_capacity = capacity;
   }

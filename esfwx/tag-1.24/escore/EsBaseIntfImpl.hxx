@@ -628,10 +628,14 @@ public:
   }
   ES_DECL_INTF_METHOD(void, incRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_INCREF
+
     esAtomicInc(m_rc);
   }
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_DECREF
+
     if( 1 > esAtomicDec(m_rc) && !m_destroying )
       destroy();
   }
@@ -724,10 +728,14 @@ public:
   }
   ES_DECL_INTF_METHOD(void, incRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_INCREF
+    
     esAtomicInc(m_rc);
   }
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_DECREF
+
     if( 1 > esAtomicDec(m_rc) && !m_destroying )
       destroy();
   }
@@ -827,10 +835,14 @@ public:
   }
   ES_DECL_INTF_METHOD(void, incRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_INCREF
+
     esAtomicInc(m_rc);
   }
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_DECREF
+
     if( 1 > esAtomicDec(m_rc) && !m_destroying )
       destroy();
   }
@@ -937,10 +949,14 @@ public:
   }
   ES_DECL_INTF_METHOD(void, incRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_INCREF
+
     esAtomicInc(m_rc);
   }
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_DECREF
+
     if( 1 > esAtomicDec(m_rc) && !m_destroying )
       destroy();
   }
@@ -1054,10 +1070,14 @@ public:
   }
   ES_DECL_INTF_METHOD(void, incRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_INCREF
+
     esAtomicInc(m_rc);
   }
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_DECREF
+
     if( 1 > esAtomicDec(m_rc) && !m_destroying )
       destroy();
   }
@@ -1178,10 +1198,14 @@ public:
   }
   ES_DECL_INTF_METHOD(void, incRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_INCREF
+
     esAtomicInc(m_rc);
   }
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE
   {
+    ES_TRACE_BASEINTF_DECREF
+
     if( 1 > esAtomicDec(m_rc) && !m_destroying )
       destroy();
   }

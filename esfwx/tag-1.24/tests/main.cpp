@@ -7,6 +7,10 @@
 
 #include "testsConfig.h"
 
+#ifdef ESTESTS_USE_VLD
+# include <vld.h>
+#endif
+
 #include <sstream>
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
@@ -86,6 +90,10 @@ int main(int argc, char **argv)
   EsSockets::initialize();
 #endif
 
+#ifdef ESTESTS_USE_VLD
+    VLDEnable();
+#endif
+
 #ifdef ES_USE_CPPTEST
     Test::TextOutput output( Test::TextOutput::Verbose );
     result = g_allTests.run( output ) ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -93,6 +101,11 @@ int main(int argc, char **argv)
     ::testing::InitGoogleTest( &argc, argv );
     result = RUN_ALL_TESTS();
 #endif
+
+#ifdef ESTESTS_USE_VLD
+    VLDDisable();
+#endif
+
   }
   catch( EsException& ex )
   {

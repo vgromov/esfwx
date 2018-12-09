@@ -10,6 +10,7 @@ set(ESTESTS_USE_SOCKETS 0 CACHE BOOL "Include Socket tests")
 
 # Script profiling tests
 set(ESTESTS_USE_SCRIPT_PROFILE 0 CACHE BOOL "Include script profiling tests (see profiling.ess script source)")
+set(ESTESTS_USE_SCRIPT_PROFILE_REPEAT 0 CACHE BOOL "Perform each script profiling test ESTESTS_SCRIPT_PROFILE_REPEAT_CNT of times")
 set(ESTESTS_SCRIPT_PROFILE_REPEAT_CNT 10 CACHE STRING "How many times to repeat each script profiling test")
 set(ESTESTS_SCRIPT_PROFILE_BASIC_FOR_LOOP 1 CACHE BOOL "Include basic for loop profiling") 
 set(ESTESTS_SCRIPT_PROFILE_BASIC_FOR_LOOP_WITH_NAMED_CONST_CNT 1 CACHE BOOL "Include basic for loop profiling with named const is used as max count value")
@@ -32,6 +33,7 @@ set(ESTESTS_SCRIPT_PROFILE_OBJ_ARRAY_INIT_FOREACH_ITERATION_AND_FLD_ASN 1 CACHE 
 # Extra configs
 set(ESTESTS_USE_CPPTEST 0 CACHE BOOL "Use CPP_TEST library to run testbed, otherwise, Google tests is used. Default=0, i.e Google test is used")
 set(ESTESTS_USE_STACK_BACKTRACE 1 CACHE BOOL "Use backward-cpp facility to print pretty CALL and STACK backtrace on test crash. For X-OSes only")
+set(ESTESTS_USE_VLD 0 CACHE BOOL "Use Visual Leak Detector library for Debug mode. Windows, MS Visual C++ only")
 
 # Prepare config vars
 #
