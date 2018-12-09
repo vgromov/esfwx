@@ -260,8 +260,7 @@ EsVariant::~EsVariant() ES_NOTHROW
 EsVariant::EsVariant(EsVariant&& other) ES_NOTHROW :
 m_type(VAR_EMPTY)
 {
-  ES_ASSERT(this != &other);
-  internalMove(other);
+  move(other);
 }
 //---------------------------------------------------------------------------
 
@@ -1836,7 +1835,7 @@ void EsVariant::internalMove(EsVariant& other) ES_NOTHROW
   m_value = other.m_value;
   m_type = other.m_type;
 
-  // Perform optional local storage pointer for vector
+  // Perform optional local storage pointer fixup for vector
   // internally used in binary buffer
   //
   if(
@@ -1854,7 +1853,7 @@ void EsVariant::move(EsVariant& other) ES_NOTHROW
   if(this == &other)
     return;
 
-  setToNull(other.typeGet());
+  doCleanup();
   internalMove(other);
 }
 //---------------------------------------------------------------------------

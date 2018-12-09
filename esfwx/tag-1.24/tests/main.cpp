@@ -7,10 +7,6 @@
 
 #include "testsConfig.h"
 
-#ifdef ESTESTS_USE_VLD
-# include <vld.h>
-#endif
-
 #include <sstream>
 
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND

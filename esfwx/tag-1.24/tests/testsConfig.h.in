@@ -37,4 +37,8 @@
 # endif
 #endif
 
+#ifdef ESTESTS_USE_VLD
+# include <vld.h>
+#endif
+
 #endif // _tests_config_h_
