@@ -144,7 +144,7 @@ source_group(res FILES ${esscript_RES})
 
 # targets
 set(staticMarker "")
-if( NOT BUILD_SHARED_LIBS )
+if( NOT ES_BUILD_SHARED_LIBS )
 	set(staticMarker "_s")
 endif()
 set(targetName "esscriptLib${staticMarker}")
@@ -163,9 +163,11 @@ target_link_libraries(${${targetName}} ${escoreLib${staticMarker}})
 # customize target properties
 #
 # export preprocessor defines for dll
-if( BUILD_SHARED_LIBS )
-	set_target_properties(${${targetName}} PROPERTIES 
-						COMPILE_DEFINITIONS "${dynamicLinkPreprocessorDefines}"
-						DEFINE_SYMBOL ESSCRIPT_EXPORTS)
+if( ES_BUILD_SHARED_LIBS )
+	set_property(
+    TARGET ${${targetName}} 
+    APPEND
+    PROPERTY COMPILE_DEFINITIONS "${ES_USEDLL_PREPROC_FOR_DYNLIB}" ESSCRIPT_EXPORTS
+  )
 endif()		
 		

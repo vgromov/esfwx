@@ -245,28 +245,28 @@ SPECIFY_PRECOMPILED_HEADER("escorepch.h" "EsCoreMain.cpp" escore_SRCS)
 SPECIFY_HEADER_FILES(escore_SRCS headerExtensions)
 SPECIFY_HEADER_FILES(escore_c_shared_SRCS headerExtensions)
 
-add_library(${${targetName}}
+add_library( ${${targetName}}
   ${escore_SRCS}
   ${escore_RES}
 )
 
-if(WIN32)
-  if(CMAKE_COMPILER_IS_GNUCXX)
+if(CMAKE_COMPILER_IS_GNUCXX)
+  if(MINGW)
     target_link_libraries( ${${targetName}} version winmm rpcrt4)
   else()
-    target_link_libraries( ${${targetName}} )
+    target_link_libraries( ${${targetName}} dl pthread)
   endif()
-elseif(UNIX)
-  target_link_libraries( ${${targetName}} dl pthread )
+else()
+  target_link_libraries( ${${targetName}} )
 endif()
 
 # customize target properties
 #
 # export preprocessor defines for dll
 if( ES_BUILD_SHARED_LIBS )
-  set_target_properties(${${targetName}}
-    PROPERTIES
-      COMPILE_DEFINITIONS "${dynamicLinkPreprocessorDefines}"
-      DEFINE_SYMBOL ESCORE_EXPORTS
+  set_property(
+    TARGET ${${targetName}}
+    APPEND
+    PROPERTY COMPILE_DEFINITIONS "${ES_USEDLL_PREPROC_FOR_DYNLIB}" ESCORE_EXPORTS
   )
 endif()

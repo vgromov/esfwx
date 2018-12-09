@@ -1,13 +1,13 @@
 // Scripting profiling tests
 //
-#ifdef ES_TEST_DO_SCRIPT_PROFILING
+#ifdef ESTESTS_USE_SCRIPT_PROFILE
 # define ES_SCRIPT_REPEAT_BEGIN \
-  { int cnt = ES_SCRIPT_REPEAT_CNT; while( cnt-- ) {
+  { int cnt = ESTESTS_SCRIPT_PROFILE_REPEAT_CNT; while( cnt-- ) {
 
 # define ES_SCRIPT_REPEAT_END \
   }}
 
-#else //< ES_TEST_DO_SCRIPT_PROFILING
+#else //< ESTESTS_USE_SCRIPT_PROFILE
 
 # define ES_SCRIPT_REPEAT_BEGIN
 # define ES_SCRIPT_REPEAT_END
@@ -57,7 +57,7 @@ protected:
   EsScriptIntf::Ptr script;
 };
 
-#ifdef ES_SCRIPT_PROFILE_BASIC_FOR_LOOP
+#ifdef ESTESTS_SCRIPT_PROFILE_BASIC_FOR_LOOP
 TEST_F(EsScriptProfileTest, BasicsForLoop) {
 
   EsVariant to = script->objectCreate(esT("ProfilingTest"));
@@ -69,7 +69,7 @@ TEST_F(EsScriptProfileTest, BasicsForLoop) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_BASIC_FOR_LOOP_WITH_NAMED_CONST_CNT
+#ifdef ESTESTS_SCRIPT_PROFILE_BASIC_FOR_LOOP_WITH_NAMED_CONST_CNT
 TEST_F( EsScriptProfileTest, BasicsForLoopWithNamedConstCnt ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -81,7 +81,7 @@ TEST_F( EsScriptProfileTest, BasicsForLoopWithNamedConstCnt ) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_BASIC_FOR_LOOP_FILL_BUFF
+#ifdef ESTESTS_SCRIPT_PROFILE_BASIC_FOR_LOOP_FILL_BUFF
 TEST_F(EsScriptProfileTest, BasicsForLoopFillBuff) {
 
   EsVariant to = script->objectCreate(esT("ProfilingTest"));
@@ -93,7 +93,7 @@ TEST_F(EsScriptProfileTest, BasicsForLoopFillBuff) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_BASIC_FOR_LOOP_FILL_BUFF_WITH_NAMED_COSNT_CNT
+#ifdef ESTESTS_SCRIPT_PROFILE_BASIC_FOR_LOOP_FILL_BUFF_WITH_NAMED_COSNT_CNT
 TEST_F( EsScriptProfileTest, BasicsForLoopFillBuffWithNamedConstCnt ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -105,7 +105,7 @@ TEST_F( EsScriptProfileTest, BasicsForLoopFillBuffWithNamedConstCnt ) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_BASIC_FOR_LOOP_FILL_BUFF_WITH_PREALLOC
+#ifdef ESTESTS_SCRIPT_PROFILE_BASIC_FOR_LOOP_FILL_BUFF_WITH_PREALLOC
 TEST_F(EsScriptProfileTest, BasicsForLoopFillBuffWithPreAlloc) {
 
   EsVariant to = script->objectCreate(esT("ProfilingTest"));
@@ -117,7 +117,7 @@ TEST_F(EsScriptProfileTest, BasicsForLoopFillBuffWithPreAlloc) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_FOR_LOOP_REFLECTED_STATIC_CALL_RET_NO_PARAMS
+#ifdef ESTESTS_SCRIPT_PROFILE_FOR_LOOP_REFLECTED_STATIC_CALL_RET_NO_PARAMS
 TEST_F(EsScriptProfileTest, ForLoopReflectedStaticCallRetNoParams) {
 
   EsVariant to = script->objectCreate(esT("ProfilingTest"));
@@ -129,7 +129,7 @@ TEST_F(EsScriptProfileTest, ForLoopReflectedStaticCallRetNoParams) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_FOR_LOOP_REFLECTED_STATIC_CALL_RET_4_PARAMS
+#ifdef ESTESTS_SCRIPT_PROFILE_FOR_LOOP_REFLECTED_STATIC_CALL_RET_4_PARAMS
 TEST_F(EsScriptProfileTest, ForLoopReflectedStaticCallRet4params) {
 
   EsVariant to = script->objectCreate(esT("ProfilingTest"));
@@ -144,7 +144,7 @@ TEST_F(EsScriptProfileTest, ForLoopReflectedStaticCallRet4params) {
 //---------------------------------------------------------------------------
 // Advanced profiling
 //
-#ifdef ES_SCRIPT_PROFILE_OBJ_COLLECTION_INIT
+#ifdef ESTESTS_SCRIPT_PROFILE_OBJ_COLLECTION_INIT
 TEST_F( EsScriptProfileTest, ObjectCollectionInit ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -156,7 +156,7 @@ TEST_F( EsScriptProfileTest, ObjectCollectionInit ) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_OBJ_COLLECTION_INIT_WITH_MIDDLE_FLD_ASSIGN
+#ifdef ESTESTS_SCRIPT_PROFILE_OBJ_COLLECTION_INIT_WITH_MIDDLE_FLD_ASSIGN
 TEST_F( EsScriptProfileTest, ObjectCollectionInitWithMiddleFieldAssign ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -168,7 +168,7 @@ TEST_F( EsScriptProfileTest, ObjectCollectionInitWithMiddleFieldAssign ) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT
+#ifdef ESTESTS_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT
 TEST_F( EsScriptProfileTest, DerivedDataObjectCollectionInit ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -180,7 +180,7 @@ TEST_F( EsScriptProfileTest, DerivedDataObjectCollectionInit ) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT_WITH_THIS_FLD_ASSIGN
+#ifdef ESTESTS_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT_WITH_THIS_FLD_ASSIGN
 TEST_F( EsScriptProfileTest, DerivedDataObjectCollectionInitWithThisFieldAssign ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -192,7 +192,7 @@ TEST_F( EsScriptProfileTest, DerivedDataObjectCollectionInitWithThisFieldAssign 
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT_WITH_BASE_FLD_ASSIGN
+#ifdef ESTESTS_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT_WITH_BASE_FLD_ASSIGN
 TEST_F( EsScriptProfileTest, DerivedDataObjectCollectionInitWithBaseFieldAssign ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -204,7 +204,7 @@ TEST_F( EsScriptProfileTest, DerivedDataObjectCollectionInitWithBaseFieldAssign 
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT
+#ifdef ESTESTS_SCRIPT_PROFILE_OBJ_ARRAY_INIT
 TEST_F( EsScriptProfileTest, SimpleArrayObjectInitTest ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -216,7 +216,7 @@ TEST_F( EsScriptProfileTest, SimpleArrayObjectInitTest ) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_DERIVED_OBJ_ARRAY_INIT
+#ifdef ESTESTS_SCRIPT_PROFILE_DERIVED_OBJ_ARRAY_INIT
 TEST_F( EsScriptProfileTest, DerivedArrayObjectInitTest ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -228,7 +228,7 @@ TEST_F( EsScriptProfileTest, DerivedArrayObjectInitTest ) {
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT_IDX_ITERATION_AND_FLD_ASN
+#ifdef ESTESTS_SCRIPT_PROFILE_OBJ_ARRAY_INIT_IDX_ITERATION_AND_FLD_ASN
 TEST_F( EsScriptProfileTest, SimpleArrayObjectInitWithIndexedIterationAndMiddleFldAssignTest ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -240,7 +240,7 @@ TEST_F( EsScriptProfileTest, SimpleArrayObjectInitWithIndexedIterationAndMiddleF
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT_IDX_ITERATION_CACHED_CNT_AND_FLD_ASN
+#ifdef ESTESTS_SCRIPT_PROFILE_OBJ_ARRAY_INIT_IDX_ITERATION_CACHED_CNT_AND_FLD_ASN
 TEST_F( EsScriptProfileTest, SimpleArrayObjectInitWithIndexedIterationCachedCntAndMiddleFldAssignTest ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );
@@ -252,7 +252,7 @@ TEST_F( EsScriptProfileTest, SimpleArrayObjectInitWithIndexedIterationCachedCntA
 }
 #endif
 
-#ifdef ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT_FOREACH_ITERATION_CACHED_CNT_AND_FLD_ASN
+#ifdef ESTESTS_SCRIPT_PROFILE_OBJ_ARRAY_INIT_FOREACH_ITERATION_AND_FLD_ASN
 TEST_F( EsScriptProfileTest, SimpleArrayObjectInitWithForEachIterationAndMiddleFldAssignTest ) {
 
   EsVariant to = script->objectCreate( esT( "ProfilingTest" ) );

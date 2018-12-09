@@ -339,7 +339,7 @@ protected:
 /// Generic implicit base for all Esxxx classes hierarchy
 ///
 class EsBaseIntf; ///< Forward decl
-class EsBase
+class ESCORE_CLASS EsBase
 {
 public:
   virtual ~EsBase() {}

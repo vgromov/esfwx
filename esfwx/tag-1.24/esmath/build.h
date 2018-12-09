@@ -11,7 +11,7 @@
 #define COMPONENT_BUILD_NUM						    1
 #define COMPONENT_DESCRIPTION_STRING	    esT("ESFWX Math Library")
 #define COMPONENT_INTERNAL_NAME				    esT("esmath")
-#define COMPONENT_ORIGINAL_NAME				    esT("esmath.dll")
+#define COMPONENT_ORIGINAL_NAME				    esT("esmath")
 #define COMPONENT_VERSION_STRING          esT("1.24.1")
 
 #ifdef _DEBUG

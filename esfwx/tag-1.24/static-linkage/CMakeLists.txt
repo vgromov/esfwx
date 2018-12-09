@@ -1,11 +1,11 @@
 # static framework components linkage pseudo-project
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.11)
 project(esfwx-static-linkage)
 
 # reset certain cache values
-# remember BUILD_SHARED_LIBS setting to restore it later
-set(oldBUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
-set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+# remember ES_BUILD_SHARED_LIBS setting to restore it later
+set(oldBUILD_SHARED_LIBS ${ES_BUILD_SHARED_LIBS})
+set(ES_BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(../escore ${CMAKE_CURRENT_SOURCE_DIR}/tempStaticEscore)
 add_subdirectory(../esmath ${CMAKE_CURRENT_SOURCE_DIR}/tempStaticEsmath)
@@ -22,4 +22,4 @@ export(TARGETS
 	)
 	   
 # restore shared libs option					
-set(BUILD_SHARED_LIBS ${oldBUILD_SHARED_LIBS} CACHE BOOL "" FORCE)	   
+set(ES_BUILD_SHARED_LIBS ${oldBUILD_SHARED_LIBS} CACHE BOOL "" FORCE)	   

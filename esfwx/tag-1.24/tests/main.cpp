@@ -5,10 +5,7 @@
 #include <esscript/esscript.h>
 #pragma hdrstop
 
-#if ES_OS == ES_OS_LINUX
-# define BACKWARD_HAS_BFD 1
-# include "backward-cpp/backward.hpp"
-#endif
+#include "testsConfig.h"
 
 #include <sstream>
 
@@ -48,76 +45,8 @@ static EsString binRootGet()
   return fpath;
 }
 
-// test includes
-#include "testEsOsInfo.cc"
-#include "testEsRegEx.cc"
-#include "testBasicTypes.cc"
-#include "testEsUtilities.cc"
-#include "testEsReflection.cc"
-#include "testEsDateTime.cc"
-#include "testEsString.cc"
-#include "testEsSyncObjects.cc"
-#include "testEsThread.cc"
-#include "testEsCryptoDesLegacy.cc"
-
-#ifdef ES_USE_CRYPTO
-# include "testEsCryptoDes.cc"
-# include "testEsCryptoAes.cc"
-#endif
-
-#if ES_OS == ES_OS_WINDOWS
-# include "testEsFile.cc"
-#elif ES_OS == ES_OS_MAC
-# include "testMacosFile.cc"
-#endif
-
-#include "testEsXml.cc"
-#include "testEsStreamBinary.cc"
-
-// Uncomment to repeat each script profiling test ES_SCRIPT_REPEAT_CNT times
-//
-#define ES_TEST_DO_SCRIPT_PROFILING
-#define ES_SCRIPT_REPEAT_CNT 10
-
-// Selective script profiling tests
-//
-//#define ES_SCRIPT_PROFILE_BASIC_FOR_LOOP
-//#define ES_SCRIPT_PROFILE_BASIC_FOR_LOOP_WITH_NAMED_CONST_CNT
-//#define ES_SCRIPT_PROFILE_BASIC_FOR_LOOP_FILL_BUFF
-//#define ES_SCRIPT_PROFILE_BASIC_FOR_LOOP_FILL_BUFF_WITH_NAMED_CNT
-//#define ES_SCRIPT_PROFILE_BASIC_FOR_LOOP_FILL_BUFF
-//#define ES_SCRIPT_PROFILE_FOR_LOOP_REFLECTED_STATIC_CALL_RET_NO_PARAMS
-//#define ES_SCRIPT_PROFILE_FOR_LOOP_REFLECTED_STATIC_CALL_RET_4_PARAMS
-//#define ES_SCRIPT_PROFILE_OBJ_COLLECTION_INIT
-//#define ES_SCRIPT_PROFILE_OBJ_COLLECTION_INIT_WITH_MIDDLE_FLD_ASSIGN
-//#define ES_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT
-//#define ES_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT_WITH_THIS_FLD_ASSIGN
-//#define ES_SCRIPT_PROFILE_DERIVED_OBJ_COLLECTION_INIT_WITH_BASE_FLD_ASSIGN
-//#define ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT
-//#define ES_SCRIPT_PROFILE_DERIVED_OBJ_ARRAY_INIT
-//#define ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT_IDX_ITERATION_FLD_ASN
-//#define ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT_IDX_ITERATION_CACHED_CNT_AND_FLD_ASN
-//#define ES_SCRIPT_PROFILE_OBJ_ARRAY_INIT_FOREACH_ITERATION_CACHED_CNT_AND_FLD_ASN
-//#include "testEsScriptProfile.cc"
-
-#ifdef ES_COMM_USE_UART
-# include "testUart.cc"
-#endif
-
-#if ES_OS != ES_OS_MAC
-#  ifdef ES_USE_BT_TESTS
-#   ifdef ES_COMM_USE_BLUETOOTH
-#     include "testBtConfig.cc"
-#     include "testEsBluetooth.cc"
-#   endif
-#  endif
-#endif
-
-#ifdef ES_COMM_USE_SOCKETS
-# include "testEsSocket.cc"
-# include "testEsSocketChannel.cc"
-# include "testEsSocketServer.cc"
-#endif
+// All tests are included from here
+#include "testsSelector.cxx"
 
 #if ES_OS == ES_OS_WINDOWS
 int _tmain(int argc, TCHAR **argv)

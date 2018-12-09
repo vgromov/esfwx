@@ -11,7 +11,7 @@
 #define COMPONENT_BUILD_NUM						    3
 #define COMPONENT_DESCRIPTION_STRING	    esT("ESFWX Script Library")
 #define COMPONENT_INTERNAL_NAME				    esT("esscript")
-#define COMPONENT_ORIGINAL_NAME				    esT("esscript.dll")
+#define COMPONENT_ORIGINAL_NAME				    esT("esscript")
 #define COMPONENT_VERSION_STRING			    esT("1.24.3")
 
 #ifdef _DEBUG

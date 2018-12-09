@@ -98,17 +98,7 @@ void EsRpcException::Throw(RpcReflectionSignature sig, int rpcId, RpcStatus stat
     throw EsRpcException(sig, rpcId, stat, ioErr);
 }
 //---------------------------------------------------------------------------
-
 //----------------------------------------------------------------------------------
-// std server wait implementation
-extern "C" {
-
-  void ekosfWait(esU32 tmo)
-  {
-    EsThread::sleep(tmo);
-  }
-
-}
 
 // Reflection class info declaration
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsRpcMaster, esT("RPC master services over Ekosfera protocol."))

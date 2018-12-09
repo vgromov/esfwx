@@ -6,10 +6,18 @@
 #endif
 #include "autolink.cxx"
 
-#include "esfwxe/utils.c"
-#include "esfwxe/crc.c"
-#include "esfwxe/commintf.c"
-#include "esfwxe/protocols/proprietary/protocolEkosf.c"
+# include "esfwxe/utils.c"
+# include "esfwxe/commintf.c"
+
+#ifdef ES_COMM_USE_RPC
+void ekosfWait(esU32 tmo)
+{
+  EsThread::sleep(tmo);
+}
+
+# include "esfwxe/crc.c"
+# include "esfwxe/protocols/proprietary/protocolEkosf.c"
+#endif
 
 ES_REFLECTION_REGISTRAR_BEGIN(escomm)
 

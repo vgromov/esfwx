@@ -36,13 +36,13 @@ ENDMACRO(SPECIFY_HEADER_FILES)
 # plugin targets finalization macro
 MACRO(PLUGIN_TARGET_FINALIZE PluginTargetVar)
 	# export preprocessor defines for dll
-	if( NOT BUILD_SHARED_LIBS )
+	if( NOT ES_BUILD_SHARED_LIBS )
 		message(FATAL_ERROR
-      "${${PluginTargetVar}} must be build with BUILD_SHARED_LIBS flag set ON"
+      "${${PluginTargetVar}} must be build with ES_BUILD_SHARED_LIBS flag set ON"
     )
 	endif()
 	set_target_properties(${${PluginTargetVar}} PROPERTIES
-						COMPILE_DEFINITIONS "${dynamicLinkPreprocessorDefines}"
+						COMPILE_DEFINITIONS "${ES_USEDLL_PREPROC_FOR_DYNLIB}"
 						ENABLE_EXPORTS OFF
 						FOLDER plugins
 						)

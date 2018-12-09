@@ -190,8 +190,9 @@ target_link_libraries(${${targetName}}
 #
 # export preprocessor defines for dll
 if( ES_BUILD_SHARED_LIBS )
-	set_target_properties(${${targetName}} PROPERTIES 
-						COMPILE_DEFINITIONS "${dynamicLinkPreprocessorDefines}"
-						DEFINE_SYMBOL ESCOMM_EXPORTS)
-			
+  set_property(
+    TARGET ${${targetName}}
+    APPEND
+    PROPERTY COMPILE_DEFINITIONS "${ES_USEDLL_PREPROC_FOR_DYNLIB}" ESCOMM_EXPORTS
+  )  
 endif()
