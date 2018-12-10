@@ -49,41 +49,6 @@ const EsVariant& EsVariant::nullObject() ES_NOTHROW
   return sc_nullObject;
 }
 //--------------------------------------------------------------------------------
-
-EsString EsVariant::dump(const EsVariant& v)
-{
-  if(v.isObject())
-  {
-    EsBaseIntfPtr obj = v.asObject();
-    if(obj)
-      return EsString::format(
-        esT("object '%s'"),
-        obj->typeNameGet()
-      );
-    else
-      return esT("null object");
-  }
-  else if(v.isCollection())
-  {
-    EsString str;
-    int cnt = v.countGet();
-    for(int idx = 0; idx < cnt; ++idx)
-      str += EsString::format(
-        esT("[%d]='%s';"),
-        idx,
-        dump(
-          v[idx]
-        )
-      );
-
-    return str;
-  }
-  else if(!v.isEmpty())
-    return v.asString();
-  else
-    return esT("null");
-}
-//--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------
 
 EsVariant::EsVariant() ES_NOTHROW :
@@ -301,6 +266,15 @@ void EsVariant::releaseObject() ES_NOTHROW
 }
 //---------------------------------------------------------------------------
 
+void EsVariant::doCleanupVariantCollection(EsVariant::Array& va) ES_NOTHROW
+{
+  // Call internal cleanup on each collection member
+  size_t cnt = va.size();
+  for(size_t idx = 0; idx < cnt; ++idx)
+    va[idx].doCleanup();
+}
+//---------------------------------------------------------------------------
+
 void EsVariant::doCleanup() ES_NOTHROW
 {
   switch( m_type )
@@ -315,12 +289,19 @@ void EsVariant::doCleanup() ES_NOTHROW
     doInterpretAsStringCollection().~EsStringArray();
     break;
   case VAR_VARIANT_COLLECTION:
-    doInterpretAsVariantCollection().~EsVariantArray();
+    {
+      EsVariant::Array& va = doInterpretAsVariantCollection();
+      // Call internal cleanup on each collection member
+      doCleanupVariantCollection(va);
+      // Deallocate collection afterwards
+      va.~EsVariantArray();
+    }
     break;
   case VAR_OBJECT:
     releaseObject();
     break;
   default:
+    // No need to do anything for other types
     break;
   }
 }
@@ -344,7 +325,7 @@ void EsVariant::setEmpty() ES_NOTHROW
 }
 //---------------------------------------------------------------------------
 
-void EsVariant::setToNull(Type type /*= TypeInvalid*/)
+void EsVariant::setToNull(Type type /*= TypeInvalid*/) ES_NOTHROW
 {
   bool wasCleaned = doSetType(type);
   switch( m_type )
@@ -376,45 +357,25 @@ void EsVariant::setToNull(Type type /*= TypeInvalid*/)
     m_value.m_double = 0.0;
     break;
   case VAR_OBJECT:
-    if( !wasCleaned )
+    if( !wasCleaned ) //< Release object anyway, nullifying intf pointer, but preserving var. type
       releaseObject();
     break;
   case VAR_VARIANT_COLLECTION:
     if( wasCleaned )
     {
-      new(m_value.m_variantCollection) EsVariantArray;
+      new(m_value.m_variantCollection) EsVariant::Array;
       doInterpretAsVariantCollection().reserve(defVarCollectionSize);
     }
     else
-      doInterpretAsVariantCollection().clear();
-    break;
-  default:
-    m_value.m_llong = 0; // this surely nullifies all the value types
-    break;
-  }
-}
-//---------------------------------------------------------------------------
-
-void EsVariant::setEmptyWithObjectDelete()
-{
-  switch( m_type )
-  {
-  case VAR_OBJECT:
-    releaseObject();
-    m_type = VAR_EMPTY;
-    break;
-  case VAR_VARIANT_COLLECTION:
     {
-      EsVariant::Array& vars = doInterpretAsVariantCollection();
-      EsVariant::Array::iterator it = vars.begin();
-      EsVariant::Array::iterator itEnd = vars.end();
-      for ( ; it != itEnd; ++it )
-        (*it).setEmptyWithObjectDelete();
-      m_type = VAR_EMPTY;
-      break;
+      EsVariant::Array& va = doInterpretAsVariantCollection();
+      doCleanupVariantCollection(va);
+      va.clear();
     }
+    break;
   default:
-    setEmpty();
+    m_value.m_llong = 0; // this surely nullifies all other value types
+    break;
   }
 }
 //---------------------------------------------------------------------------
@@ -506,21 +467,8 @@ void EsVariant::countSet(ulong newCount)
 
 EsVariant& EsVariant::operator=(double f)
 {
-  doSetType(VAR_DOUBLE);
+  doSetType(VAR_DOUBLE); //< No need to call setToNull here, doSetType is enough
   m_value.m_double = f;
-  return *this;
-}
-//---------------------------------------------------------------------------
-
-EsVariant& EsVariant::operator=(const EsString::value_type* s)
-{
-  if( doSetType(VAR_STRING) ) //< We were cleaned-up
-  {
-    m_value.m_sptr = new EsString(s);
-    ES_ASSERT(m_value.m_sptr);
-  }
-  else
-    m_value.m_sptr->assign(s);
 
   return *this;
 }
@@ -528,22 +476,17 @@ EsVariant& EsVariant::operator=(const EsString::value_type* s)
 
 EsVariant& EsVariant::operator=(const EsString& s)
 {
-  if( m_type == VAR_STRING )
-  {
-    doInterpretAsString() = s;
-    return *this;
-  }
-  else
-    return operator=( s.data() );
+  setToNull(VAR_STRING);
+  doInterpretAsString() = s;
+
+  return *this;
 }
 //---------------------------------------------------------------------------
 
 EsVariant& EsVariant::operator=(const EsString::Array& c)
 {
-  if( doSetType(VAR_STRING_COLLECTION) ) //< have to call DoSetType ...
-    new((void*)&m_value) EsString::Array(c);
-  else
-    doInterpretAsStringCollection() = c;
+  setToNull(VAR_STRING_COLLECTION);
+  doInterpretAsStringCollection() = c;
 
   return *this;
 }
@@ -551,10 +494,8 @@ EsVariant& EsVariant::operator=(const EsString::Array& c)
 
 EsVariant& EsVariant::operator=(const EsVariant::Array& c)
 {
-  if( doSetType(VAR_VARIANT_COLLECTION) ) // have to call DoSetType ...
-    new((void*)&m_value) EsVariant::Array(c);
-  else
-    doInterpretAsVariantCollection() = c;
+  setToNull(VAR_VARIANT_COLLECTION);
+  doInterpretAsVariantCollection() = c;
 
   return *this;
 }
@@ -562,19 +503,12 @@ EsVariant& EsVariant::operator=(const EsVariant::Array& c)
 
 EsVariant& EsVariant::operator=(const EsBaseIntf::Ptr& obj)
 {
-  doSetType(VAR_OBJECT);
+  setToNull(VAR_OBJECT);
   m_value.m_intf.m_ptr = obj.get();
   m_value.m_intf.m_own = obj.own();
   if( m_value.m_intf.m_ptr && m_value.m_intf.m_own )
     m_value.m_intf.m_ptr->incRef();
-  return *this;
-}
-//---------------------------------------------------------------------------
 
-EsVariant& EsVariant::operator=(const void* ptr)
-{
-  doSetType(VAR_POINTER);
-  m_value.m_pointer = const_cast<void*>(ptr);
   return *this;
 }
 //---------------------------------------------------------------------------
@@ -605,19 +539,19 @@ EsVariant& EsVariant::operator=(const EsVariant& other)
 void EsVariant::assignBinBuffer(const EsBinBuffer& v)
 {
   if( v.empty() )
-    assign(
+    assignBinBuffer(
       nullptr,
       0
     );
   else
-    assign(
+    assignBinBuffer(
       v.data(),
       v.size()
     );
 }
 //---------------------------------------------------------------------------
 
-void EsVariant::assign(EsBinBuffer::const_pointer v, size_t len)
+void EsVariant::assignBinBuffer(EsBinBuffer::const_pointer v, size_t len)
 {
   if( doSetType(VAR_BIN_BUFFER) )
     new((void*)&m_value) EsBinBuffer(
@@ -635,7 +569,6 @@ void EsVariant::assign(EsBinBuffer::const_pointer v, size_t len)
 void EsVariant::assignString(EsString::const_pointer v, size_t len)
 {
   bool wasCleaned = doSetType(VAR_STRING); // have to call DoSetType
-
   if( wasCleaned )
     m_value.m_sptr = new EsString;
   ES_ASSERT(m_value.m_sptr);
@@ -2035,7 +1968,10 @@ void EsVariant::itemDelete(const EsVariant& index)
   {
     EsReflectedClassIntf::Ptr obj = asExistingObject();
     ES_ASSERT(obj);
-    obj->call(EsStdNames::itemDelete(), index);
+    obj->call(
+      EsStdNames::itemDelete(),
+      index
+    );
   }
   else
   {
@@ -3412,8 +3348,8 @@ EsVariant EsVariant::find(const EsVariant& var) const
     break;
   case EsVariant::VAR_VARIANT_COLLECTION:
     {
-      const EsVariantArray& va = doInterpretAsVariantCollection();
-      EsVariantArray::const_iterator cit = std::find( va.begin(), va.end(), var );
+      const EsVariant::Array& va = doInterpretAsVariantCollection();
+      auto cit = std::find( va.begin(), va.end(), var );
       if( cit != va.end() )
         return cit-va.begin();
     }
@@ -3460,8 +3396,8 @@ EsVariant EsVariant::findFirstOf(const EsVariant& var) const
     break;
   case EsVariant::VAR_VARIANT_COLLECTION:
     {
-      const EsVariantArray& va = doInterpretAsVariantCollection();
-      EsVariantArray::const_iterator cit = std::find( va.begin(), va.end(), var );
+      const EsVariant::Array& va = doInterpretAsVariantCollection();
+      auto cit = std::find( va.begin(), va.end(), var );
       if( cit != va.end() )
         return va.size()-(cit-va.begin())-1;
     }
@@ -3508,8 +3444,8 @@ EsVariant EsVariant::findLastOf(const EsVariant& var) const
     break;
   case EsVariant::VAR_VARIANT_COLLECTION:
     {
-      const EsVariantArray& va = doInterpretAsVariantCollection();
-      EsVariantArray::const_reverse_iterator crit = std::find( va.rbegin(), va.rend(), var );
+      const EsVariant::Array& va = doInterpretAsVariantCollection();
+      auto crit = std::find( va.rbegin(), va.rend(), var );
       if( crit != va.rend() )
         return va.size()-(crit-va.rbegin())-1;
     }
@@ -3599,8 +3535,8 @@ void EsVariant::replace(const EsVariant& var, long offs, ulong cnt /*= 0*/)
     break;
   case EsVariant::VAR_VARIANT_COLLECTION:
     {
-      EsVariantArray& s = doInterpretAsVariantCollection();
-      const EsVariantArray& r = var.doInterpretAsVariantCollection();
+      EsVariant::Array& s = doInterpretAsVariantCollection();
+      const EsVariant::Array& r = var.doInterpretAsVariantCollection();
 
       rangeAssign(
         s,

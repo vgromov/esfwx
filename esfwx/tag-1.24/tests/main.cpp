@@ -77,6 +77,7 @@ int main(int argc, char **argv)
   ES_DEBUG_TRACE(esT("EsEnumeration size: %d"), sizeof(EsEnumeration));
   ES_DEBUG_TRACE(esT("EsDateTime size: %d"), sizeof(EsDateTime));
   ES_DEBUG_TRACE(esT("EsMathArrayReal size: %d"), sizeof(EsMathArrayReal));
+  ES_DEBUG_TRACE(esT("EsScriptObject size: %d"), sizeof(EsScriptObject));
 
   try
   {

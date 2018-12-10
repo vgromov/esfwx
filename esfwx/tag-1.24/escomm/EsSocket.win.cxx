@@ -1,12 +1,13 @@
 /// Windows sockets engine initialization|uninitialization
 ///
 //---------------------------------------------------------------------------
-#ifdef _WIN64
-# pragma comment(lib, "ws2_32.a")
-#else
-# pragma comment(lib, "ws2_32.lib")
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+#ifdef ES_COMM_USE_BLUETOOTH
+# include <ws2bth.h>
 #endif
-//---------------------------------------------------------------------------
 
 static WSADATA s_w;
 //---------------------------------------------------------------------------
@@ -165,9 +166,9 @@ public:
     if( m_raw != raw )
     {
       if( !rawParse(raw, reinterpret_cast<esU8*>(&m_addr.sin_addr)) )
-        EsException::Throw( 
-          _("'%s' is not a valid IPv4 address"), 
-          raw 
+        EsException::Throw(
+          _("'%s' is not a valid IPv4 address"),
+          raw
         );
 
       m_flags |= flagRawResolved;
@@ -542,9 +543,9 @@ public:
       if( !isBound() )
       {
         int err = ::bind(
-            m_sock,
-            (const sockaddr*)m_addr.nativeGet(),
-            m_addr.nativeSizeGet()
+          m_sock,
+          (const sockaddr*)m_addr.nativeGet(),
+          static_cast<int>(m_addr.nativeSizeGet())
         );
 
         if( SOCKET_ERROR == err )
@@ -614,7 +615,7 @@ public:
           // accepted socket address is of the same kind as our listener's
           // so use cloning to create address object for the new incoming socket
           EsSocketAddr newAddr(m_addr.typeGet());
-          int addrLen = newAddr.nativeSizeGet();
+          int addrLen = static_cast<int>(newAddr.nativeSizeGet());
           ES_ASSERT( newAddr.isOk() );
 
           SOCKET newSock = ::accept(
@@ -682,7 +683,7 @@ public:
         int err = ::connect(
           m_sock,
           (sockaddr*)m_addr.nativeGet(),
-          m_addr.nativeSizeGet()
+          static_cast<int>(m_addr.nativeSizeGet())
         );
 
         if( SOCKET_ERROR == err )
@@ -783,7 +784,10 @@ public:
         {
           if( writeOpReady(tmo, doThrow) )
           {
-            int toSend = esMin(end-pos, static_cast<ptrdiff_t>(m_maxOutChunk));
+            int toSend = esMin(
+              static_cast<int>(end-pos),
+              static_cast<int>(m_maxOutChunk)
+            );
             int result = 0;
 
             // if message oriented and not bound explicitly
@@ -794,7 +798,7 @@ public:
                 toSend,
                 0,
                 (const sockaddr*)m_addr.nativeGet(),
-                m_addr.nativeSizeGet()
+                static_cast<int>(m_addr.nativeSizeGet())
               );
             else
               result = ::send(
@@ -822,7 +826,7 @@ public:
     else
       signalNotInitialized(doThrow);
 
-    return pos-data;
+    return static_cast<ulong>(pos-data);
   }
 
   virtual ulong sendTo(const EsSocketAddr& addr, const esU8* data, ulong len, ulong tmo, bool doThrow)
@@ -841,8 +845,8 @@ public:
           if( writeOpReady(tmo, doThrow) )
           {
             int toSend = esMin(
-              end-pos,
-              static_cast<ptrdiff_t>(
+              static_cast<int>(end-pos),
+              static_cast<int>(
                 m_maxOutChunk
               )
             );
@@ -853,7 +857,7 @@ public:
               toSend,
               0,
               (const sockaddr*)m_addr.nativeGet(),
-              m_addr.nativeSizeGet()
+              static_cast<int>(m_addr.nativeSizeGet())
             );
 
             if( SOCKET_ERROR == result )
@@ -879,7 +883,7 @@ public:
     else
       signalNotInitialized(doThrow);
 
-    return pos-data;
+    return static_cast<ulong>(pos-data);
   }
 
   virtual ulong receive(esU8* data, ulong len, ulong tmo, bool doThrow)
@@ -914,8 +918,8 @@ public:
       if( noError() && toRead )
       {
         toRead = esMin(
-          end-pos,
-          static_cast<ptrdiff_t>(
+          static_cast<int>(end-pos),
+          static_cast<int>(
             esMin(
               toRead,
               m_maxInChunk
@@ -947,7 +951,7 @@ public:
         break;
     }
 
-    return pos-data;
+    return static_cast<ulong>(pos-data);
   }
 
   virtual ulong receiveFrom(EsSocketAddr& addr, esU8* data, ulong len, ulong tmo, bool doThrow)
@@ -974,7 +978,7 @@ public:
 
       // Use address of the same type as ours
       addr = EsSocketAddr(m_addr.typeGet());
-      int addrLen = addr.nativeSizeGet();
+      int addrLen = static_cast<int>(addr.nativeSizeGet());
 
       int result = recvfrom(
         m_sock,

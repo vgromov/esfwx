@@ -42,56 +42,74 @@ SPECIFY_HEADER_FILES(tests_SRCS headerExtensions)
 add_executable(${targetName}
 	${tests_SRCS}
 )
-target_link_libraries(${targetName}
+
+# Set-up extra libraries
+set(
+  ESFWX_TESTS_EXTRA_LIBRARIES 
   ${escoreLib${staticMarker}}
   ${esmathLib${staticMarker}}
   ${escommLib${staticMarker}}
   ${esscriptLib${staticMarker}}
 )
-
-set(targetProperties
-	_VARIADIC_MAX=10
+if(CMAKE_COMPILER_IS_GNUCXX AND NOT MINGW)
+  if(ESTESTS_USE_STACK_BACKTRACE)
+    list(
+      APPEND
+      ESFWX_TESTS_EXTRA_LIBRARIES
+      dl dfd
+    )
+  endif()
+endif()
+  
+target_link_libraries(
+  ${targetName}
+  ${ESFWX_TESTS_EXTRA_LIBRARIES}
+)
+message(
+  STATUS
+  "ESFWX_TESTS_EXTRA_LIBRARIES=>${ESFWX_TESTS_EXTRA_LIBRARIES}"
 )
 
+# Set-up definitions and options
+set( 
+  ESFWX_TESTS_DEFS 
+  _VARIADIC_MAX=10 
+)
 if( ES_BUILD_SHARED_LIBS )
-  set(targetProperties
-		${targetProperties}
-		${ES_USEDLL_PREPROC_FOR_EXE}
+  list(
+    APPEND 
+    ESFWX_TESTS_DEFS ${ES_USEDLL_PREPROC_FOR_EXE}
 	)
 endif()
 
-set_target_properties(
-  ${targetName} 
-  PROPERTIES COMPILE_DEFINITIONS "${targetProperties}"
-)
-
 if(CMAKE_COMPILER_IS_GNUCXX)
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set_property(
-      TARGET ${targetName} 
-      APPEND
-      PROPERTY COMPILE_DEFINITIONS -g -rdynamic
-    )
-    
-    if(ESTESTS_USE_STACK_BACKTRACE)
-      target_link_libraries(
-        ${targetName}
-        dl
-        dfd
-      )
-    endif()
+  if(NOT MINGW AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+    set(ESFWX_TESTS_OPTS "-rdynamic")
   endif()
-  
-  if(MINGW)
-    set_property(
-      TARGET ${targetName} 
-      APPEND
-      PROPERTY COMPILE_DEFINITIONS "${COMPILE_DEFINITIONS} -mconsoile -municode"
+endif()
+if(MINGW)
+  if(ESFWX_TESTS_OPTS)
+    set(
+      ESFWX_TESTS_OPTS
+      "${ESFWX_TESTS_OPTS} -mconsole -municode"
+    )
+  else()
+    set(
+      ESFWX_TESTS_OPTS
+      "-mconsole -municode"
     )
   endif()
 endif()
 
+
+set_target_properties(
+  ${targetName}
+  PROPERTIES
+  LINK_FLAGS "${ESFWX_TESTS_OPTS}"
+  COMPILE_DEFINITIONS "${ESFWX_TESTS_DEFS}"
+)
+
 message(
   STATUS
-  "tests COMPILE_DEFINITIONS=>${COMPILE_DEFINITIONS}"
+  "${targetName} ESFWX_TESTS_DEFS=>${ESFWX_TESTS_DEFS} ESFWX_TESTS_OPTS=>${ESFWX_TESTS_OPTS}"
 )

@@ -61,7 +61,7 @@ m_orphan(false)
   }
 
   m_info = EsMethodInfoKeyT(
-    m_params.size(),
+    static_cast<ulong>(m_params.size()),
     EsScriptlet::nameFormat(
       name,
       m_params.size()

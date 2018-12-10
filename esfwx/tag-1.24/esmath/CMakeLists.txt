@@ -93,10 +93,18 @@ SPECIFY_HEADER_FILES(esmath_SRCS headerExtensions)
 add_library(${${targetName}} 
 	${esmath_SRCS} 
 	${esmath_RES}
-	)
-target_link_libraries(${${targetName}} 
-	${escoreLib${staticMarker}} 
-	)
+)
+  
+# Set-up library dependencies
+set(ESMATH_EXTRA_LIBRARIES ${escoreLib${staticMarker}})
+target_link_libraries( 
+  ${${targetName}}
+  ${ESMATH_EXTRA_LIBRARIES}
+)
+message(
+  STATUS
+  "ESMATH_EXTRA_LIBRARIES=>${ESMATH_EXTRA_LIBRARIES}"
+)
 
 # customize target properties
 #

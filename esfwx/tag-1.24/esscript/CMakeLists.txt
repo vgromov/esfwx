@@ -158,7 +158,17 @@ SPECIFY_PRECOMPILED_HEADER("esscriptpch.h" "EsScriptMain.cpp" esscript_SRCS)
 SPECIFY_HEADER_FILES(esscript_SRCS headerExtensions)
 
 add_library(${${targetName}} ${esscript_SRCS} ${esscript_RES})
-target_link_libraries(${${targetName}} ${escoreLib${staticMarker}})
+
+# Set-up library dependencies
+set(ESSCRIPT_EXTRA_LIBRARIES ${escoreLib${staticMarker}})
+target_link_libraries(
+  ${${targetName}} 
+  ${ESSCRIPT_EXTRA_LIBRARIES}
+)
+message(
+  STATUS
+  "ESSCRIPT_EXTRA_LIBRARIES=>${ESSCRIPT_EXTRA_LIBRARIES}"
+)
 
 # customize target properties
 #

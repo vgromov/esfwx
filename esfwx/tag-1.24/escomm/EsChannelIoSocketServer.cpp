@@ -261,7 +261,7 @@ void EsChannelIoSocketServer::onClientDataReceived(const EsSocketAddr& addr, EsB
       data
     );
 
-    inlen = m_in.size();
+    inlen = static_cast<ulong>(m_in.size());
   }
 
   if( inlen == m_expectedLen )
@@ -345,7 +345,11 @@ ES_IMPL_INTF_METHOD(esU32, EsChannelIoSocketServer::bytesPut)(const esU8* data, 
 ES_IMPL_INTF_METHOD(ulong, EsChannelIoSocketServer::bytesPut)(const EsBinBuffer& data, ulong tmo)
 {
   if( !data.empty() )
-    return bytesPut(&data[0], data.size(), tmo);
+    return bytesPut(
+      &data[0], 
+      static_cast<esU32>(data.size()),
+      tmo
+    );
 
   return 0;
 }

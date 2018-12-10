@@ -425,7 +425,10 @@ public: /// Assignment operators:
   ///
   EsVariant& operator=(bool b)
   {
-    return doSetInt(b, VAR_BOOL);
+    return doSetInt(
+      b, 
+      VAR_BOOL
+    );
   }
 
 
@@ -455,14 +458,23 @@ public: /// Assignment operators:
   {
 #if !defined(ES_USE_NARROW_ES_CHAR)
 # if 2 == ES_CHAR_SIZE
-    return doSetInt(static_cast<llong>( static_cast<unsigned short>(c) ), VAR_CHAR);
+    return doSetInt(
+      static_cast<llong>( static_cast<unsigned short>(c) ), 
+      VAR_CHAR
+    );
 # elif 4 == ES_CHAR_SIZE
-    return doSetInt(static_cast<llong>( static_cast<ulong>(c) ), VAR_CHAR);
+    return doSetInt(
+      static_cast<llong>( static_cast<ulong>(c) ), 
+      VAR_CHAR
+    );
 # else
 #   error Unsupported|unknown ES_CHAR_SIZE!
 # endif
 #else
-    return doSetInt(static_cast<llong>( static_cast<unsigned char>(c) ), VAR_CHAR);
+    return doSetInt(
+      static_cast<llong>( static_cast<unsigned char>(c) ), 
+      VAR_CHAR
+    );
 #endif
   }
 
@@ -565,16 +577,6 @@ public: /// Assignment operators:
   ///
   EsVariant& operator=(double f);
 
-  /// Assignment operator that takes variable of type
-  /// pointer to the constant zero terminated string.
-  ///
-  /// PRECONDITION: None
-  ///
-  /// POSTCONDITION: The previous value is discarded.
-  /// The new value of type VAR_STRING is assigned.
-  ///
-  EsVariant& operator=(EsString::const_pointer p);
-
   /// Assignment operator that takes variable of type string.
   ///
   /// PRECONDITION: None
@@ -609,7 +611,7 @@ public: /// Assignment operators:
   /// POSTCONDITION: The previous value is discarded.
   /// The new value has the same type and value as the one given.
   ///
-  EsVariant& operator= (const EsVariant& v);
+  EsVariant& operator=(const EsVariant& v);
 
   /// Assignment operator that takes variable of type EsBinBuffer
   ///
@@ -618,7 +620,7 @@ public: /// Assignment operators:
   /// POSTCONDITION: The previous value is discarded.
   /// The new value has type VAR_BIN_BUFFER, and value specified.
   ///
-  inline EsVariant& operator= (const EsBinBuffer& v)
+  inline EsVariant& operator=(const EsBinBuffer& v)
   {
     assignBinBuffer(v);
     return *this;
@@ -641,7 +643,7 @@ public: /// Assignment operators:
   /// The new value has type VAR_BIN_BUFFER, and value specified
   /// with pointer and length.
   ///
-  void assign(EsBinBuffer::const_pointer v, size_t len);
+  void assignBinBuffer(EsBinBuffer::const_pointer v, size_t len);
 
   /// Assign the string to the variant type.
   ///
@@ -674,17 +676,8 @@ public: /// Assignment operators:
   template < typename OtherIntfT >
   EsVariant& operator=(const EsIntfPtr< OtherIntfT >& v)
   {
-    return operator= ( v.template request< EsBaseIntf >() );
+    return operator=( v.template request< EsBaseIntf >() );
   }
-
-  /// Assignment operator that takes variable of type void*.
-  ///
-  /// PRECONDITION: None
-  ///
-  /// POSTCONDITION: The previous value is discarded.
-  /// The new value has the same type and value as the one given.
-  ///
-  EsVariant& operator=(const void* ptr);
 
 public: /// Conversion services:
 
@@ -767,7 +760,6 @@ public: /// Conversion services:
   ///
   inline int asInt(const std::locale& loc = EsLocale::locale()) const
   {
-    //ES_COMPILE_TIME_ASSERT(sizeof(int) == sizeof(long), IntSizeEqLongSize); // Careful with architectures where sizes of int and long do not match
     return static_cast<int>( asLong(loc) );
   }
 
@@ -785,7 +777,6 @@ public: /// Conversion services:
   ///
   inline unsigned asUInt(const std::locale& loc = EsLocale::locale()) const
   {
-    //ES_COMPILE_TIME_ASSERT(sizeof(unsigned) == sizeof(ulong), UnsignedSizeEqUnsignedLongSize); // Careful with architectures where sizes of int and long do not match
     return static_cast<unsigned>( asULong(loc) );
   }
 
@@ -999,15 +990,6 @@ public: /// Conversion services:
   ///
   void setEmpty() ES_NOTHROW;
 
-  /// Discard the value of the variant type, and if it is an object, delete it.
-  /// This corresponds to a concept of owned object.
-  ///
-  /// PRECONDITION: None
-  ///
-  /// POSTCONDITION: The variant is set to empty, and if it was an interface|object, it is deleted.
-  ///
-  void setEmptyWithObjectDelete();
-
   /// Discard the value of the variant type, and set the null,
   /// empty or zero value of this given type.
   /// The null value will depend on the given type.
@@ -1018,7 +1000,7 @@ public: /// Conversion services:
   ///
   /// POSTCONDITION: Type of the variant becomes one given, with null value.
   ///
-  void setToNull(Type type = TypeInvalid);
+  void setToNull(Type type = TypeInvalid) ES_NOTHROW;
 
   /// Efficiently swap the value with the given value.
   ///
@@ -1572,17 +1554,6 @@ public: /// Conversion services:
   /// Variant contents debug trace
   EsString trace() const ES_NOTHROW;
 
-private: ///< Services:
-  /// Internal assignment service that constructs integer-based variant value
-  /// with the particular type given.
-  ///
-  /// PRECONDITION: type has to be of generic integer type. Otherwise the
-  /// behavior is undefined.
-  ///
-  /// POSTCONDITION: The variant is initialized with the value and type given.
-  ///
-  EsVariant& doSetInt(llong value, Type type) ES_NOTHROW;
-
 public: ///< Semi-public services that has to be used carefully:
   /// Interpret the internals of the variant as bool.
   ///
@@ -1951,9 +1922,19 @@ public:
   static const EsVariant& nullObject() ES_NOTHROW;
 
   /// Dump variant contents to a string
-  static EsString dump(const EsVariant& v);
+  static inline EsString dump(const EsVariant& v) ES_NOTHROW { return v.trace(); }
 
-private: //< Private methods:
+private:
+  /// Internal assignment service that constructs integer-based variant value
+  /// with the particular type given.
+  ///
+  /// PRECONDITION: type has to be of generic integer type. Otherwise the
+  /// behavior is undefined.
+  ///
+  /// POSTCONDITION: The variant is initialized with the value and type given.
+  ///
+  EsVariant& doSetInt(llong value, Type type) ES_NOTHROW;
+
   /// Set the type of the variant.
   /// If setting new type requires current value to be cleaned-up, do it,
   /// and return true. Otherwise, retain current contents, and return false.
@@ -1962,13 +1943,16 @@ private: //< Private methods:
   /// Release object interface and nullify object interface pointer
   void releaseObject() ES_NOTHROW;
 
+  /// Clenup variant collection, calling doCleanup on each member
+  static void doCleanupVariantCollection(EsVariant::Array& va) ES_NOTHROW;
+
   /// Cleanup variant contents
   void doCleanup() ES_NOTHROW;
 
   /// Internal contents move services
   void internalMove(EsVariant& other) ES_NOTHROW;
 
-private: //< Data:
+private:
   /// Variable to hold the variant value.
   /// It is the first data in the class for making sure it is aligned to the eight byte boundary.
   ///

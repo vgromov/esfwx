@@ -1439,7 +1439,7 @@ EsVariant EsScriptMachine::call(const EsString& name)
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0)
 {
-  EsVariant::Array params = {
+  const EsVariant::Array& params = {
     p0
   };
 
@@ -1452,7 +1452,7 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0)
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1)
 {
-  EsVariant::Array params = {
+  const EsVariant::Array& params = {
     p0,
     p1
   };
@@ -1466,7 +1466,7 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2)
 {
-  EsVariant::Array params = {
+  const EsVariant::Array& params = {
     p0,
     p1,
     p2
@@ -1481,7 +1481,7 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3)
 {
-  EsVariant::Array params = {
+  const EsVariant::Array& params = {
     p0,
     p1,
     p2,
@@ -1497,7 +1497,7 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4)
 {
-  EsVariant::Array params = {
+  const EsVariant::Array& params = {
     p0,
     p1,
     p2,
@@ -1514,7 +1514,7 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4, const EsVariant& p5)
 {
-  EsVariant::Array params = {
+  const EsVariant::Array& params = {
     p0,
     p1,
     p2,
@@ -1532,7 +1532,7 @@ EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const
 
 EsVariant EsScriptMachine::call(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4, const EsVariant& p5, const EsVariant& p6)
 {
-  EsVariant::Array params = {
+  const EsVariant::Array& params = {
     p0,
     p1,
     p2,
@@ -1560,7 +1560,7 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name)
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0)
 {
-  EsVariant::Array ps = {
+  const EsVariant::Array& ps = {
     p0
   };
 
@@ -1573,7 +1573,7 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1)
 {
-  EsVariant::Array ps = {
+  const EsVariant::Array& ps = {
     p0,
     p1
   };
@@ -1587,7 +1587,7 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2)
 {
-  EsVariant::Array ps = {
+  const EsVariant::Array& ps = {
     p0,
     p1,
     p2
@@ -1602,7 +1602,7 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3)
 {
-  EsVariant::Array ps = {
+  const EsVariant::Array& ps = {
     p0,
     p1,
     p2,
@@ -1618,7 +1618,7 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4)
 {
-  EsVariant::Array ps = {
+  const EsVariant::Array& ps = {
     p0,
     p1,
     p2,
@@ -1635,7 +1635,7 @@ EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, co
 
 EsReflectedClassIntf::Ptr EsScriptMachine::objectCreate(const EsString& name, const EsVariant& p0, const EsVariant& p1, const EsVariant& p2, const EsVariant& p3, const EsVariant& p4, const EsVariant& p5)
 {
-  EsVariant::Array ps = {
+  const EsVariant::Array& ps = {
     p0,
     p1,
     p2,

@@ -303,7 +303,7 @@ ES_IMPL_INTF_METHOD(esU32, EsChannelIoSocketClient::bytesGet)(esU8* data, esU32 
       )
     );
 
-  return result;
+  return static_cast<esU32>(result);
 }
 //---------------------------------------------------------------------------
 
@@ -312,7 +312,7 @@ ES_IMPL_INTF_METHOD(ulong, EsChannelIoSocketClient::bytesPut)(const EsBinBuffer&
   if( !data.empty() )
     return bytesPut(
       data.data(),
-      data.size(),
+      static_cast<esU32>(data.size()),
       tmo
     );
 

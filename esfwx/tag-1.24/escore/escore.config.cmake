@@ -23,8 +23,8 @@ set(ESCORE_USE_CRYPTO_DEBUG_TRACE 0 CACHE BOOL "Default=0. Use crypto functions 
 
 # Regex supprot
 set(ESCORE_USE_REGEX 1 CACHE BOOL "Default=1. Use Regular expressions")
-set(ESCORE_USE_REGEX_FLAVOUR "EMBEDDED_PCRE" CACHE STRING "Default=EMBEDDED_PCRE. Use STD to invoke Regular expressions implementation from standard C++ library. EMBEDDED_PCRE selects tweaked PCRE library code")
-set_property(CACHE ESCORE_USE_REGEX_FLAVOUR PROPERTY STRINGS STD EMBEDDED_PCRE)
+set(ESCORE_USE_REGEX_FLAVOUR "PCRE2_EMBEDDED" CACHE STRING "Default=PCRE2_EMBEDDED. Use STD to invoke Regular expressions implementation from standard C++ library. PCRE2_EMBEDDED selects tweaked PCRE library code")
+set_property(CACHE ESCORE_USE_REGEX_FLAVOUR PROPERTY STRINGS STD PCRE2_EMBEDDED)
 
 # Misc optional boost tuneup
 set(ESCORE_BOOST_LIB_DIAGNOSTICS 1 CACHE BOOL "Default=1. Enable boost compilation diagnostic messages")
@@ -59,7 +59,7 @@ set(ES_USE_REGEX ${ESCORE_USE_REGEX})
 if(ESCORE_USE_REGEX)
   if(ESCORE_USE_REGEX_FLAVOUR STREQUAL STD)
     set(ES_USE_REGEX_STD 1)
-  elseif(ESCORE_USE_REGEX_FLAVOUR STREQUAL EMBEDDED_PCRE)
+  elseif(ESCORE_USE_REGEX_FLAVOUR STREQUAL PCRE2_EMBEDDED)
     set(ES_USE_REGEX_PCRE 1)
   endif()
 endif()

@@ -250,15 +250,20 @@ add_library( ${${targetName}}
   ${escore_RES}
 )
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-  if(MINGW)
-    target_link_libraries( ${${targetName}} version winmm rpcrt4)
-  else()
-    target_link_libraries( ${${targetName}} dl pthread)
-  endif()
+# Set-up library dependencies
+if(WIN32)
+  set(ESCORE_EXTRA_LIBRARIES version winmm rpcrt4)
 else()
-  target_link_libraries( ${${targetName}} )
+  set(ESCORE_EXTRA_LIBRARIES dl pthread)
 endif()
+target_link_libraries( 
+  ${${targetName}} 
+  ${ESCORE_EXTRA_LIBRARIES}
+)
+message(
+  STATUS
+  "ESCORE_EXTRA_LIBRARIES=>${ESCORE_EXTRA_LIBRARIES}"
+)
 
 # customize target properties
 #

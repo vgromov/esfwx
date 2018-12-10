@@ -48,7 +48,6 @@ void EsSocketException::Throw(EsSocketError code, const EsString& msg /*= EsStri
   throw EsSocketException(code, msg);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 // Common address functionality implementation
@@ -102,17 +101,9 @@ const EsString& EsSocketAddr::Impl::serviceGet() const
   return m_svc;
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 #if ES_OS == ES_OS_WINDOWS
-# define _WINSOCK_DEPRECATED_NO_WARNINGS
-# include <winsock2.h>
-# include <ws2tcpip.h>
-
-# ifdef ES_COMM_USE_BLUETOOTH
-#   include <ws2bth.h>
-# endif
 
 # include "EsSocket.win.cxx"
 
@@ -550,11 +541,7 @@ EsVariant EsSocketAddr::null()
 
 EsVariant EsSocketAddr::NEW()
 {
-#ifdef ES_MODERN_CPP
-  std::unique_ptr<EsSocketAddr> p = std::make_unique<EsSocketAddr>();
-#else
   std::unique_ptr<EsSocketAddr> p( new EsSocketAddr );
-#endif
 
   ES_ASSERT(p.get());
   p->m_dynamic = true;
@@ -578,13 +565,6 @@ EsVariant EsSocketAddr::NEW(cr_EsVariant vtype, cr_EsVariant vaddr, cr_EsVariant
   );
 
   if( vportOrSvc.isNumeric() )
-#ifdef ES_MODERN_CPP
-    p = std::make_unique<EsSocketAddr>(
-      type,
-      vaddr.asString(),
-      vportOrSvc.asULong()
-    );
-#else
     p.reset(
       new EsSocketAddr(
         type,
@@ -592,15 +572,7 @@ EsVariant EsSocketAddr::NEW(cr_EsVariant vtype, cr_EsVariant vaddr, cr_EsVariant
         vportOrSvc.asULong()
       )
     );
-#endif
   else
-#ifdef ES_MODERN_CPP
-    p = std::make_unique<EsSocketAddr>(
-      type,
-      vaddr.asString(),
-      vportOrSvc.asString()
-    );
-#else
     p.reset(
       new EsSocketAddr(
         type,
@@ -608,7 +580,6 @@ EsVariant EsSocketAddr::NEW(cr_EsVariant vtype, cr_EsVariant vaddr, cr_EsVariant
         vportOrSvc.asString()
       )
     );
-#endif
 
   ES_ASSERT(p.get());
   p->m_dynamic = true;
@@ -938,7 +909,7 @@ ulong EsSocket::send(const EsBinBuffer& bb, ulong tmo, bool doThrow)
   if( !bb.empty() )
     return send(
       bb.data(),
-      bb.size(),
+      static_cast<ulong>(bb.size()),
       tmo,
       doThrow
     );
@@ -983,7 +954,7 @@ ulong EsSocket::sendTo(const EsSocketAddr& addr, const EsBinBuffer& bb, ulong tm
     return sendTo(
       addr,
       bb.data(),
-      bb.size(),
+      static_cast<ulong>(bb.size()),
       tmo,
       doThrow
     );

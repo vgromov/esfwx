@@ -86,7 +86,7 @@ void EsSocketClient::doClose(bool graceful, bool doThrow)
     if( bb.size() )
       onServerFarewellReceived(
         bb.data(),
-        bb.size()
+        static_cast<ulong>(bb.size())
       );
   }
 
@@ -149,7 +149,7 @@ void EsSocketClientReflected::Client::onSendFarewell(EsSocket::Impl& io)
         io.sendTo(
           m_owner.m_addr,
           bb.data(),
-          bb.size(),
+          static_cast<ulong>(bb.size()),
           0,
           m_owner.m_doThrow
         );
@@ -158,7 +158,7 @@ void EsSocketClientReflected::Client::onSendFarewell(EsSocket::Impl& io)
       {
         io.send(
           bb.data(),
-          bb.size(),
+          static_cast<ulong>(bb.size()),
           0,
           m_owner.m_doThrow
         );

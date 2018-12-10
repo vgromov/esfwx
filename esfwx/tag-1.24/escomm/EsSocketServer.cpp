@@ -84,8 +84,8 @@ void EsSocketServer::Listener::connectionlessListen()
       rcnt
     );
 
-    if( rcnt > m_buff.size() )
-      rcnt = m_buff.size();
+    if( rcnt > static_cast<ulong>(m_buff.size()) )
+      rcnt = static_cast<ulong>(m_buff.size());
 
     rcnt = m_owner.receiveFrom(
       addr,
@@ -343,7 +343,7 @@ bool EsSocketServer::Handler::response(EsBinBuffer& out, bool isAux)
   if( m_connOriented )
     wcnt = m_io->send(
       out.data(),
-      out.size(),
+      static_cast<ulong>(out.size()),
       m_owner.m_packetTmo,
       false
     );
@@ -351,7 +351,7 @@ bool EsSocketServer::Handler::response(EsBinBuffer& out, bool isAux)
     wcnt = m_io->sendTo(
       m_addr,
       out.data(),
-      out.size(),
+      static_cast<ulong>(out.size()),
       m_owner.m_handlerTtl,
       false
     );
@@ -412,8 +412,8 @@ void EsSocketServer::Handler::connectionHandle()
 
   if( rcnt )
   {
-    if( rcnt > m_in.size() )
-      rcnt = m_in.size();
+    if( rcnt > static_cast<ulong>(m_in.size()) )
+      rcnt = static_cast<ulong>(m_in.size());
 
     ES_ASSERT(rcnt);
 
@@ -486,7 +486,7 @@ void EsSocketServer::Handler::connectionlessHandle()
     m_owner.onClientDataReceived(
       m_addr,
       m_in.data(),
-      m_in.size(),
+      static_cast<ulong>(m_in.size()),
       out
     );
 
@@ -767,7 +767,7 @@ void EsSocketServer::clientRemove(const EsSocketAddr& addr)
 ulong EsSocketServer::clientsCountGet() const
 {
   EsCriticalSectionLocker lock(m_cs);
-  return m_clients.size();
+  return static_cast<ulong>(m_clients.size());
 }
 //---------------------------------------------------------------------------
 
@@ -1191,7 +1191,7 @@ void EsSocketServerReflected::Server::onClientClosing(const EsSocketAddr& addr, 
         io.sendTo(
           addr,
           bb.data(),
-          bb.size(),
+          static_cast<ulong>(bb.size()),
           m_owner.get_packetTimeout(),
           m_owner.m_doThrow
         );
@@ -1200,7 +1200,7 @@ void EsSocketServerReflected::Server::onClientClosing(const EsSocketAddr& addr, 
       {
         io.send(
           bb.data(),
-          bb.size(),
+          static_cast<ulong>(bb.size()),
           m_owner.get_packetTimeout(),
           m_owner.m_doThrow
         );

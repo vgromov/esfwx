@@ -1246,7 +1246,10 @@ bool EsClassInfo::isIndexed() const ES_NOTHROW
 EsVariant EsClassInfo::call(EsBase* obj, const EsString& name) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(0, name));
-  return info.call(obj, EsVariant::null());
+  return info.call(
+    obj, 
+    EsVariant::null()
+  );
 }
 
 EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1) const
@@ -1258,8 +1261,9 @@ EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& 
     )
   );
 
-  EsVariant::Array params;
-  params.push_back(param1);
+  const EsVariant::Array& params = {
+    param1
+  };
 
   return info.call(
     obj,
@@ -1270,11 +1274,11 @@ EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& 
 EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(2, name));
-  EsVariant::Array params;
-  params.reserve(2);
-
-  params.push_back(param1);
-  params.push_back(param2);
+  
+  const EsVariant::Array& params = {
+    param1,
+    param2
+  };
 
   return info.call(
     obj,
@@ -1285,12 +1289,11 @@ EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& 
 EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(3, name));
-  EsVariant::Array params;
-  params.reserve(3);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
+  const EsVariant::Array& params = {
+    param1,
+    param2,
+    param3
+  };
 
   return info.call(
     obj,
@@ -1301,13 +1304,12 @@ EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& 
 EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(4, name));
-  EsVariant::Array params;
-  params.reserve(4);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
-  params.push_back(param4);
+  const EsVariant::Array& params = {
+    param1,
+    param2,
+    param3,
+    param4
+  };
 
   return info.call(
     obj,
@@ -1318,14 +1320,13 @@ EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& 
 EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(5, name));
-  EsVariant::Array params;
-  params.reserve(5);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
-  params.push_back(param4);
-  params.push_back(param5);
+  const EsVariant::Array& params = {
+    param1,
+    param2,
+    param3,
+    param4,
+    param5
+  };
 
   return info.call(
     obj,
@@ -1336,15 +1337,14 @@ EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& 
 EsVariant EsClassInfo::call(EsBase* obj, const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5, const EsVariant& param6) const
 {
   const EsMethodInfo& info = methodInfoGet(EsMethodInfoKeyT(6, name));
-  EsVariant::Array params;
-  params.reserve(6);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
-  params.push_back(param4);
-  params.push_back(param5);
-  params.push_back(param6);
+  const EsVariant::Array& params = {
+    param1,
+    param2,
+    param3,
+    param4,
+    param5,
+    param6
+  };
 
   return info.call(
     obj,
@@ -1395,8 +1395,9 @@ EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1) 
       name
     )
   );
-  EsVariant::Array params;
-  params.push_back(param1);
+  const EsVariant::Array& params = {
+    param1
+  };
 
   return info.classCall(params);
 }
@@ -1409,11 +1410,10 @@ EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, 
       name
     )
   );
-  EsVariant::Array params;
-  params.reserve(2);
-
-  params.push_back(param1);
-  params.push_back(param2);
+  const EsVariant::Array& params = {
+    param1,
+    param2
+  };
 
   return info.classCall(params);
 }
@@ -1421,12 +1421,11 @@ EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3) const
 {
   const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(3, name));
-  EsVariant::Array params;
-  params.reserve(3);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
+  const EsVariant::Array& params = {
+    param1,
+    param2,
+    param3
+  };
 
   return info.classCall(params);
 }
@@ -1434,13 +1433,12 @@ EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4) const
 {
   const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(4, name));
-  EsVariant::Array params;
-  params.reserve(4);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
-  params.push_back(param4);
+  const EsVariant::Array& params = {
+    param1,
+    param2,
+    param3,
+    param4
+  };
 
   return info.classCall(params);
 }
@@ -1448,14 +1446,13 @@ EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5) const
 {
   const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(5, name));
-  EsVariant::Array params;
-  params.reserve(5);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
-  params.push_back(param4);
-  params.push_back(param5);
+  const EsVariant::Array& params = {
+    param1,
+    param2,
+    param3,
+    param4,
+    param5
+  };
 
   return info.classCall(params);
 }
@@ -1463,15 +1460,14 @@ EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, 
 EsVariant EsClassInfo::classCall(const EsString& name, const EsVariant& param1, const EsVariant& param2, const EsVariant& param3, const EsVariant& param4, const EsVariant& param5, const EsVariant& param6) const
 {
   const EsMethodInfo& info = classMethodInfoGet(EsMethodInfoKeyT(6, name));
-  EsVariant::Array params;
-  params.reserve(6);
-
-  params.push_back(param1);
-  params.push_back(param2);
-  params.push_back(param3);
-  params.push_back(param4);
-  params.push_back(param5);
-  params.push_back(param6);
+  const EsVariant::Array& params = {
+    param1,
+    param2,
+    param3,
+    param4,
+    param5,
+    param6
+  };
 
   return info.classCall(params);
 }

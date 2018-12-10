@@ -197,4 +197,24 @@ object ProfilingTest
     }
   }
  
+  function memleakTest0()
+  var idx;
+  {
+    m_coll = [];
+
+    for(idx = 0; idx < 2; ++idx)
+      m_coll += idx;
+  }
+
+  function memleakTest1()
+  var idx, tmp;
+  {
+    m_coll = [];
+
+    tmp = new TestDataSimple();
+    m_coll += tmp;
+
+    tmp = new TestDataSimple();
+    m_coll += tmp;
+  }
 }

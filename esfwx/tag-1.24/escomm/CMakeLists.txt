@@ -181,10 +181,24 @@ add_library(${${targetName}}
 	${escomm_c_shared_SRCS} 
 	${escomm_SRCS} 
 	${escomm_RES}
-	)
-target_link_libraries(${${targetName}} 
-	${escoreLib${staticMarker}} 
-	)
+)
+
+# Set-up external libraries
+set(ESCOMM_EXTRA_LIBRARIES ${escoreLib${staticMarker}})
+if(WIN32)
+  if(ESCOMM_USE_SOCKETS)
+    list(APPEND ESCOMM_EXTRA_LIBRARIES ws2_32)
+  endif()
+endif()
+
+target_link_libraries(
+  ${${targetName}} 
+	${ESCOMM_EXTRA_LIBRARIES}
+)
+message(
+  STATUS
+  "ESCOMM_EXTRA_LIBRARIES=>${ESCOMM_EXTRA_LIBRARIES}"
+)
 
 # customize target properties
 #
