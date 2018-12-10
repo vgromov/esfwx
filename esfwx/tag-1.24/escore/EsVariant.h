@@ -25,7 +25,7 @@ public:
     VAR_POINTER,            ///< Variant has generic pointer
     VAR_OBJECT,             ///< Variant has an base interface of object
     VAR_VARIANT_COLLECTION, ///< Array of any type of elements, array of variants
-    TypeInvalid = -1        ///< Specific 'Invalid' value, must bew the last     
+    TypeInvalid = -1        ///< Specific 'Invalid' value, must bew the last
   };
 
   /// Tag that allows telling string constructor from the binary buffer constructor.
@@ -426,7 +426,7 @@ public: /// Assignment operators:
   EsVariant& operator=(bool b)
   {
     return doSetInt(
-      b, 
+      b,
       VAR_BOOL
     );
   }
@@ -459,12 +459,12 @@ public: /// Assignment operators:
 #if !defined(ES_USE_NARROW_ES_CHAR)
 # if 2 == ES_CHAR_SIZE
     return doSetInt(
-      static_cast<llong>( static_cast<unsigned short>(c) ), 
+      static_cast<llong>( static_cast<unsigned short>(c) ),
       VAR_CHAR
     );
 # elif 4 == ES_CHAR_SIZE
     return doSetInt(
-      static_cast<llong>( static_cast<ulong>(c) ), 
+      static_cast<llong>( static_cast<ulong>(c) ),
       VAR_CHAR
     );
 # else
@@ -472,7 +472,7 @@ public: /// Assignment operators:
 # endif
 #else
     return doSetInt(
-      static_cast<llong>( static_cast<unsigned char>(c) ), 
+      static_cast<llong>( static_cast<unsigned char>(c) ),
       VAR_CHAR
     );
 #endif
@@ -1665,7 +1665,9 @@ public: ///< Semi-public services that has to be used carefully:
   inline EsBinBuffer& doInterpretAsBinBuffer() ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_BIN_BUFFER);
-    return *reinterpret_cast<EsBinBuffer*>(&m_value);
+    ES_ASSERT(m_value.m_bbptr);
+
+    return *m_value.m_bbptr;
   }
 
   /// Interpret the internals of the variant as constant byte string.
@@ -1680,7 +1682,9 @@ public: ///< Semi-public services that has to be used carefully:
   inline const EsBinBuffer& doInterpretAsBinBuffer() const ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_BIN_BUFFER);
-    return *reinterpret_cast<const EsBinBuffer*>(&m_value);
+    ES_ASSERT(m_value.m_bbptr);
+
+    return *m_value.m_bbptr;
   }
 
   /// Interpret the internals of the variant as string collection.
@@ -1694,7 +1698,9 @@ public: ///< Semi-public services that has to be used carefully:
   inline EsString::Array& doInterpretAsStringCollection() ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_STRING_COLLECTION);
-    return *reinterpret_cast<EsString::Array*>(&m_value);
+    ES_ASSERT(m_value.m_saptr);
+
+    return *m_value.m_saptr;
   }
 
   /// Interpret the internals of the variant as constant string collection.
@@ -1708,7 +1714,9 @@ public: ///< Semi-public services that has to be used carefully:
   inline const EsString::Array& doInterpretAsStringCollection() const ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_STRING_COLLECTION);
-    return *reinterpret_cast<const EsString::Array*>(&m_value);
+    ES_ASSERT(m_value.m_saptr);
+
+    return *m_value.m_saptr;
   }
 
   /// Interpret the internals of the variant as variant collection.
@@ -1722,7 +1730,9 @@ public: ///< Semi-public services that has to be used carefully:
   inline EsVariant::Array& doInterpretAsVariantCollection() ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_VARIANT_COLLECTION);
-    return *reinterpret_cast<EsVariant::Array*>(&m_value);
+    ES_ASSERT(m_value.m_vaptr);
+
+    return *m_value.m_vaptr;
   }
 
   /// Interpret the internals of the variant as constant variant collection.
@@ -1736,7 +1746,9 @@ public: ///< Semi-public services that has to be used carefully:
   inline const EsVariant::Array& doInterpretAsVariantCollection() const ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_VARIANT_COLLECTION);
-    return *reinterpret_cast<const EsVariant::Array*>(&m_value);
+    ES_ASSERT(m_value.m_vaptr);
+
+    return *m_value.m_vaptr;
   }
 
   /// Interpret the internals of the variant as an interface.
@@ -1750,13 +1762,21 @@ public: ///< Semi-public services that has to be used carefully:
   inline EsBaseIntf::Ptr doInterpretAsObject() ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_OBJECT);
-    return EsBaseIntf::Ptr(m_value.m_intf.m_ptr, m_value.m_intf.m_own, m_value.m_intf.m_own);
+    return EsBaseIntf::Ptr(
+      m_value.m_intf.m_ptr,
+      m_value.m_intf.m_own,
+      m_value.m_intf.m_own
+    );
   }
 
   inline EsBaseIntf::Ptr doInterpretAsObject() const ES_NOTHROW
   {
     ES_ASSERT(m_type == VAR_OBJECT);
-    return EsBaseIntf::Ptr(m_value.m_intf.m_ptr, m_value.m_intf.m_own, m_value.m_intf.m_own);
+    return EsBaseIntf::Ptr(
+      m_value.m_intf.m_ptr,
+      m_value.m_intf.m_own,
+      m_value.m_intf.m_own
+    );
   }
 
   inline void doAssignToEmpty(bool b) ES_NOTHROW
@@ -1858,15 +1878,16 @@ public: ///< Semi-public services that has to be used carefully:
   {
     ES_ASSERT(m_type == VAR_EMPTY);
     m_type = VAR_STRING_COLLECTION;
-
-    new((void*)&m_value) EsString::Array(s);
+    m_value.m_saptr = new EsString::Array(s);
+    ES_ASSERT(m_value.m_saptr);
   }
 
   inline void doAssignToEmpty(const EsVariant::Array& s)
   {
     ES_ASSERT(m_type == VAR_EMPTY);
     m_type = VAR_VARIANT_COLLECTION;
-    new((void*)&m_value) EsVariant::Array(s);
+    m_value.m_vaptr = new EsVariant::Array(s);
+    ES_ASSERT(m_value.m_vaptr);
   }
 
   void doAssignToEmpty(const EsVariant& other);
@@ -1875,7 +1896,8 @@ public: ///< Semi-public services that has to be used carefully:
   {
     ES_ASSERT(m_type == VAR_EMPTY);
     m_type = VAR_BIN_BUFFER;
-    new((void*)&m_value) EsBinBuffer(v);
+    m_value.m_bbptr = new EsBinBuffer(v);
+    ES_ASSERT(m_value.m_bbptr);
   }
 
   inline void doAssignToEmpty(EsBaseIntf* i, bool own) ES_NOTHROW
@@ -1943,9 +1965,6 @@ private:
   /// Release object interface and nullify object interface pointer
   void releaseObject() ES_NOTHROW;
 
-  /// Clenup variant collection, calling doCleanup on each member
-  static void doCleanupVariantCollection(EsVariant::Array& va) ES_NOTHROW;
-
   /// Cleanup variant contents
   void doCleanup() ES_NOTHROW;
 
@@ -1982,24 +2001,20 @@ private:
     double m_double;
 
     /// Used for storing of EsString data
-    /// NB! As soon as our implementation is std::basic_string - based, we're not in
-    /// charge of whether intrinsic small cache implementation is there, let alone
-    /// it's not public, so we may not rely on extremely optimized
-    /// bulk object move semantics here.
     ///
     EsString* m_sptr;
 
-    /// Used for storing of string data, mapped to EsBinBuffer
+    /// Used for storing EsBinBuffer data
     ///
-    EsBinBuffer::value_type m_binBuffer[ sizeof(EsBinBuffer) ];
+    EsBinBuffer* m_bbptr;
 
     /// Used for storing of string data, mapped to EsString and EsBinBuffer
     ///
-    EsBinBuffer::value_type m_stringCollection[ sizeof(EsString::Array) ];
+    EsString::Array* m_saptr;
 
     /// Used for storing the vector of variants
     ///
-    EsBinBuffer::value_type m_variantCollection[ sizeof(EsVariant::Array) ];
+    EsVariant::Array* m_vaptr;
 
   } m_value;
 

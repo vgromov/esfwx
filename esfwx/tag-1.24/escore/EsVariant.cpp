@@ -159,6 +159,7 @@ EsVariant::EsVariant(EsString::const_pointer p, unsigned len, EsVariant::AcceptS
 m_type(VAR_STRING)
 {
   m_value.m_sptr = new EsString;
+  ES_ASSERT(m_value.m_sptr);
 
   if( nullptr != p && 0 != len )
     m_value.m_sptr->assign(p, len);
@@ -168,14 +169,19 @@ m_type(VAR_STRING)
 EsVariant::EsVariant(EsBinBuffer::const_pointer p, unsigned len)  :
 m_type(VAR_BIN_BUFFER)
 {
-  new((void*)&m_value) EsBinBuffer(p, p+len);
+  m_value.m_bbptr = new EsBinBuffer(
+    p,
+    p+len
+  );
+  ES_ASSERT(m_value.m_bbptr);
 }
 //---------------------------------------------------------------------------
 
 EsVariant::EsVariant(const EsBinBuffer& s) :
 m_type(VAR_BIN_BUFFER)
 {
-  new((void*)&m_value) EsBinBuffer(s);
+  m_value.m_bbptr = new EsBinBuffer(s);
+  ES_ASSERT(m_value.m_bbptr);
 }
 //---------------------------------------------------------------------------
 
@@ -189,14 +195,16 @@ m_type(VAR_STRING)
 EsVariant::EsVariant(const EsString::Array& v) :
 m_type(VAR_STRING_COLLECTION)
 {
-  new((void*)&m_value) EsString::Array(v);
+  m_value.m_saptr = new EsString::Array(v);
+  ES_ASSERT(m_value.m_saptr);
 }
 //---------------------------------------------------------------------------
 
 EsVariant::EsVariant(const EsVariant::Array& v)  :
 m_type(VAR_VARIANT_COLLECTION)
 {
-  new((void*)&m_value) EsVariant::Array(v);
+  m_value.m_vaptr = new EsVariant::Array(v);
+  ES_ASSERT(m_value.m_vaptr);
 }
 //---------------------------------------------------------------------------
 
@@ -266,15 +274,6 @@ void EsVariant::releaseObject() ES_NOTHROW
 }
 //---------------------------------------------------------------------------
 
-void EsVariant::doCleanupVariantCollection(EsVariant::Array& va) ES_NOTHROW
-{
-  // Call internal cleanup on each collection member
-  size_t cnt = va.size();
-  for(size_t idx = 0; idx < cnt; ++idx)
-    va[idx].doCleanup();
-}
-//---------------------------------------------------------------------------
-
 void EsVariant::doCleanup() ES_NOTHROW
 {
   switch( m_type )
@@ -283,19 +282,13 @@ void EsVariant::doCleanup() ES_NOTHROW
     ES_DELETE(m_value.m_sptr);
     break;
   case VAR_BIN_BUFFER:
-    doInterpretAsBinBuffer().~EsBinBuffer();
+    ES_DELETE(m_value.m_bbptr);
     break;
   case VAR_STRING_COLLECTION:
-    doInterpretAsStringCollection().~EsStringArray();
+    ES_DELETE(m_value.m_saptr);
     break;
   case VAR_VARIANT_COLLECTION:
-    {
-      EsVariant::Array& va = doInterpretAsVariantCollection();
-      // Call internal cleanup on each collection member
-      doCleanupVariantCollection(va);
-      // Deallocate collection afterwards
-      va.~EsVariantArray();
-    }
+    ES_DELETE(m_value.m_vaptr);
     break;
   case VAR_OBJECT:
     releaseObject();
@@ -342,14 +335,20 @@ void EsVariant::setToNull(Type type /*= TypeInvalid*/) ES_NOTHROW
       doInterpretAsString().clear();
     break;
   case VAR_BIN_BUFFER:
-    if( wasCleaned )
-      new(m_value.m_binBuffer) EsBinBuffer;
+    if(wasCleaned)
+    {
+      m_value.m_bbptr = new EsBinBuffer;
+      ES_ASSERT(m_value.m_bbptr);
+    }
     else
       doInterpretAsBinBuffer().clear();
     break;
   case VAR_STRING_COLLECTION:
-    if( wasCleaned )
-      new(m_value.m_stringCollection) EsStringArray;
+    if(wasCleaned)
+    {
+      m_value.m_saptr = new EsStringArray;
+      ES_ASSERT(m_value.m_saptr);
+    }
     else
       doInterpretAsStringCollection().clear();
     break;
@@ -363,15 +362,13 @@ void EsVariant::setToNull(Type type /*= TypeInvalid*/) ES_NOTHROW
   case VAR_VARIANT_COLLECTION:
     if( wasCleaned )
     {
-      new(m_value.m_variantCollection) EsVariant::Array;
-      doInterpretAsVariantCollection().reserve(defVarCollectionSize);
+      m_value.m_vaptr = new EsVariantArray;
+      ES_ASSERT(m_value.m_vaptr);
+
+      m_value.m_vaptr->reserve(defVarCollectionSize);
     }
     else
-    {
-      EsVariant::Array& va = doInterpretAsVariantCollection();
-      doCleanupVariantCollection(va);
-      va.clear();
-    }
+      doInterpretAsVariantCollection().clear();
     break;
   default:
     m_value.m_llong = 0; // this surely nullifies all other value types
@@ -553,11 +550,14 @@ void EsVariant::assignBinBuffer(const EsBinBuffer& v)
 
 void EsVariant::assignBinBuffer(EsBinBuffer::const_pointer v, size_t len)
 {
-  if( doSetType(VAR_BIN_BUFFER) )
-    new((void*)&m_value) EsBinBuffer(
+  if(doSetType(VAR_BIN_BUFFER))
+  {
+    m_value.m_bbptr = new EsBinBuffer(
       v,
-      v+len
+      v + len
     );
+    ES_ASSERT(m_value.m_bbptr);
+  }
   else
     doInterpretAsBinBuffer().assign(
       v,
@@ -1711,6 +1711,7 @@ void EsVariant::doAssignToEmpty(EsString::const_pointer s)
   m_type = VAR_STRING;
 
   m_value.m_sptr = new EsString;
+  ES_ASSERT(m_value.m_sptr);
   if( nullptr != s )
     m_value.m_sptr->assign(s);
 }
@@ -1722,6 +1723,7 @@ void EsVariant::doAssignToEmpty(const EsString& s)
   m_type = VAR_STRING;
 
   m_value.m_sptr = new EsString;
+  ES_ASSERT(m_value.m_sptr);
   if( !s.empty() )
     m_value.m_sptr->assign(s);
 }
@@ -1732,14 +1734,14 @@ void EsVariant::swap(EsVariant& other) ES_NOTHROW
   if(this == &other)
     return;
 
-  // If we use binary buffer with internal local storage, we have to perform its
-  // fixup after direct copy is complete
-  //
-  bool fixupOtherBB = (VAR_BIN_BUFFER == m_type) &&
-    doInterpretAsBinBuffer().usesLocalStorage();
+  //// If we use binary buffer with internal local storage, we have to perform its
+  //// fixup after direct copy is complete
+  ////
+  //bool fixupOtherBB = (VAR_BIN_BUFFER == m_type) &&
+  //  doInterpretAsBinBuffer().usesLocalStorage();
 
-  bool fixupBB = (VAR_BIN_BUFFER == other.typeGet()) &&
-    other.doInterpretAsBinBuffer().usesLocalStorage();
+  //bool fixupBB = (VAR_BIN_BUFFER == other.typeGet()) &&
+  //  other.doInterpretAsBinBuffer().usesLocalStorage();
 
   // We know that Variant is always movable in memory as a whole
   //
@@ -1752,14 +1754,14 @@ void EsVariant::swap(EsVariant& other) ES_NOTHROW
   other.m_value = tmpval;
   other.m_type = tmptype;
 
-  // Perform optional local storage pointer for vector
-  // internally used in binary buffer
-  //
-  if( fixupBB )
-    doInterpretAsBinBuffer().localStorageFixup();
+  //// Perform optional local storage pointer for vector
+  //// internally used in binary buffer
+  ////
+  //if( fixupBB )
+  //  doInterpretAsBinBuffer().localStorageFixup();
 
-  if( fixupOtherBB )
-    other.doInterpretAsBinBuffer().localStorageFixup();
+  //if( fixupOtherBB )
+  //  other.doInterpretAsBinBuffer().localStorageFixup();
 }
 //---------------------------------------------------------------------------
 
@@ -1768,14 +1770,14 @@ void EsVariant::internalMove(EsVariant& other) ES_NOTHROW
   m_value = other.m_value;
   m_type = other.m_type;
 
-  // Perform optional local storage pointer fixup for vector
-  // internally used in binary buffer
-  //
-  if(
-    (VAR_BIN_BUFFER == m_type) &&
-    other.doInterpretAsBinBuffer().usesLocalStorage()
-  )
-    doInterpretAsBinBuffer().localStorageFixup();
+  //// Perform optional local storage pointer fixup for vector
+  //// internally used in binary buffer
+  ////
+  //if(
+  //  (VAR_BIN_BUFFER == m_type) &&
+  //  other.doInterpretAsBinBuffer().usesLocalStorage()
+  //)
+  //  doInterpretAsBinBuffer().localStorageFixup();
 
   other.m_type = VAR_EMPTY;
 }
@@ -1793,7 +1795,10 @@ void EsVariant::move(EsVariant& other) ES_NOTHROW
 
 EsVariant EsVariant::pow(const EsVariant& val, const std::locale& loc /*= EsLocale::locale()*/) const
 {
-  return esPow(asDouble(loc), val.asDouble(loc));
+  return esPow(
+    asDouble(loc),
+    val.asDouble(loc)
+  );
 }
 //---------------------------------------------------------------------------
 
