@@ -36,27 +36,22 @@ protected:
       script
     );
 
-    if( streamw->rootObjectTypeEntryLocate(esT("EL3C_CalibrationSession"), false) )
-    {
-      sobj = streamw->objectCreate();
+    const EsPath& binTest = EsPath::create(
+      EsPath::stdDocsGet(),
+      esT("EL3C_CalibrationSession_new"),
+      esT("bin")
+    );
 
-      const EsPath& binTest = EsPath::create(
-        EsPath::stdDocsGet(),
-        esT("EL3C_CalibrationSession_new"),
-        esT("bin")
-      );
+    if( binTest.fileExists() )
+      EsPath::fileRemove( binTest.pathGet() );
 
-      if( binTest.fileExists() )
-        EsPath::fileRemove( binTest.pathGet() );
-
-      streamb = EsStreamBinary::create(
-        static_cast<ulong>(EsStreamFlag::Write)|
-        static_cast<ulong>(EsStreamFlag::Compressed)|
-        static_cast<ulong>(EsStreamFlag::File),
-        binTest.pathGet(),
-        script
-      );
-    }
+    streamb = EsStreamBinary::create(
+      static_cast<ulong>(EsStreamFlag::Write)|
+      static_cast<ulong>(EsStreamFlag::Compressed)|
+      static_cast<ulong>(EsStreamFlag::File),
+      binTest.pathGet(),
+      script
+    );
   }
 
   void TearDown()
@@ -77,6 +72,15 @@ protected:
 TEST_F(EsStreamBinaryTest0, BinaryStreamObjectWrite) {
 
   ASSERT_TRUE( streamb );
+
+  if( streamw->rootObjectTypeEntryLocate(esT("EL3C_CalibrationSession"), false) )
+  {
+    ASSERT_NO_THROW(
+      sobj = streamw->objectCreate()
+    );
+
+    EXPECT_TRUE( sobj.get() );
+  }
 
   const EsDateTime& dtstart = EsDateTime::now();
 

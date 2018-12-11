@@ -38,7 +38,6 @@ EsDynamicLibrary::~EsDynamicLibrary()
 EsStringIndexedMap& EsDynamicLibrary::libsGet()
 {
   static EsStringIndexedMap s_libs;
-
   return s_libs;
 }
 //---------------------------------------------------------------------------

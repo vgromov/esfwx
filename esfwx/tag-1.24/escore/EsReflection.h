@@ -246,10 +246,10 @@ class ESCORE_CLASS ES_INTF_IMPL1(EsAttributes, EsAttributesIntf)
 protected:
   EsAttributes(const EsString& ownerName, bool interlocked) ES_NOTHROW :
   m_contents(
-    ownerName,
     interlocked ?
       EsStringIndexedMap::ContainerUsesInterlock :
-      EsStringIndexedMap::ContainerWithoutInterlock
+      EsStringIndexedMap::ContainerWithoutInterlock,
+     ownerName
   )
   {}
 

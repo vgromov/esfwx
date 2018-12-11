@@ -12,7 +12,7 @@
 //---------------------------------------------------------------------------
 
 EsStringIndexedMap::
-EsStringAssocContainerNodeT::EsStringAssocContainerNodeT(const EsString& name, ulong idx, const EsVariant& payload/* = EsVariant::s_null*/) ES_NOTHROW :
+EsStringAssocContainerNodeT::EsStringAssocContainerNodeT(const EsString& name, ulong idx, const EsVariant& payload/* = EsVariant::null()*/) ES_NOTHROW :
 m_name(name),
 m_idx(idx),
 m_payload(payload)
@@ -22,26 +22,36 @@ m_payload(payload)
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
-EsStringIndexedMap::EsStringIndexedMap( EsStringIndexedMap::ContainerInterlocked interlocked) ES_NOTHROW
+EsStringIndexedMap::EsStringIndexedMap( EsStringIndexedMap::ContainerInterlocked interlocked /*=ContainerUsesInterlock*/) ES_NOTHROW
 {
   if( ContainerUsesInterlock == interlocked )
     m_cs.reset( new EsCriticalSection );
 }
+//---------------------------------------------------------------------------
 
-EsStringIndexedMap::EsStringIndexedMap(const EsString& containerName /*= EsString::s_null*/, EsStringIndexedMap::ContainerInterlocked interlocked /*= ContainerUsesInterlock*/ ) ES_NOTHROW :
+EsStringIndexedMap::EsStringIndexedMap(EsStringIndexedMap::ContainerInterlocked interlocked, const EsString& containerName /*= EsString::null()*/ ) ES_NOTHROW :
 m_containerName(containerName)
 {
   if( ContainerUsesInterlock == interlocked )
     m_cs.reset( new EsCriticalSection );
 }
+//---------------------------------------------------------------------------
 
-EsStringIndexedMap::EsStringIndexedMap(const EsStringIndexedMap& src, EsStringIndexedMap::ContainerInterlocked interlocked /*= ContainerUsesInterlock*/)
+EsStringIndexedMap::EsStringIndexedMap(const EsStringIndexedMap& src, EsStringIndexedMap::ContainerInterlocked interlocked)
 {
   if( ContainerUsesInterlock == interlocked )
     m_cs.reset( new EsCriticalSection );
 
   copyFrom(src);
 }
+//---------------------------------------------------------------------------
+
+EsStringIndexedMap::EsStringIndexedMap(const EsStringIndexedMap& src)
+{
+  m_cs.reset( new EsCriticalSection ); //< Create interlocked by default
+  copyFrom(src);
+}
+//---------------------------------------------------------------------------
 
 EsStringIndexedMap::~EsStringIndexedMap() ES_NOTHROW
 {
@@ -56,6 +66,7 @@ EsStringIndexedMap::~EsStringIndexedMap() ES_NOTHROW
   catch(...)
   {}
 }
+//---------------------------------------------------------------------------
 
 // internal helpers
 //
@@ -110,6 +121,7 @@ ulong EsStringIndexedMap::internalInsert(const EsString& name, const EsVariant& 
 
   return npos;
 }
+//---------------------------------------------------------------------------
 
 void EsStringIndexedMap::copyFrom(const EsStringIndexedMap& src)
 {
@@ -129,6 +141,7 @@ void EsStringIndexedMap::copyFrom(const EsStringIndexedMap& src)
     );
   }
 }
+//---------------------------------------------------------------------------
 
 // indexed map API
 //
@@ -137,12 +150,14 @@ bool EsStringIndexedMap::isEmpty() const ES_NOTHROW
   EsCriticalSectionPtrLocker lock(m_cs);
   return m_v.empty();
 }
+//---------------------------------------------------------------------------
 
 ulong EsStringIndexedMap::countGet() const ES_NOTHROW
 {
   EsCriticalSectionPtrLocker lock(m_cs);
   return static_cast<ulong>(m_v.size());
 }
+//---------------------------------------------------------------------------
 
 ulong EsStringIndexedMap::internalFind(const EsString& name) const ES_NOTHROW
 {
@@ -153,6 +168,7 @@ ulong EsStringIndexedMap::internalFind(const EsString& name) const ES_NOTHROW
 
   return npos;
 }
+//---------------------------------------------------------------------------
 
 ulong EsStringIndexedMap::internalFind(const EsByteString& name, ulong len) const ES_NOTHROW
 {
@@ -171,12 +187,14 @@ ulong EsStringIndexedMap::internalFind(const EsByteString& name, ulong len) cons
 
   return npos;
 }
+//---------------------------------------------------------------------------
 
 ulong EsStringIndexedMap::itemFind(const EsString& name) const ES_NOTHROW
 {
   EsCriticalSectionPtrLocker lock(m_cs);
   return internalFind(name);
 }
+//---------------------------------------------------------------------------
 
 // The same as above, but for byte strings
 ulong EsStringIndexedMap::itemFind(const EsByteString& name, ulong len) const ES_NOTHROW
@@ -184,6 +202,7 @@ ulong EsStringIndexedMap::itemFind(const EsByteString& name, ulong len) const ES
   EsCriticalSectionPtrLocker lock(m_cs);
   return internalFind(name, len);
 }
+//---------------------------------------------------------------------------
 
 // insert named item with payload, return new item index, or
 // generate 'item already exists' exception
@@ -205,6 +224,7 @@ ulong EsStringIndexedMap::itemAdd(const EsString& name, const EsVariant& payload
 
   return result;
 }
+//---------------------------------------------------------------------------
 
 // item deletion by name|index. NB! deletion performance is poor
 void EsStringIndexedMap::internalDelete(ulong idx)
@@ -216,6 +236,7 @@ void EsStringIndexedMap::internalDelete(ulong idx)
   for(ulong _idx = idx; _idx < m_v.size(); ++_idx )
     m_v[_idx]->m_idx = _idx;
 }
+//---------------------------------------------------------------------------
 
 void EsStringIndexedMap::itemDelete(ulong idx)
 {
@@ -227,6 +248,7 @@ void EsStringIndexedMap::itemDelete(ulong idx)
   );
   internalDelete(idx);
 }
+//---------------------------------------------------------------------------
 
 void EsStringIndexedMap::throwItemDoesNotExist(const EsString& name) const
 {
@@ -242,6 +264,7 @@ void EsStringIndexedMap::throwItemDoesNotExist(const EsString& name) const
       m_containerName
     );
 }
+//---------------------------------------------------------------------------
 
 void EsStringIndexedMap::itemDelete(const EsString& name, bool doThrow /*= false*/)
 {
@@ -252,6 +275,7 @@ void EsStringIndexedMap::itemDelete(const EsString& name, bool doThrow /*= false
   else if( doThrow )
     throwItemDoesNotExist(name);
 }
+//---------------------------------------------------------------------------
 
 void EsStringIndexedMap::clear()
 {
@@ -259,6 +283,7 @@ void EsStringIndexedMap::clear()
   m_m.clear();
   m_v.clear();
 }
+//---------------------------------------------------------------------------
 
 EsString::Array EsStringIndexedMap::namesGet() const ES_NOTHROW
 {
@@ -274,16 +299,19 @@ EsString::Array EsStringIndexedMap::namesGet() const ES_NOTHROW
   }
   return result;
 }
+//---------------------------------------------------------------------------
 
 bool EsStringIndexedMap::itemExists(const EsString& name) const ES_NOTHROW
 {
   return itemFind(name) != npos;
 }
+//---------------------------------------------------------------------------
 
 bool EsStringIndexedMap::itemExists(const EsByteString& name, ulong len) const ES_NOTHROW
 {
   return itemFind(name, len) != npos;
 }
+//---------------------------------------------------------------------------
 
 // operators
 //
@@ -297,6 +325,7 @@ const EsString& EsStringIndexedMap::nameGet(ulong idx) const
   );
   return m_v[idx]->m_name;
 }
+//---------------------------------------------------------------------------
 
 // named payload access
 const EsVariant& EsStringIndexedMap::valueGet(const EsString& name) const
@@ -311,6 +340,7 @@ const EsVariant& EsStringIndexedMap::valueGet(const EsString& name) const
 
   return EsVariant::null();
 }
+//---------------------------------------------------------------------------
 
 void EsStringIndexedMap::valueSet(const EsString& name, const EsVariant& val)
 {
@@ -334,6 +364,7 @@ void EsStringIndexedMap::valueSet(const EsString& name, const EsVariant& val)
       );
   }
 }
+//---------------------------------------------------------------------------
 
 // indexed payload access
 const EsVariant& EsStringIndexedMap::valueGet(ulong idx) const
@@ -346,6 +377,7 @@ const EsVariant& EsStringIndexedMap::valueGet(ulong idx) const
   );
   return m_v[idx]->m_payload;
 }
+//---------------------------------------------------------------------------
 
 void EsStringIndexedMap::valueSet(ulong idx, const EsVariant& val)
 {
@@ -357,12 +389,14 @@ void EsStringIndexedMap::valueSet(ulong idx, const EsVariant& val)
   );
   m_v[idx]->m_payload = val;
 }
+//---------------------------------------------------------------------------
 
 EsStringIndexedMap& EsStringIndexedMap::operator=(const EsStringIndexedMap& src)
 {
   copyFrom(src);
   return *this;
 }
+//---------------------------------------------------------------------------
 
 // equality|inequality comparison. NB! comparison is performed on item names only,
 // payload content is not counted for
@@ -375,6 +409,7 @@ static inline bool EsStringAssocContainerNodePtrEqual(
   ES_ASSERT(_2);
   return _1->nameGet() == _2->nameGet();
 }
+//---------------------------------------------------------------------------
 
 bool EsStringIndexedMap::operator==(const EsStringIndexedMap& src) const ES_NOTHROW
 {
@@ -393,8 +428,10 @@ bool EsStringIndexedMap::operator==(const EsStringIndexedMap& src) const ES_NOTH
 
   return false;
 }
+//---------------------------------------------------------------------------
 
 bool EsStringIndexedMap::operator!=(const EsStringIndexedMap& src) const ES_NOTHROW
 {
   return !this->operator==(src);
 }
+//---------------------------------------------------------------------------

@@ -129,7 +129,6 @@ const EsString& EsSocketAddr::Impl::serviceGet() const
 
 #endif
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 ES_DECL_BASE_CLASS_INFO_BEGIN(EsSocketAddr, esT("Resolvable Socket address class"))

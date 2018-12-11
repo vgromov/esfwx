@@ -109,12 +109,14 @@ private:
 # define ES_THREADCALL  __stdcall
   typedef esU32 ResultT;
   typedef LPVOID ParamT;
+  int priorityCalc() const ES_NOTHROW;
 #elif defined(ES_POSIX_COMPAT)
 # define ES_THREADCALL
   typedef void* ResultT;
   typedef void* ParamT;
   static EsThreadId pthreadIdGet(const pthread_t& thread) ES_NOTHROW;
   static void onThreadExit(EsThread::ResultT result);
+  int priorityCalc(pthread_attr_t& attrs) const;
 #endif
 
   void threadCreate();
@@ -122,10 +124,13 @@ private:
   /// Actual thread worker
   static ResultT ES_THREADCALL threadWorker( EsThread::ParamT param );
 
-  /// Thread priority calculation helper
-  int priorityCalc();
-
 protected:
+#if ES_OS == ES_OS_WINDOWS
+  HANDLE m_thread;
+#elif defined(ES_POSIX_COMPAT)
+  pthread_t m_thread;
+#endif
+
   // recently executed thread error log
   EsString::Array m_errorLog;
 
@@ -149,12 +154,6 @@ protected:
   long m_priority;
 
   EsThreadId m_id;
-#if ES_OS == ES_OS_WINDOWS
-  HANDLE m_thread;
-#elif defined(ES_POSIX_COMPAT)
-  std::unique_ptr<pthread_attr_t> m_threadAttr;
-  pthread_t m_thread;
-#endif
 
   friend class EsThreadStateProxy;
 };

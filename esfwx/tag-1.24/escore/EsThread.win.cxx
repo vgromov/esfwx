@@ -35,7 +35,7 @@ void EsThread::cleanup()
 }
 //---------------------------------------------------------------------------
 
-int EsThread::priorityCalc()
+int EsThread::priorityCalc() const ES_NOTHROW
 {
   if(m_priority <= 20)
     return THREAD_PRIORITY_LOWEST;

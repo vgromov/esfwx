@@ -4,12 +4,14 @@
 class EsThreadTest1 : public EsThread
 {
 public:
+  EsThreadTest1() : m_idx(0) {}
+
   int idxGet() const { return m_idx; }
 
 protected:
   virtual long worker()
   {
-    m_idx = 0;
+    m_idx = 1;
     while( !checkForStopping(5) )
       ++m_idx;
 

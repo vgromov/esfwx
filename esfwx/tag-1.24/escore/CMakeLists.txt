@@ -253,9 +253,9 @@ add_library( ${${targetName}}
 # Set-up library dependencies
 if(WIN32)
   set(ESCORE_EXTRA_LIBRARIES version winmm rpcrt4)
-else()
+else(WIN32)
   set(ESCORE_EXTRA_LIBRARIES dl pthread)
-endif()
+endif(WIN32)
 target_link_libraries( 
   ${${targetName}} 
   ${ESCORE_EXTRA_LIBRARIES}

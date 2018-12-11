@@ -28,10 +28,13 @@ ES_DECL_BASE_CLASS_INFO_BEGIN(EsEnumeration, NO_CLASS_DESCR)
 ES_DECL_CLASS_INFO_END
 
 EsEnumeration::EsEnumeration(const EsString& enumTypeName) ES_NOTHROW :
-m_contents(enumTypeName),
+m_contents(
+  EsStringIndexedMap::ContainerUsesInterlock,
+  enumTypeName
+),
 m_attrs(
   EsAttributes::create(
-    enumTypeName, 
+    enumTypeName,
     false
   )
 )
@@ -41,13 +44,16 @@ m_attrs(
 
 // Non-dynamic constructor
 EsEnumeration::EsEnumeration(
-  const EsString& enumTypeName, 
+  const EsString& enumTypeName,
   ES_UNUSED(EsEnumerationNonDynamic dummy)
 ) ES_NOTHROW :
-m_contents(enumTypeName),
+m_contents(
+  EsStringIndexedMap::ContainerUsesInterlock,
+  enumTypeName
+),
 m_attrs(
   EsAttributes::create(
-    enumTypeName, 
+    enumTypeName,
     false
   )
 )
@@ -63,13 +69,13 @@ ES_IMPL_INTF_METHOD(void, EsEnumeration::attributeAdd)(const EsString& name, con
 {
   if(!m_attrs)
     m_attrs = EsAttributes::create(
-      typeNameGet(), 
+      typeNameGet(),
       false
     );
   ES_ASSERT(m_attrs);
 
   m_attrs->attributeAdd(
-    name, 
+    name,
     val
   );
 }
@@ -119,17 +125,17 @@ void EsEnumeration::itemAdd(const EsString& symbol, const EsVariant& val,  const
   EsVariant item(EsVariant::VAR_VARIANT_COLLECTION);
   item.addToVariantCollection(val)
     .addToVariantCollection(
-      label.empty() ? 
-        EsVariant::null() : 
+      label.empty() ?
+        EsVariant::null() :
         EsVariant(label)
     );
 
   m_contents.itemAdd(
-    symbol, 
+    symbol,
     item
   );
 }
-  
+
 // reflected services
 //
 ulong EsEnumeration::countGet() const ES_NOTHROW
@@ -151,10 +157,10 @@ EsVariant EsEnumeration::valueGet(cr_EsString symbol) const
 EsString EsEnumeration::labelGet(ulong idx) const
 {
   const EsVariant& label = m_contents.valueGet(idx)[1];
-  
+
   if( label.isEmpty() )
     return m_contents.nameGet(idx);
-  
+
   return esTranslationGet( label.asString() );
 }
 
@@ -162,10 +168,10 @@ EsString EsEnumeration::symbolLabelGet(cr_EsString symbol) const
 {
   ES_ASSERT(!symbol.empty());
   const EsVariant& label = m_contents.valueGet(symbol)[1];
-  
+
   if( label.isEmpty() )
     return symbol;
-  
+
   return esTranslationGet( label.asString() );
 }
 
@@ -173,7 +179,7 @@ EsString EsEnumeration::valueLabelGet(cr_EsVariant val) const
 {
   ES_ASSERT(!val.isEmpty());
   ulong idx = valueIndexGet(val);
-    
+
   return labelGet(idx);
 }
 
@@ -234,7 +240,7 @@ EsVariant EsEnumeration::valuesGet() const ES_NOTHROW
     const EsVariant& itemVal = m_contents.valueGet(idx);
     result.addToVariantCollection( itemVal.itemGet(0) );
   }
-  
+
   return result;
 }
 

@@ -56,19 +56,19 @@ private:
   EsMutex& operator=(const EsMutex&) ES_REMOVEDECL;
 
 private:
-  Type m_type;
-  EsThreadId m_owningThreadId;
-
 #if ES_OS == ES_OS_WINDOWS
 
   HANDLE m_mx;
 
 #elif defined(ES_POSIX_COMPAT)
 
-  pthread_mutexattr_t m_mxAttrs;
   std::unique_ptr<pthread_mutex_t> m_mx;
+  bool m_ok;
 
 #endif
+
+  EsThreadId m_owningThreadId;
+  Type m_type;
 };
 //---------------------------------------------------------------------------
 

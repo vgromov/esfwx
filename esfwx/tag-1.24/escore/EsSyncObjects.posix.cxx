@@ -1,15 +1,18 @@
 //---------------------------------------------------------------------------
 EsMutex::EsMutex(EsMutex::Type type /*= typeDefault*/) :
-m_type(type),
-m_owningThreadId(0)
+m_ok(false),
+m_owningThreadId(0),
+m_type(type)
 {
+  pthread_mutexattr_t attrs;
+
   EsThread::checkPthreadError(
-    pthread_mutexattr_init(&m_mxAttrs)
+    pthread_mutexattr_init(&attrs)
   );
 
   EsThread::checkPthreadError(
     pthread_mutexattr_setpshared(
-      &m_mxAttrs,
+      &attrs,
       PTHREAD_PROCESS_PRIVATE
     )
   );
@@ -17,14 +20,14 @@ m_owningThreadId(0)
   if( typeDefault == type  )
     EsThread::checkPthreadError(
       pthread_mutexattr_settype(
-        &m_mxAttrs,
+        &attrs,
         PTHREAD_MUTEX_NORMAL
       )
     );
   else // create recursive mutex
     EsThread::checkPthreadError(
       pthread_mutexattr_settype(
-        &m_mxAttrs,
+        &attrs,
         PTHREAD_MUTEX_RECURSIVE
       )
     );
@@ -32,7 +35,7 @@ m_owningThreadId(0)
 #ifndef ES_PMUTEX_NO_ROBUST
   EsThread::checkPthreadError(
     pthread_mutexattr_setrobust(
-      &m_mxAttrs,
+      &attrs,
       PTHREAD_MUTEX_ROBUST
     )
   );
@@ -44,7 +47,15 @@ m_owningThreadId(0)
   EsThread::checkPthreadError(
     pthread_mutex_init(
       m_mx.get(),
-      &m_mxAttrs
+      &attrs
+    )
+  );
+
+  m_ok = true;
+
+  EsThread::checkPthreadError(
+    pthread_mutexattr_destroy(
+      &attrs
     )
   );
 }
@@ -52,34 +63,23 @@ m_owningThreadId(0)
 
 EsMutex::~EsMutex() ES_NOTHROW
 {
+  if(!m_ok)
+    return;
+
   try
   {
+    if( resultOk == lock() )
+      unlock();
+
 #ifdef ES_DEBUG
   int err =
 #endif
-  pthread_mutex_lock(m_mx.get());
-
-#ifdef ES_DEBUG
-  ES_DEBUG_TRACE(esT("pthread_mutex_lock returned: %d"), err);
-#endif
-
-#ifdef ES_DEBUG
-  err =
-#endif
-  pthread_mutex_destroy(m_mx.get());
+  pthread_mutex_destroy(
+    m_mx.get()
+  );
 
 #ifdef ES_DEBUG
   ES_DEBUG_TRACE(esT("pthread_mutex_destroy returned: %d"), err);
-#endif
-
-#ifdef ES_DEBUG
-  err =
-#endif
-
-  pthread_mutexattr_destroy(&m_mxAttrs);
-
-#ifdef ES_DEBUG
-  ES_DEBUG_TRACE(esT("pthread_mutexattr_destroy returned: %d"), err);
 #endif
 
   }
@@ -91,7 +91,7 @@ EsMutex::~EsMutex() ES_NOTHROW
 // validity check
 bool EsMutex::isOk() const
 {
-  return nullptr != m_mx.get();
+  return m_ok && (nullptr != m_mx.get());
 }
 //---------------------------------------------------------------------------
 
@@ -159,11 +159,18 @@ EsMutex::Result EsMutex::lock(ulong ms)
 
   int err = 0;
   if( ES_INFINITE == ms )
-    err = pthread_mutex_lock(m_mx.get());
+    err = pthread_mutex_lock(
+      m_mx.get()
+    );
   else if( 0 == ms )
-    err = pthread_mutex_trylock(m_mx.get());
+    err = pthread_mutex_trylock(
+      m_mx.get()
+    );
   else
-    err = pthreadMutexTimedLock(m_mx.get(), ms);
+    err = pthreadMutexTimedLock(
+      m_mx.get(),
+      ms
+    );
 
   switch( err )
   {
@@ -194,7 +201,9 @@ EsMutex::Result EsMutex::unlock()
   if( !isOk() )
     return resultInvalid;
 
-  int err = pthread_mutex_unlock(m_mx.get());
+  int err = pthread_mutex_unlock(
+    m_mx.get()
+  );
   if( err )
     return resultError;
 

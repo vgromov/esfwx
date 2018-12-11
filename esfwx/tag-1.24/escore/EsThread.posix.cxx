@@ -18,54 +18,67 @@ m_stopped(1, 1),
 m_errorCode(0),
 m_stack(stack),
 m_id(EsThreadIdNone)
+{}
+//---------------------------------------------------------------------------
+
+void EsThread::threadCreate()
 {
-  m_threadAttr = std::make_unique<pthread_attr_t>();
-  ES_ASSERT(m_threadAttr);
+  pthread_attr_t attrs;
 
   checkPthreadError(
     pthread_attr_init(
-      m_threadAttr.get()
+      &attrs
     )
   );
 
   checkPthreadError(
     pthread_attr_setdetachstate(
-      m_threadAttr.get(),
+      &attrs,
       PTHREAD_CREATE_JOINABLE
     )
   );
 
-  if( stack )
+  if( m_stack )
   {
-    if( stack < PTHREAD_STACK_MIN )
-      stack = PTHREAD_STACK_MIN;
+    if( m_stack < PTHREAD_STACK_MIN )
+      m_stack = PTHREAD_STACK_MIN;
 
     checkPthreadError(
       pthread_attr_setstacksize(
-        m_threadAttr.get(),
-        stack
+        &attrs,
+        m_stack
       )
     );
   }
+
+  ES_ASSERT(EsThreadIdNone == m_id);
+
+  checkPthreadError(
+    pthread_create(
+      &m_thread,
+      &attrs,
+      &EsThread::threadWorker,
+      (void*)this
+    )
+  );
+  m_id = pthreadIdGet(m_thread);
+
+#ifndef ES_PTHREAD_NO_PRIO
+  checkPthreadError(
+    pthread_setschedprio(
+      m_thread,
+      priorityCalc(attrs)
+    )
+  );
+#endif
+
+  pthread_attr_destroy( &attrs );
 }
 //---------------------------------------------------------------------------
 
 EsThread::~EsThread()
 {
   stopAndWait();
-
-  if( m_threadAttr )
-  {
-#ifdef ES_DEBUG
-    int err =
-#endif
-    pthread_attr_destroy(
-      m_threadAttr.get()
-    );
-#ifdef ES_DEBUG
-    ES_ASSERT(0 == err);
-#endif
-  }
 }
 //---------------------------------------------------------------------------
 
@@ -105,14 +118,15 @@ void EsThread::cleanup()
 }
 //---------------------------------------------------------------------------
 
-int EsThread::priorityCalc()
+int EsThread::priorityCalc(pthread_attr_t& attrs) const
 {
   int policy;
   int max_prio_for_policy = 0;
   int min_prio_for_policy = 0;
+
   checkPthreadError(
     pthread_attr_getschedpolicy(
-      m_threadAttr.get(),
+      &attrs,
       &policy
     )
   );
@@ -131,31 +145,6 @@ int EsThread::priorityCalc()
     return min_prio_for_policy+prioStep*3;
   else
     return max_prio_for_policy;
-}
-//---------------------------------------------------------------------------
-
-void EsThread::threadCreate()
-{
-  ES_ASSERT(EsThreadIdNone == m_id);
-
-  checkPthreadError(
-    pthread_create(
-      &m_thread,
-      m_threadAttr.get(),
-      &EsThread::threadWorker,
-      (void*)this
-    )
-  );
-  m_id = pthreadIdGet(m_thread);
-
-#ifndef ES_PTHREAD_NO_PRIO
-  checkPthreadError(
-    pthread_setschedprio(
-      m_thread,
-      priorityCalc()
-    )
-  );
-#endif
 }
 //---------------------------------------------------------------------------
 

@@ -4,7 +4,7 @@
 // indexed map is special container,
 // which provides dual access, name by index and index by name
 // optional payload may be associated with each container item
-// item deletion is supported as well, but this operation is 
+// item deletion is supported as well, but this operation is
 // not performance-efficient
 //
 class ESCORE_CLASS EsStringIndexedMap
@@ -14,7 +14,7 @@ public:
     ContainerUsesInterlock,
     ContainerWithoutInterlock
   };
-  
+
   typedef std::shared_ptr< EsStringIndexedMap > Ptr;
 
   // internal types
@@ -23,8 +23,8 @@ public:
   {
   public:
     EsStringAssocContainerNodeT(const EsString& name, ulong idx, const EsVariant& payload = EsVariant::null()) ES_NOTHROW;
-    const EsString& nameGet() const ES_NOTHROW { return m_name; }
-    const EsVariant& payloadGet() const ES_NOTHROW { return m_payload; }
+    inline const EsString& nameGet() const ES_NOTHROW { return m_name; }
+    inline const EsVariant& payloadGet() const ES_NOTHROW { return m_payload; }
 
   protected:
     EsString m_name;
@@ -43,9 +43,10 @@ public:
   typedef std::vector< EsStringAssocContainerNodePtrT > EsStringAssocVectorT;
 
 public:
-  EsStringIndexedMap( ContainerInterlocked interlocked ) ES_NOTHROW;
-  EsStringIndexedMap(const EsString& containerName = EsString::null(), ContainerInterlocked interlocked = ContainerUsesInterlock) ES_NOTHROW;
-  EsStringIndexedMap(const EsStringIndexedMap& src, ContainerInterlocked interlocked = ContainerUsesInterlock);
+  EsStringIndexedMap(ContainerInterlocked interlocked = ContainerUsesInterlock) ES_NOTHROW;
+  EsStringIndexedMap(ContainerInterlocked interlocked, const EsString& containerName = EsString::null()) ES_NOTHROW;
+  EsStringIndexedMap(const EsStringIndexedMap& src, ContainerInterlocked interlocked);
+  EsStringIndexedMap(const EsStringIndexedMap& src);
   ~EsStringIndexedMap() ES_NOTHROW;
 
   inline bool isInterlocked() const ES_NOTHROW { return nullptr != m_cs; }
@@ -54,7 +55,7 @@ public:
   ///
 
   /// Access container name
-  const EsString& nameGet() const ES_NOTHROW { return m_containerName; }
+  inline const EsString& nameGet() const ES_NOTHROW { return m_containerName; }
 
   /// container emptiness check
   bool isEmpty() const ES_NOTHROW;
@@ -96,7 +97,7 @@ public:
   // named payload access
   const EsVariant& valueGet(const EsString& name) const;
   void valueSet(const EsString& name, const EsVariant& val);
-  
+
   // indexed payload access
   const EsVariant& valueGet(ulong idx) const;
   void valueSet(ulong idx, const EsVariant& val);
