@@ -6,7 +6,7 @@ class EsStream;
 
 /// Generic stream block
 ///
-class ESCORE_CLASS EsStreamBlock
+class ESCORE_CLASS EsStreamBlock : public std::enable_shared_from_this<EsStreamBlock>
 {
 public:
   typedef std::shared_ptr<EsStreamBlock> Ptr;
@@ -39,7 +39,7 @@ protected:
   typedef std::pair<BlocksT::iterator, BlocksT::iterator> BlocksRangeT;
 
 protected:
-  EsStreamBlock(EsStreamBlock* parent, ulong id, const EsString& name);
+  EsStreamBlock(const EsStreamBlock::Ptr& parent, ulong id, const EsString& name);
 
 public:
   ~EsStreamBlock();
@@ -57,7 +57,7 @@ public:
   bool isContext() const ES_NOTHROW { return Context == m_id; }
 
   /// Return true, if block is root context
-  bool isRoot() const ES_NOTHROW { return isContext() && 0 == m_parent; }
+  bool isRoot() const ES_NOTHROW { return isContext() && nullptr == m_parent.lock(); }
 
   /// Return true if block is of Object type
   bool isObject() const ES_NOTHROW { return Object == m_id; }
@@ -192,7 +192,7 @@ public:
   void reset(ulong ver);
 
   /// Return block's parent
-  EsStreamBlock* parentGet() ES_NOTHROW { return m_parent; }
+  EsStreamBlock::Ptr parentGet() ES_NOTHROW { return m_parent.lock(); }
 
   /// Remove child block with specified name and ID. If ID == None, look-up blocks
   /// by name only, and remove the first one found.
@@ -205,16 +205,16 @@ public:
   void childRemove(const EsStreamBlock::Ptr& child);
 
   /// Get the first child
-  EsStreamBlock::WeakPtr firstChildGet() const ES_NOTHROW { return m_first; }
+  EsStreamBlock::Ptr firstChildGet() const ES_NOTHROW { return m_first.lock(); }
 
   /// Get the last child
-  EsStreamBlock::WeakPtr lastChildGet() const ES_NOTHROW { return m_last; }
+  EsStreamBlock::Ptr lastChildGet() const ES_NOTHROW { return m_last.lock(); }
 
   /// Get the previous sibling
-  EsStreamBlock::WeakPtr prevSiblingGet() const ES_NOTHROW { return m_prev; }
+  EsStreamBlock::Ptr prevSiblingGet() const ES_NOTHROW { return m_prev.lock(); }
 
   /// Get the next sibling
-  EsStreamBlock::WeakPtr nextSiblingGet() const ES_NOTHROW { return m_next; }
+  EsStreamBlock::Ptr nextSiblingGet() const ES_NOTHROW { return m_next.lock(); }
 
   /// Get the first immediate child with the specified ID
   EsStreamBlock::Ptr firstChildGet(ulong id) const;
@@ -330,7 +330,7 @@ protected:
 
 protected:
   ulong m_id;                             ///< Block ID
-  EsStreamBlock* m_parent;                ///< Parent block
+  EsStreamBlock::WeakPtr m_parent;        ///< Parent block
   EsStreamBlock::WeakPtr m_first;         ///< First child block
   EsStreamBlock::WeakPtr m_last;          ///< Last child block
   EsStreamBlock::WeakPtr m_prev;          ///< Previous sibling

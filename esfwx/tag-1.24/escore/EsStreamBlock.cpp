@@ -82,13 +82,9 @@ const EsString& EsStreamBlock::label()
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
-EsStreamBlock::EsStreamBlock(EsStreamBlock* parent, ulong id, const EsString& name) :
+EsStreamBlock::EsStreamBlock(const EsStreamBlock::Ptr& parent, ulong id, const EsString& name) :
 m_id(id),
 m_parent(parent),
-m_first(nullptr),
-m_last(nullptr),
-m_prev(nullptr),
-m_next(nullptr),
 m_name(name)
 {
   nameValidityCheck();
@@ -102,7 +98,7 @@ m_name(name)
   {
     typeNameSet( m_name );
 
-    Ptr parent = m_parent;
+    Ptr parent = m_parent.lock();
     if( !parent )
       return;
 
@@ -131,12 +127,12 @@ EsStreamBlock::~EsStreamBlock()
   reset();
 
   // Unlink from parent
-  Ptr parent = m_parent;
+  Ptr parent = m_parent.lock();
   if( !parent )
     return;
 
   parent->childRemove(
-    this
+    shared_from_this()
   );
 }
 //---------------------------------------------------------------------------
@@ -226,7 +222,7 @@ void EsStreamBlock::idValidityCheck() const
   ulong parentId = None;
 
   {
-    Ptr parent = m_parent;
+    Ptr parent = m_parent.lock();
     if( parent )
       parentId = parent->idGet();
   }
@@ -498,8 +494,8 @@ void EsStreamBlock::childRemove(const EsStreamBlock::Ptr& child)
   Ptr childParent = child->parentGet();
   ES_ASSERT(childParent.get() == this);
 
-  Ptr prev = child->m_prev;
-  Ptr next = child->m_next;
+  Ptr prev = child->m_prev.lock();
+  Ptr next = child->m_next.lock();
   if( prev )
   {
     ES_ASSERT(prev->m_next.lock() == child);
@@ -508,8 +504,8 @@ void EsStreamBlock::childRemove(const EsStreamBlock::Ptr& child)
 
   if( next )
   {
-    ES_ASSERT(child->m_next->m_prev.lock() == child);
-    child->m_next->m_prev = prev;
+    ES_ASSERT(next->m_prev.lock() == child);
+    next->m_prev = prev;
   }
 
   if( m_first.lock() == child )
@@ -568,7 +564,7 @@ EsStreamBlock::Ptr EsStreamBlock::childAdd(const EsString& name, ulong id)
 }
 //---------------------------------------------------------------------------
 
-void EsStreamBlock::internalChildAddBefore(const EsStreamBlock::Ptr subj, const EsStreamBlock::Ptr& child, ullong key)
+void EsStreamBlock::internalChildAddBefore(const EsStreamBlock::Ptr& subj, const EsStreamBlock::Ptr& child, ullong key)
 {
   ES_ASSERT(child);
 
@@ -580,7 +576,7 @@ void EsStreamBlock::internalChildAddBefore(const EsStreamBlock::Ptr subj, const 
     if( m_first.lock() == subj )
       m_first = child;
 
-	Ptr prev = subj->m_prev;
+	  Ptr prev = subj->m_prev.lock();
     if( prev )
     {
       prev->m_next = child;
@@ -592,10 +588,11 @@ void EsStreamBlock::internalChildAddBefore(const EsStreamBlock::Ptr subj, const 
   }
   else //< Otherwise, append after last child element
   {
-    if( !m_first )
+    Ptr first = m_first.lock();
+    if( !first )
       m_first = child;
 
-    EsStreamBlock::Ptr last = m_last;
+    EsStreamBlock::Ptr last = m_last.lock();
     m_last = child;
 
     if( last )
@@ -621,7 +618,7 @@ EsStreamBlock::Ptr EsStreamBlock::childAddBefore(const EsStreamBlock::Ptr& subj,
 
   Ptr ptr(
     new EsStreamBlock(
-      this,
+      shared_from_this(),
       id,
       name
     )
@@ -633,11 +630,11 @@ EsStreamBlock::Ptr EsStreamBlock::childAddBefore(const EsStreamBlock::Ptr& subj,
     name.hashGet()
   );
 
-  return ptr.get();
+  return ptr;
 }
 //---------------------------------------------------------------------------
 
-EsStreamBlock* EsStreamBlock::itemAdd()
+EsStreamBlock::Ptr EsStreamBlock::itemAdd()
 {
   return itemAdd(
     static_cast<ulong>(m_children.size())
@@ -645,11 +642,11 @@ EsStreamBlock* EsStreamBlock::itemAdd()
 }
 //---------------------------------------------------------------------------
 
-EsStreamBlock* EsStreamBlock::itemAdd(ulong idx)
+EsStreamBlock::Ptr EsStreamBlock::itemAdd(ulong idx)
 {
   Ptr ptr(
     new EsStreamBlock(
-      this,
+      shared_from_this(),
       Item,
       EsString::null()
     )
@@ -666,17 +663,17 @@ EsStreamBlock* EsStreamBlock::itemAdd(ulong idx)
     idx
   );
 
-  return ptr.get();
+  return ptr;
 }
 //---------------------------------------------------------------------------
 
-EsStreamBlock* EsStreamBlock::itemGet(ulong idx)
+EsStreamBlock::Ptr EsStreamBlock::itemGet(ulong idx)
 {
   EsStreamBlock::BlocksT::iterator it = childItGet(idx, Item);
   if( m_children.end() != it )
-    return (*it).second.get();
+    return (*it).second;
 
-  return 0;
+  return nullptr;
 }
 //---------------------------------------------------------------------------
 
@@ -730,34 +727,34 @@ const EsVariant& EsStreamBlock::attributeGet(const EsString& attrName, bool doTh
 }
 //---------------------------------------------------------------------------
 
-EsStreamBlock* EsStreamBlock::firstChildGet(ulong id) const
+EsStreamBlock::Ptr EsStreamBlock::firstChildGet(ulong id) const
 {
-  EsStreamBlock* child = m_first;
+  EsStreamBlock::Ptr child = m_first.lock();
   while( child )
   {
     if( id == child->m_id )
       return child;
 
-    child = child->m_next;
+    child = child->m_next.lock();
   }
 
-  return 0;
+  return nullptr;
 }
 //---------------------------------------------------------------------------
 
-EsStreamBlock* EsStreamBlock::nextSiblingGet(ulong id) const
+EsStreamBlock::Ptr EsStreamBlock::nextSiblingGet(ulong id) const
 {
-  EsStreamBlock* child = m_next;
+  EsStreamBlock::Ptr child = m_next.lock();
 
   while( child )
   {
     if( id == child->m_id )
       return child;
 
-    child = child->m_next;
+    child = child->m_next.lock();
   }
 
-  return 0;
+  return nullptr;
 }
 //---------------------------------------------------------------------------
 
@@ -854,7 +851,7 @@ void EsStreamBlock::copyFrom(const EsStreamBlock& other)
     other.versionGet()
   );
 
-  const EsStreamBlock* otherChild = other.firstChildGet();
+  EsStreamBlock::Ptr otherChild = other.firstChildGet();
   while(otherChild)
   {
     cloneAdd( otherChild );
@@ -864,7 +861,7 @@ void EsStreamBlock::copyFrom(const EsStreamBlock& other)
 }
 //---------------------------------------------------------------------------
 
-void EsStreamBlock::cloneAdd(const EsStreamBlock* src)
+void EsStreamBlock::cloneAdd(const EsStreamBlock::Ptr& src)
 {
   ES_ASSERT(src);
 
@@ -873,7 +870,7 @@ void EsStreamBlock::cloneAdd(const EsStreamBlock* src)
 
   Ptr ptr(
     new EsStreamBlock(
-      this,
+      shared_from_this(),
       id,
       name
     )
@@ -911,7 +908,7 @@ void EsStreamBlock::cloneAdd(const EsStreamBlock* src)
   }
 
   // Append children
-  const EsStreamBlock* otherChild = src->firstChildGet();
+  EsStreamBlock::Ptr otherChild = src->firstChildGet();
   while(otherChild)
   {
     ptr->cloneAdd( otherChild );
@@ -994,7 +991,7 @@ void EsStreamBlock::stringDumpContents(EsString& out, ulong offs) const
   }
   else
   {
-    EsStreamBlock* child = firstChildGet();
+    EsStreamBlock::Ptr child = firstChildGet();
     while( child )
     {
       child->stringDump(out, offs);

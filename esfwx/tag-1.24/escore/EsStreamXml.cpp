@@ -251,7 +251,7 @@ void EsStreamXml::parse(const EsXmlDocument& xml)
 
   BlockScope scope(
     *this,
-    m_root.get()
+    m_root
   );
 
   EsXmlNode child = root.firstChildGet();
@@ -279,7 +279,7 @@ void EsStreamXml::nodeParse(const EsXmlNode& node)
       name
     );
 
-  EsStreamBlock* block = nullptr;
+  EsStreamBlock::Ptr block;
   if( EsStreamBlock::Item == id ) //< Create indexed block
   {
     const EsXmlAttribute& aidx = node.attributeGet(
@@ -293,7 +293,7 @@ void EsStreamXml::nodeParse(const EsXmlNode& node)
     // Handle legacy malformed XML - items were allowed outside of an ITEM container
     if( EsStreamBlock::Items != m_block->idGet() )
     {
-      EsStreamBlock* items = m_block->childGet(
+      EsStreamBlock::Ptr items = m_block->childGet(
         EsString::null(),
         EsStreamBlock::Items
       );
@@ -372,7 +372,7 @@ void EsStreamXml::nodeParse(const EsXmlNode& node)
   }
 
   // Legacy XML field structure fixup
-  EsStreamBlock* oblockFixup = nullptr;
+  EsStreamBlock::Ptr oblockFixup;
 
   // Optional Payload|Type
   if( block->supportsTypes() )
@@ -528,7 +528,7 @@ void EsStreamXml::generate(EsXmlDocument& xml) const
 
   BlockScope scope(
     const_cast<EsStreamXml&>(*this),
-    m_root.get()
+    m_root
   );
 
   blockToXml(xml);
@@ -672,7 +672,7 @@ void EsStreamXml::blockToXml(EsXmlNode& node) const
   }
 
   // Add children content to the element
-  EsStreamBlock* child = m_block->firstChildGet();
+  EsStreamBlock::Ptr child = m_block->firstChildGet();
   while( child )
   {
     BlockScope scope(

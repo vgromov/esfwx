@@ -120,8 +120,7 @@ ES_DECL_INTF_END
 class ESCORE_CLASS ES_INTF_IMPL2(EsProgressMonitorTask, EsProgressMonitorTaskIntf, EsReflectedClassIntf)
 
 private:
-  EsProgressMonitorTask(const EsString& id,
-    const EsString& text,  const EsVariant& range, const EsVariant& val);
+  EsProgressMonitorTask(const EsString& id, const EsString& text,  const EsVariant& range, const EsVariant& val);
 
 public:
   ES_DECL_REFLECTED_CLASS_BASE(EsProgressMonitorTask)
@@ -129,8 +128,7 @@ public:
 
   virtual ~EsProgressMonitorTask();
 
-  static EsProgressMonitorTaskIntf::Ptr create(const EsString& id, const EsString& text = EsString::null(),
-    const EsVariant& range = EsVariant::null(), const EsVariant& val = EsVariant::null());
+  static EsProgressMonitorTaskIntf::Ptr create(const EsString& id, const EsString& text = EsString::null(), const EsVariant& range = EsVariant::null(), const EsVariant& val = EsVariant::null());
 
   /// EsProgressMonitorTaskIntf implementation
   ///
@@ -247,8 +245,7 @@ protected:
   EsString internalPathGet() const;
   void internalTextSet(const EsString& text);
   void onChildStateChanged(int newState);
-  void internalChildAdd(const EsProgressMonitorTaskIntf::Ptr& thisTask,
-    EsProgressMonitorTask* child);
+  void internalChildAdd(const EsProgressMonitorTaskIntf::Ptr& thisTask, EsProgressMonitorTask* child);
   void internalChildRemove(const EsString& id);
   void internalProgressUpdate(ulong state);
   void internalThisStateSet(ulong state);
@@ -278,9 +275,9 @@ protected:
 
 private:
   // prohibited functionality
-  EsProgressMonitorTask();
-  EsProgressMonitorTask(const EsProgressMonitorTask&);
-  EsProgressMonitorTask& operator=(const EsProgressMonitorTask&);
+  EsProgressMonitorTask() ES_REMOVEDECL;
+  EsProgressMonitorTask(const EsProgressMonitorTask&) ES_REMOVEDECL;
+  EsProgressMonitorTask& operator=(const EsProgressMonitorTask&) ES_REMOVEDECL;
 
   friend class EsProgressMonitor;
 };
@@ -307,7 +304,7 @@ public:
   /// Entirely resets progress monitor, effectively detaching all tasks from it.
   ES_DECL_REFLECTED_INTF_METHOD0(void, reset);
   /// Return view event category
-  ES_DECL_INTF_METHOD(const EsString&, eventCategoryGet)() const { return m_cat; }
+  ES_DECL_INTF_METHOD(const EsString&, eventCategoryGet)() const ES_NOTHROW { return m_cat; }
   /// Post event to the view
   ES_DECL_INTF_METHOD(void, viewEventPost)(ulong id, const EsVariant& payload) const;
   /// Retrieve all linked task paths
@@ -336,9 +333,9 @@ protected:
   friend class EsProgressMonitorTask;
 
 private:
-  EsProgressMonitor();
-  EsProgressMonitor(const EsProgressMonitor&);
-  EsProgressMonitor& operator=(const EsProgressMonitor&);
+  EsProgressMonitor() ES_REMOVEDECL;
+  EsProgressMonitor(const EsProgressMonitor&) ES_REMOVEDECL;
+  EsProgressMonitor& operator=(const EsProgressMonitor&) ES_REMOVEDECL;
 };
 
 #endif // _progress_monitor_h_

@@ -344,7 +344,7 @@ void EsStream::rootInit(ulong version)
     )
   );
   m_root->versionSet(version);
-  m_ctx = m_root.get();
+  m_ctx = m_root;
 
   m_flags |= flagDirty;
 }
@@ -352,7 +352,7 @@ void EsStream::rootInit(ulong version)
 
 void EsStream::internalRewind()
 {
-  m_ctx = m_block = m_root.get();
+  m_ctx = m_block = m_root;
 
   internalStateReset();
 }
@@ -432,23 +432,22 @@ bool EsStream::contextOpenCreate(const EsString& name, ulong newVersion)
 {
   if( contextOpenExisting(name) )
     return true;
+
   else if( m_flags & static_cast<ulong>(EsStreamFlag::Write) )
   {
     checkContextNameNotReserved(name);
-
     ES_ASSERT(m_ctx);
-    EsStreamBlock* newCtx = m_ctx->childAdd(
+
+    EsStreamBlock::Ptr newCtx = m_ctx->childAdd(
       name,
       EsStreamBlock::Context
     );
-
     ES_ASSERT(newCtx);
 
     newCtx->versionSet(newVersion);
     m_ctx = newCtx;
 
     internalStateReset();
-
     m_flags |= flagDirty;
 
     return true;
@@ -461,16 +460,16 @@ bool EsStream::contextOpenCreate(const EsString& name, ulong newVersion)
 bool EsStream::contextOpenExisting(const EsString& name)
 {
   checkContextNameNotEmpty(name);
-
   ES_ASSERT(m_ctx);
-  EsStreamBlock* newCtx = m_ctx->childGet(
+
+  EsStreamBlock::Ptr newCtx = m_ctx->childGet(
     name,
     EsStreamBlock::Context
   );
+
   if( newCtx )
   {
     m_ctx = newCtx;
-
     internalStateReset();
 
     return true;
@@ -483,7 +482,7 @@ bool EsStream::contextOpenExisting(const EsString& name)
 void EsStream::contextCurrentClose()
 {
   ES_ASSERT(m_ctx);
-  EsStreamBlock* parent = m_ctx->parentGet();
+  EsStreamBlock::Ptr parent = m_ctx->parentGet();
   if( parent )
   {
     m_ctx = parent;
@@ -500,7 +499,7 @@ void EsStream::contextRemove(const EsString& name)
   checkStreamWriteable();
 
   ES_ASSERT(m_ctx);
-  EsStreamBlock* ctx = m_ctx->childGet(
+  EsStreamBlock::Ptr ctx = m_ctx->childGet(
     name,
     EsStreamBlock::Context
   );
@@ -842,7 +841,7 @@ void EsStream::valueWrite(const EsString& name, const EsVariant& val)
 {
   checkStreamWriteable();
 
-  EsStreamBlock* block = m_objWriteScope ? m_block : m_ctx;
+  EsStreamBlock::Ptr block = m_objWriteScope ? m_block : m_ctx;
   ES_ASSERT(block);
 
   block->childRemove(
@@ -850,13 +849,16 @@ void EsStream::valueWrite(const EsString& name, const EsVariant& val)
     EsStreamBlock::Value
   );
 
-  EsStreamBlock* vnode = block->childAdd(
+  EsStreamBlock::Ptr vnode = block->childAdd(
     name,
     EsStreamBlock::Value
   );
   ES_ASSERT(vnode);
 
-  BlockScope scope(*this, vnode);
+  BlockScope scope(
+    *this, 
+    vnode
+  );
   valueWrite(val);
 
   m_flags |= flagDirty;
@@ -867,19 +869,23 @@ EsVariant EsStream::valueRead(const EsString& name, const EsVariant& def /*= EsV
 {
   checkStreamReadable();
 
-  EsStreamBlock* block = m_objReadScope ? m_block : m_ctx;
+  EsStreamBlock::Ptr block = m_objReadScope ? m_block : m_ctx;
   ES_ASSERT(block);
 
   ES_STREAM_TRACE( esT("valueRead(%s, def)"), name.c_str() );
 
-  EsStreamBlock* vnode = block->childGet(
+  EsStreamBlock::Ptr vnode = block->childGet(
     name,
     EsStreamBlock::Value
   );
 
   if( vnode )
   {
-    BlockScope scope(*this, vnode);
+    BlockScope scope(
+      *this, 
+      vnode
+    );
+    
     return valueRead();
   }
   else
@@ -891,19 +897,22 @@ void EsStream::valueReadObject(const EsString& name, const EsBaseIntf::Ptr& obj)
 {
   checkStreamReadable();
 
-  EsStreamBlock* block = m_objReadScope ? m_block : m_ctx;
+  EsStreamBlock::Ptr block = m_objReadScope ? m_block : m_ctx;
   ES_ASSERT(block);
 
   ES_STREAM_TRACE( esT("valueReadObject(%s, obj)"), name.c_str() );
 
-  EsStreamBlock* vnode = block->childGet(
+  EsStreamBlock::Ptr vnode = block->childGet(
     name,
     EsStreamBlock::Value
   );
 
   if( vnode )
   {
-    BlockScope scope(*this, vnode);
+    BlockScope scope(
+      *this, 
+      vnode
+    );
 
     if( EsVariant::VAR_OBJECT != m_block->typeGet() )
       EsException::Throw(
@@ -911,7 +920,11 @@ void EsStream::valueReadObject(const EsString& name, const EsBaseIntf::Ptr& obj)
         name
       );
 
-    BlockScope objScope(*this, m_block->firstChildGet());
+    BlockScope objScope(
+      *this, 
+      m_block->firstChildGet()
+    );
+    
     objectRead(obj);
   }
 }
@@ -968,7 +981,7 @@ bool EsStream::nextRootObjectLocate()
 }
 //---------------------------------------------------------------------------
 
-EsString EsStream::objectBlockTypeNameGet(EsStreamBlock* bobj) const
+EsString EsStream::objectBlockTypeNameGet(const EsStreamBlock::Ptr& bobj) const
 {
   if( !bobj )
     return EsString::null();
@@ -1014,7 +1027,7 @@ void EsStream::objectWriteBegin(const EsReflectedClassIntf::Ptr& obj)
   }
 
   // Append object node
-  EsStreamBlock* bobj = m_block->childAdd(
+  EsStreamBlock::Ptr bobj = m_block->childAdd(
     typeName,
     EsStreamBlock::Object
   );
@@ -1035,7 +1048,7 @@ void EsStream::objectWriteBegin(const EsReflectedClassIntf::Ptr& obj)
 void EsStream::objectWriteEnd(const EsReflectedClassIntf::Ptr& obj)
 {
   ES_ASSERT(m_block);
-  EsStreamBlock* parent = m_block->parentGet();
+  EsStreamBlock::Ptr parent = m_block->parentGet();
 
   ES_ASSERT(parent);
   m_block = parent;
@@ -1045,7 +1058,7 @@ void EsStream::objectWriteEnd(const EsReflectedClassIntf::Ptr& obj)
 void EsStream::propertiesWriteBegin(const EsReflectedClassIntf::Ptr& obj)
 {
   ES_ASSERT(m_block);
-  EsStreamBlock* props = m_block->childAdd(
+  EsStreamBlock::Ptr props = m_block->childAdd(
     EsString::null(),
     EsStreamBlock::Properties
   );
@@ -1058,7 +1071,7 @@ void EsStream::propertiesWriteBegin(const EsReflectedClassIntf::Ptr& obj)
 void EsStream::propertiesWriteEnd(const EsReflectedClassIntf::Ptr& obj)
 {
   ES_ASSERT(m_block);
-  EsStreamBlock* parent = m_block->parentGet();
+  EsStreamBlock::Ptr parent = m_block->parentGet();
 
   ES_ASSERT(parent);
   ES_ASSERT(EsStreamBlock::Object == parent->idGet());
@@ -1101,7 +1114,7 @@ void EsStream::propertyWrite(const EsString& name, const EsVariant& val, const E
 {
   ES_ASSERT(m_block);
 
-  EsStreamBlock* prop = m_block->childAdd(
+  EsStreamBlock::Ptr prop = m_block->childAdd(
     name,
     EsStreamBlock::Property
   );
@@ -1113,7 +1126,10 @@ void EsStream::propertyWrite(const EsString& name, const EsVariant& val, const E
       label
     );
 
-  BlockScope scope(*this, prop);
+  BlockScope scope(
+    *this, 
+    prop
+  );
   valueWrite(val);
 }
 //---------------------------------------------------------------------------
@@ -1134,7 +1150,7 @@ bool EsStream::itemsWriteBegin(const EsVariant& obj)
 
   ES_ASSERT(m_block);
 
-  EsStreamBlock* items = m_block->childAdd(
+  EsStreamBlock::Ptr items = m_block->childAdd(
     EsString::null(),
     EsStreamBlock::Items
   );
@@ -1149,7 +1165,7 @@ bool EsStream::itemsWriteBegin(const EsVariant& obj)
 void EsStream::itemsWriteEnd(const EsVariant& obj)
 {
   ES_ASSERT(m_block);
-  EsStreamBlock* parent = m_block->parentGet();
+  EsStreamBlock::Ptr parent = m_block->parentGet();
 
   ES_ASSERT(parent);
   m_block = parent;
@@ -1160,7 +1176,7 @@ void EsStream::itemWrite(ulong idx, const EsVariant& obj)
 {
   const EsVariant& val = obj.itemGet(idx);
 
-  EsStreamBlock* item = m_block->itemAdd(idx);
+  EsStreamBlock::Ptr item = m_block->itemAdd(idx);
   ES_ASSERT(item);
 
   BlockScope itemScope(*this, item);
@@ -1173,7 +1189,7 @@ void EsStream::fieldsWriteBegin(const EsReflectedClassIntf::Ptr& obj)
   ES_ASSERT(obj);
   ES_ASSERT(m_block);
 
-  EsStreamBlock* fields = m_block->childAdd(
+  EsStreamBlock::Ptr fields = m_block->childAdd(
     EsString::null(),
     EsStreamBlock::Fields
   );
@@ -1186,7 +1202,7 @@ void EsStream::fieldsWriteBegin(const EsReflectedClassIntf::Ptr& obj)
 void EsStream::fieldsWriteEnd(const EsReflectedClassIntf::Ptr& obj)
 {
   ES_ASSERT(m_block);
-  EsStreamBlock* parent = m_block->parentGet();
+  EsStreamBlock::Ptr parent = m_block->parentGet();
 
   ES_ASSERT(parent);
   ES_ASSERT(EsStreamBlock::Object == parent->idGet());
@@ -1200,7 +1216,7 @@ void EsStream::fieldWrite(const EsString& name, const EsReflectedClassIntf::Ptr&
   ES_ASSERT(fld);
   ES_ASSERT(m_block);
 
-  EsStreamBlock* block = m_block->childAdd(
+  EsStreamBlock::Ptr block = m_block->childAdd(
     name,
     EsStreamBlock::Field
   );
@@ -1279,7 +1295,7 @@ void EsStream::objectReadEnd(const EsReflectedClassIntf::Ptr& obj)
 bool EsStream::propertiesReadBegin(const EsReflectedClassIntf::Ptr& obj)
 {
   ES_ASSERT( m_block );
-  EsStreamBlock* props = m_block->childGet(
+  EsStreamBlock::Ptr props = m_block->childGet(
     EsString::null(),
     EsStreamBlock::Properties
   );
@@ -1298,7 +1314,7 @@ void EsStream::propertiesReadEnd(const EsReflectedClassIntf::Ptr& obj)
 {
   ES_ASSERT( m_block );
 
-  EsStreamBlock* parent = m_block->parentGet();
+  EsStreamBlock::Ptr parent = m_block->parentGet();
   ES_ASSERT(parent);
   ES_ASSERT( EsStreamBlock::Object == parent->idGet() );
 
@@ -1386,7 +1402,7 @@ bool EsStream::itemsReadBegin(EsVariant& var, ulong& cnt, bool& doAppend)
 {
   ES_ASSERT( m_block );
 
-  EsStreamBlock* items = m_block->childGet(
+  EsStreamBlock::Ptr items = m_block->childGet(
     EsString::null(),
     EsStreamBlock::Items
   );
@@ -1453,7 +1469,7 @@ void EsStream::itemRead(ulong idx, EsVariant& var, bool doAppend)
 
   ES_STREAM_TRACE(esT("itemRead idx=%d, doAppend=%s"), idx, doAppend ? esT("true") : esT("false"));
 
-  EsStreamBlock* bitem = m_block->itemGet(idx);
+  EsStreamBlock::Ptr bitem = m_block->itemGet(idx);
   BlockScope item(
     *this,
     bitem
@@ -1481,7 +1497,7 @@ void EsStream::itemRead(ulong idx, EsVariant& var, bool doAppend)
 bool EsStream::fieldsReadBegin(const EsReflectedClassIntf::Ptr& obj)
 {
   ES_ASSERT(m_block);
-  EsStreamBlock* fields = m_block->childGet(EsString::null(), EsStreamBlock::Fields);
+  EsStreamBlock::Ptr fields = m_block->childGet(EsString::null(), EsStreamBlock::Fields);
 
   if( fields )
   {
@@ -1497,7 +1513,7 @@ void EsStream::fieldsReadEnd(const EsReflectedClassIntf::Ptr& obj)
 {
   ES_ASSERT( m_block );
 
-  EsStreamBlock* parent = m_block->parentGet();
+  EsStreamBlock::Ptr parent = m_block->parentGet();
   ES_ASSERT( parent );
   ES_ASSERT( EsStreamBlock::Object == parent->idGet() );
 

@@ -290,7 +290,7 @@ void EsStreamBinary::parse(const EsBinBuffer& bb)
   // Parse data contents, starting from the root scope
   BlockScope scope(
     *this,
-    m_root.get()
+    m_root
   );
 
   ulong pos = 0;
@@ -308,7 +308,7 @@ void EsStreamBinary::generate(EsBinBuffer& data) const
 
   BlockScope scope(
     const_cast<EsStreamBinary&>(*this),
-    m_root.get()
+    m_root
   );
 
   ulong pos = 0;
@@ -548,7 +548,7 @@ void EsStreamBinary::blockParse(const EsBinBuffer& data, ulong& pos, ulong end)
   // Assign end boundary for this block
   end = pos + hdr.m_len;
 
-  EsStreamBlock* block = 0;
+  EsStreamBlock::Ptr block;
 
   if( EsStreamBlock::Item == hdr.m_id )
   {
@@ -880,7 +880,7 @@ void EsStreamBinary::blockToBuffer(EsBinBuffer& data, ulong& pos) const
   }
 
   // If there are any nested blocks remain - write them
-  EsStreamBlock* child = m_block->firstChildGet();
+  EsStreamBlock::Ptr child = m_block->firstChildGet();
   while( child )
   {
     // Initiate block scoping

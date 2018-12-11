@@ -145,8 +145,7 @@ protected:
   class BlockScope
   {
   public:
-    BlockScope(EsStream& owner, EsStreamBlock* block) ES_NOTHROW :
-    m_old(nullptr),
+    BlockScope(EsStream& owner, const EsStreamBlock::Ptr& block) ES_NOTHROW :
     m_block(block),
     m_owner(owner)
     {
@@ -159,17 +158,17 @@ protected:
       m_owner.m_block = m_old;
     }
 
-    inline bool isOk() const ES_NOTHROW { return 0 != m_block; }
+    inline bool isOk() const ES_NOTHROW { return nullptr != m_block; }
 
   protected:
-    EsStreamBlock* m_old;
-    EsStreamBlock* m_block;
+    EsStreamBlock::Ptr m_old;
+    EsStreamBlock::Ptr m_block;
     EsStream& m_owner;
 
   private:
-    BlockScope();
-    BlockScope(const BlockScope&);
-    BlockScope& operator=(const BlockScope&);
+    BlockScope() ES_REMOVEDECL;
+    BlockScope(const BlockScope&) ES_REMOVEDECL;
+    BlockScope& operator=(const BlockScope&) ES_REMOVEDECL;
   };
 
   class ObjectReadScope
@@ -185,9 +184,9 @@ protected:
     bool m_customReading;
 
   private:
-    ObjectReadScope();
-    ObjectReadScope(const ObjectReadScope&);
-    ObjectReadScope& operator=(const ObjectReadScope&);
+    ObjectReadScope() ES_REMOVEDECL;
+    ObjectReadScope(const ObjectReadScope&) ES_REMOVEDECL;
+    ObjectReadScope& operator=(const ObjectReadScope&) ES_REMOVEDECL;
   };
   friend class ObjectReadScope;
 
@@ -204,9 +203,9 @@ protected:
     bool m_readWasStarted;
 
   private:
-    FieldsReadScope();
-    FieldsReadScope(const FieldsReadScope&);
-    FieldsReadScope& operator=(const FieldsReadScope&);
+    FieldsReadScope() ES_REMOVEDECL;
+    FieldsReadScope(const FieldsReadScope&) ES_REMOVEDECL;
+    FieldsReadScope& operator=(const FieldsReadScope&) ES_REMOVEDECL;
   };
   friend class FieldsReadScope;
 
@@ -223,9 +222,9 @@ protected:
     bool m_readWasStarted;
 
   private:
-    PropertiesReadScope();
-    PropertiesReadScope(const PropertiesReadScope&);
-    PropertiesReadScope& operator=(const PropertiesReadScope&);
+    PropertiesReadScope() ES_REMOVEDECL;
+    PropertiesReadScope(const PropertiesReadScope&) ES_REMOVEDECL;
+    PropertiesReadScope& operator=(const PropertiesReadScope&) ES_REMOVEDECL;
   };
   friend class PropertiesReadScope;
 
@@ -246,9 +245,9 @@ protected:
     ulong m_cnt;
 
   private:
-    ItemsReadScope();
-    ItemsReadScope(const ItemsReadScope&);
-    ItemsReadScope& operator=(const ItemsReadScope&);
+    ItemsReadScope() ES_REMOVEDECL;
+    ItemsReadScope(const ItemsReadScope&) ES_REMOVEDECL;
+    ItemsReadScope& operator=(const ItemsReadScope&) ES_REMOVEDECL;
   };
   friend class ItemsReadScope;
 
@@ -265,9 +264,9 @@ protected:
     bool m_customWriting;
 
   private:
-    ObjectWriteScope();
-    ObjectWriteScope(const ObjectWriteScope&);
-    ObjectWriteScope& operator=(const ObjectWriteScope&);
+    ObjectWriteScope() ES_REMOVEDECL;
+    ObjectWriteScope(const ObjectWriteScope&) ES_REMOVEDECL;
+    ObjectWriteScope& operator=(const ObjectWriteScope&) ES_REMOVEDECL;
   };
   friend class ObjectWriteScope;
 
@@ -282,9 +281,9 @@ protected:
     const EsReflectedClassIntf::Ptr& m_obj;
 
   private:
-    FieldsWriteScope();
-    FieldsWriteScope(const FieldsWriteScope&);
-    FieldsWriteScope& operator=(const FieldsWriteScope&);
+    FieldsWriteScope() ES_REMOVEDECL;
+    FieldsWriteScope(const FieldsWriteScope&) ES_REMOVEDECL;
+    FieldsWriteScope& operator=(const FieldsWriteScope&) ES_REMOVEDECL;
   };
   friend class FieldsWriteScope;
 
@@ -299,9 +298,9 @@ protected:
     const EsReflectedClassIntf::Ptr& m_obj;
 
   private:
-    PropertiesWriteScope();
-    PropertiesWriteScope(const PropertiesWriteScope&);
-    PropertiesWriteScope& operator=(const PropertiesWriteScope&);
+    PropertiesWriteScope() ES_REMOVEDECL;
+    PropertiesWriteScope(const PropertiesWriteScope&) ES_REMOVEDECL;
+    PropertiesWriteScope& operator=(const PropertiesWriteScope&) ES_REMOVEDECL;
   };
   friend class PropertiesWriteScope;
 
@@ -318,9 +317,9 @@ protected:
     bool m_writeWasStarted;
 
   private:
-    ItemsWriteScope();
-    ItemsWriteScope(const ItemsWriteScope&);
-    ItemsWriteScope& operator=(const ItemsWriteScope&);
+    ItemsWriteScope() ES_REMOVEDECL;
+    ItemsWriteScope(const ItemsWriteScope&) ES_REMOVEDECL;
+    ItemsWriteScope& operator=(const ItemsWriteScope&) ES_REMOVEDECL;
   };
   friend class ItemsWriteScope;
 
@@ -391,7 +390,7 @@ protected:
   void rootInit(ulong version);
   void internalRewind();
   void internalStateReset();
-  EsString objectBlockTypeNameGet(EsStreamBlock* bobj) const;
+  EsString objectBlockTypeNameGet(const EsStreamBlock::Ptr& bobj) const;
 
   /// Object creation helper
   EsReflectedClassIntf::Ptr doObjectCreate(const EsString& typeName) const;
@@ -482,9 +481,9 @@ protected:
   // Stream Obect Model internals. All stream IO is performed on this model.
   // Derived classes just parse specific storage into model|create storage from model
   //
-  mutable EsStreamBlock* m_ctx;
-  mutable EsStreamBlock* m_block;
-  mutable EsStreamBlock* m_rootObjIt;
+  EsStreamBlock::Ptr m_ctx;
+  EsStreamBlock::Ptr m_block;
+  EsStreamBlock::Ptr m_rootObjIt;
   EsStreamBlock::Ptr m_root;
 
   friend class BlockScope;
