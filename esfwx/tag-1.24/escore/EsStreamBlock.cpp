@@ -85,10 +85,10 @@ const EsString& EsStreamBlock::label()
 EsStreamBlock::EsStreamBlock(EsStreamBlock* parent, ulong id, const EsString& name) :
 m_id(id),
 m_parent(parent),
-m_first(0),
-m_last(0),
-m_prev(0),
-m_next(0),
+m_first(nullptr),
+m_last(nullptr),
+m_prev(nullptr),
+m_next(nullptr),
 m_name(name)
 {
   nameValidityCheck();
@@ -102,24 +102,25 @@ m_name(name)
   {
     typeNameSet( m_name );
 
-    if( m_parent  )
-    {
-      if( m_parent->supportsTypes() )
-        m_parent->typeSet( EsVariant::VAR_OBJECT );
+    Ptr parent = m_parent;
+    if( !parent )
+      return;
 
-      if( m_parent->supportsTypeName() )
-      {
-        if( !m_parent->haveTypeName() )
-          m_parent->typeNameSet( m_name );
-        else if( m_parent->typeNameGet() != m_name )
-          EsException::Throw(
-            esT("Nested Object Block type name does not match parent specs. ")
-            esT("Got '%s', expected '%s'."),
-            m_name,
-            m_parent->typeNameGet()
-          );
-      }
-    }
+    if( parent->supportsTypes() )
+      parent->typeSet( EsVariant::VAR_OBJECT );
+
+    if( !parent->supportsTypeName() )
+      return;
+
+    if( !parent->haveTypeName() )
+      parent->typeNameSet( m_name );
+    else if( parent->typeNameGet() != m_name )
+      EsException::Throw(
+        esT("Nested Object Block type name does not match parent specs. ")
+        esT("Got '%s', expected '%s'."),
+        m_name,
+        parent->typeNameGet()
+      );
   }
 }
 //---------------------------------------------------------------------------
@@ -130,8 +131,13 @@ EsStreamBlock::~EsStreamBlock()
   reset();
 
   // Unlink from parent
-  if( m_parent )
-    m_parent->childRemove( this );
+  Ptr parent = m_parent;
+  if( !parent )
+    return;
+
+  parent->childRemove(
+    this
+  );
 }
 //---------------------------------------------------------------------------
 
@@ -218,8 +224,12 @@ static void throwBlockIdAddInBlockId(ulong id, ulong parentId)
 void EsStreamBlock::idValidityCheck() const
 {
   ulong parentId = None;
-  if( m_parent )
-    parentId = m_parent->idGet();
+
+  {
+    Ptr parent = m_parent;
+    if( parent )
+      parentId = parent->idGet();
+  }
 
   switch( m_id )
   {
@@ -481,32 +491,34 @@ void EsStreamBlock::typeNameSet(const EsString& typeName)
 }
 //---------------------------------------------------------------------------
 
-void EsStreamBlock::childRemove(EsStreamBlock* child)
+void EsStreamBlock::childRemove(const EsStreamBlock::Ptr& child)
 {
   ES_ASSERT(child);
-  ES_ASSERT(child->m_parent == this);
 
-  EsStreamBlock* prev = child->m_prev;
-  EsStreamBlock* next = child->m_next;
+  Ptr childParent = child->parentGet();
+  ES_ASSERT(childParent.get() == this);
+
+  Ptr prev = child->m_prev;
+  Ptr next = child->m_next;
   if( prev )
   {
-    ES_ASSERT(prev->m_next == child);
+    ES_ASSERT(prev->m_next.lock() == child);
     prev->m_next = next;
   }
 
   if( next )
   {
-    ES_ASSERT(child->m_next->m_prev == child);
+    ES_ASSERT(child->m_next->m_prev.lock() == child);
     child->m_next->m_prev = prev;
   }
 
-  if( m_first == child )
+  if( m_first.lock() == child )
     m_first = next;
 
-  if( m_last == child )
+  if( m_last.lock() == child )
     m_last = prev;
 
-  child->m_parent = 0;
+  child->m_parent.reset();
 }
 //---------------------------------------------------------------------------
 
@@ -525,7 +537,7 @@ EsStreamBlock::BlocksT::iterator EsStreamBlock::childItGet(EsString::HashT key, 
 
   for( BlocksT::iterator it = range.first; it != range.second; ++it )
   {
-    EsStreamBlock* child = (*it).second.get();
+    Ptr child = (*it).second;
     ES_ASSERT(child);
 
     if( id == child->idGet() )
@@ -536,57 +548,60 @@ EsStreamBlock::BlocksT::iterator EsStreamBlock::childItGet(EsString::HashT key, 
 }
 //---------------------------------------------------------------------------
 
-EsStreamBlock* EsStreamBlock::childGet(const EsString& name, ulong id /*= None*/)
+EsStreamBlock::Ptr EsStreamBlock::childGet(const EsString& name, ulong id /*= None*/)
 {
   BlocksT::iterator it = childItGet(name.hashGet(), id);
   if( m_children.end() != it )
-    return (*it).second.get();
+    return (*it).second;
 
-  return 0;
+  return nullptr;
 }
 //---------------------------------------------------------------------------
 
-EsStreamBlock* EsStreamBlock::childAdd(const EsString& name, ulong id)
+EsStreamBlock::Ptr EsStreamBlock::childAdd(const EsString& name, ulong id)
 {
-  return childAddBefore(0, name, id);
+  return childAddBefore(
+    nullptr,
+    name,
+    id
+  );
 }
 //---------------------------------------------------------------------------
 
-void EsStreamBlock::internalChildAddBefore(EsStreamBlock* subj, const EsStreamBlock::Ptr& child, ullong key)
+void EsStreamBlock::internalChildAddBefore(const EsStreamBlock::Ptr subj, const EsStreamBlock::Ptr& child, ullong key)
 {
   ES_ASSERT(child);
 
-  EsStreamBlock* p = child.get();
   if( subj )
   {
-    ES_ASSERT( this == subj->m_parent );
+    ES_ASSERT( this == subj->m_parent.lock().get() );
 
     // Should add before the first element
-    if( m_first == subj )
-      m_first = p;
+    if( m_first.lock() == subj )
+      m_first = child;
 
-    EsStreamBlock* prev = subj->m_prev;
+	Ptr prev = subj->m_prev;
     if( prev )
     {
-      prev->m_next = p;
-      p->m_prev = prev;
+      prev->m_next = child;
+      child->m_prev = prev;
     }
 
-    subj->m_prev = p;
-    p->m_next = subj;
+    subj->m_prev = child;
+    child->m_next = subj;
   }
   else //< Otherwise, append after last child element
   {
     if( !m_first )
-      m_first = p;
+      m_first = child;
 
-    EsStreamBlock* last = m_last;
-    m_last = p;
+    EsStreamBlock::Ptr last = m_last;
+    m_last = child;
 
     if( last )
     {
-      last->m_next = p;
-      p->m_prev = last;
+      last->m_next = child;
+      child->m_prev = last;
     }
   }
 
@@ -599,7 +614,7 @@ void EsStreamBlock::internalChildAddBefore(EsStreamBlock* subj, const EsStreamBl
 }
 //---------------------------------------------------------------------------
 
-EsStreamBlock* EsStreamBlock::childAddBefore(EsStreamBlock* subj, const EsString& name, ulong id)
+EsStreamBlock::Ptr EsStreamBlock::childAddBefore(const EsStreamBlock::Ptr& subj, const EsString& name, ulong id)
 {
   ES_ASSERT(id > None);
   ES_ASSERT(id < _IdsCnt_);

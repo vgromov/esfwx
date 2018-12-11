@@ -10,6 +10,7 @@ class ESCORE_CLASS EsStreamBlock
 {
 public:
   typedef std::shared_ptr<EsStreamBlock> Ptr;
+  typedef std::weak_ptr<EsStreamBlock> WeakPtr;
 
   /// Stream Block IDs
   enum
@@ -83,10 +84,10 @@ public:
   size_t childrenCountGet() const ES_NOTHROW { return m_children.size(); }
 
   /// Return true if block is the first child in its parent
-  bool isFirst() const ES_NOTHROW { return nullptr == m_prev; }
+  bool isFirst() const ES_NOTHROW { return nullptr == m_prev.lock(); }
 
   /// Return true if block is the last child in its parent
-  bool isLast() const ES_NOTHROW { return nullptr == m_next; }
+  bool isLast() const ES_NOTHROW { return nullptr == m_next.lock(); }
 
   /// Return true, if block have POD payload value
   bool isPOD() const ES_NOTHROW { return nullptr != m_payload; }
@@ -176,13 +177,13 @@ public:
   void payloadReset() ES_NOTHROW { m_payload.reset(); }
 
   /// Try to find child block based on its name and ID. Return 0, if not found
-  EsStreamBlock* childGet(const EsString& name, ulong id = None);
+  EsStreamBlock::Ptr childGet(const EsString& name, ulong id = None);
 
   /// Append child block with specific name, and ID
-  EsStreamBlock* childAdd(const EsString& name, ulong id);
+  EsStreamBlock::Ptr childAdd(const EsString& name, ulong id);
 
   /// Append child block before the subj one. If subj is 0, just append child to the end
-  EsStreamBlock* childAddBefore(EsStreamBlock* subj, const EsString& name, ulong id);
+  EsStreamBlock::Ptr childAddBefore(const EsStreamBlock::Ptr& subj, const EsString& name, ulong id);
 
   /// Reset block contents. Version, if it's supported, is retained
   void reset();
@@ -201,25 +202,25 @@ public:
   /// Remove child by its pointer. Child must be an immediate child, otherwise,
   /// no operation is performed.
   ///
-  void childRemove(EsStreamBlock* child);
+  void childRemove(const EsStreamBlock::Ptr& child);
 
   /// Get the first child
-  EsStreamBlock* firstChildGet() const ES_NOTHROW { return m_first; }
+  EsStreamBlock::WeakPtr firstChildGet() const ES_NOTHROW { return m_first; }
 
   /// Get the last child
-  EsStreamBlock* lastChildGet() const ES_NOTHROW { return m_last; }
+  EsStreamBlock::WeakPtr lastChildGet() const ES_NOTHROW { return m_last; }
 
   /// Get the previous sibling
-  EsStreamBlock* prevSiblingGet() const ES_NOTHROW { return m_prev; }
+  EsStreamBlock::WeakPtr prevSiblingGet() const ES_NOTHROW { return m_prev; }
 
   /// Get the next sibling
-  EsStreamBlock* nextSiblingGet() const ES_NOTHROW { return m_next; }
+  EsStreamBlock::WeakPtr nextSiblingGet() const ES_NOTHROW { return m_next; }
 
   /// Get the first immediate child with the specified ID
-  EsStreamBlock* firstChildGet(ulong id) const;
+  EsStreamBlock::Ptr firstChildGet(ulong id) const;
 
   /// Get the next sibling with the specified ID
-  EsStreamBlock* nextSiblingGet(ulong id) const;
+  EsStreamBlock::Ptr nextSiblingGet(ulong id) const;
 
   /// Optional Attributes API
   ///
@@ -251,13 +252,13 @@ public:
   ///
 
   /// Append an indexed Item child block, with auto-indexing
-  EsStreamBlock* itemAdd();
+  EsStreamBlock::Ptr itemAdd();
 
   /// Append an indexed Item child block, with specified index
-  EsStreamBlock* itemAdd(ulong idx);
+  EsStreamBlock::Ptr itemAdd(ulong idx);
 
   /// Try to get the Item child by its index. Return 0, if not found
-  EsStreamBlock* itemGet(ulong idx);
+  EsStreamBlock::Ptr itemGet(ulong idx);
 
   /// Stream copying
   ///
@@ -289,7 +290,7 @@ protected:
 
 protected:
   /// Internal block addition helper
-  void internalChildAddBefore(EsStreamBlock* subj, const EsStreamBlock::Ptr& child, ullong key);
+  void internalChildAddBefore(const EsStreamBlock::Ptr& subj, const EsStreamBlock::Ptr& child, ullong key);
 
   /// Return the first child iterator by specified key, and id
   BlocksT::iterator childItGet(EsString::HashT key, ulong id);
@@ -325,19 +326,19 @@ protected:
   void internalAttrsInit();
 
   /// Insert clone of src into this Block children chain
-  void cloneAdd(const EsStreamBlock* src);
+  void cloneAdd(const EsStreamBlock::Ptr& src);
 
 protected:
-  ulong m_id;                     ///< Block ID
-  EsStreamBlock* m_parent;        ///< Parent block
-  EsStreamBlock* m_first;         ///< First child block
-  EsStreamBlock* m_last;          ///< Last child block
-  EsStreamBlock* m_prev;          ///< Previous sibling
-  EsStreamBlock* m_next;          ///< Next sibling
-  BlocksT m_children;             ///< Mapped children collection
-  EsString m_name;                ///< Optional block name
-  AttrsPtr m_attrs;               ///< Optional block attributes
-  ValPtr m_payload;               ///< Optional block payload value
+  ulong m_id;                             ///< Block ID
+  EsStreamBlock* m_parent;                ///< Parent block
+  EsStreamBlock::WeakPtr m_first;         ///< First child block
+  EsStreamBlock::WeakPtr m_last;          ///< Last child block
+  EsStreamBlock::WeakPtr m_prev;          ///< Previous sibling
+  EsStreamBlock::WeakPtr m_next;          ///< Next sibling
+  BlocksT m_children;                     ///< Mapped children collection
+  EsString m_name;                        ///< Optional block name
+  AttrsPtr m_attrs;                       ///< Optional block attributes
+  ValPtr m_payload;                       ///< Optional block payload value
 
 private:
   EsStreamBlock() ES_REMOVEDECL;

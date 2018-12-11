@@ -338,7 +338,7 @@ void EsStream::rootInit(ulong version)
 {
   m_root.reset(
     new EsStreamBlock(
-      0,
+      nullptr,
       EsStreamBlock::Context,
       EsStreamBlock::root()
     )
