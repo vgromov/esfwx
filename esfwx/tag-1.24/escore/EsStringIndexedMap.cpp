@@ -22,14 +22,7 @@ m_payload(payload)
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
-EsStringIndexedMap::EsStringIndexedMap( EsStringIndexedMap::ContainerInterlocked interlocked /*=ContainerUsesInterlock*/) ES_NOTHROW
-{
-  if( ContainerUsesInterlock == interlocked )
-    m_cs.reset( new EsCriticalSection );
-}
-//---------------------------------------------------------------------------
-
-EsStringIndexedMap::EsStringIndexedMap(EsStringIndexedMap::ContainerInterlocked interlocked, const EsString& containerName /*= EsString::null()*/ ) ES_NOTHROW :
+EsStringIndexedMap::EsStringIndexedMap(EsStringIndexedMap::ContainerInterlocked interlocked /*= ContainerUsesInterlock*/, const EsString& containerName /*= EsString::null()*/ ) ES_NOTHROW :
 m_containerName(containerName)
 {
   if( ContainerUsesInterlock == interlocked )

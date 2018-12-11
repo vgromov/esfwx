@@ -43,7 +43,10 @@ ES_DECL_CLASS_INFO_END
 
 EsProgressMonitorTask::EsProgressMonitorTask(const EsString& id, const EsString& text,
   const EsVariant& range, const EsVariant& val) :
-m_children(esT("EsProgressMonitorTask"))
+m_children(
+  EsStringIndexedMap::ContainerUsesInterlock,
+  esT("EsProgressMonitorTask")
+)
 {
   m_dynamic = true;
   m_pathInvalid = true;
@@ -76,7 +79,7 @@ EsProgressMonitorTaskIntf::Ptr EsProgressMonitorTask::create(const EsString& id,
 {
   std::unique_ptr<EsProgressMonitorTask> t( new EsProgressMonitorTask(id, text, range, val) );
   ES_ASSERT(t);
-  
+
   return t.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------
@@ -907,7 +910,7 @@ EsProgressMonitorIntf::Ptr EsProgressMonitor::create(const EsString& id)
 {
   std::unique_ptr<EsProgressMonitor> m( new EsProgressMonitor(id) );
   ES_ASSERT(m);
-  
+
   return m.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------

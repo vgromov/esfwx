@@ -896,7 +896,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::fieldConditionalAdd)(const EsScriptObj
   m_conditionals.push_back(field);
 
   field->setParent(
-    asIntfT<EsScriptObjectIntf>(false) //< Cast to EsScriptObjectIntf, do not incref 
+    asIntfT<EsScriptObjectIntf>(false) //< Cast to EsScriptObjectIntf, do not incref
   );
 
   ESSCRIPT_OBJECT_TRACE4(
@@ -1424,7 +1424,7 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::binBufferSet)(const EsBinBuffer& buff)
   {
     const EsString& varName = vars[idx];
     EsScriptValAccessorIntf::Ptr var = variableFind(
-      varName, 
+      varName,
       false
     );
     if( var )
@@ -1449,8 +1449,8 @@ ES_IMPL_INTF_METHOD(EsScriptCodeSection::Ptr, EsScriptObject::findScriptedMethod
     return EsScriptCodeSection::Ptr();
 
   EsScriptObjectMethodFinder finder(
-    asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref 
-    key, 
+    asIntfT<EsScriptObjectIntf>(false), //< Cast this to EsScriptObjectIntf, do not incref
+    key,
     allHierarchy
   );
   finder.traverse();
@@ -1674,9 +1674,9 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::copyFrom)(cr_EsBaseIntfPtr p1)
       else
       {
         if( isPOD() )
-          propertySet( 
-            EsStdNames::value(), 
-            other->propertyGet(EsStdNames::value()) 
+          propertySet(
+            EsStdNames::value(),
+            other->propertyGet(EsStdNames::value())
           );
         else if( isArray() )
         {
@@ -1897,7 +1897,7 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::propertyGet)(const EsString& name
         m_ctx->vm()->currentDebugInfoGet()
       );
 
-    result = info->get(  
+    result = info->get(
       this
     );
   }
@@ -1929,13 +1929,13 @@ ES_IMPL_INTF_METHOD(void, EsScriptObject::propertySet)(const EsString& name, con
     const EsPropertyInfo* info = classInfoGet().propertyInfoFind(name);
     if( !info )
       EsScriptException::ThrowPropertyIsNotDeclared(
-        name, 
-        typeNameGet(), 
+        name,
+        typeNameGet(),
         m_ctx->vm()->currentDebugInfoGet()
       );
 
-    info->set( 
-      this, 
+    info->set(
+      this,
       val
     );
   }
@@ -2004,7 +2004,7 @@ ES_IMPL_INTF_METHOD(EsVariant, EsScriptObject::callMethod)(const EsString& name,
   const EsMethodInfo* info = classInfoGet().methodInfoFind(key);
   if( info )
     return info->call(
-      this, 
+      this,
       params
     );
 
@@ -2429,8 +2429,8 @@ void EsScriptObject::propertyDeclare(const EsString& name, const EsAttributesInt
   if( !m_propsMap )
     m_propsMap.reset(
       new EsStringIndexedMap(
-        typeNameGet(),
-        EsStringIndexedMap::ContainerWithoutInterlock
+        EsStringIndexedMap::ContainerWithoutInterlock,
+        typeNameGet()
       )
     );
   ES_ASSERT(m_propsMap);
@@ -2471,8 +2471,8 @@ EsStringArray EsScriptObject::propertyAttributeNamesGet(cr_EsString propName) co
     const EsPropertyInfo* info = classInfoGet().propertyInfoFind(propName);
     if( !info )
       EsScriptException::ThrowPropertyIsNotDeclared(
-        propName, 
-        typeNameGet(), 
+        propName,
+        typeNameGet(),
         m_ctx->vm()->currentDebugInfoGet()
       );
 
@@ -2504,8 +2504,8 @@ bool EsScriptObject::propertyHasAttribute(cr_EsString propName, cr_EsString attr
     const EsPropertyInfo* info = classInfoGet().propertyInfoFind(propName);
     if( !info )
       EsScriptException::ThrowPropertyIsNotDeclared(
-        propName, 
-        typeNameGet(), 
+        propName,
+        typeNameGet(),
         m_ctx->vm()->currentDebugInfoGet()
       );
     EsAttributesIntf::Ptr attrs = info->attributesAccess();
@@ -2536,7 +2536,7 @@ EsVariant EsScriptObject::propertyAttributeGet(cr_EsString propName, cr_EsString
     const EsPropertyInfo* info = classInfoGet().propertyInfoFind(propName);
     if( !info )
       EsScriptException::ThrowPropertyIsNotDeclared(
-        propName, 
+        propName,
         typeNameGet(),
         m_ctx->vm()->currentDebugInfoGet()
       );
@@ -2571,8 +2571,8 @@ EsString EsScriptObject::propertyLabelGet(cr_EsString propName) const
     const EsPropertyInfo* info = classInfoGet().propertyInfoFind(propName);
     if( !info )
       EsScriptException::ThrowPropertyIsNotDeclared(
-        propName, 
-        typeNameGet(), 
+        propName,
+        typeNameGet(),
         m_ctx->vm()->currentDebugInfoGet()
       );
 

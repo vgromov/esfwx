@@ -22,9 +22,9 @@ protected:
   {
     std::unique_ptr<EsScriptValAccessor> ptr(
       new EsScriptValAccessor(
-        name, 
-        var, 
-        flags, 
+        name,
+        var,
+        flags,
         parent
       )
     );
@@ -179,10 +179,6 @@ EsScriptSymbolTable::EsScriptSymbolTable(const EsScriptSymbolTable& src, EsScrip
 m_contents( EsStringIndexedMap::ContainerWithoutInterlock)
 {
   clone(src, parent);
-}
-
-EsScriptSymbolTable::~EsScriptSymbolTable() ES_NOTHROW
-{
 }
 
 const EsScriptValAccessorIntf::Ptr& EsScriptSymbolTable::null() ES_NOTHROW
@@ -418,9 +414,9 @@ void EsScriptSymbolTable::symbolValSetIgnoreReadOnly(const EsString& name, const
 EsScriptValAccessorIntf::Ptr EsScriptSymbolTable::valAccessorCreate(const EsString& name, const EsVariant& val, ulong flags)
 {
   return EsScriptValAccessor::create(
-    name, 
-    val, 
-    flags, 
+    name,
+    val,
+    flags,
     nullptr
   );
 }

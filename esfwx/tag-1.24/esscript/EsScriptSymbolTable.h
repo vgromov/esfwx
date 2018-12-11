@@ -10,10 +10,9 @@ class ESSCRIPT_CLASS EsScriptSymbolTable
 public:
   typedef std::shared_ptr<EsScriptSymbolTable> Ptr;
 
-public:  
+public:
   EsScriptSymbolTable(bool checkTemplate = true) ES_NOTHROW;
   EsScriptSymbolTable(const EsScriptSymbolTable& src, EsScriptObjectIntf* parent);
-  ~EsScriptSymbolTable() ES_NOTHROW;
 
   void clone(const EsScriptSymbolTable& src, EsScriptObjectIntf* parent = nullptr);
 

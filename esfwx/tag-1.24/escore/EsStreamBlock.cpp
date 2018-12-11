@@ -292,7 +292,10 @@ void EsStreamBlock::internalAttrsInit()
 {
   if( !m_attrs )
     m_attrs.reset(
-      new EsStringIndexedMap(esT("EsStreamBlock"))
+      new EsStringIndexedMap(
+        EsStringIndexedMap::ContainerUsesInterlock,
+        esT("EsStreamBlock")
+      )
     );
 }
 //---------------------------------------------------------------------------

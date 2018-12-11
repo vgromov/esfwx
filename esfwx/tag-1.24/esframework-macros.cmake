@@ -29,8 +29,8 @@ MACRO(SPECIFY_HEADER_FILES SourceFiles HeaderExtensions)
 		endif()
 	endforeach()
 	set_source_files_properties(${headersFound} PROPERTIES
-						HEADER_FILE_ONLY ON
-						)
+		HEADER_FILE_ONLY ON
+	)
 ENDMACRO(SPECIFY_HEADER_FILES)
 
 # plugin targets finalization macro
@@ -142,34 +142,36 @@ ENDMACRO(ADD_TO_SETUP_DEPENDENCIES)
 
 # help and manual compiler
 MACRO(USE_HELP_AND_MANUAL)
-	if( NOT helpAndManualCompiler )
-		find_program(helpAndManualCompiler
-							helpman.exe
-							PATHS "c:/program files" "c:/program files (x86)" ENV PATH
-							PATH_SUFFIXES "EC Software/HelpAndManual5" "EC Software/HelpAndManual6"
-			)
-	endif()
-	if( NOT helpAndManualCompiler )
-		message(FATAL_ERROR
-      "Help and manual compiler is not found"
-    )
-	endif()
+  if(WIN32)
+    if( NOT helpAndManualCompiler )
+      find_program(helpAndManualCompiler
+                helpman.exe
+                PATHS "c:/program files" "c:/program files (x86)" ENV PATH
+                PATH_SUFFIXES "EC Software/HelpAndManual5" "EC Software/HelpAndManual6"
+        )
+    endif()
+    if( NOT helpAndManualCompiler )
+      message(FATAL_ERROR
+        "Help and manual compiler is not found"
+      )
+    endif()
+  endif()
 ENDMACRO(USE_HELP_AND_MANUAL)
 
 #plugin help target macro
 MACRO(PLUGIN_HELP_TARGET_ADD helpFileSrc pluginModuleName)
-get_filename_component(helpFileSrc ${helpFileSrc} REALPATH)
-get_filename_component(helpFileBaseName ${helpFileSrc} NAME_WE)
-set(helpFileOut help/${helpFileBaseName}.chm)
-add_custom_command(OUTPUT ${helpFileOut}
-						COMMAND ${helpAndManualCompiler} "${helpFileSrc}" "/CHM"
-					)
-add_custom_target(${pluginModuleName}_help ALL
-						DEPENDS ${helpFileOut}
-					)
-set_target_properties(${pluginModuleName}_help PROPERTIES
-					FOLDER plugins
-					)
+  get_filename_component(helpFileSrc ${helpFileSrc} REALPATH)
+  get_filename_component(helpFileBaseName ${helpFileSrc} NAME_WE)
+  set(helpFileOut help/${helpFileBaseName}.chm)
+  add_custom_command(OUTPUT ${helpFileOut}
+		COMMAND ${helpAndManualCompiler} "${helpFileSrc}" "/CHM"
+	)
+  add_custom_target(${pluginModuleName}_help ALL
+		DEPENDS ${helpFileOut}
+	)
+  set_target_properties(${pluginModuleName}_help PROPERTIES
+		FOLDER plugins
+	)
 ENDMACRO(PLUGIN_HELP_TARGET_ADD)
 
 # scriptlet encryption target macro

@@ -43,8 +43,7 @@ public:
   typedef std::vector< EsStringAssocContainerNodePtrT > EsStringAssocVectorT;
 
 public:
-  EsStringIndexedMap(ContainerInterlocked interlocked = ContainerUsesInterlock) ES_NOTHROW;
-  EsStringIndexedMap(ContainerInterlocked interlocked, const EsString& containerName = EsString::null()) ES_NOTHROW;
+  EsStringIndexedMap(ContainerInterlocked interlocked = ContainerUsesInterlock, const EsString& containerName = EsString::null()) ES_NOTHROW;
   EsStringIndexedMap(const EsStringIndexedMap& src, ContainerInterlocked interlocked);
   EsStringIndexedMap(const EsStringIndexedMap& src);
   ~EsStringIndexedMap() ES_NOTHROW;
