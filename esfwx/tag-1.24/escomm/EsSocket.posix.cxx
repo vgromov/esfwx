@@ -489,7 +489,10 @@ public:
     if( m_raw != raw )
     {
       if( !rawParse(raw, reinterpret_cast<esU8*>(&m_addr.sin_addr)) )
-        EsException::Throw( _("'%s' is not a valid IPv4 address"), raw.c_str() );
+        EsException::Throw(
+          _("'%s' is not a valid IPv4 address"),
+          raw
+        );
 
       m_flags |= flagRawResolved;
       m_raw = raw;
@@ -1003,21 +1006,16 @@ public:
           // so use cloning to create address object for the new incoming socket
           EsSocketAddr newAddr(m_addr.typeGet());
 
-#if ES_OS == ES_OS_MAC
-          unsigned int
-#else
-          int
-#endif
-            addrLen = newAddr.nativeSizeGet();
+          unsigned addrLen = newAddr.nativeSizeGet();
           ES_ASSERT( newAddr.isOk() );
 
           int newSock = ::accept(
             m_sock.sockGet(),
-            (sockaddr*)newAddr.nativeGet(),
+            reinterpret_cast<sockaddr*>(newAddr.nativeGet()),
             &addrLen
           );
 
-          if( -1 == newSock )
+          if( 0 > newSock )
             checkError( errno, m_error, doThrow );
           else
           {
@@ -1438,23 +1436,18 @@ public:
         // Use address of the same type as ours
         addr = EsSocketAddr(m_addr.typeGet());
 
-#if ES_OS == ES_OS_MAC
-        unsigned int
-#else
-        int
-#endif
-          addrLen = addr.nativeSizeGet();
+        unsigned addrLen = addr.nativeSizeGet();
 
         int result = recvfrom(
           m_sock.sockGet(),
           reinterpret_cast<char*>(data),
           toRead,
           0,
-          (sockaddr*)addr.nativeGet(),
+          reinterpret_cast<sockaddr*>(addr.nativeGet()),
           &addrLen
         );
 
-        if( -1 == result )
+        if( 0 > result )
           checkError(errno, m_error, doThrow);
         else
         {
@@ -1559,7 +1552,12 @@ protected:
     switch( m_type )
     {
     case EsSocketType::ConnectionOriented:
-      m_maxOutChunk = socketGetIntOption<int>(m_sock.sockGet(), SO_SNDBUF, m_type, m_error);
+      m_maxOutChunk = socketGetIntOption<int>(
+        m_sock.sockGet(),
+        SO_SNDBUF,
+        m_type,
+        m_error
+      );
       break;
 #ifdef ES_COMM_USE_BLUETOOTH
     case EsSocketType::Bluetooth:
@@ -1567,10 +1565,15 @@ protected:
       break;
 #endif
     case EsSocketType::MessageOriented:
-#if ES_OS == ES_OS_ANDROID || ES_OS == ES_OS_MAC
+#if ES_OS == ES_OS_ANDROID || ES_OS == ES_OS_MAC || ES_OS == ES_OS_LINUX
       m_maxOutChunk = 1024;
 #else
-      m_maxOutChunk = socketGetIntOption<unsigned int>(m_sock.sockGet(), SO_MAX_MSG_SIZE, m_type, m_error);
+      m_maxOutChunk = socketGetIntOption<unsigned>(
+        m_sock.sockGet(),
+        SO_MAX_MSG_SIZE,
+        m_type,
+        m_error
+      );
 #endif
       break;
     }

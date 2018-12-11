@@ -119,7 +119,7 @@ const EsString& EsSocketAddr::Impl::serviceGet() const
 #   include "EsSocketBluetooth.android.cxx"
 # endif
 
-#elif ES_OS == ES_OS_MAC
+#elif defined(ES_POSIX_COMPAT)
 
 # include "EsSocket.posix.cxx"
 

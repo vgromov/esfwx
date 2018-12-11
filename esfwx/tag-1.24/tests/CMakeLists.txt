@@ -56,7 +56,7 @@ if(CMAKE_COMPILER_IS_GNUCXX AND NOT MINGW)
     list(
       APPEND
       ESFWX_TESTS_EXTRA_LIBRARIES
-      dl dfd
+      dl bfd
     )
   endif()
 endif()
@@ -79,7 +79,7 @@ if( ES_BUILD_SHARED_LIBS )
   list(
     APPEND 
     ESFWX_TESTS_DEFS ${ES_USEDLL_PREPROC_FOR_EXE}
-	)
+  )
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
