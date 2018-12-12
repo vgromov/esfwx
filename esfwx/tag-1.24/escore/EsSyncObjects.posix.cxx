@@ -51,25 +51,26 @@ m_type(type)
     )
   );
 
-  m_ok = true;
-
   EsThread::checkPthreadError(
     pthread_mutexattr_destroy(
       &attrs
     )
   );
+  
+  m_ok = true;
 }
 //---------------------------------------------------------------------------
 
 EsMutex::~EsMutex() ES_NOTHROW
 {
-  if(!m_ok)
+  if(nullptr == m_mx)
     return;
 
   try
   {
-    if( resultOk == lock() )
-      unlock();
+// Perform unlocking before destroying mutex
+//    if( resultOk == lock() )
+//      unlock();
 
 #ifdef ES_DEBUG
   int err =
@@ -91,7 +92,7 @@ EsMutex::~EsMutex() ES_NOTHROW
 // validity check
 bool EsMutex::isOk() const
 {
-  return m_ok && (nullptr != m_mx.get());
+  return m_ok && (nullptr != m_mx);
 }
 //---------------------------------------------------------------------------
 

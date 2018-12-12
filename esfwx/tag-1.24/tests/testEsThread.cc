@@ -1,6 +1,6 @@
 // threading stuff tests
 //
-/*
+
 class EsThreadTest1 : public EsThread
 {
 public:
@@ -41,7 +41,7 @@ public:
   int idxGet() const { return m_idx; }
 
 protected:
-  virtual long worker()
+  virtual long worker() ES_OVERRIDE
   {
     m_idx = 0;
     while( !checkForStopping(5) )
@@ -73,7 +73,7 @@ class EsEventSubscriberTest : public EsEventSubscriber
 public:
   EsEventSubscriberTest() : EsEventSubscriber(esT("from-tread2")), m_final(false) {}
 
-  ES_DECL_INTF_METHOD(void, notify)(const EsEventIntf::Ptr& evt)
+  ES_DECL_INTF_METHOD(void, notify)(const EsEventIntf::Ptr& evt) ES_OVERRIDE
   {
     if(123 == evt->idGet())
       m_final = true;
@@ -114,4 +114,5 @@ TEST(EsThreadTest, EventDispatch) {
   EXPECT_TRUE(EsThreadState::None == thread.stateGet());
   EXPECT_TRUE(thread.idxGet() != 0);
 }
-*/
+
+
