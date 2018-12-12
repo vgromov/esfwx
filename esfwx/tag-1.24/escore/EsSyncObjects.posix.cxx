@@ -41,7 +41,7 @@ m_type(type)
   );
 #endif
 
-  m_mx = std::make_unique<pthread_mutex_t>();
+  m_mx = ES_MAKE_UNIQUE(pthread_mutex_t);
   ES_ASSERT(m_mx);
 
   EsThread::checkPthreadError(

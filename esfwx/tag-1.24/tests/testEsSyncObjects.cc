@@ -1,6 +1,6 @@
 // Sync object stuff tests
 //
-
+/*
 TEST(EsSyncObjectTest, Basics) {
 
   EsCriticalSection m_cs;
@@ -21,3 +21,4 @@ TEST(EsSyncObjectTest, Semaphore) {
   EXPECT_TRUE(EsSemaphore::resultOk == sema.post());
   EXPECT_TRUE(EsSemaphore::resultOk == sema.wait());
 }
+*/

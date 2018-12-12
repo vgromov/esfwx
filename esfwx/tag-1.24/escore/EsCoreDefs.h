@@ -398,7 +398,7 @@ inline void ES_DELETE(T*& ptr)
     ptr = nullptr;
   }
 }
-#endif
+#endif //< __cplusplus
 
 // Deprecated features macro
 //
@@ -412,19 +412,29 @@ inline void ES_DELETE(T*& ptr)
 #  endif
 #endif
 
+// Make unique and make shared usage
+//
+#if (__cplusplus > 201103L)
+# define ES_MAKE_UNIQUE(ObjT, ...) std::make_unique<ObjT>(__VA_ARGS__)
+# define ES_MAKE_SHARED(ObjT, ...) std::make_shared<ObjT>(__VA_ARGS__)
+#else
+# define ES_MAKE_UNIQUE(ObjT, ...) std::unique_ptr<ObjT>(new ObjT(__VA_ARGS__))
+# define ES_MAKE_SHARED(ObjT, ...) std::shared_ptr<ObjT>(new ObjT(__VA_ARGS__))
+#endif
+
 // Debugging stuff
 //
 // Assertion macros
 //
 #ifndef NDEBUG
-#  include <assert.h>
-#  define ES_ASSERT( x )    assert( x )
+# include <assert.h>
+# define ES_ASSERT( x )     assert( x )
 # define ES_FAIL            ES_ASSERT( 0 )
-#  define ES_FAIL_MSG( x )  ES_ASSERT( 0 == (x) )
+# define ES_FAIL_MSG( x )   ES_ASSERT( 0 == (x) )
 #else
-#  define ES_ASSERT( x )
-# define ES_FAIL          abort()
-#  define ES_FAIL_MSG( x ) abort()
+# define ES_ASSERT( x )
+# define ES_FAIL            abort()
+# define ES_FAIL_MSG( x )   abort()
 #endif
 
 #ifdef __cplusplus

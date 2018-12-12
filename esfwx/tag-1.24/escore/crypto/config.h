@@ -907,7 +907,7 @@ NAMESPACE_END
 #  if __has_feature(cxx_constexpr)
 #    define CRYPTOPP_CXX11_CONSTEXPR 1
 #  endif
-#elif (CRYPTOPP_GCC_VERSION >= 40600)
+#elif (CRYPTOPP_GCC_VERSION >= 40600) && (__cpp_constexpr > 200704)
 #  define CRYPTOPP_CXX11_CONSTEXPR 1
 #elif (__SUNPRO_CC >= 0x5130)
 #  define CRYPTOPP_CXX11_CONSTEXPR 1

@@ -33,7 +33,7 @@ static char** s_argv;
 
 static EsString binRootGet()
 {
-  const EsPath& path = EsPath::createFromFilePath( s_argv[0] );
+  const EsPath& path = EsPath::createFromFilePath( EsPath::stdAppPathGet() );
   EsString fpath = path.pathGet();
   size_t pos = fpath.find(esT("bin"));
   if( pos != EsString::npos )
