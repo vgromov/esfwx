@@ -59,6 +59,23 @@ ES_DECL_REFLECTED_SERVICES_BEGIN( EsUtilities )
   ///
   ES_DECL_REFLECTED_CLASS_METHOD1(void, systickRestore, cr_EsVariant);
 
+  /// Try to parse string argument as a vestion string
+  /// (AKA major[sep]minor<[sep]build><[sep]revision>),
+  /// and return processed parts as variant collection
+  /// If string is not recognizable as version string, return an empty variant
+  ///
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsVariant, versionStrParse, cr_EsVariant);
+  
+  /// Version string (AKA major[sep]minor<[sep]build><[sep]revision>) comparison
+  /// As of convention, return EsString::cmpLess, if _1 < _2
+  /// EsString::cmpEqual, if _1 == _2
+  /// EsString::greater otherwise
+  /// If either of string may not be recognized as a version string, throw an exception
+  /// NB! By convention, non-existing version string members are considered 0, so,
+  /// if, say str1 is 1.2 and str2 is 1.2.0.0, they are considered equal.
+  ///
+  ES_DECL_REFLECTED_CLASS_METHOD2(EsVariant, versionStrCompare, cr_EsVariant, cr_EsVariant);
+
 ES_DECL_REFLECTED_SERVICES_END
 
 }
@@ -206,6 +223,17 @@ ESCORE_FUNC( EsString, sToE(const EsString& s, const EsString& key) );
 ESCORE_FUNC( EsString, eToS(const EsString& e, const EsString& key) );
 
 #endif // ES_USE_CRYPTO_LEGACY
+
+/// Weak pointers emptiness check.
+/// Not expiration, but emptiness, i.e. non-assigned(-ness).
+/// Thank you, https://stackoverflow.com/users/2666289/holt
+/// 
+template <typename T>
+bool weakptr_is_empty(const std::weak_ptr<T>& weak) ES_NOTHROW
+{
+  using w_t = std::weak_ptr<T>;
+  return !weak.owner_before(w_t{}) && !w_t{}.owner_before(weak);
+}
 
 /// Byte inversion
 ///

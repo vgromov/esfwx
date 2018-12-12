@@ -624,6 +624,9 @@ namespace EsReflection
 ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsUtilities, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsUtilities, systickChange, EsVariant_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsUtilities, systickRestore, void_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsUtilities, versionStrParse, EsVariant_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsUtilities, versionStrCompare, EsVariant_ClassCall_cr_EsVariant_cr_EsVariant, NO_METHOD_DESCR)
+
 ES_DECL_REFLECTED_SERVICES_INFO_END
 }
 //---------------------------------------------------------------------------
@@ -644,3 +647,19 @@ void EsReflection::EsUtilities::systickRestore(cr_EsVariant period)
 }
 //---------------------------------------------------------------------------
 
+EsVariant EsReflection::EsUtilities::versionStrParse(cr_EsVariant str)
+{
+  return ::EsUtilities::versionStrParse(
+    str.asString()
+  );
+}
+//---------------------------------------------------------------------------
+
+EsVariant EsReflection::EsUtilities::versionStrCompare(cr_EsVariant _1, cr_EsVariant _2)
+{
+  return ::EsUtilities::versionStrCompare(
+    _1.asString(),
+    _2.asString()
+  );
+}
+//---------------------------------------------------------------------------

@@ -249,10 +249,7 @@ ES_DECL_CLASS_INFO_END
 EsStream::EsStream(ulong flags, ulong version, const EsBaseIntfPtr& factory) :
 m_objReadScope(nullptr),
 m_objWriteScope(nullptr),
-m_flags(flags),
-m_ctx(nullptr),
-m_block(nullptr),
-m_rootObjIt(nullptr)
+m_flags(flags)
 {
   m_dynamic = true;
   m_factory = factory;
@@ -330,7 +327,7 @@ void EsStream::internalStateReset()
   m_block = m_ctx;
 
   // Reset root object iterator, just in case
-  m_rootObjIt = nullptr;
+  m_rootObjIt.reset();
 }
 //---------------------------------------------------------------------------
 
@@ -392,7 +389,7 @@ void EsStream::fromStream(const EsStreamIntf::Ptr& other)
   checkStreamWriteable();
 
   m_root->copyFrom(
-    *(sobj->m_root)
+    sobj->m_root
   );
 }
 //---------------------------------------------------------------------------
@@ -963,7 +960,7 @@ bool EsStream::firstRootObjectLocate()
   );
   m_block = m_rootObjIt;
 
-  return 0 != m_rootObjIt;
+  return nullptr != m_rootObjIt;
 }
 //---------------------------------------------------------------------------
 
@@ -977,7 +974,7 @@ bool EsStream::nextRootObjectLocate()
     m_block = m_rootObjIt;
   }
 
-  return 0 != m_rootObjIt;
+  return nullptr != m_rootObjIt;
 }
 //---------------------------------------------------------------------------
 

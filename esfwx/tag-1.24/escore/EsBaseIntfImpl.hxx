@@ -1,6 +1,6 @@
 //#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-#define ES_INTERNAL_THIS_CAST( Intf )         dynamic_cast<Intf*>(this)
-#define ES_INTERNAL_THIS_CONSTCAST( Intf )    dynamic_cast<const Intf*>(this)
+#define ES_INTERNAL_THIS_CAST( Intf )         static_cast<Intf*>(this)
+#define ES_INTERNAL_THIS_CONSTCAST( Intf )    static_cast<const Intf*>(this)
 //---------------------------------------------------------------------------
 
 /// Helper macros for base interface refcount trace
@@ -1328,6 +1328,10 @@ public:
   {
     return DerivedT::classNameGetStatic();
   }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return DerivedT::classNameGetStatic();
+  }
   ES_DECL_INTF_METHOD(bool, is)(const EsString& name) const ES_NOTHROW ES_OVERRIDE
   {
     return name == classNameGet();
@@ -1348,6 +1352,14 @@ public:
 
     return BaseImplT::requestIntf(iid, incref);
   }
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
 };
 //---------------------------------------------------------------------------
 
@@ -1366,6 +1378,10 @@ public:
   {}
   virtual ~EsDerivedImpl2() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return DerivedT::classNameGetStatic();
+  }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
   }
@@ -1394,6 +1410,14 @@ public:
 
     return BaseImplT::requestIntf(iid, incref);
   }
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
 };
 //---------------------------------------------------------------------------
 
@@ -1412,6 +1436,10 @@ public:
   {}
   virtual ~EsDerivedImpl3() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return DerivedT::classNameGetStatic();
+  }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
   }
@@ -1442,6 +1470,14 @@ public:
 
     return BaseImplT::requestIntf(iid, incref);
   }
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
 };
 //---------------------------------------------------------------------------
 
@@ -1460,6 +1496,10 @@ public:
   {}
   virtual ~EsDerivedImpl4() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return DerivedT::classNameGetStatic();
+  }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
   }
@@ -1492,6 +1532,14 @@ public:
 
     return BaseImplT::requestIntf(iid, incref);
   }
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
 };
 //---------------------------------------------------------------------------
 
@@ -1510,6 +1558,10 @@ public:
   {}
   virtual ~EsDerivedImpl5() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return DerivedT::classNameGetStatic();
+  }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
   }
@@ -1543,6 +1595,14 @@ public:
       return ES_INTERNAL_THIS_CAST(Intf5T);
 
     return BaseImplT::requestIntf(iid, incref);
+  }
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
   }
 };
 //---------------------------------------------------------------------------
@@ -1568,6 +1628,10 @@ public:
   {
     return DerivedT::classNameGetStatic();
   }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return DerivedT::classNameGetStatic();
+  }
   ES_DECL_INTF_METHOD(bool, is)(const EsString& name) const ES_NOTHROW ES_OVERRIDE
   {
     return name == classNameGet();
@@ -1588,6 +1652,14 @@ public:
 
     return BaseImplT::requestIntf(iid, incref);
   }
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
 };
 //---------------------------------------------------------------------------
 
@@ -1606,6 +1678,10 @@ public:
   {}
   virtual ~EsDerivedImplRc2() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return DerivedT::classNameGetStatic();
+  }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
   }
@@ -1636,6 +1712,14 @@ public:
 
     return BaseImplT::requestIntf(iid, incref);
   }
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
 };
 //---------------------------------------------------------------------------
 
@@ -1654,6 +1738,10 @@ public:
   {}
   virtual ~EsDerivedImplRc3() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return DerivedT::classNameGetStatic();
+  }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
   }
@@ -1691,6 +1779,14 @@ public:
 
     return BaseImplT::requestIntf(iid, incref);
   }
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
 };
 //---------------------------------------------------------------------------
 
@@ -1709,6 +1805,10 @@ public:
   {}
   virtual ~EsDerivedImplRc4() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return DerivedT::classNameGetStatic();
+  }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
   }
@@ -1753,6 +1853,14 @@ public:
 
     return BaseImplT::requestIntf(iid, incref);
   }
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
 };
 //---------------------------------------------------------------------------
 
@@ -1771,6 +1879,10 @@ public:
   {}
   virtual ~EsDerivedImplRc5() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return DerivedT::classNameGetStatic();
+  }
+  ES_DECL_INTF_METHOD(EsString, typeNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
   }
@@ -1821,6 +1933,14 @@ public:
     }
 
     return BaseImplT::requestIntf(iid, incref);
+  }
+  ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
+  }
+  ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW ES_OVERRIDE
+  {
+    return this;
   }
 };
 //---------------------------------------------------------------------------

@@ -57,7 +57,7 @@ public:
   bool isContext() const ES_NOTHROW { return Context == m_id; }
 
   /// Return true, if block is root context
-  bool isRoot() const ES_NOTHROW { return isContext() && nullptr == m_parent.lock(); }
+  bool isRoot() const ES_NOTHROW;
 
   /// Return true if block is of Object type
   bool isObject() const ES_NOTHROW { return Object == m_id; }
@@ -84,10 +84,10 @@ public:
   size_t childrenCountGet() const ES_NOTHROW { return m_children.size(); }
 
   /// Return true if block is the first child in its parent
-  bool isFirst() const ES_NOTHROW { return nullptr == m_prev.lock(); }
+  bool isFirst() const ES_NOTHROW;
 
   /// Return true if block is the last child in its parent
-  bool isLast() const ES_NOTHROW { return nullptr == m_next.lock(); }
+  bool isLast() const ES_NOTHROW;
 
   /// Return true, if block have POD payload value
   bool isPOD() const ES_NOTHROW { return nullptr != m_payload; }
@@ -192,7 +192,7 @@ public:
   void reset(ulong ver);
 
   /// Return block's parent
-  EsStreamBlock::Ptr parentGet() ES_NOTHROW { return m_parent.lock(); }
+  EsStreamBlock::Ptr parentGet() const ES_NOTHROW { return m_parent.lock(); }
 
   /// Remove child block with specified name and ID. If ID == None, look-up blocks
   /// by name only, and remove the first one found.
@@ -266,7 +266,7 @@ public:
   /// Copy entire contents of other to us. Only root-level copying calls are allowed.
   /// If copyFrom is called woth non-root level Blocks, an exception is thrown
   ///
-  void copyFrom(const EsStreamBlock& other);
+  void copyFrom(const EsStreamBlock::Ptr& other);
 
   /// Misc known names
   ///
