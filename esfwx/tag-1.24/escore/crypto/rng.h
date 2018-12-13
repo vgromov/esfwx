@@ -27,7 +27,7 @@ public:
   LC_RNG(word32 init_seed)
     : seed(init_seed) {}
 
-  void GenerateBlock(byte *output, size_t size);
+  void GenerateBlock(CryptoPP::byte *output, size_t size);
 
   word32 GetSeed() {return seed;}
 
@@ -50,7 +50,7 @@ class CRYPTOPP_DLL X917RNG : public RandomNumberGenerator, public NotCopyable
 public:
   //! \brief Construct a X917RNG
   //! \param cipher the block cipher to use for the generator
-  //! \param seed a byte buffer to use as a seed
+  //! \param seed a CryptoPP::byte buffer to use as a seed
   //! \param deterministicTimeVector additional entropy
   //! \details <tt>cipher</tt> will be deleted by the destructor. <tt>seed</tt> must be at least
   //!   BlockSize() in length. <tt>deterministicTimeVector = 0</tt> means obtain time vector
@@ -64,7 +64,7 @@ public:
   //!   OS_GenerateRandomBlock(false, seed, seed.size());
   //!   X917RNG prng(new AES::Encryption(key, AES::DEFAULT_KEYLENGTH), seed, NULL);</pre>
   //! \sa AutoSeededX917RNG
-  X917RNG(BlockTransformation *cipher, const byte *seed, const byte *deterministicTimeVector = 0);
+  X917RNG(BlockTransformation *cipher, const CryptoPP::byte *seed, const CryptoPP::byte *deterministicTimeVector = 0);
 
   void GenerateIntoBufferedTransformation(BufferedTransformation &target, const std::string &channel, lword size);
 
@@ -87,7 +87,7 @@ public:
   //! \brief Contruct a MaurerRandomnessTest
   MaurerRandomnessTest();
 
-  size_t Put2(const byte *inString, size_t length, int messageEnd, bool blocking);
+  size_t Put2(const CryptoPP::byte *inString, size_t length, int messageEnd, bool blocking);
 
   //! \brief Provides the number of bytes of input is needed by the test
   //! \returns how many more bytes of input is needed by the test

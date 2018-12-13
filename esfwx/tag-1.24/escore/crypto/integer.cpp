@@ -2974,7 +2974,7 @@ Integer::Integer(BufferedTransformation &encodedInteger, size_t byteCount, Signe
   Decode(encodedInteger, byteCount, s);
 }
 
-Integer::Integer(const byte *encodedInteger, size_t byteCount, Signedness s, ByteOrder o)
+Integer::Integer(const CryptoPP::byte *encodedInteger, size_t byteCount, Signedness s, ByteOrder o)
 {
   CRYPTOPP_ASSERT(o == BIG_ENDIAN_ORDER || o == LITTLE_ENDIAN_ORDER);
 
@@ -3094,17 +3094,17 @@ void Integer::SetBit(size_t n, bool value)
   }
 }
 
-byte Integer::GetByte(size_t n) const
+CryptoPP::byte Integer::GetByte(size_t n) const
 {
   // Profiling tells us the original Else was dominant, so it was promoted to the first If statement.
   // The code change occurred at Commit dc99266599a0e72d.
   if (n/WORD_SIZE < reg.size())
-    return byte(reg[n/WORD_SIZE] >> ((n%WORD_SIZE)*8));
+    return CryptoPP::byte(reg[n/WORD_SIZE] >> ((n%WORD_SIZE)*8));
   else
     return 0;
 }
 
-void Integer::SetByte(size_t n, byte value)
+void Integer::SetByte(size_t n, CryptoPP::byte value)
 {
   reg.CleanGrow(RoundupSize(BytesToWords(n+1)));
   reg[n/WORD_SIZE] &= ~(word(0xff) << 8*(n%WORD_SIZE));
@@ -3319,7 +3319,7 @@ unsigned int Integer::BitCount() const
     return 0;
 }
 
-void Integer::Decode(const byte *input, size_t inputLen, Signedness s)
+void Integer::Decode(const CryptoPP::byte *input, size_t inputLen, Signedness s)
 {
   StringStore store(input, inputLen);
   Decode(store, inputLen, s);
@@ -3329,7 +3329,7 @@ void Integer::Decode(BufferedTransformation &bt, size_t inputLen, Signedness s)
 {
   CRYPTOPP_ASSERT(bt.MaxRetrievable() >= inputLen);
 
-  byte b;
+  CryptoPP::byte b;
   bt.Peek(b);
   sign = ((s==SIGNED) && (b & 0x80)) ? NEGATIVE : POSITIVE;
 
@@ -3374,7 +3374,7 @@ size_t Integer::MinEncodedSize(Signedness signedness) const
   return outputLen;
 }
 
-void Integer::Encode(byte *output, size_t outputLen, Signedness signedness) const
+void Integer::Encode(CryptoPP::byte *output, size_t outputLen, Signedness signedness) const
 {
   CRYPTOPP_ASSERT(output && outputLen);
   ArraySink sink(output, outputLen);
@@ -3403,7 +3403,7 @@ void Integer::DEREncode(BufferedTransformation &bt) const
   enc.MessageEnd();
 }
 
-void Integer::BERDecode(const byte *input, size_t len)
+void Integer::BERDecode(const CryptoPP::byte *input, size_t len)
 {
   StringStore store(input, len);
   BERDecode(store);
@@ -3434,7 +3434,7 @@ void Integer::BERDecodeAsOctetString(BufferedTransformation &bt, size_t length)
   dec.MessageEnd();
 }
 
-size_t Integer::OpenPGPEncode(byte *output, size_t len) const
+size_t Integer::OpenPGPEncode(CryptoPP::byte *output, size_t len) const
 {
   ArraySink sink(output, len);
   return OpenPGPEncode(sink);
@@ -3449,7 +3449,7 @@ size_t Integer::OpenPGPEncode(BufferedTransformation &bt) const
   return 2 + byteCount;
 }
 
-void Integer::OpenPGPDecode(const byte *input, size_t len)
+void Integer::OpenPGPDecode(const CryptoPP::byte *input, size_t len)
 {
   StringStore store(input, len);
   OpenPGPDecode(store);
@@ -3469,7 +3469,7 @@ void Integer::Randomize(RandomNumberGenerator &rng, size_t nbits)
   SecByteBlock buf(nbytes);
   rng.GenerateBlock(buf, nbytes);
   if (nbytes)
-    buf[0] = (byte)Crop(buf[0], nbits % 8);
+    buf[0] = (CryptoPP::byte)Crop(buf[0], nbits % 8);
   Decode(buf, nbytes, UNSIGNED);
 }
 
@@ -3498,13 +3498,13 @@ bool Integer::Randomize(RandomNumberGenerator &rng, const Integer &min, const In
 class KDF2_RNG : public RandomNumberGenerator
 {
 public:
-  KDF2_RNG(const byte *seed, size_t seedSize)
+  KDF2_RNG(const CryptoPP::byte *seed, size_t seedSize)
     : m_counter(0), m_counterAndSeed(seedSize + 4)
   {
     memcpy(m_counterAndSeed + 4, seed, seedSize);
   }
 
-  void GenerateBlock(byte *output, size_t size)
+  void GenerateBlock(CryptoPP::byte *output, size_t size)
   {
     PutWord(false, BIG_ENDIAN_ORDER, m_counterAndSeed, m_counter);
     ++m_counter;

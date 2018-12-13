@@ -21,9 +21,9 @@ public:
   PublicBlumBlumShub(const Integer &n, const Integer &seed);
 
   unsigned int GenerateBit();
-  byte GenerateByte();
-  void GenerateBlock(byte *output, size_t size);
-  void ProcessData(byte *outString, const byte *inString, size_t length);
+  CryptoPP::byte GenerateByte();
+  void GenerateBlock(CryptoPP::byte *output, size_t size);
+  void ProcessData(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length);
 
   bool IsSelfInverting() const {return true;}
   bool IsForwardTransformation() const {return true;}

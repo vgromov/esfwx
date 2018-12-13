@@ -931,7 +931,7 @@ bool EsStream::valueExists(const EsString& name) const
 {
   ES_ASSERT(m_block);
 
-  return 0 != m_block->childGet(
+  return nullptr != m_block->childGet(
     name,
     EsStreamBlock::Value
   );

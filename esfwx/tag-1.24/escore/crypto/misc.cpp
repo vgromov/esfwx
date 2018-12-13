@@ -25,7 +25,7 @@
 
 NAMESPACE_BEGIN(CryptoPP)
 
-void xorbuf(byte *buf, const byte *mask, size_t count)
+void xorbuf(CryptoPP::byte *buf, const CryptoPP::byte *mask, size_t count)
 {
   CRYPTOPP_ASSERT(buf != NULL);
   CRYPTOPP_ASSERT(mask != NULL);
@@ -58,7 +58,7 @@ void xorbuf(byte *buf, const byte *mask, size_t count)
     buf[i] ^= mask[i];
 }
 
-void xorbuf(byte *output, const byte *input, const byte *mask, size_t count)
+void xorbuf(CryptoPP::byte *output, const CryptoPP::byte *input, const CryptoPP::byte *mask, size_t count)
 {
   CRYPTOPP_ASSERT(output != NULL);
   CRYPTOPP_ASSERT(input != NULL);
@@ -93,14 +93,14 @@ void xorbuf(byte *output, const byte *input, const byte *mask, size_t count)
     output[i] = input[i] ^ mask[i];
 }
 
-bool VerifyBufsEqual(const byte *buf, const byte *mask, size_t count)
+bool VerifyBufsEqual(const CryptoPP::byte *buf, const CryptoPP::byte *mask, size_t count)
 {
   CRYPTOPP_ASSERT(buf != NULL);
   CRYPTOPP_ASSERT(mask != NULL);
   CRYPTOPP_ASSERT(count > 0);
 
   size_t i=0;
-  byte acc8 = 0;
+  CryptoPP::byte acc8 = 0;
 
   if (IsAligned<word32>(buf) && IsAligned<word32>(mask))
   {
@@ -125,7 +125,7 @@ bool VerifyBufsEqual(const byte *buf, const byte *mask, size_t count)
       return acc32 == 0;
     buf += 4*i;
     mask += 4*i;
-    acc8 = byte(acc32) | byte(acc32>>8) | byte(acc32>>16) | byte(acc32>>24);
+    acc8 = CryptoPP::byte(acc32) | CryptoPP::byte(acc32>>8) | CryptoPP::byte(acc32>>16) | CryptoPP::byte(acc32>>24);
   }
 
   for (i=0; i<count; i++)
@@ -212,24 +212,24 @@ void CallNewHandler()
 
 void * AlignedAllocate(size_t size)
 {
-  byte *p;
+  CryptoPP::byte *p;
 #if defined(CRYPTOPP_APPLE_ALLOC_AVAILABLE)
-  while ((p = (byte *)calloc(1, size)) == NULL)
+  while ((p = (CryptoPP::byte *)calloc(1, size)) == NULL)
 #elif defined(CRYPTOPP_MM_MALLOC_AVAILABLE)
-  while ((p = (byte *)_mm_malloc(size, 16)) == NULL)
+  while ((p = (CryptoPP::byte *)_mm_malloc(size, 16)) == NULL)
 #elif defined(CRYPTOPP_MEMALIGN_AVAILABLE)
-  while ((p = (byte *)memalign(16, size)) == NULL)
+  while ((p = (CryptoPP::byte *)memalign(16, size)) == NULL)
 #elif defined(CRYPTOPP_MALLOC_ALIGNMENT_IS_16)
-  while ((p = (byte *)malloc(size)) == NULL)
+  while ((p = (CryptoPP::byte *)malloc(size)) == NULL)
 #else
-  while ((p = (byte *)malloc(size + 16)) == NULL)
+  while ((p = (CryptoPP::byte *)malloc(size + 16)) == NULL)
 #endif
     CallNewHandler();
 
 #ifdef CRYPTOPP_NO_ALIGNED_ALLOC
   size_t adjustment = 16-((size_t)p%16);
   p += adjustment;
-  p[-1] = (byte)adjustment;
+  p[-1] = (CryptoPP::byte)adjustment;
 #endif
 
   CRYPTOPP_ASSERT(IsAlignedOn(p, 16));
@@ -241,7 +241,7 @@ void AlignedDeallocate(void *p)
 #ifdef CRYPTOPP_MM_MALLOC_AVAILABLE
   _mm_free(p);
 #elif defined(CRYPTOPP_NO_ALIGNED_ALLOC)
-  p = (byte *)p - ((byte *)p)[-1];
+  p = (CryptoPP::byte *)p - ((CryptoPP::byte *)p)[-1];
   free(p);
 #else
   free(p);

@@ -198,11 +198,11 @@ protected:
   virtual void onClientDataReceived(const EsSocketAddr& addr, EsBinBuffer::const_pointer data, ulong len, EsBinBuffer& response) = 0;
 
   /// Return true if socket may be considered active
-  virtual bool checkActive() const;
+  virtual bool checkActive() const ES_OVERRIDE;
   /// Perform operations upon object opening
-  virtual bool doOpen(bool doThrow);
+  virtual bool doOpen(bool doThrow) ES_OVERRIDE;
   /// Perform operations to close object
-  virtual void doClose(bool graceful, bool doThrow);
+  virtual void doClose(bool graceful, bool doThrow) ES_OVERRIDE;
 
 protected:
   Listener m_listener;

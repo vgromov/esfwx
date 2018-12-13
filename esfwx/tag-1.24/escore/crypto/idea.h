@@ -35,12 +35,12 @@ private:
   {
   public:
     unsigned int OptimalDataAlignment() const {return 2;}
-    void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const;
+    void ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const;
 
-    void UncheckedSetKey(const byte *userKey, unsigned int length, const NameValuePairs &params);
+    void UncheckedSetKey(const CryptoPP::byte *userKey, unsigned int length, const NameValuePairs &params);
 
   private:
-    void EnKey(const byte *);
+    void EnKey(const CryptoPP::byte *);
     void DeKey();
     FixedSizeSecBlock<Word, 6*ROUNDS+4> m_key;
 

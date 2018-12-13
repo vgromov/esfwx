@@ -71,7 +71,7 @@ public:
   UnknownOID(const char *err) : BERDecodeErr(err) {}
 };
 
-// unsigned int DERLengthEncode(unsigned int length, byte *output=0);
+// unsigned int DERLengthEncode(unsigned int length, CryptoPP::byte *output=0);
 
 //! \brief DER encode a length
 //! \param bt BufferedTransformation object for writing
@@ -100,7 +100,7 @@ CRYPTOPP_DLL void CRYPTOPP_API BERDecodeNull(BufferedTransformation &bt);
 //! \param str the string to encode
 //! \param strLen the length of the string
 //! \returns the number of octets used for the encoding
-CRYPTOPP_DLL size_t CRYPTOPP_API DEREncodeOctetString(BufferedTransformation &bt, const byte *str, size_t strLen);
+CRYPTOPP_DLL size_t CRYPTOPP_API DEREncodeOctetString(BufferedTransformation &bt, const CryptoPP::byte *str, size_t strLen);
 
 //! \brief DER encode octet string
 //! \param bt BufferedTransformation object for reading
@@ -126,14 +126,14 @@ CRYPTOPP_DLL size_t CRYPTOPP_API BERDecodeOctetString(BufferedTransformation &bt
 //! \param asnTag the ASN.1 type
 //! \returns the number of octets used for the encoding
 //! \details DEREncodeTextString() can be used for UTF8_STRING, PRINTABLE_STRING, and IA5_STRING
-CRYPTOPP_DLL size_t CRYPTOPP_API DEREncodeTextString(BufferedTransformation &bt, const std::string &str, byte asnTag);
+CRYPTOPP_DLL size_t CRYPTOPP_API DEREncodeTextString(BufferedTransformation &bt, const std::string &str, CryptoPP::byte asnTag);
 
 //! \brief BER decode text string
 //! \param bt BufferedTransformation object for reading
 //! \param str the string to encode
 //! \param asnTag the ASN.1 type
 //! \details DEREncodeTextString() can be used for UTF8_STRING, PRINTABLE_STRING, and IA5_STRING
-CRYPTOPP_DLL size_t CRYPTOPP_API BERDecodeTextString(BufferedTransformation &bt, std::string &str, byte asnTag);
+CRYPTOPP_DLL size_t CRYPTOPP_API BERDecodeTextString(BufferedTransformation &bt, std::string &str, CryptoPP::byte asnTag);
 
 //! \brief DER encode bit string
 //! \param bt BufferedTransformation object for writing
@@ -141,7 +141,7 @@ CRYPTOPP_DLL size_t CRYPTOPP_API BERDecodeTextString(BufferedTransformation &bt,
 //! \param strLen the length of the string
 //! \param unusedBits the number of unused bits
 //! \returns the number of octets used for the encoding
-CRYPTOPP_DLL size_t CRYPTOPP_API DEREncodeBitString(BufferedTransformation &bt, const byte *str, size_t strLen, unsigned int unusedBits=0);
+CRYPTOPP_DLL size_t CRYPTOPP_API DEREncodeBitString(BufferedTransformation &bt, const CryptoPP::byte *str, size_t strLen, unsigned int unusedBits=0);
 
 //! \brief DER decode bit string
 //! \param bt BufferedTransformation object for reading
@@ -210,10 +210,10 @@ public:
   //! \param flags bitwise OR of EncodedObjectFilter::Flag
   EncodedObjectFilter(BufferedTransformation *attachment = NULL, unsigned int nObjects = 1, word32 flags = 0);
 
-  //! \brief Input a byte buffer for processing
-  //! \param inString the byte buffer to process
+  //! \brief Input a CryptoPP::byte buffer for processing
+  //! \param inString the CryptoPP::byte buffer to process
   //! \param length the size of the string, in bytes
-  void Put(const byte *inString, size_t length);
+  void Put(const CryptoPP::byte *inString, size_t length);
 
   unsigned int GetNumberOfCompletedObjects() const {return m_nCurrentObject;}
   unsigned long GetPositionOfObject(unsigned int i) const {return m_positions[i];}
@@ -226,7 +226,7 @@ private:
   std::vector<unsigned int> m_positions;
   ByteQueue m_queue;
   enum State {IDENTIFIER, LENGTH, BODY, TAIL, ALL_DONE} m_state;
-  byte m_id;
+  CryptoPP::byte m_id;
   lword m_lengthRemaining;
 };
 
@@ -234,15 +234,15 @@ private:
 class CRYPTOPP_DLL BERGeneralDecoder : public Store
 {
 public:
-  explicit BERGeneralDecoder(BufferedTransformation &inQueue, byte asnTag);
-  explicit BERGeneralDecoder(BERGeneralDecoder &inQueue, byte asnTag);
+  explicit BERGeneralDecoder(BufferedTransformation &inQueue, CryptoPP::byte asnTag);
+  explicit BERGeneralDecoder(BERGeneralDecoder &inQueue, CryptoPP::byte asnTag);
   ~BERGeneralDecoder();
 
   bool IsDefiniteLength() const {return m_definiteLength;}
   lword RemainingLength() const {CRYPTOPP_ASSERT(m_definiteLength); return m_length;}
   bool EndReached() const;
-  byte PeekByte() const;
-  void CheckByte(byte b);
+  CryptoPP::byte PeekByte() const;
+  void CheckByte(CryptoPP::byte b);
 
   size_t TransferTo2(BufferedTransformation &target, lword &transferBytes, const std::string &channel=DEFAULT_CHANNEL, bool blocking=true);
   size_t CopyRangeTo2(BufferedTransformation &target, lword &begin, lword end=LWORD_MAX, const std::string &channel=DEFAULT_CHANNEL, bool blocking=true) const;
@@ -256,7 +256,7 @@ protected:
   lword m_length;
 
 private:
-  void Init(byte asnTag);
+  void Init(CryptoPP::byte asnTag);
   void StoreInitialize(const NameValuePairs &parameters)
     {CRYPTOPP_UNUSED(parameters); CRYPTOPP_ASSERT(false);}
   lword ReduceLength(lword delta);
@@ -272,11 +272,11 @@ class CRYPTOPP_DLL DERGeneralEncoder : public ByteQueue
 {
 public:
 #if defined(CRYPTOPP_MAINTAIN_BACKWARDS_COMPATIBILITY_562)
-  explicit DERGeneralEncoder(BufferedTransformation &outQueue, byte asnTag = SEQUENCE | CONSTRUCTED);
-  explicit DERGeneralEncoder(DERGeneralEncoder &outQueue, byte asnTag = SEQUENCE | CONSTRUCTED);
+  explicit DERGeneralEncoder(BufferedTransformation &outQueue, CryptoPP::byte asnTag = SEQUENCE | CONSTRUCTED);
+  explicit DERGeneralEncoder(DERGeneralEncoder &outQueue, CryptoPP::byte asnTag = SEQUENCE | CONSTRUCTED);
 #else
-  explicit DERGeneralEncoder(BufferedTransformation &outQueue, byte asnTag /*= SEQUENCE | CONSTRUCTED*/);
-  explicit DERGeneralEncoder(DERGeneralEncoder &outQueue, byte asnTag /*= SEQUENCE | CONSTRUCTED*/);
+  explicit DERGeneralEncoder(BufferedTransformation &outQueue, CryptoPP::byte asnTag /*= SEQUENCE | CONSTRUCTED*/);
+  explicit DERGeneralEncoder(DERGeneralEncoder &outQueue, CryptoPP::byte asnTag /*= SEQUENCE | CONSTRUCTED*/);
 #endif
   ~DERGeneralEncoder();
 
@@ -287,16 +287,16 @@ private:
   BufferedTransformation &m_outQueue;
   bool m_finished;
 
-  byte m_asnTag;
+  CryptoPP::byte m_asnTag;
 };
 
 //! \brief BER Sequence Decoder
 class CRYPTOPP_DLL BERSequenceDecoder : public BERGeneralDecoder
 {
 public:
-  explicit BERSequenceDecoder(BufferedTransformation &inQueue, byte asnTag = SEQUENCE | CONSTRUCTED)
+  explicit BERSequenceDecoder(BufferedTransformation &inQueue, CryptoPP::byte asnTag = SEQUENCE | CONSTRUCTED)
     : BERGeneralDecoder(inQueue, asnTag) {}
-  explicit BERSequenceDecoder(BERSequenceDecoder &inQueue, byte asnTag = SEQUENCE | CONSTRUCTED)
+  explicit BERSequenceDecoder(BERSequenceDecoder &inQueue, CryptoPP::byte asnTag = SEQUENCE | CONSTRUCTED)
     : BERGeneralDecoder(inQueue, asnTag) {}
 };
 
@@ -304,9 +304,9 @@ public:
 class CRYPTOPP_DLL DERSequenceEncoder : public DERGeneralEncoder
 {
 public:
-  explicit DERSequenceEncoder(BufferedTransformation &outQueue, byte asnTag = SEQUENCE | CONSTRUCTED)
+  explicit DERSequenceEncoder(BufferedTransformation &outQueue, CryptoPP::byte asnTag = SEQUENCE | CONSTRUCTED)
     : DERGeneralEncoder(outQueue, asnTag) {}
-  explicit DERSequenceEncoder(DERSequenceEncoder &outQueue, byte asnTag = SEQUENCE | CONSTRUCTED)
+  explicit DERSequenceEncoder(DERSequenceEncoder &outQueue, CryptoPP::byte asnTag = SEQUENCE | CONSTRUCTED)
     : DERGeneralEncoder(outQueue, asnTag) {}
 };
 
@@ -314,9 +314,9 @@ public:
 class CRYPTOPP_DLL BERSetDecoder : public BERGeneralDecoder
 {
 public:
-  explicit BERSetDecoder(BufferedTransformation &inQueue, byte asnTag = SET | CONSTRUCTED)
+  explicit BERSetDecoder(BufferedTransformation &inQueue, CryptoPP::byte asnTag = SET | CONSTRUCTED)
     : BERGeneralDecoder(inQueue, asnTag) {}
-  explicit BERSetDecoder(BERSetDecoder &inQueue, byte asnTag = SET | CONSTRUCTED)
+  explicit BERSetDecoder(BERSetDecoder &inQueue, CryptoPP::byte asnTag = SET | CONSTRUCTED)
     : BERGeneralDecoder(inQueue, asnTag) {}
 };
 
@@ -324,9 +324,9 @@ public:
 class CRYPTOPP_DLL DERSetEncoder : public DERGeneralEncoder
 {
 public:
-  explicit DERSetEncoder(BufferedTransformation &outQueue, byte asnTag = SET | CONSTRUCTED)
+  explicit DERSetEncoder(BufferedTransformation &outQueue, CryptoPP::byte asnTag = SET | CONSTRUCTED)
     : DERGeneralEncoder(outQueue, asnTag) {}
-  explicit DERSetEncoder(DERSetEncoder &outQueue, byte asnTag = SET | CONSTRUCTED)
+  explicit DERSetEncoder(DERSetEncoder &outQueue, CryptoPP::byte asnTag = SET | CONSTRUCTED)
     : DERGeneralEncoder(outQueue, asnTag) {}
 };
 
@@ -341,9 +341,9 @@ public:
   //! \param tag ASN.1 tag to match as optional data
   //! \param mask the mask to apply when matching the tag
   //! \sa ASNTag and ASNIdFlag
-  void BERDecode(BERSequenceDecoder &seqDecoder, byte tag, byte mask = ~CONSTRUCTED)
+  void BERDecode(BERSequenceDecoder &seqDecoder, CryptoPP::byte tag, CryptoPP::byte mask = ~CONSTRUCTED)
   {
-    byte b;
+    CryptoPP::byte b;
     if (seqDecoder.Peek(b) && (b & mask) == tag)
       reset(new T(seqDecoder));
   }
@@ -439,9 +439,9 @@ protected:
 //! \param asnTag the ASN.1 type
 //! \details DEREncodeUnsigned() can be used with INTEGER, BOOLEAN, and ENUM
 template <class T>
-size_t DEREncodeUnsigned(BufferedTransformation &out, T w, byte asnTag = INTEGER)
+size_t DEREncodeUnsigned(BufferedTransformation &out, T w, CryptoPP::byte asnTag = INTEGER)
 {
-  byte buf[sizeof(w)+1];
+  CryptoPP::byte buf[sizeof(w)+1];
   unsigned int bc;
   if (asnTag == BOOLEAN)
   {
@@ -452,7 +452,7 @@ size_t DEREncodeUnsigned(BufferedTransformation &out, T w, byte asnTag = INTEGER
   {
     buf[0] = 0;
     for (unsigned int i=0; i<sizeof(w); i++)
-      buf[i+1] = byte(w >> (sizeof(w)-1-i)*8);
+      buf[i+1] = CryptoPP::byte(w >> (sizeof(w)-1-i)*8);
     bc = sizeof(w);
     while (bc > 1 && buf[sizeof(w)+1-bc] == 0)
       --bc;
@@ -475,10 +475,10 @@ size_t DEREncodeUnsigned(BufferedTransformation &out, T w, byte asnTag = INTEGER
 //! \throws BERDecodeErr() if the value cannot be parsed or the decoded value is not within range.
 //! \details DEREncodeUnsigned() can be used with INTEGER, BOOLEAN, and ENUM
 template <class T>
-void BERDecodeUnsigned(BufferedTransformation &in, T &w, byte asnTag = INTEGER,
+void BERDecodeUnsigned(BufferedTransformation &in, T &w, CryptoPP::byte asnTag = INTEGER,
              T minValue = 0, T maxValue = ((std::numeric_limits<T>::max)()))
 {
-  byte b;
+  CryptoPP::byte b;
   if (!in.Get(b) || b != asnTag)
     BERDecodeError();
 
@@ -492,7 +492,7 @@ void BERDecodeUnsigned(BufferedTransformation &in, T &w, byte asnTag = INTEGER,
   if (bc != in.Get(buf, bc))
     BERDecodeError();
 
-  const byte *ptr = buf;
+  const CryptoPP::byte *ptr = buf;
   while (bc > sizeof(w) && *ptr == 0)
   {
     bc--;

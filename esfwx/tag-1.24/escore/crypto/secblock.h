@@ -141,7 +141,7 @@ typename A::pointer StandardReallocate(A& alloc, T *oldPtr, typename A::size_typ
 //! \class AllocatorWithCleanup
 //! \brief Allocates a block of memory with cleanup
 //! \tparam T class or type
-//! \tparam T_Align16 boolean that determines whether allocations should be aligned on 16-byte boundaries
+//! \tparam T_Align16 boolean that determines whether allocations should be aligned on 16-CryptoPP::byte boundaries
 //! \details If T_Align16 is true, then AllocatorWithCleanup calls AlignedAllocate()
 //!    for memory allocations. If T_Align16 is false, then AllocatorWithCleanup() calls
 //!    UnalignedAllocate() for memory allocations.
@@ -226,7 +226,7 @@ public:
 
   //! \brief Template class memeber Rebind
   //! \tparam T allocated class or type
-  //! \tparam T_Align16 boolean that determines whether allocations should be aligned on 16-byte boundaries
+  //! \tparam T_Align16 boolean that determines whether allocations should be aligned on 16-CryptoPP::byte boundaries
   //! \tparam U bound class or type
   //! \details Rebind allows a container class to allocate a different type of object
   //!   to store elements. For example, a std::list will allocate std::list_node to
@@ -240,7 +240,7 @@ public:
 #endif
 };
 
-CRYPTOPP_DLL_TEMPLATE_CLASS AllocatorWithCleanup<byte>;
+CRYPTOPP_DLL_TEMPLATE_CLASS AllocatorWithCleanup<CryptoPP::byte>;
 CRYPTOPP_DLL_TEMPLATE_CLASS AllocatorWithCleanup<word16>;
 CRYPTOPP_DLL_TEMPLATE_CLASS AllocatorWithCleanup<word32>;
 CRYPTOPP_DLL_TEMPLATE_CLASS AllocatorWithCleanup<word64>;
@@ -421,7 +421,7 @@ private:
   T* GetAlignedArray() {return m_array;}
   T m_array[S];
 #else
-  T* GetAlignedArray() {return (CRYPTOPP_BOOL_ALIGN16 && T_Align16) ? (T*)(void *)(((byte *)m_array) + (0-(size_t)m_array)%16) : m_array;}
+  T* GetAlignedArray() {return (CRYPTOPP_BOOL_ALIGN16 && T_Align16) ? (T*)(void *)(((CryptoPP::byte *)m_array) + (0-(size_t)m_array)%16) : m_array;}
   CRYPTOPP_ALIGN_DATA(8) T m_array[(CRYPTOPP_BOOL_ALIGN16 && T_Align16) ? S+8/sizeof(T) : S];
 #endif
 
@@ -526,12 +526,12 @@ public:
   //! \returns true if number of elements in the memory block is 0, false otherwise
   bool empty() const {return m_size == 0;}
 
-  //! \brief Provides a byte pointer to the first element in the memory block
-  //! \returns byte pointer to the first element in the memory block
-  byte * BytePtr() {return (byte *)m_ptr;}
-  //! \brief Return a byte pointer to the first element in the memory block
-  //! \returns constant byte pointer to the first element in the memory block
-  const byte * BytePtr() const {return (const byte *)m_ptr;}
+  //! \brief Provides a CryptoPP::byte pointer to the first element in the memory block
+  //! \returns CryptoPP::byte pointer to the first element in the memory block
+  CryptoPP::byte * BytePtr() {return (CryptoPP::byte *)m_ptr;}
+  //! \brief Return a CryptoPP::byte pointer to the first element in the memory block
+  //! \returns constant CryptoPP::byte pointer to the first element in the memory block
+  const CryptoPP::byte * BytePtr() const {return (const CryptoPP::byte *)m_ptr;}
   //! \brief Provides the number of bytes in the SecBlock
   //! \return the number of bytes in the memory block
   //! \note the return value is the number of bytes, and not count of elements.
@@ -622,7 +622,7 @@ public:
   bool operator==(const SecBlock<T, A> &t) const
   {
     return m_size == t.m_size &&
-      VerifyBufsEqual(reinterpret_cast<const byte*>(m_ptr), reinterpret_cast<const byte*>(t.m_ptr), m_size*sizeof(T));
+      VerifyBufsEqual(reinterpret_cast<const CryptoPP::byte*>(m_ptr), reinterpret_cast<const CryptoPP::byte*>(t.m_ptr), m_size*sizeof(T));
   }
 
   //! \brief Bitwise compare two SecBlocks
@@ -727,18 +727,18 @@ public:
 
 #ifdef CRYPTOPP_DOXYGEN_PROCESSING
 //! \class SecByteBlock
-//! \brief \ref SecBlock "SecBlock<byte>" typedef.
-class SecByteBlock : public SecBlock<byte> {};
+//! \brief \ref SecBlock "SecBlock<CryptoPP::byte>" typedef.
+class SecByteBlock : public SecBlock<CryptoPP::byte> {};
 //! \class SecWordBlock
 //! \brief \ref SecBlock "SecBlock<word>" typedef.
 class SecWordBlock : public SecBlock<word> {};
 //! \class AlignedSecByteBlock
-//! \brief SecBlock using \ref AllocatorWithCleanup "AllocatorWithCleanup<byte, true>" typedef
-class AlignedSecByteBlock : public SecBlock<byte, AllocatorWithCleanup<byte, true> > {};
+//! \brief SecBlock using \ref AllocatorWithCleanup "AllocatorWithCleanup<CryptoPP::byte, true>" typedef
+class AlignedSecByteBlock : public SecBlock<CryptoPP::byte, AllocatorWithCleanup<CryptoPP::byte, true> > {};
 #else
-typedef SecBlock<byte> SecByteBlock;
+typedef SecBlock<CryptoPP::byte> SecByteBlock;
 typedef SecBlock<word> SecWordBlock;
-typedef SecBlock<byte, AllocatorWithCleanup<byte, true> > AlignedSecByteBlock;
+typedef SecBlock<CryptoPP::byte, AllocatorWithCleanup<CryptoPP::byte, true> > AlignedSecByteBlock;
 #endif
 
 // No need for move semantics on derived class *if* the class does not add any
@@ -758,7 +758,7 @@ public:
 };
 
 //! \class FixedSizeAlignedSecBlock
-//! \brief Fixed size stack-based SecBlock with 16-byte alignment
+//! \brief Fixed size stack-based SecBlock with 16-CryptoPP::byte alignment
 //! \tparam T class or type
 //! \tparam S fixed-size of the stack-based memory block, in elements
 //! \tparam A AllocatorBase derived class for allocation and cleanup

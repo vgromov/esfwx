@@ -20,10 +20,10 @@ USING_NAMESPACE(std)
 class LineBreakParser : public AutoSignaling<Bufferless<Filter> >
 {
 public:
-  LineBreakParser(BufferedTransformation *attachment=NULL, byte lineEnd='\n')
+  LineBreakParser(BufferedTransformation *attachment=NULL, CryptoPP::byte lineEnd='\n')
     : m_lineEnd(lineEnd) {Detach(attachment);}
 
-  size_t Put2(const byte *begin, size_t length, int messageEnd, bool blocking)
+  size_t Put2(const CryptoPP::byte *begin, size_t length, int messageEnd, bool blocking)
   {
     if (!blocking)
       throw BlockingInputOnly("LineBreakParser");
@@ -50,7 +50,7 @@ public:
   }
 
 private:
-  byte m_lineEnd;
+  CryptoPP::byte m_lineEnd;
 };
 
 class TestDataParser : public Unflushable<FilterWithInputQueue>
@@ -252,7 +252,7 @@ protected:
   }
 
   template <class T>
-    SymmetricCipher * NewMode(T *, BlockCipher &bt, const byte *iv)
+    SymmetricCipher * NewMode(T *, BlockCipher &bt, const CryptoPP::byte *iv)
   {
     if (!m_encrypt)
       return new typename T::Decryption(bt, iv, m_feedbackSize/8);
@@ -360,7 +360,7 @@ protected:
     filter.Put(sig, sig.size());
     StringSource(m_data["Msg"], true, new HexDecoder(new Redirector(filter, Redirector::DATA_ONLY)));
     filter.MessageEnd();
-    byte b;
+    CryptoPP::byte b;
     filter.Get(b);
     OutputData(output, "Result ", b ? "P" : "F");
   }
@@ -445,7 +445,7 @@ protected:
 
           OutputData(output, "X ", priv.GetKey().GetPrivateExponent());
           OutputData(output, "Y ", pub.GetKey().GetPublicElement());
-          AttachedTransformation()->Put((byte *)output.data(), output.size());
+          AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
           output.resize(0);
         }
       }
@@ -472,7 +472,7 @@ protected:
           OutputData(output, "Seed ", seed);
           OutputData(output, "c ", counter);
           OutputData(output, "H ", h, p.ByteCount());
-          AttachedTransformation()->Put((byte *)output.data(), output.size());
+          AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
           output.resize(0);
         }
       }
@@ -510,7 +510,7 @@ protected:
         SecByteBlock R(sig, sig.size()/2), S(sig+sig.size()/2, sig.size()/2);
         OutputData(output, "R ", R);
         OutputData(output, "S ", S);
-        AttachedTransformation()->Put((byte *)output.data(), output.size());
+        AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
         output.resize(0);
       }
       else if (m_test == "SigVer")
@@ -526,10 +526,10 @@ protected:
         StringSource(m_data["S"], true, new Redirector(filter, Redirector::DATA_ONLY));
         StringSource(m_data["Msg"], true, new Redirector(filter, Redirector::DATA_ONLY));
         filter.MessageEnd();
-        byte b;
+        CryptoPP::byte b;
         filter.Get(b);
         OutputData(output, "Result ", b ? "P" : "F");
-        AttachedTransformation()->Put((byte *)output.data(), output.size());
+        AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
         output.resize(0);
       }
       else if (m_test == "PQGVer")
@@ -548,7 +548,7 @@ protected:
         result = result && g == a_exp_b_mod_c(h, (p-1)/q, p);
 
         OutputData(output, "Result ", result ? "P" : "F");
-        AttachedTransformation()->Put((byte *)output.data(), output.size());
+        AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
         output.resize(0);
       }
 
@@ -606,7 +606,7 @@ protected:
           EC_SigVer<EC2N>(output, name2oid[m_bracketString]);
       }
 
-      AttachedTransformation()->Put((byte *)output.data(), output.size());
+      AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
       output.resize(0);
       return;
     }
@@ -631,7 +631,7 @@ protected:
         StringSource(m_data["S"], true, new Redirector(filter, Redirector::DATA_ONLY));
         StringSource(m_data["Msg"], true, new Redirector(filter, Redirector::DATA_ONLY));
         filter.MessageEnd();
-        byte b;
+        CryptoPP::byte b;
         filter.Get(b);
         OutputData(output, "Result ", b ? "P" : "F");
       }
@@ -669,7 +669,7 @@ protected:
         OutputData(output, "S ", sig);
       }
 
-      AttachedTransformation()->Put((byte *)output.data(), output.size());
+      AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
       output.resize(0);
       return;
     }
@@ -707,7 +707,7 @@ protected:
           seed = MD[1002];
           OutputData(output, "COUNT ", j);
           OutputData(output, "MD ", seed);
-          AttachedTransformation()->Put((byte *)output.data(), output.size());
+          AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
           output.resize(0);
         }
       }
@@ -718,7 +718,7 @@ protected:
         int len = atol(m_data["Len"].c_str());
         StringSource(msg.begin(), len/8, true, new HashFilter(*pHF, new ArraySink(tag, tag.size())));
         OutputData(output, "MD ", tag);
-        AttachedTransformation()->Put((byte *)output.data(), output.size());
+        AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
         output.resize(0);
       }
       return;
@@ -734,7 +734,7 @@ protected:
         key.resize(24);
         HexDecoder hexDec(new ArraySink(key, key.size()));
         for (int i=0; i<3; i++)
-          hexDec.Put((byte *)keys[i].data(), keys[i].size());
+          hexDec.Put((CryptoPP::byte *)keys[i].data(), keys[i].size());
 
         if (keys[0] == keys[2])
         {
@@ -767,7 +767,7 @@ protected:
       }
 
       OutputData(output, "R ", r);
-      AttachedTransformation()->Put((byte *)output.data(), output.size());
+      AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
       output.resize(0);
       return;
     }
@@ -794,7 +794,7 @@ protected:
       SecByteBlock tag(Tlen);
       StringSource(m_data["Msg"], true, new HexDecoder(new HashFilter(*pMAC, new ArraySink(tag, Tlen), false, Tlen)));
       OutputData(output, "Mac ", tag);
-      AttachedTransformation()->Put((byte *)output.data(), output.size());
+      AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
       output.resize(0);
       return;
     }
@@ -972,7 +972,7 @@ protected:
           IB[0] = OB[innerCount-1];
         }
         output += "\n";
-        AttachedTransformation()->Put((byte *)output.data(), output.size());
+        AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
         output.resize(0);
       }
     }
@@ -989,7 +989,7 @@ protected:
 
       for (int i=0; i<100; i++)
       {
-        pCipher->SetKey(KEY[i], keySize, MakeParameters(Name::IV(), (const byte *)ivs[i])(Name::FeedbackSize(), (int)K/8, false));
+        pCipher->SetKey(KEY[i], keySize, MakeParameters(Name::IV(), (const CryptoPP::byte *)ivs[i])(Name::FeedbackSize(), (int)K/8, false));
 
         for (int j=0; j<1000; j++)
         {
@@ -1018,7 +1018,7 @@ protected:
         OutputData(output, INPUT, inputs[0]);
         OutputData(output, OUTPUT, outputs[999]);
         output += "\n";
-        AttachedTransformation()->Put((byte *)output.data(), output.size());
+        AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
         output.resize(0);
 
         KEY[i+1] = UpdateKey(KEY[i], outputs);
@@ -1047,7 +1047,7 @@ protected:
       OutputGivenData(output, INPUT);
       OutputData(output, OUTPUT, result);
       output += "\n";
-      AttachedTransformation()->Put((byte *)output.data(), output.size());
+      AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
     }
   }
 
@@ -1115,7 +1115,7 @@ protected:
     if (copyLine)
     {
       m_line += '\n';
-      AttachedTransformation()->Put((byte *)m_line.data(), m_line.size(), blocking);
+      AttachedTransformation()->Put((CryptoPP::byte *)m_line.data(), m_line.size(), blocking);
       return false;
     }
 
@@ -1137,7 +1137,7 @@ protected:
       {
         // copy input to output
         std::string output = m_line + '\n';
-        AttachedTransformation()->Put((byte *)output.data(), output.size());
+        AttachedTransformation()->Put((CryptoPP::byte *)output.data(), output.size());
       }
 
       for (unsigned int i = 0; i < tokens.size(); i++)

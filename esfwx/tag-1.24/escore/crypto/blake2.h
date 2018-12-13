@@ -74,20 +74,20 @@ struct CRYPTOPP_NO_VTABLE BLAKE2_ParameterBlock<true>
   {
     CRYPTOPP_ASSERT(digestSize <= DIGESTSIZE);
     memset(this, 0x00, sizeof(*this));
-    digestLength = (byte)digestSize;
+    digestLength = (CryptoPP::byte)digestSize;
     fanout = depth = 1;
   }
 
-  BLAKE2_ParameterBlock(size_t digestSize, size_t keyLength, const byte* salt, size_t saltLength,
-    const byte* personalization, size_t personalizationLength);
+  BLAKE2_ParameterBlock(size_t digestSize, size_t keyLength, const CryptoPP::byte* salt, size_t saltLength,
+    const CryptoPP::byte* personalization, size_t personalizationLength);
 
-  byte digestLength;
-  byte keyLength, fanout, depth;
-  byte leafLength[4];
-  byte nodeOffset[8];
-  byte nodeDepth, innerLength, rfu[14];
-  byte salt[SALTSIZE];
-  byte personalization[PERSONALIZATIONSIZE];
+  CryptoPP::byte digestLength;
+  CryptoPP::byte keyLength, fanout, depth;
+  CryptoPP::byte leafLength[4];
+  CryptoPP::byte nodeOffset[8];
+  CryptoPP::byte nodeDepth, innerLength, rfu[14];
+  CryptoPP::byte salt[SALTSIZE];
+  CryptoPP::byte personalization[PERSONALIZATIONSIZE];
 };
 
 //! \brief BLAKE2s parameter block specialization
@@ -109,20 +109,20 @@ struct CRYPTOPP_NO_VTABLE BLAKE2_ParameterBlock<false>
   {
     CRYPTOPP_ASSERT(digestSize <= DIGESTSIZE);
     memset(this, 0x00, sizeof(*this));
-    digestLength = (byte)digestSize;
+    digestLength = (CryptoPP::byte)digestSize;
     fanout = depth = 1;
   }
 
-  BLAKE2_ParameterBlock(size_t digestSize, size_t keyLength, const byte* salt, size_t saltLength,
-    const byte* personalization, size_t personalizationLength);
+  BLAKE2_ParameterBlock(size_t digestSize, size_t keyLength, const CryptoPP::byte* salt, size_t saltLength,
+    const CryptoPP::byte* personalization, size_t personalizationLength);
 
-  byte digestLength;
-  byte keyLength, fanout, depth;
-  byte leafLength[4];
-  byte nodeOffset[6];
-  byte nodeDepth, innerLength;
-  byte salt[SALTSIZE];
-  byte personalization[PERSONALIZATIONSIZE];
+  CryptoPP::byte digestLength;
+  CryptoPP::byte keyLength, fanout, depth;
+  CryptoPP::byte leafLength[4];
+  CryptoPP::byte nodeOffset[6];
+  CryptoPP::byte nodeDepth, innerLength;
+  CryptoPP::byte salt[SALTSIZE];
+  CryptoPP::byte personalization[PERSONALIZATIONSIZE];
 };
 
 //! \class BLAKE2_State
@@ -147,7 +147,7 @@ struct CRYPTOPP_NO_VTABLE BLAKE2_State
 
   // SSE2, SSE4 and NEON depend upon t[] and f[] being side-by-side
   W h[8], t[2], f[2];
-  byte  buffer[BLOCKSIZE];
+  CryptoPP::byte  buffer[BLOCKSIZE];
   size_t length;
 };
 
@@ -192,7 +192,7 @@ public:
   unsigned int DigestSize() const {return m_digestSize;}
   unsigned int OptimalDataAlignment() const {return (CRYPTOPP_BOOL_ALIGN16 ? 16 : GetAlignmentOf<W>());}
 
-  void Update(const byte *input, size_t length);
+  void Update(const CryptoPP::byte *input, size_t length);
   void Restart();
 
   //! \brief Restart a hash with parameter block and counter
@@ -214,20 +214,20 @@ public:
   //! \details Tree mode is persisted across calls to Restart().
   bool GetTreeMode() const {return m_treeMode;}
 
-  void TruncatedFinal(byte *hash, size_t size);
+  void TruncatedFinal(CryptoPP::byte *hash, size_t size);
 
 protected:
   BLAKE2_Base();
   BLAKE2_Base(bool treeMode, unsigned int digestSize);
-  BLAKE2_Base(const byte *key, size_t keyLength, const byte* salt, size_t saltLength,
-    const byte* personalization, size_t personalizationLength,
+  BLAKE2_Base(const CryptoPP::byte *key, size_t keyLength, const CryptoPP::byte* salt, size_t saltLength,
+    const CryptoPP::byte* personalization, size_t personalizationLength,
     bool treeMode, unsigned int digestSize);
 
   // Operates on state buffer and/or input. Must be BLOCKSIZE, final block will pad with 0's.
-  void Compress(const byte *input);
+  void Compress(const CryptoPP::byte *input);
   inline void IncrementCounter(size_t count=BLOCKSIZE);
 
-  void UncheckedSetKey(const byte* key, unsigned int length, const CryptoPP::NameValuePairs& params);
+  void UncheckedSetKey(const CryptoPP::byte* key, unsigned int length, const CryptoPP::NameValuePairs& params);
 
 private:
   AlignedState m_state;
@@ -259,16 +259,16 @@ public:
   BLAKE2b(bool treeMode=false, unsigned int digestSize = DIGESTSIZE) : ThisBase(treeMode, digestSize) {}
 
   //! \brief Construct a BLAKE2b hash
-  //! \param key a byte array used to key the cipher
-  //! \param keyLength the size of the byte array
-  //! \param salt a byte array used as salt
-  //! \param saltLength the size of the byte array
-  //! \param personalization a byte array used as prsonalization string
-  //! \param personalizationLength the size of the byte array
+  //! \param key a CryptoPP::byte array used to key the cipher
+  //! \param keyLength the size of the CryptoPP::byte array
+  //! \param salt a CryptoPP::byte array used as salt
+  //! \param saltLength the size of the CryptoPP::byte array
+  //! \param personalization a CryptoPP::byte array used as prsonalization string
+  //! \param personalizationLength the size of the CryptoPP::byte array
   //! \param treeMode flag indicating tree mode
   //! \param digestSize the digest size, in bytes
-  BLAKE2b(const byte *key, size_t keyLength, const byte* salt = NULL, size_t saltLength = 0,
-    const byte* personalization = NULL, size_t personalizationLength = 0,
+  BLAKE2b(const CryptoPP::byte *key, size_t keyLength, const CryptoPP::byte* salt = NULL, size_t saltLength = 0,
+    const CryptoPP::byte* personalization = NULL, size_t personalizationLength = 0,
     bool treeMode=false, unsigned int digestSize = DIGESTSIZE)
     : ThisBase(key, keyLength, salt, saltLength, personalization, personalizationLength, treeMode, digestSize) {}
 };
@@ -295,16 +295,16 @@ public:
   BLAKE2s(bool treeMode=false, unsigned int digestSize = DIGESTSIZE) : ThisBase(treeMode, digestSize) {}
 
   //! \brief Construct a BLAKE2s hash
-  //! \param key a byte array used to key the cipher
-  //! \param keyLength the size of the byte array
-  //! \param salt a byte array used as salt
-  //! \param saltLength the size of the byte array
-  //! \param personalization a byte array used as prsonalization string
-  //! \param personalizationLength the size of the byte array
+  //! \param key a CryptoPP::byte array used to key the cipher
+  //! \param keyLength the size of the CryptoPP::byte array
+  //! \param salt a CryptoPP::byte array used as salt
+  //! \param saltLength the size of the CryptoPP::byte array
+  //! \param personalization a CryptoPP::byte array used as prsonalization string
+  //! \param personalizationLength the size of the CryptoPP::byte array
   //! \param treeMode flag indicating tree mode
   //! \param digestSize the digest size, in bytes
-  BLAKE2s(const byte *key, size_t keyLength, const byte* salt = NULL, size_t saltLength = 0,
-    const byte* personalization = NULL, size_t personalizationLength = 0,
+  BLAKE2s(const CryptoPP::byte *key, size_t keyLength, const CryptoPP::byte* salt = NULL, size_t saltLength = 0,
+    const CryptoPP::byte* personalization = NULL, size_t personalizationLength = 0,
     bool treeMode=false, unsigned int digestSize = DIGESTSIZE)
     : ThisBase(key, keyLength, salt, saltLength, personalization, personalizationLength, treeMode, digestSize) {}
 };

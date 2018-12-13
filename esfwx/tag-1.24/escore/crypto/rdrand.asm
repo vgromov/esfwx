@@ -39,9 +39,9 @@ PUBLIC MASM_RSA_GenerateBlock
 
 ;; C/C++ Function prototypes
 ;;   X86:
-;;      extern "C" int MASM_RRA_GenerateBlock(byte* ptr, size_t size, unsigned int safety);
+;;      extern "C" int MASM_RRA_GenerateBlock(CryptoPP::byte* ptr, size_t size, unsigned int safety);
 ;;   X64:
-;;      extern "C" int __fastcall MASM_RRA_GenerateBlock(byte* ptr, size_t size, unsigned int safety);
+;;      extern "C" int __fastcall MASM_RRA_GenerateBlock(CryptoPP::byte* ptr, size_t size, unsigned int safety);
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -74,7 +74,7 @@ OPTION LANGUAGE:C
 OPTION PROLOGUE:NONE
 OPTION EPILOGUE:NONE
 
-;; Base relative (in): arg1, byte* buffer
+;; Base relative (in): arg1, CryptoPP::byte* buffer
 ;; Base relative (in): arg2, size_t bsize
 ;; Base relative (in): arg3, unsigned int safety
 ;; EAX (out): success (1), failure (0)
@@ -106,7 +106,7 @@ GenerateBlock_Top:
 
 Call_RDRAND_EAX:
 			;; RDRAND is not available prior to VS2012. Just emit
-			;;   the byte codes using DB. This is `rdrand eax`.
+			;;   the CryptoPP::byte codes using DB. This is `rdrand eax`.
 	DB		0Fh, 0C7h, 0F0h
 
 			;; If CF=1, the number returned by RDRAND is valid.
@@ -192,7 +192,7 @@ ALIGN   16
 OPTION PROLOGUE:NONE
 OPTION EPILOGUE:NONE
 
-;; RCX (in): arg1, byte* buffer
+;; RCX (in): arg1, CryptoPP::byte* buffer
 ;; RDX (in): arg2, size_t bsize
 ;; R8d (in): arg3, unsigned int safety
 ;; RAX (out): success (1), failure (0)
@@ -221,7 +221,7 @@ GenerateBlock_Top:
 
 Call_RDRAND_RAX:
 			;; RDRAND is not available prior to VS2012. Just emit
-			;;   the byte codes using DB. This is `rdrand rax`.
+			;;   the CryptoPP::byte codes using DB. This is `rdrand rax`.
 	DB		048h, 0Fh, 0C7h, 0F0h
 
 			;; If CF=1, the number returned by RDRAND is valid.
@@ -318,7 +318,7 @@ OPTION LANGUAGE:C
 OPTION PROLOGUE:NONE
 OPTION EPILOGUE:NONE
 
-;; Base relative (in): arg1, byte* buffer
+;; Base relative (in): arg1, CryptoPP::byte* buffer
 ;; Base relative (in): arg2, size_t bsize
 ;; Base relative (in): arg3, unsigned int safety
 ;; EAX (out): success (1), failure (0)
@@ -350,7 +350,7 @@ GenerateBlock_Top:
 
 Call_RDSEED_EAX:
 			;; RDSEED is not available prior to VS2012. Just emit
-			;;   the byte codes using DB. This is `rdseed eax`.
+			;;   the CryptoPP::byte codes using DB. This is `rdseed eax`.
 	DB		0Fh, 0C7h, 0F8h
 
 			;; If CF=1, the number returned by RDSEED is valid.
@@ -436,7 +436,7 @@ ALIGN   16
 OPTION PROLOGUE:NONE
 OPTION EPILOGUE:NONE
 
-;; RCX (in): arg1, byte* buffer
+;; RCX (in): arg1, CryptoPP::byte* buffer
 ;; RDX (in): arg2, size_t bsize
 ;; R8d (in): arg3, unsigned int safety
 ;; RAX (out): success (1), failure (0)
@@ -465,7 +465,7 @@ GenerateBlock_Top:
 
 Call_RDSEED_RAX:
 			;; RDSEED is not available prior to VS2012. Just emit
-			;;   the byte codes using DB. This is `rdseed rax`.
+			;;   the CryptoPP::byte codes using DB. This is `rdseed rax`.
 	DB 048h, 0Fh, 0C7h, 0F8h
 
 			;; If CF=1, the number returned by RDSEED is valid.

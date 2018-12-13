@@ -129,30 +129,30 @@
 
 #if MASM_RDRAND_ASM_AVAILABLE
 # ifdef _M_X64
-extern "C" int CRYPTOPP_FASTCALL MASM_RRA_GenerateBlock(byte*, size_t, unsigned int);
+extern "C" int CRYPTOPP_FASTCALL MASM_RRA_GenerateBlock(CryptoPP::byte*, size_t, unsigned int);
 // #  pragma comment(lib, "rdrand-x64.lib")
 # else
-extern "C" int MASM_RRA_GenerateBlock(byte*, size_t, unsigned int);
+extern "C" int MASM_RRA_GenerateBlock(CryptoPP::byte*, size_t, unsigned int);
 // #  pragma comment(lib, "rdrand-x86.lib")
 # endif
 #endif
 
 #if MASM_RDSEED_ASM_AVAILABLE
 # ifdef _M_X64
-extern "C" int CRYPTOPP_FASTCALL MASM_RSA_GenerateBlock(byte*, size_t, unsigned int);
+extern "C" int CRYPTOPP_FASTCALL MASM_RSA_GenerateBlock(CryptoPP::byte*, size_t, unsigned int);
 // #  pragma comment(lib, "rdrand-x64.lib")
 # else
-extern "C" int MASM_RSA_GenerateBlock(byte*, size_t, unsigned int);
+extern "C" int MASM_RSA_GenerateBlock(CryptoPP::byte*, size_t, unsigned int);
 // #  pragma comment(lib, "rdrand-x86.lib")
 # endif
 #endif
 
 #if NASM_RDRAND_ASM_AVAILABLE
-extern "C" int NASM_RRA_GenerateBlock(byte*, size_t, unsigned int);
+extern "C" int NASM_RRA_GenerateBlock(CryptoPP::byte*, size_t, unsigned int);
 #endif
 
 #if NASM_RDSEED_ASM_AVAILABLE
-extern "C" int NASM_RSA_GenerateBlock(byte*, size_t, unsigned int);
+extern "C" int NASM_RSA_GenerateBlock(CryptoPP::byte*, size_t, unsigned int);
 #endif
 
 /////////////////////////////////////////////////////////////////////
@@ -161,7 +161,7 @@ extern "C" int NASM_RSA_GenerateBlock(byte*, size_t, unsigned int);
 NAMESPACE_BEGIN(CryptoPP)
 
 #if ALL_RDRAND_INTRIN_AVAILABLE
-static int ALL_RRI_GenerateBlock(byte *output, size_t size, unsigned int safety)
+static int ALL_RRI_GenerateBlock(CryptoPP::byte *output, size_t size, unsigned int safety)
 {
   CRYPTOPP_ASSERT((output && size) || !(output || size));
 #if CRYPTOPP_BOOL_X86 || CRYPTOPP_BOOL_X32
@@ -221,7 +221,7 @@ static int ALL_RRI_GenerateBlock(byte *output, size_t size, unsigned int safety)
 #endif // ALL_RDRAND_INTRINSIC_AVAILABLE
 
 #if GCC_RDRAND_ASM_AVAILABLE
-static int GCC_RRA_GenerateBlock(byte *output, size_t size, unsigned int safety)
+static int GCC_RRA_GenerateBlock(CryptoPP::byte *output, size_t size, unsigned int safety)
 {
   CRYPTOPP_ASSERT((output && size) || !(output || size));
 #if CRYPTOPP_BOOL_X64 || CRYPTOPP_BOOL_X32
@@ -234,9 +234,9 @@ static int GCC_RRA_GenerateBlock(byte *output, size_t size, unsigned int safety)
   {
     __asm__ volatile(
 #if CRYPTOPP_BOOL_X64 || CRYPTOPP_BOOL_X32
-      ".byte 0x48, 0x0f, 0xc7, 0xf0;\n"  // rdrand rax
+      ".CryptoPP::byte 0x48, 0x0f, 0xc7, 0xf0;\n"  // rdrand rax
 #else
-      ".byte 0x0f, 0xc7, 0xf0;\n"        // rdrand eax
+      ".CryptoPP::byte 0x0f, 0xc7, 0xf0;\n"        // rdrand eax
 #endif
       "setc %1; "
       : "=a" (val), "=qm" (rc)
@@ -282,7 +282,7 @@ static int GCC_RRA_GenerateBlock(byte *output, size_t size, unsigned int safety)
 #endif // GCC_RDRAND_ASM_AVAILABLE
 
 #if (CRYPTOPP_BOOL_X86 || CRYPTOPP_BOOL_X32 || CRYPTOPP_BOOL_X64)
-void RDRAND::GenerateBlock(byte *output, size_t size)
+void RDRAND::GenerateBlock(CryptoPP::byte *output, size_t size)
 {
   CRYPTOPP_UNUSED(output), CRYPTOPP_UNUSED(size);
   CRYPTOPP_ASSERT((output && size) || !(output || size));
@@ -336,7 +336,7 @@ void RDRAND::DiscardBytes(size_t n)
 /////////////////////////////////////////////////////////////////////
 
 #if ALL_RDSEED_INTRIN_AVAILABLE
-static int ALL_RSI_GenerateBlock(byte *output, size_t size, unsigned int safety)
+static int ALL_RSI_GenerateBlock(CryptoPP::byte *output, size_t size, unsigned int safety)
 {
   CRYPTOPP_ASSERT((output && size) || !(output || size));
 #if CRYPTOPP_BOOL_X86 || CRYPTOPP_BOOL_X32
@@ -396,7 +396,7 @@ static int ALL_RSI_GenerateBlock(byte *output, size_t size, unsigned int safety)
 #endif // ALL_RDSEED_INTRIN_AVAILABLE
 
 #if GCC_RDSEED_ASM_AVAILABLE
-static int GCC_RSA_GenerateBlock(byte *output, size_t size, unsigned int safety)
+static int GCC_RSA_GenerateBlock(CryptoPP::byte *output, size_t size, unsigned int safety)
 {
   CRYPTOPP_ASSERT((output && size) || !(output || size));
 #if CRYPTOPP_BOOL_X64 || CRYPTOPP_BOOL_X32
@@ -409,9 +409,9 @@ static int GCC_RSA_GenerateBlock(byte *output, size_t size, unsigned int safety)
   {
     __asm__ volatile(
 #if CRYPTOPP_BOOL_X64 || CRYPTOPP_BOOL_X32
-      ".byte 0x48, 0x0f, 0xc7, 0xf8;\n"  // rdseed rax
+      ".CryptoPP::byte 0x48, 0x0f, 0xc7, 0xf8;\n"  // rdseed rax
 #else
-      ".byte 0x0f, 0xc7, 0xf8;\n"        // rdseed eax
+      ".CryptoPP::byte 0x0f, 0xc7, 0xf8;\n"        // rdseed eax
 #endif
       "setc %1; "
       : "=a" (val), "=qm" (rc)
@@ -456,7 +456,7 @@ static int GCC_RSA_GenerateBlock(byte *output, size_t size, unsigned int safety)
 #endif // GCC_RDSEED_ASM_AVAILABLE
 
 #if (CRYPTOPP_BOOL_X86 || CRYPTOPP_BOOL_X32 || CRYPTOPP_BOOL_X64)
-void RDSEED::GenerateBlock(byte *output, size_t size)
+void RDSEED::GenerateBlock(CryptoPP::byte *output, size_t size)
 {
   CRYPTOPP_UNUSED(output), CRYPTOPP_UNUSED(size);
   CRYPTOPP_ASSERT((output && size) || !(output || size));

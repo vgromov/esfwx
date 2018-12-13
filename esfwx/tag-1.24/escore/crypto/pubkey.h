@@ -229,9 +229,9 @@ public:
   //! max size of unpadded message in bytes, given max size of padded message in bits (1 less than size of modulus)
   virtual size_t MaxUnpaddedLength(size_t paddedLength) const =0;
 
-  virtual void Pad(RandomNumberGenerator &rng, const byte *raw, size_t inputLength, byte *padded, size_t paddedBitLength, const NameValuePairs &parameters) const =0;
+  virtual void Pad(RandomNumberGenerator &rng, const CryptoPP::byte *raw, size_t inputLength, CryptoPP::byte *padded, size_t paddedBitLength, const NameValuePairs &parameters) const =0;
 
-  virtual DecodingResult Unpad(const byte *padded, size_t paddedBitLength, byte *raw, const NameValuePairs &parameters) const =0;
+  virtual DecodingResult Unpad(const CryptoPP::byte *padded, size_t paddedBitLength, CryptoPP::byte *raw, const NameValuePairs &parameters) const =0;
 };
 
 // ********************************************************
@@ -310,7 +310,7 @@ public:
   virtual ~TF_DecryptorBase() { }
 #endif
 
-  DecodingResult Decrypt(RandomNumberGenerator &rng, const byte *ciphertext, size_t ciphertextLength, byte *plaintext, const NameValuePairs &parameters = g_nullNameValuePairs) const;
+  DecodingResult Decrypt(RandomNumberGenerator &rng, const CryptoPP::byte *ciphertext, size_t ciphertextLength, CryptoPP::byte *plaintext, const NameValuePairs &parameters = g_nullNameValuePairs) const;
 };
 
 //! \class TF_DecryptorBase
@@ -322,13 +322,13 @@ public:
   virtual ~TF_EncryptorBase() { }
 #endif
 
-  void Encrypt(RandomNumberGenerator &rng, const byte *plaintext, size_t plaintextLength, byte *ciphertext, const NameValuePairs &parameters = g_nullNameValuePairs) const;
+  void Encrypt(RandomNumberGenerator &rng, const CryptoPP::byte *plaintext, size_t plaintextLength, CryptoPP::byte *ciphertext, const NameValuePairs &parameters = g_nullNameValuePairs) const;
 };
 
 // ********************************************************
 
 // Typedef change due to Clang, http://github.com/weidai11/cryptopp/issues/300
-typedef std::pair<const byte *, unsigned int> HashIdentifier;
+typedef std::pair<const CryptoPP::byte *, unsigned int> HashIdentifier;
 
 //! \class PK_SignatureMessageEncodingMethod
 //! \brief Interface for message encoding method for public key signature schemes.
@@ -354,13 +354,13 @@ public:
     {throw NotImplemented("PK_MessageEncodingMethod: this signature scheme does not support message recovery");}
 
   // for verification, DL
-  virtual void ProcessSemisignature(HashTransformation &hash, const byte *semisignature, size_t semisignatureLength) const
+  virtual void ProcessSemisignature(HashTransformation &hash, const CryptoPP::byte *semisignature, size_t semisignatureLength) const
     {CRYPTOPP_UNUSED(hash); CRYPTOPP_UNUSED(semisignature); CRYPTOPP_UNUSED(semisignatureLength);}
 
   // for signature
   virtual void ProcessRecoverableMessage(HashTransformation &hash,
-    const byte *recoverableMessage, size_t recoverableMessageLength,
-    const byte *presignature, size_t presignatureLength,
+    const CryptoPP::byte *recoverableMessage, size_t recoverableMessageLength,
+    const CryptoPP::byte *presignature, size_t presignatureLength,
     SecByteBlock &semisignature) const
   {
     CRYPTOPP_UNUSED(hash);CRYPTOPP_UNUSED(recoverableMessage); CRYPTOPP_UNUSED(recoverableMessageLength);
@@ -370,27 +370,27 @@ public:
   }
 
   virtual void ComputeMessageRepresentative(RandomNumberGenerator &rng,
-    const byte *recoverableMessage, size_t recoverableMessageLength,
+    const CryptoPP::byte *recoverableMessage, size_t recoverableMessageLength,
     HashTransformation &hash, HashIdentifier hashIdentifier, bool messageEmpty,
-    byte *representative, size_t representativeBitLength) const =0;
+    CryptoPP::byte *representative, size_t representativeBitLength) const =0;
 
   virtual bool VerifyMessageRepresentative(
     HashTransformation &hash, HashIdentifier hashIdentifier, bool messageEmpty,
-    byte *representative, size_t representativeBitLength) const =0;
+    CryptoPP::byte *representative, size_t representativeBitLength) const =0;
 
   virtual DecodingResult RecoverMessageFromRepresentative(  // for TF
     HashTransformation &hash, HashIdentifier hashIdentifier, bool messageEmpty,
-    byte *representative, size_t representativeBitLength,
-    byte *recoveredMessage) const
+    CryptoPP::byte *representative, size_t representativeBitLength,
+    CryptoPP::byte *recoveredMessage) const
     {CRYPTOPP_UNUSED(hash);CRYPTOPP_UNUSED(hashIdentifier); CRYPTOPP_UNUSED(messageEmpty);
     CRYPTOPP_UNUSED(representative); CRYPTOPP_UNUSED(representativeBitLength); CRYPTOPP_UNUSED(recoveredMessage);
     throw NotImplemented("PK_MessageEncodingMethod: this signature scheme does not support message recovery");}
 
   virtual DecodingResult RecoverMessageFromSemisignature(    // for DL
     HashTransformation &hash, HashIdentifier hashIdentifier,
-    const byte *presignature, size_t presignatureLength,
-    const byte *semisignature, size_t semisignatureLength,
-    byte *recoveredMessage) const
+    const CryptoPP::byte *presignature, size_t presignatureLength,
+    const CryptoPP::byte *semisignature, size_t semisignatureLength,
+    CryptoPP::byte *recoveredMessage) const
     {CRYPTOPP_UNUSED(hash);CRYPTOPP_UNUSED(hashIdentifier); CRYPTOPP_UNUSED(presignature); CRYPTOPP_UNUSED(presignatureLength);
     CRYPTOPP_UNUSED(semisignature); CRYPTOPP_UNUSED(semisignatureLength); CRYPTOPP_UNUSED(recoveredMessage);
     throw NotImplemented("PK_MessageEncodingMethod: this signature scheme does not support message recovery");}
@@ -402,7 +402,7 @@ public:
     {
       static HashIdentifier CRYPTOPP_API Lookup()
       {
-        return HashIdentifier((const byte *)NULL, 0);
+        return HashIdentifier((const CryptoPP::byte *)NULL, 0);
       }
     };
   };
@@ -417,7 +417,7 @@ class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE PK_DeterministicSignatureMessageEncodingMe
 public:
   bool VerifyMessageRepresentative(
     HashTransformation &hash, HashIdentifier hashIdentifier, bool messageEmpty,
-    byte *representative, size_t representativeBitLength) const;
+    CryptoPP::byte *representative, size_t representativeBitLength) const;
 };
 
 //! \class PK_RecoverableSignatureMessageEncodingMethod
@@ -429,7 +429,7 @@ class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE PK_RecoverableSignatureMessageEncodingMeth
 public:
   bool VerifyMessageRepresentative(
     HashTransformation &hash, HashIdentifier hashIdentifier, bool messageEmpty,
-    byte *representative, size_t representativeBitLength) const;
+    CryptoPP::byte *representative, size_t representativeBitLength) const;
 };
 
 //! \class DL_SignatureMessageEncodingMethod_DSA
@@ -440,9 +440,9 @@ class CRYPTOPP_DLL DL_SignatureMessageEncodingMethod_DSA : public PK_Determinist
 {
 public:
   void ComputeMessageRepresentative(RandomNumberGenerator &rng,
-    const byte *recoverableMessage, size_t recoverableMessageLength,
+    const CryptoPP::byte *recoverableMessage, size_t recoverableMessageLength,
     HashTransformation &hash, HashIdentifier hashIdentifier, bool messageEmpty,
-    byte *representative, size_t representativeBitLength) const;
+    CryptoPP::byte *representative, size_t representativeBitLength) const;
 };
 
 //! \class DL_SignatureMessageEncodingMethod_NR
@@ -453,9 +453,9 @@ class CRYPTOPP_DLL DL_SignatureMessageEncodingMethod_NR : public PK_Deterministi
 {
 public:
   void ComputeMessageRepresentative(RandomNumberGenerator &rng,
-    const byte *recoverableMessage, size_t recoverableMessageLength,
+    const CryptoPP::byte *recoverableMessage, size_t recoverableMessageLength,
     HashTransformation &hash, HashIdentifier hashIdentifier, bool messageEmpty,
-    byte *representative, size_t representativeBitLength) const;
+    CryptoPP::byte *representative, size_t representativeBitLength) const;
 };
 
 //! \class PK_MessageAccumulatorBase
@@ -469,7 +469,7 @@ public:
 
   virtual HashTransformation & AccessHash() =0;
 
-  void Update(const byte *input, size_t length)
+  void Update(const CryptoPP::byte *input, size_t length)
   {
     AccessHash().Update(input, length);
     m_empty = m_empty && length == 0;
@@ -530,8 +530,8 @@ public:
   virtual ~TF_SignerBase() { }
 #endif
 
-  void InputRecoverableMessage(PK_MessageAccumulator &messageAccumulator, const byte *recoverableMessage, size_t recoverableMessageLength) const;
-  size_t SignAndRestart(RandomNumberGenerator &rng, PK_MessageAccumulator &messageAccumulator, byte *signature, bool restart=true) const;
+  void InputRecoverableMessage(PK_MessageAccumulator &messageAccumulator, const CryptoPP::byte *recoverableMessage, size_t recoverableMessageLength) const;
+  size_t SignAndRestart(RandomNumberGenerator &rng, PK_MessageAccumulator &messageAccumulator, CryptoPP::byte *signature, bool restart=true) const;
 };
 
 //! _
@@ -542,9 +542,9 @@ public:
   virtual ~TF_VerifierBase() { }
 #endif
 
-  void InputSignature(PK_MessageAccumulator &messageAccumulator, const byte *signature, size_t signatureLength) const;
+  void InputSignature(PK_MessageAccumulator &messageAccumulator, const CryptoPP::byte *signature, size_t signatureLength) const;
   bool VerifyAndRestart(PK_MessageAccumulator &messageAccumulator) const;
-  DecodingResult RecoverAndRestart(byte *recoveredMessage, PK_MessageAccumulator &recoveryAccumulator) const;
+  DecodingResult RecoverAndRestart(CryptoPP::byte *recoveredMessage, PK_MessageAccumulator &recoveryAccumulator) const;
 };
 
 // ********************************************************
@@ -693,26 +693,26 @@ public:
 
   //! \brief Generate and apply mask
   //! \param hash HashTransformation derived class
-  //! \param output the destination byte array
-  //! \param outputLength the size fo the the destination byte array
+  //! \param output the destination CryptoPP::byte array
+  //! \param outputLength the size fo the the destination CryptoPP::byte array
   //! \param input the message to hash
   //! \param inputLength the size of the message
   //! \param mask flag indicating whether to apply the mask
-  virtual void GenerateAndMask(HashTransformation &hash, byte *output, size_t outputLength, const byte *input, size_t inputLength, bool mask = true) const =0;
+  virtual void GenerateAndMask(HashTransformation &hash, CryptoPP::byte *output, size_t outputLength, const CryptoPP::byte *input, size_t inputLength, bool mask = true) const =0;
 };
 
 //! \fn P1363_MGF1KDF2_Common
 //! \brief P1363 mask generation function
 //! \param hash HashTransformation derived class
-//! \param output the destination byte array
-//! \param outputLength the size fo the the destination byte array
+//! \param output the destination CryptoPP::byte array
+//! \param outputLength the size fo the the destination CryptoPP::byte array
 //! \param input the message to hash
 //! \param inputLength the size of the message
 //! \param derivationParams additional derivation parameters
 //! \param derivationParamsLength the size of the additional derivation parameters
 //! \param mask flag indicating whether to apply the mask
 //! \param counterStart starting counter value used in generation function
-CRYPTOPP_DLL void CRYPTOPP_API P1363_MGF1KDF2_Common(HashTransformation &hash, byte *output, size_t outputLength, const byte *input, size_t inputLength, const byte *derivationParams, size_t derivationParamsLength, bool mask, unsigned int counterStart);
+CRYPTOPP_DLL void CRYPTOPP_API P1363_MGF1KDF2_Common(HashTransformation &hash, CryptoPP::byte *output, size_t outputLength, const CryptoPP::byte *input, size_t inputLength, const CryptoPP::byte *derivationParams, size_t derivationParamsLength, bool mask, unsigned int counterStart);
 
 //! \class P1363_MGF1
 //! \brief P1363 mask generation function
@@ -720,7 +720,7 @@ class P1363_MGF1 : public MaskGeneratingFunction
 {
 public:
   CRYPTOPP_CONSTEXPR static const char * CRYPTOPP_API StaticAlgorithmName() {return "MGF1";}
-  void GenerateAndMask(HashTransformation &hash, byte *output, size_t outputLength, const byte *input, size_t inputLength, bool mask = true) const
+  void GenerateAndMask(HashTransformation &hash, CryptoPP::byte *output, size_t outputLength, const CryptoPP::byte *input, size_t inputLength, bool mask = true) const
   {
     P1363_MGF1KDF2_Common(hash, output, outputLength, input, inputLength, NULL, 0, mask, 0);
   }
@@ -735,7 +735,7 @@ template <class H>
 class P1363_KDF2
 {
 public:
-  static void CRYPTOPP_API DeriveKey(byte *output, size_t outputLength, const byte *input, size_t inputLength, const byte *derivationParams, size_t derivationParamsLength)
+  static void CRYPTOPP_API DeriveKey(CryptoPP::byte *output, size_t outputLength, const CryptoPP::byte *input, size_t inputLength, const CryptoPP::byte *derivationParams, size_t derivationParamsLength)
   {
     H h;
     P1363_MGF1KDF2_Common(h, output, outputLength, input, inputLength, derivationParams, derivationParamsLength, false, 1);
@@ -883,18 +883,18 @@ public:
   //! \brief Encodes the element
   //! \param reversible flag indicating the encoding format
   //! \param element reference to the element to encode
-  //! \param encoded destination byte array for the encoded element
+  //! \param encoded destination CryptoPP::byte array for the encoded element
   //! \details EncodeElement() must be implemented in a derived class.
   //! \pre <tt>COUNTOF(encoded) == GetEncodedElementSize()</tt>
-  virtual void EncodeElement(bool reversible, const Element &element, byte *encoded) const =0;
+  virtual void EncodeElement(bool reversible, const Element &element, CryptoPP::byte *encoded) const =0;
 
   //! \brief Decodes the element
-  //! \param encoded byte array with the encoded element
+  //! \param encoded CryptoPP::byte array with the encoded element
   //! \param checkForGroupMembership flag indicating if the element should be validated
   //! \return Element after decoding
   //! \details DecodeElement() must be implemented in a derived class.
   //! \pre <tt>COUNTOF(encoded) == GetEncodedElementSize()</tt>
-  virtual Element DecodeElement(const byte *encoded, bool checkForGroupMembership) const =0;
+  virtual Element DecodeElement(const CryptoPP::byte *encoded, bool checkForGroupMembership) const =0;
 
   //! \brief Converts an element to an Integer
   //! \param element the element to convert to an Integer
@@ -1177,7 +1177,7 @@ public:
   {
     if (!params.GetThisObject(this->AccessGroupParameters()))
       this->AccessGroupParameters().GenerateRandom(rng, params);
-//    std::pair<const byte *, int> seed;
+//    std::pair<const CryptoPP::byte *, int> seed;
     Integer x(rng, Integer::One(), GetAbstractGroupParameters().GetMaxExponent());
 //      Integer::ANY, Integer::Zero(), Integer::One(),
 //      params.GetValue("DeterministicKeyGenerationSeed", seed) ? &seed : NULL);
@@ -1349,7 +1349,7 @@ public:
 
   virtual bool ParameterSupported(const char *name) const
     {CRYPTOPP_UNUSED(name); return false;}
-  virtual void Derive(const DL_GroupParameters<T> &groupParams, byte *derivedKey, size_t derivedLength, const T &agreedElement, const T &ephemeralPublicKey, const NameValuePairs &derivationParams) const =0;
+  virtual void Derive(const DL_GroupParameters<T> &groupParams, CryptoPP::byte *derivedKey, size_t derivedLength, const T &agreedElement, const T &ephemeralPublicKey, const NameValuePairs &derivationParams) const =0;
 };
 
 //! \brief Interface for symmetric encryption algorithms used in DL cryptosystems
@@ -1365,8 +1365,8 @@ public:
   virtual size_t GetSymmetricKeyLength(size_t plaintextLength) const =0;
   virtual size_t GetSymmetricCiphertextLength(size_t plaintextLength) const =0;
   virtual size_t GetMaxSymmetricPlaintextLength(size_t ciphertextLength) const =0;
-  virtual void SymmetricEncrypt(RandomNumberGenerator &rng, const byte *key, const byte *plaintext, size_t plaintextLength, byte *ciphertext, const NameValuePairs &parameters) const =0;
-  virtual DecodingResult SymmetricDecrypt(const byte *key, const byte *ciphertext, size_t ciphertextLength, byte *plaintext, const NameValuePairs &parameters) const =0;
+  virtual void SymmetricEncrypt(RandomNumberGenerator &rng, const CryptoPP::byte *key, const CryptoPP::byte *plaintext, size_t plaintextLength, CryptoPP::byte *ciphertext, const NameValuePairs &parameters) const =0;
+  virtual DecodingResult SymmetricDecrypt(const CryptoPP::byte *key, const CryptoPP::byte *ciphertext, size_t ciphertextLength, CryptoPP::byte *plaintext, const NameValuePairs &parameters) const =0;
 };
 
 //! \brief Discrete Log (DL) base interface
@@ -1473,7 +1473,7 @@ public:
     alg.Sign(params, key.GetPrivateExponent(), k, e, r, s);
   }
 
-  void InputRecoverableMessage(PK_MessageAccumulator &messageAccumulator, const byte *recoverableMessage, size_t recoverableMessageLength) const
+  void InputRecoverableMessage(PK_MessageAccumulator &messageAccumulator, const CryptoPP::byte *recoverableMessage, size_t recoverableMessageLength) const
   {
     PK_MessageAccumulatorBase &ma = static_cast<PK_MessageAccumulatorBase &>(messageAccumulator);
     ma.m_recoverableMessage.Assign(recoverableMessage, recoverableMessageLength);
@@ -1483,7 +1483,7 @@ public:
       ma.m_semisignature);
   }
 
-  size_t SignAndRestart(RandomNumberGenerator &rng, PK_MessageAccumulator &messageAccumulator, byte *signature, bool restart) const
+  size_t SignAndRestart(RandomNumberGenerator &rng, PK_MessageAccumulator &messageAccumulator, CryptoPP::byte *signature, bool restart) const
   {
     this->GetMaterial().DoQuickSanityCheck();
 
@@ -1556,7 +1556,7 @@ public:
   virtual ~DL_VerifierBase() { }
 #endif
 
-  void InputSignature(PK_MessageAccumulator &messageAccumulator, const byte *signature, size_t signatureLength) const
+  void InputSignature(PK_MessageAccumulator &messageAccumulator, const CryptoPP::byte *signature, size_t signatureLength) const
   {
     CRYPTOPP_UNUSED(signature); CRYPTOPP_UNUSED(signatureLength);
     PK_MessageAccumulatorBase &ma = static_cast<PK_MessageAccumulatorBase &>(messageAccumulator);
@@ -1590,7 +1590,7 @@ public:
     return alg.Verify(params, key, e, r, ma.m_s);
   }
 
-  DecodingResult RecoverAndRestart(byte *recoveredMessage, PK_MessageAccumulator &messageAccumulator) const
+  DecodingResult RecoverAndRestart(CryptoPP::byte *recoveredMessage, PK_MessageAccumulator &messageAccumulator) const
   {
     this->GetMaterial().DoQuickSanityCheck();
 
@@ -1666,7 +1666,7 @@ public:
   virtual ~DL_DecryptorBase() { }
 #endif
 
-  DecodingResult Decrypt(RandomNumberGenerator &rng, const byte *ciphertext, size_t ciphertextLength, byte *plaintext, const NameValuePairs &parameters = g_nullNameValuePairs) const
+  DecodingResult Decrypt(RandomNumberGenerator &rng, const CryptoPP::byte *ciphertext, size_t ciphertextLength, CryptoPP::byte *plaintext, const NameValuePairs &parameters = g_nullNameValuePairs) const
   {
     try
     {
@@ -1708,7 +1708,7 @@ public:
   virtual ~DL_EncryptorBase() { }
 #endif
 
-  void Encrypt(RandomNumberGenerator &rng, const byte *plaintext, size_t plaintextLength, byte *ciphertext, const NameValuePairs &parameters = g_nullNameValuePairs) const
+  void Encrypt(RandomNumberGenerator &rng, const CryptoPP::byte *plaintext, size_t plaintextLength, CryptoPP::byte *ciphertext, const NameValuePairs &parameters = g_nullNameValuePairs) const
   {
     const DL_KeyAgreementAlgorithm<T> &agreeAlg = this->GetKeyAgreementAlgorithm();
     const DL_KeyDerivationAlgorithm<T> &derivAlg = this->GetKeyDerivationAlgorithm();
@@ -1911,13 +1911,13 @@ public:
   unsigned int PrivateKeyLength() const {return GetAbstractGroupParameters().GetSubgroupOrder().ByteCount();}
   unsigned int PublicKeyLength() const {return GetAbstractGroupParameters().GetEncodedElementSize(true);}
 
-  void GeneratePrivateKey(RandomNumberGenerator &rng, byte *privateKey) const
+  void GeneratePrivateKey(RandomNumberGenerator &rng, CryptoPP::byte *privateKey) const
   {
     Integer x(rng, Integer::One(), GetAbstractGroupParameters().GetMaxExponent());
     x.Encode(privateKey, PrivateKeyLength());
   }
 
-  void GeneratePublicKey(RandomNumberGenerator &rng, const byte *privateKey, byte *publicKey) const
+  void GeneratePublicKey(RandomNumberGenerator &rng, const CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const
   {
     CRYPTOPP_UNUSED(rng);
     const DL_GroupParameters<T> &params = GetAbstractGroupParameters();
@@ -1926,7 +1926,7 @@ public:
     params.EncodeElement(true, y, publicKey);
   }
 
-  bool Agree(byte *agreedValue, const byte *privateKey, const byte *otherPublicKey, bool validateOtherPublicKey=true) const
+  bool Agree(CryptoPP::byte *agreedValue, const CryptoPP::byte *privateKey, const CryptoPP::byte *otherPublicKey, bool validateOtherPublicKey=true) const
   {
     try
     {

@@ -13,8 +13,6 @@
 # pragma package(smart_init)
 #endif
 
-#include "autolink.cxx"
-
 // test engine includes
 #ifdef ES_USE_CPPTEST
 #  include "cpptest.h"

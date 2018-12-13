@@ -8,13 +8,13 @@
 
 NAMESPACE_BEGIN(CryptoPP)
 
-static void MulU(byte *k, unsigned int length)
+static void MulU(CryptoPP::byte *k, unsigned int length)
 {
-  byte carry = 0;
+  CryptoPP::byte carry = 0;
 
   for (int i=length-1; i>=1; i-=2)
   {
-    byte carry2 = k[i] >> 7;
+    CryptoPP::byte carry2 = k[i] >> 7;
     k[i] += k[i] + carry;
     carry = k[i-1] >> 7;
     k[i-1] += k[i-1] + carry2;
@@ -40,7 +40,7 @@ static void MulU(byte *k, unsigned int length)
   }
 }
 
-void CMAC_Base::UncheckedSetKey(const byte *key, unsigned int length, const NameValuePairs &params)
+void CMAC_Base::UncheckedSetKey(const CryptoPP::byte *key, unsigned int length, const NameValuePairs &params)
 {
   BlockCipher &cipher = AccessCipher();
   unsigned int blockSize = cipher.BlockSize();
@@ -55,7 +55,7 @@ void CMAC_Base::UncheckedSetKey(const byte *key, unsigned int length, const Name
   MulU(m_reg+2*blockSize, blockSize);
 }
 
-void CMAC_Base::Update(const byte *input, size_t length)
+void CMAC_Base::Update(const CryptoPP::byte *input, size_t length)
 {
   CRYPTOPP_ASSERT((input && length) || !(input || length));
   if (!length)
@@ -100,7 +100,7 @@ void CMAC_Base::Update(const byte *input, size_t length)
   CRYPTOPP_ASSERT(m_counter > 0);
 }
 
-void CMAC_Base::TruncatedFinal(byte *mac, size_t size)
+void CMAC_Base::TruncatedFinal(CryptoPP::byte *mac, size_t size)
 {
   ThrowIfInvalidTruncatedSize(size);
 

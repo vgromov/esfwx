@@ -14,7 +14,7 @@ NAMESPACE_BEGIN(CryptoPP)
 
 static word64 SHARKTransform(word64 a)
 {
-  static const byte iG[8][8] = {
+  static const CryptoPP::byte iG[8][8] = {
     0xe7, 0x30, 0x90, 0x85, 0xd0, 0x4b, 0x91, 0x41,
     0x53, 0x95, 0x9b, 0xa5, 0x96, 0xbc, 0xa1, 0x68,
     0x02, 0x45, 0xf7, 0x65, 0x5c, 0x1f, 0xb6, 0x52,
@@ -33,7 +33,7 @@ static word64 SHARKTransform(word64 a)
   return result;
 }
 
-void SHARK::Base::UncheckedSetKey(const byte *key, unsigned int keyLen, const NameValuePairs &params)
+void SHARK::Base::UncheckedSetKey(const CryptoPP::byte *key, unsigned int keyLen, const NameValuePairs &params)
 {
   AssertValidKeyLength(keyLen);
 
@@ -42,14 +42,14 @@ void SHARK::Base::UncheckedSetKey(const byte *key, unsigned int keyLen, const Na
 
   // concatenate key enought times to fill a
   for (unsigned int i=0; i<(m_rounds+1)*8; i++)
-    ((byte *)m_roundKeys.begin())[i] = key[i%keyLen];
+    ((CryptoPP::byte *)m_roundKeys.begin())[i] = key[i%keyLen];
 
   SHARK::Encryption e;
   e.InitForKeySetup();
-  byte IV[8] = {0,0,0,0,0,0,0,0};
+  CryptoPP::byte IV[8] = {0,0,0,0,0,0,0,0};
   CFB_Mode_ExternalCipher::Encryption cfb(e, IV);
 
-  cfb.ProcessString((byte *)m_roundKeys.begin(), (m_rounds+1)*8);
+  cfb.ProcessString((CryptoPP::byte *)m_roundKeys.begin(), (m_rounds+1)*8);
 
   ConditionalByteReverse(BIG_ENDIAN_ORDER, m_roundKeys.begin(), m_roundKeys.begin(), (m_rounds+1)*8);
 
@@ -92,9 +92,9 @@ void SHARK::Enc::InitForKeySetup()
 
 typedef word64 ArrayOf256Word64s[256];
 
-template <const byte *sbox, const ArrayOf256Word64s *cbox>
+template <const CryptoPP::byte *sbox, const ArrayOf256Word64s *cbox>
 struct SharkProcessAndXorBlock{    // VC60 workaround: problem with template functions
-inline SharkProcessAndXorBlock(const word64 *roundKeys, unsigned int rounds, const byte *inBlock, const byte *xorBlock, byte *outBlock)
+inline SharkProcessAndXorBlock(const word64 *roundKeys, unsigned int rounds, const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock)
 {
   CRYPTOPP_ASSERT(IsAlignedOn(inBlock,GetAlignmentOf<word64>()));
   word64 tmp = *(word64 *)(void *)inBlock ^ roundKeys[0];
@@ -115,7 +115,7 @@ inline SharkProcessAndXorBlock(const word64 *roundKeys, unsigned int rounds, con
       ^ roundKeys[i];
   }
 
-  PutBlock<byte, BigEndian>(xorBlock, outBlock)
+  PutBlock<CryptoPP::byte, BigEndian>(xorBlock, outBlock)
     (sbox[GETBYTE(tmp, 7)])
     (sbox[GETBYTE(tmp, 6)])
     (sbox[GETBYTE(tmp, 5)])
@@ -129,12 +129,12 @@ inline SharkProcessAndXorBlock(const word64 *roundKeys, unsigned int rounds, con
   *(word64 *)(void *)outBlock ^= roundKeys[rounds];
 }};
 
-void SHARK::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void SHARK::Enc::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   SharkProcessAndXorBlock<sbox, cbox>(m_roundKeys, m_rounds, inBlock, xorBlock, outBlock);
 }
 
-void SHARK::Dec::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void SHARK::Dec::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   SharkProcessAndXorBlock<sbox, cbox>(m_roundKeys, m_rounds, inBlock, xorBlock, outBlock);
 }

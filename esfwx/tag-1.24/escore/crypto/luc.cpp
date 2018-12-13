@@ -156,7 +156,7 @@ void InvertibleLUCFunction::DEREncode(BufferedTransformation &bt) const
 {
   DERSequenceEncoder seq(bt);
 
-  const byte version[] = {INTEGER, 1, 0};
+  const CryptoPP::byte version[] = {INTEGER, 1, 0};
   seq.Put(version, sizeof(version));
   m_n.DEREncode(seq);
   m_e.DEREncode(seq);

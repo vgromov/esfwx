@@ -39,27 +39,27 @@ public:
   /// EsNetAddressPoolIntf services reflection
   ///
   /// (Re-) initialize address pool
-  ES_DECL_REFLECTED_INTF_METHOD0(void, initialize);
+  ES_DECL_REFLECTED_INTF_METHOD0(void, initialize) ES_OVERRIDE;
   /// Peek address at the beginning of the pool
-  ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, peek);
+  ES_DECL_REFLECTED_INTF_CONST_METHOD0(ulong, peek) ES_OVERRIDE;
   /// Peek address in pool at specified position
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, peekAt, ulong);
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(ulong, peekAt, ulong) ES_OVERRIDE;
   /// Acquire address from the beginning of the pool
-  ES_DECL_REFLECTED_INTF_METHOD0(ulong, acquire);
+  ES_DECL_REFLECTED_INTF_METHOD0(ulong, acquire) ES_OVERRIDE;
   /// Acquire address from the specific pool position
-  ES_DECL_REFLECTED_INTF_METHOD1(ulong, acquireAt, ulong);
+  ES_DECL_REFLECTED_INTF_METHOD1(ulong, acquireAt, ulong) ES_OVERRIDE;
   /// Lease specified address
-  ES_DECL_REFLECTED_INTF_METHOD1(void, lease, ulong);
+  ES_DECL_REFLECTED_INTF_METHOD1(void, lease, ulong) ES_OVERRIDE;
   /// Release previously acquired address
-  ES_DECL_REFLECTED_INTF_METHOD1(void, release, ulong);
+  ES_DECL_REFLECTED_INTF_METHOD1(void, release, ulong) ES_OVERRIDE;
 
   /// Non-reflected EsNetAddressPoolIntf services implementation
   ///
   /// Return true if pool is empty (no more addresses available)
-  ES_DECL_INTF_METHOD(bool, isEmpty)() const { return m_pool.empty(); }
+  ES_DECL_INTF_METHOD(bool, isEmpty)() const ES_OVERRIDE { return m_pool.empty(); }
 
   /// Return count of free addresses in pool
-  ES_DECL_INTF_METHOD(ulong, availableAddressesCountGet)() const { return static_cast<ulong>(m_pool.size()); }
+  ES_DECL_INTF_METHOD(ulong, availableAddressesCountGet)() const ES_OVERRIDE { return static_cast<ulong>(m_pool.size()); }
 
   /// Reflected properties
   ///

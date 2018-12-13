@@ -43,8 +43,8 @@ public:
   //! \details You can change the encoding to RFC 4648 web safe alphabet by performing the following:
   //!   <pre>
   //!     Base64Encoder encoder;
-  //!     const byte ALPHABET[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
-  //!     AlgorithmParameters params = MakeParameters(Name::EncodingLookupArray(),(const byte *)ALPHABET);
+  //!     const CryptoPP::byte ALPHABET[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+  //!     AlgorithmParameters params = MakeParameters(Name::EncodingLookupArray(),(const CryptoPP::byte *)ALPHABET);
   //!     encoder.IsolatedInitialize(params);</pre>
   //! \details If you change the encoding alphabet, then you will need to change the decoding alphabet \a and
   //!   the decoder's lookup table.
@@ -74,7 +74,7 @@ public:
   //!   by performing the following:
   //!   <pre>
   //!     int lookup[256];
-  //!     const byte ALPHABET[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+  //!     const CryptoPP::byte ALPHABET[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
   //!     Base64Decoder::InitializeDecodingLookupArray(lookup, ALPHABET, 64, false);
   //!
   //!     Base64Decoder decoder;

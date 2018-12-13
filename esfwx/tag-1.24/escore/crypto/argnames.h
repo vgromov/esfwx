@@ -18,8 +18,8 @@ CRYPTOPP_DEFINE_NAME_STRING(ValueNames)      //!< string, a list of value names 
 CRYPTOPP_DEFINE_NAME_STRING(Version)      //!< int
 CRYPTOPP_DEFINE_NAME_STRING(Seed)        //!< ConstByteArrayParameter
 CRYPTOPP_DEFINE_NAME_STRING(Key)        //!< ConstByteArrayParameter
-CRYPTOPP_DEFINE_NAME_STRING(IV)          //!< ConstByteArrayParameter, also accepts const byte * for backwards compatibility
-CRYPTOPP_DEFINE_NAME_STRING(StolenIV)      //!< byte *
+CRYPTOPP_DEFINE_NAME_STRING(IV)          //!< ConstByteArrayParameter, also accepts const CryptoPP::byte * for backwards compatibility
+CRYPTOPP_DEFINE_NAME_STRING(StolenIV)      //!< CryptoPP::byte *
 CRYPTOPP_DEFINE_NAME_STRING(Rounds)        //!< int
 CRYPTOPP_DEFINE_NAME_STRING(FeedbackSize)    //!< int
 CRYPTOPP_DEFINE_NAME_STRING(WordSize)      //!< int, in bytes
@@ -69,10 +69,10 @@ CRYPTOPP_DEFINE_NAME_STRING(Terminator)      //< ConstByteArrayParameter
 CRYPTOPP_DEFINE_NAME_STRING(Uppercase)      //< bool
 CRYPTOPP_DEFINE_NAME_STRING(GroupSize)      //< int
 CRYPTOPP_DEFINE_NAME_STRING(Pad)        //< bool
-CRYPTOPP_DEFINE_NAME_STRING(PaddingByte)    //< byte
+CRYPTOPP_DEFINE_NAME_STRING(PaddingByte)    //< CryptoPP::byte
 CRYPTOPP_DEFINE_NAME_STRING(Log2Base)      //< int
-CRYPTOPP_DEFINE_NAME_STRING(EncodingLookupArray)  //< const byte *
-CRYPTOPP_DEFINE_NAME_STRING(DecodingLookupArray)  //< const byte *
+CRYPTOPP_DEFINE_NAME_STRING(EncodingLookupArray)  //< const CryptoPP::byte *
+CRYPTOPP_DEFINE_NAME_STRING(DecodingLookupArray)  //< const CryptoPP::byte *
 CRYPTOPP_DEFINE_NAME_STRING(InsertLineBreaks)  //< bool
 CRYPTOPP_DEFINE_NAME_STRING(MaxLineLength)    //< int
 CRYPTOPP_DEFINE_NAME_STRING(DigestSize)      //!< int, in bytes
@@ -86,7 +86,7 @@ CRYPTOPP_DEFINE_NAME_STRING(PersonalizationSize)  //!< int, in bytes
 CRYPTOPP_DEFINE_NAME_STRING(Salt)        //!< ConstByteArrayParameter
 CRYPTOPP_DEFINE_NAME_STRING(Tweak)        //!< ConstByteArrayParameter
 CRYPTOPP_DEFINE_NAME_STRING(SaltSize)      //!< int, in bytes
-CRYPTOPP_DEFINE_NAME_STRING(TreeMode)      //< byte
+CRYPTOPP_DEFINE_NAME_STRING(TreeMode)      //< CryptoPP::byte
 DOCUMENTED_NAMESPACE_END
 
 NAMESPACE_END

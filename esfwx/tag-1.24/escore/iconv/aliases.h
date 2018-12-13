@@ -45,7 +45,7 @@ inline
 __inline
 #endif
 static unsigned int
-aliases_hash (register const char *str, register unsigned int len)
+aliases_hash (ES_REGISTER const char *str, ES_REGISTER unsigned int len)
 {
   static const unsigned short asso_values[] =
     {
@@ -63,7 +63,7 @@ aliases_hash (register const char *str, register unsigned int len)
       936, 936, 936, 936, 936, 936, 936, 936, 936, 936,
       936, 936, 936, 936, 936, 936, 936, 936
     };
-  register int hval = len;
+  ES_REGISTER int hval = len;
 
   switch (hval)
     {
@@ -1694,18 +1694,18 @@ inline
 __inline
 #endif
 const struct alias *
-aliases_lookup(register const char *str, register unsigned int len)
+aliases_lookup(ES_REGISTER const char *str, ES_REGISTER unsigned int len)
 {
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
     {
-      register int key = aliases_hash (str, len);
+      ES_REGISTER int key = aliases_hash (str, len);
 
       if (key <= MAX_HASH_VALUE && key >= 0)
         {
-          register int o = aliases[key].name;
+          ES_REGISTER int o = aliases[key].name;
           if (o >= 0)
             {
-              register const char *s = o + stringpool;
+              ES_REGISTER const char *s = o + stringpool;
 
               if (*str == *s && !strcmp (str + 1, s + 1))
                 return &aliases[key];

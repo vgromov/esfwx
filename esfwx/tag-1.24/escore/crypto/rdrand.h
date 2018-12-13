@@ -70,12 +70,12 @@ public:
   }
 
   //! \brief Generate random array of bytes
-  //! \param output the byte buffer
+  //! \param output the CryptoPP::byte buffer
   //! \param size the length of the buffer, in bytes
 #if (CRYPTOPP_BOOL_X86 || CRYPTOPP_BOOL_X32 || CRYPTOPP_BOOL_X64)
-  virtual void GenerateBlock(byte *output, size_t size);
+  virtual void GenerateBlock(CryptoPP::byte *output, size_t size);
 #else
-  virtual void GenerateBlock(byte *output, size_t size) {
+  virtual void GenerateBlock(CryptoPP::byte *output, size_t size) {
     CRYPTOPP_UNUSED(output), CRYPTOPP_UNUSED(size);
     throw NotImplemented("RDRAND: rdrand is not available on this platform");
   }
@@ -99,7 +99,7 @@ public:
   //! \param input unused
   //! \param length unused
   //! \details The operation is a nop for this generator.
-  virtual void IncorporateEntropy(const byte *input, size_t length)
+  virtual void IncorporateEntropy(const CryptoPP::byte *input, size_t length)
   {
     // Override to avoid the base class' throw.
     CRYPTOPP_UNUSED(input); CRYPTOPP_UNUSED(length);
@@ -154,12 +154,12 @@ public:
   }
 
   //! \brief Generate random array of bytes
-  //! \param output the byte buffer
+  //! \param output the CryptoPP::byte buffer
   //! \param size the length of the buffer, in bytes
 #if (CRYPTOPP_BOOL_X86 || CRYPTOPP_BOOL_X32 || CRYPTOPP_BOOL_X64)
-  virtual void GenerateBlock(byte *output, size_t size);
+  virtual void GenerateBlock(CryptoPP::byte *output, size_t size);
 #else
-  virtual void GenerateBlock(byte *output, size_t size) {
+  virtual void GenerateBlock(CryptoPP::byte *output, size_t size) {
     CRYPTOPP_UNUSED(output), CRYPTOPP_UNUSED(size);
     throw NotImplemented("RDSEED: rdseed is not available on this platform");
   }
@@ -183,7 +183,7 @@ public:
   //! \param input unused
   //! \param length unused
   //! \details The operation is a nop for this generator.
-  virtual void IncorporateEntropy(const byte *input, size_t length)
+  virtual void IncorporateEntropy(const CryptoPP::byte *input, size_t length)
   {
     // Override to avoid the base class' throw.
     CRYPTOPP_UNUSED(input); CRYPTOPP_UNUSED(length);

@@ -122,13 +122,13 @@ struct EnumToType
   static ENUM_TYPE ToEnum() {return (ENUM_TYPE)VALUE;}
 };
 
-//! \brief Provides the byte ordering
+//! \brief Provides the CryptoPP::byte ordering
 //! \details Big-endian and little-endian modes are supported. Bi-endian and PDP-endian modes
 //!   are not supported.
 enum ByteOrder {
-  //! \brief byte order is little-endian
+  //! \brief CryptoPP::byte order is little-endian
   LITTLE_ENDIAN_ORDER = 0,
-  //! \brief byte order is big-endian
+  //! \brief CryptoPP::byte order is big-endian
   BIG_ENDIAN_ORDER = 1};
 
 //! \brief Provides a constant for LittleEndian
@@ -524,7 +524,7 @@ public:
 };
 
 //! \class SimpleKeyingInterface
-//! \brief Interface for algorithms that take byte strings as keys
+//! \brief Interface for algorithms that take CryptoPP::byte strings as keys
 //! \sa FixedKeyLength(), VariableKeyLength(), SameKeyLengthAs(), SimpleKeyingInterfaceImpl()
 class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE SimpleKeyingInterface
 {
@@ -555,7 +555,7 @@ public:
   //! \param length the size of the key, in bytes
   //! \param params additional initialization parameters that cannot be passed
   //!   directly through the constructor
-  virtual void SetKey(const byte *key, size_t length, const NameValuePairs &params = g_nullNameValuePairs);
+  virtual void SetKey(const CryptoPP::byte *key, size_t length, const NameValuePairs &params = g_nullNameValuePairs);
 
   //! \brief Sets or reset the key of this object
   //! \param key the key to use when keying the object
@@ -565,7 +565,7 @@ public:
   //! \details SetKeyWithRounds() calls SetKey() with a NameValuePairs
   //!   object that only specifies rounds. rounds is an integer parameter,
   //!   and <tt>-1</tt> means use the default number of rounds.
-  void SetKeyWithRounds(const byte *key, size_t length, int rounds);
+  void SetKeyWithRounds(const CryptoPP::byte *key, size_t length, int rounds);
 
   //! \brief Sets or reset the key of this object
   //! \param key the key to use when keying the object
@@ -573,18 +573,18 @@ public:
   //! \param iv the intiialization vector to use when keying the object
   //! \param ivLength the size of the iv, in bytes
   //! \details SetKeyWithIV() calls SetKey() with a NameValuePairs
-  //!   that only specifies IV. The IV is a byte buffer with size ivLength.
+  //!   that only specifies IV. The IV is a CryptoPP::byte buffer with size ivLength.
   //!   ivLength is an integer parameter, and <tt>-1</tt> means use IVSize().
-  void SetKeyWithIV(const byte *key, size_t length, const byte *iv, size_t ivLength);
+  void SetKeyWithIV(const CryptoPP::byte *key, size_t length, const CryptoPP::byte *iv, size_t ivLength);
 
   //! \brief Sets or reset the key of this object
   //! \param key the key to use when keying the object
   //! \param length the size of the key, in bytes
   //! \param iv the intiialization vector to use when keying the object
   //! \details SetKeyWithIV() calls SetKey() with a NameValuePairs() object
-  //!   that only specifies iv. iv is a byte buffer, and it must have
+  //!   that only specifies iv. iv is a CryptoPP::byte buffer, and it must have
   //!   a size IVSize().
-  void SetKeyWithIV(const byte *key, size_t length, const byte *iv)
+  void SetKeyWithIV(const CryptoPP::byte *key, size_t length, const CryptoPP::byte *iv)
     {SetKeyWithIV(key, length, iv, IVSize());}
 
   //! \brief Secure IVs requirements as enumerated values.
@@ -656,7 +656,7 @@ public:
   //! \param ivLength the size of the initialization vector, in bytes
   //! \details Resynchronize() resynchronizes with an IV provided by the caller. <tt>ivLength=-1</tt> means use IVSize().
   //! \throws NotImplemented() if the object does not support resynchronization
-  virtual void Resynchronize(const byte *iv, int ivLength=-1) {
+  virtual void Resynchronize(const CryptoPP::byte *iv, int ivLength=-1) {
     CRYPTOPP_UNUSED(iv); CRYPTOPP_UNUSED(ivLength);
     throw NotImplemented(GetAlgorithm().AlgorithmName() + ": this object doesn't support resynchronization");
   }
@@ -670,7 +670,7 @@ public:
   //!    before using this object again.
   //! \details Internally, the base class implementation calls RandomNumberGenerator's GenerateBlock()
   //! \note This method is not implemented on decryption objects.
-  virtual void GetNextIV(RandomNumberGenerator &rng, byte *iv);
+  virtual void GetNextIV(RandomNumberGenerator &rng, CryptoPP::byte *iv);
 
 protected:
   //! \brief Returns the base class  Algorithm
@@ -678,11 +678,11 @@ protected:
   virtual const Algorithm & GetAlgorithm() const =0;
 
   //! \brief Sets the key for this object without performing parameter validation
-  //! \param key a byte buffer used to key the cipher
-  //! \param length the length of the byte buffer
+  //! \param key a CryptoPP::byte buffer used to key the cipher
+  //! \param length the length of the CryptoPP::byte buffer
   //! \param params additional parameters passed as  NameValuePairs
   //! \details key must be at least DEFAULT_KEYLENGTH in length.
-  virtual void UncheckedSetKey(const byte *key, unsigned int length, const NameValuePairs &params) =0;
+  virtual void UncheckedSetKey(const CryptoPP::byte *key, unsigned int length, const NameValuePairs &params) =0;
 
   //! \brief Validates the key length
   //! \param length the size of the keying material, in bytes
@@ -703,7 +703,7 @@ protected:
   //!   then the function succeeds. If  iv is  NULL, then  IVRequirement is checked against
   //!    UNPREDICTABLE_RANDOM_IV. If  IVRequirement is  UNPREDICTABLE_RANDOM_IV, then
   //!   then the function succeeds. Otherwise, an exception is thrown.
-  void ThrowIfInvalidIV(const byte *iv);
+  void ThrowIfInvalidIV(const CryptoPP::byte *iv);
 
   //! \brief Validates the IV length
   //! \param length the size of an IV, in bytes
@@ -713,9 +713,9 @@ protected:
   //! \brief Retrieves and validates the IV
   //! \param params  NameValuePairs with the IV supplied as a ConstByteArrayParameter
   //! \param size the length of the IV, in bytes
-  //! \return a pointer to the first byte of the  IV
+  //! \return a pointer to the first CryptoPP::byte of the  IV
   //! \throws InvalidArgument if the number of  rounds are invalid
-  const byte * GetIVAndThrowIfInvalid(const NameValuePairs &params, size_t &size);
+  const CryptoPP::byte * GetIVAndThrowIfInvalid(const NameValuePairs &params, size_t &size);
 
   //! \brief Validates the key length
   //! \param length the size of the keying material, in bytes
@@ -744,7 +744,7 @@ public:
   //!     BLOCKSIZE at compile time, or BlockSize() at runtime.
   //! \note The message can be transformed in-place, or the buffers must \a not overlap
   //! \sa FixedBlockSize, BlockCipherFinal from seckey.h and BlockSize()
-  virtual void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const =0;
+  virtual void ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const =0;
 
   //! \brief Encrypt or decrypt a block
   //! \param inBlock the input message before processing
@@ -754,7 +754,7 @@ public:
   //!    Use  BLOCKSIZE at compile time, or BlockSize() at runtime.
   //! \sa FixedBlockSize, BlockCipherFinal from seckey.h and BlockSize()
   //! \note The message can be transformed in-place, or the buffers must \a not overlap
-  void ProcessBlock(const byte *inBlock, byte *outBlock) const
+  void ProcessBlock(const CryptoPP::byte *inBlock, CryptoPP::byte *outBlock) const
     {ProcessAndXorBlock(inBlock, NULL, outBlock);}
 
   //! \brief Encrypt or decrypt a block in place
@@ -763,7 +763,7 @@ public:
   //! \details The size of the block is determined by the block cipher and its documentation.
   //!    Use BLOCKSIZE at compile time, or BlockSize() at runtime.
   //! \sa FixedBlockSize, BlockCipherFinal from seckey.h and BlockSize()
-  void ProcessBlock(byte *inoutBlock) const
+  void ProcessBlock(CryptoPP::byte *inoutBlock) const
     {ProcessAndXorBlock(inoutBlock, NULL, inoutBlock);}
 
   //! Provides the block size of the cipher
@@ -807,8 +807,8 @@ public:
   //! \param length the size of the blocks, in bytes
   //! \param flags additional flags to control processing
   //! \details Encrypt and xor multiple blocks according to FlagsForAdvancedProcessBlocks flags.
-  //! \note If BT_InBlockIsCounter is set, then the last byte of inBlocks may be modified.
-  virtual size_t AdvancedProcessBlocks(const byte *inBlocks, const byte *xorBlocks, byte *outBlocks, size_t length, word32 flags) const;
+  //! \note If BT_InBlockIsCounter is set, then the last CryptoPP::byte of inBlocks may be modified.
+  virtual size_t AdvancedProcessBlocks(const CryptoPP::byte *inBlocks, const CryptoPP::byte *xorBlocks, CryptoPP::byte *outBlocks, size_t length, word32 flags) const;
 
   //! \brief Provides the direction of the cipher
   //! \return ENCRYPTION if IsForwardTransformation() is true, DECRYPTION otherwise
@@ -851,19 +851,19 @@ public:
   virtual unsigned int OptimalDataAlignment() const;
 
   //! \brief Encrypt or decrypt an array of bytes
-  //! \param outString the output byte buffer
-  //! \param inString the input byte buffer
-  //! \param length the size of the input and output byte buffers, in bytes
+  //! \param outString the output CryptoPP::byte buffer
+  //! \param inString the input CryptoPP::byte buffer
+  //! \param length the size of the input and output CryptoPP::byte buffers, in bytes
   //! \details Either <tt>inString == outString</tt>, or they must not overlap.
-  virtual void ProcessData(byte *outString, const byte *inString, size_t length) =0;
+  virtual void ProcessData(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length) =0;
 
   //! \brief Encrypt or decrypt the last block of data
-  //! \param outString the output byte buffer
-  //! \param inString the input byte buffer
-  //! \param length the size of the input and output byte buffers, in bytes
+  //! \param outString the output CryptoPP::byte buffer
+  //! \param inString the input CryptoPP::byte buffer
+  //! \param length the size of the input and output CryptoPP::byte buffers, in bytes
   //!  ProcessLastBlock is used when the last block of data is special.
   //!   Currently the only use of this function is CBC-CTS mode.
-  virtual void ProcessLastBlock(byte *outString, const byte *inString, size_t length);
+  virtual void ProcessLastBlock(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length);
 
   //! \brief Provides the size of the last block
   //! \returns the minimum size of the last block
@@ -875,7 +875,7 @@ public:
   //! \param inoutString the string to process
   //! \param length the size of the  inoutString, in bytes
   //! \details Internally, the base class implementation calls ProcessData().
-  inline void ProcessString(byte *inoutString, size_t length)
+  inline void ProcessString(CryptoPP::byte *inoutString, size_t length)
     {ProcessData(inoutString, inoutString, length);}
 
   //! \brief Encrypt or decrypt a string of bytes
@@ -883,13 +883,13 @@ public:
   //! \param inString the input string to process
   //! \param length the size of the input and output strings, in bytes
   //! \details Internally, the base class implementation calls ProcessData().
-  inline void ProcessString(byte *outString, const byte *inString, size_t length)
+  inline void ProcessString(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length)
     {ProcessData(outString, inString, length);}
 
-  //! \brief Encrypt or decrypt a byte
-  //! \param input the input byte to process
+  //! \brief Encrypt or decrypt a CryptoPP::byte
+  //! \param input the input CryptoPP::byte to process
   //! \details Internally, the base class implementation calls ProcessData() with a size of 1.
-  inline byte ProcessByte(byte input)
+  inline CryptoPP::byte ProcessByte(CryptoPP::byte input)
     {ProcessData(&input, &input, 1); return input;}
 
   //! \brief Determines whether the cipher supports random access
@@ -943,7 +943,7 @@ public:
   //! \brief Updates a hash with additional input
   //! \param input the additional input as a buffer
   //! \param length the size of the buffer, in bytes
-  virtual void Update(const byte *input, size_t length) =0;
+  virtual void Update(const CryptoPP::byte *input, size_t length) =0;
 
   //! \brief Request space which can be written into by the caller
   //! \param size the requested size of the buffer
@@ -953,14 +953,14 @@ public:
   //!   the array returned to the caller.
   //! \details The base class implementation sets  size to 0 and returns  NULL.
   //! \note Some objects, like ArraySink, cannot create a space because its fixed.
-  virtual byte * CreateUpdateSpace(size_t &size) {size=0; return NULL;}
+  virtual CryptoPP::byte * CreateUpdateSpace(size_t &size) {size=0; return NULL;}
 
   //! \brief Computes the hash of the current message
   //! \param digest a pointer to the buffer to receive the hash
   //! \details Final() restarts the hash for a new message.
   //! \pre <tt>COUNTOF(digest) == DigestSize()</tt> or <tt>COUNTOF(digest) == HASH::DIGESTSIZE</tt> ensures
-  //!   the output byte buffer is large enough for the digest.
-  virtual void Final(byte *digest)
+  //!   the output CryptoPP::byte buffer is large enough for the digest.
+  virtual void Final(CryptoPP::byte *digest)
     {TruncatedFinal(digest, DigestSize());}
 
   //! \brief Restart the hash
@@ -1002,8 +1002,8 @@ public:
   //!   and Final() separately
   //! \details CalculateDigest() restarts the hash for the next message.
   //! \pre <tt>COUNTOF(digest) == DigestSize()</tt> or <tt>COUNTOF(digest) == HASH::DIGESTSIZE</tt> ensures
-  //!   the output byte buffer is large enough for the digest.
-  virtual void CalculateDigest(byte *digest, const byte *input, size_t length)
+  //!   the output CryptoPP::byte buffer is large enough for the digest.
+  virtual void CalculateDigest(CryptoPP::byte *digest, const CryptoPP::byte *input, size_t length)
     {Update(input, length); Final(digest);}
 
   //! \brief Verifies the hash of the current message
@@ -1014,8 +1014,8 @@ public:
   //!   a constant time comparison function. digestLength cannot exceed DigestSize().
   //! \details Verify() restarts the hash for the next message.
   //! \pre <tt>COUNTOF(digest) == DigestSize()</tt> or <tt>COUNTOF(digest) == HASH::DIGESTSIZE</tt> ensures
-  //!   the output byte buffer is large enough for the digest.
-  virtual bool Verify(const byte *digest)
+  //!   the output CryptoPP::byte buffer is large enough for the digest.
+  virtual bool Verify(const CryptoPP::byte *digest)
     {return TruncatedVerify(digest, DigestSize());}
 
   //! \brief Updates the hash with additional input and verifies the hash of the current message
@@ -1030,8 +1030,8 @@ public:
   //!   which is a constant time comparison function. digestLength cannot exceed DigestSize().
   //! \details VerifyDigest() restarts the hash for the next message.
   //! \pre <tt>COUNTOF(digest) == DigestSize()</tt> or <tt>COUNTOF(digest) == HASH::DIGESTSIZE</tt> ensures
-  //!   the output byte buffer is large enough for the digest.
-  virtual bool VerifyDigest(const byte *digest, const byte *input, size_t length)
+  //!   the output CryptoPP::byte buffer is large enough for the digest.
+  virtual bool VerifyDigest(const CryptoPP::byte *digest, const CryptoPP::byte *input, size_t length)
     {Update(input, length); return Verify(digest);}
 
   //! \brief Computes the hash of the current message
@@ -1039,7 +1039,7 @@ public:
   //! \param digestSize the size of the truncated digest, in bytes
   //! \details TruncatedFinal() call Final() and then copies digestSize bytes to digest.
   //!   The hash is restarted the hash for the next message.
-  virtual void TruncatedFinal(byte *digest, size_t digestSize) =0;
+  virtual void TruncatedFinal(CryptoPP::byte *digest, size_t digestSize) =0;
 
   //! \brief Updates the hash with additional input and computes the hash of the current message
   //! \param digest a pointer to the buffer to receive the hash
@@ -1050,8 +1050,8 @@ public:
   //!   and CalculateDigest() separately.
   //! \details CalculateTruncatedDigest() restarts the hash for the next message.
   //! \pre <tt>COUNTOF(digest) == DigestSize()</tt> or <tt>COUNTOF(digest) == HASH::DIGESTSIZE</tt> ensures
-  //!   the output byte buffer is large enough for the digest.
-  virtual void CalculateTruncatedDigest(byte *digest, size_t digestSize, const byte *input, size_t length)
+  //!   the output CryptoPP::byte buffer is large enough for the digest.
+  virtual void CalculateTruncatedDigest(CryptoPP::byte *digest, size_t digestSize, const CryptoPP::byte *input, size_t length)
     {Update(input, length); TruncatedFinal(digest, digestSize);}
 
   //! \brief Verifies the hash of the current message
@@ -1064,7 +1064,7 @@ public:
   //! \details Verify() performs a bitwise compare on the buffers using VerifyBufsEqual(), which is
   //!   a constant time comparison function. digestLength cannot exceed DigestSize().
   //! \details TruncatedVerify() restarts the hash for the next message.
-  virtual bool TruncatedVerify(const byte *digest, size_t digestLength);
+  virtual bool TruncatedVerify(const CryptoPP::byte *digest, size_t digestLength);
 
   //! \brief Updates the hash with additional input and verifies the hash of the current message
   //! \param digest a pointer to the buffer of an \a existing hash
@@ -1079,8 +1079,8 @@ public:
   //!   on a buffer smaller than DigestSize(). However, digestLength cannot exceed DigestSize().
   //! \details VerifyTruncatedDigest() restarts the hash for the next message.
   //! \pre <tt>COUNTOF(digest) == DigestSize()</tt> or <tt>COUNTOF(digest) == HASH::DIGESTSIZE</tt> ensures
-  //!   the output byte buffer is large enough for the digest.
-  virtual bool VerifyTruncatedDigest(const byte *digest, size_t digestLength, const byte *input, size_t length)
+  //!   the output CryptoPP::byte buffer is large enough for the digest.
+  virtual bool VerifyTruncatedDigest(const CryptoPP::byte *digest, size_t digestLength, const CryptoPP::byte *input, size_t length)
     {Update(input, length); return TruncatedVerify(digest, digestLength);}
 
 protected:
@@ -1161,12 +1161,12 @@ public:
   //! \return true if the authenticated encryption succeeded, false otherwise
   //! \details EncryptAndAuthenticate() encrypts and generates the MAC in one call. The function will truncate MAC if
   //!   <tt>macSize < TagSize()</tt>.
-  virtual void EncryptAndAuthenticate(byte *ciphertext, byte *mac, size_t macSize, const byte *iv, int ivLength, const byte *header, size_t headerLength, const byte *message, size_t messageLength);
+  virtual void EncryptAndAuthenticate(CryptoPP::byte *ciphertext, CryptoPP::byte *mac, size_t macSize, const CryptoPP::byte *iv, int ivLength, const CryptoPP::byte *header, size_t headerLength, const CryptoPP::byte *message, size_t messageLength);
   //! \brief Decrypts and verifies a MAC in one call
   //! \return true if the MAC is valid and the decoding succeeded, false otherwise
   //! \details DecryptAndVerify() decrypts and verifies the MAC in one call. The function returns true iff MAC is valid.
   //!   DecryptAndVerify() will assume MAC is truncated if <tt>macLength < TagSize()</tt>.
-  virtual bool DecryptAndVerify(byte *message, const byte *mac, size_t macLength, const byte *iv, int ivLength, const byte *header, size_t headerLength, const byte *ciphertext, size_t ciphertextLength);
+  virtual bool DecryptAndVerify(CryptoPP::byte *message, const CryptoPP::byte *mac, size_t macLength, const CryptoPP::byte *iv, int ivLength, const CryptoPP::byte *header, size_t headerLength, const CryptoPP::byte *ciphertext, size_t ciphertextLength);
 
   //! \brief Provides the name of this algorithm
   //! \return the standard algorithm name
@@ -1205,7 +1205,7 @@ public:
   //!   ability to use additional entropy.
   //! \details If a derived class does not override IncorporateEntropy(), then the base class throws
   //!   NotImplemented.
-  virtual void IncorporateEntropy(const byte *input, size_t length)
+  virtual void IncorporateEntropy(const CryptoPP::byte *input, size_t length)
   {
     CRYPTOPP_UNUSED(input); CRYPTOPP_UNUSED(length);
     throw NotImplemented("RandomNumberGenerator: IncorporateEntropy not implemented");
@@ -1215,12 +1215,12 @@ public:
   //! \return true if IncorporateEntropy() is implemented
   virtual bool CanIncorporateEntropy() const {return false;}
 
-  //! \brief Generate new random byte and return it
-  //! \return a random 8-bit byte
-  //! \details Default implementation calls GenerateBlock() with one byte.
+  //! \brief Generate new random CryptoPP::byte and return it
+  //! \return a random 8-bit CryptoPP::byte
+  //! \details Default implementation calls GenerateBlock() with one CryptoPP::byte.
   //! \details All generated values are uniformly distributed over the range specified within the
   //!   the contraints of a particular generator.
-  virtual byte GenerateByte();
+  virtual CryptoPP::byte GenerateByte();
 
   //! \brief Generate new random bit and return it
   //! \return a random bit
@@ -1240,13 +1240,13 @@ public:
   virtual word32 GenerateWord32(word32 min=0, word32 max=0xffffffffUL);
 
   //! \brief Generate random array of bytes
-  //! \param output the byte buffer
+  //! \param output the CryptoPP::byte buffer
   //! \param size the length of the buffer, in bytes
   //! \details All generated values are uniformly distributed over the range specified within the
   //!   the contraints of a particular generator.
   //! \note A derived generator \a must override either GenerateBlock() or
   //!    GenerateIntoBufferedTransformation(). They can override both, or have one call the other.
-  virtual void GenerateBlock(byte *output, size_t size);
+  virtual void GenerateBlock(CryptoPP::byte *output, size_t size);
 
   //! \brief Generate random bytes into a BufferedTransformation
   //! \param target the BufferedTransformation object which receives the bytes
@@ -1276,11 +1276,11 @@ public:
   }
 
 #ifdef CRYPTOPP_MAINTAIN_BACKWARDS_COMPATIBILITY
-  byte GetByte() {return GenerateByte();}
+  CryptoPP::byte GetByte() {return GenerateByte();}
   unsigned int GetBit() {return GenerateBit();}
   word32 GetLong(word32 a=0, word32 b=0xffffffffL) {return GenerateWord32(a, b);}
   word16 GetShort(word16 a=0, word16 b=0xffff) {return (word16)GenerateWord32(a, b);}
-  void GetBlock(byte *output, size_t size) {GenerateBlock(output, size);}
+  void GetBlock(CryptoPP::byte *output, size_t size) {GenerateBlock(output, size);}
 #endif
 
 };
@@ -1377,21 +1377,21 @@ public:
   //!  \name INPUT
   //@{
 
-    //! \brief Input a byte for processing
-    //! \param inByte the 8-bit byte (octet) to be processed.
+    //! \brief Input a CryptoPP::byte for processing
+    //! \param inByte the 8-bit CryptoPP::byte (octet) to be processed.
     //! \param blocking specifies whether the object should block when processing input.
     //! \return the number of bytes that remain in the block (i.e., bytes not processed)
-    //! \details <tt>Put(byte)</tt> calls <tt>Put(byte*, size_t)</tt>.
-    size_t Put(byte inByte, bool blocking=true)
+    //! \details <tt>Put(CryptoPP::byte)</tt> calls <tt>Put(CryptoPP::byte*, size_t)</tt>.
+    size_t Put(CryptoPP::byte inByte, bool blocking=true)
       {return Put(&inByte, 1, blocking);}
 
-    //! \brief Input a byte buffer for processing
-    //! \param inString the byte buffer to process
+    //! \brief Input a CryptoPP::byte buffer for processing
+    //! \param inString the CryptoPP::byte buffer to process
     //! \param length the size of the string, in bytes
     //! \param blocking specifies whether the object should block when processing input
     //! \return the number of bytes that remain in the block (i.e., bytes not processed)
     //! \details Internally, Put() calls Put2().
-    size_t Put(const byte *inString, size_t length, bool blocking=true)
+    size_t Put(const CryptoPP::byte *inString, size_t length, bool blocking=true)
       {return Put2(inString, length, 0, blocking);}
 
     //! Input a 16-bit word for processing.
@@ -1417,7 +1417,7 @@ public:
     //! \details The base class implementation sets  size to 0 and returns  NULL.
     //! \note Some objects, like ArraySink, cannot create a space because its fixed. In the case of
     //! an ArraySink, the pointer to the array is returned and the  size is remaining size.
-    virtual byte * CreatePutSpace(size_t &size)
+    virtual CryptoPP::byte * CreatePutSpace(size_t &size)
       {size=0; return NULL;}
 
     //! \brief Determines whether input can be modifed by the callee
@@ -1427,12 +1427,12 @@ public:
       {return false;}
 
     //! \brief Input multiple bytes that may be modified by callee.
-    //! \param inString the byte buffer to process
+    //! \param inString the CryptoPP::byte buffer to process
     //! \param length the size of the string, in bytes
     //! \param blocking specifies whether the object should block when processing input
     //! \return 0 indicates all bytes were processed during the call. Non-0 indicates the
     //!   number of bytes that were \a not processed
-    size_t PutModifiable(byte *inString, size_t length, bool blocking=true)
+    size_t PutModifiable(CryptoPP::byte *inString, size_t length, bool blocking=true)
       {return PutModifiable2(inString, length, 0, blocking);}
 
     //! \brief Signals the end of messages to the object
@@ -1444,7 +1444,7 @@ public:
       {return !!Put2(NULL, 0, propagation < 0 ? -1 : propagation+1, blocking);}
 
     //! \brief Input multiple bytes for processing and signal the end of a message
-    //! \param inString the byte buffer to process
+    //! \param inString the CryptoPP::byte buffer to process
     //! \param length the size of the string, in bytes
     //! \param propagation the number of attached transformations the  MessageEnd() signal should be passed
     //! \param blocking specifies whether the object should block when processing input
@@ -1453,24 +1453,24 @@ public:
     //!    ensure all attached transformations finish processing the message.
     //! \details propagation count includes this object. Setting propagation to <tt>1</tt> means this
     //!   object only. Setting propagation to <tt>-1</tt> means unlimited propagation.
-    size_t PutMessageEnd(const byte *inString, size_t length, int propagation=-1, bool blocking=true)
+    size_t PutMessageEnd(const CryptoPP::byte *inString, size_t length, int propagation=-1, bool blocking=true)
       {return Put2(inString, length, propagation < 0 ? -1 : propagation+1, blocking);}
 
     //! \brief Input multiple bytes for processing
-    //! \param inString the byte buffer to process
+    //! \param inString the CryptoPP::byte buffer to process
     //! \param length the size of the string, in bytes
     //! \param messageEnd means how many filters to signal MessageEnd() to, including this one
     //! \param blocking specifies whether the object should block when processing input
     //! \details Derived classes must implement Put2().
-    virtual size_t Put2(const byte *inString, size_t length, int messageEnd, bool blocking) =0;
+    virtual size_t Put2(const CryptoPP::byte *inString, size_t length, int messageEnd, bool blocking) =0;
 
     //! \brief Input multiple bytes that may be modified by callee.
-    //! \param inString the byte buffer to process.
+    //! \param inString the CryptoPP::byte buffer to process.
     //! \param length the size of the string, in bytes.
     //! \param messageEnd means how many filters to signal MessageEnd() to, including this one.
     //! \param blocking specifies whether the object should block when processing input.
     //! \details Internally, PutModifiable2() calls Put2().
-    virtual size_t PutModifiable2(byte *inString, size_t length, int messageEnd, bool blocking)
+    virtual size_t PutModifiable2(CryptoPP::byte *inString, size_t length, int messageEnd, bool blocking)
       {return Put2(inString, length, messageEnd, blocking);}
 
     //! \class BlockingInputOnly
@@ -1593,25 +1593,25 @@ public:
     //! \returns true if bytes are available for retrieval, false otherwise
     virtual bool AnyRetrievable() const;
 
-    //! \brief Retrieve a 8-bit byte
+    //! \brief Retrieve a 8-bit CryptoPP::byte
     //! \param outByte the 8-bit value to be retrieved
     //! \return the number of bytes consumed during the call.
     //! \details Use the return value of  Get to detect short reads.
-    virtual size_t Get(byte &outByte);
+    virtual size_t Get(CryptoPP::byte &outByte);
 
     //! \brief Retrieve a block of bytes
     //! \param outString a block of bytes
     //! \param getMax the number of bytes to  Get
     //! \return the number of bytes consumed during the call.
     //! \details Use the return value of  Get to detect short reads.
-    virtual size_t Get(byte *outString, size_t getMax);
+    virtual size_t Get(CryptoPP::byte *outString, size_t getMax);
 
-    //! \brief Peek a 8-bit byte
+    //! \brief Peek a 8-bit CryptoPP::byte
     //! \param outByte the 8-bit value to be retrieved
     //! \return the number of bytes read during the call.
     //! \details Peek does not remove bytes from the object. Use the return value of
     //!     Get to detect short reads.
-    virtual size_t Peek(byte &outByte) const;
+    virtual size_t Peek(CryptoPP::byte &outByte) const;
 
     //! \brief Peek a block of bytes
     //! \param outString a block of bytes
@@ -1619,7 +1619,7 @@ public:
     //! \return the number of bytes read during the call.
     //! \details Peek does not remove bytes from the object. Use the return value of
     //!     Get to detect short reads.
-    virtual size_t Peek(byte *outString, size_t peekMax) const;
+    virtual size_t Peek(CryptoPP::byte *outString, size_t peekMax) const;
 
     //! \brief Retrieve a 16-bit word
     //! \param value the 16-bit value to be retrieved
@@ -1689,7 +1689,7 @@ public:
 
     //! \brief Copy bytes from this object using an index to another BufferedTransformation
     //! \param target the destination BufferedTransformation
-    //! \param position the 0-based index of the byte stream to begin the copying
+    //! \param position the 0-based index of the CryptoPP::byte stream to begin the copying
     //! \param copyMax the number of bytes to copy
     //! \param channel the channel on which the transfer should occur
     //! \return the number of bytes copied during the call.
@@ -1814,8 +1814,8 @@ public:
 
     //! \brief Copy bytes from this object to another BufferedTransformation
     //! \param target the destination BufferedTransformation
-    //! \param begin the 0-based index of the first byte to copy in the stream
-    //! \param end the 0-based index of the last byte to copy in the stream
+    //! \param begin the 0-based index of the first CryptoPP::byte to copy in the stream
+    //! \param end the 0-based index of the last CryptoPP::byte to copy in the stream
     //! \param channel the channel on which the transfer should occur
     //! \param blocking specifies whether the object should block when processing input
     //! \return the number of bytes that remain in the copy block (i.e., bytes not copied)
@@ -1824,7 +1824,7 @@ public:
     //!   not from an absolute position in the stream.
     //! \details begin is an \a IN and \a OUT parameter. When the call is made, begin is the
     //!   starting position of the copy. When the call returns, begin is the position of the first
-    //!   byte that was \a not copied (which may be different tahn  end).  begin can be used for
+    //!   CryptoPP::byte that was \a not copied (which may be different tahn  end).  begin can be used for
     //!   subsequent calls to  CopyRangeTo2.
     virtual size_t CopyRangeTo2(BufferedTransformation &target, lword &begin, lword end=LWORD_MAX, const std::string &channel=DEFAULT_CHANNEL, bool blocking=true) const =0;
 
@@ -1863,33 +1863,33 @@ public:
     struct InvalidChannelName : public InvalidArgument
       {InvalidChannelName(const std::string &name, const std::string &channel) : InvalidArgument(name + ": unexpected channel name \"" + channel + "\"") {}};
 
-    //! \brief Input a byte for processing on a channel
+    //! \brief Input a CryptoPP::byte for processing on a channel
     //! \param channel the channel to process the data.
-    //! \param inByte the 8-bit byte (octet) to be processed.
+    //! \param inByte the 8-bit CryptoPP::byte (octet) to be processed.
     //! \param blocking specifies whether the object should block when processing input.
     //! \return 0 indicates all bytes were processed during the call. Non-0 indicates the
     //!   number of bytes that were \a not processed.
-    size_t ChannelPut(const std::string &channel, byte inByte, bool blocking=true)
+    size_t ChannelPut(const std::string &channel, CryptoPP::byte inByte, bool blocking=true)
       {return ChannelPut(channel, &inByte, 1, blocking);}
 
-    //! \brief Input a byte buffer for processing on a channel
+    //! \brief Input a CryptoPP::byte buffer for processing on a channel
     //! \param channel the channel to process the data
-    //! \param inString the byte buffer to process
+    //! \param inString the CryptoPP::byte buffer to process
     //! \param length the size of the string, in bytes
     //! \param blocking specifies whether the object should block when processing input
     //! \return 0 indicates all bytes were processed during the call. Non-0 indicates the
     //!   number of bytes that were \a not processed.
-    size_t ChannelPut(const std::string &channel, const byte *inString, size_t length, bool blocking=true)
+    size_t ChannelPut(const std::string &channel, const CryptoPP::byte *inString, size_t length, bool blocking=true)
       {return ChannelPut2(channel, inString, length, 0, blocking);}
 
     //! \brief Input multiple bytes that may be modified by callee on a channel
     //! \param channel the channel to process the data.
-    //! \param inString the byte buffer to process
+    //! \param inString the CryptoPP::byte buffer to process
     //! \param length the size of the string, in bytes
     //! \param blocking specifies whether the object should block when processing input
     //! \return 0 indicates all bytes were processed during the call. Non-0 indicates the
     //!   number of bytes that were \a not processed.
-    size_t ChannelPutModifiable(const std::string &channel, byte *inString, size_t length, bool blocking=true)
+    size_t ChannelPutModifiable(const std::string &channel, CryptoPP::byte *inString, size_t length, bool blocking=true)
       {return ChannelPutModifiable2(channel, inString, length, 0, blocking);}
 
     //! \brief Input a 16-bit word for processing on a channel.
@@ -1923,14 +1923,14 @@ public:
 
     //! \brief Input multiple bytes for processing and signal the end of a message
     //! \param channel the channel to process the data.
-    //! \param inString the byte buffer to process
+    //! \param inString the CryptoPP::byte buffer to process
     //! \param length the size of the string, in bytes
     //! \param propagation the number of attached transformations the ChannelPutMessageEnd() signal should be passed
     //! \param blocking specifies whether the object should block when processing input
     //! \return the number of bytes that remain in the block (i.e., bytes not processed)
     //! \details propagation count includes this object. Setting propagation to <tt>1</tt> means this
     //!   object only. Setting propagation to <tt>-1</tt> means unlimited propagation.
-    size_t ChannelPutMessageEnd(const std::string &channel, const byte *inString, size_t length, int propagation=-1, bool blocking=true)
+    size_t ChannelPutMessageEnd(const std::string &channel, const CryptoPP::byte *inString, size_t length, int propagation=-1, bool blocking=true)
       {return ChannelPut2(channel, inString, length, propagation < 0 ? -1 : propagation+1, blocking);}
 
     //! \brief Request space which can be written into by the caller
@@ -1944,25 +1944,25 @@ public:
     //! \details The base class implementation sets size to 0 and returns NULL.
     //! \note Some objects, like ArraySink(), cannot create a space because its fixed. In the case of
     //! an ArraySink(), the pointer to the array is returned and the size is remaining size.
-    virtual byte * ChannelCreatePutSpace(const std::string &channel, size_t &size);
+    virtual CryptoPP::byte * ChannelCreatePutSpace(const std::string &channel, size_t &size);
 
     //! \brief Input multiple bytes for processing on a channel.
     //! \param channel the channel to process the data.
-    //! \param inString the byte buffer to process.
+    //! \param inString the CryptoPP::byte buffer to process.
     //! \param length the size of the string, in bytes.
     //! \param messageEnd means how many filters to signal MessageEnd() to, including this one.
     //! \param blocking specifies whether the object should block when processing input.
     //! \return the number of bytes that remain in the block (i.e., bytes not processed)
-    virtual size_t ChannelPut2(const std::string &channel, const byte *inString, size_t length, int messageEnd, bool blocking);
+    virtual size_t ChannelPut2(const std::string &channel, const CryptoPP::byte *inString, size_t length, int messageEnd, bool blocking);
 
     //! \brief Input multiple bytes that may be modified by callee on a channel
     //! \param channel the channel to process the data
-    //! \param inString the byte buffer to process
+    //! \param inString the CryptoPP::byte buffer to process
     //! \param length the size of the string, in bytes
     //! \param messageEnd means how many filters to signal MessageEnd() to, including this one
     //! \param blocking specifies whether the object should block when processing input
     //! \return the number of bytes that remain in the block (i.e., bytes not processed)
-    virtual size_t ChannelPutModifiable2(const std::string &channel, byte *inString, size_t length, int messageEnd, bool blocking);
+    virtual size_t ChannelPutModifiable2(const std::string &channel, CryptoPP::byte *inString, size_t length, int messageEnd, bool blocking);
 
     //! \brief Flush buffered input and/or output on a channel
     //! \param channel the channel to flush the data
@@ -2038,7 +2038,7 @@ protected:
     {return propagation != 0 ? propagation - 1 : 0;}
 
 private:
-  byte m_buf[4];  // for ChannelPutWord16 and ChannelPutWord32, to ensure buffer isn't deallocated before non-blocking operation completes
+  CryptoPP::byte m_buf[4];  // for ChannelPutWord16 and ChannelPutWord32, to ensure buffer isn't deallocated before non-blocking operation completes
 };
 
 //! \brief An input discarding BufferedTransformation
@@ -2363,19 +2363,19 @@ public:
     InvalidPlaintextLength() : Exception(OTHER_ERROR, "PK_Encryptor: invalid plaintext length") {}
   };
 
-  //! \brief Encrypt a byte string
+  //! \brief Encrypt a CryptoPP::byte string
   //! \param rng a RandomNumberGenerator derived class
-  //! \param plaintext the plaintext byte buffer
-  //! \param plaintextLength the size of the plaintext byte buffer
-  //! \param ciphertext a byte buffer to hold the encrypted string
+  //! \param plaintext the plaintext CryptoPP::byte buffer
+  //! \param plaintextLength the size of the plaintext CryptoPP::byte buffer
+  //! \param ciphertext a CryptoPP::byte buffer to hold the encrypted string
   //! \param parameters a set of NameValuePairs to initialize this object
   //! \pre <tt>CiphertextLength(plaintextLength) != 0</tt> ensures the plaintext isn't too large
   //! \pre <tt>COUNTOF(ciphertext) == CiphertextLength(plaintextLength)</tt> ensures the output
-  //!   byte buffer is large enough.
+  //!   CryptoPP::byte buffer is large enough.
   //! \sa PK_Decryptor
   virtual void Encrypt(RandomNumberGenerator &rng,
-    const byte *plaintext, size_t plaintextLength,
-    byte *ciphertext, const NameValuePairs &parameters = g_nullNameValuePairs) const =0;
+    const CryptoPP::byte *plaintext, size_t plaintextLength,
+    CryptoPP::byte *ciphertext, const NameValuePairs &parameters = g_nullNameValuePairs) const =0;
 
   //! \brief Create a new encryption filter
   //! \param rng a RandomNumberGenerator derived class
@@ -2396,11 +2396,11 @@ public:
   virtual ~PK_Decryptor() {}
 #endif
 
-  //! \brief Decrypt a byte string
+  //! \brief Decrypt a CryptoPP::byte string
   //! \param rng a RandomNumberGenerator derived class
-  //! \param ciphertext the encrypted byte buffer
-  //! \param ciphertextLength the size of the encrypted byte buffer
-  //! \param plaintext a byte buffer to hold the decrypted string
+  //! \param ciphertext the encrypted CryptoPP::byte buffer
+  //! \param ciphertextLength the size of the encrypted CryptoPP::byte buffer
+  //! \param plaintext a CryptoPP::byte buffer to hold the decrypted string
   //! \param parameters a set of NameValuePairs to initialize this object
   //! \return the result of the decryption operation
   //! \details If DecodingResult::isValidCoding is true, then DecodingResult::messageLength
@@ -2408,11 +2408,11 @@ public:
   //!   if decryption failed. If DecodingResult::isValidCoding is false, then DecodingResult::messageLength
   //!   is undefined.
   //! \pre <tt>COUNTOF(plaintext) == MaxPlaintextLength(ciphertextLength)</tt> ensures the output
-  //!   byte buffer is large enough
+  //!   CryptoPP::byte buffer is large enough
   //! \sa PK_Encryptor
   virtual DecodingResult Decrypt(RandomNumberGenerator &rng,
-    const byte *ciphertext, size_t ciphertextLength,
-    byte *plaintext, const NameValuePairs &parameters = g_nullNameValuePairs) const =0;
+    const CryptoPP::byte *ciphertext, size_t ciphertextLength,
+    CryptoPP::byte *plaintext, const NameValuePairs &parameters = g_nullNameValuePairs) const =0;
 
   //! \brief Create a new decryption filter
   //! \param rng a RandomNumberGenerator derived class
@@ -2425,8 +2425,8 @@ public:
 
   //! \brief Decrypt a fixed size ciphertext
   //! \param rng a RandomNumberGenerator derived class
-  //! \param ciphertext the encrypted byte buffer
-  //! \param plaintext a byte buffer to hold the decrypted string
+  //! \param ciphertext the encrypted CryptoPP::byte buffer
+  //! \param plaintext a CryptoPP::byte buffer to hold the decrypted string
   //! \param parameters a set of NameValuePairs to initialize this object
   //! \return the result of the decryption operation
   //! \details If DecodingResult::isValidCoding is true, then DecodingResult::messageLength
@@ -2434,9 +2434,9 @@ public:
   //!   if decryption failed. If DecodingResult::isValidCoding is false, then DecodingResult::messageLength
   //!   is undefined.
   //! \pre <tt>COUNTOF(plaintext) == MaxPlaintextLength(ciphertextLength)</tt> ensures the output
-  //!   byte buffer is large enough
+  //!   CryptoPP::byte buffer is large enough
   //! \sa PK_Encryptor
-  DecodingResult FixedLengthDecrypt(RandomNumberGenerator &rng, const byte *ciphertext, byte *plaintext, const NameValuePairs &parameters = g_nullNameValuePairs) const
+  DecodingResult FixedLengthDecrypt(RandomNumberGenerator &rng, const CryptoPP::byte *ciphertext, CryptoPP::byte *plaintext, const NameValuePairs &parameters = g_nullNameValuePairs) const
     {return Decrypt(rng, ciphertext, FixedCiphertextLength(), plaintext, parameters);}
 };
 
@@ -2536,7 +2536,7 @@ public:
     {throw NotImplemented("PK_MessageAccumulator: DigestSize() should not be called");}
 
   //! \warning TruncatedFinal() should not be called on PK_MessageAccumulator
-  void TruncatedFinal(byte *digest, size_t digestSize)
+  void TruncatedFinal(CryptoPP::byte *digest, size_t digestSize)
   {
     CRYPTOPP_UNUSED(digest); CRYPTOPP_UNUSED(digestSize);
     throw NotImplemented("PK_MessageAccumulator: TruncatedFinal() should not be called");
@@ -2563,7 +2563,7 @@ public:
   //! \param messageAccumulator a reference to a PK_MessageAccumulator
   //! \param recoverableMessage a pointer to the recoverable message part to be signed
   //! \param recoverableMessageLength the size of the recoverable message part
-  virtual void InputRecoverableMessage(PK_MessageAccumulator &messageAccumulator, const byte *recoverableMessage, size_t recoverableMessageLength) const =0;
+  virtual void InputRecoverableMessage(PK_MessageAccumulator &messageAccumulator, const CryptoPP::byte *recoverableMessage, size_t recoverableMessageLength) const =0;
 
   //! \brief Sign and delete the messageAccumulator
   //! \param rng a RandomNumberGenerator derived class
@@ -2572,7 +2572,7 @@ public:
   //! \return actual signature length
   //! \details Sign() deletes the messageAccumulator, even if an exception is thrown.
   //! \pre <tt>COUNTOF(signature) == MaxSignatureLength()</tt>
-  virtual size_t Sign(RandomNumberGenerator &rng, PK_MessageAccumulator *messageAccumulator, byte *signature) const;
+  virtual size_t Sign(RandomNumberGenerator &rng, PK_MessageAccumulator *messageAccumulator, CryptoPP::byte *signature) const;
 
   //! \brief Sign and restart messageAccumulator
   //! \param rng a RandomNumberGenerator derived class
@@ -2581,7 +2581,7 @@ public:
   //! \param restart flag indicating whether the messageAccumulator should be restarted
   //! \return actual signature length
   //! \pre <tt>COUNTOF(signature) == MaxSignatureLength()</tt>
-  virtual size_t SignAndRestart(RandomNumberGenerator &rng, PK_MessageAccumulator &messageAccumulator, byte *signature, bool restart=true) const =0;
+  virtual size_t SignAndRestart(RandomNumberGenerator &rng, PK_MessageAccumulator &messageAccumulator, CryptoPP::byte *signature, bool restart=true) const =0;
 
   //! \brief Sign a message
   //! \param rng a RandomNumberGenerator derived class
@@ -2590,7 +2590,7 @@ public:
   //! \param signature a block of bytes for the signature
   //! \return actual signature length
   //! \pre <tt>COUNTOF(signature) == MaxSignatureLength()</tt>
-  virtual size_t SignMessage(RandomNumberGenerator &rng, const byte *message, size_t messageLen, byte *signature) const;
+  virtual size_t SignMessage(RandomNumberGenerator &rng, const CryptoPP::byte *message, size_t messageLen, CryptoPP::byte *signature) const;
 
   //! \brief Sign a recoverable message
   //! \param rng a RandomNumberGenerator derived class
@@ -2601,8 +2601,8 @@ public:
   //! \param signature a block of bytes for the signature
   //! \return actual signature length
   //! \pre <tt>COUNTOF(signature) == MaxSignatureLength(recoverableMessageLength)</tt>
-  virtual size_t SignMessageWithRecovery(RandomNumberGenerator &rng, const byte *recoverableMessage, size_t recoverableMessageLength,
-    const byte *nonrecoverableMessage, size_t nonrecoverableMessageLength, byte *signature) const;
+  virtual size_t SignMessageWithRecovery(RandomNumberGenerator &rng, const CryptoPP::byte *recoverableMessage, size_t recoverableMessageLength,
+    const CryptoPP::byte *nonrecoverableMessage, size_t nonrecoverableMessageLength, CryptoPP::byte *signature) const;
 };
 
 //! \class PK_Verifier
@@ -2629,7 +2629,7 @@ public:
   //! \param messageAccumulator a pointer to a PK_MessageAccumulator derived class
   //! \param signature the signature on the message
   //! \param signatureLength the size of the signature
-  virtual void InputSignature(PK_MessageAccumulator &messageAccumulator, const byte *signature, size_t signatureLength) const =0;
+  virtual void InputSignature(PK_MessageAccumulator &messageAccumulator, const CryptoPP::byte *signature, size_t signatureLength) const =0;
 
   //! \brief Check whether messageAccumulator contains a valid signature and message
   //! \param messageAccumulator a pointer to a PK_MessageAccumulator derived class
@@ -2649,8 +2649,8 @@ public:
   //! \param signature a pointer to the signature over the message
   //! \param signatureLen the size of the signature
   //! \return true if the signature is valid, false otherwise
-  virtual bool VerifyMessage(const byte *message, size_t messageLen,
-    const byte *signature, size_t signatureLen) const;
+  virtual bool VerifyMessage(const CryptoPP::byte *message, size_t messageLen,
+    const CryptoPP::byte *signature, size_t signatureLen) const;
 
   //! \brief Recover a message from its signature
   //! \param recoveredMessage a pointer to the recoverable message part to be verified
@@ -2658,7 +2658,7 @@ public:
   //! \return the result of the verification operation
   //! \details Recover() deletes the messageAccumulator, even if an exception is thrown.
   //! \pre <tt>COUNTOF(recoveredMessage) == MaxRecoverableLengthFromSignatureLength(signatureLength)</tt>
-  virtual DecodingResult Recover(byte *recoveredMessage, PK_MessageAccumulator *messageAccumulator) const;
+  virtual DecodingResult Recover(CryptoPP::byte *recoveredMessage, PK_MessageAccumulator *messageAccumulator) const;
 
   //! \brief Recover a message from its signature
   //! \param recoveredMessage a pointer to the recoverable message part to be verified
@@ -2666,7 +2666,7 @@ public:
   //! \return the result of the verification operation
   //! \details RecoverAndRestart() restarts the messageAccumulator
   //! \pre <tt>COUNTOF(recoveredMessage) == MaxRecoverableLengthFromSignatureLength(signatureLength)</tt>
-  virtual DecodingResult RecoverAndRestart(byte *recoveredMessage, PK_MessageAccumulator &messageAccumulator) const =0;
+  virtual DecodingResult RecoverAndRestart(CryptoPP::byte *recoveredMessage, PK_MessageAccumulator &messageAccumulator) const =0;
 
   //! \brief Recover a message from its signature
   //! \param recoveredMessage a pointer for the recovered message
@@ -2676,9 +2676,9 @@ public:
   //! \param signatureLength the size of the signature
   //! \return the result of the verification operation
   //! \pre <tt>COUNTOF(recoveredMessage) == MaxRecoverableLengthFromSignatureLength(signatureLength)</tt>
-  virtual DecodingResult RecoverMessage(byte *recoveredMessage,
-    const byte *nonrecoverableMessage, size_t nonrecoverableMessageLength,
-    const byte *signature, size_t signatureLength) const;
+  virtual DecodingResult RecoverMessage(CryptoPP::byte *recoveredMessage,
+    const CryptoPP::byte *nonrecoverableMessage, size_t nonrecoverableMessageLength,
+    const CryptoPP::byte *signature, size_t signatureLength) const;
 };
 
 //! \class SimpleKeyAgreementDomain
@@ -2707,30 +2707,30 @@ public:
 
   //! \brief Generate private key in this domain
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer for the generated private key in this domain
+  //! \param privateKey a CryptoPP::byte buffer for the generated private key in this domain
   //! \pre <tt>COUNTOF(privateKey) == PrivateKeyLength()</tt>
-  virtual void GeneratePrivateKey(RandomNumberGenerator &rng, byte *privateKey) const =0;
+  virtual void GeneratePrivateKey(RandomNumberGenerator &rng, CryptoPP::byte *privateKey) const =0;
 
   //! \brief Generate a public key from a private key in this domain
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer with the previously generated private key
-  //! \param publicKey a byte buffer for the generated public key in this domain
+  //! \param privateKey a CryptoPP::byte buffer with the previously generated private key
+  //! \param publicKey a CryptoPP::byte buffer for the generated public key in this domain
   //! \pre <tt>COUNTOF(publicKey) == PublicKeyLength()</tt>
-  virtual void GeneratePublicKey(RandomNumberGenerator &rng, const byte *privateKey, byte *publicKey) const =0;
+  virtual void GeneratePublicKey(RandomNumberGenerator &rng, const CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const =0;
 
   //! \brief Generate a private/public key pair
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer for the generated private key in this domain
-  //! \param publicKey a byte buffer for the generated public key in this domain
+  //! \param privateKey a CryptoPP::byte buffer for the generated private key in this domain
+  //! \param publicKey a CryptoPP::byte buffer for the generated public key in this domain
   //! \details GenerateKeyPair() is equivalent to calling GeneratePrivateKey() and then GeneratePublicKey().
   //! \pre <tt>COUNTOF(privateKey) == PrivateKeyLength()</tt>
   //! \pre <tt>COUNTOF(publicKey) == PublicKeyLength()</tt>
-  virtual void GenerateKeyPair(RandomNumberGenerator &rng, byte *privateKey, byte *publicKey) const;
+  virtual void GenerateKeyPair(RandomNumberGenerator &rng, CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const;
 
   //! \brief Derive agreed value
-  //! \param agreedValue a byte buffer for the shared secret
-  //! \param privateKey a byte buffer with your private key in this domain
-  //! \param otherPublicKey a byte buffer with the other party's public key in this domain
+  //! \param agreedValue a CryptoPP::byte buffer for the shared secret
+  //! \param privateKey a CryptoPP::byte buffer with your private key in this domain
+  //! \param otherPublicKey a CryptoPP::byte buffer with the other party's public key in this domain
   //! \param validateOtherPublicKey a flag indicating if the other party's public key should be validated
   //! \return true upon success, false in case of failure
   //! \details Agree() derives an agreed value from your private keys and couterparty's public keys.
@@ -2739,7 +2739,7 @@ public:
   //! \pre <tt>COUNTOF(agreedValue) == AgreedValueLength()</tt>
   //! \pre <tt>COUNTOF(privateKey) == PrivateKeyLength()</tt>
   //! \pre <tt>COUNTOF(otherPublicKey) == PublicKeyLength()</tt>
-  virtual bool Agree(byte *agreedValue, const byte *privateKey, const byte *otherPublicKey, bool validateOtherPublicKey=true) const =0;
+  virtual bool Agree(CryptoPP::byte *agreedValue, const CryptoPP::byte *privateKey, const CryptoPP::byte *otherPublicKey, bool validateOtherPublicKey=true) const =0;
 
 #ifdef CRYPTOPP_MAINTAIN_BACKWARDS_COMPATIBILITY
   bool ValidateDomainParameters(RandomNumberGenerator &rng) const
@@ -2772,25 +2772,25 @@ public:
 
   //! \brief Generate static private key in this domain
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer for the generated private key in this domain
+  //! \param privateKey a CryptoPP::byte buffer for the generated private key in this domain
   //! \pre <tt>COUNTOF(privateKey) == PrivateStaticKeyLength()</tt>
-  virtual void GenerateStaticPrivateKey(RandomNumberGenerator &rng, byte *privateKey) const =0;
+  virtual void GenerateStaticPrivateKey(RandomNumberGenerator &rng, CryptoPP::byte *privateKey) const =0;
 
   //! \brief Generate a static public key from a private key in this domain
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer with the previously generated private key
-  //! \param publicKey a byte buffer for the generated public key in this domain
+  //! \param privateKey a CryptoPP::byte buffer with the previously generated private key
+  //! \param publicKey a CryptoPP::byte buffer for the generated public key in this domain
   //! \pre <tt>COUNTOF(publicKey) == PublicStaticKeyLength()</tt>
-  virtual void GenerateStaticPublicKey(RandomNumberGenerator &rng, const byte *privateKey, byte *publicKey) const =0;
+  virtual void GenerateStaticPublicKey(RandomNumberGenerator &rng, const CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const =0;
 
   //! \brief Generate a static private/public key pair
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer for the generated private key in this domain
-  //! \param publicKey a byte buffer for the generated public key in this domain
+  //! \param privateKey a CryptoPP::byte buffer for the generated private key in this domain
+  //! \param publicKey a CryptoPP::byte buffer for the generated public key in this domain
   //! \details GenerateStaticKeyPair() is equivalent to calling GenerateStaticPrivateKey() and then GenerateStaticPublicKey().
   //! \pre <tt>COUNTOF(privateKey) == PrivateStaticKeyLength()</tt>
   //! \pre <tt>COUNTOF(publicKey) == PublicStaticKeyLength()</tt>
-  virtual void GenerateStaticKeyPair(RandomNumberGenerator &rng, byte *privateKey, byte *publicKey) const;
+  virtual void GenerateStaticKeyPair(RandomNumberGenerator &rng, CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const;
 
   //! \brief Provides the size of ephemeral private key
   //! \return the size of ephemeral private key in this domain
@@ -2802,30 +2802,30 @@ public:
 
   //! \brief Generate ephemeral private key
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer for the generated private key in this domain
+  //! \param privateKey a CryptoPP::byte buffer for the generated private key in this domain
   //! \pre <tt>COUNTOF(privateKey) == PrivateEphemeralKeyLength()</tt>
-  virtual void GenerateEphemeralPrivateKey(RandomNumberGenerator &rng, byte *privateKey) const =0;
+  virtual void GenerateEphemeralPrivateKey(RandomNumberGenerator &rng, CryptoPP::byte *privateKey) const =0;
 
   //! \brief Generate ephemeral public key
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer for the generated private key in this domain
-  //! \param publicKey a byte buffer for the generated public key in this domain
+  //! \param privateKey a CryptoPP::byte buffer for the generated private key in this domain
+  //! \param publicKey a CryptoPP::byte buffer for the generated public key in this domain
   //! \pre <tt>COUNTOF(publicKey) == PublicEphemeralKeyLength()</tt>
-  virtual void GenerateEphemeralPublicKey(RandomNumberGenerator &rng, const byte *privateKey, byte *publicKey) const =0;
+  virtual void GenerateEphemeralPublicKey(RandomNumberGenerator &rng, const CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const =0;
 
   //! \brief Generate private/public key pair
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer for the generated private key in this domain
-  //! \param publicKey a byte buffer for the generated public key in this domain
+  //! \param privateKey a CryptoPP::byte buffer for the generated private key in this domain
+  //! \param publicKey a CryptoPP::byte buffer for the generated public key in this domain
   //! \details GenerateEphemeralKeyPair() is equivalent to calling GenerateEphemeralPrivateKey() and then GenerateEphemeralPublicKey()
-  virtual void GenerateEphemeralKeyPair(RandomNumberGenerator &rng, byte *privateKey, byte *publicKey) const;
+  virtual void GenerateEphemeralKeyPair(RandomNumberGenerator &rng, CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const;
 
   //! \brief Derive agreed value
-  //! \param agreedValue a byte buffer for the shared secret
-  //! \param staticPrivateKey a byte buffer with your static private key in this domain
-  //! \param ephemeralPrivateKey a byte buffer with your ephemeral private key in this domain
-  //! \param staticOtherPublicKey a byte buffer with the other party's static public key in this domain
-  //! \param ephemeralOtherPublicKey a byte buffer with the other party's ephemeral public key in this domain
+  //! \param agreedValue a CryptoPP::byte buffer for the shared secret
+  //! \param staticPrivateKey a CryptoPP::byte buffer with your static private key in this domain
+  //! \param ephemeralPrivateKey a CryptoPP::byte buffer with your ephemeral private key in this domain
+  //! \param staticOtherPublicKey a CryptoPP::byte buffer with the other party's static public key in this domain
+  //! \param ephemeralOtherPublicKey a CryptoPP::byte buffer with the other party's ephemeral public key in this domain
   //! \param validateStaticOtherPublicKey a flag indicating if the other party's public key should be validated
   //! \return true upon success, false in case of failure
   //! \details Agree() derives an agreed value from your private keys and couterparty's public keys.
@@ -2836,9 +2836,9 @@ public:
   //! \pre <tt>COUNTOF(ephemeralPrivateKey) == EphemeralPrivateKeyLength()</tt>
   //! \pre <tt>COUNTOF(staticOtherPublicKey) == StaticPublicKeyLength()</tt>
   //! \pre <tt>COUNTOF(ephemeralOtherPublicKey) == EphemeralPublicKeyLength()</tt>
-  virtual bool Agree(byte *agreedValue,
-    const byte *staticPrivateKey, const byte *ephemeralPrivateKey,
-    const byte *staticOtherPublicKey, const byte *ephemeralOtherPublicKey,
+  virtual bool Agree(CryptoPP::byte *agreedValue,
+    const CryptoPP::byte *staticPrivateKey, const CryptoPP::byte *ephemeralPrivateKey,
+    const CryptoPP::byte *staticOtherPublicKey, const CryptoPP::byte *ephemeralOtherPublicKey,
     bool validateStaticOtherPublicKey=true) const =0;
 
 #ifdef CRYPTOPP_MAINTAIN_BACKWARDS_COMPATIBILITY
@@ -2900,10 +2900,10 @@ public:
 
   virtual bool OutgoingMessageAvailable() const =0;
   virtual unsigned int GetOutgoingMessageLength() const =0;
-  virtual void GetOutgoingMessage(byte *message) =0;
+  virtual void GetOutgoingMessage(CryptoPP::byte *message) =0;
 
   virtual bool LastMessageProcessed() const =0;
-  virtual void ProcessIncomingMessage(const byte *message, unsigned int messageLength) =0;
+  virtual void ProcessIncomingMessage(const CryptoPP::byte *message, unsigned int messageLength) =0;
 
 protected:
   void HandleProtocolError(Exception::ErrorType errorType, const std::string &s) const;
@@ -2924,7 +2924,7 @@ public:
 #endif
 
   virtual unsigned int GetAgreedValueLength() const =0;
-  virtual void GetAgreedValue(byte *agreedValue) const =0;
+  virtual void GetAgreedValue(CryptoPP::byte *agreedValue) const =0;
 };
 
 class PasswordAuthenticatedKeyAgreementSession : public KeyAgreementSession
@@ -2935,9 +2935,9 @@ public:
 #endif
 
   void InitializePasswordAuthenticatedKeyAgreementSession(RandomNumberGenerator &rng,
-    const byte *myId, unsigned int myIdLength,
-    const byte *counterPartyId, unsigned int counterPartyIdLength,
-    const byte *passwordOrVerifier, unsigned int passwordOrVerifierLength);
+    const CryptoPP::byte *myId, unsigned int myIdLength,
+    const CryptoPP::byte *counterPartyId, unsigned int counterPartyIdLength,
+    const CryptoPP::byte *passwordOrVerifier, unsigned int passwordOrVerifierLength);
 };
 
 class PasswordAuthenticatedKeyAgreementDomain : public KeyAgreementAlgorithm
@@ -2951,8 +2951,8 @@ public:
   virtual bool ValidateDomainParameters(RandomNumberGenerator &rng) const
     {return GetCryptoParameters().Validate(rng, 2);}
 
-  virtual unsigned int GetPasswordVerifierLength(const byte *password, unsigned int passwordLength) const =0;
-  virtual void GeneratePasswordVerifier(RandomNumberGenerator &rng, const byte *userId, unsigned int userIdLength, const byte *password, unsigned int passwordLength, byte *verifier) const =0;
+  virtual unsigned int GetPasswordVerifierLength(const CryptoPP::byte *password, unsigned int passwordLength) const =0;
+  virtual void GeneratePasswordVerifier(RandomNumberGenerator &rng, const CryptoPP::byte *userId, unsigned int userIdLength, const CryptoPP::byte *password, unsigned int passwordLength, CryptoPP::byte *verifier) const =0;
 
   enum RoleFlags {CLIENT=1, SERVER=2, INITIATOR=4, RESPONDER=8};
 

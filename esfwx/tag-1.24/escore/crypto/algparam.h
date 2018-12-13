@@ -25,7 +25,7 @@
 NAMESPACE_BEGIN(CryptoPP)
 
 //! \class ConstByteArrayParameter
-//! \brief Used to pass byte array input as part of a NameValuePairs object
+//! \brief Used to pass CryptoPP::byte array input as part of a NameValuePairs object
 class ConstByteArrayParameter
 {
 public:
@@ -37,7 +37,7 @@ public:
   ConstByteArrayParameter(const char *data = NULL, bool deepCopy = false)
     : m_deepCopy(false), m_data(NULL), m_size(0)
   {
-    Assign((const byte *)data, data ? strlen(data) : 0, deepCopy);
+    Assign((const CryptoPP::byte *)data, data ? strlen(data) : 0, deepCopy);
   }
 
   //! \brief Construct a ConstByteArrayParameter
@@ -46,7 +46,7 @@ public:
   //! \param deepCopy flag indicating whether the data should be copied
   //! \details The deepCopy option is used when the NameValuePairs object can't
   //!   keep a copy of the data available
-  ConstByteArrayParameter(const byte *data, size_t size, bool deepCopy = false)
+  ConstByteArrayParameter(const CryptoPP::byte *data, size_t size, bool deepCopy = false)
     : m_deepCopy(false), m_data(NULL), m_size(0)
   {
     Assign(data, size, deepCopy);
@@ -62,7 +62,7 @@ public:
     : m_deepCopy(false), m_data(NULL), m_size(0)
   {
     CRYPTOPP_COMPILE_ASSERT(sizeof(CPP_TYPENAME T::value_type) == 1);
-    Assign((const byte *)string.data(), string.size(), deepCopy);
+    Assign((const CryptoPP::byte *)string.data(), string.size(), deepCopy);
   }
 
   //! \brief Assign contents from a memory buffer
@@ -71,7 +71,7 @@ public:
   //! \param deepCopy flag indicating whether the data should be copied
   //! \details The deepCopy option is used when the NameValuePairs object can't
   //!   keep a copy of the data available
-  void Assign(const byte *data, size_t size, bool deepCopy)
+  void Assign(const CryptoPP::byte *data, size_t size, bool deepCopy)
   {
     // This fires, which means: no data with a size, or data with no size.
     // CRYPTOPP_ASSERT((data && size) || !(data || size));
@@ -85,29 +85,29 @@ public:
     m_deepCopy = deepCopy;
   }
 
-  //! \brief Pointer to the first byte in the memory block
-  const byte *begin() const {return m_deepCopy ? m_block.begin() : m_data;}
-  //! \brief Pointer beyond the last byte in the memory block
-  const byte *end() const {return m_deepCopy ? m_block.end() : m_data + m_size;}
+  //! \brief Pointer to the first CryptoPP::byte in the memory block
+  const CryptoPP::byte *begin() const {return m_deepCopy ? m_block.begin() : m_data;}
+  //! \brief Pointer beyond the last CryptoPP::byte in the memory block
+  const CryptoPP::byte *end() const {return m_deepCopy ? m_block.end() : m_data + m_size;}
   //! \brief Length of the memory block
   size_t size() const {return m_deepCopy ? m_block.size() : m_size;}
 
 private:
   bool m_deepCopy;
-  const byte *m_data;
+  const CryptoPP::byte *m_data;
   size_t m_size;
   SecByteBlock m_block;
 };
 
 //! \class ByteArrayParameter
-//! \brief Used to pass byte array input as part of a NameValuePairs object
+//! \brief Used to pass CryptoPP::byte array input as part of a NameValuePairs object
 class ByteArrayParameter
 {
 public:
   //! \brief Construct a ByteArrayParameter
   //! \param data a memory buffer
   //! \param size the length of the memory buffer
-  ByteArrayParameter(byte *data = NULL, unsigned int size = 0)
+  ByteArrayParameter(CryptoPP::byte *data = NULL, unsigned int size = 0)
     : m_data(data), m_size(size) {}
 
   //! \brief Construct a ByteArrayParameter
@@ -115,15 +115,15 @@ public:
   ByteArrayParameter(SecByteBlock &block)
     : m_data(block.begin()), m_size(block.size()) {}
 
-  //! \brief Pointer to the first byte in the memory block
-  byte *begin() const {return m_data;}
-  //! \brief Pointer beyond the last byte in the memory block
-  byte *end() const {return m_data + m_size;}
+  //! \brief Pointer to the first CryptoPP::byte in the memory block
+  CryptoPP::byte *begin() const {return m_data;}
+  //! \brief Pointer beyond the last CryptoPP::byte in the memory block
+  CryptoPP::byte *end() const {return m_data + m_size;}
   //! \brief Length of the memory block
   size_t size() const {return m_size;}
 
 private:
-  byte *m_data;
+  CryptoPP::byte *m_data;
   size_t m_size;
 };
 

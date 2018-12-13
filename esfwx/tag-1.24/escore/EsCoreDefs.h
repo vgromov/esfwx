@@ -142,12 +142,12 @@
 # if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 #   if !defined(ES_CLANG) && defined(ECC_PACKAGE)
 #     pragma warn -8118
-#     define ES_EXPORT_SPEC                  PACKAGE
-#     define ES_IMPORT_SPEC                  PACKAGE
-#     define ES_FUNCEXPORT_SPEC(type, decl)  type ES_EXPORT_SPEC decl
-#     define ES_FUNCIMPORT_SPEC(type, decl)  type ES_IMPORT_SPEC decl
-#     define ES_DATAEXPORT_SPEC(type, decl)  type ES_EXPORT_SPEC decl
-#     define ES_DATAIMPORT_SPEC(type, decl)  type ES_IMPORT_SPEC decl
+#     define ES_EXPORT_SPEC                   PACKAGE
+#     define ES_IMPORT_SPEC                   PACKAGE
+#     define ES_FUNCEXPORT_SPEC(type, decl)   type ES_EXPORT_SPEC decl
+#     define ES_FUNCIMPORT_SPEC(type, decl)   type ES_IMPORT_SPEC decl
+#     define ES_DATAEXPORT_SPEC(type, decl)   type ES_EXPORT_SPEC decl
+#     define ES_DATAIMPORT_SPEC(type, decl)   type ES_IMPORT_SPEC decl
 #   else
 #     if __CODEGEARC__ < 0x0700
 #       define ES_EXPORT_SPEC                 __export
@@ -164,8 +164,8 @@
 #       define ES_FUNCIMPORT_SPEC(type, decl) ES_IMPORT_SPEC type decl
 #       define ES_DATAEXPORT_SPEC(type, decl) ES_EXPORT_SPEC type decl
 #       define ES_DATAIMPORT_SPEC(type, decl) ES_IMPORT_SPEC type decl
-#     elif __CODEGEARC__ < 0x0740
-        // XE9, XE10, XE11
+#     else
+        // XE9, XE10, XE11, XExx+
 #       define ES_EXPORT_SPEC                 __declspec(dllexport)
 #       define ES_IMPORT_SPEC                 __declspec(dllimport)
 #       define ES_FUNCEXPORT_SPEC(type, decl) type ES_EXPORT_SPEC decl
@@ -182,10 +182,10 @@
 #     define ES_EXPORT_SPEC                   __attribute__((visibility("default")))
 #     define ES_IMPORT_SPEC                   __attribute__((visibility("default")))
 #   endif
-#   define ES_FUNCEXPORT_SPEC(type, decl)   type decl ES_EXPORT_SPEC
-#   define ES_FUNCIMPORT_SPEC(type, decl)   type decl ES_IMPORT_SPEC
-#   define ES_DATAEXPORT_SPEC(type, decl)   type decl ES_EXPORT_SPEC
-#   define ES_DATAIMPORT_SPEC(type, decl)   type decl ES_IMPORT_SPEC
+#   define ES_FUNCEXPORT_SPEC(type, decl)     type decl ES_EXPORT_SPEC
+#   define ES_FUNCIMPORT_SPEC(type, decl)     type decl ES_IMPORT_SPEC
+#   define ES_DATAEXPORT_SPEC(type, decl)     type decl ES_EXPORT_SPEC
+#   define ES_DATAIMPORT_SPEC(type, decl)     type decl ES_IMPORT_SPEC
 # else // Not using borland toolchain - prefer platform specs
 #   define ES_EXPORT_SPEC                     __declspec(dllexport)
 #   define ES_IMPORT_SPEC                     __declspec(dllimport)
@@ -372,12 +372,14 @@
 // Non-copyable class
 //
 #ifdef ES_MODERN_CPP
-# define ES_REMOVEDECL = delete
-# define ES_OVERRIDE override
+# define ES_REMOVEDECL  = delete
+# define ES_OVERRIDE    override
+# define ES_REGISTER
 #else
 # define ES_REMOVEDECL
 # define ES_OVERRIDE
-# define nullptr NULL
+# define nullptr        NULL
+# define ES_REGISTER    register
 #endif
 
 # define ES_NON_COPYABLE(ClassName) \

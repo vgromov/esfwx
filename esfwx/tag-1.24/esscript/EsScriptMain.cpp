@@ -18,8 +18,6 @@
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 # pragma package(smart_init)
 #endif
-
-#include "autolink.cxx"
 //---------------------------------------------------------------------------
 
 ES_REFLECTION_REGISTRAR_BEGIN(esscript)

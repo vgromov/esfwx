@@ -44,8 +44,8 @@ public:
     */
     PolynomialMod2(word value, size_t bitLength=WORD_BITS);
 
-    //! convert from big-endian byte array
-    PolynomialMod2(const byte *encodedPoly, size_t byteCount)
+    //! convert from big-endian CryptoPP::byte array
+    PolynomialMod2(const CryptoPP::byte *encodedPoly, size_t byteCount)
       {Decode(encodedPoly, byteCount);}
 
     //! convert from big-endian form stored in a BufferedTransformation
@@ -81,12 +81,12 @@ public:
     /*! if outputLen < MinEncodedSize, the most significant bytes will be dropped
       if outputLen > MinEncodedSize, the most significant bytes will be padded
     */
-    void Encode(byte *output, size_t outputLen) const;
+    void Encode(CryptoPP::byte *output, size_t outputLen) const;
     //!
     void Encode(BufferedTransformation &bt, size_t outputLen) const;
 
     //!
-    void Decode(const byte *input, size_t inputLen);
+    void Decode(const CryptoPP::byte *input, size_t inputLen);
     //!
     //* Precondition: bt.MaxRetrievable() >= inputLen
     void Decode(BufferedTransformation &bt, size_t inputLen);
@@ -108,8 +108,8 @@ public:
 
     //! return the n-th bit, n=0 being the least significant bit
     bool GetBit(size_t n) const {return GetCoefficient(n)!=0;}
-    //! return the n-th byte
-    byte GetByte(size_t n) const;
+    //! return the n-th CryptoPP::byte
+    CryptoPP::byte GetByte(size_t n) const;
 
     //! the zero polynomial will return a degree of -1
     signed int Degree() const {return (signed int)(BitCount()-1U);}
@@ -155,8 +155,8 @@ public:
 
     //!
     void SetBit(size_t i, int value = 1);
-    //! set the n-th byte to value
-    void SetByte(size_t n, byte value);
+    //! set the n-th CryptoPP::byte to value
+    void SetByte(size_t n, CryptoPP::byte value);
 
     //!
     void SetCoefficient(size_t i, int value) {SetBit(i, value);}

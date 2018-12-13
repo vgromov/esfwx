@@ -85,36 +85,36 @@ public:
   ///
 
   /// Return true if handler is interested in specific event category
-  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, isInterestedIn, cr_EsString);
+  ES_DECL_REFLECTED_INTF_CONST_METHOD1(bool, isInterestedIn, cr_EsString) ES_OVERRIDE;
   /// Append category to the subscription
-  ES_DECL_REFLECTED_INTF_METHOD1(void, categoryAdd, cr_EsString);
+  ES_DECL_REFLECTED_INTF_METHOD1(void, categoryAdd, cr_EsString) ES_OVERRIDE;
   /// Remove category from subscription
-  ES_DECL_REFLECTED_INTF_METHOD1(void, categoryRemove, cr_EsString);
+  ES_DECL_REFLECTED_INTF_METHOD1(void, categoryRemove, cr_EsString) ES_OVERRIDE;
 
   /// Async subscriber interface
   ///
 
   /// Try to receive and process event, continue trying while ulong timeout is not expired
-  ES_DECL_REFLECTED_INTF_METHOD1(void, eventProcess, ulong);
+  ES_DECL_REFLECTED_INTF_METHOD1(void, eventProcess, ulong) ES_OVERRIDE;
   /// The same as the previous method called with timeout = 0
-  ES_DECL_REFLECTED_INTF_METHOD0(void, eventProcess);
+  ES_DECL_REFLECTED_INTF_METHOD0(void, eventProcess) ES_OVERRIDE;
   /// Reset event queue (does nothing for sync subscriber)
-  ES_DECL_REFLECTED_INTF_METHOD0(void, eventsReset);
+  ES_DECL_REFLECTED_INTF_METHOD0(void, eventsReset) ES_OVERRIDE;
 
   /// Non-reflected EsEventHandlerIntf services implementation
   ///
 
   /// Query, if this handler is of synchronous or asynchronous type
-  ES_DECL_INTF_METHOD(bool, isSync)() const { return m_isSync; }
+  ES_DECL_INTF_METHOD(bool, isSync)() const ES_OVERRIDE { return m_isSync; }
   /// Subscription categories access
-  ES_DECL_INTF_METHOD(EsStringArray, categoriesGet)() const;
-  ES_DECL_INTF_METHOD(void, categoriesSet)(const EsStringArray& categories);
+  ES_DECL_INTF_METHOD(EsStringArray, categoriesGet)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(void, categoriesSet)(const EsStringArray& categories) ES_OVERRIDE;
   /// Subscription activity
-  ES_DECL_INTF_METHOD(bool, isActive)() const;
-  ES_DECL_INTF_METHOD(void, activeSet)(bool active);
+  ES_DECL_INTF_METHOD(bool, isActive)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(void, activeSet)(bool active) ES_OVERRIDE;
 
   /// Actual event handler access
-  ES_DECL_INTF_METHOD(void, handlerSet)(const EsBaseIntfPtr& handler);
+  ES_DECL_INTF_METHOD(void, handlerSet)(const EsBaseIntfPtr& handler) ES_OVERRIDE;
 
   /// Properties
   ///

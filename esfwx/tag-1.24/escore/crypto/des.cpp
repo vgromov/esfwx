@@ -117,7 +117,7 @@ static inline void FPERM(word32 &left, word32 &right)
   left = rotrFixed(left^work, 4U);
 }
 
-void DES::Base::UncheckedSetKey(const byte *userKey, unsigned int length, const NameValuePairs &)
+void DES::Base::UncheckedSetKey(const CryptoPP::byte *userKey, unsigned int length, const NameValuePairs &)
 {
   AssertValidKeyLength(length);
 
@@ -136,7 +136,7 @@ void DES::Base::UncheckedSetKey(const byte *userKey, unsigned int length, const 
  */
 #ifdef notdef
 /* initial permutation IP */
-static byte ip[] = {
+static CryptoPP::byte ip[] = {
      58, 50, 42, 34, 26, 18, 10,  2,
      60, 52, 44, 36, 28, 20, 12,  4,
      62, 54, 46, 38, 30, 22, 14,  6,
@@ -148,7 +148,7 @@ static byte ip[] = {
 };
 
 /* final permutation IP^-1 */
-static byte fp[] = {
+static CryptoPP::byte fp[] = {
      40,  8, 48, 16, 56, 24, 64, 32,
      39,  7, 47, 15, 55, 23, 63, 31,
      38,  6, 46, 14, 54, 22, 62, 30,
@@ -159,7 +159,7 @@ static byte fp[] = {
      33,  1, 41,  9, 49, 17, 57, 25
 };
 /* expansion operation matrix */
-static byte ei[] = {
+static CryptoPP::byte ei[] = {
      32,  1,  2,  3,  4,  5,
     4,  5,  6,  7,  8,  9,
     8,  9, 10, 11, 12, 13,
@@ -170,7 +170,7 @@ static byte ei[] = {
      28, 29, 30, 31, 32,  1
 };
 /* The (in)famous S-boxes */
-static byte sbox[8][64] = {
+static CryptoPP::byte sbox[8][64] = {
      /* S1 */
      14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5,  9,  0,  7,
     0, 15,  7,  4, 14,  2, 13,  1, 10,  6, 12, 11,  9,  5,  3,  8,
@@ -222,7 +222,7 @@ static byte sbox[8][64] = {
 
 /* 32-bit permutation function P used on the output of the S-boxes */
 namespace {
-  const byte p32i[] = {
+  const CryptoPP::byte p32i[] = {
      16,  7, 20, 21,
      29, 12, 28, 17,
     1, 15, 23, 26,
@@ -237,7 +237,7 @@ namespace {
 
 /* permuted choice table (key) */
 namespace {
-  const byte pc1[] = {
+  const CryptoPP::byte pc1[] = {
      57, 49, 41, 33, 25, 17,  9,
     1, 58, 50, 42, 34, 26, 18,
      10,  2, 59, 51, 43, 35, 27,
@@ -252,14 +252,14 @@ namespace {
 
 /* number left rotations of pc1 */
 namespace {
-  const byte totrot[] = {
+  const CryptoPP::byte totrot[] = {
      1,2,4,6,8,10,12,14,15,17,19,21,23,25,27,28
   };
 }
 
 /* permuted choice key (table) */
 namespace {
-  const byte pc2[] = {
+  const CryptoPP::byte pc2[] = {
      14, 17, 11, 24,  1,  5,
     3, 28, 15,  6, 21, 10,
      23, 19, 12,  4, 26,  8,
@@ -273,7 +273,7 @@ namespace {
 
 /* End of DES-defined tables */
 
-/* bit 0 is left-most in byte */
+/* bit 0 is left-most in CryptoPP::byte */
 namespace {
   const int bytebit[] = {
      0200,0100,040,020,010,04,02,01
@@ -281,24 +281,20 @@ namespace {
 }
 
 /* Set key (initialize key schedule array) */
-void RawDES::RawSetKey(CipherDir dir, const byte *key)
+void RawDES::RawSetKey(CipherDir dir, const CryptoPP::byte *key)
 {
-#if (_MSC_VER >= 1600) || (__cplusplus >= 201103L)
-# define register /* Define to nothing for C++11 and above */
-#endif
-
   SecByteBlock buffer(56+56+8);
-  byte *const pc1m=buffer;                 /* place to modify pc1 into */
-  byte *const pcr=pc1m+56;                 /* place to rotate pc1 into */
-  byte *const ks=pcr+56;
-  register int i,j,l;
+  CryptoPP::byte *const pc1m=buffer;                 /* place to modify pc1 into */
+  CryptoPP::byte *const pcr=pc1m+56;                 /* place to rotate pc1 into */
+  CryptoPP::byte *const ks=pcr+56;
+  ES_REGISTER int i,j,l;
   int m;
 
   for (j=0; j<56; j++) {          /* convert pc1 to bits of key */
     l=pc1[j]-1;             /* integer bit location  */
     m = l & 07;             /* find bit              */
-    pc1m[j]=(key[l>>3] &    /* find which key byte l is in */
-      bytebit[m])     /* and which bit of that byte */
+    pc1m[j]=(key[l>>3] &    /* find which key CryptoPP::byte l is in */
+      bytebit[m])     /* and which bit of that CryptoPP::byte */
       ? 1 : 0;        /* and store 1-bit result */
   }
   for (i=0; i<16; i++) {          /* key chunk for each iteration */
@@ -366,7 +362,7 @@ void RawDES::RawProcessBlock(word32 &l_, word32 &r_) const
   l_ = l; r_ = r;
 }
 
-void DES_EDE2::Base::UncheckedSetKey(const byte *userKey, unsigned int length, const NameValuePairs &)
+void DES_EDE2::Base::UncheckedSetKey(const CryptoPP::byte *userKey, unsigned int length, const NameValuePairs &)
 {
   AssertValidKeyLength(length);
 
@@ -374,7 +370,7 @@ void DES_EDE2::Base::UncheckedSetKey(const byte *userKey, unsigned int length, c
   m_des2.RawSetKey(ReverseCipherDir(GetCipherDirection()), userKey+8);
 }
 
-void DES_EDE2::Base::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void DES_EDE2::Base::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   word32 l,r;
   Block::Get(inBlock)(l)(r);
@@ -386,7 +382,7 @@ void DES_EDE2::Base::ProcessAndXorBlock(const byte *inBlock, const byte *xorBloc
   Block::Put(xorBlock, outBlock)(r)(l);
 }
 
-void DES_EDE3::Base::UncheckedSetKey(const byte *userKey, unsigned int length, const NameValuePairs &)
+void DES_EDE3::Base::UncheckedSetKey(const CryptoPP::byte *userKey, unsigned int length, const NameValuePairs &)
 {
   AssertValidKeyLength(length);
 
@@ -395,7 +391,7 @@ void DES_EDE3::Base::UncheckedSetKey(const byte *userKey, unsigned int length, c
   m_des3.RawSetKey(GetCipherDirection(), userKey + (IsForwardTransformation() ? 16 : 0));
 }
 
-void DES_EDE3::Base::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void DES_EDE3::Base::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   word32 l,r;
   Block::Get(inBlock)(l)(r);
@@ -409,13 +405,13 @@ void DES_EDE3::Base::ProcessAndXorBlock(const byte *inBlock, const byte *xorBloc
 
 #endif  // #ifndef CRYPTOPP_IMPORTS
 
-static inline bool CheckParity(byte b)
+static inline bool CheckParity(CryptoPP::byte b)
 {
   unsigned int a = b ^ (b >> 4);
   return ((a ^ (a>>1) ^ (a>>2) ^ (a>>3)) & 1) == 1;
 }
 
-bool DES::CheckKeyParityBits(const byte *key)
+bool DES::CheckKeyParityBits(const CryptoPP::byte *key)
 {
   for (unsigned int i=0; i<8; i++)
     if (!CheckParity(key[i]))
@@ -423,7 +419,7 @@ bool DES::CheckKeyParityBits(const byte *key)
   return true;
 }
 
-void DES::CorrectKeyParityBits(byte *key)
+void DES::CorrectKeyParityBits(CryptoPP::byte *key)
 {
   for (unsigned int i=0; i<8; i++)
     if (!CheckParity(key[i]))
@@ -431,7 +427,7 @@ void DES::CorrectKeyParityBits(byte *key)
 }
 
 // Encrypt or decrypt a block of data in ECB mode
-void DES::Base::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void DES::Base::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   word32 l,r;
   Block::Get(inBlock)(l)(r);
@@ -441,7 +437,7 @@ void DES::Base::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, by
   Block::Put(xorBlock, outBlock)(r)(l);
 }
 
-void DES_XEX3::Base::UncheckedSetKey(const byte *key, unsigned int length, const NameValuePairs &)
+void DES_XEX3::Base::UncheckedSetKey(const CryptoPP::byte *key, unsigned int length, const NameValuePairs &)
 {
   AssertValidKeyLength(length);
 
@@ -453,7 +449,7 @@ void DES_XEX3::Base::UncheckedSetKey(const byte *key, unsigned int length, const
   memcpy(m_x3, key + (IsForwardTransformation() ? 16 : 0), BLOCKSIZE);
 }
 
-void DES_XEX3::Base::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void DES_XEX3::Base::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   xorbuf(outBlock, inBlock, m_x1, BLOCKSIZE);
   m_des->ProcessAndXorBlock(outBlock, xorBlock, outBlock);

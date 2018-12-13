@@ -7,8 +7,6 @@
 # pragma package(smart_init)
 #endif
 
-#include "autolink.cxx"
-
 // ensure complex size is the same
 ES_COMPILE_TIME_ASSERT(sizeof(EsMath::Complex)==sizeof(alglib::complex), sizeofEsMathComplex);
 //---------------------------------------------------------------------------

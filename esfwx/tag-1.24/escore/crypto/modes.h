@@ -54,7 +54,7 @@ public:
     this->ResizeBuffers();
   }
 
-  void SetCipherWithIV(BlockCipher &cipher, const byte *iv, int feedbackSize = 0)
+  void SetCipherWithIV(BlockCipher &cipher, const CryptoPP::byte *iv, int feedbackSize = 0)
   {
     this->ThrowIfInvalidIV(iv);
     this->m_cipher = &cipher;
@@ -94,11 +94,11 @@ template <class POLICY_INTERFACE>
 class CRYPTOPP_NO_VTABLE ModePolicyCommonTemplate : public CipherModeBase, public POLICY_INTERFACE
 {
   unsigned int GetAlignment() const {return m_cipher->OptimalDataAlignment();}
-  void CipherSetKey(const NameValuePairs &params, const byte *key, size_t length);
+  void CipherSetKey(const NameValuePairs &params, const CryptoPP::byte *key, size_t length);
 };
 
 template <class POLICY_INTERFACE>
-void ModePolicyCommonTemplate<POLICY_INTERFACE>::CipherSetKey(const NameValuePairs &params, const byte *key, size_t length)
+void ModePolicyCommonTemplate<POLICY_INTERFACE>::CipherSetKey(const NameValuePairs &params, const CryptoPP::byte *key, size_t length)
 {
   m_cipher->SetKey(key, length, params);
   ResizeBuffers();
@@ -116,11 +116,11 @@ public:
 
 protected:
   unsigned int GetBytesPerIteration() const {return m_feedbackSize;}
-  byte * GetRegisterBegin() {return m_register + BlockSize() - m_feedbackSize;}
+  CryptoPP::byte * GetRegisterBegin() {return m_register + BlockSize() - m_feedbackSize;}
   bool CanIterate() const {return m_feedbackSize == BlockSize();}
-  void Iterate(byte *output, const byte *input, CipherDir dir, size_t iterationCount);
+  void Iterate(CryptoPP::byte *output, const CryptoPP::byte *input, CipherDir dir, size_t iterationCount);
   void TransformRegister();
-  void CipherResynchronize(const byte *iv, size_t length);
+  void CipherResynchronize(const CryptoPP::byte *iv, size_t length);
   void SetFeedbackSize(unsigned int feedbackSize);
   void ResizeBuffers();
 
@@ -148,8 +148,8 @@ public:
 private:
   unsigned int GetBytesPerIteration() const {return BlockSize();}
   unsigned int GetIterationsToBuffer() const {return m_cipher->OptimalNumberOfParallelBlocks();}
-  void WriteKeystream(byte *keystreamBuffer, size_t iterationCount);
-  void CipherResynchronize(byte *keystreamBuffer, const byte *iv, size_t length);
+  void WriteKeystream(CryptoPP::byte *keystreamBuffer, size_t iterationCount);
+  void CipherResynchronize(CryptoPP::byte *keystreamBuffer, const CryptoPP::byte *iv, size_t length);
 };
 
 //! \class CTR_ModePolicy
@@ -167,11 +167,11 @@ protected:
   unsigned int GetAlignment() const {return m_cipher->OptimalDataAlignment();}
   unsigned int GetBytesPerIteration() const {return BlockSize();}
   unsigned int GetIterationsToBuffer() const {return m_cipher->OptimalNumberOfParallelBlocks();}
-  void WriteKeystream(byte *buffer, size_t iterationCount)
+  void WriteKeystream(CryptoPP::byte *buffer, size_t iterationCount)
     {OperateKeystream(WRITE_KEYSTREAM, buffer, NULL, iterationCount);}
   bool CanOperateKeystream() const {return true;}
-  void OperateKeystream(KeystreamOperation operation, byte *output, const byte *input, size_t iterationCount);
-  void CipherResynchronize(byte *keystreamBuffer, const byte *iv, size_t length);
+  void OperateKeystream(KeystreamOperation operation, CryptoPP::byte *output, const CryptoPP::byte *input, size_t iterationCount);
+  void CipherResynchronize(CryptoPP::byte *keystreamBuffer, const CryptoPP::byte *iv, size_t length);
   void SeekToIteration(lword iterationCount);
 
   AlignedSecByteBlock m_counterArray;
@@ -182,12 +182,12 @@ protected:
 class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE BlockOrientedCipherModeBase : public CipherModeBase
 {
 public:
-  void UncheckedSetKey(const byte *key, unsigned int length, const NameValuePairs &params);
+  void UncheckedSetKey(const CryptoPP::byte *key, unsigned int length, const NameValuePairs &params);
   unsigned int MandatoryBlockSize() const {return BlockSize();}
   bool IsRandomAccess() const {return false;}
   bool IsSelfInverting() const {return false;}
   bool IsForwardTransformation() const {return m_cipher->IsForwardTransformation();}
-  void Resynchronize(const byte *iv, int length=-1) {memcpy_s(m_register, m_register.size(), iv, ThrowIfInvalidIVLength(length));}
+  void Resynchronize(const CryptoPP::byte *iv, int length=-1) {memcpy_s(m_register, m_register.size(), iv, ThrowIfInvalidIVLength(length));}
 
 protected:
   bool RequireAlignedInput() const {return true;}
@@ -211,11 +211,11 @@ protected:
 class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE ECB_OneWay : public BlockOrientedCipherModeBase
 {
 public:
-  void SetKey(const byte *key, size_t length, const NameValuePairs &params = g_nullNameValuePairs)
+  void SetKey(const CryptoPP::byte *key, size_t length, const NameValuePairs &params = g_nullNameValuePairs)
     {m_cipher->SetKey(key, length, params); BlockOrientedCipherModeBase::ResizeBuffers();}
   IV_Requirement IVRequirement() const {return NOT_RESYNCHRONIZABLE;}
   unsigned int OptimalBlockSize() const {return BlockSize() * m_cipher->OptimalNumberOfParallelBlocks();}
-  void ProcessData(byte *outString, const byte *inString, size_t length);
+  void ProcessData(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length);
   CRYPTOPP_CONSTEXPR static const char * CRYPTOPP_API StaticAlgorithmName() {return "ECB";}
 };
 
@@ -235,7 +235,7 @@ public:
 class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE CBC_Encryption : public CBC_ModeBase
 {
 public:
-  void ProcessData(byte *outString, const byte *inString, size_t length);
+  void ProcessData(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length);
 };
 
 //! \class CBC_CTS_Encryption
@@ -243,19 +243,19 @@ public:
 class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE CBC_CTS_Encryption : public CBC_Encryption
 {
 public:
-  void SetStolenIV(byte *iv) {m_stolenIV = iv;}
+  void SetStolenIV(CryptoPP::byte *iv) {m_stolenIV = iv;}
   unsigned int MinLastBlockSize() const {return BlockSize()+1;}
-  void ProcessLastBlock(byte *outString, const byte *inString, size_t length);
+  void ProcessLastBlock(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length);
   CRYPTOPP_CONSTEXPR static const char * CRYPTOPP_API StaticAlgorithmName() {return "CBC/CTS";}
 
 protected:
-  void UncheckedSetKey(const byte *key, unsigned int length, const NameValuePairs &params)
+  void UncheckedSetKey(const CryptoPP::byte *key, unsigned int length, const NameValuePairs &params)
   {
     CBC_Encryption::UncheckedSetKey(key, length, params);
-    m_stolenIV = params.GetValueWithDefault(Name::StolenIV(), (byte *)NULL);
+    m_stolenIV = params.GetValueWithDefault(Name::StolenIV(), (CryptoPP::byte *)NULL);
   }
 
-  byte *m_stolenIV;
+  CryptoPP::byte *m_stolenIV;
 };
 
 //! \class CBC_Decryption
@@ -263,7 +263,7 @@ protected:
 class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE CBC_Decryption : public CBC_ModeBase
 {
 public:
-  void ProcessData(byte *outString, const byte *inString, size_t length);
+  void ProcessData(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length);
 
 protected:
 
@@ -287,7 +287,7 @@ class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE CBC_CTS_Decryption : public CBC_Decryption
 {
 public:
   unsigned int MinLastBlockSize() const {return BlockSize()+1;}
-  void ProcessLastBlock(byte *outString, const byte *inString, size_t length);
+  void ProcessLastBlock(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length);
 };
 
 //! \class CipherModeFinalTemplate_CipherHolder
@@ -301,17 +301,17 @@ public:
     this->m_cipher = &this->m_object;
     this->ResizeBuffers();
   }
-  CipherModeFinalTemplate_CipherHolder(const byte *key, size_t length)
+  CipherModeFinalTemplate_CipherHolder(const CryptoPP::byte *key, size_t length)
   {
     this->m_cipher = &this->m_object;
     this->SetKey(key, length);
   }
-  CipherModeFinalTemplate_CipherHolder(const byte *key, size_t length, const byte *iv)
+  CipherModeFinalTemplate_CipherHolder(const CryptoPP::byte *key, size_t length, const CryptoPP::byte *iv)
   {
     this->m_cipher = &this->m_object;
     this->SetKey(key, length, MakeParameters(Name::IV(), ConstByteArrayParameter(iv, this->m_cipher->BlockSize())));
   }
-  CipherModeFinalTemplate_CipherHolder(const byte *key, size_t length, const byte *iv, int feedbackSize)
+  CipherModeFinalTemplate_CipherHolder(const CryptoPP::byte *key, size_t length, const CryptoPP::byte *iv, int feedbackSize)
   {
     this->m_cipher = &this->m_object;
     this->SetKey(key, length, MakeParameters(Name::IV(), ConstByteArrayParameter(iv, this->m_cipher->BlockSize()))(Name::FeedbackSize(), feedbackSize));
@@ -331,7 +331,7 @@ public:
   CipherModeFinalTemplate_ExternalCipher() {}
   CipherModeFinalTemplate_ExternalCipher(BlockCipher &cipher)
     {this->SetCipher(cipher);}
-  CipherModeFinalTemplate_ExternalCipher(BlockCipher &cipher, const byte *iv, int feedbackSize = 0)
+  CipherModeFinalTemplate_ExternalCipher(BlockCipher &cipher, const CryptoPP::byte *iv, int feedbackSize = 0)
     {this->SetCipherWithIV(cipher, iv, feedbackSize);}
 
   std::string AlgorithmName() const

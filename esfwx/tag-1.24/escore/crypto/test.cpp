@@ -153,7 +153,7 @@ int CRYPTOPP_API main(int argc, char *argv[])
     seed.resize(16, ' ');
 
     OFB_Mode<AES>::Encryption& prng = dynamic_cast<OFB_Mode<AES>::Encryption&>(GlobalRNG());
-    prng.SetKeyWithIV((byte *)seed.data(), 16, (byte *)seed.data());
+    prng.SetKeyWithIV((CryptoPP::byte *)seed.data(), 16, (CryptoPP::byte *)seed.data());
 
     std::string command, executableName, macFilename;
 
@@ -263,8 +263,8 @@ int CRYPTOPP_API main(int argc, char *argv[])
         cerr << "Warning: certificate table (IMAGE_DIRECTORY_ENTRY_SECURITY) of target image is not empty.\n";
 
       // find where to place computed MAC
-      byte mac[] = CRYPTOPP_DUMMY_DLL_MAC;
-      byte *found = std::search(buf.begin(), buf.end(), mac+0, mac+sizeof(mac));
+      CryptoPP::byte mac[] = CRYPTOPP_DUMMY_DLL_MAC;
+      CryptoPP::byte *found = std::search(buf.begin(), buf.end(), mac+0, mac+sizeof(mac));
       if (found == buf.end())
       {
         cerr << "MAC placeholder not found. The MAC may already be placed.\n";
@@ -287,7 +287,7 @@ int CRYPTOPP_API main(int argc, char *argv[])
       HexEncoder encoder;
       encoder.Put(mac, sizeof(mac)), encoder.MessageEnd();
       hexMac.resize(static_cast<size_t>(encoder.MaxRetrievable()));
-      encoder.Get(reinterpret_cast<byte*>(&hexMac[0]), hexMac.size());
+      encoder.Get(reinterpret_cast<CryptoPP::byte*>(&hexMac[0]), hexMac.size());
 
       // Report MAC and location
       std::cout << "Placing MAC " << hexMac << " in " << fname << " at file offset " << macPos;
@@ -492,7 +492,7 @@ SecByteBlock HexDecodeString(const char *hex)
 void GenerateRSAKey(unsigned int keyLength, const char *privFilename, const char *pubFilename, const char *seed)
 {
   RandomPool randPool;
-  randPool.IncorporateEntropy((byte *)seed, strlen(seed));
+  randPool.IncorporateEntropy((CryptoPP::byte *)seed, strlen(seed));
 
   RSAES_OAEP_SHA_Decryptor priv(randPool, keyLength);
   HexEncoder privFile(new FileSink(privFilename));
@@ -511,7 +511,7 @@ string RSAEncryptString(const char *pubFilename, const char *seed, const char *m
   RSAES_OAEP_SHA_Encryptor pub(pubFile);
 
   RandomPool randPool;
-  randPool.IncorporateEntropy((byte *)seed, strlen(seed));
+  randPool.IncorporateEntropy((CryptoPP::byte *)seed, strlen(seed));
 
   string result;
   StringSource(message, true, new PK_EncryptorFilter(randPool, pub, new HexEncoder(new StringSink(result))));
@@ -596,7 +596,7 @@ void HmacFile(const char *hexKey, const char *file)
   {
     std::string decodedKey;
     StringSource(hexKey, true, new HexDecoder(new StringSink(decodedKey)));
-    mac.reset(new HMAC<SHA1>((const byte *)decodedKey.data(), decodedKey.size()));
+    mac.reset(new HMAC<SHA1>((const CryptoPP::byte *)decodedKey.data(), decodedKey.size()));
   }
   FileSource(file, true, new HashFilter(*mac, new HexEncoder(new FileSink(cout))));
 }
@@ -614,7 +614,7 @@ string EncryptString(const char *instr, const char *passPhrase)
   string outstr;
 
   DefaultEncryptorWithMAC encryptor(passPhrase, new HexEncoder(new StringSink(outstr)));
-  encryptor.Put((byte *)instr, strlen(instr));
+  encryptor.Put((CryptoPP::byte *)instr, strlen(instr));
   encryptor.MessageEnd();
 
   return outstr;
@@ -625,7 +625,7 @@ string DecryptString(const char *instr, const char *passPhrase)
   string outstr;
 
   HexDecoder decryptor(new DefaultDecryptorWithMAC(passPhrase, new StringSink(outstr)));
-  decryptor.Put((byte *)instr, strlen(instr));
+  decryptor.Put((CryptoPP::byte *)instr, strlen(instr));
   decryptor.MessageEnd();
 
   return outstr;
@@ -648,7 +648,7 @@ void SecretShareFile(int threshold, int nShares, const char *filename, const cha
     throw InvalidArgument("SecretShareFile: " + IntToString(nShares) + " is not in range [1, 1000]");
 
   RandomPool rng;
-  rng.IncorporateEntropy((byte *)seed, strlen(seed));
+  rng.IncorporateEntropy((CryptoPP::byte *)seed, strlen(seed));
 
   ChannelSwitch *channelSwitch = NULL;
   FileSource source(filename, false, new SecretSharing(rng, threshold, nShares, channelSwitch = new ChannelSwitch));
@@ -658,13 +658,13 @@ void SecretShareFile(int threshold, int nShares, const char *filename, const cha
   for (int i=0; i<nShares; i++)
   {
     char extension[5] = ".000";
-    extension[1]='0'+byte(i/100);
-    extension[2]='0'+byte((i/10)%10);
-    extension[3]='0'+byte(i%10);
+    extension[1]='0'+CryptoPP::byte(i/100);
+    extension[2]='0'+CryptoPP::byte((i/10)%10);
+    extension[3]='0'+CryptoPP::byte(i%10);
     fileSinks[i].reset(new FileSink((string(filename)+extension).c_str()));
 
     channel = WordToString<word32>(i);
-    fileSinks[i]->Put((const byte *)channel.data(), 4);
+    fileSinks[i]->Put((const CryptoPP::byte *)channel.data(), 4);
     channelSwitch->AddRoute(channel, *fileSinks[i], DEFAULT_CHANNEL);
   }
 
@@ -712,13 +712,13 @@ void InformationDisperseFile(int threshold, int nShares, const char *filename)
   for (int i=0; i<nShares; i++)
   {
     char extension[5] = ".000";
-    extension[1]='0'+byte(i/100);
-    extension[2]='0'+byte((i/10)%10);
-    extension[3]='0'+byte(i%10);
+    extension[1]='0'+CryptoPP::byte(i/100);
+    extension[2]='0'+CryptoPP::byte((i/10)%10);
+    extension[3]='0'+CryptoPP::byte(i%10);
     fileSinks[i].reset(new FileSink((string(filename)+extension).c_str()));
 
     channel = WordToString<word32>(i);
-    fileSinks[i]->Put((const byte *)channel.data(), 4);
+    fileSinks[i]->Put((const CryptoPP::byte *)channel.data(), 4);
     channelSwitch->AddRoute(channel, *fileSinks[i], DEFAULT_CHANNEL);
   }
 
@@ -890,7 +890,7 @@ bool Validate(int alg, bool thorough, const char *seedInput)
   seed.resize(16, ' ');
 
   OFB_Mode<AES>::Encryption& prng = dynamic_cast<OFB_Mode<AES>::Encryption&>(GlobalRNG());
-  prng.SetKeyWithIV((byte *)seed.data(), 16, (byte *)seed.data());
+  prng.SetKeyWithIV((CryptoPP::byte *)seed.data(), 16, (CryptoPP::byte *)seed.data());
 
   PrintSeedAndThreads(seed);
 

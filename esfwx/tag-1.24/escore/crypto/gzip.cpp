@@ -15,12 +15,12 @@ void Gzip::WritePrestreamHeader()
   AttachedTransformation()->Put(DEFLATED);
   AttachedTransformation()->Put(0);    // general flag
   AttachedTransformation()->PutWord32(0);  // time stamp
-  byte extra = byte((GetDeflateLevel() == 1) ? FAST : ((GetDeflateLevel() == 9) ? SLOW : 0));
+  CryptoPP::byte extra = CryptoPP::byte((GetDeflateLevel() == 1) ? FAST : ((GetDeflateLevel() == 9) ? SLOW : 0));
   AttachedTransformation()->Put(extra);
   AttachedTransformation()->Put(GZIP_OS_CODE);
 }
 
-void Gzip::ProcessUncompressedData(const byte *inString, size_t length)
+void Gzip::ProcessUncompressedData(const CryptoPP::byte *inString, size_t length)
 {
   m_crc.Update(inString, length);
   m_totalLen += (word32)length;
@@ -46,8 +46,8 @@ void Gunzip::ProcessPrestreamHeader()
   m_length = 0;
   m_crc.Restart();
 
-  byte buf[6];
-  byte b, flags;
+  CryptoPP::byte buf[6];
+  CryptoPP::byte b, flags;
 
   if (m_inQueue.Get(buf, 2)!=2) throw HeaderErr();
   if (buf[0] != MAGIC1 || buf[1] != MAGIC2) throw HeaderErr();
@@ -74,7 +74,7 @@ void Gunzip::ProcessPrestreamHeader()
     while (b);
 }
 
-void Gunzip::ProcessDecompressedData(const byte *inString, size_t length)
+void Gunzip::ProcessDecompressedData(const CryptoPP::byte *inString, size_t length)
 {
   AttachedTransformation()->Put(inString, length);
   m_crc.Update(inString, length);

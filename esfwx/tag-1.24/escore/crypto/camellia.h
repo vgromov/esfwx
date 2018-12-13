@@ -27,11 +27,11 @@ class Camellia : public Camellia_Info, public BlockCipherDocumentation
   class CRYPTOPP_NO_VTABLE Base : public BlockCipherImpl<Camellia_Info>
   {
   public:
-    void UncheckedSetKey(const byte *key, unsigned int keylen, const NameValuePairs &params);
-    void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const;
+    void UncheckedSetKey(const CryptoPP::byte *key, unsigned int keylen, const NameValuePairs &params);
+    void ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const;
 
   protected:
-    CRYPTOPP_ALIGN_DATA(4) static const byte s1[256];
+    CRYPTOPP_ALIGN_DATA(4) static const CryptoPP::byte s1[256];
     static const word32 SP[4][256];
 
     unsigned int m_rounds;

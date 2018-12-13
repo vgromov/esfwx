@@ -10,10 +10,10 @@ NAMESPACE_BEGIN(CryptoPP)
 class GF256
 {
 public:
-  typedef byte Element;
+  typedef CryptoPP::byte Element;
   typedef int RandomizationParameter;
 
-  GF256(byte modulus) : m_modulus(modulus) {}
+  GF256(CryptoPP::byte modulus) : m_modulus(modulus) {}
 
   Element RandomElement(RandomNumberGenerator &rng, int ignored = 0) const
     {CRYPTOPP_UNUSED(ignored); return rng.GenerateByte();}

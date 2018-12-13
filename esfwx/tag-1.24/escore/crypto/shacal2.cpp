@@ -31,7 +31,7 @@ NAMESPACE_BEGIN(CryptoPP)
 #define P(a,b,c,d,e,f,g,h,k) \
   h-=S0(a)+Maj(a,b,c);d-=h;h-=S1(e)+Ch(e,f,g)+*--k;
 
-void SHACAL2::Base::UncheckedSetKey(const byte *userKey, unsigned int keylen, const NameValuePairs &)
+void SHACAL2::Base::UncheckedSetKey(const CryptoPP::byte *userKey, unsigned int keylen, const NameValuePairs &)
 {
   AssertValidKeyLength(keylen);
 
@@ -52,13 +52,13 @@ void SHACAL2::Base::UncheckedSetKey(const byte *userKey, unsigned int keylen, co
 
 typedef BlockGetAndPut<word32, BigEndian> Block;
 
-void SHACAL2::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void SHACAL2::Enc::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   word32 a, b, c, d, e, f, g, h;
   const word32 *rk = m_key;
 
   /*
-   * map byte array block to cipher state:
+   * map CryptoPP::byte array block to cipher state:
    */
   Block::Get(inBlock)(a)(b)(c)(d)(e)(f)(g)(h);
 
@@ -78,19 +78,19 @@ void SHACAL2::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock,
   }
 
   /*
-   * map cipher state to byte array block:
+   * map cipher state to CryptoPP::byte array block:
    */
 
   Block::Put(xorBlock, outBlock)(a)(b)(c)(d)(e)(f)(g)(h);
 }
 
-void SHACAL2::Dec::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void SHACAL2::Dec::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   word32 a, b, c, d, e, f, g, h;
   const word32 *rk = m_key + 64;
 
   /*
-   * map byte array block to cipher state:
+   * map CryptoPP::byte array block to cipher state:
    */
   Block::Get(inBlock)(a)(b)(c)(d)(e)(f)(g)(h);
 
@@ -110,7 +110,7 @@ void SHACAL2::Dec::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock,
   }
 
   /*
-   * map cipher state to byte array block:
+   * map cipher state to CryptoPP::byte array block:
    */
 
   Block::Put(xorBlock, outBlock)(a)(b)(c)(d)(e)(f)(g)(h);

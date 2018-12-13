@@ -300,17 +300,17 @@ public:
   /// EsProgressMonitorIntf implementation
   ///
   /// Return progress monitor id string
-  ES_DECL_INTF_METHOD(const EsString&, idGet)() const;
+  ES_DECL_INTF_METHOD(const EsString&, idGet)() const ES_OVERRIDE;
   /// Entirely resets progress monitor, effectively detaching all tasks from it.
-  ES_DECL_REFLECTED_INTF_METHOD0(void, reset);
+  ES_DECL_REFLECTED_INTF_METHOD0(void, reset) ES_OVERRIDE;
   /// Return view event category
-  ES_DECL_INTF_METHOD(const EsString&, eventCategoryGet)() const ES_NOTHROW { return m_cat; }
+  ES_DECL_INTF_METHOD(const EsString&, eventCategoryGet)() const ES_NOTHROW ES_OVERRIDE { return m_cat; }
   /// Post event to the view
-  ES_DECL_INTF_METHOD(void, viewEventPost)(ulong id, const EsVariant& payload) const;
+  ES_DECL_INTF_METHOD(void, viewEventPost)(ulong id, const EsVariant& payload) const ES_OVERRIDE;
   /// Retrieve all linked task paths
-  ES_DECL_INTF_METHOD(EsString::Array, taskPathsGet)() const;
+  ES_DECL_INTF_METHOD(EsString::Array, taskPathsGet)() const ES_OVERRIDE;
   /// Get task by its path
-  ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, taskGetByPath)(const EsString& path) const;
+  ES_DECL_INTF_METHOD(EsBaseIntf::Ptr, taskGetByPath)(const EsString& path) const ES_OVERRIDE;
 
   /// Reflected constructor
   ES_DECL_REFLECTED_CLASS_CTOR1(EsBaseIntfPtr, cr_EsString);

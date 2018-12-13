@@ -101,6 +101,12 @@ if(MINGW)
   endif()
 endif()
 
+if( BORLAND OR EMBARCADERO )
+  set(
+    ESFWX_TESTS_OPTS
+    "${ESFWX_TESTS_OPTS} ${CMAKE_CREATE_CONSOLE_EXE}"
+  )
+endif()
 
 set_target_properties(
   ${targetName}

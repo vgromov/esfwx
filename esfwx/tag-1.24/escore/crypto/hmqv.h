@@ -76,7 +76,7 @@ public:
 
   //! generate static private key
   /*! \pre size of privateKey == PrivateStaticKeyLength() */
-  void GenerateStaticPrivateKey(RandomNumberGenerator &rng, byte *privateKey) const
+  void GenerateStaticPrivateKey(RandomNumberGenerator &rng, CryptoPP::byte *privateKey) const
   {
     Integer x(rng, Integer::One(), GetAbstractGroupParameters().GetMaxExponent());
     x.Encode(privateKey, StaticPrivateKeyLength());
@@ -84,7 +84,7 @@ public:
 
   //! generate static public key
   /*! \pre size of publicKey == PublicStaticKeyLength() */
-  void GenerateStaticPublicKey(RandomNumberGenerator &rng, const byte *privateKey, byte *publicKey) const
+  void GenerateStaticPublicKey(RandomNumberGenerator &rng, const CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const
   {
     CRYPTOPP_UNUSED(rng);
     const DL_GroupParameters<Element> &params = GetAbstractGroupParameters();
@@ -97,7 +97,7 @@ public:
   unsigned int EphemeralPublicKeyLength() const{return StaticPublicKeyLength();}
 
   //! return length of ephemeral private keys in this domain
-  void GenerateEphemeralPrivateKey(RandomNumberGenerator &rng, byte *privateKey) const
+  void GenerateEphemeralPrivateKey(RandomNumberGenerator &rng, CryptoPP::byte *privateKey) const
   {
     const DL_GroupParameters<Element> &params = GetAbstractGroupParameters();
     Integer x(rng, Integer::One(), params.GetMaxExponent());
@@ -107,7 +107,7 @@ public:
   }
 
   //! return length of ephemeral public keys in this domain
-  void GenerateEphemeralPublicKey(RandomNumberGenerator &rng, const byte *privateKey, byte *publicKey) const
+  void GenerateEphemeralPublicKey(RandomNumberGenerator &rng, const CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const
   {
     CRYPTOPP_UNUSED(rng);
     memcpy(publicKey, privateKey+StaticPrivateKeyLength(), EphemeralPublicKeyLength());
@@ -122,12 +122,12 @@ public:
   \pre length of staticOtherPublicKey == StaticPublicKeyLength()
   \pre length of ephemeralOtherPublicKey == EphemeralPublicKeyLength()
   */
-  bool Agree(byte *agreedValue,
-    const byte *staticPrivateKey, const byte *ephemeralPrivateKey,
-    const byte *staticOtherPublicKey, const byte *ephemeralOtherPublicKey,
+  bool Agree(CryptoPP::byte *agreedValue,
+    const CryptoPP::byte *staticPrivateKey, const CryptoPP::byte *ephemeralPrivateKey,
+    const CryptoPP::byte *staticOtherPublicKey, const CryptoPP::byte *ephemeralOtherPublicKey,
     bool validateStaticOtherPublicKey=true) const
   {
-    byte *XX = NULL, *YY = NULL, *AA = NULL, *BB = NULL;
+    CryptoPP::byte *XX = NULL, *YY = NULL, *AA = NULL, *BB = NULL;
     size_t xxs = 0, yys = 0, aas = 0, bbs = 0;
 
     // Depending on the role, this will hold either A's or B's static
@@ -144,11 +144,11 @@ public:
         Element B = params.ExponentiateBase(b);
         params.EncodeElement(true, B, tt);
 
-        XX = const_cast<byte*>(ephemeralOtherPublicKey);
+        XX = const_cast<CryptoPP::byte*>(ephemeralOtherPublicKey);
         xxs = EphemeralPublicKeyLength();
-        YY = const_cast<byte*>(ephemeralPrivateKey) + StaticPrivateKeyLength();
+        YY = const_cast<CryptoPP::byte*>(ephemeralPrivateKey) + StaticPrivateKeyLength();
         yys = EphemeralPublicKeyLength();
-        AA = const_cast<byte*>(staticOtherPublicKey);
+        AA = const_cast<CryptoPP::byte*>(staticOtherPublicKey);
         aas = StaticPublicKeyLength();
         BB = tt.BytePtr();
         bbs = tt.SizeInBytes();
@@ -159,13 +159,13 @@ public:
         Element A = params.ExponentiateBase(a);
         params.EncodeElement(true, A, tt);
 
-        XX = const_cast<byte*>(ephemeralPrivateKey) + StaticPrivateKeyLength();
+        XX = const_cast<CryptoPP::byte*>(ephemeralPrivateKey) + StaticPrivateKeyLength();
         xxs = EphemeralPublicKeyLength();
-        YY = const_cast<byte*>(ephemeralOtherPublicKey);
+        YY = const_cast<CryptoPP::byte*>(ephemeralOtherPublicKey);
         yys = EphemeralPublicKeyLength();
         AA = tt.BytePtr();
         aas = tt.SizeInBytes();
-        BB = const_cast<byte*>(staticOtherPublicKey);
+        BB = const_cast<CryptoPP::byte*>(staticOtherPublicKey);
         bbs = StaticPublicKeyLength();
       }
       else
@@ -247,9 +247,9 @@ protected:
   // each provides.
 
   inline void Hash(const Element* sigma,
-    const byte* e1, size_t e1len, // Ephemeral key and key length
-    const byte* s1, size_t s1len, // Static key and key length
-    byte* digest, size_t dlen) const
+    const CryptoPP::byte* e1, size_t e1len, // Ephemeral key and key length
+    const CryptoPP::byte* s1, size_t s1len, // Static key and key length
+    CryptoPP::byte* digest, size_t dlen) const
   {
     HASH hash;
     size_t idx = 0, req = dlen;

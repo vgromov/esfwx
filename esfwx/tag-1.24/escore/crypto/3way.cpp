@@ -68,7 +68,7 @@ static inline word32 reverseBits(word32 a)
   pi_gamma_pi(a0, a1, a2);  \
 }
 
-void ThreeWay::Base::UncheckedSetKey(const byte *uk, unsigned int length, const NameValuePairs &params)
+void ThreeWay::Base::UncheckedSetKey(const CryptoPP::byte *uk, unsigned int length, const NameValuePairs &params)
 {
   AssertValidKeyLength(length);
 
@@ -87,7 +87,7 @@ void ThreeWay::Base::UncheckedSetKey(const byte *uk, unsigned int length, const 
   }
 }
 
-void ThreeWay::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void ThreeWay::Enc::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   typedef BlockGetAndPut<word32, BigEndian> Block;
 
@@ -114,7 +114,7 @@ void ThreeWay::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock
   Block::Put(xorBlock, outBlock)(a0)(a1)(a2);
 }
 
-void ThreeWay::Dec::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void ThreeWay::Dec::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   typedef BlockGetAndPut<word32, LittleEndian> Block;
 

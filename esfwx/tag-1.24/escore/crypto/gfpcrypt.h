@@ -61,16 +61,16 @@ public:
 
 #ifndef CRYPTOPP_MAINTAIN_BACKWARDS_COMPATIBILITY_562
   // Cygwin i386 crash at -O3; see .
-  void EncodeElement(bool reversible, const Element &element, byte *encoded) const;
+  void EncodeElement(bool reversible, const Element &element, CryptoPP::byte *encoded) const;
   unsigned int GetEncodedElementSize(bool reversible) const;
 #else
-  void EncodeElement(bool reversible, const Element &element, byte *encoded) const
+  void EncodeElement(bool reversible, const Element &element, CryptoPP::byte *encoded) const
     {CRYPTOPP_UNUSED(reversible); element.Encode(encoded, GetModulus().ByteCount());}
   unsigned int GetEncodedElementSize(bool reversible) const
     {CRYPTOPP_UNUSED(reversible); return GetModulus().ByteCount();}
 #endif
 
-  Integer DecodeElement(const byte *encoded, bool checkForGroupMembership) const;
+  Integer DecodeElement(const CryptoPP::byte *encoded, bool checkForGroupMembership) const;
   Integer ConvertElementToInteger(const Element &element) const
     {return element;}
   Integer GetMaxExponent() const;
@@ -506,10 +506,10 @@ public:
     {return plaintextLength + MAC::DIGESTSIZE;}
   size_t GetMaxSymmetricPlaintextLength(size_t ciphertextLength) const
     {return (unsigned int)SaturatingSubtract(ciphertextLength, (unsigned int)MAC::DIGESTSIZE);}
-  void SymmetricEncrypt(RandomNumberGenerator &rng, const byte *key, const byte *plaintext, size_t plaintextLength, byte *ciphertext, const NameValuePairs &parameters) const
+  void SymmetricEncrypt(RandomNumberGenerator &rng, const CryptoPP::byte *key, const CryptoPP::byte *plaintext, size_t plaintextLength, CryptoPP::byte *ciphertext, const NameValuePairs &parameters) const
   {
     CRYPTOPP_UNUSED(rng);
-    const byte *cipherKey = NULL, *macKey = NULL;
+    const CryptoPP::byte *cipherKey = NULL, *macKey = NULL;
     if (DHAES_MODE)
     {
       macKey = key;
@@ -532,16 +532,16 @@ public:
     mac.Update(encodingParameters.begin(), encodingParameters.size());
     if (DHAES_MODE)
     {
-      byte L[8] = {0,0,0,0};
+      CryptoPP::byte L[8] = {0,0,0,0};
       PutWord(false, BIG_ENDIAN_ORDER, L+4, word32(encodingParameters.size()));
       mac.Update(L, 8);
     }
     mac.Final(ciphertext + plaintextLength);
   }
-  DecodingResult SymmetricDecrypt(const byte *key, const byte *ciphertext, size_t ciphertextLength, byte *plaintext, const NameValuePairs &parameters) const
+  DecodingResult SymmetricDecrypt(const CryptoPP::byte *key, const CryptoPP::byte *ciphertext, size_t ciphertextLength, CryptoPP::byte *plaintext, const NameValuePairs &parameters) const
   {
     size_t plaintextLength = GetMaxSymmetricPlaintextLength(ciphertextLength);
-    const byte *cipherKey, *macKey;
+    const CryptoPP::byte *cipherKey, *macKey;
     if (DHAES_MODE)
     {
       macKey = key;
@@ -561,7 +561,7 @@ public:
     mac.Update(encodingParameters.begin(), encodingParameters.size());
     if (DHAES_MODE)
     {
-      byte L[8] = {0,0,0,0};
+      CryptoPP::byte L[8] = {0,0,0,0};
       PutWord(false, BIG_ENDIAN_ORDER, L+4, word32(encodingParameters.size()));
       mac.Update(L, 8);
     }
@@ -585,7 +585,7 @@ class DL_KeyDerivationAlgorithm_P1363 : public DL_KeyDerivationAlgorithm<T>
 {
 public:
   bool ParameterSupported(const char *name) const {return strcmp(name, Name::KeyDerivationParameters()) == 0;}
-  void Derive(const DL_GroupParameters<T> &params, byte *derivedKey, size_t derivedLength, const T &agreedElement, const T &ephemeralPublicKey, const NameValuePairs &parameters) const
+  void Derive(const DL_GroupParameters<T> &params, CryptoPP::byte *derivedKey, size_t derivedLength, const T &agreedElement, const T &ephemeralPublicKey, const NameValuePairs &parameters) const
   {
     SecByteBlock agreedSecret;
     if (DHAES_MODE)

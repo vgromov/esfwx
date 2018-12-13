@@ -39,9 +39,9 @@ public:
   CRYPTOPP_CONSTEXPR static const char* StaticAlgorithmName() { return "SHA3"; }
   unsigned int OptimalDataAlignment() const {return GetAlignmentOf<word64>();}
 
-  void Update(const byte *input, size_t length);
+  void Update(const CryptoPP::byte *input, size_t length);
   void Restart();
-  void TruncatedFinal(byte *hash, size_t size);
+  void TruncatedFinal(CryptoPP::byte *hash, size_t size);
 
   // unsigned int BlockSize() const { return r(); } // that's the idea behind it
 protected:

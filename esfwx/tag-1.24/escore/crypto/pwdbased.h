@@ -25,17 +25,17 @@ public:
   //! \returns maximum derived key length, in bytes
   virtual size_t MaxDerivedKeyLength() const =0;
 
-  //! \brief Determines if the derivation function uses the purpose byte
-  //! \returns true if the derivation function uses the purpose byte, false otherwise
+  //! \brief Determines if the derivation function uses the purpose CryptoPP::byte
+  //! \returns true if the derivation function uses the purpose CryptoPP::byte, false otherwise
   virtual bool UsesPurposeByte() const =0;
 
   //! \brief Derive key from the password
-  //! \param derived the byte buffer to receive the derived password
-  //! \param derivedLen the size of the byte buffer to receive the derived password
+  //! \param derived the CryptoPP::byte buffer to receive the derived password
+  //! \param derivedLen the size of the CryptoPP::byte buffer to receive the derived password
   //! \param purpose an octet indicating the purpose of the derivation
-  //! \param password the byte buffer with the password
+  //! \param password the CryptoPP::byte buffer with the password
   //! \param passwordLen the size of the password, in bytes
-  //! \param salt the byte buffer with the salt
+  //! \param salt the CryptoPP::byte buffer with the salt
   //! \param saltLen the size of the salt, in bytes
   //! \param iterations the number of iterations to attempt
   //! \param timeInSeconds the length of time the derivation function should execute
@@ -43,7 +43,7 @@ public:
   //! \details DeriveKey returns the actual iteration count achieved. If <tt>timeInSeconds == 0</tt>, then the complete number
   //!   of iterations will be obtained. If <tt>timeInSeconds != 0</tt>, then DeriveKey will iterate until time elapsed, as
   //!   measured by ThreadUserTimer.
-  virtual unsigned int DeriveKey(byte *derived, size_t derivedLen, byte purpose, const byte *password, size_t passwordLen, const byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds=0) const =0;
+  virtual unsigned int DeriveKey(CryptoPP::byte *derived, size_t derivedLen, CryptoPP::byte purpose, const CryptoPP::byte *password, size_t passwordLen, const CryptoPP::byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds=0) const =0;
 };
 
 //! \brief PBKDF1 from PKCS #5
@@ -54,8 +54,8 @@ class PKCS5_PBKDF1 : public PasswordBasedKeyDerivationFunction
 public:
   size_t MaxDerivedKeyLength() const {return T::DIGESTSIZE;}
   bool UsesPurposeByte() const {return false;}
-  // PKCS #5 says PBKDF1 should only take 8-byte salts. This implementation allows salts of any length.
-  unsigned int DeriveKey(byte *derived, size_t derivedLen, byte purpose, const byte *password, size_t passwordLen, const byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds=0) const;
+  // PKCS #5 says PBKDF1 should only take 8-CryptoPP::byte salts. This implementation allows salts of any length.
+  unsigned int DeriveKey(CryptoPP::byte *derived, size_t derivedLen, CryptoPP::byte purpose, const CryptoPP::byte *password, size_t passwordLen, const CryptoPP::byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds=0) const;
 };
 
 //! \brief PBKDF2 from PKCS #5
@@ -66,7 +66,7 @@ class PKCS5_PBKDF2_HMAC : public PasswordBasedKeyDerivationFunction
 public:
   size_t MaxDerivedKeyLength() const {return 0xffffffffU;}  // should multiply by T::DIGESTSIZE, but gets overflow that way
   bool UsesPurposeByte() const {return false;}
-  unsigned int DeriveKey(byte *derived, size_t derivedLen, byte purpose, const byte *password, size_t passwordLen, const byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds=0) const;
+  unsigned int DeriveKey(CryptoPP::byte *derived, size_t derivedLen, CryptoPP::byte purpose, const CryptoPP::byte *password, size_t passwordLen, const CryptoPP::byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds=0) const;
 };
 
 /*
@@ -80,7 +80,7 @@ public:
 */
 
 template <class T>
-unsigned int PKCS5_PBKDF1<T>::DeriveKey(byte *derived, size_t derivedLen, byte purpose, const byte *password, size_t passwordLen, const byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds) const
+unsigned int PKCS5_PBKDF1<T>::DeriveKey(CryptoPP::byte *derived, size_t derivedLen, CryptoPP::byte purpose, const CryptoPP::byte *password, size_t passwordLen, const CryptoPP::byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds) const
 {
   CRYPTOPP_UNUSED(purpose);
   CRYPTOPP_ASSERT(derivedLen <= MaxDerivedKeyLength());
@@ -110,7 +110,7 @@ unsigned int PKCS5_PBKDF1<T>::DeriveKey(byte *derived, size_t derivedLen, byte p
 }
 
 template <class T>
-unsigned int PKCS5_PBKDF2_HMAC<T>::DeriveKey(byte *derived, size_t derivedLen, byte purpose, const byte *password, size_t passwordLen, const byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds) const
+unsigned int PKCS5_PBKDF2_HMAC<T>::DeriveKey(CryptoPP::byte *derived, size_t derivedLen, CryptoPP::byte purpose, const CryptoPP::byte *password, size_t passwordLen, const CryptoPP::byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds) const
 {
   CRYPTOPP_UNUSED(purpose);
   CRYPTOPP_ASSERT(derivedLen <= MaxDerivedKeyLength());
@@ -130,7 +130,7 @@ unsigned int PKCS5_PBKDF2_HMAC<T>::DeriveKey(byte *derived, size_t derivedLen, b
     unsigned int j;
     for (j=0; j<4; j++)
     {
-      byte b = byte(i >> ((3-j)*8));
+      CryptoPP::byte b = CryptoPP::byte(i >> ((3-j)*8));
       hmac.Update(&b, 1);
     }
     hmac.Final(buffer);
@@ -177,11 +177,11 @@ class PKCS12_PBKDF : public PasswordBasedKeyDerivationFunction
 public:
   size_t MaxDerivedKeyLength() const {return size_t(0)-1;}
   bool UsesPurposeByte() const {return true;}
-  unsigned int DeriveKey(byte *derived, size_t derivedLen, byte purpose, const byte *password, size_t passwordLen, const byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds) const;
+  unsigned int DeriveKey(CryptoPP::byte *derived, size_t derivedLen, CryptoPP::byte purpose, const CryptoPP::byte *password, size_t passwordLen, const CryptoPP::byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds) const;
 };
 
 template <class T>
-unsigned int PKCS12_PBKDF<T>::DeriveKey(byte *derived, size_t derivedLen, byte purpose, const byte *password, size_t passwordLen, const byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds) const
+unsigned int PKCS12_PBKDF<T>::DeriveKey(CryptoPP::byte *derived, size_t derivedLen, CryptoPP::byte purpose, const CryptoPP::byte *password, size_t passwordLen, const CryptoPP::byte *salt, size_t saltLen, unsigned int iterations, double timeInSeconds) const
 {
   CRYPTOPP_ASSERT(derivedLen <= MaxDerivedKeyLength());
   CRYPTOPP_ASSERT(iterations > 0 || timeInSeconds > 0);
@@ -193,7 +193,7 @@ unsigned int PKCS12_PBKDF<T>::DeriveKey(byte *derived, size_t derivedLen, byte p
   const size_t DLen = v, SLen = RoundUpToMultipleOf(saltLen, v);
   const size_t PLen = RoundUpToMultipleOf(passwordLen, v), ILen = SLen + PLen;
   SecByteBlock buffer(DLen + SLen + PLen);
-  byte *D = buffer, *S = buffer+DLen, *P = buffer+DLen+SLen, *I = S;
+  CryptoPP::byte *D = buffer, *S = buffer+DLen, *P = buffer+DLen+SLen, *I = S;
 
   memset(D, purpose, DLen);
   size_t i;

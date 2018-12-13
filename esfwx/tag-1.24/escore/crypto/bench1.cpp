@@ -39,7 +39,7 @@ const double CLOCK_TICKS_PER_SECOND = 1000000.0;
 double logtotal = 0.0, g_allocatedTime = 0, g_hertz = 0;
 unsigned int logcount = 0;
 
-static const byte defaultKey[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+static const CryptoPP::byte defaultKey[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
   "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 
 void OutputResultBytes(const char *name, double length, double timeTaken)

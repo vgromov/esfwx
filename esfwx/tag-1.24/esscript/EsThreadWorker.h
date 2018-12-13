@@ -60,7 +60,7 @@ private:
   EsThreadWorker(bool weakWorkerRef);
 
 public:
-  static EsThreadWorkerIntf::Ptr create(bool weakWorkerRef = true, const EsBaseIntfPtr& worker = EsBaseIntfPtr());
+  static EsThreadWorkerIntf::Ptr create(bool weakWorkerRef = true, const EsBaseIntfPtr& worker = nullptr);
   virtual ~EsThreadWorker();
 
   ES_DECL_REFLECTED_CLASS_BASE(EsThreadWorker)
@@ -79,37 +79,37 @@ public:
   /// EsThreadWorkerIntf reflected services
   ///
   /// Start thread with default priority, if it's not already running
-  ES_DECL_REFLECTED_INTF_METHOD0(void, start);
+  ES_DECL_REFLECTED_INTF_METHOD0(void, start) ES_OVERRIDE;
   /// Start thread with sepcified priority, if it's not already running
-  ES_DECL_REFLECTED_INTF_METHOD1(void, start, ulong);
+  ES_DECL_REFLECTED_INTF_METHOD1(void, start, ulong) ES_OVERRIDE;
   /// Signal thread to stop, do not wait for it to end
-  ES_DECL_REFLECTED_INTF_METHOD0(void, stop);
+  ES_DECL_REFLECTED_INTF_METHOD0(void, stop) ES_OVERRIDE;
   /// Signal thread to stop, and blocking wait for it to end
-  ES_DECL_REFLECTED_INTF_METHOD0(void, stopAndWait);
+  ES_DECL_REFLECTED_INTF_METHOD0(void, stopAndWait) ES_OVERRIDE;
   /// Append message to thread's error log
-  ES_DECL_REFLECTED_INTF_METHOD1(void, errorLogAppend, cr_EsString);
+  ES_DECL_REFLECTED_INTF_METHOD1(void, errorLogAppend, cr_EsString) ES_OVERRIDE;
   /// Access check for stopping timeout
-  ES_DECL_INTF_METHOD(ulong, stoppingCheckTmoGet)() const;
-  ES_DECL_INTF_METHOD(void, stoppingCheckTmoSet)(ulong tmo);
+  ES_DECL_INTF_METHOD(ulong, stoppingCheckTmoGet)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(void, stoppingCheckTmoSet)(ulong tmo) ES_OVERRIDE;
 
   /// EsThreadWorkerIntf reflected services
   ///
   /// Get thread identification value
-  ES_DECL_INTF_METHOD(EsVariant, idGet)() const;
+  ES_DECL_INTF_METHOD(EsVariant, idGet)() const ES_OVERRIDE;
   /// Get thread exit code value
-  ES_DECL_INTF_METHOD(EsVariant, exitCodeGet)() const;
+  ES_DECL_INTF_METHOD(EsVariant, exitCodeGet)() const ES_OVERRIDE;
   /// Get thread error log
-  ES_DECL_INTF_METHOD(EsVariant, errorLogGet)() const;
+  ES_DECL_INTF_METHOD(EsVariant, errorLogGet)() const ES_OVERRIDE;
   /// Get thread state
-  ES_DECL_INTF_METHOD(EsVariant, stateGet)() const;
+  ES_DECL_INTF_METHOD(EsVariant, stateGet)() const ES_OVERRIDE;
   /// Get thread priority
-  ES_DECL_INTF_METHOD(EsVariant, priorityGet)() const;
+  ES_DECL_INTF_METHOD(EsVariant, priorityGet)() const ES_OVERRIDE;
   /// Get thread breaker object
-  ES_DECL_INTF_METHOD(EsVariant, breakerGet)() const;
+  ES_DECL_INTF_METHOD(EsVariant, breakerGet)() const ES_OVERRIDE;
   /// Set thread worker implementation object
-  ES_DECL_INTF_METHOD(void, workerSet)(const EsBaseIntfPtr& worker);
+  ES_DECL_INTF_METHOD(void, workerSet)(const EsBaseIntfPtr& worker) ES_OVERRIDE;
   /// Get thread worker implementation object
-  ES_DECL_INTF_METHOD(EsBaseIntfPtr, workerGet)() const;
+  ES_DECL_INTF_METHOD(EsBaseIntfPtr, workerGet)() const ES_OVERRIDE;
 
   /// Reflected properties
   ///
@@ -137,6 +137,11 @@ protected:
   bool m_weakWorkerRef;
 
   friend class EsThreadImpl;
+  
+private:
+  EsThreadWorker() ES_REMOVEDECL;
+  EsThreadWorker(const EsThreadWorker&) ES_REMOVEDECL;
+  EsThreadWorker& operator=(const EsThreadWorker&) ES_REMOVEDECL;
 };
 
 namespace EsReflection

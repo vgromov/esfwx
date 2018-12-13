@@ -46,8 +46,8 @@ public:
   //!   32 Encoding with Extended Hex Alphabet</A> by performing the following:
   //!   <pre>
   //!     Base32Encoder encoder;
-  //!     const byte ALPHABET[] = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
-  //!     AlgorithmParameters params = MakeParameters(Name::EncodingLookupArray(),(const byte *)ALPHABET);
+  //!     const CryptoPP::byte ALPHABET[] = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
+  //!     AlgorithmParameters params = MakeParameters(Name::EncodingLookupArray(),(const CryptoPP::byte *)ALPHABET);
   //!     encoder.IsolatedInitialize(params);</pre>
   //! \details If you change the encoding alphabet, then you will need to change the decoding alphabet \a and
   //!   the decoder's lookup table.
@@ -76,7 +76,7 @@ public:
   //!   32 Encoding with Extended Hex Alphabet</A> by performing the following:
   //!   <pre>
   //!     int lookup[256];
-  //!     const byte ALPHABET[] = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
+  //!     const CryptoPP::byte ALPHABET[] = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
   //!     Base32Decoder::InitializeDecodingLookupArray(lookup, ALPHABET, 32, true /*insensitive*/);
   //!
   //!     Base32Decoder decoder;

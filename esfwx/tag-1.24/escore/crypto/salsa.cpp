@@ -40,7 +40,7 @@ void Salsa20_TestInstantiations()
 }
 #endif
 
-void Salsa20_Policy::CipherSetKey(const NameValuePairs &params, const byte *key, size_t length)
+void Salsa20_Policy::CipherSetKey(const NameValuePairs &params, const CryptoPP::byte *key, size_t length)
 {
   m_rounds = params.GetIntValueWithDefault(Name::Rounds(), 20);
 
@@ -53,14 +53,14 @@ void Salsa20_Policy::CipherSetKey(const NameValuePairs &params, const byte *key,
   GetBlock<word32, LittleEndian> get2(key + length - 16);
   get2(m_state[15])(m_state[12])(m_state[9])(m_state[6]);
 
-  // "expand 16-byte k" or "expand 32-byte k"
+  // "expand 16-CryptoPP::byte k" or "expand 32-CryptoPP::byte k"
   m_state[0] = 0x61707865;
   m_state[1] = (length == 16) ? 0x3120646e : 0x3320646e;
   m_state[2] = (length == 16) ? 0x79622d36 : 0x79622d32;
   m_state[3] = 0x6b206574;
 }
 
-void Salsa20_Policy::CipherResynchronize(byte *keystreamBuffer, const byte *IV, size_t length)
+void Salsa20_Policy::CipherResynchronize(CryptoPP::byte *keystreamBuffer, const CryptoPP::byte *IV, size_t length)
 {
   CRYPTOPP_UNUSED(keystreamBuffer), CRYPTOPP_UNUSED(length);
   CRYPTOPP_ASSERT(length==8);
@@ -100,7 +100,7 @@ unsigned int Salsa20_Policy::GetOptimalBlockSize() const
 
 #ifdef CRYPTOPP_X64_MASM_AVAILABLE
 extern "C" {
-void Salsa20_OperateKeystream(byte *output, const byte *input, size_t iterationCount, int rounds, void *state);
+void Salsa20_OperateKeystream(CryptoPP::byte *output, const CryptoPP::byte *input, size_t iterationCount, int rounds, void *state);
 }
 #endif
 
@@ -108,7 +108,7 @@ void Salsa20_OperateKeystream(byte *output, const byte *input, size_t iterationC
 # pragma warning(disable: 4731)  // frame pointer register 'ebp' modified by inline assembly code
 #endif
 
-void Salsa20_Policy::OperateKeystream(KeystreamOperation operation, byte *output, const byte *input, size_t iterationCount)
+void Salsa20_Policy::OperateKeystream(KeystreamOperation operation, CryptoPP::byte *output, const CryptoPP::byte *input, size_t iterationCount)
 {
 #endif  // #ifdef CRYPTOPP_GENERATE_X64_MASM
 
@@ -158,7 +158,7 @@ void Salsa20_Policy::OperateKeystream(KeystreamOperation operation, byte *output
     #define REG_temp      rdx
     #define SSE2_WORKSPACE    %5    /* constant */
 
-    CRYPTOPP_ALIGN_DATA(16) byte workspace[16*32];
+    CRYPTOPP_ALIGN_DATA(16) CryptoPP::byte workspace[16*32];
   #else
     #define REG_output      edi
     #define REG_input      eax
@@ -571,7 +571,7 @@ Salsa20_OperateKeystream ENDP
   }
 }  // see comment above if an internal compiler error occurs here
 
-void XSalsa20_Policy::CipherSetKey(const NameValuePairs &params, const byte *key, size_t length)
+void XSalsa20_Policy::CipherSetKey(const NameValuePairs &params, const CryptoPP::byte *key, size_t length)
 {
   m_rounds = params.GetIntValueWithDefault(Name::Rounds(), 20);
 
@@ -582,14 +582,14 @@ void XSalsa20_Policy::CipherSetKey(const NameValuePairs &params, const byte *key
   if (length == 16)
     memcpy(m_key.begin()+4, m_key.begin(), 16);
 
-  // "expand 32-byte k"
+  // "expand 32-CryptoPP::byte k"
   m_state[0] = 0x61707865;
   m_state[1] = 0x3320646e;
   m_state[2] = 0x79622d32;
   m_state[3] = 0x6b206574;
 }
 
-void XSalsa20_Policy::CipherResynchronize(byte *keystreamBuffer, const byte *IV, size_t length)
+void XSalsa20_Policy::CipherResynchronize(CryptoPP::byte *keystreamBuffer, const CryptoPP::byte *IV, size_t length)
 {
   CRYPTOPP_UNUSED(keystreamBuffer), CRYPTOPP_UNUSED(length);
   CRYPTOPP_ASSERT(length==24);

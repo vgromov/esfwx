@@ -35,14 +35,14 @@ class MDC : public MDC_Info<T>
     typedef typename T::HashWordType HashWordType;
 
   public:
-    void UncheckedSetKey(const byte *userKey, unsigned int length, const NameValuePairs &params)
+    void UncheckedSetKey(const CryptoPP::byte *userKey, unsigned int length, const NameValuePairs &params)
     {
       this->AssertValidKeyLength(length);
       memcpy_s(m_key, m_key.size(), userKey, this->KEYLENGTH);
       T::CorrectEndianess(Key(), Key(), this->KEYLENGTH);
     }
 
-    void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+    void ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
     {
       T::CorrectEndianess(Buffer(), (HashWordType *)inBlock, this->BLOCKSIZE);
       T::Transform(Buffer(), Key());
@@ -65,8 +65,8 @@ class MDC : public MDC_Info<T>
     HashWordType *Buffer() const {return (HashWordType *)m_buffer.data();}
 
     // VC60 workaround: bug triggered if using FixedSizeAllocatorWithCleanup
-    FixedSizeSecBlock<byte, MDC_Info<T>::KEYLENGTH, AllocatorWithCleanup<byte> > m_key;
-    mutable FixedSizeSecBlock<byte, MDC_Info<T>::BLOCKSIZE, AllocatorWithCleanup<byte> > m_buffer;
+    FixedSizeSecBlock<CryptoPP::byte, MDC_Info<T>::KEYLENGTH, AllocatorWithCleanup<CryptoPP::byte> > m_key;
+    mutable FixedSizeSecBlock<CryptoPP::byte, MDC_Info<T>::BLOCKSIZE, AllocatorWithCleanup<CryptoPP::byte> > m_buffer;
   };
 
 public:

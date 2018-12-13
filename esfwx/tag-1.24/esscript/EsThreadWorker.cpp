@@ -30,7 +30,7 @@ public:
   }
 
 protected:
-  virtual long worker()
+  virtual long worker() ES_OVERRIDE
   {
     long exitCode = 0;
 
@@ -69,7 +69,7 @@ protected:
     return exitCode;
   }
 
-  virtual void onEnterWorker()
+  virtual void onEnterWorker() ES_OVERRIDE
   {
     EsReflectedClassIntf::Ptr wrk;
     {
@@ -83,7 +83,7 @@ protected:
       wrk->call(esT("onThreadEnter"));
   }
 
-  virtual void onExitWorker()
+  virtual void onExitWorker() ES_OVERRIDE
   {
     EsReflectedClassIntf::Ptr wrk;
     {

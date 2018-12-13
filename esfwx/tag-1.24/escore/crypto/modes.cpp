@@ -33,7 +33,7 @@ void CipherModeBase::ResizeBuffers()
 }
 #endif
 
-void CFB_ModePolicy::Iterate(byte *output, const byte *input, CipherDir dir, size_t iterationCount)
+void CFB_ModePolicy::Iterate(CryptoPP::byte *output, const CryptoPP::byte *input, CipherDir dir, size_t iterationCount)
 {
   CRYPTOPP_ASSERT(input);
   CRYPTOPP_ASSERT(output);
@@ -67,7 +67,7 @@ void CFB_ModePolicy::TransformRegister()
   memcpy_s(m_register+updateSize, m_register.size()-updateSize, m_temp, m_feedbackSize);
 }
 
-void CFB_ModePolicy::CipherResynchronize(const byte *iv, size_t length)
+void CFB_ModePolicy::CipherResynchronize(const CryptoPP::byte *iv, size_t length)
 {
   CRYPTOPP_ASSERT(length == BlockSize());
   CopyOrZero(m_register, iv, length);
@@ -87,7 +87,7 @@ void CFB_ModePolicy::ResizeBuffers()
   m_temp.New(BlockSize());
 }
 
-void OFB_ModePolicy::WriteKeystream(byte *keystreamBuffer, size_t iterationCount)
+void OFB_ModePolicy::WriteKeystream(CryptoPP::byte *keystreamBuffer, size_t iterationCount)
 {
   CRYPTOPP_ASSERT(m_cipher->IsForwardTransformation());  // OFB mode needs the "encrypt" direction of the underlying block cipher, even to decrypt
   unsigned int s = BlockSize();
@@ -97,7 +97,7 @@ void OFB_ModePolicy::WriteKeystream(byte *keystreamBuffer, size_t iterationCount
   memcpy(m_register, keystreamBuffer+s*(iterationCount-1), s);
 }
 
-void OFB_ModePolicy::CipherResynchronize(byte *keystreamBuffer, const byte *iv, size_t length)
+void OFB_ModePolicy::CipherResynchronize(CryptoPP::byte *keystreamBuffer, const CryptoPP::byte *iv, size_t length)
 {
   CRYPTOPP_UNUSED(keystreamBuffer), CRYPTOPP_UNUSED(length);
   CRYPTOPP_ASSERT(length == BlockSize());
@@ -110,8 +110,8 @@ void CTR_ModePolicy::SeekToIteration(lword iterationCount)
   int carry=0;
   for (int i=BlockSize()-1; i>=0; i--)
   {
-    unsigned int sum = m_register[i] + byte(iterationCount) + carry;
-    m_counterArray[i] = (byte) sum;
+    unsigned int sum = m_register[i] + CryptoPP::byte(iterationCount) + carry;
+    m_counterArray[i] = (CryptoPP::byte) sum;
     carry = sum >> 8;
     iterationCount >>= 8;
   }
@@ -122,7 +122,7 @@ void CTR_ModePolicy::IncrementCounterBy256()
   IncrementCounterByOne(m_counterArray, BlockSize()-1);
 }
 
-void CTR_ModePolicy::OperateKeystream(KeystreamOperation /*operation*/, byte *output, const byte *input, size_t iterationCount)
+void CTR_ModePolicy::OperateKeystream(KeystreamOperation /*operation*/, CryptoPP::byte *output, const CryptoPP::byte *input, size_t iterationCount)
 {
   CRYPTOPP_ASSERT(m_cipher->IsForwardTransformation());  // CTR mode needs the "encrypt" direction of the underlying block cipher, even to decrypt
   unsigned int s = BlockSize();
@@ -130,10 +130,10 @@ void CTR_ModePolicy::OperateKeystream(KeystreamOperation /*operation*/, byte *ou
 
   while (iterationCount)
   {
-    byte lsb = m_counterArray[s-1];
+    CryptoPP::byte lsb = m_counterArray[s-1];
     size_t blocks = UnsignedMin(iterationCount, 256U-lsb);
     m_cipher->AdvancedProcessBlocks(m_counterArray, input, output, blocks*s, BlockTransformation::BT_InBlockIsCounter|BlockTransformation::BT_AllowParallel);
-    if ((m_counterArray[s-1] = lsb + (byte)blocks) == 0)
+    if ((m_counterArray[s-1] = lsb + (CryptoPP::byte)blocks) == 0)
       IncrementCounterBy256();
 
     output += blocks*s;
@@ -142,7 +142,7 @@ void CTR_ModePolicy::OperateKeystream(KeystreamOperation /*operation*/, byte *ou
   }
 }
 
-void CTR_ModePolicy::CipherResynchronize(byte *keystreamBuffer, const byte *iv, size_t length)
+void CTR_ModePolicy::CipherResynchronize(CryptoPP::byte *keystreamBuffer, const CryptoPP::byte *iv, size_t length)
 {
   CRYPTOPP_UNUSED(keystreamBuffer), CRYPTOPP_UNUSED(length);
   CRYPTOPP_ASSERT(length == BlockSize());
@@ -151,14 +151,14 @@ void CTR_ModePolicy::CipherResynchronize(byte *keystreamBuffer, const byte *iv, 
   m_counterArray = m_register;
 }
 
-void BlockOrientedCipherModeBase::UncheckedSetKey(const byte *key, unsigned int length, const NameValuePairs &params)
+void BlockOrientedCipherModeBase::UncheckedSetKey(const CryptoPP::byte *key, unsigned int length, const NameValuePairs &params)
 {
   m_cipher->SetKey(key, length, params);
   ResizeBuffers();
   if (IsResynchronizable())
   {
     size_t ivLength;
-    const byte *iv = GetIVAndThrowIfInvalid(params, ivLength);
+    const CryptoPP::byte *iv = GetIVAndThrowIfInvalid(params, ivLength);
     Resynchronize(iv, (int)ivLength);
   }
 }
@@ -172,13 +172,13 @@ void BlockOrientedCipherModeBase::ResizeBuffers()
 }
 #endif
 
-void ECB_OneWay::ProcessData(byte *outString, const byte *inString, size_t length)
+void ECB_OneWay::ProcessData(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length)
 {
   CRYPTOPP_ASSERT(length%BlockSize()==0);
   m_cipher->AdvancedProcessBlocks(inString, NULL, outString, length, BlockTransformation::BT_AllowParallel);
 }
 
-void CBC_Encryption::ProcessData(byte *outString, const byte *inString, size_t length)
+void CBC_Encryption::ProcessData(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length)
 {
   if (!length)
     return;
@@ -191,7 +191,7 @@ void CBC_Encryption::ProcessData(byte *outString, const byte *inString, size_t l
   memcpy(m_register, outString + length - blockSize, blockSize);
 }
 
-void CBC_CTS_Encryption::ProcessLastBlock(byte *outString, const byte *inString, size_t length)
+void CBC_CTS_Encryption::ProcessLastBlock(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length)
 {
   if (length <= BlockSize())
   {
@@ -227,7 +227,7 @@ void CBC_Decryption::ResizeBuffers()
 }
 #endif
 
-void CBC_Decryption::ProcessData(byte *outString, const byte *inString, size_t length)
+void CBC_Decryption::ProcessData(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length)
 {
   if (!length)
     return;
@@ -241,9 +241,9 @@ void CBC_Decryption::ProcessData(byte *outString, const byte *inString, size_t l
   m_register.swap(m_temp);
 }
 
-void CBC_CTS_Decryption::ProcessLastBlock(byte *outString, const byte *inString, size_t length)
+void CBC_CTS_Decryption::ProcessLastBlock(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length)
 {
-  const byte *pn, *pn1;
+  const CryptoPP::byte *pn, *pn1;
   bool stealIV = length <= BlockSize();
 
   if (stealIV)

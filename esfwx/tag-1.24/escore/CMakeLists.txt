@@ -269,6 +269,10 @@ message(
 #
 # export preprocessor defines for dll
 if( ES_BUILD_SHARED_LIBS )
+  if(BORLAND AND EMBARCADERO)
+    set_embt_target(Package)
+  endif()
+
   set_property(
     TARGET ${${targetName}}
     APPEND

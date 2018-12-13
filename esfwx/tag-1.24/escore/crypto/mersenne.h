@@ -43,13 +43,13 @@ public:
   }
 
   //! \brief Generate random array of bytes
-  //! \param output byte buffer
+  //! \param output CryptoPP::byte buffer
   //! \param size length of the buffer, in bytes
   //! \details Bytes are written to output in big endian order. If output length
   //!   is not a multiple of word32, then unused bytes are not accumulated for subsequent
   //!   calls to GenerateBlock. Rather, the unused tail bytes are discarded, and the
   //!   stream is continued at the next word32 boundary from the state array.
-  void GenerateBlock(byte *output, size_t size)
+  void GenerateBlock(CryptoPP::byte *output, size_t size)
   {
     // Handle word32 size blocks
     word32 temp;

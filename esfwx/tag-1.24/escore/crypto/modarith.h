@@ -225,8 +225,8 @@ public:
   unsigned int MaxElementBitLength() const
     {return (m_modulus-1).BitCount();}
 
-  //! \brief Provides the maximum byte size of an element in the ring
-  //! \returns maximum byte size of an element
+  //! \brief Provides the maximum CryptoPP::byte size of an element in the ring
+  //! \returns maximum CryptoPP::byte size of an element
   unsigned int MaxElementByteLength() const
     {return (m_modulus-1).ByteCount();}
 

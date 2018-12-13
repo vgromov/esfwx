@@ -40,7 +40,7 @@ protected:
       DEFLATED=8, FAST=4, SLOW=2};
 
   void WritePrestreamHeader();
-  void ProcessUncompressedData(const byte *string, size_t length);
+  void ProcessUncompressedData(const CryptoPP::byte *string, size_t length);
   void WritePoststreamTail();
 
   word32 m_totalLen;
@@ -88,7 +88,7 @@ protected:
 
   unsigned int MaxPrestreamHeaderSize() const {return 1024;}
   void ProcessPrestreamHeader();
-  void ProcessDecompressedData(const byte *string, size_t length);
+  void ProcessDecompressedData(const CryptoPP::byte *string, size_t length);
   unsigned int MaxPoststreamTailSize() const {return 8;}
   void ProcessPoststreamTail();
 

@@ -29,13 +29,13 @@ static const unsigned int KEYLENGTH = DefaultBlockCipher::Encryption::DEFAULT_KE
 // deducible from it, and (3) it contains as much entropy as it can hold, or
 // the amount of entropy in the input string, whichever is smaller.
 
-static void Mash(const byte *in, size_t inLen, byte *out, size_t outLen, int iterations)
+static void Mash(const CryptoPP::byte *in, size_t inLen, CryptoPP::byte *out, size_t outLen, int iterations)
 {
   if (BytePrecision(outLen) > 2)
     throw InvalidArgument("Mash: output legnth too large");
 
   size_t bufSize = RoundUpToMultipleOf(outLen, (size_t)DefaultHashModule::DIGESTSIZE);
-  byte b[2];
+  CryptoPP::byte b[2];
   SecByteBlock buf(bufSize);
   SecByteBlock outBuf(bufSize);
   DefaultHashModule hash;
@@ -43,8 +43,8 @@ static void Mash(const byte *in, size_t inLen, byte *out, size_t outLen, int ite
   unsigned int i;
   for(i=0; i<outLen; i+=DefaultHashModule::DIGESTSIZE)
   {
-    b[0] = (byte) (i >> 8);
-    b[1] = (byte) i;
+    b[0] = (CryptoPP::byte) (i >> 8);
+    b[1] = (CryptoPP::byte) i;
     hash.Update(b, 2);
     hash.Update(in, inLen);
     hash.Final(outBuf+i);
@@ -55,8 +55,8 @@ static void Mash(const byte *in, size_t inLen, byte *out, size_t outLen, int ite
     memcpy(buf, outBuf, bufSize);
     for (i=0; i<bufSize; i+=DefaultHashModule::DIGESTSIZE)
     {
-      b[0] = (byte) (i >> 8);
-      b[1] = (byte) i;
+      b[0] = (CryptoPP::byte) (i >> 8);
+      b[1] = (CryptoPP::byte) i;
       hash.Update(b, 2);
       hash.Update(buf, bufSize);
       hash.Final(outBuf+i);
@@ -66,7 +66,7 @@ static void Mash(const byte *in, size_t inLen, byte *out, size_t outLen, int ite
   memcpy(out, outBuf, outLen);
 }
 
-static void GenerateKeyIV(const byte *passphrase, size_t passphraseLength, const byte *salt, size_t saltLength, byte *key, byte *IV)
+static void GenerateKeyIV(const CryptoPP::byte *passphrase, size_t passphraseLength, const CryptoPP::byte *salt, size_t saltLength, CryptoPP::byte *key, CryptoPP::byte *IV)
 {
   SecByteBlock temp(passphraseLength+saltLength);
   memcpy(temp, passphrase, passphraseLength);
@@ -80,17 +80,17 @@ static void GenerateKeyIV(const byte *passphrase, size_t passphraseLength, const
 // ********************************************************
 
 DefaultEncryptor::DefaultEncryptor(const char *passphrase, BufferedTransformation *attachment)
-  : ProxyFilter(NULL, 0, 0, attachment), m_passphrase((const byte *)passphrase, strlen(passphrase))
+  : ProxyFilter(NULL, 0, 0, attachment), m_passphrase((const CryptoPP::byte *)passphrase, strlen(passphrase))
 {
 }
 
-DefaultEncryptor::DefaultEncryptor(const byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment)
+DefaultEncryptor::DefaultEncryptor(const CryptoPP::byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment)
   : ProxyFilter(NULL, 0, 0, attachment), m_passphrase(passphrase, passphraseLength)
 {
 }
 
 
-void DefaultEncryptor::FirstPut(const byte *)
+void DefaultEncryptor::FirstPut(const CryptoPP::byte *)
 {
   // VC60 workaround: __LINE__ expansion bug
   CRYPTOPP_COMPILE_ASSERT_INSTANCE(SALTLENGTH <= DefaultHashModule::DIGESTSIZE, 1);
@@ -102,9 +102,9 @@ void DefaultEncryptor::FirstPut(const byte *)
   // use hash(passphrase | time | clock) as salt
   hash.Update(m_passphrase, m_passphrase.size());
   time_t t=time(0);
-  hash.Update((byte *)&t, sizeof(t));
+  hash.Update((CryptoPP::byte *)&t, sizeof(t));
   clock_t c=clock();
-  hash.Update((byte *)&c, sizeof(c));
+  hash.Update((CryptoPP::byte *)&c, sizeof(c));
   hash.Final(salt);
 
   // use hash(passphrase | salt) as key check
@@ -125,7 +125,7 @@ void DefaultEncryptor::FirstPut(const byte *)
   m_filter->Put(keyCheck, BLOCKSIZE);
 }
 
-void DefaultEncryptor::LastPut(const byte *inString, size_t length)
+void DefaultEncryptor::LastPut(const CryptoPP::byte *inString, size_t length)
 {
   CRYPTOPP_UNUSED(inString); CRYPTOPP_UNUSED(length);
   m_filter->MessageEnd();
@@ -136,12 +136,12 @@ void DefaultEncryptor::LastPut(const byte *inString, size_t length)
 DefaultDecryptor::DefaultDecryptor(const char *p, BufferedTransformation *attachment, bool throwException)
   : ProxyFilter(NULL, SALTLENGTH+BLOCKSIZE, 0, attachment)
   , m_state(WAITING_FOR_KEYCHECK)
-  , m_passphrase((const byte *)p, strlen(p))
+  , m_passphrase((const CryptoPP::byte *)p, strlen(p))
   , m_throwException(throwException)
 {
 }
 
-DefaultDecryptor::DefaultDecryptor(const byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment, bool throwException)
+DefaultDecryptor::DefaultDecryptor(const CryptoPP::byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment, bool throwException)
   : ProxyFilter(NULL, SALTLENGTH+BLOCKSIZE, 0, attachment)
   , m_state(WAITING_FOR_KEYCHECK)
   , m_passphrase(passphrase, passphraseLength)
@@ -149,12 +149,12 @@ DefaultDecryptor::DefaultDecryptor(const byte *passphrase, size_t passphraseLeng
 {
 }
 
-void DefaultDecryptor::FirstPut(const byte *inString)
+void DefaultDecryptor::FirstPut(const CryptoPP::byte *inString)
 {
   CheckKey(inString, inString+SALTLENGTH);
 }
 
-void DefaultDecryptor::LastPut(const byte *inString, size_t length)
+void DefaultDecryptor::LastPut(const CryptoPP::byte *inString, size_t length)
 {
   CRYPTOPP_UNUSED(inString); CRYPTOPP_UNUSED(length);
   if (m_filter.get() == NULL)
@@ -170,7 +170,7 @@ void DefaultDecryptor::LastPut(const byte *inString, size_t length)
   }
 }
 
-void DefaultDecryptor::CheckKey(const byte *salt, const byte *keyCheck)
+void DefaultDecryptor::CheckKey(const CryptoPP::byte *salt, const CryptoPP::byte *keyCheck)
 {
   SecByteBlock check(STDMAX((unsigned int)2*BLOCKSIZE, (unsigned int)DefaultHashModule::DIGESTSIZE));
 
@@ -204,7 +204,7 @@ void DefaultDecryptor::CheckKey(const byte *salt, const byte *keyCheck)
 
 // ********************************************************
 
-static DefaultMAC * NewDefaultEncryptorMAC(const byte *passphrase, size_t passphraseLength)
+static DefaultMAC * NewDefaultEncryptorMAC(const CryptoPP::byte *passphrase, size_t passphraseLength)
 {
   size_t macKeyLength = DefaultMAC::StaticGetValidKeyLength(16);
   SecByteBlock macKey(macKeyLength);
@@ -215,19 +215,19 @@ static DefaultMAC * NewDefaultEncryptorMAC(const byte *passphrase, size_t passph
 
 DefaultEncryptorWithMAC::DefaultEncryptorWithMAC(const char *passphrase, BufferedTransformation *attachment)
   : ProxyFilter(NULL, 0, 0, attachment)
-  , m_mac(NewDefaultEncryptorMAC((const byte *)passphrase, strlen(passphrase)))
+  , m_mac(NewDefaultEncryptorMAC((const CryptoPP::byte *)passphrase, strlen(passphrase)))
 {
   SetFilter(new HashFilter(*m_mac, new DefaultEncryptor(passphrase), true));
 }
 
-DefaultEncryptorWithMAC::DefaultEncryptorWithMAC(const byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment)
+DefaultEncryptorWithMAC::DefaultEncryptorWithMAC(const CryptoPP::byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment)
   : ProxyFilter(NULL, 0, 0, attachment)
   , m_mac(NewDefaultEncryptorMAC(passphrase, passphraseLength))
 {
   SetFilter(new HashFilter(*m_mac, new DefaultEncryptor(passphrase, passphraseLength), true));
 }
 
-void DefaultEncryptorWithMAC::LastPut(const byte *inString, size_t length)
+void DefaultEncryptorWithMAC::LastPut(const CryptoPP::byte *inString, size_t length)
 {
   CRYPTOPP_UNUSED(inString); CRYPTOPP_UNUSED(length);
   m_filter->MessageEnd();
@@ -237,13 +237,13 @@ void DefaultEncryptorWithMAC::LastPut(const byte *inString, size_t length)
 
 DefaultDecryptorWithMAC::DefaultDecryptorWithMAC(const char *passphrase, BufferedTransformation *attachment, bool throwException)
   : ProxyFilter(NULL, 0, 0, attachment)
-  , m_mac(NewDefaultEncryptorMAC((const byte *)passphrase, strlen(passphrase)))
+  , m_mac(NewDefaultEncryptorMAC((const CryptoPP::byte *)passphrase, strlen(passphrase)))
   , m_throwException(throwException)
 {
   SetFilter(new DefaultDecryptor(passphrase, m_hashVerifier=new HashVerifier(*m_mac, NULL, HashVerifier::PUT_MESSAGE), throwException));
 }
 
-DefaultDecryptorWithMAC::DefaultDecryptorWithMAC(const byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment, bool throwException)
+DefaultDecryptorWithMAC::DefaultDecryptorWithMAC(const CryptoPP::byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment, bool throwException)
   : ProxyFilter(NULL, 0, 0, attachment)
   , m_mac(NewDefaultEncryptorMAC(passphrase, passphraseLength))
   , m_throwException(throwException)
@@ -261,7 +261,7 @@ bool DefaultDecryptorWithMAC::CheckLastMAC() const
   return m_hashVerifier->GetLastResult();
 }
 
-void DefaultDecryptorWithMAC::LastPut(const byte *inString, size_t length)
+void DefaultDecryptorWithMAC::LastPut(const CryptoPP::byte *inString, size_t length)
 {
   CRYPTOPP_UNUSED(inString); CRYPTOPP_UNUSED(length);
   m_filter->MessageEnd();

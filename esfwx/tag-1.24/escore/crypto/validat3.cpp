@@ -51,12 +51,12 @@ USING_NAMESPACE(std)
 struct HashTestTuple
 {
   HashTestTuple(const char *input, const char *output, unsigned int repeatTimes=1)
-    : input((byte *)input), output((byte *)output), inputLen(strlen(input)), repeatTimes(repeatTimes) {}
+    : input((CryptoPP::byte *)input), output((CryptoPP::byte *)output), inputLen(strlen(input)), repeatTimes(repeatTimes) {}
 
   HashTestTuple(const char *input, unsigned int inputLen, const char *output, unsigned int repeatTimes)
-    : input((byte *)input), output((byte *)output), inputLen(inputLen), repeatTimes(repeatTimes) {}
+    : input((CryptoPP::byte *)input), output((CryptoPP::byte *)output), inputLen(inputLen), repeatTimes(repeatTimes) {}
 
-  const byte *input, *output;
+  const CryptoPP::byte *input, *output;
   size_t inputLen;
   unsigned int repeatTimes;
 };
@@ -373,7 +373,7 @@ bool ValidateWhirlpool()
 #ifdef CRYPTOPP_REMOVED
 bool ValidateMD5MAC()
 {
-  const byte keys[2][MD5MAC::KEYLENGTH]={
+  const CryptoPP::byte keys[2][MD5MAC::KEYLENGTH]={
     {0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88,0x99,0xaa,0xbb,0xcc,0xdd,0xee,0xff},
     {0x01,0x23,0x45,0x67,0x89,0xab,0xcd,0xef,0xfe,0xdc,0xba,0x98,0x76,0x54,0x32,0x10}};
 
@@ -386,7 +386,7 @@ bool ValidateMD5MAC()
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
     "12345678901234567890123456789012345678901234567890123456789012345678901234567890"};
 
-  const byte output[2][7][MD5MAC::DIGESTSIZE]={
+  const CryptoPP::byte output[2][7][MD5MAC::DIGESTSIZE]={
     {{0x1f,0x1e,0xf2,0x37,0x5c,0xc0,0xe0,0x84,0x4f,0x98,0xe7,0xe8,0x11,0xa3,0x4d,0xa8},
     {0x7a,0x76,0xee,0x64,0xca,0x71,0xef,0x23,0x7e,0x26,0x29,0xed,0x94,0x52,0x73,0x65},
     {0xe8,0x01,0x3c,0x11,0xf7,0x20,0x9d,0x13,0x28,0xc0,0xca,0xa0,0x4f,0xd0,0x12,0xa6},
@@ -405,7 +405,7 @@ bool ValidateMD5MAC()
   // Coverity finding, also see http://stackoverflow.com/a/34509163/608639.
   StreamState ss(cout);
 
-  byte digest[MD5MAC::DIGESTSIZE];
+  CryptoPP::byte digest[MD5MAC::DIGESTSIZE];
   bool pass=true, fail;
 
   cout << "\nMD5MAC validation suite running...\n";
@@ -419,10 +419,10 @@ bool ValidateMD5MAC()
     cout << endl << endl;
     for (int i=0;i<7;i++)
     {
-      mac.Update((byte *)TestVals[i], strlen(TestVals[i]));
+      mac.Update((CryptoPP::byte *)TestVals[i], strlen(TestVals[i]));
       mac.Final(digest);
       fail = memcmp(digest, output[k][i], MD5MAC::DIGESTSIZE)
-         || !mac.VerifyDigest(output[k][i], (byte *)TestVals[i], strlen(TestVals[i]));
+         || !mac.VerifyDigest(output[k][i], (CryptoPP::byte *)TestVals[i], strlen(TestVals[i]));
       pass = pass && !fail;
       cout << (fail ? "FAILED   " : "passed   ");
       for (int j=0;j<MD5MAC::DIGESTSIZE;j++)
@@ -445,7 +445,7 @@ bool ValidateXMACC()
 {
   typedef XMACC<MD5> XMACC_MD5;
 
-  const byte keys[2][XMACC_MD5::KEYLENGTH]={
+  const CryptoPP::byte keys[2][XMACC_MD5::KEYLENGTH]={
     {0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88,0x99,0xaa,0xbb},
     {0x01,0x23,0x45,0x67,0x89,0xab,0xcd,0xef,0xfe,0xdc,0xba,0x98}};
 
@@ -460,7 +460,7 @@ bool ValidateXMACC()
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
     "12345678901234567890123456789012345678901234567890123456789012345678901234567890"};
 
-  const byte output[2][7][XMACC_MD5::DIGESTSIZE]={
+  const CryptoPP::byte output[2][7][XMACC_MD5::DIGESTSIZE]={
     {{0xcc,0xdd,0xef,0x00,0xfa,0x89,0x54,0x92,0x86,0x32,0xda,0x2a,0x3f,0x29,0xc5,0x52,0xa0,0x0d,0x05,0x13},
     {0xcc,0xdd,0xef,0x01,0xae,0xdb,0x8b,0x7b,0x69,0x71,0xc7,0x91,0x71,0x48,0x9d,0x18,0xe7,0xdf,0x9d,0x5a},
     {0xcc,0xdd,0xef,0x02,0x5e,0x01,0x2e,0x2e,0x4b,0xc3,0x83,0x62,0xc2,0xf4,0xe6,0x18,0x1c,0x44,0xaf,0xca},
@@ -479,7 +479,7 @@ bool ValidateXMACC()
   // Coverity finding, also see http://stackoverflow.com/a/34509163/608639.
   StreamState ss(cout);
 
-  byte digest[XMACC_MD5::DIGESTSIZE];
+  CryptoPP::byte digest[XMACC_MD5::DIGESTSIZE];
   bool pass=true, fail;
 
   cout << "\nXMACC/MD5 validation suite running...\n";
@@ -493,10 +493,10 @@ bool ValidateXMACC()
     cout << "    COUNTER: 0x" << hex << counters[k] << endl << endl;
     for (int i=0;i<7;i++)
     {
-      mac.Update((byte *)TestVals[i], strlen(TestVals[i]));
+      mac.Update((CryptoPP::byte *)TestVals[i], strlen(TestVals[i]));
       mac.Final(digest);
       fail = memcmp(digest, output[k][i], XMACC_MD5::DIGESTSIZE)
-         || !mac.VerifyDigest(output[k][i], (byte *)TestVals[i], strlen(TestVals[i]));
+         || !mac.VerifyDigest(output[k][i], (CryptoPP::byte *)TestVals[i], strlen(TestVals[i]));
       pass = pass && !fail;
       cout << (fail ? "FAILED   " : "passed   ");
       for (int j=0;j<XMACC_MD5::DIGESTSIZE;j++)
@@ -511,7 +511,7 @@ bool ValidateXMACC()
 
 bool ValidateTTMAC()
 {
-  const byte key[TTMAC::KEYLENGTH]={
+  const CryptoPP::byte key[TTMAC::KEYLENGTH]={
     0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88,0x99,
     0xaa,0xbb,0xcc,0xdd,0xee,0xff,0x01,0x23,0x45,0x67};
 
@@ -525,7 +525,7 @@ bool ValidateTTMAC()
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
     "12345678901234567890123456789012345678901234567890123456789012345678901234567890"};
 
-  const byte output[8][TTMAC::DIGESTSIZE]={
+  const CryptoPP::byte output[8][TTMAC::DIGESTSIZE]={
     {0x2d,0xec,0x8e,0xd4,0xa0,0xfd,0x71,0x2e,0xd9,0xfb,0xf2,0xab,0x46,0x6e,0xc2,0xdf,0x21,0x21,0x5e,0x4a},
     {0x58,0x93,0xe3,0xe6,0xe3,0x06,0x70,0x4d,0xd7,0x7a,0xd6,0xe6,0xed,0x43,0x2c,0xde,0x32,0x1a,0x77,0x56},
     {0x70,0xbf,0xd1,0x02,0x97,0x97,0xa5,0xc1,0x6d,0xa5,0xb5,0x57,0xa1,0xf0,0xb2,0x77,0x9b,0x78,0x49,0x7e},
@@ -538,7 +538,7 @@ bool ValidateTTMAC()
   // Coverity finding, also see http://stackoverflow.com/a/34509163/608639.
   StreamState ss(cout);
 
-  byte digest[TTMAC::DIGESTSIZE];
+  CryptoPP::byte digest[TTMAC::DIGESTSIZE];
   bool pass=true, fail;
 
   cout << "\nTwo-Track-MAC validation suite running...\n";
@@ -546,10 +546,10 @@ bool ValidateTTMAC()
   TTMAC mac(key, sizeof(key));
   for (unsigned int k=0; k<sizeof(TestVals)/sizeof(TestVals[0]); k++)
   {
-    mac.Update((byte *)TestVals[k], strlen(TestVals[k]));
+    mac.Update((CryptoPP::byte *)TestVals[k], strlen(TestVals[k]));
     mac.Final(digest);
     fail = memcmp(digest, output[k], TTMAC::DIGESTSIZE)
-      || !mac.VerifyDigest(output[k], (byte *)TestVals[k], strlen(TestVals[k]));
+      || !mac.VerifyDigest(output[k], (CryptoPP::byte *)TestVals[k], strlen(TestVals[k]));
     pass = pass && !fail;
     cout << (fail ? "FAILED   " : "passed   ");
     for (int j=0;j<TTMAC::DIGESTSIZE;j++)
@@ -562,7 +562,7 @@ bool ValidateTTMAC()
 
 struct PBKDF_TestTuple
 {
-  byte purpose;
+  CryptoPP::byte purpose;
   unsigned int iterations;
   const char *hexPassword, *hexSalt, *hexDerivedKey;
 };
@@ -581,7 +581,7 @@ bool TestPBKDF(PasswordBasedKeyDerivationFunction &pbkdf, const PBKDF_TestTuple 
     StringSource(tuple.hexDerivedKey, true, new HexDecoder(new StringSink(derivedKey)));
 
     SecByteBlock derived(derivedKey.size());
-    pbkdf.DeriveKey(derived, derived.size(), tuple.purpose, (byte *)password.data(), password.size(), (byte *)salt.data(), salt.size(), tuple.iterations);
+    pbkdf.DeriveKey(derived, derived.size(), tuple.purpose, (CryptoPP::byte *)password.data(), password.size(), (CryptoPP::byte *)salt.data(), salt.size(), tuple.iterations);
     bool fail = memcmp(derived, derivedKey.data(), derived.size()) != 0;
     pass = pass && !fail;
 
@@ -1151,11 +1151,11 @@ bool ValidateBLAKE2s()
       }
   };
 
-  byte digest[BLAKE2s::DIGESTSIZE];
+  CryptoPP::byte digest[BLAKE2s::DIGESTSIZE];
   for (unsigned int i=0; i<COUNTOF(tests); ++i)
   {
-    BLAKE2s blake2s((const byte*)tests[i].key, tests[i].klen);
-    blake2s.Update((const byte*)tests[i].message, tests[i].mlen);
+    BLAKE2s blake2s((const CryptoPP::byte*)tests[i].key, tests[i].klen);
+    blake2s.Update((const CryptoPP::byte*)tests[i].message, tests[i].mlen);
     blake2s.Final(digest);
 
     fail = memcmp(digest, tests[i].digest, sizeof(digest)) != 0;
@@ -1546,11 +1546,11 @@ bool ValidateBLAKE2b()
       }
   };
 
-  byte digest[BLAKE2b::DIGESTSIZE];
+  CryptoPP::byte digest[BLAKE2b::DIGESTSIZE];
   for (unsigned int i=0; i<COUNTOF(tests); ++i)
   {
-    BLAKE2b blake2b((const byte*)tests[i].key, tests[i].klen);
-    blake2b.Update((const byte*)tests[i].message, tests[i].mlen);
+    BLAKE2b blake2b((const CryptoPP::byte*)tests[i].key, tests[i].klen);
+    blake2b.Update((const CryptoPP::byte*)tests[i].message, tests[i].mlen);
     blake2b.Final(digest);
 
     fail = memcmp(digest, tests[i].digest, sizeof(digest)) != 0;

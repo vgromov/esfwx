@@ -95,13 +95,13 @@ public:
   //! \brief Provides the size of the agreed value
   //! \return size of agreed value produced  in this domain
   //! \details The length is calculated using <tt>GetEncodedElementSize(false)</tt>, which means the
-  //!   element is encoded in a non-reversible format. A non-reversible format means its a raw byte array,
+  //!   element is encoded in a non-reversible format. A non-reversible format means its a raw CryptoPP::byte array,
   //!   and it lacks presentation format like an ASN.1 BIT_STRING or OCTET_STRING.
   unsigned int AgreedValueLength() const {return GetAbstractGroupParameters().GetEncodedElementSize(false);}
 
   //! \brief Provides the size of the static private key
   //! \return size of static private keys in this domain
-  //! \details The length is calculated using the byte count of the subgroup order.
+  //! \details The length is calculated using the CryptoPP::byte count of the subgroup order.
   unsigned int StaticPrivateKeyLength() const {return GetAbstractGroupParameters().GetSubgroupOrder().ByteCount();}
 
   //! \brief Provides the size of the static public key
@@ -113,10 +113,10 @@ public:
 
   //! \brief Generate static private key in this domain
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer for the generated private key in this domain
+  //! \param privateKey a CryptoPP::byte buffer for the generated private key in this domain
   //! \details The private key is a random scalar used as an exponent in the range <tt>[1,MaxExponent()]</tt>.
   //! \pre <tt>COUNTOF(privateKey) == PrivateStaticKeyLength()</tt>
-  void GenerateStaticPrivateKey(RandomNumberGenerator &rng, byte *privateKey) const
+  void GenerateStaticPrivateKey(RandomNumberGenerator &rng, CryptoPP::byte *privateKey) const
   {
     Integer x(rng, Integer::One(), GetAbstractGroupParameters().GetMaxExponent());
     x.Encode(privateKey, StaticPrivateKeyLength());
@@ -124,12 +124,12 @@ public:
 
   //! \brief Generate a static public key from a private key in this domain
   //! \param rng a RandomNumberGenerator derived class
-  //! \param privateKey a byte buffer with the previously generated private key
-  //! \param publicKey a byte buffer for the generated public key in this domain
+  //! \param privateKey a CryptoPP::byte buffer with the previously generated private key
+  //! \param publicKey a CryptoPP::byte buffer for the generated public key in this domain
   //! \details The public key is an element or point on the curve, and its stored in a revrsible format.
   //!    A reversible format means it has a presentation format, and its an ANS.1 encoded element or point.
   //! \pre <tt>COUNTOF(publicKey) == PublicStaticKeyLength()</tt>
-  void GenerateStaticPublicKey(RandomNumberGenerator &rng, const byte *privateKey, byte *publicKey) const
+  void GenerateStaticPublicKey(RandomNumberGenerator &rng, const CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const
   {
     CRYPTOPP_UNUSED(rng);
     const DL_GroupParameters<Element> &params = GetAbstractGroupParameters();
@@ -141,7 +141,7 @@ public:
   unsigned int EphemeralPrivateKeyLength() const {return StaticPrivateKeyLength() + StaticPublicKeyLength();}
   unsigned int EphemeralPublicKeyLength() const {return StaticPublicKeyLength();}
 
-  void GenerateEphemeralPrivateKey(RandomNumberGenerator &rng, byte *privateKey) const
+  void GenerateEphemeralPrivateKey(RandomNumberGenerator &rng, CryptoPP::byte *privateKey) const
   {
     const DL_GroupParameters<Element> &params = GetAbstractGroupParameters();
     Integer x(rng, Integer::One(), params.GetMaxExponent());
@@ -150,15 +150,15 @@ public:
     params.EncodeElement(true, y, privateKey+StaticPrivateKeyLength());
   }
 
-  void GenerateEphemeralPublicKey(RandomNumberGenerator &rng, const byte *privateKey, byte *publicKey) const
+  void GenerateEphemeralPublicKey(RandomNumberGenerator &rng, const CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const
   {
     CRYPTOPP_UNUSED(rng);
     memcpy(publicKey, privateKey+StaticPrivateKeyLength(), EphemeralPublicKeyLength());
   }
 
-  bool Agree(byte *agreedValue,
-    const byte *staticPrivateKey, const byte *ephemeralPrivateKey,
-    const byte *staticOtherPublicKey, const byte *ephemeralOtherPublicKey,
+  bool Agree(CryptoPP::byte *agreedValue,
+    const CryptoPP::byte *staticPrivateKey, const CryptoPP::byte *ephemeralPrivateKey,
+    const CryptoPP::byte *staticOtherPublicKey, const CryptoPP::byte *ephemeralOtherPublicKey,
     bool validateStaticOtherPublicKey=true) const
   {
     try

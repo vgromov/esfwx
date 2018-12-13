@@ -1092,7 +1092,7 @@ local unsigned bi_reverse(
     int len       /* its bit length */
 )
 {
-    register unsigned res = 0;
+    ES_REGISTER unsigned res = 0;
     do {
         res |= code & 1;
         code >>= 1, res <<= 1;

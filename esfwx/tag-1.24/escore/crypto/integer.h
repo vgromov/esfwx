@@ -115,7 +115,7 @@ public:
 
     //! \brief Convert from a C-string
     //! \param str C-string value
-    //! \param order byte order
+    //! \param order CryptoPP::byte order
     //! \details \p str can be in base 2, 8, 10, or 16. Base is determined by a case
     //!   insensitive suffix of 'h', 'o', or 'b'.  No suffix means base 10.
     //! \details Byte order was added at Crypto++ 5.7 to allow use of little-endian
@@ -124,33 +124,33 @@ public:
 
     //! \brief Convert from a wide C-string
     //! \param str wide C-string value
-    //! \param order byte order
+    //! \param order CryptoPP::byte order
     //! \details \p str can be in base 2, 8, 10, or 16. Base is determined by a case
     //!   insensitive suffix of 'h', 'o', or 'b'.  No suffix means base 10.
     //! \details Byte order was added at Crypto++ 5.7 to allow use of little-endian
     //!   integers with curve25519, Poly1305 and Microsoft CAPI.
     explicit Integer(const wchar_t *str, ByteOrder order = BIG_ENDIAN_ORDER);
 
-    //! \brief Convert from a big-endian byte array
-    //! \param encodedInteger big-endian byte array
-    //! \param byteCount length of the byte array
+    //! \brief Convert from a big-endian CryptoPP::byte array
+    //! \param encodedInteger big-endian CryptoPP::byte array
+    //! \param byteCount length of the CryptoPP::byte array
     //! \param sign enumeration indicating Signedness
-    //! \param order byte order
+    //! \param order CryptoPP::byte order
     //! \details Byte order was added at Crypto++ 5.7 to allow use of little-endian
     //!   integers with curve25519, Poly1305 and Microsoft CAPI.
-    Integer(const byte *encodedInteger, size_t byteCount, Signedness sign=UNSIGNED, ByteOrder order = BIG_ENDIAN_ORDER);
+    Integer(const CryptoPP::byte *encodedInteger, size_t byteCount, Signedness sign=UNSIGNED, ByteOrder order = BIG_ENDIAN_ORDER);
 
     //! \brief Convert from a big-endian array
-    //! \param bt BufferedTransformation object with big-endian byte array
-    //! \param byteCount length of the byte array
+    //! \param bt BufferedTransformation object with big-endian CryptoPP::byte array
+    //! \param byteCount length of the CryptoPP::byte array
     //! \param sign enumeration indicating Signedness
-    //! \param order byte order
+    //! \param order CryptoPP::byte order
     //! \details Byte order was added at Crypto++ 5.7 to allow use of little-endian
     //!   integers with curve25519, Poly1305 and Microsoft CAPI.
     Integer(BufferedTransformation &bt, size_t byteCount, Signedness sign=UNSIGNED, ByteOrder order = BIG_ENDIAN_ORDER);
 
-    //! \brief Convert from a BER encoded byte array
-    //! \param bt BufferedTransformation object with BER encoded byte array
+    //! \brief Convert from a BER encoded CryptoPP::byte array
+    //! \param bt BufferedTransformation object with BER encoded CryptoPP::byte array
     explicit Integer(BufferedTransformation &bt);
 
     //! \brief Create a random integer
@@ -204,13 +204,13 @@ public:
     size_t MinEncodedSize(Signedness sign=UNSIGNED) const;
 
     //! \brief Encode in big-endian format
-    //! \param output big-endian byte array
-    //! \param outputLen length of the byte array
+    //! \param output big-endian CryptoPP::byte array
+    //! \param outputLen length of the CryptoPP::byte array
     //! \param sign enumeration indicating Signedness
     //! \details Unsigned means encode absolute value, signed means encode two's complement if negative.
     //! \details outputLen can be used to ensure an Integer is encoded to an exact size (rather than a
     //!   minimum size). An exact size is useful, for example, when encoding to a field element size.
-    void Encode(byte *output, size_t outputLen, Signedness sign=UNSIGNED) const;
+    void Encode(CryptoPP::byte *output, size_t outputLen, Signedness sign=UNSIGNED) const;
 
     //! \brief Encode in big-endian format
     //! \param bt BufferedTransformation object
@@ -233,12 +233,12 @@ public:
     void DEREncodeAsOctetString(BufferedTransformation &bt, size_t length) const;
 
     //! \brief Encode absolute value in OpenPGP format
-    //! \param output big-endian byte array
-    //! \param bufferSize length of the byte array
+    //! \param output big-endian CryptoPP::byte array
+    //! \param bufferSize length of the CryptoPP::byte array
     //! \returns length of the output
     //! \details OpenPGPEncode places result into a BufferedTransformation object and returns the
     //!   number of bytes used for the encoding
-    size_t OpenPGPEncode(byte *output, size_t bufferSize) const;
+    size_t OpenPGPEncode(CryptoPP::byte *output, size_t bufferSize) const;
 
     //! \brief Encode absolute value in OpenPGP format
     //! \param bt BufferedTransformation object
@@ -247,23 +247,23 @@ public:
     //!   number of bytes used for the encoding
     size_t OpenPGPEncode(BufferedTransformation &bt) const;
 
-    //! \brief Decode from big-endian byte array
-    //! \param input big-endian byte array
-    //! \param inputLen length of the byte array
+    //! \brief Decode from big-endian CryptoPP::byte array
+    //! \param input big-endian CryptoPP::byte array
+    //! \param inputLen length of the CryptoPP::byte array
     //! \param sign enumeration indicating Signedness
-    void Decode(const byte *input, size_t inputLen, Signedness sign=UNSIGNED);
+    void Decode(const CryptoPP::byte *input, size_t inputLen, Signedness sign=UNSIGNED);
 
-    //! \brief Decode nonnegative value from big-endian byte array
+    //! \brief Decode nonnegative value from big-endian CryptoPP::byte array
     //! \param bt BufferedTransformation object
-    //! \param inputLen length of the byte array
+    //! \param inputLen length of the CryptoPP::byte array
     //! \param sign enumeration indicating Signedness
     //! \note <tt>bt.MaxRetrievable() \>= inputLen</tt>.
     void Decode(BufferedTransformation &bt, size_t inputLen, Signedness sign=UNSIGNED);
 
     //! \brief Decode from BER format
-    //! \param input big-endian byte array
-    //! \param inputLen length of the byte array
-    void BERDecode(const byte *input, size_t inputLen);
+    //! \param input big-endian CryptoPP::byte array
+    //! \param inputLen length of the CryptoPP::byte array
+    void BERDecode(const CryptoPP::byte *input, size_t inputLen);
 
     //! \brief Decode from BER format
     //! \param bt BufferedTransformation object
@@ -271,7 +271,7 @@ public:
 
     //! \brief Decode nonnegative value from big-endian octet string
     //! \param bt BufferedTransformation object
-    //! \param length length of the byte array
+    //! \param length length of the CryptoPP::byte array
     void BERDecodeAsOctetString(BufferedTransformation &bt, size_t length);
 
     //! \brief Exception thrown when an error is encountered decoding an OpenPGP integer
@@ -282,9 +282,9 @@ public:
     };
 
     //! \brief Decode from OpenPGP format
-    //! \param input big-endian byte array
-    //! \param inputLen length of the byte array
-    void OpenPGPDecode(const byte *input, size_t inputLen);
+    //! \param input big-endian CryptoPP::byte array
+    //! \param inputLen length of the CryptoPP::byte array
+    void OpenPGPDecode(const CryptoPP::byte *input, size_t inputLen);
     //! \brief Decode from OpenPGP format
     //! \param bt BufferedTransformation object
     void OpenPGPDecode(BufferedTransformation &bt);
@@ -314,9 +314,9 @@ public:
     //! \brief Provides the i-th bit of the Integer
     //! \returns the i-th bit, i=0 being the least significant bit
     bool GetBit(size_t i) const;
-    //! \brief Provides the i-th byte of the Integer
-    //! \returns the i-th byte
-    byte GetByte(size_t i) const;
+    //! \brief Provides the i-th CryptoPP::byte of the Integer
+    //! \returns the i-th CryptoPP::byte
+    CryptoPP::byte GetByte(size_t i) const;
     //! \brief Provides the low order bits of the Integer
     //! \returns n lowest bits of *this >> i
     lword GetBits(size_t i, size_t n) const;
@@ -417,9 +417,9 @@ public:
     //! \details 0-based numbering.
     void SetBit(size_t n, bool value=1);
 
-    //! \brief Set the n-th byte to value
+    //! \brief Set the n-th CryptoPP::byte to value
     //! \details 0-based numbering.
-    void SetByte(size_t n, byte value);
+    void SetByte(size_t n, CryptoPP::byte value);
 
     //! \brief Reverse the Sign of the Integer
     void Negate();

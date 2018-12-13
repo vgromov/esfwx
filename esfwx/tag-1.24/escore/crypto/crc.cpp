@@ -13,7 +13,7 @@ NAMESPACE_BEGIN(CryptoPP)
 # undef CRYPTOPP_BOOL_SSE4_INTRINSICS_AVAILABLE
 #endif
 
-/* Table of CRC-32's of all single byte values (made by makecrc.c) */
+/* Table of CRC-32's of all single CryptoPP::byte values (made by makecrc.c) */
 const word32 CRC32::m_tab[] = {
 #ifdef IS_LITTLE_ENDIAN
   0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
@@ -129,7 +129,7 @@ CRC32::CRC32()
   Reset();
 }
 
-void CRC32::Update(const byte *s, size_t n)
+void CRC32::Update(const CryptoPP::byte *s, size_t n)
 {
 #if (CRYPTOPP_BOOL_ARM_CRC32_INTRINSICS_AVAILABLE)
   if (HasCRC32())
@@ -169,7 +169,7 @@ void CRC32::Update(const byte *s, size_t n)
   m_crc = crc;
 }
 
-void CRC32::TruncatedFinal(byte *hash, size_t size)
+void CRC32::TruncatedFinal(CryptoPP::byte *hash, size_t size)
 {
   ThrowIfInvalidTruncatedSize(size);
 
@@ -297,7 +297,7 @@ CRC32C::CRC32C()
   Reset();
 }
 
-void CRC32C::Update(const byte *s, size_t n)
+void CRC32C::Update(const CryptoPP::byte *s, size_t n)
 {
 #if CRYPTOPP_BOOL_SSE4_INTRINSICS_AVAILABLE
   if (HasSSE4())
@@ -351,7 +351,7 @@ void CRC32C::Update(const byte *s, size_t n)
   m_crc = crc;
 }
 
-void CRC32C::TruncatedFinal(byte *hash, size_t size)
+void CRC32C::TruncatedFinal(CryptoPP::byte *hash, size_t size)
 {
   ThrowIfInvalidTruncatedSize(size);
 

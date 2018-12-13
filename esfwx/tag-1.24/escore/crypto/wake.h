@@ -38,9 +38,9 @@ template <class B = BigEndian>
 class CRYPTOPP_NO_VTABLE WAKE_Policy : public AdditiveCipherConcretePolicy<word32, 1, 64>, protected WAKE_Base
 {
 protected:
-  void CipherSetKey(const NameValuePairs &params, const byte *key, size_t length);
+  void CipherSetKey(const NameValuePairs &params, const CryptoPP::byte *key, size_t length);
   // OFB
-  void OperateKeystream(KeystreamOperation operation, byte *output, const byte *input, size_t iterationCount);
+  void OperateKeystream(KeystreamOperation operation, CryptoPP::byte *output, const CryptoPP::byte *input, size_t iterationCount);
   bool CipherIsRandomAccess() const {return false;}
 };
 
@@ -59,7 +59,7 @@ template <class B = BigEndian>
 class WAKE_ROFB_Policy : public WAKE_Policy<B>
 {
 protected:
-  void Iterate(KeystreamOperation operation, byte *output, const byte *input, unsigned int iterationCount);
+  void Iterate(KeystreamOperation operation, CryptoPP::byte *output, const CryptoPP::byte *input, unsigned int iterationCount);
 };
 
 template <class B = BigEndian>

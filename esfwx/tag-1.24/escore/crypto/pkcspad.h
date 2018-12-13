@@ -25,8 +25,8 @@ public:
   CRYPTOPP_CONSTEXPR static const char *StaticAlgorithmName() {return "EME-PKCS1-v1_5";}
 
   size_t MaxUnpaddedLength(size_t paddedLength) const;
-  void Pad(RandomNumberGenerator &rng, const byte *raw, size_t inputLength, byte *padded, size_t paddedLength, const NameValuePairs &parameters) const;
-  DecodingResult Unpad(const byte *padded, size_t paddedLength, byte *raw, const NameValuePairs &parameters) const;
+  void Pad(RandomNumberGenerator &rng, const CryptoPP::byte *raw, size_t inputLength, CryptoPP::byte *padded, size_t paddedLength, const NameValuePairs &parameters) const;
+  DecodingResult Unpad(const CryptoPP::byte *padded, size_t paddedLength, CryptoPP::byte *raw, const NameValuePairs &parameters) const;
 };
 
 //! \class PKCS_DigestDecoration
@@ -34,7 +34,7 @@ public:
 template <class H> class PKCS_DigestDecoration
 {
 public:
-  static const byte decoration[];
+  static const CryptoPP::byte decoration[];
   static const unsigned int length;
 };
 
@@ -73,9 +73,9 @@ public:
     {return 8 * (digestSize + hashIdentifierSize + 10);}
 
   void ComputeMessageRepresentative(RandomNumberGenerator &rng,
-    const byte *recoverableMessage, size_t recoverableMessageLength,
+    const CryptoPP::byte *recoverableMessage, size_t recoverableMessageLength,
     HashTransformation &hash, HashIdentifier hashIdentifier, bool messageEmpty,
-    byte *representative, size_t representativeBitLength) const;
+    CryptoPP::byte *representative, size_t representativeBitLength) const;
 
   struct HashIdentifierLookup
   {

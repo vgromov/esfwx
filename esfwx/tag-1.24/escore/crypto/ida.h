@@ -26,11 +26,11 @@ public:
 
   unsigned int GetThreshold() const {return m_threshold;}
   void AddOutputChannel(word32 channelId);
-  void ChannelData(word32 channelId, const byte *inString, size_t length, bool messageEnd);
+  void ChannelData(word32 channelId, const CryptoPP::byte *inString, size_t length, bool messageEnd);
   lword InputBuffered(word32 channelId) const;
 
   void IsolatedInitialize(const NameValuePairs &parameters=g_nullNameValuePairs);
-  size_t ChannelPut2(const std::string &channel, const byte *begin, size_t length, int messageEnd, bool blocking)
+  size_t ChannelPut2(const std::string &channel, const CryptoPP::byte *begin, size_t length, int messageEnd, bool blocking)
   {
     if (!blocking)
       throw BlockingInputOnly("RawIDA");
@@ -73,7 +73,7 @@ public:
   }
 
   void IsolatedInitialize(const NameValuePairs &parameters=g_nullNameValuePairs);
-  size_t Put2(const byte *begin, size_t length, int messageEnd, bool blocking);
+  size_t Put2(const CryptoPP::byte *begin, size_t length, int messageEnd, bool blocking);
   bool Flush(bool hardFlush, int propagation=-1, bool blocking=true) {return m_ida.Flush(hardFlush, propagation, blocking);}
 
 protected:
@@ -111,7 +111,7 @@ public:
   }
 
   void IsolatedInitialize(const NameValuePairs &parameters=g_nullNameValuePairs);
-  size_t Put2(const byte *begin, size_t length, int messageEnd, bool blocking);
+  size_t Put2(const CryptoPP::byte *begin, size_t length, int messageEnd, bool blocking);
   bool Flush(bool hardFlush, int propagation=-1, bool blocking=true) {return m_ida.Flush(hardFlush, propagation, blocking);}
 
 protected:
@@ -146,7 +146,7 @@ public:
 
   void IsolatedInitialize(const NameValuePairs &parameters)
     {CRYPTOPP_UNUSED(parameters); m_possiblePadding = false;}
-  size_t Put2(const byte *begin, size_t length, int messageEnd, bool blocking);
+  size_t Put2(const CryptoPP::byte *begin, size_t length, int messageEnd, bool blocking);
 
   // GetPossiblePadding() == false at the end of a message indicates incorrect padding
   bool GetPossiblePadding() const {return m_possiblePadding;}

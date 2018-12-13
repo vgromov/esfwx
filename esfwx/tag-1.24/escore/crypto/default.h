@@ -35,14 +35,14 @@ public:
   DefaultEncryptor(const char *passphrase, BufferedTransformation *attachment = NULL);
 
   //! \brief Construct a DefaultEncryptor
-  //! \param passphrase a byte string password
-  //! \param passphraseLength the length of the byte string password
+  //! \param passphrase a CryptoPP::byte string password
+  //! \param passphraseLength the length of the CryptoPP::byte string password
   //! \param attachment a BufferedTransformation to attach to this object
-  DefaultEncryptor(const byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment = NULL);
+  DefaultEncryptor(const CryptoPP::byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment = NULL);
 
 protected:
-  void FirstPut(const byte *);
-  void LastPut(const byte *inString, size_t length);
+  void FirstPut(const CryptoPP::byte *);
+  void LastPut(const CryptoPP::byte *inString, size_t length);
 
 private:
   SecByteBlock m_passphrase;
@@ -64,11 +64,11 @@ public:
   DefaultDecryptor(const char *passphrase, BufferedTransformation *attachment = NULL, bool throwException=true);
 
   //! \brief Constructs a DefaultDecryptor
-  //! \param passphrase a byte string password
-  //! \param passphraseLength the length of the byte string password
+  //! \param passphrase a CryptoPP::byte string password
+  //! \param passphraseLength the length of the CryptoPP::byte string password
   //! \param attachment a BufferedTransformation to attach to this object
   //! \param throwException a flag specifiying whether an Exception should be thrown on error
-  DefaultDecryptor(const byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment = NULL, bool throwException=true);
+  DefaultDecryptor(const CryptoPP::byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment = NULL, bool throwException=true);
 
   class Err : public Exception
   {
@@ -82,13 +82,13 @@ public:
   State CurrentState() const {return m_state;}
 
 protected:
-  void FirstPut(const byte *inString);
-  void LastPut(const byte *inString, size_t length);
+  void FirstPut(const CryptoPP::byte *inString);
+  void LastPut(const CryptoPP::byte *inString, size_t length);
 
   State m_state;
 
 private:
-  void CheckKey(const byte *salt, const byte *keyCheck);
+  void CheckKey(const CryptoPP::byte *salt, const CryptoPP::byte *keyCheck);
 
   SecByteBlock m_passphrase;
   CBC_Mode<DefaultBlockCipher>::Decryption m_cipher;
@@ -115,14 +115,14 @@ public:
   DefaultEncryptorWithMAC(const char *passphrase, BufferedTransformation *attachment = NULL);
 
   //! \brief Constructs a DefaultEncryptorWithMAC
-  //! \param passphrase a byte string password
-  //! \param passphraseLength the length of the byte string password
+  //! \param passphrase a CryptoPP::byte string password
+  //! \param passphraseLength the length of the CryptoPP::byte string password
   //! \param attachment a BufferedTransformation to attach to this object
-  DefaultEncryptorWithMAC(const byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment = NULL);
+  DefaultEncryptorWithMAC(const CryptoPP::byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment = NULL);
 
 protected:
-  void FirstPut(const byte *inString) {CRYPTOPP_UNUSED(inString);}
-  void LastPut(const byte *inString, size_t length);
+  void FirstPut(const CryptoPP::byte *inString) {CRYPTOPP_UNUSED(inString);}
+  void LastPut(const CryptoPP::byte *inString, size_t length);
 
 private:
   member_ptr<DefaultMAC> m_mac;
@@ -152,18 +152,18 @@ public:
   DefaultDecryptorWithMAC(const char *passphrase, BufferedTransformation *attachment = NULL, bool throwException=true);
 
   //! \brief Constructs a DefaultDecryptor
-  //! \param passphrase a byte string password
-  //! \param passphraseLength the length of the byte string password
+  //! \param passphrase a CryptoPP::byte string password
+  //! \param passphraseLength the length of the CryptoPP::byte string password
   //! \param attachment a BufferedTransformation to attach to this object
   //! \param throwException a flag specifiying whether an Exception should be thrown on error
-  DefaultDecryptorWithMAC(const byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment = NULL, bool throwException=true);
+  DefaultDecryptorWithMAC(const CryptoPP::byte *passphrase, size_t passphraseLength, BufferedTransformation *attachment = NULL, bool throwException=true);
 
   DefaultDecryptor::State CurrentState() const;
   bool CheckLastMAC() const;
 
 protected:
-  void FirstPut(const byte *inString) {CRYPTOPP_UNUSED(inString);}
-  void LastPut(const byte *inString, size_t length);
+  void FirstPut(const CryptoPP::byte *inString) {CRYPTOPP_UNUSED(inString);}
+  void LastPut(const CryptoPP::byte *inString, size_t length);
 
 private:
   member_ptr<DefaultMAC> m_mac;

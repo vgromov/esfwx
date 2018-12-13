@@ -97,7 +97,7 @@ WindowsPipeReceiver::WindowsPipeReceiver()
   m_overlapped.hEvent = m_event;
 }
 
-bool WindowsPipeReceiver::Receive(byte* buf, size_t bufLen)
+bool WindowsPipeReceiver::Receive(CryptoPP::byte* buf, size_t bufLen)
 {
   CRYPTOPP_ASSERT(!m_resultPending && !m_eofReceived);
 
@@ -178,7 +178,7 @@ WindowsPipeSender::WindowsPipeSender()
   m_overlapped.hEvent = m_event;
 }
 
-void WindowsPipeSender::Send(const byte* buf, size_t bufLen)
+void WindowsPipeSender::Send(const CryptoPP::byte* buf, size_t bufLen)
 {
   DWORD written = 0;
   const HANDLE h = GetHandle();

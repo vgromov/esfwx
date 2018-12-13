@@ -121,14 +121,14 @@ public:
 
   //! \brief Generate a public key from a private key in this domain
   //! \param rng RandomNumberGenerator derived class
-  //! \param privateKey byte buffer with the previously generated private key
-  //! \param publicKey byte buffer for the generated public key in this domain
+  //! \param privateKey CryptoPP::byte buffer with the previously generated private key
+  //! \param publicKey CryptoPP::byte buffer for the generated public key in this domain
   //! \details If using a FIPS 140-2 validated library on Windows, then this class will perform
   //!   a self test to ensure the key pair is pairwise consistent. Non-FIPS and non-Windows
   //!   builds of the library do not provide FIPS validated cryptography, so the code should be
   //!   removed by the optimizer.
   //! \pre <tt>COUNTOF(publicKey) == PublicKeyLength()</tt>
-  void GeneratePublicKey(RandomNumberGenerator &rng, const byte *privateKey, byte *publicKey) const
+  void GeneratePublicKey(RandomNumberGenerator &rng, const CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const
   {
     Base::GeneratePublicKey(rng, privateKey, publicKey);
 

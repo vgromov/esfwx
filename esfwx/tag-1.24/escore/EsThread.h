@@ -174,8 +174,8 @@ public:
 
   // reflected services
   ES_DECL_REFLECTED_METHOD1(bool, checkForStop, ulong);
-  ES_DECL_INTF_METHOD(bool, isBreaking)() const;
-  ES_DECL_INTF_METHOD(bool, isBreaking)(ulong ms) const;
+  ES_DECL_INTF_METHOD(bool, isBreaking)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, isBreaking)(ulong ms) const ES_OVERRIDE;
 
 protected:
   EsThread& m_thread;

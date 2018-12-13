@@ -24,17 +24,17 @@ enum DSASignatureFormat {
 };
 
 //! \brief Converts between signature encoding formats
-//! \param buffer byte buffer for the converted signature encoding
+//! \param buffer CryptoPP::byte buffer for the converted signature encoding
 //! \param bufferSize the length of the converted signature encoding buffer
 //! \param toFormat the source signature format
-//! \param signature byte buffer for the existing signature encoding
+//! \param signature CryptoPP::byte buffer for the existing signature encoding
 //! \param signatureLen the length of the existing signature encoding buffer
 //! \param fromFormat the source signature format
 //! \details This function converts between these formats, and returns length
 //!   of signature in the target format. If <tt>toFormat == DSA_P1363</tt>, then
 //!   <tt>bufferSize</tt> must equal <tt>publicKey.SignatureLength()</tt>
-size_t DSAConvertSignatureFormat(byte *buffer, size_t bufferSize, DSASignatureFormat toFormat,
-  const byte *signature, size_t signatureLen, DSASignatureFormat fromFormat);
+size_t DSAConvertSignatureFormat(CryptoPP::byte *buffer, size_t bufferSize, DSASignatureFormat toFormat,
+  const CryptoPP::byte *signature, size_t signatureLen, DSASignatureFormat fromFormat);
 
 NAMESPACE_END
 

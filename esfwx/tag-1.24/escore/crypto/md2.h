@@ -13,8 +13,8 @@ class MD2 : public HashTransformation
 {
 public:
   MD2();
-  void Update(const byte *input, size_t length);
-  void TruncatedFinal(byte *hash, size_t size);
+  void Update(const CryptoPP::byte *input, size_t length);
+  void TruncatedFinal(CryptoPP::byte *hash, size_t size);
   unsigned int DigestSize() const {return DIGESTSIZE;}
   unsigned int BlockSize() const {return BLOCKSIZE;}
   CRYPTOPP_CONSTEXPR static const char *StaticAlgorithmName() {return "MD2";}

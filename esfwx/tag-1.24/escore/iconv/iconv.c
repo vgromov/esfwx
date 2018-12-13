@@ -179,7 +179,7 @@ static const struct alias sysdep_aliases[] = {
 __inline
 #endif
 const struct alias *
-aliases2_lookup (register const char *str)
+aliases2_lookup (ES_REGISTER const char *str)
 {
   const struct alias * ptr;
   unsigned int count;

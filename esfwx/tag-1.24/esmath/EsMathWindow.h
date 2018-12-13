@@ -53,7 +53,7 @@ public:
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
 
 protected:
-  virtual void doGenerate() const;
+  virtual void doGenerate() const ES_OVERRIDE;
 };
 //---------------------------------------------------------------------------
 
@@ -74,7 +74,7 @@ public:
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
 
 protected:
-  virtual void doGenerate() const;
+  virtual void doGenerate() const ES_OVERRIDE;
 };
 //---------------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ public:
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
 
 protected:
-  virtual void doGenerate() const;
+  virtual void doGenerate() const ES_OVERRIDE;
 };
 //---------------------------------------------------------------------------
 
@@ -116,7 +116,7 @@ public:
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
 
 protected:
-  virtual void doGenerate() const;
+  virtual void doGenerate() const ES_OVERRIDE;
 };
 //---------------------------------------------------------------------------
 
@@ -151,7 +151,7 @@ public:
   ES_DECL_PROPERTY(alpha, double)
 
 protected:
-  virtual void doGenerate() const;
+  virtual void doGenerate() const ES_OVERRIDE;
 
 protected:
   mutable double m_alpha;
@@ -175,7 +175,7 @@ public:
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
 
 protected:
-  virtual void doGenerate() const;
+  virtual void doGenerate() const ES_OVERRIDE;
 };
 //---------------------------------------------------------------------------
 
@@ -196,7 +196,7 @@ public:
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
 
 protected:
-  virtual void doGenerate() const;
+  virtual void doGenerate() const ES_OVERRIDE;
 };
 //---------------------------------------------------------------------------
 
@@ -217,7 +217,7 @@ public:
   ES_DECL_REFLECTED_CLASS_CTOR0(EsBaseIntfPtr);
 
 protected:
-  virtual void doGenerate() const;
+  virtual void doGenerate() const ES_OVERRIDE;
 };
 //---------------------------------------------------------------------------
 

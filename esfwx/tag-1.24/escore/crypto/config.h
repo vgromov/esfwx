@@ -230,10 +230,9 @@ namespace CryptoPP { }
 #  define __USE_W32_SOCKETS
 #endif
 
-typedef unsigned char byte;    // put in global namespace to avoid ambiguity with other byte typedefs
-
 NAMESPACE_BEGIN(CryptoPP)
 
+typedef unsigned char CryptoPP::byte;
 typedef unsigned short word16;
 typedef unsigned int word32;
 
@@ -548,7 +547,7 @@ NAMESPACE_END
   #define CRYPTOPP_BOOL_ALIGN16 0
 #endif
 
-// how to allocate 16-byte aligned memory (for SSE2)
+// how to allocate 16-CryptoPP::byte aligned memory (for SSE2)
 #if defined(CRYPTOPP_MSVC6PP_OR_LATER)
   #define CRYPTOPP_MM_MALLOC_AVAILABLE
 #elif defined(__APPLE__)
@@ -561,7 +560,7 @@ NAMESPACE_END
   #define CRYPTOPP_NO_ALIGNED_ALLOC
 #endif
 
-// Apple always provides 16-byte aligned, and tells us to use calloc
+// Apple always provides 16-CryptoPP::byte aligned, and tells us to use calloc
 // http://developer.apple.com/library/mac/documentation/Performance/Conceptual/ManagingMemory/Articles/MemoryAlloc.html
 
 // how to disable inlining

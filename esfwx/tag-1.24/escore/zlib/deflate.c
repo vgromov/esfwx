@@ -1175,9 +1175,9 @@ local uInt longest_match(
 )
 {
     unsigned chain_length = s->max_chain_length;/* max hash chain length */
-    register Bytef *scan = s->window + s->strstart; /* current string */
-    register Bytef *match;                       /* matched string */
-    register int len;                           /* length of current match */
+    ES_REGISTER Bytef *scan = s->window + s->strstart; /* current string */
+    ES_REGISTER Bytef *match;                       /* matched string */
+    ES_REGISTER int len;                           /* length of current match */
     int best_len = s->prev_length;              /* best match length so far */
     int nice_match = s->nice_match;             /* stop if match long enough */
     IPos limit = s->strstart > (IPos)MAX_DIST(s) ?
@@ -1192,13 +1192,13 @@ local uInt longest_match(
     /* Compare two bytes at a time. Note: this is not always beneficial.
      * Try with and without -DUNALIGNED_OK to check.
      */
-    register Bytef *strend = s->window + s->strstart + MAX_MATCH - 1;
-    register ush scan_start = *(ushf*)scan;
-    register ush scan_end   = *(ushf*)(scan+best_len-1);
+    ES_REGISTER Bytef *strend = s->window + s->strstart + MAX_MATCH - 1;
+    ES_REGISTER ush scan_start = *(ushf*)scan;
+    ES_REGISTER ush scan_end   = *(ushf*)(scan+best_len-1);
 #else
-    register Bytef *strend = s->window + s->strstart + MAX_MATCH;
-    register z_Byte scan_end1  = scan[best_len-1];
-    register z_Byte scan_end   = scan[best_len];
+    ES_REGISTER Bytef *strend = s->window + s->strstart + MAX_MATCH;
+    ES_REGISTER z_Byte scan_end1  = scan[best_len-1];
+    ES_REGISTER z_Byte scan_end   = scan[best_len];
 #endif
 
     /* The code is optimized for HASH_BITS >= 8 and MAX_MATCH-2 multiple of 16.
@@ -1324,10 +1324,10 @@ local uInt longest_match(
     IPos cur_match
 )
 {
-    register Bytef *scan = s->window + s->strstart; /* current string */
-    register Bytef *match;                       /* matched string */
-    register int len;                           /* length of current match */
-    register Bytef *strend = s->window + s->strstart + MAX_MATCH;
+    ES_REGISTER Bytef *scan = s->window + s->strstart; /* current string */
+    ES_REGISTER Bytef *match;                       /* matched string */
+    ES_REGISTER int len;                           /* length of current match */
+    ES_REGISTER Bytef *strend = s->window + s->strstart + MAX_MATCH;
 
     /* The code is optimized for HASH_BITS >= 8 and MAX_MATCH-2 multiple of 16.
      * It is easy to get rid of this optimization if necessary.
@@ -1391,8 +1391,8 @@ local void fill_window(
     deflate_state *s
 )
 {
-    register unsigned n, m;
-    register Posf *p;
+    ES_REGISTER unsigned n, m;
+    ES_REGISTER Posf *p;
     unsigned more;    /* Amount of free space at the end of the window. */
     uInt wsize = s->w_size;
 

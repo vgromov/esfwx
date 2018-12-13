@@ -25,10 +25,10 @@ public:
 
   CRYPTOPP_CONSTEXPR static const char *StaticAlgorithmName() {return "ARC4";}
 
-  void GenerateBlock(byte *output, size_t size);
+  void GenerateBlock(CryptoPP::byte *output, size_t size);
   void DiscardBytes(size_t n);
 
-    void ProcessData(byte *outString, const byte *inString, size_t length);
+    void ProcessData(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length);
 
   bool IsRandomAccess() const {return false;}
   bool IsSelfInverting() const {return true;}
@@ -38,11 +38,11 @@ public:
   typedef SymmetricCipherFinal<ARC4_Base> Decryption;
 
 protected:
-  void UncheckedSetKey(const byte *key, unsigned int length, const NameValuePairs &params);
+  void UncheckedSetKey(const CryptoPP::byte *key, unsigned int length, const NameValuePairs &params);
   virtual unsigned int GetDefaultDiscardBytes() const {return 0;}
 
-    FixedSizeSecBlock<byte, 256> m_state;
-    byte m_x, m_y;
+    FixedSizeSecBlock<CryptoPP::byte, 256> m_state;
+    CryptoPP::byte m_x, m_y;
 };
 
 //! <a href="http://www.weidai.com/scan-mirror/cs.html#RC4">Alleged RC4</a>

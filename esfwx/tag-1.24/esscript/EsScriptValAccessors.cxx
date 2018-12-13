@@ -31,17 +31,17 @@ public:
   }
 
   // interface impl
-  ES_DECL_INTF_METHOD(EsVariant&, get)();
-  ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW { return true; }
-  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val);
-  ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW { return true; }
-  ES_DECL_INTF_METHOD(EsString, trace)() const;
-  ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW { return false; }
-  ES_DECL_INTF_METHOD(bool, isBuiltIn)() const ES_NOTHROW { return false; }
-  ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_NOTHROW { return EsScriptSymbolFlag::None; }
-  ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_NOTHROW { return EsString::null(); }
+  ES_DECL_INTF_METHOD(EsVariant&, get)() ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW ES_OVERRIDE { return true; }
+  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val) ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW ES_OVERRIDE { return true; }
+  ES_DECL_INTF_METHOD(EsString, trace)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW ES_OVERRIDE { return false; }
+  ES_DECL_INTF_METHOD(bool, isBuiltIn)() const ES_NOTHROW ES_OVERRIDE { return false; }
+  ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_NOTHROW ES_OVERRIDE { return EsScriptSymbolFlag::None; }
+  ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_NOTHROW ES_OVERRIDE { return EsString::null(); }
   // for member var accessors only
-  ES_DECL_INTF_METHOD(void, updateSubscriberAdd)(EsScriptObjectIntf* subscriber) { ES_FAIL; }
+  ES_DECL_INTF_METHOD(void, updateSubscriberAdd)(EsScriptObjectIntf* subscriber) ES_OVERRIDE { ES_FAIL; }
 
 protected:
   // data members
@@ -78,17 +78,17 @@ public:
   }
 
   // interface impl
-  ES_DECL_INTF_METHOD(EsVariant&, get)();
-  ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW { return true; }
-  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val);
-  ES_DECL_INTF_METHOD(EsString, trace)() const;
-  ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW { return true; }
-  ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW { return false; }
-  ES_DECL_INTF_METHOD(bool, isBuiltIn)() const ES_NOTHROW { return false; }
-  ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_NOTHROW { return EsScriptSymbolFlag::None; }
-  ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_NOTHROW { return EsString::null(); }
+  ES_DECL_INTF_METHOD(EsVariant&, get)() ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW ES_OVERRIDE { return true; }
+  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val) ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(EsString, trace)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW ES_OVERRIDE { return true; }
+  ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW ES_OVERRIDE { return false; }
+  ES_DECL_INTF_METHOD(bool, isBuiltIn)() const ES_NOTHROW ES_OVERRIDE { return false; }
+  ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_NOTHROW ES_OVERRIDE { return EsScriptSymbolFlag::None; }
+  ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_NOTHROW ES_OVERRIDE { return EsString::null(); }
   // for member var accessors only
-  ES_DECL_INTF_METHOD(void, updateSubscriberAdd)(EsScriptObjectIntf* subscriber) { ES_FAIL; }
+  ES_DECL_INTF_METHOD(void, updateSubscriberAdd)(EsScriptObjectIntf* subscriber) ES_OVERRIDE { ES_FAIL; }
 
 protected:
   // data members
@@ -124,17 +124,17 @@ public:
   }
 
   // interface impl
-  ES_DECL_INTF_METHOD(EsVariant&, get)();
-  ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW { return true; }
-  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val);
-  ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW;
-  ES_DECL_INTF_METHOD(EsString, trace)() const;
-  ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW { return false; }
-  ES_DECL_INTF_METHOD(bool, isBuiltIn)() const ES_NOTHROW { return false; }
-  ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_NOTHROW { return EsScriptSymbolFlag::None; }
-  ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_NOTHROW { return EsString::null(); }
+  ES_DECL_INTF_METHOD(EsVariant&, get)() ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW ES_OVERRIDE { return true; }
+  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val) ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(EsString, trace)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW ES_OVERRIDE { return false; }
+  ES_DECL_INTF_METHOD(bool, isBuiltIn)() const ES_NOTHROW ES_OVERRIDE { return false; }
+  ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_NOTHROW ES_OVERRIDE { return EsScriptSymbolFlag::None; }
+  ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_NOTHROW ES_OVERRIDE { return EsString::null(); }
   // for member var accessors only
-  ES_DECL_INTF_METHOD(void, updateSubscriberAdd)(EsScriptObjectIntf* subscriber) { ES_FAIL; }
+  ES_DECL_INTF_METHOD(void, updateSubscriberAdd)(EsScriptObjectIntf* subscriber) ES_OVERRIDE { ES_FAIL; }
 
 protected:
   // data members
@@ -175,17 +175,17 @@ public:
   }
 
   // interface impl
-  ES_DECL_INTF_METHOD(EsVariant&, get)();
-  ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW { return true; }
-  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val);
-  ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW { return true; }
-  ES_DECL_INTF_METHOD(EsString, trace)() const;
-  ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW { return false; }
-  ES_DECL_INTF_METHOD(bool, isBuiltIn)() const ES_NOTHROW { return false; }
-  ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_NOTHROW { return EsScriptSymbolFlag::None; }
-  ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_NOTHROW { return m_propName; }
+  ES_DECL_INTF_METHOD(EsVariant&, get)() ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, getReturnsTemporary)() const ES_NOTHROW ES_OVERRIDE { return true; }
+  ES_DECL_INTF_METHOD(void, set)(const EsVariant& val) ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, isOk)() const ES_NOTHROW ES_OVERRIDE { return true; }
+  ES_DECL_INTF_METHOD(EsString, trace)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(bool, isReadOnly)() const ES_NOTHROW ES_OVERRIDE { return false; }
+  ES_DECL_INTF_METHOD(bool, isBuiltIn)() const ES_NOTHROW ES_OVERRIDE { return false; }
+  ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_NOTHROW ES_OVERRIDE { return EsScriptSymbolFlag::None; }
+  ES_DECL_INTF_METHOD(const EsString&, nameGet)() const ES_NOTHROW ES_OVERRIDE { return m_propName; }
   // for member var accessors only
-  ES_DECL_INTF_METHOD(void, updateSubscriberAdd)(EsScriptObjectIntf* subscriber) { ES_FAIL; }
+  ES_DECL_INTF_METHOD(void, updateSubscriberAdd)(EsScriptObjectIntf* subscriber) ES_OVERRIDE { ES_FAIL; }
 
 protected:
   // Try to get property info from instruction cache or, if not there, find it in object,

@@ -5,8 +5,6 @@
 # pragma package(smart_init)
 #endif
 
-#include "autolink.cxx"
-
 // compile-time asserts on wchar_t size definitions
 #if (ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND)
   ES_COMPILE_TIME_ASSERT(sizeof(ES_WCHAR)==sizeof(System::WideChar), sizeofWideChar);

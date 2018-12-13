@@ -85,7 +85,7 @@ void RandomizedTransfer(BufferedTransformation &source, BufferedTransformation &
 {
   while (source.MaxRetrievable() > (finish ? 0 : 4096))
   {
-    byte buf[4096+64];
+    CryptoPP::byte buf[4096+64];
     size_t start = GlobalRNG().GenerateWord32(0, 63);
     size_t len = GlobalRNG().GenerateWord32(1, UnsignedMin(4096U, 3*source.MaxRetrievable()/2));
     len = source.Get(buf+start, len);
@@ -134,7 +134,7 @@ void PutDecodedDatumInto(const TestData &data, const char *name, BufferedTransfo
 
     while (repeat--)
     {
-      q.Put((const byte *)s2.data(), s2.size());
+      q.Put((const CryptoPP::byte *)s2.data(), s2.size());
       RandomizedTransfer(q, target, false);
     }
   }
@@ -195,7 +195,7 @@ public:
     {
       m_temp.resize(0);
       PutDecodedDatumInto(m_data, name, StringSink(m_temp).Ref());
-      reinterpret_cast<ConstByteArrayParameter *>(pValue)->Assign((const byte *)m_temp.data(), m_temp.size(), false);
+      reinterpret_cast<ConstByteArrayParameter *>(pValue)->Assign((const CryptoPP::byte *)m_temp.data(), m_temp.size(), false);
     }
     else
       throw ValueTypeMismatch(name, typeid(std::string), valueType);
@@ -275,7 +275,7 @@ void TestSignatureScheme(TestData &v)
   {
     TestKeyPairValidAndConsistent(verifier->AccessMaterial(), signer->GetMaterial());
     VerifierFilter verifierFilter(*verifier, NULL, VerifierFilter::THROW_EXCEPTION);
-    verifierFilter.Put((const byte *)"abc", 3);
+    verifierFilter.Put((const CryptoPP::byte *)"abc", 3);
     StringSource ss("abc", true, new SignerFilter(GlobalRNG(), *signer, new Redirector(verifierFilter)));
   }
   else if (test == "Sign")
@@ -383,8 +383,8 @@ void TestSymmetricCipher(TestData &v, const NameValuePairs &overrideParameters)
     }
     else
     {
-      encryptor->SetKey((const byte *)key.data(), key.size(), pairs);
-      decryptor->SetKey((const byte *)key.data(), key.size(), pairs);
+      encryptor->SetKey((const CryptoPP::byte *)key.data(), key.size(), pairs);
+      decryptor->SetKey((const CryptoPP::byte *)key.data(), key.size(), pairs);
     }
 
     int seek = pairs.GetIntValueWithDefault("Seek", 0);
@@ -398,13 +398,13 @@ void TestSymmetricCipher(TestData &v, const NameValuePairs &overrideParameters)
     if (test == "EncryptionMCT" || test == "DecryptionMCT")
     {
       SymmetricCipher *cipher = encryptor.get();
-      SecByteBlock buf((byte *)plaintext.data(), plaintext.size()), keybuf((byte *)key.data(), key.size());
+      SecByteBlock buf((CryptoPP::byte *)plaintext.data(), plaintext.size()), keybuf((CryptoPP::byte *)key.data(), key.size());
 
       if (test == "DecryptionMCT")
       {
         cipher = decryptor.get();
         ciphertext = GetDecodedDatum(v, "Ciphertext");
-        buf.Assign((byte *)ciphertext.data(), ciphertext.size());
+        buf.Assign((CryptoPP::byte *)ciphertext.data(), ciphertext.size());
       }
 
       for (int i=0; i<400; i++)
@@ -417,7 +417,7 @@ void TestSymmetricCipher(TestData &v, const NameValuePairs &overrideParameters)
         }
 
         encrypted.erase(0, encrypted.size() - keybuf.size());
-        xorbuf(keybuf.begin(), (const byte *)encrypted.data(), keybuf.size());
+        xorbuf(keybuf.begin(), (const CryptoPP::byte *)encrypted.data(), keybuf.size());
         cipher->SetKey(keybuf, keybuf.size());
       }
       encrypted.assign((char *)buf.begin(), buf.size());
@@ -503,8 +503,8 @@ void TestAuthenticatedSymmetricCipher(TestData &v, const NameValuePairs &overrid
     member_ptr<AuthenticatedSymmetricCipher> asc1, asc2;
     asc1.reset(ObjectFactoryRegistry<AuthenticatedSymmetricCipher, ENCRYPTION>::Registry().CreateObject(name.c_str()));
     asc2.reset(ObjectFactoryRegistry<AuthenticatedSymmetricCipher, DECRYPTION>::Registry().CreateObject(name.c_str()));
-    asc1->SetKey((const byte *)key.data(), key.size(), pairs);
-    asc2->SetKey((const byte *)key.data(), key.size(), pairs);
+    asc1->SetKey((const CryptoPP::byte *)key.data(), key.size(), pairs);
+    asc2->SetKey((const CryptoPP::byte *)key.data(), key.size(), pairs);
 
     std::string encrypted, decrypted;
     AuthenticatedEncryptionFilter ef(*asc1, new StringSink(encrypted));
@@ -590,7 +590,7 @@ void TestDigestOrMAC(TestData &v, bool testDigest)
     mac.reset(ObjectFactoryRegistry<MessageAuthenticationCode>::Registry().CreateObject(name.c_str()));
     pHash = mac.get();
     std::string key = GetDecodedDatum(v, "Key");
-    mac->SetKey((const byte *)key.c_str(), key.size(), pairs);
+    mac->SetKey((const CryptoPP::byte *)key.c_str(), key.size(), pairs);
   }
 
   if (test == "Verify" || test == "VerifyTruncated" || test == "NotVerify")
@@ -633,10 +633,10 @@ void TestKeyDerivationFunction(TestData &v)
   kdf.reset(ObjectFactoryRegistry<KeyDerivationFunction>::Registry().CreateObject(name.c_str()));
 
   std::string calc; calc.resize(length);
-  unsigned int ret = kdf->DeriveKey(reinterpret_cast<byte*>(&calc[0]), calc.size(),
-    reinterpret_cast<const byte*>(key.data()), key.size(),
-    reinterpret_cast<const byte*>(salt.data()), salt.size(),
-    reinterpret_cast<const byte*>(info.data()), info.size());
+  unsigned int ret = kdf->DeriveKey(reinterpret_cast<CryptoPP::byte*>(&calc[0]), calc.size(),
+    reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size(),
+    reinterpret_cast<const CryptoPP::byte*>(salt.data()), salt.size(),
+    reinterpret_cast<const CryptoPP::byte*>(info.data()), info.size());
 
   if(calc != derived || ret != length)
     SignalTestFailure();

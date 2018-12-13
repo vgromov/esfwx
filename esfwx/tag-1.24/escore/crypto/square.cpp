@@ -21,7 +21,7 @@ NAMESPACE_BEGIN(CryptoPP)
 // apply theta to a roundkey
 static void SquareTransform (word32 in[4], word32 out[4])
 {
-  static const byte G[4][4] =
+  static const CryptoPP::byte G[4][4] =
   {
     0x02U, 0x01U, 0x01U, 0x03U,
     0x03U, 0x02U, 0x01U, 0x01U,
@@ -44,7 +44,7 @@ static void SquareTransform (word32 in[4], word32 out[4])
 #define roundkeys(i, j)    m_roundkeys[(i)*4+(j)]
 #define roundkeys4(i)    (m_roundkeys+(i)*4)
 
-void Square::Base::UncheckedSetKey(const byte *userKey, unsigned int length, const NameValuePairs &)
+void Square::Base::UncheckedSetKey(const CryptoPP::byte *userKey, unsigned int length, const NameValuePairs &)
 {
   AssertValidKeyLength(length);
 
@@ -79,10 +79,10 @@ void Square::Base::UncheckedSetKey(const byte *userKey, unsigned int length, con
   }
 }
 
-#define MSB(x) (((x) >> 24) & 0xffU)  /* most  significant byte */
+#define MSB(x) (((x) >> 24) & 0xffU)  /* most  significant CryptoPP::byte */
 #define SSB(x) (((x) >> 16) & 0xffU)  /* second in significance */
 #define TSB(x) (((x) >>  8) & 0xffU)  /* third  in significance */
-#define LSB(x) (((x)      ) & 0xffU)  /* least significant byte */
+#define LSB(x) (((x)      ) & 0xffU)  /* least significant CryptoPP::byte */
 
 #define squareRound(text, temp, T0, T1, T2, T3, roundkey) \
 { \
@@ -134,7 +134,7 @@ void Square::Base::UncheckedSetKey(const byte *userKey, unsigned int length, con
 
 typedef BlockGetAndPut<word32, BigEndian> Block;
 
-void Square::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void Square::Enc::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   word32 text[4], temp[4];
   Block::Get(inBlock)(text[0])(text[1])(text[2])(text[3]);
@@ -159,7 +159,7 @@ void Square::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, 
   Block::Put(xorBlock, outBlock)(text[0])(text[1])(text[2])(text[3]);
 }
 
-void Square::Dec::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void Square::Dec::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
   word32 text[4], temp[4];
   Block::Get(inBlock)(text[0])(text[1])(text[2])(text[3]);

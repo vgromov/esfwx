@@ -225,7 +225,7 @@ ES_COMPILE_TIME_ASSERT(sizeof(ES_CHAR) <= sizeof(ES_UCHAR), es_uchar_SizeCheck);
 
 size_t es_strlen(ES_CTSTR s)
 {
-  register ES_CTSTR p = s;
+  ES_REGISTER ES_CTSTR p = s;
   while(*p) ++p;
 
   return p-s;
@@ -234,10 +234,10 @@ size_t es_strlen(ES_CTSTR s)
 
 int es_strcmp(ES_CTSTR s1, ES_CTSTR s2)
 {
-  register const ES_UCHAR* p1 = reinterpret_cast<const ES_UCHAR*>(s1);
-  register const ES_UCHAR* p2 = reinterpret_cast<const ES_UCHAR*>(s2);
-  register ES_UCHAR c1;
-  register ES_UCHAR c2;
+  ES_REGISTER const ES_UCHAR* p1 = reinterpret_cast<const ES_UCHAR*>(s1);
+  ES_REGISTER const ES_UCHAR* p2 = reinterpret_cast<const ES_UCHAR*>(s2);
+  ES_REGISTER ES_UCHAR c1;
+  ES_REGISTER ES_UCHAR c2;
 
   do
   {
@@ -265,11 +265,11 @@ int es_stricmp(ES_CTSTR s1, ES_CTSTR s2)
 
 int es_strncmp(ES_CTSTR s1, ES_CTSTR s2, size_t n)
 {
-  register const ES_UCHAR* p1 = reinterpret_cast<const ES_UCHAR*>(s1);
-  register const ES_UCHAR* p2 = reinterpret_cast<const ES_UCHAR*>(s2);
+  ES_REGISTER const ES_UCHAR* p1 = reinterpret_cast<const ES_UCHAR*>(s1);
+  ES_REGISTER const ES_UCHAR* p2 = reinterpret_cast<const ES_UCHAR*>(s2);
 
-  register ES_UCHAR c1 = 0;
-  register ES_UCHAR c2 = 0;
+  ES_REGISTER ES_UCHAR c1 = 0;
+  ES_REGISTER ES_UCHAR c2 = 0;
 
   while(n > 0)
   {
@@ -306,8 +306,8 @@ ES_CTSTR es_strchr(ES_CTSTR s, ES_CHAR c)
 
 ES_CTSTR es_strstr(ES_CTSTR s1, ES_CTSTR s2)
 {
-  register ES_CTSTR s = s1;
-  register ES_CTSTR p = s2;
+  ES_REGISTER ES_CTSTR s = s1;
+  ES_REGISTER ES_CTSTR p = s2;
 
   do
   {

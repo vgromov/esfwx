@@ -542,7 +542,7 @@ static bool TryCRC32()
   volatile bool result = true;
   __try
   {
-    word32 w=0, x=1; word16 y=2; byte z=3;
+    word32 w=0, x=1; word16 y=2; CryptoPP::byte z=3;
     w = __crc32cw(w,x);
     w = __crc32ch(w,y);
     w = __crc32cb(w,z);
@@ -571,7 +571,7 @@ static bool TryCRC32()
     result = false;
   else
   {
-    word32 w=0, x=1; word16 y=2; byte z=3;
+    word32 w=0, x=1; word16 y=2; CryptoPP::byte z=3;
     w = __crc32cw(w,x);
     w = __crc32ch(w,y);
     w = __crc32cb(w,z);

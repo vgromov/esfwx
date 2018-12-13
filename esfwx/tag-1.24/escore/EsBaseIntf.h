@@ -492,7 +492,7 @@ public: \
 ClassName : public BaseName { \
 public: \
   static inline EsString classNameGetStatic() ES_NOTHROW { return ES_STRINGIZE(ClassName); } \
-  ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW { return ES_STRINGIZE(ClassName); }
+  ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE { return ES_STRINGIZE(ClassName); }
 
 //---------------------------------------------------------------------------
 /// Macros to declare class which is derived from base interface implementation class,

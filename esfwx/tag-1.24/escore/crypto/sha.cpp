@@ -257,7 +257,7 @@ static void CRYPTOPP_FASTCALL X86_SHA256_HashBlocks(word32 *state, const word32 
 
 #if defined(__GNUC__)
   #if CRYPTOPP_BOOL_X64
-    FixedSizeAlignedSecBlock<byte, LOCALS_SIZE> workspace;
+    FixedSizeAlignedSecBlock<CryptoPP::byte, LOCALS_SIZE> workspace;
   #endif
   __asm__ __volatile__
   (
@@ -591,7 +591,7 @@ void SHA256::Transform(word32 *state, const word32 *data)
 {
   word32 W[16];
 #if (defined(CRYPTOPP_X86_ASM_AVAILABLE) || defined(CRYPTOPP_X32_ASM_AVAILABLE) || defined(CRYPTOPP_X64_MASM_AVAILABLE)) && !defined(CRYPTOPP_DISABLE_SHA_ASM)
-  // this byte reverse is a waste of time, but this function is only called by MDC
+  // this CryptoPP::byte reverse is a waste of time, but this function is only called by MDC
   ByteReverse(W, data, BLOCKSIZE);
   X86_SHA256_HashBlocks(state, W, BLOCKSIZE - !HasSSE2());
 #else
@@ -719,10 +719,10 @@ CRYPTOPP_NAKED static void CRYPTOPP_FASTCALL SHA512_SSE2_Transform(word64 *state
 
 #if CRYPTOPP_BOOL_X32
   AS2(  lea    edi, [esp+8+8*8])    // start at middle of state buffer. will decrement pointer each round to avoid copying
-  AS2(  lea    esi, [esp+8+20*8+8])  // 16-byte alignment, then add 8
+  AS2(  lea    esi, [esp+8+20*8+8])  // 16-CryptoPP::byte alignment, then add 8
 #else
   AS2(  lea    edi, [esp+4+8*8])    // start at middle of state buffer. will decrement pointer each round to avoid copying
-  AS2(  lea    esi, [esp+4+20*8+8])  // 16-byte alignment, then add 8
+  AS2(  lea    esi, [esp+4+20*8+8])  // 16-CryptoPP::byte alignment, then add 8
 #endif
 
   AS2(  movdqa  xmm0, [ecx+0*16])

@@ -26,7 +26,7 @@
 
 ;; C/C++ Function prototypes
 ;;   X86, X32 and X64:
-;;     extern "C" int NASM_RRA_GenerateBlock(byte* ptr, size_t size, unsigned int safety);
+;;     extern "C" int NASM_RRA_GenerateBlock(CryptoPP::byte* ptr, size_t size, unsigned int safety);
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -43,7 +43,7 @@
 
 %ifdef X86 or X32   ;; Set via the command line
 
-;; Arg1, byte* buffer
+;; Arg1, CryptoPP::byte* buffer
 ;; Arg2, size_t bsize
 ;; Arg3, unsigned int safety
 ;; EAX (out): success (1), failure (0)
@@ -100,7 +100,7 @@ NASM_RRA_GenerateBlock:
 	DB 		48h	;; X32 can use the full register, issue the REX.w prefix
 %endif
 			;; RDRAND is not available prior to VS2012. Just emit
-			;;   the byte codes using DB. This is `rdrand eax`.
+			;;   the CryptoPP::byte codes using DB. This is `rdrand eax`.
 	DB		0Fh, 07h, 0F0h
 
 			;; If CF=1, the number returned by RDRAND is valid.
@@ -204,7 +204,7 @@ global		NASM_RRA_GenerateBlock
 section		.text
 align		16
 
-;; Arg1, byte* buffer
+;; Arg1, CryptoPP::byte* buffer
 ;; Arg2, size_t bsize
 ;; Arg3, unsigned int safety
 ;; RAX (out): success (1), failure (0)
@@ -233,7 +233,7 @@ NASM_RRA_GenerateBlock:
 
 .Call_RDRAND_RAX:
 			;; RDRAND is not available prior to VS2012. Just emit
-			;;   the byte codes using DB. This is `rdrand rax`.
+			;;   the CryptoPP::byte codes using DB. This is `rdrand rax`.
 	DB 		048h, 0Fh, 0C7h, 0F0h
 
 			;; If CF=1, the number returned by RDRAND is valid.
@@ -322,7 +322,7 @@ NASM_RRA_GenerateBlock:
 
 %ifdef X86 or X32   ;; Set via the command line
 
-;; Arg1, byte* buffer
+;; Arg1, CryptoPP::byte* buffer
 ;; Arg2, size_t bsize
 ;; Arg3, unsigned int safety
 ;; EAX (out): success (1), failure (0)
@@ -380,7 +380,7 @@ NASM_RSA_GenerateBlock:
 	DB		48h		;; X32 can use the full register, issue the REX.w prefix
 %endif
 			;; RDSEED is not available prior to VS2012. Just emit
-			;;   the byte codes using DB. This is `rdseed eax`.
+			;;   the CryptoPP::byte codes using DB. This is `rdseed eax`.
 	DB		0Fh, 0C7h, 0F8h
 
 			;; If CF=1, the number returned by RDSEED is valid.
@@ -478,7 +478,7 @@ global		NASM_RSA_GenerateBlock
 section		.text
 align		16
 
-;; Arg1, byte* buffer
+;; Arg1, CryptoPP::byte* buffer
 ;; Arg2, size_t bsize
 ;; Arg3, unsigned int safety
 ;; RAX (out): success (1), failure (0)
@@ -507,7 +507,7 @@ NASM_RSA_GenerateBlock:
 
 .Call_RDSEED_RAX:
 			;; RDSEED is not available prior to VS2012. Just emit
-			;;   the byte codes using DB. This is `rdseed rax`.
+			;;   the CryptoPP::byte codes using DB. This is `rdseed rax`.
 	DB		048h, 0Fh, 0C7h, 0F8h
 
 			;; If CF=1, the number returned by RDSEED is valid.

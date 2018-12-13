@@ -33,7 +33,7 @@ class LR : public LR_Info<T>, public BlockCipherDocumentation
   {
   public:
     // VC60 workaround: have to define these functions within class definition
-    void UncheckedSetKey(const byte *userKey, unsigned int length, const NameValuePairs &params)
+    void UncheckedSetKey(const CryptoPP::byte *userKey, unsigned int length, const NameValuePairs &params)
     {
       this->AssertValidKeyLength(length);
 
@@ -65,7 +65,7 @@ class LR : public LR_Info<T>, public BlockCipherDocumentation
 #define OL outBlock
 #define OR outBlock+this->S
 
-    void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+    void ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
     {
       this->hm.Update(KL, this->L);
       this->hm.Update(IL, this->S);
@@ -97,7 +97,7 @@ class LR : public LR_Info<T>, public BlockCipherDocumentation
   class CRYPTOPP_NO_VTABLE Dec : public Base
   {
   public:
-    void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+    void ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
     {
       this->hm.Update(KR, this->L);
       this->hm.Update(IR, this->S);

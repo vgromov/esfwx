@@ -22,12 +22,12 @@ public:
   void AddDefaultRoute(BufferedTransformation &destination, const std::string &channel);
   void AddRoute(unsigned int begin, unsigned int end, BufferedTransformation &destination, const std::string &channel);
 
-  void Put(byte inByte);
-  void Put(const byte *inString, unsigned int length);
+  void Put(CryptoPP::byte inByte);
+  void Put(const CryptoPP::byte *inString, unsigned int length);
 
   void Flush(bool completeFlush, int propagation=-1);
   void MessageEnd(int propagation=-1);
-  void PutMessageEnd(const byte *inString, unsigned int length, int propagation=-1);
+  void PutMessageEnd(const CryptoPP::byte *inString, unsigned int length, int propagation=-1);
   void MessageSeriesEnd(int propagation=-1);
 
 private:
@@ -104,13 +104,13 @@ public:
 
   void IsolatedInitialize(const NameValuePairs &parameters=g_nullNameValuePairs);
 
-  size_t ChannelPut2(const std::string &channel, const byte *begin, size_t length, int messageEnd, bool blocking);
-  size_t ChannelPutModifiable2(const std::string &channel, byte *begin, size_t length, int messageEnd, bool blocking);
+  size_t ChannelPut2(const std::string &channel, const CryptoPP::byte *begin, size_t length, int messageEnd, bool blocking);
+  size_t ChannelPutModifiable2(const std::string &channel, CryptoPP::byte *begin, size_t length, int messageEnd, bool blocking);
 
   bool ChannelFlush(const std::string &channel, bool completeFlush, int propagation=-1, bool blocking=true);
   bool ChannelMessageSeriesEnd(const std::string &channel, int propagation=-1, bool blocking=true);
 
-  byte * ChannelCreatePutSpace(const std::string &channel, size_t &size);
+  CryptoPP::byte * ChannelCreatePutSpace(const std::string &channel, size_t &size);
 
   void AddDefaultRoute(BufferedTransformation &destination);
   void RemoveDefaultRoute(BufferedTransformation &destination);

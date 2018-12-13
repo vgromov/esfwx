@@ -50,19 +50,19 @@ void WAKE_Base::GenKey(word32 k0, word32 k1, word32 k2, word32 k3)
     t[p]+=t[p+89] ;       // mix first entries
   x=t[33] ; z=t[59] | 0x01000001 ;
   z=z&0xff7fffff ;
-  for (p=0 ; p<256 ; p++) {    //change top byte to
+  for (p=0 ; p<256 ; p++) {    //change top CryptoPP::byte to
     x=(x&0xff7fffff)+z ;      // a permutation etc
     t[p]=(t[p] & 0x00ffffff) ^ x ; }
 
   t[256]=t[0] ;
-  byte y=byte(x);
+  CryptoPP::byte y=CryptoPP::byte(x);
   for (p=0 ; p<256 ; p++) {    // further change perm.
-    t[p]=t[y=byte(t[p^y]^y)] ;  // and other digits
+    t[p]=t[y=CryptoPP::byte(t[p^y]^y)] ;  // and other digits
     t[y]=t[p+1] ;  }
 }
 
 template <class B>
-void WAKE_Policy<B>::CipherSetKey(const NameValuePairs &params, const byte *key, size_t length)
+void WAKE_Policy<B>::CipherSetKey(const NameValuePairs &params, const CryptoPP::byte *key, size_t length)
 {
   CRYPTOPP_UNUSED(params); CRYPTOPP_UNUSED(key); CRYPTOPP_UNUSED(length);
   word32 k0, k1, k2, k3;
@@ -72,7 +72,7 @@ void WAKE_Policy<B>::CipherSetKey(const NameValuePairs &params, const byte *key,
 
 // OFB
 template <class B>
-void WAKE_Policy<B>::OperateKeystream(KeystreamOperation operation, byte *output, const byte *input, size_t iterationCount)
+void WAKE_Policy<B>::OperateKeystream(KeystreamOperation operation, CryptoPP::byte *output, const CryptoPP::byte *input, size_t iterationCount)
 {
 #define WAKE_OUTPUT(x)\
   while (iterationCount--)\
@@ -92,7 +92,7 @@ void WAKE_Policy<B>::OperateKeystream(KeystreamOperation operation, byte *output
 }
 /*
 template <class B>
-void WAKE_ROFB_Policy<B>::Iterate(KeystreamOperation operation, byte *output, const byte *input, unsigned int iterationCount)
+void WAKE_ROFB_Policy<B>::Iterate(KeystreamOperation operation, CryptoPP::byte *output, const CryptoPP::byte *input, unsigned int iterationCount)
 {
   KeystreamOutput<B> keystreamOperation(operation, output, input);
 

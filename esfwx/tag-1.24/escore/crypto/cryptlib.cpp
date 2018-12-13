@@ -34,7 +34,7 @@
 
 NAMESPACE_BEGIN(CryptoPP)
 
-CRYPTOPP_COMPILE_ASSERT(sizeof(byte) == 1);
+CRYPTOPP_COMPILE_ASSERT(sizeof(CryptoPP::byte) == 1);
 CRYPTOPP_COMPILE_ASSERT(sizeof(word16) == 2);
 CRYPTOPP_COMPILE_ASSERT(sizeof(word32) == 4);
 CRYPTOPP_COMPILE_ASSERT(sizeof(word64) == 8);
@@ -94,18 +94,18 @@ Algorithm::Algorithm(bool checkSelfTestStatus)
   }
 }
 
-void SimpleKeyingInterface::SetKey(const byte *key, size_t length, const NameValuePairs &params)
+void SimpleKeyingInterface::SetKey(const CryptoPP::byte *key, size_t length, const NameValuePairs &params)
 {
   this->ThrowIfInvalidKeyLength(length);
   this->UncheckedSetKey(key, (unsigned int)length, params);
 }
 
-void SimpleKeyingInterface::SetKeyWithRounds(const byte *key, size_t length, int rounds)
+void SimpleKeyingInterface::SetKeyWithRounds(const CryptoPP::byte *key, size_t length, int rounds)
 {
   SetKey(key, length, MakeParameters(Name::Rounds(), rounds));
 }
 
-void SimpleKeyingInterface::SetKeyWithIV(const byte *key, size_t length, const byte *iv, size_t ivLength)
+void SimpleKeyingInterface::SetKeyWithIV(const CryptoPP::byte *key, size_t length, const CryptoPP::byte *iv, size_t ivLength)
 {
   SetKey(key, length, MakeParameters(Name::IV(), ConstByteArrayParameter(iv, ivLength)));
 }
@@ -122,7 +122,7 @@ void SimpleKeyingInterface::ThrowIfResynchronizable()
     throw InvalidArgument(GetAlgorithm().AlgorithmName() + ": this object requires an IV");
 }
 
-void SimpleKeyingInterface::ThrowIfInvalidIV(const byte *iv)
+void SimpleKeyingInterface::ThrowIfInvalidIV(const CryptoPP::byte *iv)
 {
   if (!iv && IVRequirement() == UNPREDICTABLE_RANDOM_IV)
     throw InvalidArgument(GetAlgorithm().AlgorithmName() + ": this object cannot use a null IV");
@@ -140,10 +140,10 @@ size_t SimpleKeyingInterface::ThrowIfInvalidIVLength(int size)
     return size;
 }
 
-const byte * SimpleKeyingInterface::GetIVAndThrowIfInvalid(const NameValuePairs &params, size_t &size)
+const CryptoPP::byte * SimpleKeyingInterface::GetIVAndThrowIfInvalid(const NameValuePairs &params, size_t &size)
 {
   ConstByteArrayParameter ivWithLength;
-  const byte *iv;
+  const CryptoPP::byte *iv;
   bool found = false;
 
   try {found = params.GetValue(Name::IV(), ivWithLength);}
@@ -170,12 +170,12 @@ const byte * SimpleKeyingInterface::GetIVAndThrowIfInvalid(const NameValuePairs 
   }
 }
 
-void SimpleKeyingInterface::GetNextIV(RandomNumberGenerator &rng, byte *IV)
+void SimpleKeyingInterface::GetNextIV(RandomNumberGenerator &rng, CryptoPP::byte *IV)
 {
   rng.GenerateBlock(IV, IVSize());
 }
 
-size_t BlockTransformation::AdvancedProcessBlocks(const byte *inBlocks, const byte *xorBlocks, byte *outBlocks, size_t length, word32 flags) const
+size_t BlockTransformation::AdvancedProcessBlocks(const CryptoPP::byte *inBlocks, const CryptoPP::byte *xorBlocks, CryptoPP::byte *outBlocks, size_t length, word32 flags) const
 {
   CRYPTOPP_ASSERT(inBlocks);
   CRYPTOPP_ASSERT(outBlocks);
@@ -216,7 +216,7 @@ size_t BlockTransformation::AdvancedProcessBlocks(const byte *inBlocks, const by
     }
 
     if (flags & BT_InBlockIsCounter)
-      const_cast<byte *>(inBlocks)[blockSize-1]++;
+      const_cast<CryptoPP::byte *>(inBlocks)[blockSize-1]++;
     inBlocks += inIncrement;
     outBlocks += outIncrement;
     xorBlocks += xorIncrement;
@@ -241,7 +241,7 @@ unsigned int HashTransformation::OptimalDataAlignment() const
   return GetAlignmentOf<word32>();
 }
 
-void StreamTransformation::ProcessLastBlock(byte *outString, const byte *inString, size_t length)
+void StreamTransformation::ProcessLastBlock(CryptoPP::byte *outString, const CryptoPP::byte *inString, size_t length)
 {
   CRYPTOPP_ASSERT(MinLastBlockSize() == 0);  // this function should be overriden otherwise
 
@@ -265,7 +265,7 @@ void AuthenticatedSymmetricCipher::SpecifyDataLengths(lword headerLength, lword 
   UncheckedSpecifyDataLengths(headerLength, messageLength, footerLength);
 }
 
-void AuthenticatedSymmetricCipher::EncryptAndAuthenticate(byte *ciphertext, byte *mac, size_t macSize, const byte *iv, int ivLength, const byte *header, size_t headerLength, const byte *message, size_t messageLength)
+void AuthenticatedSymmetricCipher::EncryptAndAuthenticate(CryptoPP::byte *ciphertext, CryptoPP::byte *mac, size_t macSize, const CryptoPP::byte *iv, int ivLength, const CryptoPP::byte *header, size_t headerLength, const CryptoPP::byte *message, size_t messageLength)
 {
   Resynchronize(iv, ivLength);
   SpecifyDataLengths(headerLength, messageLength);
@@ -274,7 +274,7 @@ void AuthenticatedSymmetricCipher::EncryptAndAuthenticate(byte *ciphertext, byte
   TruncatedFinal(mac, macSize);
 }
 
-bool AuthenticatedSymmetricCipher::DecryptAndVerify(byte *message, const byte *mac, size_t macLength, const byte *iv, int ivLength, const byte *header, size_t headerLength, const byte *ciphertext, size_t ciphertextLength)
+bool AuthenticatedSymmetricCipher::DecryptAndVerify(CryptoPP::byte *message, const CryptoPP::byte *mac, size_t macLength, const CryptoPP::byte *iv, int ivLength, const CryptoPP::byte *header, size_t headerLength, const CryptoPP::byte *ciphertext, size_t ciphertextLength)
 {
   Resynchronize(iv, ivLength);
   SpecifyDataLengths(headerLength, ciphertextLength);
@@ -288,9 +288,9 @@ unsigned int RandomNumberGenerator::GenerateBit()
   return GenerateByte() & 1;
 }
 
-byte RandomNumberGenerator::GenerateByte()
+CryptoPP::byte RandomNumberGenerator::GenerateByte()
 {
-  byte b;
+  CryptoPP::byte b;
   GenerateBlock(&b, 1);
   return b;
 }
@@ -304,7 +304,7 @@ word32 RandomNumberGenerator::GenerateWord32(word32 min, word32 max)
 
   do
   {
-    GenerateBlock((byte *)&value, sizeof(value));
+    GenerateBlock((CryptoPP::byte *)&value, sizeof(value));
     value = Crop(value, maxBits);
   } while (value > range);
 
@@ -323,7 +323,7 @@ word32 RandomNumberGenerator::GenerateWord32(word32 min, word32 max)
 // RandomNumberGenerator pointer or reference so polymorphism can provide the
 // proper runtime dispatching.
 
-void RandomNumberGenerator::GenerateBlock(byte *output, size_t size)
+void RandomNumberGenerator::GenerateBlock(CryptoPP::byte *output, size_t size)
 {
   CRYPTOPP_UNUSED(output), CRYPTOPP_UNUSED(size);
 
@@ -343,7 +343,7 @@ void RandomNumberGenerator::DiscardBytes(size_t n)
 
 void RandomNumberGenerator::GenerateIntoBufferedTransformation(BufferedTransformation &target, const std::string &channel, lword length)
 {
-  FixedSizeSecBlock<byte, 256> buffer;
+  FixedSizeSecBlock<CryptoPP::byte, 256> buffer;
   while (length)
   {
     size_t len = UnsignedMin(buffer.size(), length);
@@ -368,7 +368,7 @@ public:
 
 #if defined(CRYPTOPP_DOXYGEN_PROCESSING)
   //! \brief An implementation that throws NotImplemented
-  byte GenerateByte () {}
+  CryptoPP::byte GenerateByte () {}
   //! \brief An implementation that throws NotImplemented
   unsigned int GenerateBit () {}
   //! \brief An implementation that throws NotImplemented
@@ -376,7 +376,7 @@ public:
 #endif
 
   //! \brief An implementation that throws NotImplemented
-  void GenerateBlock(byte *output, size_t size)
+  void GenerateBlock(CryptoPP::byte *output, size_t size)
   {
     CRYPTOPP_UNUSED(output); CRYPTOPP_UNUSED(size);
     throw NotImplemented("NullRNG: NullRNG should only be passed to functions that don't need to generate random bytes");
@@ -386,7 +386,7 @@ public:
   //! \brief An implementation that throws NotImplemented
   void GenerateIntoBufferedTransformation (BufferedTransformation &target, const std::string &channel, lword length) {}
   //! \brief An implementation that throws NotImplemented
-  void IncorporateEntropy (const byte *input, size_t length) {}
+  void IncorporateEntropy (const CryptoPP::byte *input, size_t length) {}
   //! \brief An implementation that returns \p false
   bool CanIncorporateEntropy () const {}
   //! \brief An implementation that does nothing
@@ -405,7 +405,7 @@ RandomNumberGenerator & NullRNG()
   return s_nullRNG;
 }
 
-bool HashTransformation::TruncatedVerify(const byte *digestIn, size_t digestLength)
+bool HashTransformation::TruncatedVerify(const CryptoPP::byte *digestIn, size_t digestLength)
 {
   ThrowIfInvalidTruncatedSize(digestLength);
   SecByteBlock digest(digestLength);
@@ -416,7 +416,7 @@ bool HashTransformation::TruncatedVerify(const byte *digestIn, size_t digestLeng
 void HashTransformation::ThrowIfInvalidTruncatedSize(size_t size) const
 {
   if (size > DigestSize())
-    throw InvalidArgument("HashTransformation: can't truncate a " + IntToString(DigestSize()) + " byte digest to " + IntToString(size) + " bytes");
+    throw InvalidArgument("HashTransformation: can't truncate a " + IntToString(DigestSize()) + " CryptoPP::byte digest to " + IntToString(size) + " bytes");
 }
 
 unsigned int BufferedTransformation::GetMaxWaitObjectCount() const
@@ -453,7 +453,7 @@ bool BufferedTransformation::MessageSeriesEnd(int propagation, bool blocking)
   return IsolatedMessageSeriesEnd(blocking);
 }
 
-byte * BufferedTransformation::ChannelCreatePutSpace(const std::string &channel, size_t &size)
+CryptoPP::byte * BufferedTransformation::ChannelCreatePutSpace(const std::string &channel, size_t &size)
 {
   if (channel.empty())
     return CreatePutSpace(size);
@@ -461,7 +461,7 @@ byte * BufferedTransformation::ChannelCreatePutSpace(const std::string &channel,
     throw NoChannelSupport(AlgorithmName());
 }
 
-size_t BufferedTransformation::ChannelPut2(const std::string &channel, const byte *begin, size_t length, int messageEnd, bool blocking)
+size_t BufferedTransformation::ChannelPut2(const std::string &channel, const CryptoPP::byte *begin, size_t length, int messageEnd, bool blocking)
 {
   if (channel.empty())
     return Put2(begin, length, messageEnd, blocking);
@@ -469,7 +469,7 @@ size_t BufferedTransformation::ChannelPut2(const std::string &channel, const byt
     throw NoChannelSupport(AlgorithmName());
 }
 
-size_t BufferedTransformation::ChannelPutModifiable2(const std::string &channel, byte *begin, size_t length, int messageEnd, bool blocking)
+size_t BufferedTransformation::ChannelPutModifiable2(const std::string &channel, CryptoPP::byte *begin, size_t length, int messageEnd, bool blocking)
 {
   if (channel.empty())
     return PutModifiable2(begin, length, messageEnd, blocking);
@@ -507,12 +507,12 @@ bool BufferedTransformation::AnyRetrievable() const
     return AttachedTransformation()->AnyRetrievable();
   else
   {
-    byte b;
+    CryptoPP::byte b;
     return Peek(b) != 0;
   }
 }
 
-size_t BufferedTransformation::Get(byte &outByte)
+size_t BufferedTransformation::Get(CryptoPP::byte &outByte)
 {
   if (AttachedTransformation())
     return AttachedTransformation()->Get(outByte);
@@ -520,7 +520,7 @@ size_t BufferedTransformation::Get(byte &outByte)
     return Get(&outByte, 1);
 }
 
-size_t BufferedTransformation::Get(byte *outString, size_t getMax)
+size_t BufferedTransformation::Get(CryptoPP::byte *outString, size_t getMax)
 {
   if (AttachedTransformation())
     return AttachedTransformation()->Get(outString, getMax);
@@ -531,7 +531,7 @@ size_t BufferedTransformation::Get(byte *outString, size_t getMax)
   }
 }
 
-size_t BufferedTransformation::Peek(byte &outByte) const
+size_t BufferedTransformation::Peek(CryptoPP::byte &outByte) const
 {
   if (AttachedTransformation())
     return AttachedTransformation()->Peek(outByte);
@@ -539,7 +539,7 @@ size_t BufferedTransformation::Peek(byte &outByte) const
     return Peek(&outByte, 1);
 }
 
-size_t BufferedTransformation::Peek(byte *outString, size_t peekMax) const
+size_t BufferedTransformation::Peek(CryptoPP::byte *outString, size_t peekMax) const
 {
   if (AttachedTransformation())
     return AttachedTransformation()->Peek(outString, peekMax);
@@ -723,7 +723,7 @@ size_t BufferedTransformation::PutWord32(word32 value, ByteOrder order, bool blo
 
 size_t BufferedTransformation::PeekWord16(word16 &value, ByteOrder order) const
 {
-  byte buf[2] = {0, 0};
+  CryptoPP::byte buf[2] = {0, 0};
   size_t len = Peek(buf, 2);
 
   if (order)
@@ -736,7 +736,7 @@ size_t BufferedTransformation::PeekWord16(word16 &value, ByteOrder order) const
 
 size_t BufferedTransformation::PeekWord32(word32 &value, ByteOrder order) const
 {
-  byte buf[4] = {0, 0, 0, 0};
+  CryptoPP::byte buf[4] = {0, 0, 0, 0};
   size_t len = Peek(buf, 4);
 
   if (order)
@@ -779,7 +779,7 @@ public:
     Detach(attachment);
   }
 
-  size_t Put2(const byte *inString, size_t length, int messageEnd, bool blocking)
+  size_t Put2(const CryptoPP::byte *inString, size_t length, int messageEnd, bool blocking)
   {
     FILTER_BEGIN;
     m_plaintextQueue.Put(inString, length);
@@ -824,7 +824,7 @@ public:
     Detach(attachment);
   }
 
-  size_t Put2(const byte *inString, size_t length, int messageEnd, bool blocking)
+  size_t Put2(const CryptoPP::byte *inString, size_t length, int messageEnd, bool blocking)
   {
     FILTER_BEGIN;
     m_ciphertextQueue.Put(inString, length);
@@ -863,21 +863,21 @@ BufferedTransformation * PK_Decryptor::CreateDecryptionFilter(RandomNumberGenera
   return new PK_DefaultDecryptionFilter(rng, *this, attachment, parameters);
 }
 
-size_t PK_Signer::Sign(RandomNumberGenerator &rng, PK_MessageAccumulator *messageAccumulator, byte *signature) const
+size_t PK_Signer::Sign(RandomNumberGenerator &rng, PK_MessageAccumulator *messageAccumulator, CryptoPP::byte *signature) const
 {
   member_ptr<PK_MessageAccumulator> m(messageAccumulator);
   return SignAndRestart(rng, *m, signature, false);
 }
 
-size_t PK_Signer::SignMessage(RandomNumberGenerator &rng, const byte *message, size_t messageLen, byte *signature) const
+size_t PK_Signer::SignMessage(RandomNumberGenerator &rng, const CryptoPP::byte *message, size_t messageLen, CryptoPP::byte *signature) const
 {
   member_ptr<PK_MessageAccumulator> m(NewSignatureAccumulator(rng));
   m->Update(message, messageLen);
   return SignAndRestart(rng, *m, signature, false);
 }
 
-size_t PK_Signer::SignMessageWithRecovery(RandomNumberGenerator &rng, const byte *recoverableMessage, size_t recoverableMessageLength,
-  const byte *nonrecoverableMessage, size_t nonrecoverableMessageLength, byte *signature) const
+size_t PK_Signer::SignMessageWithRecovery(RandomNumberGenerator &rng, const CryptoPP::byte *recoverableMessage, size_t recoverableMessageLength,
+  const CryptoPP::byte *nonrecoverableMessage, size_t nonrecoverableMessageLength, CryptoPP::byte *signature) const
 {
   member_ptr<PK_MessageAccumulator> m(NewSignatureAccumulator(rng));
   InputRecoverableMessage(*m, recoverableMessage, recoverableMessageLength);
@@ -891,7 +891,7 @@ bool PK_Verifier::Verify(PK_MessageAccumulator *messageAccumulator) const
   return VerifyAndRestart(*m);
 }
 
-bool PK_Verifier::VerifyMessage(const byte *message, size_t messageLen, const byte *signature, size_t signatureLength) const
+bool PK_Verifier::VerifyMessage(const CryptoPP::byte *message, size_t messageLen, const CryptoPP::byte *signature, size_t signatureLength) const
 {
   member_ptr<PK_MessageAccumulator> m(NewVerificationAccumulator());
   InputSignature(*m, signature, signatureLength);
@@ -899,15 +899,15 @@ bool PK_Verifier::VerifyMessage(const byte *message, size_t messageLen, const by
   return VerifyAndRestart(*m);
 }
 
-DecodingResult PK_Verifier::Recover(byte *recoveredMessage, PK_MessageAccumulator *messageAccumulator) const
+DecodingResult PK_Verifier::Recover(CryptoPP::byte *recoveredMessage, PK_MessageAccumulator *messageAccumulator) const
 {
   member_ptr<PK_MessageAccumulator> m(messageAccumulator);
   return RecoverAndRestart(recoveredMessage, *m);
 }
 
-DecodingResult PK_Verifier::RecoverMessage(byte *recoveredMessage,
-  const byte *nonrecoverableMessage, size_t nonrecoverableMessageLength,
-  const byte *signature, size_t signatureLength) const
+DecodingResult PK_Verifier::RecoverMessage(CryptoPP::byte *recoveredMessage,
+  const CryptoPP::byte *nonrecoverableMessage, size_t nonrecoverableMessageLength,
+  const CryptoPP::byte *signature, size_t signatureLength) const
 {
   member_ptr<PK_MessageAccumulator> m(NewVerificationAccumulator());
   InputSignature(*m, signature, signatureLength);
@@ -915,19 +915,19 @@ DecodingResult PK_Verifier::RecoverMessage(byte *recoveredMessage,
   return RecoverAndRestart(recoveredMessage, *m);
 }
 
-void SimpleKeyAgreementDomain::GenerateKeyPair(RandomNumberGenerator &rng, byte *privateKey, byte *publicKey) const
+void SimpleKeyAgreementDomain::GenerateKeyPair(RandomNumberGenerator &rng, CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const
 {
   GeneratePrivateKey(rng, privateKey);
   GeneratePublicKey(rng, privateKey, publicKey);
 }
 
-void AuthenticatedKeyAgreementDomain::GenerateStaticKeyPair(RandomNumberGenerator &rng, byte *privateKey, byte *publicKey) const
+void AuthenticatedKeyAgreementDomain::GenerateStaticKeyPair(RandomNumberGenerator &rng, CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const
 {
   GenerateStaticPrivateKey(rng, privateKey);
   GenerateStaticPublicKey(rng, privateKey, publicKey);
 }
 
-void AuthenticatedKeyAgreementDomain::GenerateEphemeralKeyPair(RandomNumberGenerator &rng, byte *privateKey, byte *publicKey) const
+void AuthenticatedKeyAgreementDomain::GenerateEphemeralKeyPair(RandomNumberGenerator &rng, CryptoPP::byte *privateKey, CryptoPP::byte *publicKey) const
 {
   GenerateEphemeralPrivateKey(rng, privateKey);
   GenerateEphemeralPublicKey(rng, privateKey, publicKey);

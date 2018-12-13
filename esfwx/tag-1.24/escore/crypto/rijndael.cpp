@@ -111,28 +111,28 @@ static volatile bool s_TeFilled = false, s_TdFilled = false;
 // ************************* Portable Code ************************************
 
 #define QUARTER_ROUND(L, T, t, a, b, c, d)  \
-  a ^= L(T, 3, byte(t)); t >>= 8;\
-  b ^= L(T, 2, byte(t)); t >>= 8;\
-  c ^= L(T, 1, byte(t)); t >>= 8;\
+  a ^= L(T, 3, CryptoPP::byte(t)); t >>= 8;\
+  b ^= L(T, 2, CryptoPP::byte(t)); t >>= 8;\
+  c ^= L(T, 1, CryptoPP::byte(t)); t >>= 8;\
   d ^= L(T, 0, t);
 
 #define QUARTER_ROUND_LE(t, a, b, c, d)  \
-  tempBlock[a] = ((byte *)(Te+byte(t)))[1]; t >>= 8;\
-  tempBlock[b] = ((byte *)(Te+byte(t)))[1]; t >>= 8;\
-  tempBlock[c] = ((byte *)(Te+byte(t)))[1]; t >>= 8;\
-  tempBlock[d] = ((byte *)(Te+t))[1];
+  tempBlock[a] = ((CryptoPP::byte *)(Te+CryptoPP::byte(t)))[1]; t >>= 8;\
+  tempBlock[b] = ((CryptoPP::byte *)(Te+CryptoPP::byte(t)))[1]; t >>= 8;\
+  tempBlock[c] = ((CryptoPP::byte *)(Te+CryptoPP::byte(t)))[1]; t >>= 8;\
+  tempBlock[d] = ((CryptoPP::byte *)(Te+t))[1];
 
 #if defined(CRYPTOPP_ALLOW_UNALIGNED_DATA_ACCESS) || defined(CRYPTOPP_ALLOW_RIJNDAEL_UNALIGNED_DATA_ACCESS)
   #define QUARTER_ROUND_LD(t, a, b, c, d)  \
-    tempBlock[a] = ((byte *)(Td+byte(t)))[GetNativeByteOrder()*7]; t >>= 8;\
-    tempBlock[b] = ((byte *)(Td+byte(t)))[GetNativeByteOrder()*7]; t >>= 8;\
-    tempBlock[c] = ((byte *)(Td+byte(t)))[GetNativeByteOrder()*7]; t >>= 8;\
-    tempBlock[d] = ((byte *)(Td+t))[GetNativeByteOrder()*7];
+    tempBlock[a] = ((CryptoPP::byte *)(Td+CryptoPP::byte(t)))[GetNativeByteOrder()*7]; t >>= 8;\
+    tempBlock[b] = ((CryptoPP::byte *)(Td+CryptoPP::byte(t)))[GetNativeByteOrder()*7]; t >>= 8;\
+    tempBlock[c] = ((CryptoPP::byte *)(Td+CryptoPP::byte(t)))[GetNativeByteOrder()*7]; t >>= 8;\
+    tempBlock[d] = ((CryptoPP::byte *)(Td+t))[GetNativeByteOrder()*7];
 #else
   #define QUARTER_ROUND_LD(t, a, b, c, d)  \
-    tempBlock[a] = Sd[byte(t)]; t >>= 8;\
-    tempBlock[b] = Sd[byte(t)]; t >>= 8;\
-    tempBlock[c] = Sd[byte(t)]; t >>= 8;\
+    tempBlock[a] = Sd[CryptoPP::byte(t)]; t >>= 8;\
+    tempBlock[b] = Sd[CryptoPP::byte(t)]; t >>= 8;\
+    tempBlock[c] = Sd[CryptoPP::byte(t)]; t >>= 8;\
     tempBlock[d] = Sd[t];
 #endif
 
@@ -143,8 +143,8 @@ static volatile bool s_TeFilled = false, s_TdFilled = false;
   #define QUARTER_ROUND_FE(t, a, b, c, d)    QUARTER_ROUND(TL_F, Te, t, d, c, b, a)
   #define QUARTER_ROUND_FD(t, a, b, c, d)    QUARTER_ROUND(TL_F, Td, t, d, c, b, a)
   #if defined(CRYPTOPP_ALLOW_UNALIGNED_DATA_ACCESS) || defined(CRYPTOPP_ALLOW_RIJNDAEL_UNALIGNED_DATA_ACCESS)
-    #define TL_F(T, i, x)  (*(word32 *)(void *)((byte *)T + x*8 + (6-i)%4+1))
-    #define TL_M(T, i, x)  (*(word32 *)(void *)((byte *)T + x*8 + (i+3)%4+1))
+    #define TL_F(T, i, x)  (*(word32 *)(void *)((CryptoPP::byte *)T + x*8 + (6-i)%4+1))
+    #define TL_M(T, i, x)  (*(word32 *)(void *)((CryptoPP::byte *)T + x*8 + (i+3)%4+1))
   #else
     #define TL_F(T, i, x)  rotrFixed(T[x], (3-i)*8)
     #define TL_M(T, i, x)  T[i*256 + x]
@@ -153,7 +153,7 @@ static volatile bool s_TeFilled = false, s_TdFilled = false;
   #define QUARTER_ROUND_FE(t, a, b, c, d)    QUARTER_ROUND(TL_F, Te, t, a, b, c, d)
   #define QUARTER_ROUND_FD(t, a, b, c, d)    QUARTER_ROUND(TL_F, Td, t, a, b, c, d)
   #if defined(CRYPTOPP_ALLOW_UNALIGNED_DATA_ACCESS) || defined(CRYPTOPP_ALLOW_RIJNDAEL_UNALIGNED_DATA_ACCESS)
-    #define TL_F(T, i, x)  (*(word32 *)(void *)((byte *)T + x*8 + (4-i)%4))
+    #define TL_F(T, i, x)  (*(word32 *)(void *)((CryptoPP::byte *)T + x*8 + (4-i)%4))
     #define TL_M      TL_F
   #else
     #define TL_F(T, i, x)  rotrFixed(T[x], i*8)
@@ -176,7 +176,7 @@ void Rijndael::Base::FillEncTable()
 {
   for (int i=0; i<256; i++)
   {
-    byte x = Se[i];
+    CryptoPP::byte x = Se[i];
 #if defined(CRYPTOPP_ALLOW_UNALIGNED_DATA_ACCESS) || defined(CRYPTOPP_ALLOW_RIJNDAEL_UNALIGNED_DATA_ACCESS)
     word32 y = word32(x)<<8 | word32(x)<<16 | word32(f2(x))<<24;
     Te[i] = word64(y | f3(x))<<32 | y;
@@ -199,7 +199,7 @@ void Rijndael::Base::FillDecTable()
 {
   for (int i=0; i<256; i++)
   {
-    byte x = Sd[i];
+    CryptoPP::byte x = Sd[i];
 #if defined(CRYPTOPP_ALLOW_UNALIGNED_DATA_ACCESS) || defined(CRYPTOPP_ALLOW_RIJNDAEL_UNALIGNED_DATA_ACCESS)
     word32 y = word32(fd(x))<<8 | word32(f9(x))<<16 | word32(fe(x))<<24;
     Td[i] = word64(y | fb(x))<<32 | y | x;
@@ -215,7 +215,7 @@ void Rijndael::Base::FillDecTable()
   s_TdFilled = true;
 }
 
-void Rijndael::Base::UncheckedSetKey(const byte *userKey, unsigned int keylen, const NameValuePairs &)
+void Rijndael::Base::UncheckedSetKey(const CryptoPP::byte *userKey, unsigned int keylen, const NameValuePairs &)
 {
   AssertValidKeyLength(keylen);
 
@@ -386,7 +386,7 @@ void Rijndael::Base::UncheckedSetKey(const byte *userKey, unsigned int keylen, c
 #endif
 }
 
-void Rijndael::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void Rijndael::Enc::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
 #if CRYPTOPP_BOOL_SSE2_ASM_AVAILABLE || defined(CRYPTOPP_X64_MASM_AVAILABLE) || CRYPTOPP_BOOL_AESNI_INTRINSICS_AVAILABLE
 #if (CRYPTOPP_BOOL_SSE2_ASM_AVAILABLE || defined(CRYPTOPP_X64_MASM_AVAILABLE)) && !defined(CRYPTOPP_DISABLE_RIJNDAEL_ASM)
@@ -426,7 +426,7 @@ void Rijndael::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock
 #else
   for (i=0; i<1024; i+=cacheLineSize)
 #endif
-    u &= *(const word32 *)(const void *)(((const byte *)Te)+i);
+    u &= *(const word32 *)(const void *)(((const CryptoPP::byte *)Te)+i);
   u &= Te[255];
   s0 |= u; s1 |= u; s2 |= u; s3 |= u;
 
@@ -457,7 +457,7 @@ void Rijndael::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock
     } while (--r);
 
   word32 tbw[4];
-  byte *const tempBlock = (byte *)tbw;
+  CryptoPP::byte *const tempBlock = (CryptoPP::byte *)tbw;
 
   QUARTER_ROUND_LE(t2, 15, 2, 5, 8)
   QUARTER_ROUND_LE(t1, 11, 14, 1, 4)
@@ -467,7 +467,7 @@ void Rijndael::Enc::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock
   Block::Put(xorBlock, outBlock)(tbw[0]^rk[0])(tbw[1]^rk[1])(tbw[2]^rk[2])(tbw[3]^rk[3]);
 }
 
-void Rijndael::Dec::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const
+void Rijndael::Dec::ProcessAndXorBlock(const CryptoPP::byte *inBlock, const CryptoPP::byte *xorBlock, CryptoPP::byte *outBlock) const
 {
 #if CRYPTOPP_BOOL_AESNI_INTRINSICS_AVAILABLE
   if (HasAESNI())
@@ -504,7 +504,7 @@ void Rijndael::Dec::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock
 #else
   for (i=0; i<1024; i+=cacheLineSize)
 #endif
-    u &= *(const word32 *)(const void *)(((const byte *)Td)+i);
+    u &= *(const word32 *)(const void *)(((const CryptoPP::byte *)Td)+i);
   u &= Td[255];
   s0 |= u; s1 |= u; s2 |= u; s3 |= u;
 
@@ -546,7 +546,7 @@ void Rijndael::Dec::ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock
 #endif
 
   word32 tbw[4];
-  byte *const tempBlock = (byte *)tbw;
+  CryptoPP::byte *const tempBlock = (CryptoPP::byte *)tbw;
 
   QUARTER_ROUND_LD(t2, 7, 2, 13, 8)
   QUARTER_ROUND_LD(t1, 3, 14, 9, 4)
@@ -863,7 +863,7 @@ CRYPTOPP_NAKED void CRYPTOPP_FASTCALL Rijndael_Enc_AdvancedProcessBlocks(void *l
 #else
   AS2(  add    MM(2), 1)
 #endif
-  // remaining part of second round, in: edx(previous round),esi(keyed counter byte) eax,ebx,[L_SAVED_X+2*4],[L_SAVED_X+3*4], out: eax,ebx,ecx,edx
+  // remaining part of second round, in: edx(previous round),esi(keyed counter CryptoPP::byte) eax,ebx,[L_SAVED_X+2*4],[L_SAVED_X+3*4], out: eax,ebx,ecx,edx
   AS2(  xor    edx, DWORD PTR [AS_REG_7+WORD_REG(cx)*8+3])
     XOR(    ebx, dl, 3)
     MOV(    ecx, dh, 2)
@@ -1073,7 +1073,7 @@ void Rijndael_Enc_AdvancedProcessBlocks(void *locals, const word32 *k);
 // |YYYYY|
 // +-----+
 //
-static inline bool AliasedWithTable(const byte *begin, const byte *end)
+static inline bool AliasedWithTable(const CryptoPP::byte *begin, const CryptoPP::byte *end)
 {
   ptrdiff_t s0 = uintptr_t(begin)%4096, s1 = uintptr_t(end)%4096;
   ptrdiff_t t0 = uintptr_t(Te)%4096, t1 = (uintptr_t(Te)+sizeof(Te))%4096;
@@ -1157,7 +1157,7 @@ CRYPTOPP_ALIGN_DATA(16)
 static const word32 s_one[] = {0, 0, 0, 1<<24};
 
 template <typename F1, typename F4>
-inline size_t AESNI_AdvancedProcessBlocks(F1 func1, F4 func4, MAYBE_CONST __m128i *subkeys, unsigned int rounds, const byte *inBlocks, const byte *xorBlocks, byte *outBlocks, size_t length, word32 flags)
+inline size_t AESNI_AdvancedProcessBlocks(F1 func1, F4 func4, MAYBE_CONST __m128i *subkeys, unsigned int rounds, const CryptoPP::byte *inBlocks, const CryptoPP::byte *xorBlocks, CryptoPP::byte *outBlocks, size_t length, word32 flags)
 {
   size_t blockSize = 16;
   size_t inIncrement = (flags & (BlockTransformation::BT_InBlockIsCounter|BlockTransformation::BT_DontIncrementInOutPointers)) ? 0 : blockSize;
@@ -1248,7 +1248,7 @@ inline size_t AESNI_AdvancedProcessBlocks(F1 func1, F4 func4, MAYBE_CONST __m128
       block = _mm_xor_si128(block, _mm_loadu_si128((const __m128i *)(const void *)xorBlocks));
 
     if (flags & BlockTransformation::BT_InBlockIsCounter)
-      const_cast<byte *>(inBlocks)[15]++;
+      const_cast<CryptoPP::byte *>(inBlocks)[15]++;
 
     func1(block, subkeys, rounds);
 
@@ -1271,8 +1271,8 @@ inline size_t AESNI_AdvancedProcessBlocks(F1 func1, F4 func4, MAYBE_CONST __m128
 struct Locals
 {
   word32 subkeys[4*12], workspace[8];
-  const byte *inBlocks, *inXorBlocks, *outXorBlocks;
-  byte *outBlocks;
+  const CryptoPP::byte *inBlocks, *inXorBlocks, *outXorBlocks;
+  CryptoPP::byte *outBlocks;
   size_t inIncrement, inXorIncrement, outXorIncrement, outIncrement;
   size_t regSpill, lengthAndCounterFlag, keysBegin;
 };
@@ -1284,7 +1284,7 @@ const size_t s_sizeToAllocate = s_aliasPageSize + s_aliasBlockSize + sizeof(Loca
 Rijndael::Enc::Enc() : m_aliasBlock(s_sizeToAllocate) { }
 #endif
 
-size_t Rijndael::Enc::AdvancedProcessBlocks(const byte *inBlocks, const byte *xorBlocks, byte *outBlocks, size_t length, word32 flags) const
+size_t Rijndael::Enc::AdvancedProcessBlocks(const CryptoPP::byte *inBlocks, const CryptoPP::byte *xorBlocks, CryptoPP::byte *outBlocks, size_t length, word32 flags) const
 {
 #if CRYPTOPP_BOOL_AESNI_INTRINSICS_AVAILABLE
   if (HasAESNI())
@@ -1297,10 +1297,10 @@ size_t Rijndael::Enc::AdvancedProcessBlocks(const byte *inBlocks, const byte *xo
     if (length < BLOCKSIZE)
       return length;
 
-    static const byte *zeros = (const byte*)(Te+256);
-    byte *space = NULL, *originalSpace = const_cast<byte*>(m_aliasBlock.data());
+    static const CryptoPP::byte *zeros = (const CryptoPP::byte*)(Te+256);
+    CryptoPP::byte *space = NULL, *originalSpace = const_cast<CryptoPP::byte*>(m_aliasBlock.data());
 
-    // round up to nearest 256 byte boundary
+    // round up to nearest 256 CryptoPP::byte boundary
     space = originalSpace +  (s_aliasBlockSize - (uintptr_t)originalSpace % s_aliasBlockSize) % s_aliasBlockSize;
     while (AliasedWithTable(space, space + sizeof(Locals)))
     {
@@ -1347,7 +1347,7 @@ size_t Rijndael::Enc::AdvancedProcessBlocks(const byte *inBlocks, const byte *xo
 
 #if CRYPTOPP_BOOL_AESNI_INTRINSICS_AVAILABLE
 
-size_t Rijndael::Dec::AdvancedProcessBlocks(const byte *inBlocks, const byte *xorBlocks, byte *outBlocks, size_t length, word32 flags) const
+size_t Rijndael::Dec::AdvancedProcessBlocks(const CryptoPP::byte *inBlocks, const CryptoPP::byte *xorBlocks, CryptoPP::byte *outBlocks, size_t length, word32 flags) const
 {
   if (HasAESNI())
     return AESNI_AdvancedProcessBlocks(AESNI_Dec_Block, AESNI_Dec_4_Blocks, (MAYBE_CONST __m128i *)(const void *)m_key.begin(), m_rounds, inBlocks, xorBlocks, outBlocks, length, flags);

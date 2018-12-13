@@ -47,14 +47,14 @@ public:
 
   // event interface implementation
   //
-  ES_DECL_INTF_METHOD(const EsDateTime&, timestampGet)() const;
-  ES_DECL_INTF_METHOD(const EsString&, categoryGet)() const;
-  ES_DECL_INTF_METHOD(ulong, idGet)() const;
-  ES_DECL_INTF_METHOD(ulong, flagsGet)() const;
-  ES_DECL_INTF_METHOD(void, flagsSet)(ulong flags);
-  ES_DECL_REFLECTED_INTF_METHOD0(void, consume);
-  ES_DECL_INTF_METHOD(const EsVariant&, payloadGet)() const;
-  ES_DECL_INTF_METHOD(void, payloadSet)(const EsVariant& payload);
+  ES_DECL_INTF_METHOD(const EsDateTime&, timestampGet)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(const EsString&, categoryGet)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(ulong, idGet)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(ulong, flagsGet)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(void, flagsSet)(ulong flags) ES_OVERRIDE;
+  ES_DECL_REFLECTED_INTF_METHOD0(void, consume) ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(const EsVariant&, payloadGet)() const ES_OVERRIDE;
+  ES_DECL_INTF_METHOD(void, payloadSet)(const EsVariant& payload) ES_OVERRIDE;
 
   // Reflected properties
   //

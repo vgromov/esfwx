@@ -4,7 +4,6 @@
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
 # pragma package(smart_init)
 #endif
-#include "autolink.cxx"
 
 # include "esfwxe/utils.c"
 # include "esfwxe/commintf.c"

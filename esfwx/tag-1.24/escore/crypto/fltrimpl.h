@@ -50,7 +50,7 @@
   FILTER_OUTPUT2(site, 0, output, length, messageEnd)
 
 #define FILTER_OUTPUT_BYTE(site, output)  \
-  FILTER_OUTPUT(site, &(const byte &)(byte)output, 1, 0)
+  FILTER_OUTPUT(site, &(const CryptoPP::byte &)(CryptoPP::byte)output, 1, 0)
 
 #define FILTER_OUTPUT2_MODIFIABLE(site, statement, output, length, messageEnd)  \
   {\
