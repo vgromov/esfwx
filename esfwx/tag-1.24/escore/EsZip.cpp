@@ -160,7 +160,7 @@ EsBinBuffer EsZipCompressor::compress(const EsBinBuffer& src)
 #endif
     );
 
-  zs->avail_in = static_cast<z_uInt>(src.size());
+  zs->avail_in = static_cast<unsigned>(src.size());
   zs->next_in =
 #ifdef ES_USE_ECC_ZLIB
     (System::Byte*)
@@ -273,7 +273,7 @@ EsBinBuffer EsZipDecompressor::decompress(const EsBinBuffer& src)
 #endif
     );
 
-  zs->avail_in = static_cast<z_uInt>(src.size());
+  zs->avail_in = static_cast<unsigned>(src.size());
   zs->next_in =
 #ifdef ES_USE_ECC_ZLIB
     (System::Byte*)

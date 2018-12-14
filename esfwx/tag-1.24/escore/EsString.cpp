@@ -1255,10 +1255,8 @@ EsString EsString::format(const std::locale& loc, EsString::const_pointer fmt, c
 //
 static inline void checkCharRange(int c)
 {
-  ES_COMPILE_TIME_ASSERT(std::numeric_limits<char>::min() < 0, charMustBeOfSignedType); // Watch that the char is a signed type
-
   if ( c < std::numeric_limits<char>::min() || c > std::numeric_limits<unsigned char>::max() ) // Check -127 .. 255
-    EsException::Throw(
+    EsException::Throw(
       _("Wide character with code 0x%X encountered in place where only eight-bit characters allowed"),
       static_cast<unsigned>(c)
     );
