@@ -269,7 +269,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool ES_UNUSED(incref = true) ) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
       return asBaseIntf();

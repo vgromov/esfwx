@@ -134,12 +134,14 @@ public:
 
 protected:
   typedef std::map<EsVariant, ulong> Mapped;
-  // helper services
+  
+  // Helper services
   Mapped::iterator checkKeyExistsAndNodeGet(const EsVariant& key, bool doThrow);
   Mapped::const_iterator checkKeyExistsAndNodeGet(const EsVariant& key, bool doThrow) const;
   static void throwKeyIsNotFound(const EsVariant& key);
   void checkKeyDoesNotExist(const EsVariant& key);
-  // overridable services
+
+  // Overridable services
   virtual void keyCheck(const EsVariant& key) const;
   virtual void valCheck(const EsVariant& key, const EsVariant& val) const;
   virtual void doClear();

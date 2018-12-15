@@ -1659,7 +1659,7 @@ static ulong weeknumberCalc(const EsDateTime& dt, ulong firstWeekday)
   ES_ASSERT(7 >= firstWeekday);
 
   ulong doy = dt.get_dayOfYear();
-  ulong dow = dt.get_dayOfWeek();
+//  ulong dow = dt.get_dayOfWeek();
   EsDateTime _1stJanSameYear = dt;
   _1stJanSameYear.set_dayOfMonth(1);
   _1stJanSameYear.set_month(1);
@@ -1676,7 +1676,7 @@ static ulong weeknumberCalc(const EsDateTime& dt, ulong firstWeekday)
 //---------------------------------------------------------------------------
 
 static EsString _LC_Mth_name(
-  const std::locale& loc,
+  const std::locale& ES_UNUSED(loc),
   int m
 )
 {
@@ -1715,7 +1715,7 @@ static EsString _LC_Mth_name(
 //---------------------------------------------------------------------------
 
 static EsString _LC_ShortMth_name(
-  const std::locale& loc,
+  const std::locale& ES_UNUSED(loc),
   int m
 )
 {
@@ -1754,7 +1754,7 @@ static EsString _LC_ShortMth_name(
 //---------------------------------------------------------------------------
 
 static EsString _LC_Day_name(
-  const std::locale& loc,
+  const std::locale& ES_UNUSED(loc),
   int d
 )
 {
@@ -1783,7 +1783,7 @@ static EsString _LC_Day_name(
 //---------------------------------------------------------------------------
 
 static EsString _LC_ShortDay_name(
-  const std::locale& loc,
+  const std::locale& ES_UNUSED(loc),
   int d
 )
 {

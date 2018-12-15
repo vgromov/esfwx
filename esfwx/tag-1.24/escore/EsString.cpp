@@ -794,7 +794,6 @@ EsString EsString::formatV(const std::locale& loc, EsString::const_pointer fmt, 
     // optional width and precision placeholders for * case
     ulong matchStart, matchLen;
     // format the entire field, append formatted string to result and skip further
-    EsString::const_pointer tmpPos = pos;
     if(
       re.matchGet(
         matchStart,
@@ -1742,7 +1741,7 @@ EsString EsString::charToEscapedString(int c)
   EsString::value_type str[4];
   if( c == esT('\'') || c == esT('\\') )
   {
-    str[0] = esT('\\');
+    str[0] = static_cast<EsString::value_type>(esT('\\'));
     str[1] = c;
     return EsString(str, 2);
   }

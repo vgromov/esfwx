@@ -580,7 +580,7 @@ void EsVariant::assignString(EsString::const_pointer v, size_t len)
 }
 //---------------------------------------------------------------------------
 
-bool EsVariant::asBool(const std::locale& loc /*= EsLocale::locale()*/) const
+bool EsVariant::asBool(const std::locale& ES_UNUSED(loc) /*= EsLocale::locale()*/) const
 {
   switch( m_type )
   {
@@ -831,7 +831,7 @@ esU32 EsVariant::asInternalDWord(const std::locale& loc /*= EsLocale::locale()*/
   switch( m_type )
   {
   case VAR_POINTER:
-    if( sizeof(esU32) != sizeof(void*) )
+    ES_IF_CONSTEXPR( sizeof(esU32) != sizeof(void*) )
       EsException::ThrowNotSupportedForThisType();
   case VAR_BOOL:
     ES_ASSERT(m_value.m_ullong <= 1);
@@ -915,7 +915,7 @@ esU64 EsVariant::asInternalQWord(const std::locale& loc /*= EsLocale::locale()*/
   switch( m_type )
   {
   case VAR_POINTER:
-    if(sizeof(ullong) != sizeof(void*))
+    ES_IF_CONSTEXPR(sizeof(ullong) != sizeof(void*))
       EsException::ThrowNotSupportedForThisType();
   case VAR_BOOL:
     ES_ASSERT(m_value.m_ullong <= 1);
@@ -1159,7 +1159,7 @@ ulong EsVariant::asULong(const std::locale& loc /*= EsLocale::locale()*/) const
   switch( m_type )
   {
   case VAR_POINTER:
-    if( sizeof(ullong) != sizeof(void*) )
+    ES_IF_CONSTEXPR( sizeof(ullong) != sizeof(void*) )
       EsException::ThrowNotSupportedForThisType();
   case VAR_BOOL:
     ES_ASSERT(m_value.m_ullong <= 1);
@@ -1239,7 +1239,7 @@ ullong EsVariant::asULLong(const std::locale& loc /*= EsLocale::locale()*/) cons
   switch( m_type )
   {
   case VAR_POINTER:
-    if( sizeof(ullong) != sizeof(void*) )
+    ES_IF_CONSTEXPR( sizeof(ullong) != sizeof(void*) )
       EsException::ThrowNotSupportedForThisType();
   case VAR_BOOL:
     ES_ASSERT(m_value.m_ullong <= 1);

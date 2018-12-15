@@ -3598,7 +3598,6 @@ bool EsXmlDocument::saveFile(const EsString& path, const EsString& indent, unsig
 static EsXmlParseResult load_file_impl(EsXmlDocument& doc, EsFile& file, unsigned int options, EsXmlEncoding encoding)
 {
   // get file size (can result in I/O errors)
-  EsXmlParseStatus size_status = xmlParseStatusOk;
   size_t size = (size_t)file.get_length();
 
   // allocate buffer for the whole file
@@ -3620,7 +3619,12 @@ static EsXmlParseResult load_file_impl(EsXmlDocument& doc, EsFile& file, unsigne
     return make_parse_result(xmlParseStatusIoError);
   }
 
-  return doc.loadBufferInplaceOwn(contents, size, options, encoding);
+  return doc.loadBufferInplaceOwn(
+    contents, 
+    size, 
+    options, 
+    encoding
+  );
 }
 
 EsXmlParseResult EsXmlDocument::loadFile(const EsString& path, unsigned int options, EsXmlEncoding encoding)

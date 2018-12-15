@@ -90,7 +90,7 @@ set(escore_utility_SRCS
       EsVector.h
       EsGrammarDefs.h
       EsNearestGreater2n.h
-      )
+    )
 source_group(utility FILES ${escore_utility_SRCS})
 
 set(escore_crypto_SRCS
@@ -103,8 +103,7 @@ set(escore_crypto_SRCS
       EsCryptoHash.cpp
       EsCryptoHash.h
       EsCryptoInternal.cpp
-      EsCryptoInternal.h
-      )
+    )
 source_group(crypto FILES ${escore_crypto_SRCS})
 
 set(escore_event_SRCS
@@ -112,7 +111,7 @@ set(escore_event_SRCS
 			EsEvent.h
 			EsEventDispatcher.cpp
 			EsEventDispatcher.h
-			)
+		)
 source_group(event FILES ${escore_event_SRCS})
 
 set(escore_file_SRCS
@@ -122,7 +121,7 @@ set(escore_file_SRCS
 			EsPath.h
 			EsPathEnumerator.cpp
 			EsPathEnumerator.h
-			)
+		)
 source_group(file FILES ${escore_file_SRCS})
 
 set(escore_thread_SRCS
@@ -132,7 +131,7 @@ set(escore_thread_SRCS
 			EsThread.h
 			EsSyncObjects.cpp
 			EsSyncObjects.h
-			)
+		)
 source_group(thread FILES ${escore_thread_SRCS})
 
 set(escore_string_SRCS
@@ -153,14 +152,14 @@ set(escore_string_SRCS
 			EsRegEx.h
       EsLocale.cpp
       EsLocale.h
-			)
+		)
 source_group(string FILES ${escore_string_SRCS})
 
 set(escore_interfaces_SRCS
 			EsBaseIntf.h
 			EsBreakIntf.h
 			EsLogIntf.h
-			)
+		)
 source_group(interfaces FILES ${escore_interfaces_SRCS})
 
 set(escore_reflection_SRCS
@@ -187,7 +186,7 @@ set(escore_reflection_SRCS
       EsMetaclass.h
       EsStdNames.cpp
       EsStdNames.h
-			)
+		)
 source_group(reflection FILES ${escore_reflection_SRCS})
 
 set(escore_streams_SRCS
@@ -199,14 +198,14 @@ set(escore_streams_SRCS
       EsStreamBinary.h
       EsStreamXml.cpp
       EsStreamXml.h
-      )
+    )
 source_group(streams FILES ${escore_streams_SRCS})
 
 set(escore_locale_SRCS
 			locale/escore.pot
 			locale/escore.ru_RU.po
       locale/escore.de_DE.po
-			)
+		)
 source_group(locale FILES ${escore_locale_SRCS})
 I18N_ADD("escore" escore_locale_SRCS "${binaryRoot}")
 
@@ -222,7 +221,7 @@ set(escore_SRCS
 			${escore_streams_SRCS}
 			${escore_event_SRCS}
 			${escore_locale_SRCS}
-			)
+		)
 
 if(WIN32)
     set(escore_RES ${escore_RES} res/version.rc)

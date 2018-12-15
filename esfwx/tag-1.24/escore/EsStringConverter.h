@@ -168,7 +168,7 @@ protected:
     size_t idx = 0;
     while(cp < end)
     {
-      if( sizeof(typename W_T::value_type) > 1 )
+      ES_IF_CONSTEXPR( sizeof(typename W_T::value_type) > 1 )
       {
         typename W_T::value_type v = 0;
 

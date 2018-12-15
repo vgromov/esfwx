@@ -29,6 +29,7 @@
 #endif /* MAKECRCH */
 
 #include "zutil.h"      /* for STDC and FAR definitions */
+#include <EsCoreDefs.h>
 
 #if defined(ES_USE_ZLIB) && !defined( ES_USE_ECC_ZLIB )
 
@@ -217,7 +218,7 @@ unsigned long ZEXPORT crc32(
 #endif /* DYNAMIC_CRC_TABLE */
 
 #ifdef BYFOUR
-    if (sizeof(void *) == sizeof(ptrdiff_t)) {
+    ES_IF_CONSTEXPR(sizeof(void *) == sizeof(ptrdiff_t)) {
         z_crc_t endian;
 
         endian = 1;

@@ -1,7 +1,6 @@
 #include "escorepch.h"
 #pragma hdrstop
 
-#include "EsCryptoInternal.h"
 #include "EsCryptoHash.h"
 
 // Static linking under BCC - use dependencies ordering for modules
@@ -13,6 +12,28 @@
 //---------------------------------------------------------------------------
 
 #ifdef ES_USE_CRYPTO
+
+#include "crypto/iterhash.h"
+#include "crypto/iterhash.cpp"
+#include "crypto/algparam.cpp"
+#include "crypto/integer.cpp"
+#include "crypto/queue.cpp"
+#include "crypto/mqueue.cpp"
+#include "crypto/nbtheory.cpp"
+#include "crypto/asn.cpp"
+#include "crypto/pubkey.cpp"
+
+#include "crypto/ripemd.cpp"
+#include "crypto/md5.cpp"
+#undef f2
+#undef f3
+#undef f4
+#undef H
+#undef G
+#undef F
+#undef ROUND
+#include "crypto/sha.cpp"
+#include "crypto/sha3.cpp"
 
 //---------------------------------------------------------------------------
 

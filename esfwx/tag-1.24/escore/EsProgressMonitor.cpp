@@ -698,7 +698,8 @@ void EsProgressMonitorTask::internalMonitorSet(const EsProgressMonitorIntf::Ptr&
 }
 //---------------------------------------------------------------------------
 
-void EsProgressMonitorTask::internalChildAdd(const EsProgressMonitorTaskIntf::Ptr& thisTask,
+void EsProgressMonitorTask::internalChildAdd(
+  const EsProgressMonitorTaskIntf::Ptr& thisTask,
   EsProgressMonitorTask* child)
 {
   ES_ASSERT(child);
@@ -968,7 +969,8 @@ ES_IMPL_INTF_METHOD(EsBaseIntf::Ptr, EsProgressMonitor::taskGetByPath)(const EsS
 }
 //---------------------------------------------------------------------------
 
-void EsProgressMonitor::internalChildAdd(const EsProgressMonitorIntf::Ptr& thisMon,
+void EsProgressMonitor::internalChildAdd(
+  const EsProgressMonitorIntf::Ptr& ES_UNUSED(thisMon),
   EsProgressMonitorTask* child)
 {
   ES_ASSERT(child);

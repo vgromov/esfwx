@@ -1,7 +1,6 @@
 #include "escorepch.h"
 #pragma hdrstop
 
-#include "EsCryptoInternal.h"
 #include "EsCryptoAes.h"
 
 // Static linking under BCC - use dependencies ordering for modules
@@ -13,11 +12,18 @@
 //---------------------------------------------------------------------------
 
 #ifdef ES_USE_CRYPTO
+
 # ifdef ES_USE_CRYPTO_DEBUG_TRACE
 #   define ES_CRYPTOAES_DEBUG_TRACE ES_DEBUG_TRACE
 # else
 #   define ES_CRYPTOAES_DEBUG_TRACE(...) ((void)0)
 # endif
+//---------------------------------------------------------------------------
+
+#include "crypto/aes.h"
+#include "crypto/rdtables.cpp"
+#include "crypto/rijndael.cpp"
+//---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
 ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsCryptoAes, NO_CLASS_DESCR)

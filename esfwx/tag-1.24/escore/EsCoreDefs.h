@@ -103,6 +103,15 @@
 #if (__cplusplus >= 201103L) || (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201103L)
 # define ES_MODERN_CPP
 # define ES_HAVE_NOEXCEPT
+# if (__cplusplus >= 201103L)
+#   define ES_CPP11
+#   if (__cplusplus >= 201402L)
+#     define ES_CPP14
+#     if (__cplusplus >= 201703L)
+#       define ES_CPP17
+#     endif
+#   endif
+# endif
 #endif
 
 #if ES_COMPILER_VENDOR_MS == ES_COMPILER_VENDOR
@@ -372,14 +381,23 @@
 // Non-copyable class
 //
 #ifdef ES_MODERN_CPP
-# define ES_REMOVEDECL  = delete
-# define ES_OVERRIDE    override
+
+# define ES_REMOVEDECL      = delete
+# define ES_OVERRIDE        override
 # define ES_REGISTER
+# define ES_CONSTEXPR       constexpr
+# if defined(ES_CPP17)
+#   define ES_IF_CONSTEXPR  if constexpr
+# else
+#   define ES_IF_CONSTEXPR  if
+# endif
 #else
 # define ES_REMOVEDECL
 # define ES_OVERRIDE
-# define nullptr        NULL
-# define ES_REGISTER    register
+# define nullptr          NULL
+# define ES_REGISTER      register
+# define ES_CONSTEXPR
+# define ES_IF_CONSTEXPR  if
 #endif
 
 # define ES_NON_COPYABLE(ClassName) \

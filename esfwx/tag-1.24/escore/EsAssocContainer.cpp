@@ -462,7 +462,7 @@ void EsAssocContainer::keyCheck(const EsVariant& key) const
 }
 //---------------------------------------------------------------------------
 
-void EsAssocContainer::valCheck(const EsVariant& key, const EsVariant& val) const
+void EsAssocContainer::valCheck(const EsVariant& ES_UNUSED(key), const EsVariant& ES_UNUSED(val)) const
 {
   // do nothing by default
 }

@@ -628,7 +628,6 @@ EsString EsStringI18n::translationGet(const EsString& src, const EsString& domai
 
 EsString EsStringI18n::pluralEval(const TranslationEntry& entry, size_t cnt) const
 {
-  const EsString& lang = languageCodeGet(m_locale);
   if( !entry.m_trPlurals.empty() )
   {
     int pluralsCnt;
@@ -682,7 +681,7 @@ public:
   {}
 
 protected:
-  virtual bool onObject(const EsString& curPath, const EsString& name, bool isDir)
+  virtual bool onObject(const EsString& ES_UNUSED(curPath), const EsString& name, bool isDir)
   {
     if( !isDir )
     {

@@ -1,7 +1,6 @@
 #include "escorepch.h"
 #pragma hdrstop
 
-#include "EsCryptoInternal.h"
 #include "EsCryptoDes.h"
 
 // Static linking under BCC - use dependencies ordering for modules
@@ -13,12 +12,18 @@
 //---------------------------------------------------------------------------
 
 #ifdef ES_USE_CRYPTO
+
 # ifdef ES_USE_CRYPTO_DEBUG_TRACE
 #   define ES_CRYPTODES_DEBUG_TRACE ES_DEBUG_TRACE
 # else
 #   define ES_CRYPTODES_DEBUG_TRACE(...) ((void)0)
 # endif
+//---------------------------------------------------------------------------
 
+#include "crypto/des.h"
+#include "crypto/des.cpp"
+#include "crypto/dessp.cpp"
+//---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
 ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsCryptoDes, NO_CLASS_DESCR)

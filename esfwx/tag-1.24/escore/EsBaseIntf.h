@@ -31,7 +31,12 @@ struct EsIID
   template <typename IntfT>
   static inline EsIID fromIntf() ES_NOTHROW
   {
-    return EsIID(IntfT::uid0, IntfT::uid1, IntfT::uid2, IntfT::uid3);
+    return EsIID(
+      static_cast<esU32>(IntfT::uid0), 
+      static_cast<esU32>(IntfT::uid1), 
+      static_cast<esU32>(IntfT::uid2), 
+      static_cast<esU32>(IntfT::uid3)
+    );
   }
 
   /// Check EsIID for emptyness
