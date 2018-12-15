@@ -382,7 +382,7 @@ public:
 
   /// Debug-only functionality. Dump Block contents and children to string, in aligned, readable manner
 #ifdef ES_DEBUG
-  ES_DECL_INTF_METHOD(EsString, debugDump)() const;
+  ES_DECL_INTF_METHOD(EsString, debugDump)() const ES_OVERRIDE;
 #endif
 
 protected:

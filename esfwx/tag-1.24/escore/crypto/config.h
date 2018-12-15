@@ -232,7 +232,7 @@ namespace CryptoPP { }
 
 NAMESPACE_BEGIN(CryptoPP)
 
-typedef unsigned char CryptoPP::byte;
+typedef unsigned char byte;
 typedef unsigned short word16;
 typedef unsigned int word32;
 

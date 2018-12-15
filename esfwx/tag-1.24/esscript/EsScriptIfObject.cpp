@@ -16,10 +16,18 @@ class ES_INTF_IMPL_DERIVED(EsScriptIfBranchObject, EsScriptObject)
 
 protected:
   // friends-only services
-  EsScriptIfBranchObject(const EsScriptContext::Ptr& ctx, esU32 flags, const EsScriptMethodMapPtr& scopedMethods,
-    const EsScriptObjectDataBufferPtr& buff, bool trueFalse) :
-  EsScriptObject(trueFalse ? EsStdNames::_true() : EsStdNames::_false(), EsScriptObjectIntf::Ptr(), scopedMethods, ctx, flags, buff,
-    EsAttributesIntf::Ptr()),
+  EsScriptIfBranchObject(const EsScriptContext::Ptr& ctx, esU32 flags, const EsScriptMethodMapPtr& scopedMethods, const EsScriptObjectDataBufferPtr& buff, bool trueFalse) :
+  EsScriptObject(
+    trueFalse ? 
+      EsStdNames::_true() : 
+      EsStdNames::_false(), 
+    nullptr, 
+    scopedMethods, 
+    ctx, 
+    flags, 
+    buff,
+    nullptr
+  ),
   m_true(trueFalse)
   {
   }
@@ -44,7 +52,7 @@ protected:
   // base class overrides
   //
   // create instance of script object from its metaclass instance
-  ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, objectCreate)(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const
+  ES_DECL_INTF_METHOD(EsScriptObjectIntf::Ptr, objectCreate)(const EsScriptObjectDataBufferPtr& buff, bool splitCtx) const ES_OVERRIDE
   {
     std::unique_ptr<EsScriptIfBranchObject> ptr(
       new EsScriptIfBranchObject(

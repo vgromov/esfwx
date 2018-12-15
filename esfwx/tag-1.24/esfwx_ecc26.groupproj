@@ -1,0 +1,84 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{61147DC0-3577-4DB6-AE19-B796020754BC}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="escore\escore_ecc26.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="escomm\escomm_ecc26.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="esmath\esmath_ecc26.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="esscript\esscript_ecc26.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="tests\tests_ecc26.cbproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="escore_ecc26">
+        <MSBuild Projects="escore\escore_ecc26.cbproj"/>
+    </Target>
+    <Target Name="escore_ecc26:Clean">
+        <MSBuild Projects="escore\escore_ecc26.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="escore_ecc26:Make">
+        <MSBuild Projects="escore\escore_ecc26.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="escomm_ecc26">
+        <MSBuild Projects="escomm\escomm_ecc26.cbproj"/>
+    </Target>
+    <Target Name="escomm_ecc26:Clean">
+        <MSBuild Projects="escomm\escomm_ecc26.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="escomm_ecc26:Make">
+        <MSBuild Projects="escomm\escomm_ecc26.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="esmath_ecc26">
+        <MSBuild Projects="esmath\esmath_ecc26.cbproj"/>
+    </Target>
+    <Target Name="esmath_ecc26:Clean">
+        <MSBuild Projects="esmath\esmath_ecc26.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="esmath_ecc26:Make">
+        <MSBuild Projects="esmath\esmath_ecc26.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="esscript_ecc26">
+        <MSBuild Projects="esscript\esscript_ecc26.cbproj"/>
+    </Target>
+    <Target Name="esscript_ecc26:Clean">
+        <MSBuild Projects="esscript\esscript_ecc26.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="esscript_ecc26:Make">
+        <MSBuild Projects="esscript\esscript_ecc26.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="tests_ecc26">
+        <MSBuild Projects="tests\tests_ecc26.cbproj"/>
+    </Target>
+    <Target Name="tests_ecc26:Clean">
+        <MSBuild Projects="tests\tests_ecc26.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="tests_ecc26:Make">
+        <MSBuild Projects="tests\tests_ecc26.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="escore_ecc26;escomm_ecc26;esmath_ecc26;esscript_ecc26;tests_ecc26"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="escore_ecc26:Clean;escomm_ecc26:Clean;esmath_ecc26:Clean;esscript_ecc26:Clean;tests_ecc26:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="escore_ecc26:Make;escomm_ecc26:Make;esmath_ecc26:Make;esscript_ecc26:Make;tests_ecc26:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
