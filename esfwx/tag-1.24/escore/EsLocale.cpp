@@ -633,7 +633,8 @@ protected:
 };
 //---------------------------------------------------------------------------
 
-class EsMoneypunct : public std::moneypunct<EsString::value_type>
+template <bool intl>
+class EsMoneypunct : public std::moneypunct<EsString::value_type, intl>
 {
 public:
   typedef std::moneypunct<EsString::value_type> BaseT;
@@ -937,7 +938,7 @@ public:
   EsMoneyPut(const EsLocInfoNode& node) : m_node(node) {}
 
 protected:
-  virtual iter_type do_put(iter_type out, bool intl, std::ios_base& in, char_type fill, long double units) const ES_OVERRIDE
+  virtual iter_type do_put(iter_type out, bool intl, std::ios_base& in, char_type fill, long double val) const ES_OVERRIDE
   {
       const std::locale& loc = in.getloc();
       const EsCtype& cType = std::use_facet< EsCtype >(loc);
@@ -951,10 +952,10 @@ protected:
         &bs[0],
         sze,
         "%.0Lf",
-        units
+        val
       );
 
-      ining_type digits(
+      string_type valstr(
         len,
         char_type()
       );
@@ -962,165 +963,286 @@ protected:
       cType.widen(
         &bs[0],
         &bs[0]+len,
-        &digits[0]
+        &valstr[0]
       );
 
       return intl ?
-        format<true>(out, in, fill, digits) :
-        format<false>(out, in, fill, digits);
+        format<true>(out, in, fill, val < 0, valstr) :
+        format<false>(out, in, fill, val < 0, valstr);
   }
 
-	virtual iter_type do_put(iter_type out, bool intl, std::ios_base& in, char_type fill, const ining_type& digits) const ES_OVERRIDE
+	virtual iter_type do_put(iter_type out, bool intl, std::ios_base& in, char_type fill, const string_type& valstr) const ES_OVERRIDE
 	{
+    if(valstr.empty())
+      return out;
+
+    bool neg = *valstr.c_str() == esT('-');
+
     return intl ?
-      format<true>(out, in, fill, digits) :
-      format<false>(out, in, fill, digits);
+      format<true>(out, in, fill, neg, valstr) :
+      format<false>(out, in, fill, neg, valstr);
   }
 
-  template<bool intl>
-  iter_type format(iter_type out, ios_base& in, char_type fill, const string_type& digits) const
+  template <bool intl>
+  iter_type format(iter_type out, std::ios_base& in, char_type fill, bool neg, string_type valstr) const
   {
-    const _Mpunct<_Elem> *_Ppunct_fac;
-		if(intl)
-			_Ppunct_fac =
-				&use_facet< _Mypunct1 >(_Iosbase.getloc());	// international
+    // Reference monepunct facet attached to in locale, or just a standard one
+    const EsMoneypunct<intl>& mpunctFacet = std::use_facet< EsMoneypunct<intl> >( in.getloc() );
+
+    // Digital zero char
+		static const EsString::value_type digZero = esT('0');
+
+    // Access grouping data
+		const std::string& grp = mpunctFacet.grouping();
+
+    // Access fraction dgits count
+		int signedFd = mpunctFacet.frac_digits();
+		size_t usignedFd = (signedFd < 0) ? 
+      -signedFd : 
+      signedFd;
+
+		if(valstr.size() <= usignedFd)
+			valstr.insert(
+        static_cast<size_t>(0), 
+        usignedFd - valstr.size() + 1, 
+        digZero
+      );
+		else if(
+      *grp.c_str() != CHAR_MAX && 
+      '\0' < *grp.c_str()
+    )
+		{	
+      // Grouping specified, add thousands separators
+			const EsString::value_type ksep = mpunctFacet.thousands_sep();
+			const char* grpPos = grp.c_str();
+			size_t offs = valstr.size() - usignedFd;	// start of fraction
+
+			while(
+        *grpPos != CHAR_MAX && 
+        '\0' < *grpPos && 
+        static_cast<size_t>(*grpPos) < offs
+      )
+ 		  {	
+        // Add a thousands separator, right to left
+				valstr.insert(
+          offs -= *grpPos, 
+          static_cast<size_t>(1), 
+          ksep
+        );
+				
+        if('\0' < grpPos[1])
+					++grpPos;	// not last group, advance
+			}
+		}
+
+		std::money_base::pattern patt;
+		string_type sign;
+		if(neg)
+		{	
+      // negative value, choose appropriate format and sign
+			patt = mpunctFacet.neg_format();
+			sign = mpunctFacet.negative_sign();
+		}
 		else
-			_Ppunct_fac =
-				&use_facet< _Mypunct0 >(_Iosbase.getloc());	// local
-		const _Elem _E0 = _MAKLOCCHR(_Elem, '0', _Cvt);
+		{	// positive value, choose appropriate format and sign
+			patt = mpunctFacet.pos_format();
+			sign = mpunctFacet.positive_sign();
+		}
 
-		const string _Grouping = _Ppunct_fac->grouping();
-		int _Ifracdigits = _Ppunct_fac->frac_digits();
-		unsigned int _Fracdigits = _Ifracdigits < 0 ? -_Ifracdigits
-			: _Ifracdigits;
+		string_type currSym;
+		if(in.flags() & std::ios_base::showbase)
+			currSym = mpunctFacet.curr_symbol();	// Showbase set - insert currency symbol
 
-		if (_Val.size() <= _Fracdigits)
-			_Val.insert((size_t)0, _Fracdigits - _Val.size() + 1, _E0);
-		else if (*_Grouping.c_str() != CHAR_MAX && '\0' < *_Grouping.c_str())
-			{	// grouping specified, add thousands separators
-			const _Elem _Kseparator = _Ppunct_fac->thousands_sep();
-			const char *_Pg = _Grouping.c_str();
-			size_t _Off = _Val.size() - _Fracdigits;	// start of fraction
+		bool fillInternal = false;
+		size_t fillCnt = 0;
+    size_t offs = 0;
+		while( offs < 4 )
+    {
+			switch (patt.field[offs])
+			{	
+      // Accumulate total length in fillCnt
+			case std::money_base::symbol:	  //< count currency symbol size
+				fillCnt += currSym.size();
+				break;
+			case std::money_base::sign:	    //< count sign size
+				fillCnt += sign.size();
+				break;
+			case std::money_base::value:	  //< count value field size
+				fillCnt += valstr.size() + 
+          (0 < usignedFd ? 1 : 0)	+ 
+          (
+            (valstr.size() <= usignedFd) ? 
+              usignedFd - valstr.size() + 1 : 
+              0
+          );
+				break;
+			case std::money_base::space:	  //< count space size
+				++fillCnt;	// at least one space
+				// NB! fall through
+			case std::money_base::none:	    //< count space size
+				if(offs != 3)
+					fillInternal = true;	      //< Do optional internal fill
+				break;
+			}
 
-			while (*_Pg != CHAR_MAX && '\0' < *_Pg
-				&& (size_t)*_Pg < _Off)
-				{	// add a thousands separator, right to left
-				_Val.insert(_Off -= *_Pg, (size_t)1, _Kseparator);
-				if ('\0' < _Pg[1])
-					++_Pg;	// not last group, advance
+      ++offs;
+    }
+
+		fillCnt = ((in.width() <= 0) || (static_cast<size_t>(in.width()) <= fillCnt)) ? 
+      0 : 
+      static_cast<size_t>(in.width()) - fillCnt;
+
+		std::ios_base::fmtflags fmtFlags = in.flags() & std::ios_base::adjustfield;
+		if( 
+      fmtFlags != std::ios_base::left	&& 
+      (fmtFlags != std::ios_base::internal || !fillInternal)
+    )
+		{
+      // Do leading fill
+			out = set(
+        out, 
+        fill, 
+        fillCnt
+      );
+			
+      fillCnt = 0;
+		}
+
+		for(offs = 0; offs < 4; ++offs)
+    {
+      // put components as specified by patt
+			switch(patt.field[offs])
+			{	
+			case std::money_base::symbol:	// put currency symbol
+				out = copy(
+          out, 
+          currSym.begin(), 
+          currSym.size()
+        );
+				break;
+			case std::money_base::sign:	// put sign
+				if(0 < sign.size())
+					out = copy(
+            out, 
+            sign.begin(), 
+            1
+          );
+				break;
+			case std::money_base::value:	// put value field
+				if(usignedFd == 0)
+					out = copy(
+            out, 
+            valstr.begin(),
+						valstr.size()
+          );	// no fraction part
+				else if(valstr.size() <= usignedFd)
+				{	
+          // put leading zero, all fraction digits
+          //
+					*out++ = digZero;
+          
+          // Separator
+					*out++ = mpunctFacet.decimal_point();
+
+          // Insert zeros
+          out = set(
+            out, 
+            digZero,
+						usignedFd - valstr.size()
+          );
+          
+          // Fraction
+					out = copy(
+            out, 
+            valstr.begin(), 
+            valstr.size()
+          );
 				}
-			}
-
-		money_base::pattern _Pattern;
-		string_type _Sign;
-		if (_Neg)
-			{	// negative value, choose appropriate format and sign
-			_Pattern = _Ppunct_fac->neg_format();
-			_Sign = _Ppunct_fac->negative_sign();
-			}
-		else
-			{	// positive value, choose appropriate format and sign
-			_Pattern = _Ppunct_fac->pos_format();
-			_Sign = _Ppunct_fac->positive_sign();
-			}
-
-		string_type _Symbol;
-		if (_Iosbase.flags() & ios_base::showbase)
-			_Symbol = _Ppunct_fac->curr_symbol();	// showbase ==> show $
-
-		bool _Intern = false;
-		size_t _Fillcount, _Off;
-		for (_Fillcount = 0, _Off = 0; _Off < 4; ++_Off)
-			switch (_Pattern.field[_Off])
-			{	// accumulate total length in _Fillcount
-			case money_base::symbol:	// count currency symbol size
-				_Fillcount += _Symbol.size();
-				break;
-
-			case money_base::sign:	// count sign size
-				_Fillcount += _Sign.size();
-				break;
-
-			case money_base::value:	// count value field size
-				_Fillcount += _Val.size() + (0 < _Fracdigits ? 1 : 0)
-					+ (_Val.size() <= _Fracdigits
-						? _Fracdigits - _Val.size() + 1 : 0);
-				break;
-
-			case money_base::space:	// count space size
-				++_Fillcount;	// at least one space
-				// fall through
-
-			case money_base::none:	// count space size
-				if (_Off != 3)
-					_Intern = true;	// optional internal fill
-				break;
-			}
-
-		_Fillcount = _Iosbase.width() <= 0
-			|| (size_t)_Iosbase.width() <= _Fillcount
-				? 0 : (size_t)_Iosbase.width() - _Fillcount;
-
-		ios_base::fmtflags _Afl =
-			_Iosbase.flags() & ios_base::adjustfield;
-		if (_Afl != ios_base::left
-			&& (_Afl != ios_base::internal || !_Intern))
-			{	// put leading fill
-			_Dest = _Rep(_Dest, _Fill, _Fillcount);
-			_Fillcount = 0;
-			}
-
-		for (_Off = 0; _Off < 4; ++_Off)
-			switch (_Pattern.field[_Off])
-				{	// put components as specified by _Pattern
-			case money_base::symbol:	// put currency symbol
-				_Dest = _Put(_Dest, _Symbol.begin(), _Symbol.size());
-				break;
-
-			case money_base::sign:	// put sign
-				if (0 < _Sign.size())
-					_Dest = _Put(_Dest, _Sign.begin(), 1);
-				break;
-
-			case money_base::value:	// put value field
-				if (_Fracdigits == 0)
-					_Dest = _Put(_Dest, _Val.begin(),
-						_Val.size());	// no fraction part
-				else if (_Val.size() <= _Fracdigits)
-					{	// put leading zero, all fraction digits
-					*_Dest++ = _E0;
-					*_Dest++ = _Ppunct_fac->decimal_point();
-					_Dest = _Rep(_Dest, _E0,
-						_Fracdigits - _Val.size());	// insert zeros
-					_Dest = _Put(_Dest, _Val.begin(), _Val.size());
-					}
 				else
-					{	// put both integer and fraction parts
-					_Dest = _Put(_Dest, _Val.begin(),
-						_Val.size() - _Fracdigits);	// put integer part
-					*_Dest++ = _Ppunct_fac->decimal_point();
-					_Dest = _Put(_Dest, _Val.end() - _Fracdigits,
-						_Fracdigits);	// put fraction part
-					}
-				break;
-
-			case money_base::space:	// put any internal fill
-				_Dest = _Rep(_Dest, _Fill, 1);
-				// fall through
-
-			case money_base::none:	// put any internal fill
-				if (_Afl == ios_base::internal)
-					{	// put internal fill
-					_Dest = _Rep(_Dest, _Fill, _Fillcount);
-					_Fillcount = 0;
-					}
+				{	
+          // put both integer and fraction parts
+          //
+          // put integer part
+					out = copy(
+            out, 
+            valstr.begin(),
+						valstr.size() - usignedFd
+          );
+          
+          // Separator
+					*out++ = mpunctFacet.decimal_point();
+          
+          // Fraction part
+					out = copy(
+            out, 
+            valstr.end() - usignedFd,
+						usignedFd
+           );
 				}
+				break;
+			case std::money_base::space:	// put any internal fill
+				out = set(
+          out, 
+          fill, 
+          1
+        );
+				// NB! fall through
+			case std::money_base::none:	// put any internal fill
+			  if(fmtFlags == std::ios_base::internal)
+				{	
+          // put internal fill
+				  out = set(
+            out, 
+            fill, 
+            fillCnt
+          );
+				  fillCnt = 0;
+			  }
+        break;
+	  	}
+    }
 
-		if (1 < _Sign.size())
-			_Dest = _Put(_Dest, _Sign.begin() + 1,
-				_Sign.size() - 1);	// put remainder of sign
-		_Iosbase.width(0);
-		return (_Rep(_Dest, _Fill, _Fillcount));	// put trailing fill
+		if(1 < sign.size())
+			out = copy( // put remainder of sign
+        out, 
+        sign.begin() + 1,
+				sign.size() - 1
+      );
+
+		in.width(0); //< Reset any width adjustments
+
+    // Append trailing fill and return
+    return set(
+      out, 
+      fill, 
+      fillCnt
+    );
+  }
+
+private:
+  static iter_type set(iter_type out, EsString::value_type ch, size_t cnt)
+  {	
+    while(cnt)
+    {
+      (*out) = ch;
+      ++out;
+      --cnt;
+    }
+
+    return out;
+  }
+
+  static iter_type copy(iter_type out, typename string_type::const_iterator src, size_t cnt)
+  {	
+    while(cnt)
+    {
+      (*out) = (*src);
+      ++out;
+      ++src;
+      --cnt;
+    }
+    
+    return out;
   }
 
 protected:
@@ -1214,7 +1336,7 @@ EsLocaleInfoMap::LocalePtr EsLocaleInfoMap::localeCreate(const EsLocInfoNode& no
                   EsLocale::locale(),  //< Use our global locale as a base template
                   new EsCtype(node)
                 ),
-                new EsMoneypunct(node)
+                new EsMoneypunct<false>(node)
               ),
               new EsNumpunct(node)
             ),

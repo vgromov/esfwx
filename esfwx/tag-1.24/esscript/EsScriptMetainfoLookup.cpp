@@ -182,12 +182,17 @@ static void staticRemove(EsStringArray& fqNames)
 
 void EsScriptMetainfoLookup::enumerationsRemove(EsStringArray& objs) const
 {
-  std::remove_if(
+  auto newEnd = std::remove_if(
     objs.begin(),
     objs.end(),
     [this](const EsString& obj) -> bool {
       return m_meta->isKindOf(obj, EsEnumeration::classNameGetStatic());
     }
+  );
+
+  objs.erase(
+    newEnd,
+    objs.end()
   );
 }
 //--------------------------------------------------------------------------------

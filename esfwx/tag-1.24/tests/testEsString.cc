@@ -144,7 +144,7 @@ TEST(EsStringTest, CulturalFormattingMoney) {
   EsString str1 = oss.str();
 
   EXPECT_TRUE( oss.good() );
-  EXPECT_TRUE( str1 != str );
+  EXPECT_FALSE( str1 == str );
 
   oss.str(EsString::null());
 
@@ -164,6 +164,13 @@ TEST(EsStringTest, CulturalFormattingMoney) {
   str1 = oss.str();
 
   EXPECT_TRUE(str1 == str);
+
+  oss.str(EsString::null());
+
+  oss << std::showbase << std::put_money(1234567.46, true);
+  str1 = oss.str();
+
+  EXPECT_FALSE(str1 == str);
 }
 /*
 TEST(EsTokenizerTest, All) {
