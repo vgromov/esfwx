@@ -63,6 +63,7 @@ private:
 #elif defined(ES_POSIX_COMPAT)
 
   std::unique_ptr<pthread_mutex_t> m_mx;
+  EsAtomicInteger m_cnt;
   bool m_ok;
 
 #endif

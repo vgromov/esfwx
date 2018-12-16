@@ -1,5 +1,6 @@
 //---------------------------------------------------------------------------
 EsMutex::EsMutex(EsMutex::Type type /*= typeDefault*/) :
+m_cnt(0),
 m_ok(false),
 m_owningThreadId(0),
 m_type(type)
@@ -68,9 +69,7 @@ EsMutex::~EsMutex() ES_NOTHROW
 
   try
   {
-// Perform unlocking before destroying mutex
-//    if( resultOk == lock() )
-//      unlock();
+    ES_ASSERT(0 == m_cnt);
 
 #ifdef ES_DEBUG
   int err =
@@ -188,6 +187,7 @@ EsMutex::Result EsMutex::lock(ulong ms)
     return resultInvalid;
   }
 
+  esAtomicInc(m_cnt);
   if(m_type == typeDefault) // required for checking recursion
     m_owningThreadId = EsThread::currentIdGet();
 
@@ -207,6 +207,8 @@ EsMutex::Result EsMutex::unlock()
   );
   if( err )
     return resultError;
+  
+  esAtomicDec(m_cnt);
 
   return resultOk;
 }
