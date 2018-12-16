@@ -1005,39 +1005,39 @@ protected:
 
     // Access fraction dgits count
 		int signedFd = mpunctFacet.frac_digits();
-		size_t usignedFd = (signedFd < 0) ? 
-      -signedFd : 
+		size_t usignedFd = (signedFd < 0) ?
+      -signedFd :
       signedFd;
 
 		if(valstr.size() <= usignedFd)
 			valstr.insert(
-        static_cast<size_t>(0), 
-        usignedFd - valstr.size() + 1, 
+        static_cast<size_t>(0),
+        usignedFd - valstr.size() + 1,
         digZero
       );
 		else if(
-      *grp.c_str() != CHAR_MAX && 
+      *grp.c_str() != std::numeric_limits<char>::max() &&
       '\0' < *grp.c_str()
     )
-		{	
+		{
       // Grouping specified, add thousands separators
 			const EsString::value_type ksep = mpunctFacet.thousands_sep();
 			const char* grpPos = grp.c_str();
 			size_t offs = valstr.size() - usignedFd;	// start of fraction
 
 			while(
-        *grpPos != CHAR_MAX && 
-        '\0' < *grpPos && 
+        *grpPos != std::numeric_limits<char>::max() &&
+        '\0' < *grpPos &&
         static_cast<size_t>(*grpPos) < offs
       )
- 		  {	
+ 		  {
         // Add a thousands separator, right to left
 				valstr.insert(
-          offs -= *grpPos, 
-          static_cast<size_t>(1), 
+          offs -= *grpPos,
+          static_cast<size_t>(1),
           ksep
         );
-				
+
         if('\0' < grpPos[1])
 					++grpPos;	// not last group, advance
 			}
@@ -1046,7 +1046,7 @@ protected:
 		std::money_base::pattern patt;
 		string_type sign;
 		if(neg)
-		{	
+		{
       // negative value, choose appropriate format and sign
 			patt = mpunctFacet.neg_format();
 			sign = mpunctFacet.negative_sign();
@@ -1059,8 +1059,8 @@ protected:
 
 		string_type currSym;
 		if(in.flags() & std::ios_base::showbase)
-			currSym = intl ? 
-        mpunctFacet.currintl_symbol() : 
+			currSym = intl ?
+        mpunctFacet.currintl_symbol() :
         mpunctFacet.curr_symbol();	// Showbase set - insert currency symbol
 
 		bool fillInternal = false;
@@ -1069,7 +1069,7 @@ protected:
 		while( offs < 4 )
     {
 			switch (patt.field[offs])
-			{	
+			{
       // Accumulate total length in fillCnt
 			case std::money_base::symbol:	  //< count currency symbol size
 				fillCnt += currSym.size();
@@ -1078,11 +1078,11 @@ protected:
 				fillCnt += sign.size();
 				break;
 			case std::money_base::value:	  //< count value field size
-				fillCnt += valstr.size() + 
-          (0 < usignedFd ? 1 : 0)	+ 
+				fillCnt += valstr.size() +
+          (0 < usignedFd ? 1 : 0)	+
           (
-            (valstr.size() <= usignedFd) ? 
-              usignedFd - valstr.size() + 1 : 
+            (valstr.size() <= usignedFd) ?
+              usignedFd - valstr.size() + 1 :
               0
           );
 				break;
@@ -1098,23 +1098,23 @@ protected:
       ++offs;
     }
 
-		fillCnt = ((in.width() <= 0) || (static_cast<size_t>(in.width()) <= fillCnt)) ? 
-      0 : 
+		fillCnt = ((in.width() <= 0) || (static_cast<size_t>(in.width()) <= fillCnt)) ?
+      0 :
       static_cast<size_t>(in.width()) - fillCnt;
 
 		std::ios_base::fmtflags fmtFlags = in.flags() & std::ios_base::adjustfield;
-		if( 
-      fmtFlags != std::ios_base::left	&& 
+		if(
+      fmtFlags != std::ios_base::left	&&
       (fmtFlags != std::ios_base::internal || !fillInternal)
     )
 		{
       // Do leading fill
 			out = set(
-        out, 
-        fill, 
+        out,
+        fill,
         fillCnt
       );
-			
+
       fillCnt = 0;
 		}
 
@@ -1122,69 +1122,69 @@ protected:
     {
       // put components as specified by patt
 			switch(patt.field[offs])
-			{	
+			{
 			case std::money_base::symbol:	// put currency symbol
 				out = copy(
-          out, 
-          currSym.begin(), 
+          out,
+          currSym.begin(),
           currSym.size()
         );
 				break;
 			case std::money_base::sign:	// put sign
 				if(0 < sign.size())
 					out = copy(
-            out, 
-            sign.begin(), 
+            out,
+            sign.begin(),
             1
           );
 				break;
 			case std::money_base::value:	// put value field
 				if(usignedFd == 0)
 					out = copy(
-            out, 
+            out,
             valstr.begin(),
 						valstr.size()
           );	// no fraction part
 				else if(valstr.size() <= usignedFd)
-				{	
+				{
           // put leading zero, all fraction digits
           //
 					*out++ = digZero;
-          
+
           // Separator
 					*out++ = mpunctFacet.decimal_point();
 
           // Insert zeros
           out = set(
-            out, 
+            out,
             digZero,
 						usignedFd - valstr.size()
           );
-          
+
           // Fraction
 					out = copy(
-            out, 
-            valstr.begin(), 
+            out,
+            valstr.begin(),
             valstr.size()
           );
 				}
 				else
-				{	
+				{
           // put both integer and fraction parts
           //
           // put integer part
 					out = copy(
-            out, 
+            out,
             valstr.begin(),
 						valstr.size() - usignedFd
           );
-          
+
           // Separator
 					*out++ = mpunctFacet.decimal_point();
-          
+
           // Fraction part
 					out = copy(
-            out, 
+            out,
             valstr.end() - usignedFd,
 						usignedFd
            );
@@ -1192,18 +1192,18 @@ protected:
 				break;
 			case std::money_base::space:	// put any internal fill
 				out = set(
-          out, 
-          fill, 
+          out,
+          fill,
           1
         );
 				// NB! fall through
 			case std::money_base::none:	// put any internal fill
 			  if(fmtFlags == std::ios_base::internal)
-				{	
+				{
           // put internal fill
 				  out = set(
-            out, 
-            fill, 
+            out,
+            fill,
             fillCnt
           );
 				  fillCnt = 0;
@@ -1214,7 +1214,7 @@ protected:
 
 		if(1 < sign.size())
 			out = copy( // put remainder of sign
-        out, 
+        out,
         sign.begin() + 1,
 				sign.size() - 1
       );
@@ -1223,15 +1223,15 @@ protected:
 
     // Append trailing fill and return
     return set(
-      out, 
-      fill, 
+      out,
+      fill,
       fillCnt
     );
   }
 
 private:
   static iter_type set(iter_type out, EsString::value_type ch, size_t cnt)
-  {	
+  {
     while(cnt)
     {
       (*out) = ch;
@@ -1243,7 +1243,7 @@ private:
   }
 
   static iter_type copy(iter_type out, typename string_type::const_iterator src, size_t cnt)
-  {	
+  {
     while(cnt)
     {
       (*out) = (*src);
@@ -1251,7 +1251,7 @@ private:
       ++src;
       --cnt;
     }
-    
+
     return out;
   }
 
