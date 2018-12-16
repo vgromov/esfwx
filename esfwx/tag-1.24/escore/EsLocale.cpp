@@ -367,6 +367,7 @@ struct EsLocInfoNode
   const ES_CHAR* m_sepTh;
   const char* m_grp;
   const ES_CHAR* m_cur;
+  const ES_CHAR* m_curIntl;
   int m_curFracDigits;
   int m_curFmtPos;
   int m_curFmtNeg;
@@ -389,7 +390,7 @@ struct EsLocInfoNode
 static const EsLocInfoNode* locInfoNodesGet() { \
 static const EsLocInfoNode sc_locInfos[] = {
 
-#define ES_LOCINFO_ENTRY(locname, locale_snativedigits, locale_snegativesign, locale_spositivesign, locale_sdecimal, locale_sthousand, locale_sgrouping, locale_scurrency, locale_icurrdigits, locale_icurrency, locale_inegcurr, locale_smondecimalsep, locale_smonthousandsep, locale_smongrouping, locale_slist, locale_s1159, locale_s2359, locale_sdate, locale_stime, locale_stimeformat, locale_sshortdate, locale_sshorttime, locale_slongdate, locale_syearmonth) \
+#define ES_LOCINFO_ENTRY(locname, locale_snativedigits, locale_snegativesign, locale_spositivesign, locale_sdecimal, locale_sthousand, locale_sgrouping, locale_scurrency, locale_scurrency_intl, locale_icurrdigits, locale_icurrency, locale_inegcurr, locale_smondecimalsep, locale_smonthousandsep, locale_smongrouping, locale_slist, locale_s1159, locale_s2359, locale_sdate, locale_stime, locale_stimeformat, locale_sshortdate, locale_sshorttime, locale_slongdate, locale_syearmonth) \
   { esT( locname ), \
     esT( locale_snegativesign ), \
     esT( locale_spositivesign ), \
@@ -397,6 +398,7 @@ static const EsLocInfoNode sc_locInfos[] = {
     esT( locale_sthousand ), \
     locale_sgrouping, \
     esT( locale_scurrency ), \
+    esT( locale_scurrency_intl ), \
     locale_icurrdigits, \
     locale_icurrency, \
     locale_inegcurr, \
@@ -633,8 +635,7 @@ protected:
 };
 //---------------------------------------------------------------------------
 
-template <bool intl>
-class EsMoneypunct : public std::moneypunct<EsString::value_type, intl>
+class EsMoneypunct : public std::moneypunct<EsString::value_type>
 {
 public:
   typedef std::moneypunct<EsString::value_type> BaseT;
@@ -645,6 +646,7 @@ public:
   {
     m_grp.assign( m_node.m_moneyGrp );
     m_cur.assign( m_node.m_cur );
+    m_curIntl.assign( m_node.m_curIntl );
     m_ps.assign( m_node.m_plus );
     m_ns.assign( m_node.m_minus );
 
@@ -858,6 +860,11 @@ public:
     return m_cur;
   }
 
+  EsBasicStringT currintl_symbol() const ES_NOTHROW
+  {
+    return m_curIntl;
+  }
+
   EsBasicStringT do_positive_sign() const
   #if (ES_OS != ES_OS_ANDROID) && (ES_OS != ES_OS_MAC)
    ES_NOTHROW
@@ -902,6 +909,7 @@ protected:
   const EsLocInfoNode& m_node;
   std::string m_grp;
   EsBasicStringT m_cur;
+  EsBasicStringT m_curIntl;
   EsBasicStringT m_ps;
   EsBasicStringT m_ns;
   std::money_base::pattern m_pospatt;
@@ -987,7 +995,7 @@ protected:
   iter_type format(iter_type out, std::ios_base& in, char_type fill, bool neg, string_type valstr) const
   {
     // Reference monepunct facet attached to in locale, or just a standard one
-    const EsMoneypunct<intl>& mpunctFacet = std::use_facet< EsMoneypunct<intl> >( in.getloc() );
+    const EsMoneypunct& mpunctFacet = std::use_facet< EsMoneypunct >( in.getloc() );
 
     // Digital zero char
 		static const EsString::value_type digZero = esT('0');
@@ -1051,7 +1059,9 @@ protected:
 
 		string_type currSym;
 		if(in.flags() & std::ios_base::showbase)
-			currSym = mpunctFacet.curr_symbol();	// Showbase set - insert currency symbol
+			currSym = intl ? 
+        mpunctFacet.currintl_symbol() : 
+        mpunctFacet.curr_symbol();	// Showbase set - insert currency symbol
 
 		bool fillInternal = false;
 		size_t fillCnt = 0;
@@ -1336,7 +1346,7 @@ EsLocaleInfoMap::LocalePtr EsLocaleInfoMap::localeCreate(const EsLocInfoNode& no
                   EsLocale::locale(),  //< Use our global locale as a base template
                   new EsCtype(node)
                 ),
-                new EsMoneypunct<false>(node)
+                new EsMoneypunct(node)
               ),
               new EsNumpunct(node)
             ),
