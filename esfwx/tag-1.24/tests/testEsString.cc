@@ -1,6 +1,6 @@
 ﻿// EsString-related tests
 //
-
+/*
 TEST(EsStringTest, Basics) {
   EsString s1 = esT("1234");
   EsString s2 = esT("124");
@@ -128,7 +128,7 @@ TEST(EsStringTest, CulturalFormattingExtra) {
   str = EsLocale::timePmGet(loc);
   ASSERT_TRUE(esT("ПП") == str);
 }
-
+*/
 TEST(EsStringTest, CulturalFormattingMoney) {
 
   const std::locale& loc = EsLocale::locale("ru_RU");
@@ -140,10 +140,18 @@ TEST(EsStringTest, CulturalFormattingMoney) {
   str += esT("345,67 ");
 
   std::basic_stringstream<EsString::value_type> oss;
+  oss << std::put_money(1234567.46);
+  EsString str1 = oss.str();
+
+  EXPECT_TRUE( oss.good() );
+  EXPECT_TRUE( str1 != str );
+
+  oss.str(EsString::null());
+
   oss.imbue(loc);
 
   oss << std::put_money(1234567.46);
-  EsString str1 = oss.str();
+  str1 = oss.str();
 
   EXPECT_TRUE( oss.good() );
   EXPECT_TRUE( str1 == str );
@@ -157,7 +165,7 @@ TEST(EsStringTest, CulturalFormattingMoney) {
 
   EXPECT_TRUE(str1 == str);
 }
-
+/*
 TEST(EsTokenizerTest, All) {
   EsString s = esT("Some string;,with.+ consecutive,tokens");
   EsString t = esT(" ;,.+");
@@ -194,7 +202,7 @@ TEST(EsStringTest, VersionStringsComparison) {
   EXPECT_TRUE(EsString::cmpGreater == EsUtilities::versionStrCompare(v1, EsString::null()));
   EXPECT_THROW(EsUtilities::versionStrCompare(v0, v6), EsException);
 }
-
+*/
 //TEST(EsStringI18nTest, All) {
 //
 //  EsStringI18n& i18n = EsStringI18n::instanceGet();

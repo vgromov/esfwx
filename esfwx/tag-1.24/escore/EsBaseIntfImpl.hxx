@@ -99,7 +99,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool ES_UNUSED(incref)) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
       return asBaseIntf();
@@ -183,7 +183,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool ES_UNUSED(incref) ) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
       return asBaseIntf();
@@ -269,7 +269,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool ES_UNUSED(incref = true) ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool ES_UNUSED(incref) ) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
       return asBaseIntf();
@@ -356,7 +356,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool ES_UNUSED(incref) ) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
       return asBaseIntf();
@@ -446,7 +446,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool ES_UNUSED(incref)) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
       return asBaseIntf();
@@ -538,7 +538,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool ES_UNUSED(incref)) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
       return asBaseIntf();
@@ -649,7 +649,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
     {
@@ -749,7 +749,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref ) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
     {
@@ -856,7 +856,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD( void*, requestIntf )(const EsIID& iid, bool incref = true) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD( void*, requestIntf )(const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
     {
@@ -970,7 +970,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
     {
@@ -1091,7 +1091,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
     {
@@ -1219,7 +1219,7 @@ public:
     if( m_dynamic )
       delete this;
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<EsBaseIntf>() == iid )
     {
@@ -1345,7 +1345,7 @@ public:
     return 0;
   }
   ES_DECL_INTF_METHOD(void, destroy)()  ES_NOTHROW ES_OVERRIDE { BaseImplT::destroy(); }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<Intf1T>() == iid )
       return ES_INTERNAL_THIS_CAST(Intf1T);
@@ -1401,7 +1401,7 @@ public:
   {
     BaseImplT::destroy();
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<Intf1T>() == iid )
       return ES_INTERNAL_THIS_CAST(Intf1T);
@@ -1459,7 +1459,7 @@ public:
   {
     BaseImplT::destroy();
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<Intf1T>() == iid )
       return ES_INTERNAL_THIS_CAST(Intf1T);
@@ -1519,7 +1519,7 @@ public:
   {
     BaseImplT::destroy();
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<Intf1T>() == iid )
       return ES_INTERNAL_THIS_CAST(Intf1T);
@@ -1581,7 +1581,7 @@ public:
   {
     BaseImplT::destroy();
   }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<Intf1T>() == iid )
       return ES_INTERNAL_THIS_CAST(Intf1T);
@@ -1640,7 +1640,7 @@ public:
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE { BaseImplT::decRef(); }
   ES_DECL_INTF_METHOD(size_t, refGet)() const ES_NOTHROW ES_OVERRIDE { return BaseImplT::refGet(); }
   ES_DECL_INTF_METHOD(void, destroy)() ES_NOTHROW ES_OVERRIDE { BaseImplT::destroy(); }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<Intf1T>() == iid )
     {
@@ -1693,7 +1693,7 @@ public:
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE { BaseImplT::decRef(); }
   ES_DECL_INTF_METHOD(size_t, refGet)() const ES_NOTHROW ES_OVERRIDE { return BaseImplT::refGet(); }
   ES_DECL_INTF_METHOD(void, destroy)() ES_NOTHROW ES_OVERRIDE { BaseImplT::destroy(); }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<Intf1T>() == iid )
     {
@@ -1753,7 +1753,7 @@ public:
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE { BaseImplT::decRef(); }
   ES_DECL_INTF_METHOD(size_t, refGet)() const ES_NOTHROW ES_OVERRIDE { return BaseImplT::refGet(); }
   ES_DECL_INTF_METHOD(void, destroy)() ES_NOTHROW ES_OVERRIDE { BaseImplT::destroy(); }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<Intf1T>() == iid )
     {
@@ -1820,7 +1820,7 @@ public:
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE { BaseImplT::decRef(); }
   ES_DECL_INTF_METHOD(size_t, refGet)() const ES_NOTHROW ES_OVERRIDE { return BaseImplT::refGet(); }
   ES_DECL_INTF_METHOD(void, destroy)() ES_NOTHROW ES_OVERRIDE { BaseImplT::destroy(); }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<Intf1T>() == iid )
     {
@@ -1894,7 +1894,7 @@ public:
   ES_DECL_INTF_METHOD(void, decRef)() ES_NOTHROW ES_OVERRIDE { BaseImplT::decRef(); }
   ES_DECL_INTF_METHOD(size_t, refGet)() const ES_NOTHROW ES_OVERRIDE { return BaseImplT::refGet(); }
   ES_DECL_INTF_METHOD(void, destroy)() ES_NOTHROW ES_OVERRIDE { BaseImplT::destroy(); }
-  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref = true ) ES_NOTHROW ES_OVERRIDE
+  ES_DECL_INTF_METHOD(void*, requestIntf)( const EsIID& iid, bool incref) ES_NOTHROW ES_OVERRIDE
   {
     if( EsIID::fromIntf<Intf1T>() == iid )
     {

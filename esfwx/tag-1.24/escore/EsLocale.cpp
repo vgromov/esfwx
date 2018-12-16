@@ -937,6 +937,193 @@ public:
   EsMoneyPut(const EsLocInfoNode& node) : m_node(node) {}
 
 protected:
+  virtual iter_type do_put(iter_type out, bool intl, std::ios_base& in, char_type fill, long double units) const ES_OVERRIDE
+  {
+      const std::locale& loc = in.getloc();
+      const EsCtype& cType = std::use_facet< EsCtype >(loc);
+
+      // max_exponent10 + 1 for the integer part, + 2 for sign and '\0'.
+      const int sze = std::numeric_limits<long double>::max_exponent10 + 3;
+      EsByteString bs;
+      bs.resize(sze);
+
+      int len = snprintf(
+        &bs[0],
+        sze,
+        "%.0Lf",
+        units
+      );
+
+      ining_type digits(
+        len,
+        char_type()
+      );
+
+      cType.widen(
+        &bs[0],
+        &bs[0]+len,
+        &digits[0]
+      );
+
+      return intl ?
+        format<true>(out, in, fill, digits) :
+        format<false>(out, in, fill, digits);
+  }
+
+	virtual iter_type do_put(iter_type out, bool intl, std::ios_base& in, char_type fill, const ining_type& digits) const ES_OVERRIDE
+	{
+    return intl ?
+      format<true>(out, in, fill, digits) :
+      format<false>(out, in, fill, digits);
+  }
+
+  template<bool intl>
+  iter_type format(iter_type out, ios_base& in, char_type fill, const string_type& digits) const
+  {
+    const _Mpunct<_Elem> *_Ppunct_fac;
+		if(intl)
+			_Ppunct_fac =
+				&use_facet< _Mypunct1 >(_Iosbase.getloc());	// international
+		else
+			_Ppunct_fac =
+				&use_facet< _Mypunct0 >(_Iosbase.getloc());	// local
+		const _Elem _E0 = _MAKLOCCHR(_Elem, '0', _Cvt);
+
+		const string _Grouping = _Ppunct_fac->grouping();
+		int _Ifracdigits = _Ppunct_fac->frac_digits();
+		unsigned int _Fracdigits = _Ifracdigits < 0 ? -_Ifracdigits
+			: _Ifracdigits;
+
+		if (_Val.size() <= _Fracdigits)
+			_Val.insert((size_t)0, _Fracdigits - _Val.size() + 1, _E0);
+		else if (*_Grouping.c_str() != CHAR_MAX && '\0' < *_Grouping.c_str())
+			{	// grouping specified, add thousands separators
+			const _Elem _Kseparator = _Ppunct_fac->thousands_sep();
+			const char *_Pg = _Grouping.c_str();
+			size_t _Off = _Val.size() - _Fracdigits;	// start of fraction
+
+			while (*_Pg != CHAR_MAX && '\0' < *_Pg
+				&& (size_t)*_Pg < _Off)
+				{	// add a thousands separator, right to left
+				_Val.insert(_Off -= *_Pg, (size_t)1, _Kseparator);
+				if ('\0' < _Pg[1])
+					++_Pg;	// not last group, advance
+				}
+			}
+
+		money_base::pattern _Pattern;
+		string_type _Sign;
+		if (_Neg)
+			{	// negative value, choose appropriate format and sign
+			_Pattern = _Ppunct_fac->neg_format();
+			_Sign = _Ppunct_fac->negative_sign();
+			}
+		else
+			{	// positive value, choose appropriate format and sign
+			_Pattern = _Ppunct_fac->pos_format();
+			_Sign = _Ppunct_fac->positive_sign();
+			}
+
+		string_type _Symbol;
+		if (_Iosbase.flags() & ios_base::showbase)
+			_Symbol = _Ppunct_fac->curr_symbol();	// showbase ==> show $
+
+		bool _Intern = false;
+		size_t _Fillcount, _Off;
+		for (_Fillcount = 0, _Off = 0; _Off < 4; ++_Off)
+			switch (_Pattern.field[_Off])
+			{	// accumulate total length in _Fillcount
+			case money_base::symbol:	// count currency symbol size
+				_Fillcount += _Symbol.size();
+				break;
+
+			case money_base::sign:	// count sign size
+				_Fillcount += _Sign.size();
+				break;
+
+			case money_base::value:	// count value field size
+				_Fillcount += _Val.size() + (0 < _Fracdigits ? 1 : 0)
+					+ (_Val.size() <= _Fracdigits
+						? _Fracdigits - _Val.size() + 1 : 0);
+				break;
+
+			case money_base::space:	// count space size
+				++_Fillcount;	// at least one space
+				// fall through
+
+			case money_base::none:	// count space size
+				if (_Off != 3)
+					_Intern = true;	// optional internal fill
+				break;
+			}
+
+		_Fillcount = _Iosbase.width() <= 0
+			|| (size_t)_Iosbase.width() <= _Fillcount
+				? 0 : (size_t)_Iosbase.width() - _Fillcount;
+
+		ios_base::fmtflags _Afl =
+			_Iosbase.flags() & ios_base::adjustfield;
+		if (_Afl != ios_base::left
+			&& (_Afl != ios_base::internal || !_Intern))
+			{	// put leading fill
+			_Dest = _Rep(_Dest, _Fill, _Fillcount);
+			_Fillcount = 0;
+			}
+
+		for (_Off = 0; _Off < 4; ++_Off)
+			switch (_Pattern.field[_Off])
+				{	// put components as specified by _Pattern
+			case money_base::symbol:	// put currency symbol
+				_Dest = _Put(_Dest, _Symbol.begin(), _Symbol.size());
+				break;
+
+			case money_base::sign:	// put sign
+				if (0 < _Sign.size())
+					_Dest = _Put(_Dest, _Sign.begin(), 1);
+				break;
+
+			case money_base::value:	// put value field
+				if (_Fracdigits == 0)
+					_Dest = _Put(_Dest, _Val.begin(),
+						_Val.size());	// no fraction part
+				else if (_Val.size() <= _Fracdigits)
+					{	// put leading zero, all fraction digits
+					*_Dest++ = _E0;
+					*_Dest++ = _Ppunct_fac->decimal_point();
+					_Dest = _Rep(_Dest, _E0,
+						_Fracdigits - _Val.size());	// insert zeros
+					_Dest = _Put(_Dest, _Val.begin(), _Val.size());
+					}
+				else
+					{	// put both integer and fraction parts
+					_Dest = _Put(_Dest, _Val.begin(),
+						_Val.size() - _Fracdigits);	// put integer part
+					*_Dest++ = _Ppunct_fac->decimal_point();
+					_Dest = _Put(_Dest, _Val.end() - _Fracdigits,
+						_Fracdigits);	// put fraction part
+					}
+				break;
+
+			case money_base::space:	// put any internal fill
+				_Dest = _Rep(_Dest, _Fill, 1);
+				// fall through
+
+			case money_base::none:	// put any internal fill
+				if (_Afl == ios_base::internal)
+					{	// put internal fill
+					_Dest = _Rep(_Dest, _Fill, _Fillcount);
+					_Fillcount = 0;
+					}
+				}
+
+		if (1 < _Sign.size())
+			_Dest = _Put(_Dest, _Sign.begin() + 1,
+				_Sign.size() - 1);	// put remainder of sign
+		_Iosbase.width(0);
+		return (_Rep(_Dest, _Fill, _Fillcount));	// put trailing fill
+  }
+
+protected:
   const EsLocInfoNode& m_node;
 };
 //---------------------------------------------------------------------------
