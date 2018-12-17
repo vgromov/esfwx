@@ -2,12 +2,19 @@
 cmake_minimum_required(VERSION 3.11)
 project(framework)
 
-include(${PROJECT_BINARY_DIR}/escmake/escommon.defs.cmake)
-# Must be placed here, after escommon.defs, but before other stuff
-include(esfwx.config.cmake)
+if( NOT ESFWX_IS_PART_OF_PROJECT )
+  include(${PROJECT_BINARY_DIR}/escmake/escommon.defs.cmake)
 
-include(${PROJECT_BINARY_DIR}/escmake/escompiler.defs.cmake)
-include(${PROJECT_BINARY_DIR}/escmake/eslinker.defs.cmake)
+  # Must be placed here, after escommon.defs, but before other stuff
+  include(esfwx.config.cmake)
+endif()
+
+include(esfwx.defs.cmake)
+
+if( NOT ESFWX_IS_PART_OF_PROJECT )
+  include(${PROJECT_BINARY_DIR}/escmake/escompiler.defs.cmake)
+  include(${PROJECT_BINARY_DIR}/escmake/eslinker.defs.cmake)
+endif()
 
 # framework version file generation
 #
@@ -34,7 +41,7 @@ if( ESFWXCONFIG_STANDALONE_BUILD )
 	# for each subproject, add project current source and build dirs to the include directories
 	set(CMAKE_INCLUDE_CURRENT_DIR ON)
 	# reset i18n aggregation variables
-	I18N_RESET()
+	ESI18N_RESET()
 	include_directories(	${PROJECT_SOURCE_DIR}
 												${PROJECT_SOURCE_DIR}/compatibility-headers
 												${PROJECT_SOURCE_DIR}/external
@@ -53,5 +60,5 @@ if( ESFWXCONFIG_STANDALONE_BUILD )
     add_subdirectory(tests)
   endif()
   
-  I18N_TRACE()
+  ESI18N_TRACE()
  endif()

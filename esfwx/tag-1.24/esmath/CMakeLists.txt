@@ -62,7 +62,7 @@ set(esmath_locale_SRCS
 						locale/esmath.ru_RU.po
 						)
 source_group(locale FILES ${esmath_locale_SRCS})
-I18N_ADD("esmath" esmath_locale_SRCS "${binaryRoot}")
+ESI18N_ADD("esmath" esmath_locale_SRCS "${binaryRoot}")
 
 set(esmath_SRCS
 						${esmath_common_SRCS}
@@ -87,8 +87,8 @@ message(
   "esmath targetName=>${targetName}:${${targetName}}"
 )
 
-SPECIFY_PRECOMPILED_HEADER("esmathpch.h" "EsMathMain.cpp" esmath_SRCS)
-SPECIFY_HEADER_FILES(esmath_SRCS headerExtensions)
+ES_SPECIFY_PRECOMPILED_HEADER("esmathpch.h" "EsMathMain.cpp" esmath_SRCS)
+ES_SPECIFY_HEADER_FILES(esmath_SRCS headerExtensions)
 
 add_library(${${targetName}} 
 	${esmath_SRCS} 

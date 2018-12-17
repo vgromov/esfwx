@@ -131,7 +131,7 @@ set(escomm_locale_SRCS
 						locale/escomm.ru_RU.po
 						)
 source_group(locale FILES ${escomm_locale_SRCS})
-I18N_ADD("escomm" escomm_locale_SRCS "${binaryRoot}")
+ESI18N_ADD("escomm" escomm_locale_SRCS "${binaryRoot}")
 
 set(escomm_SRCS
 						${escomm_common_SRCS}
@@ -173,9 +173,9 @@ message(
   "escomm targetName=>${targetName}:${${targetName}}"
 )
 
-SPECIFY_PRECOMPILED_HEADER("escommpch.h" "EsCommMain.cpp" escomm_SRCS)
-SPECIFY_HEADER_FILES(escomm_SRCS headerExtensions)
-SPECIFY_HEADER_FILES(escomm_c_shared_SRCS headerExtensions)
+ES_SPECIFY_PRECOMPILED_HEADER("escommpch.h" "EsCommMain.cpp" escomm_SRCS)
+ES_SPECIFY_HEADER_FILES(escomm_SRCS headerExtensions)
+ES_SPECIFY_HEADER_FILES(escomm_c_shared_SRCS headerExtensions)
 
 add_library(${${targetName}} 
 	${escomm_c_shared_SRCS} 

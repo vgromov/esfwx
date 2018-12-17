@@ -37,7 +37,7 @@ if( NOT ES_BUILD_SHARED_LIBS )
 	set(staticMarker "_s")
 endif()
 set(targetName tests_${ESTESTS_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker})
-SPECIFY_HEADER_FILES(tests_SRCS headerExtensions)
+ES_SPECIFY_HEADER_FILES(tests_SRCS headerExtensions)
 
 add_executable(${targetName}
 	${tests_SRCS}

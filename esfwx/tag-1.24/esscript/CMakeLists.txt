@@ -154,8 +154,8 @@ message(
   "esscript targetName=>${targetName}:${${targetName}}"
 )
 
-SPECIFY_PRECOMPILED_HEADER("esscriptpch.h" "EsScriptMain.cpp" esscript_SRCS)
-SPECIFY_HEADER_FILES(esscript_SRCS headerExtensions)
+ES_SPECIFY_PRECOMPILED_HEADER("esscriptpch.h" "EsScriptMain.cpp" esscript_SRCS)
+ES_SPECIFY_HEADER_FILES(esscript_SRCS headerExtensions)
 
 add_library(${${targetName}} ${esscript_SRCS} ${esscript_RES})
 

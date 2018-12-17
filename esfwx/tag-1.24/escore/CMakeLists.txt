@@ -207,7 +207,7 @@ set(escore_locale_SRCS
       locale/escore.de_DE.po
 		)
 source_group(locale FILES ${escore_locale_SRCS})
-I18N_ADD("escore" escore_locale_SRCS "${binaryRoot}")
+ESI18N_ADD("escore" escore_locale_SRCS "${binaryRoot}")
 
 set(escore_SRCS
 			${escore_common_SRCS}
@@ -240,9 +240,9 @@ message(
   "escore targetName=>${targetName}:${${targetName}}"
 )
 
-SPECIFY_PRECOMPILED_HEADER("escorepch.h" "EsCoreMain.cpp" escore_SRCS)
-SPECIFY_HEADER_FILES(escore_SRCS headerExtensions)
-SPECIFY_HEADER_FILES(escore_c_shared_SRCS headerExtensions)
+ES_SPECIFY_PRECOMPILED_HEADER("escorepch.h" "EsCoreMain.cpp" escore_SRCS)
+ES_SPECIFY_HEADER_FILES(escore_SRCS headerExtensions)
+ES_SPECIFY_HEADER_FILES(escore_c_shared_SRCS headerExtensions)
 
 add_library( ${${targetName}}
   ${escore_SRCS}
