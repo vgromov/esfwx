@@ -94,8 +94,9 @@ GUID EsUUID::fromVariant(const EsVariant& var)
   }
   else if( var.isKindOf(classNameGetStatic()) )
   {
-    EsReflectedClassIntf::Ptr o = var.asExistingObject();
-    EsUUID* uuid = ES_INTFPTR_TO_OBJECTPTR(o, EsUUID);
+    EsUUID* uuid = ES_INTFPTR_TO_OBJECTPTR<EsUUID>(
+      var.asExistingObject()
+    );
     ES_ASSERT(uuid);
 
     return uuid->uuidGet();

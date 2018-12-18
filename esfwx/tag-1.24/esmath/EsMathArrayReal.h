@@ -40,12 +40,6 @@ public:
   ///
   ES_DECL_REFLECTED_CONST_METHOD0(EsBaseIntfPtr, clone);
 
-  /// Try to interpret variant as EsMathArrayReal*.
-  /// If variant could not be referenced as EsMathArrayReal*,
-  /// return NULL
-  ///
-  static EsMathArrayReal* fromVariant(const EsVariant& in);
-
   /// Create EsMathArrayReal object, optionally filling-in its items from src,
   /// return created object as EsVariant-compatible EsBaseIntfPtr.
   /// Optionally, if outp is not nullptr, set it to the created object pointer

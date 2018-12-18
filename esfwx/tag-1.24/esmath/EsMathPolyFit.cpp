@@ -249,7 +249,7 @@ EsVariant EsMathPolyFit::calculateV(cr_EsVariant in) const
 
 void EsMathPolyFit::calculateVectorInplace(cr_EsVariant in) const
 {
-  EsMathArrayReal* ar = EsMathArrayReal::fromVariant(in);
+  EsMathArrayReal* ar = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(in);
   if( !ar )
     EsException::Throw(
       esT("%s call error, input parameter could not be interpreted as an array or collection"),
@@ -305,8 +305,8 @@ void EsMathPolyFit::buildConstrained(cr_EsVariant vx, cr_EsVariant vy, ulong pow
 {
   bool freePx = false;
   bool freePy = false;
-  EsMathArrayReal* px = EsMathArrayReal::fromVariant(vx);
-  EsMathArrayReal* py = EsMathArrayReal::fromVariant(vy);
+  EsMathArrayReal* px = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vx);
+  EsMathArrayReal* py = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vy);
   EsMathFitConstraints csx;
   constraintsFromVariant(csx, constraints);
 
@@ -352,7 +352,7 @@ void EsMathPolyFit::buildConstrained(cr_EsVariant vx, cr_EsVariant vy, ulong pow
 void EsMathPolyFit::buildConstrained(cr_EsVariant vy, ulong power, cr_EsVariant constraints)
 {
   bool freePy = false;
-  EsMathArrayReal* py = EsMathArrayReal::fromVariant(vy);
+  EsMathArrayReal* py = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vy);
   EsMathFitConstraints csx;
   constraintsFromVariant(csx, constraints);
 

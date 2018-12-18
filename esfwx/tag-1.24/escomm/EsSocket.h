@@ -312,12 +312,6 @@ public:
   /// Reflected transformation helper
   ///
 
-  /// Try to interpret variant as EsMathArrayComplex*.
-  /// If variant could not be referenced as EsMathArrayComplex*,
-  /// return nullptr
-  ///
-  static EsSocketAddr* fromVariant(const EsVariant& in);
-
   /// Return raw address string in form [raw-addr]:[raw-port]
   ES_DECL_REFLECTED_CONST_METHOD0(EsString, asRawString);
 

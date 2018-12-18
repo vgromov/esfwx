@@ -164,19 +164,6 @@ void EsMathArrayReal::fill(double val)
 }
 //---------------------------------------------------------------------------
 
-EsMathArrayReal* EsMathArrayReal::fromVariant(const EsVariant& in)
-{
-  if( in.isObject() )
-  {
-    EsReflectedClassIntf::Ptr obj  = in.asObject();
-    if( obj && obj->isKindOf(classNameGetStatic()) )
-      return ES_INTFPTR_TO_OBJECTPTR(obj, EsMathArrayReal);
-  }
-
-  return nullptr;
-}
-//---------------------------------------------------------------------------
-
 template < typename directT >
 bool fromBuffer(
   EsMathArrayReal* a,
@@ -428,7 +415,7 @@ void EsMathArrayReal::set_items(const EsVariant& src)
   else
   {
     // Try copy from the object of the same type
-    const EsMathArrayReal* sp = fromVariant(src);
+    const EsMathArrayReal* sp = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(src);
     if( sp )
     {
       copy(*sp);
@@ -789,7 +776,7 @@ void EsMathArrayReal::copy(const EsMathArrayReal& src)
 EsVariant EsMathArrayReal::add(const EsVariant& v)
 {
   ulong cnt = countGet();
-  EsMathArrayReal* src = fromVariant(v);
+  EsMathArrayReal* src = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(v);
   if( !src )
   {
     double arg = v.asDouble();
@@ -840,7 +827,7 @@ EsVariant EsMathArrayReal::add(const EsVariant& v)
 void EsMathArrayReal::add_inplace(const EsVariant& v)
 {
   ulong cnt = countGet();
-  EsMathArrayReal* src = fromVariant(v);
+  EsMathArrayReal* src = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(v);
   if( !src )
   {
     double arg = v.asDouble();
@@ -873,7 +860,7 @@ void EsMathArrayReal::add_inplace(const EsVariant& v)
 EsVariant EsMathArrayReal::subtract(const EsVariant& v)
 {
   ulong cnt = countGet();
-  EsMathArrayReal* src = fromVariant(v);
+  EsMathArrayReal* src = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(v);
   if( !src )
   {
     double arg = v.asDouble();
@@ -924,7 +911,7 @@ EsVariant EsMathArrayReal::subtract(const EsVariant& v)
 void EsMathArrayReal::subtract_inplace(const EsVariant& v)
 {
   ulong cnt = countGet();
-  EsMathArrayReal* src = fromVariant(v);
+  EsMathArrayReal* src = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(v);
   if( !src )
   {
     double arg = v.asDouble();
@@ -957,7 +944,7 @@ void EsMathArrayReal::subtract_inplace(const EsVariant& v)
 EsVariant EsMathArrayReal::multiply(const EsVariant& v)
 {
   ulong cnt = countGet();
-  EsMathArrayReal* src = fromVariant(v);
+  EsMathArrayReal* src = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(v);
   if( !src )
   {
     double arg = v.asDouble();
@@ -1008,7 +995,7 @@ EsVariant EsMathArrayReal::multiply(const EsVariant& v)
 void EsMathArrayReal::multiply_inplace(const EsVariant& v)
 {
   ulong cnt = countGet();
-  EsMathArrayReal* src = fromVariant(v);
+  EsMathArrayReal* src = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(v);
   if( !src )
   {
     double arg = v.asDouble();
@@ -1048,7 +1035,7 @@ void EsMathArrayReal::multiply_inplace(const EsVariant& v)
 EsVariant EsMathArrayReal::divide(const EsVariant& v)
 {
   ulong cnt = countGet();
-  EsMathArrayReal* src = fromVariant(v);
+  EsMathArrayReal* src = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(v);
   if( !src )
   {
     double arg = v.asDouble();
@@ -1099,7 +1086,7 @@ EsVariant EsMathArrayReal::divide(const EsVariant& v)
 void EsMathArrayReal::divide_inplace(const EsVariant& v)
 {
   ulong cnt = countGet();
-  EsMathArrayReal* src = fromVariant(v);
+  EsMathArrayReal* src = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(v);
   if( !src )
   {
     double arg = v.asDouble();

@@ -368,7 +368,7 @@ EsVariant EsSocketClientReflected::get_address() const
 
 void EsSocketClientReflected::set_address(const EsVariant& vaddr)
 {
-  EsSocketAddr* addr = EsSocketAddr::fromVariant(vaddr);
+  EsSocketAddr* addr = ES_VARIANT_TO_OBJECTPTR<EsSocketAddr>(vaddr);
   ES_ASSERT(addr);
 
   m_addr = *addr;

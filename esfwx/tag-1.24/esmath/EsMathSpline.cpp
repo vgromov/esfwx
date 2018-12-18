@@ -242,7 +242,7 @@ EsVariant EsMathSpline::calculateV(cr_EsVariant in) const
 
 void EsMathSpline::calculateVectorInplace(cr_EsVariant in) const
 {
-  EsMathArrayReal* ar = EsMathArrayReal::fromVariant(in);
+  EsMathArrayReal* ar = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(in);
   if( !ar )
     EsException::Throw(
       esT("%s call error, input parameter could not be interpreted as an array or collection"),
@@ -311,8 +311,8 @@ void EsMathSpline::build(const EsVariant& vx, const EsVariant& vy)
 {
   bool freePx = false;
   bool freePy = false;
-  EsMathArrayReal* px = EsMathArrayReal::fromVariant(vx);
-  EsMathArrayReal* py = EsMathArrayReal::fromVariant(vy);
+  EsMathArrayReal* px = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vx);
+  EsMathArrayReal* py = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vy);
 
   if( !px )
   {
@@ -356,7 +356,7 @@ void EsMathSpline::build(const EsVariant& vx, const EsVariant& vy)
 void EsMathSpline::build(const EsVariant& vy)
 {
   bool freePy = false;
-  EsMathArrayReal* py = EsMathArrayReal::fromVariant(vy);
+  EsMathArrayReal* py = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vy);
 
   if( !py )
   {
@@ -387,8 +387,8 @@ void EsMathSpline::akimaBuild(const EsVariant& vx, const EsVariant& vy)
 {
   bool freePx = false;
   bool freePy = false;
-  EsMathArrayReal* px = EsMathArrayReal::fromVariant(vx);
-  EsMathArrayReal* py = EsMathArrayReal::fromVariant(vy);
+  EsMathArrayReal* px = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vx);
+  EsMathArrayReal* py = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vy);
 
   if( !px )
   {
@@ -432,7 +432,7 @@ void EsMathSpline::akimaBuild(const EsVariant& vx, const EsVariant& vy)
 void EsMathSpline::akimaBuild(const EsVariant& vy)
 {
   bool freePy = false;
-  EsMathArrayReal* py = EsMathArrayReal::fromVariant(vy);
+  EsMathArrayReal* py = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vy);
 
   if( !py )
   {

@@ -250,24 +250,11 @@ EsVariant EsMathArrayComplex::get_items() const
 }
 //---------------------------------------------------------------------------
 
-EsMathArrayComplex* EsMathArrayComplex::fromVariant(const EsVariant& in)
-{
-  if( in.isObject() )
-  {
-    EsReflectedClassIntf::Ptr obj  = in.asObject();
-    if( obj && obj->isKindOf(classNameGetStatic()) )
-      return ES_INTFPTR_TO_OBJECTPTR(obj, EsMathArrayComplex);
-  }
-
-  return nullptr;
-}
-//---------------------------------------------------------------------------
-
 void EsMathArrayComplex::set_items(const EsVariant& src)
 {
   bool copied = false;
 
-  const EsMathArrayComplex* sp = fromVariant(src);
+  const EsMathArrayComplex* sp = ES_VARIANT_TO_OBJECTPTR<EsMathArrayComplex>(src);
   // Try copy from object of the same type
   if( sp )
   {

@@ -508,20 +508,11 @@ llong EsTimeSpan::get_allMilliseconds() const
 }
 //---------------------------------------------------------------------------
 
-static EsTimeSpan* timeSpanPtrFromObj(const EsReflectedClassIntf::Ptr& obj)
-{
-  if(obj && obj->isKindOf(EsTimeSpan::classNameGetStatic()))
-    return ES_INTFPTR_TO_OBJECTPTR(obj, EsTimeSpan);
-
-  return nullptr;
-}
-//---------------------------------------------------------------------------
-
 esDT EsTimeSpan::fromVariant(const EsVariant& var)
 {
   if( var.isObject() )
   {
-    EsTimeSpan* dts = timeSpanPtrFromObj(var.asExistingObject());
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR<EsTimeSpan>(var.asExistingObject());
     if(dts)
       return static_cast<esDT>(*dts);
 
@@ -544,7 +535,7 @@ EsVariant EsTimeSpan::compare(cr_EsVariant spanOrLlong) const
 {
   if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
   {
-    EsTimeSpan* dts = timeSpanPtrFromObj(spanOrLlong.asExistingObject());
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR<EsTimeSpan>(spanOrLlong.asExistingObject());
     if(dts)
       return cmp(dts);
   }
@@ -565,7 +556,7 @@ EsVariant EsTimeSpan::add(cr_EsVariant spanOrLlong) const
   checkComposed();
   if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
   {
-    EsTimeSpan* dts = timeSpanPtrFromObj(spanOrLlong.asExistingObject());
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR<EsTimeSpan>(spanOrLlong.asExistingObject());
     if(dts)
       return create(m_dt + static_cast<esDT>(*dts));
   }
@@ -582,7 +573,7 @@ EsVariant EsTimeSpan::subtract(cr_EsVariant spanOrLlong) const
   checkComposed();
   if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
   {
-    EsTimeSpan* dts = timeSpanPtrFromObj(spanOrLlong.asExistingObject());
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR<EsTimeSpan>(spanOrLlong.asExistingObject());
     if(dts)
       return create(m_dt - static_cast<esDT>(*dts));
   }
@@ -918,20 +909,11 @@ EsDateTime::operator esDT () const
 }
 //---------------------------------------------------------------------------
 
-static EsDateTime* dateTimePtrFromObj(const EsReflectedClassIntf::Ptr& obj)
-{
-  if(obj && obj->isKindOf(EsDateTime::classNameGetStatic()))
-    return ES_INTFPTR_TO_OBJECTPTR(obj, EsDateTime);
-
-  return nullptr;
-}
-//---------------------------------------------------------------------------
-
 esDT EsDateTime::fromVariant(const EsVariant& var)
 {
   if( var.isObject() )
   {
-    EsDateTime* dt = dateTimePtrFromObj(var.asExistingObject());
+    EsDateTime* dt = ES_INTFPTR_TO_OBJECTPTR<EsDateTime>(var.asExistingObject());
     if(dt)
       return static_cast<esDT>(*dt);
 
@@ -1187,7 +1169,7 @@ EsVariant EsDateTime::compare(cr_EsVariant otherDt) const
 {
   if( otherDt.isObject() && !otherDt.isEmpty() )
   {
-    EsDateTime* dt = dateTimePtrFromObj(otherDt.asExistingObject());
+    EsDateTime* dt = ES_INTFPTR_TO_OBJECTPTR<EsDateTime>(otherDt.asExistingObject());
     if( dt )
       return cmp(dt);
   }
@@ -1203,7 +1185,7 @@ EsVariant  EsDateTime::add(cr_EsVariant spanOrLlong) const
   checkComposed();
   if( spanOrLlong.isObject() && !spanOrLlong.isEmpty() )
   {
-    EsTimeSpan* dts = timeSpanPtrFromObj(spanOrLlong.asExistingObject());
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR<EsTimeSpan>(spanOrLlong.asExistingObject());
     if(dts)
       return create(m_dt + static_cast<esDT>(*dts));
   }
@@ -1222,13 +1204,13 @@ EsVariant  EsDateTime::subtract(cr_EsVariant spanOrDtOrLlong) const
   if( spanOrDtOrLlong.isObject() && !spanOrDtOrLlong.isEmpty() )
   {
     // try span
-    EsTimeSpan* dts = timeSpanPtrFromObj(spanOrDtOrLlong.asExistingObject());
+    EsTimeSpan* dts = ES_INTFPTR_TO_OBJECTPTR<EsTimeSpan>(spanOrDtOrLlong.asExistingObject());
     if(dts)
       return create(m_dt - static_cast<esDT>(*dts));
     else
     {
       // try date time - should return span object then
-      EsDateTime* dt = dateTimePtrFromObj(spanOrDtOrLlong.asExistingObject());
+      EsDateTime* dt = ES_INTFPTR_TO_OBJECTPTR<EsDateTime>(spanOrDtOrLlong.asExistingObject());
       if( dt )
         return EsTimeSpan::create(m_dt - static_cast<esDT>(*dt));
     }

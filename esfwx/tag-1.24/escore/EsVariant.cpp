@@ -1611,7 +1611,7 @@ EsBaseIntf::Ptr EsVariant::asObject()
   case VAR_OBJECT:
     return doInterpretAsObject();
   case VAR_EMPTY:
-    return EsBaseIntf::Ptr();
+    return nullptr;
   default:
     EsException::Throw(
       esT("Could not convert variant of type '%s' to interface reference"),
@@ -1621,7 +1621,7 @@ EsBaseIntf::Ptr EsVariant::asObject()
   }
 
   ES_FAIL;
-  return EsBaseIntf::Ptr(); // we are never here, pacify compilers in debug mode
+  return nullptr; // we are never here, pacify compilers in debug mode
 }
 //---------------------------------------------------------------------------
 
@@ -1630,7 +1630,7 @@ EsBaseIntf::Ptr EsVariant::asExistingObject()
   EsBaseIntf::Ptr obj = asObject();
   if( !obj )
   {
-    EsException::ThrowNoValue();
+    EsException::ThrowNoValue(esT("EsVariant::asExistingObject"));
     ES_FAIL;
   }
   return obj;
@@ -1646,7 +1646,7 @@ void* EsVariant::asPointer()
   case VAR_POINTER:
     return m_value.m_pointer;
   case VAR_EMPTY:
-    EsException::ThrowNoValue();
+    EsException::ThrowNoValue(esT("EsVariant::asPointer"));
     ES_FAIL;
     break;
   default:

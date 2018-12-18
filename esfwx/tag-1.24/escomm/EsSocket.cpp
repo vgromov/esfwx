@@ -258,19 +258,6 @@ EsSocketAddr& EsSocketAddr::operator=(const EsSocketAddr& src)
 }
 //---------------------------------------------------------------------------
 
-EsSocketAddr* EsSocketAddr::fromVariant(const EsVariant& in)
-{
-  if( in.isObject() )
-  {
-    EsReflectedClassIntf::Ptr obj  = in.asObject();
-    if( obj && obj->isKindOf(classNameGetStatic()) )
-      return ES_INTFPTR_TO_OBJECTPTR(obj, EsSocketAddr);
-  }
-
-  return nullptr;
-}
-//---------------------------------------------------------------------------
-
 EsString EsSocketAddr::asRawString() const
 {
   return const_cast<EsSocketAddr*>(this)->rawGet(true) +
@@ -835,7 +822,7 @@ bool EsSocket::open(const EsSocketAddr& addr, EsSocketType type /*= EsSocketType
       EsSocketException::Throw(EsSocketError::Generic, _("Socket already opened with another socket type specification"));
   }
 
-  return nullptr != m_impl && doOpen(false);
+  return doOpen(false);
 }
 //---------------------------------------------------------------------------
 

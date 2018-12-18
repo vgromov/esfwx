@@ -203,7 +203,7 @@ EsVariant EsMathConvolutionReal::process(cr_EsVariant in) const
   ES_ASSERT(out);
   out->m_dynamic = true;
 
-  EsMathArrayReal* sig = EsMathArrayReal::fromVariant(in);
+  EsMathArrayReal* sig = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(in);
   bool needFree = false;
   if( !sig )
   {

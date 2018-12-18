@@ -299,7 +299,7 @@ EsVariant EsMathSplineFit::calculateV(cr_EsVariant in) const
 
 void EsMathSplineFit::calculateVectorInplace(cr_EsVariant in) const
 {
-  EsMathArrayReal* ar = EsMathArrayReal::fromVariant(in);
+  EsMathArrayReal* ar = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(in);
   if( !ar )
     EsException::Throw(
       esT("%s call error, input parameter could not be interpreted as an array or collection"),
@@ -380,8 +380,8 @@ void EsMathSplineFit::buildConstrained(cr_EsVariant vx, cr_EsVariant vy, ulong b
 {
   bool freePx = false;
   bool freePy = false;
-  EsMathArrayReal* px = EsMathArrayReal::fromVariant(vx);
-  EsMathArrayReal* py = EsMathArrayReal::fromVariant(vy);
+  EsMathArrayReal* px = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vx);
+  EsMathArrayReal* py = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vy);
   EsMathFitConstraints csx;
   constraintsFromVariant(csx, constraints);
 
@@ -427,7 +427,7 @@ void EsMathSplineFit::buildConstrained(cr_EsVariant vx, cr_EsVariant vy, ulong b
 void EsMathSplineFit::buildConstrained(cr_EsVariant vy, ulong basisCnt, cr_EsVariant constraints)
 {
   bool freePy = false;
-  EsMathArrayReal* py = EsMathArrayReal::fromVariant(vy);
+  EsMathArrayReal* py = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vy);
   EsMathFitConstraints csx;
   constraintsFromVariant(csx, constraints);
 
@@ -460,8 +460,8 @@ void EsMathSplineFit::buildPenalized(cr_EsVariant vx, cr_EsVariant vy, ulong bas
 {
   bool freePx = false;
   bool freePy = false;
-  EsMathArrayReal* px = EsMathArrayReal::fromVariant(vx);
-  EsMathArrayReal* py = EsMathArrayReal::fromVariant(vy);
+  EsMathArrayReal* px = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vx);
+  EsMathArrayReal* py = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vy);
 
   if( !px )
   {
@@ -505,7 +505,7 @@ void EsMathSplineFit::buildPenalized(cr_EsVariant vx, cr_EsVariant vy, ulong bas
 void EsMathSplineFit::buildPenalized(cr_EsVariant vy, ulong basisCnt, cr_EsVariant rho)
 {
   bool freePy = false;
-  EsMathArrayReal* py = EsMathArrayReal::fromVariant(vy);
+  EsMathArrayReal* py = ES_VARIANT_TO_OBJECTPTR<EsMathArrayReal>(vy);
 
   if( !py )
   {

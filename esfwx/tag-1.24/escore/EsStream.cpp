@@ -382,7 +382,7 @@ void EsStream::fromStream(const EsStreamIntf::Ptr& other)
   if( !other )
     EsException::Throw( esT("Could not copy stream from an empty object") );
 
-  EsStream* sobj = ES_INTFPTR_TO_OBJECTPTR(other, EsStream);
+  EsStream* sobj = ES_INTFPTR_TO_OBJECTPTR<EsStream>(other);
   if( sobj == this )
     EsException::Throw( esT("Could not copy stream from itself") );
 

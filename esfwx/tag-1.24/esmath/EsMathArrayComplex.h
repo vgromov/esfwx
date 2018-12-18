@@ -43,12 +43,6 @@ public:
   /// Return our copy as EsBaseIntfPtr
   EsBaseIntfPtr clone() const;
 
-  /// Try to interpret variant as EsMathArrayComplex*.
-  /// If variant could not be referenced as EsMathArrayComplex*,
-  /// return nullptr
-  ///
-  static EsMathArrayComplex* fromVariant(const EsVariant& in);
-
   /// Reflected services
   ///
 

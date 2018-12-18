@@ -405,7 +405,7 @@ void EsScriptSymbolTable::symbolValSetIgnoreReadOnly(const EsString& name, const
 
   ESSCRIPT_VALACCESS_ASSERT_NOT_ACCESSOR(val)
 
-  EsScriptValAccessor* pval = ES_INTFPTR_TO_OBJECTPTR(sym, EsScriptValAccessor);
+  EsScriptValAccessor* pval = ES_INTFPTR_TO_OBJECTPTR<EsScriptValAccessor>(sym);
   ES_ASSERT(pval);
 
   pval->m_val = val;

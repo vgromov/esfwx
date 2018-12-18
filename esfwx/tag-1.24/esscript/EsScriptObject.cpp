@@ -1132,7 +1132,7 @@ void EsScriptObject::useContextOf(const EsBaseIntf::Ptr& other)
 
   if( sobj )
   {
-    EsScriptObject* pobj = ES_INTFPTR_TO_OBJECTPTR(sobj, EsScriptObject);
+    EsScriptObject* pobj = ES_INTFPTR_TO_OBJECTPTR<EsScriptObject>(sobj);
     ES_ASSERT(pobj);
 
     m_ctx->linkTo( pobj->m_ctx );

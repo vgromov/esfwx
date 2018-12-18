@@ -1346,7 +1346,7 @@ EsVariant EsSocketServerReflected::send(cr_EsVariant vdata, cr_EsVariant vtmo)
 
 EsVariant EsSocketServerReflected::send(cr_EsVariant vaddr, cr_EsVariant vdata, cr_EsVariant vtmo)
 {
-  EsSocketAddr* addr = EsSocketAddr::fromVariant(vaddr);
+  EsSocketAddr* addr = ES_VARIANT_TO_OBJECTPTR<EsSocketAddr>(vaddr);
   ES_ASSERT(addr);
 
   const EsBinBuffer& bb = vdata.asBinBuffer();
@@ -1362,7 +1362,7 @@ EsVariant EsSocketServerReflected::send(cr_EsVariant vaddr, cr_EsVariant vdata, 
 
 void EsSocketServerReflected::clientDisconnect(cr_EsVariant vaddr, cr_EsVariant noFarewell)
 {
-  EsSocketAddr* addr = EsSocketAddr::fromVariant(vaddr);
+  EsSocketAddr* addr = ES_VARIANT_TO_OBJECTPTR<EsSocketAddr>(vaddr);
   ES_ASSERT(addr);
 
   m_srv.disconnectedSet(
@@ -1455,7 +1455,7 @@ EsVariant EsSocketServerReflected::get_address() const
 
 void EsSocketServerReflected::set_address(const EsVariant& vaddr)
 {
-  EsSocketAddr* addr = EsSocketAddr::fromVariant(vaddr);
+  EsSocketAddr* addr = ES_VARIANT_TO_OBJECTPTR<EsSocketAddr>(vaddr);
   ES_ASSERT(addr);
 
   m_addr = *addr;
