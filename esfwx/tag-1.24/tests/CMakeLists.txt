@@ -39,17 +39,18 @@ endif()
 set(targetName tests_${ESTESTS_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker})
 ES_SPECIFY_HEADER_FILES(tests_SRCS headerExtensions)
 
-add_executable(${targetName}
+add_executable(
+  ${targetName}
 	${tests_SRCS}
 )
 
 # Set-up extra libraries
 set(
   ESFWX_TESTS_EXTRA_LIBRARIES 
-  ${escoreLib${staticMarker}}
-  ${esmathLib${staticMarker}}
-  ${escommLib${staticMarker}}
-  ${esscriptLib${staticMarker}}
+  ${escoreLib}
+  ${esmathLib}
+  ${escommLib}
+  ${esscriptLib}
 )
 if(CMAKE_COMPILER_IS_GNUCXX AND NOT MINGW)
   if(ESTESTS_USE_STACK_BACKTRACE)

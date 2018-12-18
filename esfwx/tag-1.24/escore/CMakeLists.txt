@@ -31,10 +31,10 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/Doxyfile"
   )
 
-include_directories(${escore_CONFIG_DIR})
+include_directories(${ES_PROJECT_ROOT})
 
 set(escore_common_SRCS
-      ${escore_CONFIG_DIR}/EsCoreConfig.h
+      ${ES_PROJECT_ROOT}/EsCoreConfig.h
       build.h
       EsCoreDefs.h
       EsCoreTypes.h

@@ -36,12 +36,12 @@ cmake_policy(SET CMP0074 NEW)
   
 # boost dependencies
 find_package(Boost 1.54 REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS} ${esscript_CONFIG_DIR})
+include_directories(${Boost_INCLUDE_DIRS} ${ES_PROJECT_ROOT})
 link_directories(${Boost_LIBRARY_DIRS})
 
 # project source files
 set(esscript_common_SRCS	
- 						${esscript_CONFIG_DIR}/EsScriptConfig.h
+ 						${ES_PROJECT_ROOT}/EsScriptConfig.h
 						build.h
 						esscript.h
             EsScriptMain.h

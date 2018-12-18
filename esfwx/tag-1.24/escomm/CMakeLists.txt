@@ -32,10 +32,10 @@ configure_file (
   )
 	
 # project top-level build directory
-include_directories(../compatibility-headers ${escomm_CONFIG_DIR})
+include_directories(../compatibility-headers ${ES_PROJECT_ROOT})
 
 set(escomm_common_SRCS
-						${escomm_CONFIG_DIR}/EsCommConfig.h
+						${ES_PROJECT_ROOT}/EsCommConfig.h
 						escomm.h
 						build.h
             protocolEkosfConfig.h

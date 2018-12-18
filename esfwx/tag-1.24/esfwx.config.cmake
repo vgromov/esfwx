@@ -11,3 +11,10 @@ endif()
 if(ESFWXCONFIG_BUILD_SHARED_LIBS)
   set(ESFWXCONFIG_USE_DYNAMIC_RUNTIME 1 CACHE BOOL "" FORCE)
 endif()
+
+# If esfwx is being built as a part of external project, these cache variables may be set elsewhere internally
+if(ESFWXCONFIG_STANDALONE_BUILD OR ESFWXCONFIG_BUILD_TESTS)
+  set(ESFWXCONFIG_BUILD_MATH 1 CACHE BOOL "Build esmath-math processing library")
+	set(ESFWXCONFIG_BUILD_COMM 1 CACHE BOOL "Build escomm-communication library")
+  set(ESFWXCONFIG_BUILD_SCRIPT 1 CACHE BOOL "Build esscript-scripting engine library")
+endif()  
