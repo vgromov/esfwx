@@ -36,9 +36,9 @@ private:
   bool m_nested;
 
 private:
-  EsPathScope();
-  EsPathScope(const EsPathScope&);
-  EsPathScope& operator=(const EsPathScope&);
+  EsPathScope() ES_REMOVEDECL;
+  EsPathScope(const EsPathScope&) ES_REMOVEDECL;
+  EsPathScope& operator=(const EsPathScope&) ES_REMOVEDECL;
 };
 //---------------------------------------------------------------------------
 
@@ -70,7 +70,6 @@ void EsPathEnumerator::execute(ulong flags)
   onEnd();
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 namespace EsReflection
@@ -126,7 +125,7 @@ EsBaseIntfPtr EsPathEnumeratorHelper::NEW(cr_EsBaseIntfPtr owner)
 {
   std::unique_ptr<EsPathEnumeratorHelper> enu( new EsPathEnumeratorHelper(owner) );
   ES_ASSERT(enu);
-  
+
   return enu.release()->asBaseIntfPtr();
 }
 //---------------------------------------------------------------------------

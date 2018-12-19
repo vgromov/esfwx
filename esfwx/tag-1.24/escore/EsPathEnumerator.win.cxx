@@ -7,9 +7,11 @@ bool EsPathEnumerator::internalProcess(const EsString& nestedDir /*= EsString::n
   // reserve space for nested dirs
   EsString::Array dirs;
   dirs.reserve(16);
-  EsString curPath = m_curPath.pathGet(  static_cast<ulong>(EsPathFlag::Default)|
-                                        static_cast<ulong>(EsPathFlag::AppendSeparator)|
-                                        static_cast<ulong>(EsPathFlag::ExcludeFile) );
+  EsString curPath = m_curPath.pathGet(
+    static_cast<ulong>(EsPathFlag::Default)|
+    static_cast<ulong>(EsPathFlag::AppendSeparator)|
+    static_cast<ulong>(EsPathFlag::ExcludeFile)
+  );
   const EsString& findStr = curPath + m_wildcard;
 
   // Process objects in current path
@@ -23,11 +25,19 @@ bool EsPathEnumerator::internalProcess(const EsString& nestedDir /*= EsString::n
       {
         EsString name(data.cFileName);
         bool isDir = FILE_ATTRIBUTE_DIRECTORY == (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
-        if( isDir && (m_flags & static_cast<ulong>(EsPathEnumeratorFlag::Recursive)) &&
-            esT(".") != name && esT("..") != name )
+        if(
+          isDir &&
+          (m_flags & static_cast<ulong>(EsPathEnumeratorFlag::Recursive)) &&
+          esT(".") != name &&
+          esT("..") != name
+        )
           dirs.push_back(name);
 
-        result = onObject(curPath, name, isDir);
+        result = onObject(
+          curPath,
+          name,
+          isDir
+        );
 
       } while( result && ::FindNextFile(ff, &data) );
     }
@@ -41,9 +51,10 @@ bool EsPathEnumerator::internalProcess(const EsString& nestedDir /*= EsString::n
   }
 
   // proceed with recursion, if needed
-  if( result &&
-      (m_flags & static_cast<ulong>(EsPathEnumeratorFlag::Recursive)) &&
-      !dirs.empty()
+  if(
+    result &&
+    (m_flags & static_cast<ulong>(EsPathEnumeratorFlag::Recursive)) &&
+    !dirs.empty()
   )
   {
     for(size_t idx = 0; idx < dirs.size() && result; ++idx)

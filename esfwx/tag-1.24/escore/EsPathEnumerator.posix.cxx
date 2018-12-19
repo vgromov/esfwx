@@ -15,18 +15,23 @@ bool EsPathEnumerator::internalProcess(const EsString& nestedDir /*= EsString::n
   // reserve space for nested dirs
   EsString::Array dirs;
   dirs.reserve(16);
-  EsString curPath = m_curPath.pathGet(  static_cast<ulong>(EsPathFlag::Default)|
-                                        static_cast<ulong>(EsPathFlag::AppendSeparator)|
-                                        static_cast<ulong>(EsPathFlag::ExcludeFile) );
-  const EsByteString& patt = EsString::toUtf8( m_wildcard );
+  EsString curPath = m_curPath.pathGet(
+    as_<ulong>(EsPathFlag::Default)|
+    as_<ulong>(EsPathFlag::AppendSeparator)|
+    as_<ulong>(EsPathFlag::ExcludeFile)
+  );
 
+  if( !EsPath::dirExists(curPath, EsString::null()) )
+    return result;
+
+  const EsByteString& patt = EsString::toUtf8( m_wildcard );
   const EsByteString& bpath = EsString::toUtf8(curPath);
   DIR* dirp = opendir( bpath.c_str() );
 
   if( !dirp )
     EsException::ThrowOsError(
       EsUtilities::osErrorCodeGet(),
-      esT("EsPathEnumerator error: '%s'")
+      esT("EsPathEnumerator error: '%s', '") + curPath + esT("'")
     );
 
   try
@@ -65,7 +70,11 @@ bool EsPathEnumerator::internalProcess(const EsString& nestedDir /*= EsString::n
           )
             dirs.push_back(name);
 
-          result = onObject(curPath, name, isDir);
+          result = onObject(
+            curPath,
+            name,
+            isDir
+          );
         }
       }
       else

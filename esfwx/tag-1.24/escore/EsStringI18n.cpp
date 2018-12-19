@@ -675,7 +675,10 @@ class EsLocaleEnumerator : public EsPathEnumerator
 {
 public:
   EsLocaleEnumerator(const EsString& searchPath, EsRegEx& re, EsString::Array& locales) :
-  EsPathEnumerator(searchPath, esT("*.*.mo")),
+  EsPathEnumerator(
+    searchPath,
+    esT("*.*.mo")
+  ),
   m_re(re),
   m_locales(locales)
   {}

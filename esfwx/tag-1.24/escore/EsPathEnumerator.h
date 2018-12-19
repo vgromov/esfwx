@@ -1,19 +1,20 @@
 #ifndef _es_path_enumerator_h_
 #define _es_path_enumerator_h_
+
 /// @file        EsPathEnumerator.h
 ///
-///  Author:      Vsevolod V Gromov
+///  Author:     Vsevolod V Gromov
 ///  Copyright:  ExacTSoft 2009-2013
-/// 
+///
 
 /// Enumerator flags
 enum class EsPathEnumeratorFlag : ulong
 {
-  Recursive        = 0x0001,    ///< Perform recursive path enumeration
-  FollowSymlinks  = 0x0002,    ///< Follow symlinks during enumeration
-  Default          = 0          ///< Default behaviour:
-                              ///<  - do not recurse
-                              ///<  - do not follow symlinks
+  Recursive       = 0x0001,     ///< Perform recursive path enumeration
+  FollowSymlinks  = 0x0002,     ///< Follow symlinks during enumeration
+  Default         = 0           ///< Default behaviour:
+                                ///<  - do not recurse
+                                ///<  - do not follow symlinks
 };
 
 /// Path objects enumerator helper class base.
@@ -102,9 +103,9 @@ protected:
   EsReflectedClassIntf::Ptr m_owner;
 
 private:
-  EsPathEnumeratorHelper();
-  EsPathEnumeratorHelper(const EsPathEnumeratorHelper&);
-  EsPathEnumeratorHelper& operator=(const EsPathEnumeratorHelper&);
+  EsPathEnumeratorHelper() ES_REMOVEDECL;
+  EsPathEnumeratorHelper(const EsPathEnumeratorHelper&) ES_REMOVEDECL;
+  EsPathEnumeratorHelper& operator=(const EsPathEnumeratorHelper&) ES_REMOVEDECL;
 
   friend class EsPathEnumeratorImpl;
 };
@@ -115,9 +116,9 @@ namespace EsReflection
 {
 
 ES_DECL_EXPORTED_ENUMERATION_BEGIN(ESCORE_CLASS, EsPathEnumeratorFlag)
-  ES_DECL_ENUMERATION_ITEM_LABELLED(Recursive,      static_cast<ulong>(::EsPathEnumeratorFlag::Recursive), esT("Perform recursive path enumeration"))
-  ES_DECL_ENUMERATION_ITEM_LABELLED(FollowSymlinks,  static_cast<ulong>(::EsPathEnumeratorFlag::FollowSymlinks), esT("Follow symlinks during enumeration"))
-  ES_DECL_ENUMERATION_ITEM_LABELLED(Default,        static_cast<ulong>(::EsPathEnumeratorFlag::Default), esT("Default behaviour: do not recurse, do not follow symlinks"))
+  ES_DECL_ENUMERATION_ITEM_LABELLED(Recursive,        static_cast<ulong>(::EsPathEnumeratorFlag::Recursive), esT("Perform recursive path enumeration"))
+  ES_DECL_ENUMERATION_ITEM_LABELLED(FollowSymlinks,   static_cast<ulong>(::EsPathEnumeratorFlag::FollowSymlinks), esT("Follow symlinks during enumeration"))
+  ES_DECL_ENUMERATION_ITEM_LABELLED(Default,          static_cast<ulong>(::EsPathEnumeratorFlag::Default), esT("Default behaviour: do not recurse, do not follow symlinks"))
 ES_DECL_ENUMERATION_END
 
 }

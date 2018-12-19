@@ -582,27 +582,4 @@ inline bool EsIntfPtr< IntfT >::operator== (const EsIntfPtr< OtherIntfT >& _2) c
           p2 &&
           p1.get() == p2.get();
 }
-
-template <typename ObjT, typename IntfPtrT>
-ObjT* ES_INTFPTR_TO_OBJECTPTR(const IntfPtrT& intfPtr)
-{
-  if(intfPtr && intfPtr->classNameGet() == ObjT::classNameGetStatic())
-    return static_cast<ObjT*>(intfPtr->implementorGet());
-
-  return nullptr;
-}
-
-template <typename ObjT>
-ObjT* ES_VARIANT_TO_OBJECTPTR(const EsVariant& vin)
-{
-  if(!vin.isObject())
-    return nullptr;
-
-  EsBaseIntfPtr intfPtr = vin.asObject();
-  if(intfPtr && vin.isKindOf( ObjT::classNameGetStatic() ) )
-    return static_cast<ObjT*>(intfPtr->implementorGet());
-
-  return nullptr;
-}
-
 #endif // _base_intf_h_

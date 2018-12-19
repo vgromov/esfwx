@@ -548,7 +548,37 @@ private:
 } // namespace EsUtilities
 
 /// Inplace typecast
+///
 template <typename ToT, typename FromT>
-inline ToT as_(FromT t) { return static_cast<ToT>(t); }
+inline ToT as_(FromT t) 
+{ 
+  return static_cast<ToT>(t); 
+}
+
+/// Convert intfPtr to its object implementor pointer 
+///
+template <typename ObjT, typename IntfPtrT>
+ObjT* ES_INTFPTR_TO_OBJECTPTR(const IntfPtrT& intfPtr)
+{
+  if(intfPtr && intfPtr->classNameGet() == ObjT::classNameGetStatic())
+    return static_cast<ObjT*>(intfPtr->implementorGet());
+
+  return nullptr;
+}
+
+/// Try to convert object held in variant to its implementor object pointer
+/// 
+template <typename ObjT>
+ObjT* ES_VARIANT_TO_OBJECTPTR(const EsVariant& vin)
+{
+  if(!vin.isObject())
+    return nullptr;
+
+  EsBaseIntfPtr intfPtr = vin.asObject();
+  if(intfPtr && vin.isKindOf( ObjT::classNameGetStatic() ) )
+    return static_cast<ObjT*>(intfPtr->implementorGet());
+
+  return nullptr;
+}
 
 #endif // _es_utilities_h_
