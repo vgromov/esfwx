@@ -65,7 +65,7 @@ ES_DECL_REFLECTED_SERVICES_BEGIN( EsUtilities )
   /// If string is not recognizable as version string, return an empty variant
   ///
   ES_DECL_REFLECTED_CLASS_METHOD1(EsVariant, versionStrParse, cr_EsVariant);
-  
+
   /// Version string (AKA major[sep]minor<[sep]build><[sep]revision>) comparison
   /// As of convention, return EsString::cmpLess, if _1 < _2
   /// EsString::cmpEqual, if _1 == _2
@@ -227,7 +227,7 @@ ESCORE_FUNC( EsString, eToS(const EsString& e, const EsString& key) );
 /// Weak pointers emptiness check.
 /// Not expiration, but emptiness, i.e. non-assigned(-ness).
 /// Thank you, https://stackoverflow.com/users/2666289/holt
-/// 
+///
 template <typename T>
 bool weakptr_is_empty(const std::weak_ptr<T>& weak) ES_NOTHROW
 {
@@ -550,24 +550,29 @@ private:
 /// Inplace typecast
 ///
 template <typename ToT, typename FromT>
-inline ToT as_(FromT t) 
-{ 
-  return static_cast<ToT>(t); 
+inline ToT as_(FromT t)
+{
+  return static_cast<ToT>(t);
 }
 
-/// Convert intfPtr to its object implementor pointer 
+/// Convert intfPtr to its object implementor pointer
 ///
 template <typename ObjT, typename IntfPtrT>
 ObjT* ES_INTFPTR_TO_OBJECTPTR(const IntfPtrT& intfPtr)
 {
-  if(intfPtr && intfPtr->classNameGet() == ObjT::classNameGetStatic())
+  EsReflectedClassIntf::Ptr rclass = intfPtr;
+  const EsString& cname = ObjT::classNameGetStatic();
+
+  if(rclass && rclass->isKindOf(cname)) //< Test against reflected-class branch
+    return static_cast<ObjT*>(intfPtr->implementorGet());
+  else if(intfPtr && intfPtr->classNameGet() == cname) //< If failed - check standard interface functionality
     return static_cast<ObjT*>(intfPtr->implementorGet());
 
   return nullptr;
 }
 
 /// Try to convert object held in variant to its implementor object pointer
-/// 
+///
 template <typename ObjT>
 ObjT* ES_VARIANT_TO_OBJECTPTR(const EsVariant& vin)
 {
