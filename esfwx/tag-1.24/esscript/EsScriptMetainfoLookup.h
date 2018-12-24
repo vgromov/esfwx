@@ -5,9 +5,10 @@
 ///
 class ESSCRIPT_CLASS ES_INTF_IMPL1(EsScriptMetainfoLookup, EsReflectedClassIntf)
 
-public:
+protected:
   EsScriptMetainfoLookup(const EsMetaclassIntf::Ptr& meta) ES_NOTHROW;
 
+public:
   ES_DECL_REFLECTED_CLASS_BASE(EsScriptMetainfoLookup)
   ES_DECL_ATTR_HANDLING_STD
 

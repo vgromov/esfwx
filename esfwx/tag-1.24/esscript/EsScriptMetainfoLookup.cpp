@@ -36,8 +36,10 @@ ES_DECL_CLASS_INFO_END
 EsScriptMetainfoLookup::EsScriptMetainfoLookup(const EsMetaclassIntf::Ptr& meta) ES_NOTHROW :
 m_meta(meta)
 {
-  if( m_meta )
-    EsException::ThrowNoValue(_("Could not construct EsScriptMetainfoLookup with an empty metaclass instance"));
+  if( !m_meta )
+    EsException::ThrowNoValue(
+      _("Could not construct EsScriptMetainfoLookup with an empty metaclass instance")
+    );
 }
 //---------------------------------------------------------------------------
 
@@ -443,14 +445,14 @@ EsStringArray EsScriptMetainfoLookup::keywordsFind(cr_EsString type, cr_EsString
   if(EsString::npos != typesel.find(esT("1")))
     result.insert(
       result.end(),
-      sc_keywords0.begin(),
-      sc_keywords0.end()
+      sc_keywords1.begin(),
+      sc_keywords1.end()
     );
   if(EsString::npos != typesel.find(esT("2")))
     result.insert(
       result.end(),
-      sc_keywords0.begin(),
-      sc_keywords0.end()
+      sc_keywords2.begin(),
+      sc_keywords2.end()
     );
 
   filterAndSort(result, start);
