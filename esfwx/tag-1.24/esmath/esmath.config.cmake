@@ -6,4 +6,4 @@ set(component_BUILD_NUM	1)
 
 # Set-up ESMATH binary version naming
 #
-set(ESMATH_VERSION_SUFFIX "${ESFWX_VERSION_SUFFIX}_${component_BUILD_NUM}")
+set(ESMATH_VERSION_SUFFIX "${ESFWX_VERSION_SUFFIX}_${component_BUILD_NUM}" CACHE INTERNAL "")
