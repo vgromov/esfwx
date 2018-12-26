@@ -12,7 +12,8 @@
 #endif
 //---------------------------------------------------------------------------
 
-EsScriptParser::Node::Node(const EsScriptParser& parser, long id, ulong start, ulong end, const EsScriptParser::Node* parent /*= nullptr*/, ulong expectedChildrenCnt /*= 0*/) :
+EsScriptParser::Node::Node(const EsScriptParser& parser, long id, EsString::HashT hash, ulong start, ulong end, const EsScriptParser::Node* parent /*= nullptr*/, ulong expectedChildrenCnt /*= 0*/) :
+  m_hash(hash),
   m_parser(&parser),
   m_parent(parent),
   m_id(id),
@@ -42,12 +43,13 @@ void EsScriptParser::Node::rangeCheckToInclude(ulong start, ulong end) ES_NOTHRO
 }
 //--------------------------------------------------------------------------------
 
-EsScriptParser::Node::PtrT EsScriptParser::Node::childAdd(long id, ulong start, ulong end, ulong expectedChildrenCnt)
+EsScriptParser::Node::PtrT EsScriptParser::Node::childAdd(long id, EsString::HashT hash, ulong start, ulong end, ulong expectedChildrenCnt)
 {
   PtrT node(
     new Node(
       *m_parser,
       id,
+      hash,
       start,
       end,
       this,
@@ -99,6 +101,28 @@ const EsScriptParser::Node* EsScriptParser::Node::firstChildGetById(long id, boo
   }
 
   return nullptr;
+}
+//--------------------------------------------------------------------------------
+
+EsScriptParser::Node::PtrArrayT EsScriptParser::Node::childrenGet(long id, EsString::HashT hash /*= 0*/) const ES_NOTHROW
+{
+  PtrArrayT result;
+  result.reserve( 
+    m_children.size()
+  );
+
+  for(auto child : m_children)
+  {
+    if( id != child->idGet() )
+      continue;
+
+    if( hash && hash != child->hashGet() )
+      continue;
+
+    result.push_back(child);
+  }
+
+  return result;
 }
 //--------------------------------------------------------------------------------
 
@@ -175,6 +199,35 @@ EsScriptParser::EsScriptParser() :
   m_isParsed(false),
   m_stop(0)
 {}
+//--------------------------------------------------------------------------------
+
+const EsScriptParser::Node* EsScriptParser::rootNodeFind(long id, EsString::HashT hashIdent) const ES_NOTHROW
+{
+  if(!m_isParsed || 0 == hashIdent)
+    return nullptr;
+
+  for(size_t idx = 0; idx < m_roots.size(); ++idx)
+  {
+    Node::PtrT root = m_roots[idx];
+    ES_ASSERT(root);
+    ES_ASSERT(root->isOk());
+
+    if( id != root->idGet() )
+      continue;
+
+    const EsScriptParser::Node* ident = root->firstChildGetById(
+      EsScriptParser::identId
+    );
+
+    if( ident && hashIdent == ident->hashGet() )
+      return root.get();
+
+    if( hashIdent == root->hashGet() )
+      return root.get();
+  }
+
+  return nullptr;
+}
 //--------------------------------------------------------------------------------
 
 const EsScriptParser::Node* EsScriptParser::deepestNodeFindByPos(ulong pos) const ES_NOTHROW

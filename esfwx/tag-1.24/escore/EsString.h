@@ -23,6 +23,7 @@ public:
   typedef EsBasicStringT::pointer pointer;
   typedef EsBasicStringT::const_iterator const_iterator;
   typedef EsBasicStringT::iterator iterator;
+  typedef EsHashFNV_1a_64 HashCalcT;
 
   /// Constants
   ///
@@ -492,7 +493,7 @@ public:
 
 protected:
   EsBasicStringT m_str;
-  mutable EsHashFNV_1a_64 m_hash;
+  mutable HashCalcT m_hash;
   mutable bool m_hashInvalid;
 };
 

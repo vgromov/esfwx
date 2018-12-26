@@ -19,11 +19,12 @@ public:
   {
   public:
     typedef std::shared_ptr<Node> PtrT;
+    typedef std::vector<PtrT> PtrArrayT;
 
   protected:
-    Node(const EsScriptParser& parser, long id, ulong start, ulong end, const Node* parent = nullptr, ulong expectedChildrenCnt = 0);
+    Node(const EsScriptParser& parser, long id, EsString::HashT hash, ulong start, ulong end, const Node* parent = nullptr, ulong expectedChildrenCnt = 0);
 
-    EsScriptParser::Node::PtrT childAdd(long id, ulong start, ulong end, ulong expectedChildrenCnt);
+    EsScriptParser::Node::PtrT childAdd(long id, EsString::HashT hash, ulong start, ulong end, ulong expectedChildrenCnt);
 
   public:
     inline bool isOk() const ES_NOTHROW { return nullptr != m_parser && noneId != m_id; }
@@ -32,6 +33,8 @@ public:
     inline const EsScriptParser& parserGet() const ES_NOTHROW { return *m_parser; }
 
     inline long idGet() const ES_NOTHROW { return m_id; }
+
+    inline EsString::HashT hashGet() const ES_NOTHROW { return m_hash; }
 
     inline const Node& parentGet() const ES_NOTHROW { return *m_parent; }
 
@@ -45,12 +48,13 @@ public:
 
     const Node* firstChildGetById(long id, bool doNested = true) const ES_NOTHROW;
 
+    Node::PtrArrayT childrenGet(long id, EsString::HashT hash = 0) const ES_NOTHROW;
+
     EsString stringExtract(const EsString& in) const ES_NOTHROW;
     EsString stringValExtract(const EsString& str) const ES_NOTHROW;
 
   protected:
     const Node* deepestNodeFindByPos(ulong pos) const ES_NOTHROW;
-    PtrT childAdd(ulong id, ulong start, ulong end, size_t expectedChildrenCnt);
     void rangeCheckToInclude(ulong start, ulong end) ES_NOTHROW;
 
     template <typename ChildrenT>
@@ -61,7 +65,8 @@ public:
     );
 
   protected:
-    std::vector<PtrT> m_children;
+    PtrArrayT m_children;
+    EsString::HashT m_hash;
     const EsScriptParser* m_parser;
     const Node* m_parent;
     long m_id;
@@ -88,6 +93,7 @@ public:
 
   bool parse(const EsString& in);
 
+  const Node* rootNodeFind(long id, EsString::HashT hashIdent) const ES_NOTHROW;
   const Node* deepestNodeFindByPos(ulong pos) const ES_NOTHROW;
 
 protected:
@@ -107,7 +113,7 @@ protected:
 
 protected:
   EsString::HashT m_hashPrev;
-  std::vector<Node::PtrT> m_roots;
+  Node::PtrArrayT m_roots;
   ulong m_stop;
   bool m_isParsed;
 

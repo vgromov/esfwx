@@ -5790,6 +5790,10 @@ void EsScriptParser::Node::childrenNodesAdd(
   {
     EsScriptParser::Node::PtrT childNode = node->childAdd(
       static_cast<long>(astChild.value.id().to_long()),
+      EsString::HashCalcT(
+        astChild.value.begin(),
+        astChild.value.end()
+      ).get(),
       static_cast<ulong>(astChild.value.begin()-inStart),
       static_cast<ulong>(astChild.value.end()-inStart),
       static_cast<ulong>(astChild.children.size())
@@ -5816,6 +5820,10 @@ void EsScriptParser::rootInit(
     new Node(
       *this,
       static_cast<long>(astRoot.value.id().to_long()),
+      EsString::HashCalcT(
+        astRoot.value.begin(),
+        astRoot.value.end()
+      ).get(),
       static_cast<ulong>(astRoot.value.begin()-inStart),
       static_cast<ulong>(astRoot.value.end()-inStart),
       nullptr,
