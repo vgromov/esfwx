@@ -9,6 +9,8 @@
 # include "esfwxe/commintf.c"
 
 #ifdef ES_COMM_USE_RPC
+extern "C" {
+
 void ekosfWait(esU32 tmo)
 {
   EsThread::sleep(tmo);
@@ -16,6 +18,8 @@ void ekosfWait(esU32 tmo)
 
 # include "esfwxe/crc.c"
 # include "esfwxe/protocols/proprietary/protocolEkosf.c"
+
+} //< extern "C"
 #endif
 
 ES_REFLECTION_REGISTRAR_BEGIN(escomm)

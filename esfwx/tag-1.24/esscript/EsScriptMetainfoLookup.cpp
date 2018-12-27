@@ -64,15 +64,30 @@ EsBaseIntfPtr EsScriptMetainfoLookup::get_metaclass() const
 //--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------
 
-static void filterAndSort(EsStringArray& arr, const EsString& filter)
+static void filterAndSort(EsStringArray& arr, const EsString& filter, const EsString& after = EsString::null())
 {
   if( !filter.empty() )
   {
     auto newEnd = std::remove_if(
       arr.begin(),
       arr.end(),
-      [filter](const EsString& val) -> bool {
-        return 0 != val.find(filter);
+      [filter, after](const EsString& val) -> bool {
+
+        size_t offs = 0;
+        if( !after.empty() )
+          offs = val.find(after);
+
+        if( EsString::npos != offs )
+          offs += after.size();
+        else 
+          offs = 0;
+
+        size_t pos = val.find(
+          filter,
+          offs
+        );
+        
+        return 0 != pos; //< Found at start, skipping 'after'
       }
     );
 
@@ -98,17 +113,9 @@ static EsString tokenizedSigTypeGet(EsStringTokenizer& toksig)
 
 static void fqNameToReadable(EsString& fqName)
 {
-  EsString result;
-  EsStringTokenizer tok(fqName, esT("::.|"));
+  EsStringTokenizer tok(fqName, esT("|"));
 
-  if( 0 == fqName.find(esT("::")) )
-    result = tok.get_nextToken();
-  else
-  {
-    tok.get_nextToken(); //< Skip object | namespace
-    result = tok.get_nextToken();
-  }
-
+  EsString result = tok.get_nextToken();
   long paramcnt = EsString::toLong(
     tok.get_nextToken()
   );
@@ -116,26 +123,11 @@ static void fqNameToReadable(EsString& fqName)
   const EsString& sig = tok.get_nextToken(); //< Get signature
   ES_ASSERT(!sig.empty());
 
-  // Parse signature into return type and parameters
-  EsStringTokenizer toksig(sig, esT("_"));
-  const EsString& ret = tokenizedSigTypeGet(toksig);
+  // Replace call specifier with service name
+  EsRegEx re(esT("(Object[:.]+Method)"));
+  re.set_text(sig);
 
-  // Skip call specifier
-  toksig.get_nextToken();
-
-  result += esT("(");
-  while( toksig.get_moreTokens() )
-  {
-    const EsString& argType = tokenizedSigTypeGet(toksig);
-    result += argType;
-
-    if( toksig.get_moreTokens() )
-      result += esT(", ");
-  }
-  result += esT(") ");
-  result += ret;
-
-  fqName = result;
+  fqName = re.replace(result);
 }
 //--------------------------------------------------------------------------------
 
@@ -225,13 +217,10 @@ EsStringArray EsScriptMetainfoLookup::globalFunctionsFind(cr_EsString start) con
 
 EsStringArray EsScriptMetainfoLookup::variantServicesFind(cr_EsString start) const
 {
-  EsStringArray methods = m_meta->fqNamesGet(esT("EsVar"));
-
-  nonStaticRemove(methods);
-  fqNamesToReadables(methods);
-  filterAndSort(methods, start);
-
-  return methods;
+  return objectStaticMethodsFind(
+    esT("EsVar"),
+    start
+  );
 }
 //--------------------------------------------------------------------------------
 
@@ -241,7 +230,11 @@ EsStringArray EsScriptMetainfoLookup::objectStaticMethodsFind(cr_EsString nsOrOb
 
   nonStaticRemove(methods);
   fqNamesToReadables(methods);
-  filterAndSort(methods, start);
+  filterAndSort(
+    methods, 
+    start, 
+    nsOrObj + esT("::")
+  );
 
   return methods;
 }
@@ -253,7 +246,11 @@ EsStringArray EsScriptMetainfoLookup::objectMethodsFind(cr_EsString obj, cr_EsSt
 
   staticRemove(methods);
   fqNamesToReadables(methods);
-  filterAndSort(methods, start);
+  filterAndSort(
+    methods, 
+    start,
+    obj + esT('.')
+  );
 
   return methods;
 }
@@ -408,8 +405,6 @@ EsStringArray EsScriptMetainfoLookup::keywordsFind(cr_EsString type, cr_EsString
     esT("const"),
     esT("var"),
     esT("extern"),
-    esT("require"),
-    esT("link"),
     esT("enum"),
     esT("object"),
     esT("extends")
@@ -430,11 +425,16 @@ EsStringArray EsScriptMetainfoLookup::keywordsFind(cr_EsString type, cr_EsString
     esT("do")
   };
 
+  static const EsStringArray sc_keywords3 = {
+    esT("require"),
+    esT("link")
+  };
+
   EsStringArray result;
 
   EsString typesel = type;
   if(typesel.empty())
-    typesel = esT("012");
+    typesel = esT("0123");
 
   if(EsString::npos != typesel.find(esT("0")))
     result.insert(
@@ -454,8 +454,17 @@ EsStringArray EsScriptMetainfoLookup::keywordsFind(cr_EsString type, cr_EsString
       sc_keywords2.begin(),
       sc_keywords2.end()
     );
+  if(EsString::npos != typesel.find(esT("3")))
+    result.insert(
+      result.end(),
+      sc_keywords3.begin(),
+      sc_keywords3.end()
+    );
 
-  filterAndSort(result, start);
+  filterAndSort(
+    result, 
+    start
+  );
 
   return result;
 }
