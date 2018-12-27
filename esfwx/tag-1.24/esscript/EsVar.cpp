@@ -15,7 +15,7 @@
 //
 ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsVar, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsVar, as, EsVariant_ClassCall_ulong, NO_METHOD_DESCR)
-  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsVar, as, EsVariant_ClassCall_ulong_ulong, NO_METHOD_DESCR)  
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsVar, as, EsVariant_ClassCall_ulong_ulong, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsVar, typeGet, ulong_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsVar, countGet, ulong_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsVar, itemGet, EsVariant_ClassCall_cr_EsVariant_ulong, NO_METHOD_DESCR)
@@ -53,6 +53,7 @@ ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsVar, NO_CLASS_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsVar, sortAscending, void_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsVar, sortDescending, void_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
   ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsVar, reverse, void_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
+  ES_DECL_REFLECTED_CLASS_METHOD_INFO_STD(EsVar, trace, EsVariant_ClassCall_cr_EsVariant, NO_METHOD_DESCR)
 ES_DECL_REFLECTED_SERVICES_INFO_END
 
 EsVariant EsVar::as(ulong type)
@@ -69,7 +70,7 @@ EsVariant EsVar::as(ulong type, ulong size)
   EsVariant result = as(type);
   if( !result.isIndexed() )
     EsException::ThrowCannotIndexItem();
-  
+
   result.countSet(size);
   return result;
 }
@@ -154,7 +155,7 @@ void EsVar::itemDelete(cr_EsVariant var, ulong idx)
   EsScriptException::ThrowPerformingOperationOnTemporary(esT("itemDelete"));
 }
 
-void EsVar::setToNull(const EsVariant& var)  
+void EsVar::setToNull(const EsVariant& var)
 {
   if( var.isObject() )
   {
@@ -175,7 +176,7 @@ void EsVar::setToNull(const EsVariant& var)
   EsScriptException::ThrowPerformingOperationOnTemporary(esT("setToNull"));
 }
 
-EsVariant EsVar::value(const EsVariant& var)  
+EsVariant EsVar::value(const EsVariant& var)
 {
   if( var.isObject() )
   {
@@ -741,4 +742,16 @@ void EsVar::reverse(cr_EsVariant var)
   }
 
   EsScriptException::ThrowPerformingOperationOnTemporary(esT("reverse"));
+}
+
+EsVariant EsVar::trace(cr_EsVariant var)
+{
+  if( var.isObject() )
+  {
+    EsScriptValAccessorIntf::Ptr acc = var.asObject();
+    if( acc )
+      return acc->get().trace();
+  }
+
+  return var.trace();
 }

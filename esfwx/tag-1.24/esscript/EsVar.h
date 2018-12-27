@@ -15,13 +15,13 @@ ES_DECL_REFLECTED_SERVICES_BEGIN( EsVar )
   ES_DECL_REFLECTED_CLASS_METHOD3(void, itemSet, cr_EsVariant, ulong, cr_EsVariant);
   ES_DECL_REFLECTED_CLASS_METHOD2(void, itemDelete, cr_EsVariant, ulong);
   ES_DECL_REFLECTED_CLASS_METHOD1(void, setToNull, cr_EsVariant);
-  ES_DECL_REFLECTED_CLASS_METHOD1(EsVariant, value, cr_EsVariant);  
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsVariant, value, cr_EsVariant);
   ES_DECL_REFLECTED_CLASS_METHOD1(EsString, asString, cr_EsVariant);
   ES_DECL_REFLECTED_CLASS_METHOD1(EsString, asEscapedString, cr_EsVariant);
   ES_DECL_REFLECTED_CLASS_METHOD1(EsBinBuffer, asBinBuffer, cr_EsVariant);
   ES_DECL_REFLECTED_CLASS_METHOD1(bool, asBool, cr_EsVariant);
   ES_DECL_REFLECTED_CLASS_METHOD1(esU8, asByte, cr_EsVariant);
-  ES_DECL_REFLECTED_CLASS_METHOD1(EsVariant, asChar, cr_EsVariant);  
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsVariant, asChar, cr_EsVariant);
   ES_DECL_REFLECTED_CLASS_METHOD1(long, asLong, cr_EsVariant);
   ES_DECL_REFLECTED_CLASS_METHOD1(ulong, asULong, cr_EsVariant);
   ES_DECL_REFLECTED_CLASS_METHOD1(llong, asLLong, cr_EsVariant);
@@ -54,6 +54,9 @@ ES_DECL_REFLECTED_SERVICES_BEGIN( EsVar )
   ES_DECL_REFLECTED_CLASS_METHOD1(void, sortDescending, cr_EsVariant);
   /// Return collection whose elements are in reverse order
   ES_DECL_REFLECTED_CLASS_METHOD1(void, reverse, cr_EsVariant);
+
+  /// Debug trace variant content to string
+  ES_DECL_REFLECTED_CLASS_METHOD1(EsVariant, trace, cr_EsVariant);
 
 ES_DECL_REFLECTED_SERVICES_END
 
