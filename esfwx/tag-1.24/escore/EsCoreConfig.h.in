@@ -12,15 +12,15 @@
 
 /// Use localization engine, based on gettext
 #cmakedefine ES_I18N
-# cmakedefine ES_I18N_RARE_LANGS
+#cmakedefine ES_I18N_RARE_LANGS
 
 /// Use embarcadero zlib implementation from crtl
 #cmakedefine ES_USE_ZLIB
-# cmakedefine ES_USE_ECC_ZLIB
+#cmakedefine ES_USE_ECC_ZLIB
 
 // Cryptography configuration
 #ifndef __APPLE__
-# cmakedefine ES_USE_CRYPTO
+#cmakedefine ES_USE_CRYPTO
 #endif
 
 #cmakedefine ES_USE_CRYPTO_LEGACY
@@ -31,8 +31,8 @@
 /// Regex engine configuration
 ///
 #cmakedefine ES_USE_REGEX
-# cmakedefine ES_USE_REGEX_STD
-# cmakedefine ES_USE_REGEX_PCRE
+#cmakedefine ES_USE_REGEX_STD
+#cmakedefine ES_USE_REGEX_PCRE
 
 /// Misc defines
 ///
