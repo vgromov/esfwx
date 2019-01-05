@@ -2067,19 +2067,17 @@ INCLUDE_FILE_PATTERNS  =
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
 PREDEFINED             = ESMATH_CLASS \
-                         ESMATH_FUNC \
-                         ESMATH_DATA \
+                         "ESMATH_FUNC(ret, func)=ret func" \
+                         "ESMATH_DATA(type, decl)=type decl" \
+                         ES_NOTHROW \
+                         ES_OVERRIDE \
+                         ES_REMOVEDECL \
+                         "ES_UNUSED(x)=#x" \
                          ES_I18N \
-                         ES_COMM_USE_STUB \
-                         ES_COMM_USE_DIRECT_COM \
-                         ES_COMM_USE_EKONNECT \
-                         ES_COMM_USE_SOCKETS \
-                         ES_COMM_USE_BLUETOOTH \
                          "ES_STRINGIZE_HELPER(x)=#x" \
                          "ES_STRINGIZE(x)=ES_STRINGIZE_HELPER(x)" \
                          "ES_DECL_INTF_METHOD(ret, name)=virtual ret name" \
-                         "ES_DECL_INTF_BEGIN1(uida, uidb, uidc, uidd, Intf1)=struct ES_ABSTRACT Intf1 { public:" \
-                         "ES_DECL_INTF_BEGIN2(uida, uidb, uidc, uidd, Intf1, Intf2)=struct ES_ABSTRACT Intf1 : public Intf2 { public:" \
+                         "ES_DECL_INTF_BEGIN(uida, uidb, uidc, uidd, IntfT)=class IntfT : virtual public EsBaseIntf { public:" \
                          "ES_DECL_INTF_END=};" \
                          "ES_INTF_IMPL_DERIVED(Class1, Class2)=Class1 : public Class2 {" \
                          "ES_INTF_IMPL_END=};" \

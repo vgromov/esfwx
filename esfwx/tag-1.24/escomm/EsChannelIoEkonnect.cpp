@@ -959,6 +959,16 @@ public:
       !regexDescrGet().get_matches();
   }
 
+  inline bool operator() (const EsVariant& node) const
+  {
+    regexSerialGet().set_text(node[0].asString());
+    regexDescrGet().set_text(node[1].asString());
+
+    return EsFtdiDriver::DEVICE_232R != node.typeGet() ||
+      !regexSerialGet().get_matches() ||
+      !regexDescrGet().get_matches();
+  }
+
 protected:
   static EsRegEx& regexSerialGet()
   {
@@ -977,9 +987,6 @@ protected:
 
     return s_regexDescr;
   }
-
-private:
-  isNotApplicableDevice& operator=(const isNotApplicableDevice& src);
 };
 //---------------------------------------------------------------------------
 
@@ -997,7 +1004,7 @@ EsFtdiDriver::DeviceList EsChannelIoEkonnect::getDeviceList()
   }
 
   // filter only devices with our hardware idGet & serial mask
-  EsFtdiDriver::DeviceList::iterator new_end =
+  auto new_end =
     std::remove_if(
       result.begin(),
       result.end(),
@@ -1015,10 +1022,28 @@ EsFtdiDriver::DeviceList EsChannelIoEkonnect::getDeviceList()
 
 EsVariant EsChannelIoEkonnect::enumerate(const EsVariant& includeBusyPorts)
 {
-  return EsFtdiDriver::enumerate(
+  EsVariant::Array devices = EsFtdiDriver::enumerate(
     includeBusyPorts,
     false
-  );
+  ).doInterpretAsVariantCollection();
+
+  if(!devices.empty())
+  {
+    // filter only devices with our hardware idGet & serial mask
+    auto new_end =
+      std::remove_if(
+        devices.begin(),
+        devices.end(),
+        isNotApplicableDevice()
+      );
+
+    devices.erase(
+      new_end,
+      devices.end()
+    );
+  }
+
+  return devices;
 }
 //---------------------------------------------------------------------------
 
@@ -1061,7 +1086,6 @@ ES_IMPL_INTF_METHOD(bool, EsChannelIoEkonnect::rateSet)(ulong rate)
   return internalSetBaud(rate, false);
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 esBL EsChannelIoEkonnect::cLock(EseChannelIo* p, esU32 tmo)

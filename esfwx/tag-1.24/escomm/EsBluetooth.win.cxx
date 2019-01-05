@@ -11,14 +11,14 @@ void EsBtLib::load()
     m_lib = EsDynamicLibrary::load(esT("bthprops.cpl"), true);
 
   ES_ASSERT(m_lib);
-  m_pfnBluetoothFindFirstRadio = (pfnBluetoothFindFirstRadio)m_lib->procAddrGet(esT("BluetoothFindFirstRadio"));
-  m_pfnBluetoothFindNextRadio = (pfnBluetoothFindNextRadio)m_lib->procAddrGet(esT("BluetoothFindNextRadio"));
-  m_pfnBluetoothFindRadioClose = (pfnBluetoothFindRadioClose)m_lib->procAddrGet(esT("BluetoothFindRadioClose"));
-  m_pfnBluetoothGetRadioInfo = (pfnBluetoothGetRadioInfo)m_lib->procAddrGet(esT("BluetoothGetRadioInfo"));
-  m_pfnBluetoothFindFirstDevice = (pfnBluetoothFindFirstDevice)m_lib->procAddrGet(esT("BluetoothFindFirstDevice"));
-  m_pfnBluetoothFindNextDevice = (pfnBluetoothFindNextDevice)m_lib->procAddrGet(esT("BluetoothFindNextDevice"));
-  m_pfnBluetoothFindDeviceClose = (pfnBluetoothFindDeviceClose)m_lib->procAddrGet(esT("BluetoothFindDeviceClose"));
-  m_pfnBluetoothEnumerateInstalledServices = (pfnBluetoothEnumerateInstalledServices)m_lib->procAddrGet(esT("BluetoothEnumerateInstalledServices"));
+  m_pfnBluetoothFindFirstRadio = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothFindFirstRadio>(m_lib->procAddrGet(esT("BluetoothFindFirstRadio")));
+  m_pfnBluetoothFindNextRadio = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothFindNextRadio>(m_lib->procAddrGet(esT("BluetoothFindNextRadio")));
+  m_pfnBluetoothFindRadioClose = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothFindRadioClose>(m_lib->procAddrGet(esT("BluetoothFindRadioClose")));
+  m_pfnBluetoothGetRadioInfo = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGetRadioInfo>(m_lib->procAddrGet(esT("BluetoothGetRadioInfo")));
+  m_pfnBluetoothFindFirstDevice = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothFindFirstDevice>(m_lib->procAddrGet(esT("BluetoothFindFirstDevice")));
+  m_pfnBluetoothFindNextDevice = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothFindNextDevice>(m_lib->procAddrGet(esT("BluetoothFindNextDevice")));
+  m_pfnBluetoothFindDeviceClose = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothFindDeviceClose>(m_lib->procAddrGet(esT("BluetoothFindDeviceClose")));
+  m_pfnBluetoothEnumerateInstalledServices = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothEnumerateInstalledServices>(m_lib->procAddrGet(esT("BluetoothEnumerateInstalledServices")));
 }
 //---------------------------------------------------------------------------
 
@@ -26,14 +26,14 @@ void EsBtLib::unload()
 {
   if( m_lib )
   {
-    m_pfnBluetoothFindFirstRadio = 0;
-    m_pfnBluetoothFindNextRadio = 0;
-    m_pfnBluetoothFindRadioClose = 0;
-    m_pfnBluetoothGetRadioInfo = 0;
-    m_pfnBluetoothFindFirstDevice = 0;
-    m_pfnBluetoothFindNextDevice = 0;
-    m_pfnBluetoothFindDeviceClose = 0;
-    m_pfnBluetoothEnumerateInstalledServices = 0;
+    m_pfnBluetoothFindFirstRadio = nullptr;
+    m_pfnBluetoothFindNextRadio = nullptr;
+    m_pfnBluetoothFindRadioClose = nullptr;
+    m_pfnBluetoothGetRadioInfo = nullptr;
+    m_pfnBluetoothFindFirstDevice = nullptr;
+    m_pfnBluetoothFindNextDevice = nullptr;
+    m_pfnBluetoothFindDeviceClose = nullptr;
+    m_pfnBluetoothEnumerateInstalledServices = nullptr;
     m_lib->unload();
     m_lib.reset();
   }
@@ -48,13 +48,13 @@ void EsBtLEsetupApiLib::load()
     m_lib = EsDynamicLibrary::load(esT("setupapi.dll"), true);
 
   ES_ASSERT(m_lib);
-  m_pfnSetupDiGetClassDevs = (pfnSetupDiGetClassDevs)m_lib->procAddrGetAorW(esT("SetupDiGetClassDevs"));
-  m_pfnSetupDiEnumDeviceInterfaces = (pfnSetupDiEnumDeviceInterfaces)m_lib->procAddrGet(esT("SetupDiEnumDeviceInterfaces"));
-  m_pfnSetupDiGetDeviceInterfaceDetail = (pfnSetupDiGetDeviceInterfaceDetail)m_lib->procAddrGetAorW(esT("SetupDiGetDeviceInterfaceDetail"));
-  m_pfnSetupDiDestroyDeviceInfoList = (pfnSetupDiDestroyDeviceInfoList)m_lib->procAddrGet(esT("SetupDiDestroyDeviceInfoList"));
-  m_pfnSetupDiGetDeviceInterfaceProperty = (pfnSetupDiGetDeviceInterfaceProperty)m_lib->procAddrGetAorW(esT("SetupDiGetDeviceInterfaceProperty"));
-  m_pfnSetupDiEnumDeviceInfo = (pfnSetupDiEnumDeviceInfo)m_lib->procAddrGet(esT("SetupDiEnumDeviceInfo"));
-  m_pfnSetupDiGetDeviceProperty = (pfnSetupDiGetDeviceProperty)m_lib->procAddrGetAorW(esT("SetupDiGetDeviceProperty"));
+  m_pfnSetupDiGetClassDevs = esCallCastToCall<EsDynamicLibrary::Pfn, pfnSetupDiGetClassDevs>(m_lib->procAddrGetAorW(esT("SetupDiGetClassDevs")));
+  m_pfnSetupDiEnumDeviceInterfaces = esCallCastToCall<EsDynamicLibrary::Pfn, pfnSetupDiEnumDeviceInterfaces>(m_lib->procAddrGet(esT("SetupDiEnumDeviceInterfaces")));
+  m_pfnSetupDiGetDeviceInterfaceDetail = esCallCastToCall<EsDynamicLibrary::Pfn, pfnSetupDiGetDeviceInterfaceDetail>(m_lib->procAddrGetAorW(esT("SetupDiGetDeviceInterfaceDetail")));
+  m_pfnSetupDiDestroyDeviceInfoList = esCallCastToCall<EsDynamicLibrary::Pfn, pfnSetupDiDestroyDeviceInfoList>(m_lib->procAddrGet(esT("SetupDiDestroyDeviceInfoList")));
+  m_pfnSetupDiGetDeviceInterfaceProperty = esCallCastToCall<EsDynamicLibrary::Pfn, pfnSetupDiGetDeviceInterfaceProperty>(m_lib->procAddrGetAorW(esT("SetupDiGetDeviceInterfaceProperty")));
+  m_pfnSetupDiEnumDeviceInfo = esCallCastToCall<EsDynamicLibrary::Pfn, pfnSetupDiEnumDeviceInfo>(m_lib->procAddrGet(esT("SetupDiEnumDeviceInfo")));
+  m_pfnSetupDiGetDeviceProperty = esCallCastToCall<EsDynamicLibrary::Pfn, pfnSetupDiGetDeviceProperty>(m_lib->procAddrGetAorW(esT("SetupDiGetDeviceProperty")));
 }
 //---------------------------------------------------------------------------
 
@@ -62,13 +62,13 @@ void EsBtLEsetupApiLib::unload()
 {
   if( m_lib )
   {
-    m_pfnSetupDiGetClassDevs = 0;
-    m_pfnSetupDiEnumDeviceInterfaces = 0;
-    m_pfnSetupDiGetDeviceInterfaceDetail = 0;
-    m_pfnSetupDiDestroyDeviceInfoList = 0;
-    m_pfnSetupDiGetDeviceInterfaceProperty = 0;
-    m_pfnSetupDiEnumDeviceInfo = 0;
-    m_pfnSetupDiGetDeviceProperty = 0;
+    m_pfnSetupDiGetClassDevs = nullptr;
+    m_pfnSetupDiEnumDeviceInterfaces = nullptr;
+    m_pfnSetupDiGetDeviceInterfaceDetail = nullptr;
+    m_pfnSetupDiDestroyDeviceInfoList = nullptr;
+    m_pfnSetupDiGetDeviceInterfaceProperty = nullptr;
+    m_pfnSetupDiEnumDeviceInfo = nullptr;
+    m_pfnSetupDiGetDeviceProperty = nullptr;
     m_lib->unload();
     m_lib.reset();
   }
@@ -273,7 +273,7 @@ void EsBluetoothRadioEnumerator::execute()
   BLUETOOTH_RADIO_INFO info;
   info.dwSize = sizeof(info);
 
-  HANDLE hradio = 0;
+  HANDLE hradio = nullptr;
   BLUETOOTH_FIND_RADIO_PARAMS params;
   params.dwSize = sizeof(params);
 

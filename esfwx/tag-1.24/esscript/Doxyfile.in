@@ -1296,7 +1296,7 @@ GENERATE_HTMLHELP      = YES
 # written to the html output directory.
 # This tag requires that the tag GENERATE_HTMLHELP is set to YES.
 
-CHM_FILE               = esscript.chm
+CHM_FILE               = @component_INTERNAL_NAME@.chm
 
 # The HHC_LOCATION tag can be used to specify the location (absolute path
 # including file name) of the HTML help compiler (hhc.exe). If non-empty,
@@ -1639,7 +1639,7 @@ GENERATE_LATEX         = YES
 # The default directory is: latex.
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-LATEX_OUTPUT           = esscript
+LATEX_OUTPUT           = @component_INTERNAL_NAME@
 
 # The LATEX_CMD_NAME tag can be used to specify the LaTeX command name to be
 # invoked.
@@ -2065,17 +2065,20 @@ INCLUDE_FILE_PATTERNS  =
 # recursively expanded use the := operator instead of the = operator.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-PREDEFINED             = ESSCRIPT_CLASS \
-                         ESSCRIPT_FUNC \
-                         ESSCRIPT_DATA \
-                         ES_USE_SCRIPTLETS \
+PREDEFINED             = ES_USE_SCRIPTLETS \
                          ES_USE_COMPILER_IMPLEMENTATION \
+                         ESSCRIPT_CLASS \
+                         "ESSCRIPT_FUNC(ret, func)=ret func" \
+                         "ESSCRIPT_DATA(type, decl)=type decl" \
+                         ES_NOTHROW \
+                         ES_OVERRIDE \
+                         ES_REMOVEDECL \
+                         "ES_UNUSED(x)=#x" \
                          ES_I18N \
                          "ES_STRINGIZE_HELPER(x)=#x" \
                          "ES_STRINGIZE(x)=ES_STRINGIZE_HELPER(x)" \
                          "ES_DECL_INTF_METHOD(ret, name)=virtual ret name" \
-                         "ES_DECL_INTF_BEGIN1(uida, uidb, uidc, uidd, Intf1)=struct ES_ABSTRACT Intf1 { public:" \
-                         "ES_DECL_INTF_BEGIN2(uida, uidb, uidc, uidd, Intf1, Intf2)=struct ES_ABSTRACT Intf1 : public Intf2 { public:" \
+                         "ES_DECL_INTF_BEGIN(uida, uidb, uidc, uidd, IntfT)=class IntfT : virtual public EsBaseIntf { public:" \
                          "ES_DECL_INTF_END=};" \
                          "ES_INTF_IMPL_DERIVED(Class1, Class2)=Class1 : public Class2 {" \
                          "ES_INTF_IMPL_END=};" \

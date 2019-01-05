@@ -364,6 +364,61 @@ public:
 };
 //---------------------------------------------------------------------------
 
+/// Generic member service call type
+typedef void (EsBase:: *EsMemberCallT)(void);
+/// Generic class service call type
+typedef void (*EsClassCallT)(void);
+
+/// Generic method (class or member)
+union EsMethodT {
+  EsMemberCallT m_method;
+  EsClassCallT m_classMethod;
+};
+
+/// To- and From- generic method type casting helpers
+///
+template <typename CallT>
+EsMethodT esCallCastToEsMethodT(CallT pfn) ES_NOTHROW
+{
+  union {
+    CallT src;
+    EsMethodT dest;
+
+  } converter;
+
+  converter.src = pfn;
+  return converter.dest;
+}
+//--------------------------------------------------------------------------------
+
+template <typename CallT>
+CallT esCallCastFromEsMethodT(const EsMethodT& genericPfn) ES_NOTHROW
+{
+  union {
+    EsMethodT src;
+    CallT dest;
+
+  } converter;
+
+  converter.src = genericPfn;
+  return converter.dest;
+}
+//--------------------------------------------------------------------------------
+
+template <typename SrcCallT, typename DestCallT>
+DestCallT esCallCastToCall(SrcCallT pfn) ES_NOTHROW
+{
+  union {
+    SrcCallT src;
+    DestCallT dest;
+
+  } converter;
+
+  converter.src = pfn;
+  return converter.dest;
+}
+//--------------------------------------------------------------------------------
+
 /// Interface declaration helper macro
 ///
 
@@ -411,17 +466,6 @@ public:
   /// Access to interface implementor's object instance
   ES_DECL_INTF_METHOD(EsBase*, implementorGet)() ES_NOTHROW = 0;
   ES_DECL_INTF_METHOD(const EsBase*, implementorGet)() const ES_NOTHROW = 0;
-};
-
-/// Generic member service call type
-typedef void (EsBase:: *EsMemberCallT)(void);
-/// Generic class service call type
-typedef void (*EsClassCallT)(void);
-
-/// Generic method (class or member)
-union EsMethodT {
-  EsMemberCallT m_method;
-  EsClassCallT m_classMethod;
 };
 
 // Multiple interface templated implementation macros
