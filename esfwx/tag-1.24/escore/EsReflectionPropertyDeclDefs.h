@@ -35,21 +35,14 @@ protected: \
 // must not be used in header files
 //
 
-#define NO_DEFAULT_VAL      EsVariant::null()
-#define NO_PROPERTY_LABEL    EsString::null()
-#define NO_PROPERTY_DESCR    NO_PROPERTY_LABEL
+#define NO_DEFAULT_VAL        EsVariant::null()
+#define NO_PROPERTY_LABEL     EsString::null()
+#define NO_PROPERTY_DESCR     NO_PROPERTY_LABEL
 
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
-#  define ES_INTERNAL_PROPCALL_CAST_GETTER(OwnerT, NativeT, CallT) \
-    EsCastCallToMember<EsBaseImplCallT>((EsBaseImplCallT)(NativeT (OwnerT:: *)()) CallT)
-#  define ES_INTERNAL_PROPCALL_CAST_SETTER(OwnerT, NativeT, CallT) \
-    EsCastCallToMember<EsBaseImplCallT>((EsBaseImplCallT)(void (OwnerT:: *)(ES_CONCAT(cr_, NativeT))) CallT)
-#else
-#  define ES_INTERNAL_PROPCALL_CAST_GETTER(OwnerT, NativeT, CallT) \
-    EsCastCallToMember<EsBaseImplCallT>((EsBaseImplCallT)(NativeT (OwnerT:: *)()) CallT)
-#  define ES_INTERNAL_PROPCALL_CAST_SETTER(OwnerT, NativeT, CallT) \
-    EsCastCallToMember<EsBaseImplCallT>((EsBaseImplCallT)(void (OwnerT:: *)(ES_CONCAT(cr_, NativeT))) CallT)
-#endif
+#define ES_INTERNAL_PROPCALL_CAST_GETTER(OwnerT, NativeT, CallT) \
+  esCallCastToCall< NativeT (OwnerT:: *)() const, EsMemberCallT >(CallT)
+#define ES_INTERNAL_PROPCALL_CAST_SETTER(OwnerT, NativeT, CallT) \
+  esCallCastToCall< void (OwnerT:: *)(ES_CONCAT(cr_, NativeT)), EsMemberCallT >(CallT)
 
 #define ES_DECL_PROP_INFO_INTERNAL(OwnerT, PropName, NativeT, Label, DefVal, Descr, Restriction, Persistent) \
   static EsPropertyInfo s_## PropName ##_info( \

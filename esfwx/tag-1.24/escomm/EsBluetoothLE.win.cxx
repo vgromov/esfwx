@@ -310,20 +310,20 @@ protected:
 
 public:
   EsBtLEapiLib() :
-  m_pfnBthpGATTCloseSession(0),
-  m_pfnBluetoothGATTGetServices(0),
-  m_pfnBluetoothGATTGetIncludedServices(0),
-  m_pfnBluetoothGATTGetCharacteristics(0),
-  m_pfnBluetoothGATTGetDescriptors(0),
-  m_pfnBluetoothGATTGetCharacteristicValue(0),
-  m_pfnBluetoothGATTGetDescriptorValue(0),
-  m_pfnBluetoothGATTBeginReliableWrite(0),
-  m_pfnBluetoothGATTEndReliableWrite(0),
-  m_pfnBluetoothGATTAbortReliableWrite(0),
-  m_pfnBluetoothGATTSetCharacteristicValue(0),
-  m_pfnBluetoothGATTSetDescriptorValue(0),
-  m_pfnBluetoothGATTRegisterEvent(0),
-  m_pfnBluetoothGATTUnregisterEvent(0)
+  m_pfnBthpGATTCloseSession(nullptr),
+  m_pfnBluetoothGATTGetServices(nullptr),
+  m_pfnBluetoothGATTGetIncludedServices(nullptr),
+  m_pfnBluetoothGATTGetCharacteristics(nullptr),
+  m_pfnBluetoothGATTGetDescriptors(nullptr),
+  m_pfnBluetoothGATTGetCharacteristicValue(nullptr),
+  m_pfnBluetoothGATTGetDescriptorValue(nullptr),
+  m_pfnBluetoothGATTBeginReliableWrite(nullptr),
+  m_pfnBluetoothGATTEndReliableWrite(nullptr),
+  m_pfnBluetoothGATTAbortReliableWrite(nullptr),
+  m_pfnBluetoothGATTSetCharacteristicValue(nullptr),
+  m_pfnBluetoothGATTSetDescriptorValue(nullptr),
+  m_pfnBluetoothGATTRegisterEvent(nullptr),
+  m_pfnBluetoothGATTUnregisterEvent(nullptr)
   {}
 
   ~EsBtLEapiLib()
@@ -349,40 +349,40 @@ public:
       m_lib = EsDynamicLibrary::load(esT("bluetoothapis.dll"), true);
 
     ES_ASSERT(m_lib);
-    m_pfnBthpGATTCloseSession = (pfnBthpGATTCloseSession)m_lib->procAddrGet(esT("BthpGATTCloseSession"));
-    m_pfnBluetoothGATTGetServices = (pfnBluetoothGATTGetServices)m_lib->procAddrGet(esT("BluetoothGATTGetServices"));
-    m_pfnBluetoothGATTGetIncludedServices = (pfnBluetoothGATTGetIncludedServices)m_lib->procAddrGet(esT("BluetoothGATTGetIncludedServices"));
-    m_pfnBluetoothGATTGetCharacteristics = (pfnBluetoothGATTGetCharacteristics)m_lib->procAddrGet(esT("BluetoothGATTGetCharacteristics"));
-    m_pfnBluetoothGATTGetDescriptors = (pfnBluetoothGATTGetDescriptors)m_lib->procAddrGet(esT("BluetoothGATTGetDescriptors"));
-    m_pfnBluetoothGATTGetCharacteristicValue = (pfnBluetoothGATTGetCharacteristicValue)m_lib->procAddrGet(esT("BluetoothGATTGetCharacteristicValue"));
-    m_pfnBluetoothGATTGetDescriptorValue = (pfnBluetoothGATTGetDescriptorValue)m_lib->procAddrGet(esT("BluetoothGATTGetDescriptorValue"));
-    m_pfnBluetoothGATTBeginReliableWrite = (pfnBluetoothGATTBeginReliableWrite)m_lib->procAddrGet(esT("BluetoothGATTBeginReliableWrite"));
-    m_pfnBluetoothGATTEndReliableWrite = (pfnBluetoothGATTEndReliableWrite)m_lib->procAddrGet(esT("BluetoothGATTEndReliableWrite"));
-    m_pfnBluetoothGATTAbortReliableWrite = (pfnBluetoothGATTAbortReliableWrite)m_lib->procAddrGet(esT("BluetoothGATTAbortReliableWrite"));
-    m_pfnBluetoothGATTSetCharacteristicValue = (pfnBluetoothGATTSetCharacteristicValue)m_lib->procAddrGet(esT("BluetoothGATTSetCharacteristicValue"));
-    m_pfnBluetoothGATTSetDescriptorValue = (pfnBluetoothGATTSetDescriptorValue)m_lib->procAddrGet(esT("BluetoothGATTSetDescriptorValue"));
-    m_pfnBluetoothGATTRegisterEvent = (pfnBluetoothGATTRegisterEvent)m_lib->procAddrGet(esT("BluetoothGATTRegisterEvent"));
-    m_pfnBluetoothGATTUnregisterEvent = (pfnBluetoothGATTUnregisterEvent)m_lib->procAddrGet(esT("BluetoothGATTUnregisterEvent"));
+    m_pfnBthpGATTCloseSession = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBthpGATTCloseSession>(m_lib->procAddrGet(esT("BthpGATTCloseSession")));
+    m_pfnBluetoothGATTGetServices = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTGetServices>(m_lib->procAddrGet(esT("BluetoothGATTGetServices")));
+    m_pfnBluetoothGATTGetIncludedServices = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTGetIncludedServices>(m_lib->procAddrGet(esT("BluetoothGATTGetIncludedServices")));
+    m_pfnBluetoothGATTGetCharacteristics = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTGetCharacteristics>(m_lib->procAddrGet(esT("BluetoothGATTGetCharacteristics")));
+    m_pfnBluetoothGATTGetDescriptors = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTGetDescriptors>(m_lib->procAddrGet(esT("BluetoothGATTGetDescriptors")));
+    m_pfnBluetoothGATTGetCharacteristicValue = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTGetCharacteristicValue>(m_lib->procAddrGet(esT("BluetoothGATTGetCharacteristicValue")));
+    m_pfnBluetoothGATTGetDescriptorValue = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTGetDescriptorValue>(m_lib->procAddrGet(esT("BluetoothGATTGetDescriptorValue")));
+    m_pfnBluetoothGATTBeginReliableWrite = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTBeginReliableWrite>(m_lib->procAddrGet(esT("BluetoothGATTBeginReliableWrite")));
+    m_pfnBluetoothGATTEndReliableWrite = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTEndReliableWrite>(m_lib->procAddrGet(esT("BluetoothGATTEndReliableWrite")));
+    m_pfnBluetoothGATTAbortReliableWrite = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTAbortReliableWrite>(m_lib->procAddrGet(esT("BluetoothGATTAbortReliableWrite")));
+    m_pfnBluetoothGATTSetCharacteristicValue = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTSetCharacteristicValue>(m_lib->procAddrGet(esT("BluetoothGATTSetCharacteristicValue")));
+    m_pfnBluetoothGATTSetDescriptorValue = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTSetDescriptorValue>(m_lib->procAddrGet(esT("BluetoothGATTSetDescriptorValue")));
+    m_pfnBluetoothGATTRegisterEvent = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTRegisterEvent>(m_lib->procAddrGet(esT("BluetoothGATTRegisterEvent")));
+    m_pfnBluetoothGATTUnregisterEvent = esCallCastToCall<EsDynamicLibrary::Pfn, pfnBluetoothGATTUnregisterEvent>(m_lib->procAddrGet(esT("BluetoothGATTUnregisterEvent")));
   }
 
   void unload()
   {
     if( m_lib )
     {
-      m_pfnBthpGATTCloseSession = 0;
-      m_pfnBluetoothGATTGetServices = 0;
-      m_pfnBluetoothGATTGetIncludedServices = 0;
-      m_pfnBluetoothGATTGetCharacteristics = 0;
-      m_pfnBluetoothGATTGetDescriptors = 0;
-      m_pfnBluetoothGATTGetCharacteristicValue = 0;
-      m_pfnBluetoothGATTGetDescriptorValue = 0;
-      m_pfnBluetoothGATTBeginReliableWrite = 0;
-      m_pfnBluetoothGATTEndReliableWrite = 0;
-      m_pfnBluetoothGATTAbortReliableWrite = 0;
-      m_pfnBluetoothGATTSetCharacteristicValue = 0;
-      m_pfnBluetoothGATTSetDescriptorValue = 0;
-      m_pfnBluetoothGATTRegisterEvent = 0;
-      m_pfnBluetoothGATTUnregisterEvent = 0;
+      m_pfnBthpGATTCloseSession = nullptr;
+      m_pfnBluetoothGATTGetServices = nullptr;
+      m_pfnBluetoothGATTGetIncludedServices = nullptr;
+      m_pfnBluetoothGATTGetCharacteristics = nullptr;
+      m_pfnBluetoothGATTGetDescriptors = nullptr;
+      m_pfnBluetoothGATTGetCharacteristicValue = nullptr;
+      m_pfnBluetoothGATTGetDescriptorValue = nullptr;
+      m_pfnBluetoothGATTBeginReliableWrite = nullptr;
+      m_pfnBluetoothGATTEndReliableWrite = nullptr;
+      m_pfnBluetoothGATTAbortReliableWrite = nullptr;
+      m_pfnBluetoothGATTSetCharacteristicValue = nullptr;
+      m_pfnBluetoothGATTSetDescriptorValue = nullptr;
+      m_pfnBluetoothGATTRegisterEvent = nullptr;
+      m_pfnBluetoothGATTUnregisterEvent = nullptr;
 
       m_lib->unload();
       m_lib.reset();

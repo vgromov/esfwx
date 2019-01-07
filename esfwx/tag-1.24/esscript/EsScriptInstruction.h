@@ -498,7 +498,7 @@ protected:
   ulong m_payloadMask;
 
   // Optional param 0
-  union {
+  union Payload0 {
     EsVarType m_varType;
     EsMemberRefType m_refType;
     EsIvalType m_ivalType;
@@ -508,22 +508,28 @@ protected:
     ulong m_tryCatchIdx;
     esU32 m_raw0;
 
+    Payload0() ES_NOTHROW : m_raw0(0) {}
+
   } m_payload0;
 
   // Optional param 1
-  union {
+  union Payload1 {
     long m_jmpOffs;
     bool m_asStmt;
     ulong m_ivalArgsCnt;
     esU32 m_raw1;
 
+    Payload1() ES_NOTHROW : m_raw1(0) {}
+
   } m_payload1;
 
   // Optional param 2
-  union
+  union Payload2
   {
     bool m_isPostfix;
     esU32 m_raw2;
+
+    Payload2() ES_NOTHROW : m_raw2(0) {}
 
   } m_payload2;
 

@@ -39,23 +39,6 @@ const IntfT* EsBase::asIntfT(bool doIncref /*= true*/) const ES_NOTHROW //< Cont
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
-// helper templated call type caster, primarily for Borland calls resolution stuff
-template <typename BaseCallT>
-inline EsMemberCallT EsCastCallToMember(BaseCallT in) ES_NOTHROW
-{
-  union
-  {
-    BaseCallT m_in;
-    EsMemberCallT m_out;
-
-  } caster;
-
-  caster.m_in = in;
-  return caster.m_out;
-}
-//---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
-
 /// EsBaseImpl template classes, may implement Intf1T, Intf2T, Intf3T,
 /// Intf4T, Intf5T, and EsBaseIntf interfaces,
 /// using non-refcouted internals.

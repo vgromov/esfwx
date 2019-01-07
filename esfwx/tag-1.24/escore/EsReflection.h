@@ -555,8 +555,8 @@ protected:
   EsString m_name;
   EsAttributesIntf::Ptr m_attrs;
   EsMemberCallT m_reader;
-  int m_readerSignature;
   EsMemberCallT m_writer;
+  int m_readerSignature;
   int m_writerSignature;
 };
 //---------------------------------------------------------------------------

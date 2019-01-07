@@ -534,7 +534,7 @@ void EsUartEnumerator::enumerate(bool busyPortsInclude /*= true*/)
   DWORD dwGuids = 0;
   setupDiClassGuidsFromName(esT("Ports"), 0, 0, &dwGuids);
   if(dwGuids == 0)
-    EsException::ThrowOsError(EsUtilities::osErrorCodeGet());
+    return;
 
   //allocate guids array
   std::vector<GUID> guids;

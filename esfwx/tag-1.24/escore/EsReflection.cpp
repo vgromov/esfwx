@@ -656,8 +656,8 @@ m_attrs(
   )
 ),
 m_reader(reader),
-m_readerSignature(readerSig),
 m_writer(writer),
+m_readerSignature(readerSig),
 m_writerSignature(writerSig)
 {
   // assert reader & writer signatures

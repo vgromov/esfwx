@@ -542,6 +542,7 @@ void EsScript::compiledBinarySet(const EsBinBuffer& buff, bool retainDebug)
     retainDebug,
     buff
   );
+
   m_compiled = true;
 }
 //---------------------------------------------------------------------------

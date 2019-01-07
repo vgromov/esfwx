@@ -12,7 +12,7 @@ switch( m_readerSignature ) {
 #define  REFL_METHOD_ENTRY7( RetVal, Param1, Param2, Param3, Param4, Param5, Param6, Param7 )
 #define  REFL_CONST_METHOD_ENTRY0( RetVal)   \
 case GEN_SIG0(RetVal, CallConst): \
-  result = (obj->*( GEN_SIG0(RetVal, CallConst_T) )m_reader)(); break;
+  result = (obj->*esCallCastToCall< EsMemberCallT, GEN_SIG0(RetVal, CallConst_T) >(m_reader))(); break;
 #define  REFL_CONST_METHOD_ENTRY1( RetVal, Param1 )
 #define  REFL_CONST_METHOD_ENTRY2( RetVal, Param1, Param2 )
 #define  REFL_CONST_METHOD_ENTRY3( RetVal, Param1, Param2, Param3 )

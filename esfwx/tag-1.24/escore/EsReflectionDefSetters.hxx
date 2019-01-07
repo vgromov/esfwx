@@ -21,7 +21,7 @@ switch( m_writerSignature ) {
 #define  REFL_METHOD_ENTRY_NR0
 #define  REFL_METHOD_ENTRY_NR1( Param1 )   \
 case GEN_SIG1(void, Call, Param1): \
-  (obj->*( GEN_SIG1(void, Call, Param1 ##_T) )m_writer)(To_## Param1 (val)); break;
+  (obj->*esCallCastToCall<EsMemberCallT, GEN_SIG1(void, Call, Param1 ##_T) >(m_writer))(To_## Param1 (val)); break;
 #define  REFL_METHOD_ENTRY_NR2( Param1, Param2 )
 #define  REFL_METHOD_ENTRY_NR3( Param1, Param2, Param3 )
 #define  REFL_METHOD_ENTRY_NR4( Param1, Param2, Param3, Param4 )

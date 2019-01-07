@@ -6,19 +6,11 @@
 
 #define NO_METHOD_DESCR  EsString::null()
 
-#if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_MS
-#  define ES_INTERNAL_METHOD_CAST(OwnerT, MethodName, Sig, CallT) \
-    __pragma(warning(disable: 4191)) \
-    EsCastCallToMember<EsBaseImplCallT>( (EsBaseImplCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) CallT)
-#  define ES_INTERNAL_INTF_METHOD_CAST(OwnerT, IntfType, MethodName, Sig, CallT) \
-    __pragma(warning(disable: 4191)) \
-    EsCastCallToMember<EsBaseImplCallT>( (EsBaseImplCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) CallT)
-#else
-#  define ES_INTERNAL_METHOD_CAST(OwnerT, MethodName, Sig, CallT) \
-    EsCastCallToMember<EsBaseImplCallT>( (EsBaseImplCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) CallT)
-#  define ES_INTERNAL_INTF_METHOD_CAST(OwnerT, IntfType, MethodName, Sig, CallT) \
-    EsCastCallToMember<EsBaseImplCallT>( (EsBaseImplCallT)( ES_CONCAT4(MethodName, _, Sig, _T) ) CallT)
-#endif
+#define ES_INTERNAL_METHOD_CAST(OwnerT, MethodName, Sig, CallT) \
+  esCallCastToCall< ES_CONCAT4(MethodName, _, Sig, _T), EsMemberCallT >(CallT)
+
+#define ES_INTERNAL_INTF_METHOD_CAST(OwnerT, IntfType, MethodName, Sig, CallT) \
+  esCallCastToCall< ES_CONCAT4(MethodName, _, Sig, _T), EsMemberCallT >(CallT)
 
 // allow method reflection to have alias by which method will be identified in reflection framework
 // this would augment calling overloaded methods which differ only by parameter types

@@ -283,12 +283,11 @@ void EsMathWindowFlatTop::doGenerate() const
   }
 }
 //---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 ES_DECL_CLASS_INFO_DERIVED_BEGIN( EsMathWindowGaussian, EsMathWindow, _i("Gaussian window") )
   ES_DECL_REFLECTED_CTOR_INFO(EsMathWindowGaussian, EsBaseIntfPtr_ClassCall, NO_METHOD_DESCR)
-  ES_DECL_PROP_INFO(          EsMathWindowGaussian, alpha, ulong, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
+  ES_DECL_PROP_INFO(          EsMathWindowGaussian, alpha, double, NO_PROPERTY_LABEL, NO_DEFAULT_VAL, NO_PROPERTY_DESCR)
 ES_DECL_CLASS_INFO_END
 //---------------------------------------------------------------------------
 

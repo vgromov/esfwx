@@ -302,7 +302,6 @@ public:
     if( this == &src ) // if we're not assigning ouselves to ourselves
       return;
 
-// REM    EsCriticalSectionLocker locksrc( src.m_cs );
     m_intf = src.m_intf;
     m_own = src.m_own;
 
