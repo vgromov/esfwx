@@ -59,7 +59,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  //virtual ~EsBaseImpl0() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -143,7 +142,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  //virtual ~EsBaseImpl1() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -229,7 +227,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  //virtual ~EsBaseImpl2() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -317,7 +314,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImpl3() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -406,7 +402,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImpl4() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -498,7 +493,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImpl5() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -600,7 +594,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImplRc0() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -700,7 +693,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImplRc1() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -807,7 +799,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImplRc2() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -921,7 +912,6 @@ public:
   m_destroying(false),
   m_rc(1)
   {}
-  virtual ~EsBaseImplRc3() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -1042,7 +1032,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImplRc4() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -1170,7 +1159,6 @@ public:
   m_dynamic(false),
   m_destroying(false)
   {}
-  virtual ~EsBaseImplRc5() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return FinalImplT::classNameGetStatic();
@@ -1306,7 +1294,6 @@ public:
   EsDerivedImpl1() ES_NOTHROW :
   BaseImplT()
   {}
-  virtual ~EsDerivedImpl1() {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
@@ -1359,7 +1346,6 @@ public:
   EsDerivedImpl2() ES_NOTHROW :
   BaseImplT()
   {}
-  virtual ~EsDerivedImpl2() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
@@ -1417,7 +1403,6 @@ public:
   EsDerivedImpl3() ES_NOTHROW :
   BaseImplT()
   {}
-  virtual ~EsDerivedImpl3() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
@@ -1477,7 +1462,6 @@ public:
   EsDerivedImpl4() ES_NOTHROW :
   BaseImplT()
   {}
-  virtual ~EsDerivedImpl4() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
@@ -1539,7 +1523,6 @@ public:
   EsDerivedImpl5() ES_NOTHROW :
   BaseImplT()
   {}
-  virtual ~EsDerivedImpl5() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
@@ -1606,7 +1589,6 @@ public:
   EsDerivedImplRc1() ES_NOTHROW :
   BaseImplT()
   {}
-  virtual ~EsDerivedImplRc1() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
@@ -1659,7 +1641,6 @@ public:
   EsDerivedImplRc2() ES_NOTHROW :
   BaseImplT()
   {}
-  virtual ~EsDerivedImplRc2() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
@@ -1719,7 +1700,6 @@ public:
   EsDerivedImplRc3() ES_NOTHROW :
   BaseImplT()
   {}
-  virtual ~EsDerivedImplRc3() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
@@ -1786,7 +1766,6 @@ public:
   EsDerivedImplRc4() ES_NOTHROW :
   BaseImplT()
   {}
-  virtual ~EsDerivedImplRc4() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
@@ -1860,7 +1839,6 @@ public:
   EsDerivedImplRc5() ES_NOTHROW :
   BaseImplT()
   {}
-  virtual ~EsDerivedImplRc5() ES_NOTHROW {}
   ES_DECL_INTF_METHOD(EsString, classNameGet)() const ES_NOTHROW ES_OVERRIDE
   {
     return DerivedT::classNameGetStatic();
