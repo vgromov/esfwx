@@ -442,8 +442,6 @@ public:
   enum { uid0 = 0x61233F3D, uid1 = 0x2A86471D, uid2 = 0xB73DAE05, uid3 = 0x51A4E46C };
   typedef EsIntfPtr<EsBaseIntf> Ptr;
 
-  inline virtual ~EsBaseIntf() ES_NOTHROW {}
-
   /// Analog to COM's query interface method. if requested interface is not supported,
   /// return NULL pointer, otherwise, return properly cast requested interface pointer,
   /// wrapped in void pointer.
