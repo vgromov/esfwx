@@ -26,22 +26,22 @@ set(tests_SRCS
 # Add backward.cpp - pretty stack backtrace printer
 if(ESTESTS_USE_STACK_BACKTRACE AND (UNIX AND NOT WIN32))
   set(tests_SRCS
-		${tests_SRCS}
-		backward-cpp/backward.cpp
-	)
+    ${tests_SRCS}
+    backward-cpp/backward.cpp
+  )
 endif()
 
 # targets
 set(staticMarker "")
 if( NOT ES_BUILD_SHARED_LIBS )
-	set(staticMarker "_s")
+  set(staticMarker "_s")
 endif()
 set(targetName tests_${ESTESTS_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker})
-ES_SPECIFY_HEADER_FILES(tests_SRCS headerExtensions)
+ES_SPECIFY_HEADER_FILES(tests_SRCS ${ES_HEADER_EXTENSIONS})
 
 add_executable(
   ${targetName}
-	${tests_SRCS}
+  ${tests_SRCS}
 )
 
 # Set-up extra libraries

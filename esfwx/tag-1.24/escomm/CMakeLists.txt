@@ -174,8 +174,8 @@ message(
 )
 
 ES_SPECIFY_PRECOMPILED_HEADER("escommpch.h" "EsCommMain.cpp" escomm_SRCS)
-ES_SPECIFY_HEADER_FILES(escomm_SRCS headerExtensions)
-ES_SPECIFY_HEADER_FILES(escomm_c_shared_SRCS headerExtensions)
+ES_SPECIFY_HEADER_FILES(escomm_SRCS ${ES_HEADER_EXTENSIONS})
+ES_SPECIFY_HEADER_FILES(escomm_c_shared_SRCS ${ES_HEADER_EXTENSIONS})
 
 add_library(${${targetName}} 
 	${escomm_c_shared_SRCS} 

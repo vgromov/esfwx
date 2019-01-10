@@ -9,7 +9,7 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/build.h.in"
   "${PROJECT_SOURCE_DIR}/build.h"
   )
-	
+  
 # optional resource version file generation
 #
 configure_file (
@@ -23,11 +23,11 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/Doxyfile.in"
   "${PROJECT_SOURCE_DIR}/Doxyfile"
   )
-	
+  
 # project top-level build directory
 set(esmath_common_SRCS
-						esmath.h
-						build.h
+            esmath.h
+            build.h
             EsMathException.cpp
             EsMathException.h
             EsMathUtils.cpp
@@ -55,30 +55,30 @@ set(esmath_common_SRCS
             EsMathSplineFit.h
             EsMathWindow.cpp
             EsMathWindow.h
-						)
+            )
 
 set(esmath_locale_SRCS 
-						locale/esmath.pot
-						locale/esmath.ru_RU.po
-						)
+            locale/esmath.pot
+            locale/esmath.ru_RU.po
+            )
 source_group(locale FILES ${esmath_locale_SRCS})
 ESI18N_ADD("esmath" esmath_locale_SRCS "${binaryRoot}")
 
 set(esmath_SRCS
-						${esmath_common_SRCS}
-						${esmath_alglib_SRCS}
-						${esmath_locale_SRCS}
-						)					
-						
+            ${esmath_common_SRCS}
+            ${esmath_alglib_SRCS}
+            ${esmath_locale_SRCS}
+            )          
+            
 if(WIN32)
-	set(esmath_RES ${esmath_RES} res/version.rc)
-endif(WIN32)						
+  set(esmath_RES ${esmath_RES} res/version.rc)
+endif(WIN32)            
 source_group(res FILES ${esmath_RES})
 
 # targets
 set(staticMarker "")
 if( NOT ES_BUILD_SHARED_LIBS )
-	set(staticMarker "_s")
+  set(staticMarker "_s")
 endif()
 set(targetName "esmathLib${staticMarker}")
 set(${targetName} "esmath_${ESMATH_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker}" CACHE INTERNAL "" FORCE)
@@ -88,11 +88,11 @@ message(
 )
 
 ES_SPECIFY_PRECOMPILED_HEADER("esmathpch.h" "EsMathMain.cpp" esmath_SRCS)
-ES_SPECIFY_HEADER_FILES(esmath_SRCS headerExtensions)
+ES_SPECIFY_HEADER_FILES(esmath_SRCS ${ES_HEADER_EXTENSIONS})
 
 add_library(${${targetName}} 
-	${esmath_SRCS} 
-	${esmath_RES}
+  ${esmath_SRCS} 
+  ${esmath_RES}
 )
   
 # Set-up library dependencies
@@ -114,9 +114,9 @@ if( ES_BUILD_SHARED_LIBS )
     set_embt_target(Package)
   endif()
 
-	set_property(
+  set_property(
     TARGET ${${targetName}} 
     APPEND
     PROPERTY COMPILE_DEFINITIONS "${ES_USEDLL_PREPROC_FOR_DYNLIB}" ESMATH_EXPORTS
-  )					
+  )          
 endif()

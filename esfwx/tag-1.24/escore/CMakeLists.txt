@@ -47,36 +47,36 @@ set(escore_common_SRCS
 source_group(common FILES ${escore_common_SRCS})
 
 set(escore_utility_SRCS
-			EsAssocContainer.cpp
-			EsAssocContainer.h
-			EsBinBuffer.cpp
-			EsBinBuffer.h
-			EsCompositeFile.cpp
-			EsCompositeFile.h
-			EsCrc.cpp
-			EsCrc.h
-			EsDateTime.cpp
-			EsDateTime.h
-			EsDynamicLibrary.cpp
-			EsDynamicLibrary.h
-			EsEnumeration.cpp
-			EsEnumeration.h
-			EsExceptions.cpp
-			EsExceptions.h
-			EsHash.cpp
-			EsHash.h
-			EsVariant.cpp
-			EsVariant.h
-			EsVariantType.cpp
-			EsVariantType.h
-			EsScriptDebugInfo.cpp
-			EsScriptDebugInfo.h
-			EsRange.cpp
-			EsRange.h
-			EsUtilities.cpp
-			EsUtilities.h
-			EsProgressMonitor.cpp
-			EsProgressMonitor.h
+      EsAssocContainer.cpp
+      EsAssocContainer.h
+      EsBinBuffer.cpp
+      EsBinBuffer.h
+      EsCompositeFile.cpp
+      EsCompositeFile.h
+      EsCrc.cpp
+      EsCrc.h
+      EsDateTime.cpp
+      EsDateTime.h
+      EsDynamicLibrary.cpp
+      EsDynamicLibrary.h
+      EsEnumeration.cpp
+      EsEnumeration.h
+      EsExceptions.cpp
+      EsExceptions.h
+      EsHash.cpp
+      EsHash.h
+      EsVariant.cpp
+      EsVariant.h
+      EsVariantType.cpp
+      EsVariantType.h
+      EsScriptDebugInfo.cpp
+      EsScriptDebugInfo.h
+      EsRange.cpp
+      EsRange.h
+      EsUtilities.cpp
+      EsUtilities.h
+      EsProgressMonitor.cpp
+      EsProgressMonitor.h
       EsOsInfo.cpp
       EsOsInfo.h
       EsScriptDebugInfo.cpp
@@ -107,91 +107,91 @@ set(escore_crypto_SRCS
 source_group(crypto FILES ${escore_crypto_SRCS})
 
 set(escore_event_SRCS
-			EsEvent.cpp
-			EsEvent.h
-			EsEventDispatcher.cpp
-			EsEventDispatcher.h
-		)
+      EsEvent.cpp
+      EsEvent.h
+      EsEventDispatcher.cpp
+      EsEventDispatcher.h
+    )
 source_group(event FILES ${escore_event_SRCS})
 
 set(escore_file_SRCS
-			EsFile.cpp
-			EsFile.h
-			EsPath.cpp
-			EsPath.h
-			EsPathEnumerator.cpp
-			EsPathEnumerator.h
-		)
+      EsFile.cpp
+      EsFile.h
+      EsPath.cpp
+      EsPath.h
+      EsPathEnumerator.cpp
+      EsPathEnumerator.h
+    )
 source_group(file FILES ${escore_file_SRCS})
 
 set(escore_thread_SRCS
       EsAtomic.cpp
-			EsAtomic.h
-			EsThread.cpp
-			EsThread.h
-			EsSyncObjects.cpp
-			EsSyncObjects.h
-		)
+      EsAtomic.h
+      EsThread.cpp
+      EsThread.h
+      EsSyncObjects.cpp
+      EsSyncObjects.h
+    )
 source_group(thread FILES ${escore_thread_SRCS})
 
 set(escore_string_SRCS
-			EsStringDefs.h
-			EsString.cpp
-			EsString.h
+      EsStringDefs.h
+      EsString.cpp
+      EsString.h
       EsStringStd.cpp
       EsStringStd.h
-			EsStringI18n.cpp
-			EsStringI18n.h
-			EsStringConverter.cpp
-			EsStringConverter.h
-			EsStringIndexedMap.cpp
-			EsStringIndexedMap.h
-			EsStringTokenizer.cpp
-			EsStringTokenizer.h
-			EsRegEx.cpp
-			EsRegEx.h
+      EsStringI18n.cpp
+      EsStringI18n.h
+      EsStringConverter.cpp
+      EsStringConverter.h
+      EsStringIndexedMap.cpp
+      EsStringIndexedMap.h
+      EsStringTokenizer.cpp
+      EsStringTokenizer.h
+      EsRegEx.cpp
+      EsRegEx.h
       EsLocale.cpp
       EsLocale.h
-		)
+    )
 source_group(string FILES ${escore_string_SRCS})
 
 set(escore_interfaces_SRCS
-			EsBaseIntf.h
-			EsBreakIntf.h
-			EsLogIntf.h
-		)
+      EsBaseIntf.h
+      EsBreakIntf.h
+      EsLogIntf.h
+    )
 source_group(interfaces FILES ${escore_interfaces_SRCS})
 
 set(escore_reflection_SRCS
-			EsReflection.cpp
-			EsReflection.hxx
-			EsReflection.h
-			EsReflectionDefCallProxies.hxx
-			EsReflectionDefCalls.hxx
-			EsReflectionDefClassCallProxies.hxx
-			EsReflectionDefClassCalls.hxx
-			EsReflectionDefGetters.hxx
-			EsReflectionDefParamCount.h
-			EsReflectionDefSetters.hxx
-			EsReflectionDefSignatures.h
-			EsReflectionDefSigStrings.hxx
-			EsReflectionDefTypeCasts.h
-			EsReflectionDualCallDefs.h
-			EsReflectionGenDefs.h
-			EsReflectionMethodDeclDefs.h
-			EsReflectionMethodInfoDeclDefs.h
-			EsReflectionPropertyDeclDefs.h
-			EsReflectionReflectedClassDefs.h
+      EsReflection.cpp
+      EsReflection.hxx
+      EsReflection.h
+      EsReflectionDefCallProxies.hxx
+      EsReflectionDefCalls.hxx
+      EsReflectionDefClassCallProxies.hxx
+      EsReflectionDefClassCalls.hxx
+      EsReflectionDefGetters.hxx
+      EsReflectionDefParamCount.h
+      EsReflectionDefSetters.hxx
+      EsReflectionDefSignatures.h
+      EsReflectionDefSigStrings.hxx
+      EsReflectionDefTypeCasts.h
+      EsReflectionDualCallDefs.h
+      EsReflectionGenDefs.h
+      EsReflectionMethodDeclDefs.h
+      EsReflectionMethodInfoDeclDefs.h
+      EsReflectionPropertyDeclDefs.h
+      EsReflectionReflectedClassDefs.h
       EsMetaclass.cpp
       EsMetaclass.h
       EsStdNames.cpp
       EsStdNames.h
-		)
+    )
 source_group(reflection FILES ${escore_reflection_SRCS})
 
 set(escore_streams_SRCS
-			EsStream.cpp
-			EsStream.h
+      EsStream.cpp
+      EsStream.h
       EsStreamBlock.cpp
       EsStreamBlock.h
       EsStreamBinary.cpp
@@ -202,26 +202,26 @@ set(escore_streams_SRCS
 source_group(streams FILES ${escore_streams_SRCS})
 
 set(escore_locale_SRCS
-			locale/escore.pot
-			locale/escore.ru_RU.po
+      locale/escore.pot
+      locale/escore.ru_RU.po
       locale/escore.de_DE.po
-		)
+    )
 source_group(locale FILES ${escore_locale_SRCS})
 ESI18N_ADD("escore" escore_locale_SRCS "${binaryRoot}")
 
 set(escore_SRCS
-			${escore_common_SRCS}
-			${escore_utility_SRCS}
-			${escore_crypto_SRCS}
-			${escore_interfaces_SRCS}
-			${escore_reflection_SRCS}
-			${escore_string_SRCS}
-			${escore_file_SRCS}
-			${escore_thread_SRCS}
-			${escore_streams_SRCS}
-			${escore_event_SRCS}
-			${escore_locale_SRCS}
-		)
+      ${escore_common_SRCS}
+      ${escore_utility_SRCS}
+      ${escore_crypto_SRCS}
+      ${escore_interfaces_SRCS}
+      ${escore_reflection_SRCS}
+      ${escore_string_SRCS}
+      ${escore_file_SRCS}
+      ${escore_thread_SRCS}
+      ${escore_streams_SRCS}
+      ${escore_event_SRCS}
+      ${escore_locale_SRCS}
+    )
 
 if(WIN32)
     set(escore_RES ${escore_RES} res/version.rc)
@@ -241,8 +241,8 @@ message(
 )
 
 ES_SPECIFY_PRECOMPILED_HEADER("escorepch.h" "EsCoreMain.cpp" escore_SRCS)
-ES_SPECIFY_HEADER_FILES(escore_SRCS headerExtensions)
-ES_SPECIFY_HEADER_FILES(escore_c_shared_SRCS headerExtensions)
+ES_SPECIFY_HEADER_FILES(escore_SRCS ${ES_HEADER_EXTENSIONS})
+ES_SPECIFY_HEADER_FILES(escore_c_shared_SRCS ${ES_HEADER_EXTENSIONS})
 
 add_library( ${${targetName}}
   ${escore_SRCS}
