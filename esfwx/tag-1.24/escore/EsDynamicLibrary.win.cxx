@@ -101,7 +101,7 @@ void* EsDynamicLibrary::symbolAddrGet(const EsString& name, bool doThrow /*= tru
 EsDynamicLibrary::Pfn EsDynamicLibrary::procAddrGetAorW(const EsString& name, bool doThrow /*= true*/)
 {
   return procAddrGet(name+
-#ifdef ES_UNICODE
+#ifdef ES_CHAR_IS_WCHAR_T
     esT('W')
 #else
     esT('A')

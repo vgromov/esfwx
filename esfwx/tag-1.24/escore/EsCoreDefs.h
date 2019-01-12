@@ -261,6 +261,7 @@
 #ifndef UNICODE
 #  define UNICODE
 #endif
+#define ES_USE_UNICODE
 
 /// Standard C includes,
 /// OS-specific includes,

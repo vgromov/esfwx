@@ -28,7 +28,7 @@ ES_DECL_REFLECTED_SERVICES_INFO_BEGIN(EsChannelIoFactory, esT("Communication cha
 #ifdef ES_COMM_USE_CHANNEL_EKONNECT
   ES_REGISTER_CHANNEL(EsChannelIoEkonnect)
 #endif
-#ifdef ES_COMM_USE_CHANNEL_SOCKETS
+#ifdef ES_COMM_USE_CHANNEL_IO_SOCKET
   ES_REGISTER_CHANNEL(EsChannelIoSocketClient)
   ES_REGISTER_CHANNEL(EsChannelIoSocketServer)
 #endif
