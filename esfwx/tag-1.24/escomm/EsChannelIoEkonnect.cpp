@@ -949,44 +949,42 @@ ES_IMPL_INTF_METHOD(EsString, EsChannelIoEkonnect::errorStringGet)() const
 class isNotApplicableDevice
 {
 public:
-  inline bool operator() (const EsFtdiDriver::FT_DEVICE_LIST_INFO_NODE& node) const
+  isNotApplicableDevice() :
+  m_regexSerial(
+    esT("6000(0|1)-[0-9]{5}-[0-9]{2}"),
+    static_cast<ulong>(EsRegExCompileFlag::DEFAULT) |
+    static_cast<ulong>(EsRegExCompileFlag::NOSUB)
+  ),
+  m_regexDescr(
+    esT("EKONNECT[0-9]?"),
+    static_cast<ulong>(EsRegExCompileFlag::DEFAULT) |
+    static_cast<ulong>(EsRegExCompileFlag::NOSUB)
+  )
+  {}
+
+  inline bool isMatching(const EsFtdiDriver::FT_DEVICE_LIST_INFO_NODE& node)
   {
-    regexSerialGet().set_text(node.serialNumberStrGet());
-    regexDescrGet().set_text(node.descriptionStrGet());
+    m_regexSerial.set_text(node.serialNumberStrGet());
+    m_regexDescr.set_text(node.descriptionStrGet());
 
     return EsFtdiDriver::DEVICE_232R != node.typeGet() ||
-      !regexSerialGet().get_matches() ||
-      !regexDescrGet().get_matches();
+      !m_regexSerial.get_matches() ||
+      !m_regexDescr.get_matches();
   }
 
-  inline bool operator() (const EsVariant& node) const
+  inline bool isMatching(const EsVariant& node)
   {
-    regexSerialGet().set_text(node[0].asString());
-    regexDescrGet().set_text(node[1].asString());
+    m_regexSerial.set_text(node[0].asString());
+    m_regexDescr.set_text(node[1].asString());
 
-    return EsFtdiDriver::DEVICE_232R != node.typeGet() ||
-      !regexSerialGet().get_matches() ||
-      !regexDescrGet().get_matches();
+    return node[8].asBool() || //< MPSSE device
+      !m_regexSerial.get_matches() ||
+      !m_regexDescr.get_matches();
   }
 
 protected:
-  static EsRegEx& regexSerialGet()
-  {
-    static EsRegEx s_regexSerial(esT("6000(0|1)-[0-9]{5}-[0-9]{2}"),
-              static_cast<ulong>(EsRegExCompileFlag::DEFAULT)|
-              static_cast<ulong>(EsRegExCompileFlag::NOSUB));
-
-    return s_regexSerial;
-  }
-
-  static EsRegEx& regexDescrGet()
-  {
-    static EsRegEx s_regexDescr(esT("EKONNECT[0-9]?"),
-              static_cast<ulong>(EsRegExCompileFlag::DEFAULT)|
-              static_cast<ulong>(EsRegExCompileFlag::NOSUB));
-
-    return s_regexDescr;
-  }
+  EsRegEx m_regexSerial;
+  EsRegEx m_regexDescr;
 };
 //---------------------------------------------------------------------------
 
@@ -1004,11 +1002,12 @@ EsFtdiDriver::DeviceList EsChannelIoEkonnect::getDeviceList()
   }
 
   // filter only devices with our hardware idGet & serial mask
+  isNotApplicableDevice filter;
   auto new_end =
     std::remove_if(
       result.begin(),
       result.end(),
-      isNotApplicableDevice()
+      [&](const EsFtdiDriver::FT_DEVICE_LIST_INFO_NODE& node) -> bool { return filter.isMatching(node); }
     );
 
   result.erase(
@@ -1030,11 +1029,12 @@ EsVariant EsChannelIoEkonnect::enumerate(const EsVariant& includeBusyPorts)
   if(!devices.empty())
   {
     // filter only devices with our hardware idGet & serial mask
+    isNotApplicableDevice filter;
     auto new_end =
       std::remove_if(
         devices.begin(),
         devices.end(),
-        isNotApplicableDevice()
+        [&](const EsVariant& node) -> bool { return filter.isMatching(node); }
       );
 
     devices.erase(
