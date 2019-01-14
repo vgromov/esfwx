@@ -190,9 +190,9 @@ public:
   ES_DECL_REFLECTED_INTF_METHOD0(void, shutdown) ES_OVERRIDE;
   ES_DECL_REFLECTED_INTF_METHOD1(void, queueBootloader, ulong) ES_OVERRIDE;
 
-  // advanced communication services
+  // Advanced communication services
   //
-  // ping with optional channel settings tune-up (advanced ping)
+  // Ping with optional channel settings tune-up (advanced ping)
   //
   ES_DECL_REFLECTED_INTF_METHOD0(bool, pingEx) ES_OVERRIDE;
 
