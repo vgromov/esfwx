@@ -82,15 +82,16 @@ if( NOT ES_BUILD_SHARED_LIBS )
 endif()
 set(targetName "esmathLib${staticMarker}")
 set(${targetName} "esmath_${ESMATH_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker}" CACHE INTERNAL "" FORCE)
+set(ESMATH_LIB_TARGET ${${targetName}} CACHE INTERNAL "")
 message(
   STATUS
-  "esmath targetName=>${targetName}:${${targetName}}"
+  "esmath targetName=>${targetName}:${ESMATH_LIB_TARGET}"
 )
 
 ES_SPECIFY_PRECOMPILED_HEADER("esmathpch.h" "EsMathMain.cpp" esmath_SRCS)
 ES_SPECIFY_HEADER_FILES(esmath_SRCS ${ES_HEADER_EXTENSIONS})
 
-add_library(${${targetName}} 
+add_library(${ESMATH_LIB_TARGET} 
   ${esmath_SRCS} 
   ${esmath_RES}
 )
@@ -98,7 +99,7 @@ add_library(${${targetName}}
 # Set-up library dependencies
 set(ESMATH_EXTRA_LIBRARIES ${escoreLib${staticMarker}})
 target_link_libraries( 
-  ${${targetName}}
+  ${ESMATH_LIB_TARGET}
   ${ESMATH_EXTRA_LIBRARIES}
 )
 message(
@@ -115,7 +116,7 @@ if( ES_BUILD_SHARED_LIBS )
   endif()
 
   set_property(
-    TARGET ${${targetName}} 
+    TARGET ${ESMATH_LIB_TARGET} 
     APPEND
     PROPERTY COMPILE_DEFINITIONS "${ES_USEDLL_PREPROC_FOR_DYNLIB}" ESMATH_EXPORTS
   )          

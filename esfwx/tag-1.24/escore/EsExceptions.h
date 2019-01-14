@@ -43,7 +43,7 @@ public:
 #if ES_COMPILER_VENDOR == ES_COMPILER_VENDOR_BORLAND
   __fastcall
 #endif
-  EsException(ulong code, ulong severity, ulong facility,  const EsString& msg,
+  EsException(ulong code, ulong severity, ulong facility, const EsString& msg,
     const EsScriptDebugInfoIntf::Ptr& dbg = EsScriptDebugInfoIntf::Ptr(),
     bool doLogErrors = true
   );

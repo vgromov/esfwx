@@ -26,9 +26,6 @@ configure_file (
 # build framework components in standalone mode
 # otherwise, host project defines which components to build
 if( ESFWXCONFIG_STANDALONE_BUILD )
-  
-  # ESFWX-specific macros
-  include(esframework-macros.cmake)
 
 	# global directories
 	set(binaryRoot ${ES_PROJECT_ROOT}/bin CACHE INTERNAL "Build binary root")
@@ -56,10 +53,9 @@ if(ESFWXCONFIG_BUILD_MATH)
 
   # esmath dependencies
   add_dependencies(
-    ${esmathLib} 
-    ${escoreLib} 
+    ${ESMATH_LIB_TARGET} 
+    ${ESCORE_LIB_TARGET}
   )
-
 endif()
 
 if(ESFWXCONFIG_BUILD_COMM)
@@ -67,8 +63,8 @@ if(ESFWXCONFIG_BUILD_COMM)
   
   # escomm dependencies
   add_dependencies(
-    ${escommLib} 
-    ${escoreLib} 
+    ${ESCOMM_LIB_TARGET} 
+    ${ESCORE_LIB_TARGET} 
   )
 endif()
 
@@ -77,10 +73,10 @@ if(ESFWXCONFIG_BUILD_SCRIPT)
 
   # esscript dependencies
   add_dependencies(
-    ${esscriptLib} 
-    ${escoreLib} 
-    ${escommLib}
-    ${esmathLib}
+    ${ESSCRIPT_LIB_TARGET} 
+    ${ESCORE_LIB_TARGET} 
+    ${ESCOMM_LIB_TARGET}
+    ${ESMATH_LIB_TARGET}
   )
 endif()
 
@@ -91,11 +87,11 @@ if(ESFWXCONFIG_BUILD_TESTS)
 
   # esscript dependencies
   add_dependencies(
-    ${}
-    ${esscriptLib} 
-    ${escoreLib} 
-    ${escommLib}
-    ${esmathLib}
+    ${ESFWX_TESTS_TARGET}
+    ${ESCORE_LIB_TARGET} 
+    ${ESCOMM_LIB_TARGET}
+    ${ESMATH_LIB_TARGET}
+    ${ESSCRIPT_LIB_TARGET} 
   )
 
 endif()

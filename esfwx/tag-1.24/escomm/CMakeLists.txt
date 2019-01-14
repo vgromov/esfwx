@@ -168,16 +168,17 @@ if( NOT ES_BUILD_SHARED_LIBS )
 endif()
 set(targetName "escommLib${staticMarker}")
 set(${targetName} "escomm_${ESCOMM_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker}" CACHE INTERNAL "" FORCE)
+set(ESCOMM_LIB_TARGET ${${targetName}} CACHE INTERNAL "")
 message(
   STATUS
-  "escomm targetName=>${targetName}:${${targetName}}"
+  "escomm targetName=>${targetName}:${ESCOMM_LIB_TARGET}"
 )
 
 ES_SPECIFY_PRECOMPILED_HEADER("escommpch.h" "EsCommMain.cpp" escomm_SRCS)
 ES_SPECIFY_HEADER_FILES(escomm_SRCS ${ES_HEADER_EXTENSIONS})
 ES_SPECIFY_HEADER_FILES(escomm_c_shared_SRCS ${ES_HEADER_EXTENSIONS})
 
-add_library(${${targetName}} 
+add_library(${ESCOMM_LIB_TARGET} 
 	${escomm_c_shared_SRCS} 
 	${escomm_SRCS} 
 	${escomm_RES}
@@ -192,7 +193,7 @@ if(WIN32)
 endif()
 
 target_link_libraries(
-  ${${targetName}} 
+  ${ESCOMM_LIB_TARGET} 
 	${ESCOMM_EXTRA_LIBRARIES}
 )
 message(
@@ -209,7 +210,7 @@ if( ES_BUILD_SHARED_LIBS )
   endif()
 
   set_property(
-    TARGET ${${targetName}}
+    TARGET ${ESCOMM_LIB_TARGET}
     APPEND
     PROPERTY COMPILE_DEFINITIONS "${ES_USEDLL_PREPROC_FOR_DYNLIB}" ESCOMM_EXPORTS
   )  

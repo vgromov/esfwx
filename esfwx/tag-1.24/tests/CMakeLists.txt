@@ -37,10 +37,11 @@ if( NOT ES_BUILD_SHARED_LIBS )
   set(staticMarker "_s")
 endif()
 set(targetName tests_${ESTESTS_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker})
+set(ESFWX_TESTS_TARGET ${targetName} CACHE INTERNAL "")
 ES_SPECIFY_HEADER_FILES(tests_SRCS ${ES_HEADER_EXTENSIONS})
 
 add_executable(
-  ${targetName}
+  ${ESFWX_TESTS_TARGET}
   ${tests_SRCS}
 )
 
@@ -63,7 +64,7 @@ if(CMAKE_COMPILER_IS_GNUCXX AND NOT MINGW)
 endif()
   
 target_link_libraries(
-  ${targetName}
+  ${ESFWX_TESTS_TARGET}
   ${ESFWX_TESTS_EXTRA_LIBRARIES}
 )
 message(
@@ -110,7 +111,7 @@ if( BORLAND OR EMBARCADERO )
 endif()
 
 set_target_properties(
-  ${targetName}
+  ${ESFWX_TESTS_TARGET}
   PROPERTIES
   LINK_FLAGS "${ESFWX_TESTS_OPTS}"
   COMPILE_DEFINITIONS "${ESFWX_TESTS_DEFS}"
@@ -118,5 +119,5 @@ set_target_properties(
 
 message(
   STATUS
-  "${targetName} ESFWX_TESTS_DEFS=>${ESFWX_TESTS_DEFS} ESFWX_TESTS_OPTS=>${ESFWX_TESTS_OPTS}"
+  "${ESFWX_TESTS_TARGET} ESFWX_TESTS_DEFS=>${ESFWX_TESTS_DEFS} ESFWX_TESTS_OPTS=>${ESFWX_TESTS_OPTS}"
 )

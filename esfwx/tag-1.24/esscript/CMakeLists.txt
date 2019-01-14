@@ -151,20 +151,21 @@ if( NOT ES_BUILD_SHARED_LIBS )
 endif()
 set(targetName "esscriptLib${staticMarker}")
 set(${targetName} "esscript_${ESSCRIPT_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker}" CACHE INTERNAL "" FORCE)
+set(ESSCRIPT_LIB_TARGET ${${targetName}} CACHE INTERNAL "")
 message(
   STATUS
-  "esscript targetName=>${targetName}:${${targetName}}"
+  "esscript targetName=>${targetName}:${ESSCRIPT_LIB_TARGET}"
 )
 
 ES_SPECIFY_PRECOMPILED_HEADER("esscriptpch.h" "EsScriptMain.cpp" esscript_SRCS)
 ES_SPECIFY_HEADER_FILES(esscript_SRCS ${ES_HEADER_EXTENSIONS})
 
-add_library(${${targetName}} ${esscript_SRCS} ${esscript_RES})
+add_library(${ESSCRIPT_LIB_TARGET} ${esscript_SRCS} ${esscript_RES})
 
 # Set-up library dependencies
 set(ESSCRIPT_EXTRA_LIBRARIES ${escoreLib${staticMarker}})
 target_link_libraries(
-  ${${targetName}} 
+  ${ESSCRIPT_LIB_TARGET} 
   ${ESSCRIPT_EXTRA_LIBRARIES}
 )
 message(
@@ -181,7 +182,7 @@ if( ES_BUILD_SHARED_LIBS )
   endif()
 
   set_property(
-    TARGET ${${targetName}} 
+    TARGET ${ESSCRIPT_LIB_TARGET} 
     APPEND
     PROPERTY COMPILE_DEFINITIONS "${ES_USEDLL_PREPROC_FOR_DYNLIB}" ESSCRIPT_EXPORTS
   )

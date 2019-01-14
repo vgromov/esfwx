@@ -235,16 +235,17 @@ if( NOT ES_BUILD_SHARED_LIBS )
 endif()
 set(targetName "escoreLib${staticMarker}")
 set(${targetName} "escore_${ESCORE_VERSION_SUFFIX}_${ESCOMMON_BIN_SUFFIX}${ESCOMMON_COMPILER_VERSION}${staticMarker}" CACHE INTERNAL "" FORCE)
+set(ESCORE_LIB_TARGET ${${targetName}} CACHE INTERNAL "")
 message(
   STATUS
-  "escore targetName=>${targetName}:${${targetName}}"
+  "escore targetName=>${targetName}:${ESCORE_LIB_TARGET}"
 )
 
 ES_SPECIFY_PRECOMPILED_HEADER("escorepch.h" "EsCoreMain.cpp" escore_SRCS)
 ES_SPECIFY_HEADER_FILES(escore_SRCS ${ES_HEADER_EXTENSIONS})
 ES_SPECIFY_HEADER_FILES(escore_c_shared_SRCS ${ES_HEADER_EXTENSIONS})
 
-add_library( ${${targetName}}
+add_library( ${ESCORE_LIB_TARGET}
   ${escore_SRCS}
   ${escore_RES}
 )
@@ -256,7 +257,7 @@ else(WIN32)
   set(ESCORE_EXTRA_LIBRARIES dl pthread)
 endif(WIN32)
 target_link_libraries( 
-  ${${targetName}} 
+  ${ESCORE_LIB_TARGET} 
   ${ESCORE_EXTRA_LIBRARIES}
 )
 message(
@@ -273,7 +274,7 @@ if( ES_BUILD_SHARED_LIBS )
   endif()
 
   set_property(
-    TARGET ${${targetName}}
+    TARGET ${ESCORE_LIB_TARGET}
     APPEND
     PROPERTY COMPILE_DEFINITIONS "${ES_USEDLL_PREPROC_FOR_DYNLIB}" ESCORE_EXPORTS
   )

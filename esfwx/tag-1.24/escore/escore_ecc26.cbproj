@@ -92,6 +92,9 @@
         <RunBCCOutOfProcess>true</RunBCCOutOfProcess>
         <SubProcessesNumber>4</SubProcessesNumber>
         <IncludePath>..\;..\compatibility-headers;..\external;$(IncludePath)</IncludePath>
+        <ILINK_DisableIncrementalLinking>true</ILINK_DisableIncrementalLinking>
+        <UsingDelphiRTL>true</UsingDelphiRTL>
+        <ILINK_ClearState>true</ILINK_ClearState>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <PackageImports>bindcomp;bindcompdbx;bindcompfmx;bindengine;CloudService;CustomIPTransport;DataSnapClient;DataSnapCommon;DataSnapFireDAC;DataSnapNativeClient;DataSnapProviderClient;dbexpress;dbrtl;dbxcds;DbxClientDriver;DbxCommonDriver;DBXInterBaseDriver;DBXSqliteDriver;dsnap;dsnapxml;emsclient;emsclientfiredac;FireDAC;FireDACCommon;FireDACCommonDriver;FireDACDBXDriver;FireDACDSDriver;FireDACIBDriver;FireDACSqliteDriver;fmx;fmxFireDAC;IndyCore;IndyIPClient;IndyIPCommon;IndyIPServer;IndyProtocols;IndySystem;inet;RESTBackendComponents;RESTComponents;rtl;soapmidas;soaprtl;soapserver;tethering;xmlrtl;$(PackageImports)</PackageImports>
