@@ -1,0 +1,286 @@
+/// FTxxxx MPSSE script test.
+/// Interfacing the I2C with VEML6075 on it.
+///
+
+// Enumerate available MPSSE devices
+var devInfos = EsFtdiDriver::enumerate(
+      true,   //< Include busy devices
+      true    //< Include only MPSSE-capable devices
+    );
+
+if( !devInfos#countGet() )
+  throw "Could not find any MPSSE-capable devices";
+
+// Take the first found device and open it  
+var dev = EsFtdiDriver::deviceCreate(
+  EsFtdiDeviceKind$$MPSSE_I2C,
+  devInfos[0]
+);
+  
+if( !dev )
+  throw EsStr::format(
+    "Could not create MPSSE device of type %s for %s",
+    EsFtdiDeviceKind$$MPSSE_I2C$$label,
+    devInfos[0]
+  );
+
+if( !dev.open() )
+  throw EsStr::format(
+    "Could not open MPSSE device %s",
+    devInfos[0]
+  );
+
+// Set OS systicks period to 1 ms
+var systick = EsUtilities::systickChange(
+  1
+);
+
+const c_veml6075_addr = 0x10;
+
+function veml6075registerRead(bus, reg)
+var buff;
+{
+  bus.write(
+    c_veml6075_addr,
+    reg#asByte(),
+    EsFtdiMpsseI2cIO$$START_BIT
+  );
+  
+  buff = bus.read(
+    c_veml6075_addr,
+    2,
+    EsFtdiMpsseI2cIO$$START_BIT|
+    EsFtdiMpsseI2cIO$$STOP_BIT|
+    EsFtdiMpsseI2cIO$$NACK_LAST_BYTE
+  );
+  
+  if( 2 == buff#countGet() )
+    return buff[0] + (buff[1] << 8);
+}
+
+function veml6075registerWrite(bus, reg, data)
+var buff = B"\0\0\0";
+{
+  buff[0] = reg;
+  buff[1] = (data#asULong() & 0xFF);
+  buff[2] = ((data#asULong() >> 8) & 0xFF);
+  
+  return 3 == bus.write(
+    c_veml6075_addr,
+    buff,
+    EsFtdiMpsseI2cIO$$START_BIT|
+    EsFtdiMpsseI2cIO$$STOP_BIT|
+    EsFtdiMpsseI2cIO$$BREAK_ON_NACK
+  );
+}
+
+function veml6075idRead(bus)
+{
+  return veml6075registerRead(
+    bus, 
+    0x0C
+  );
+}
+
+function veml6075uvcomp1Read(bus)
+{
+  return veml6075registerRead(
+    bus, 
+    0x0A
+  );
+}
+
+function veml6075uvcomp2Read(bus)
+{
+  return veml6075registerRead(
+    bus, 
+    0x0B
+  );
+}
+
+function veml6075uvaRead(bus)
+{
+  return veml6075registerRead(
+    bus, 
+    0x07
+  );
+}
+
+function veml6075uvbRead(bus)
+{
+  return veml6075registerRead(
+    bus, 
+    0x09
+  );
+}
+
+function veml6075configRead(bus)
+var raw, tmp, cfg = []; // 6:4 UV_IT, 3 HD, 2 UV_TRIG, 1 UV_AF, 0 SHDN
+{
+  raw = veml6075registerRead(
+    bus, 
+    0x00
+  );
+  
+  // Decode conversion time
+  tmp = ((raw >> 4) & 0x07);
+  switch( tmp )
+  {
+  case 0:
+    cfg += 50;
+  case 1:
+    cfg += 100;
+  case 2:
+    cfg += 200;
+  case 3:
+    cfg += 400;
+  case 4:
+    cfg += 800;
+  default:
+    cfg += "invalid";
+  }
+
+  cfg += (raw >> 3) & 0x01; //< High Dynamic range
+  cfg += (raw >> 2) & 0x01; //< Trigger mode (measure once, then stop, if in active force mode)
+  cfg += (raw >> 1) & 0x01; //< Active force mode
+  cfg += raw & 0x01;        //< Shutdown
+
+  return cfg;
+}
+
+function veml6075configWrite(bus, convTime, hdRange, oneshotMode, shutdown )
+var raw = B"\0\0";
+{
+  switch(convTime)
+  {
+  case 100:
+    raw[0] = 1 << 4;
+  case 200:
+    raw[0] = 2 << 4;
+  case 400:
+    raw[0] = 3 << 4;
+  case 800:
+    raw[0] = 4 << 4;
+  }
+  
+  if( hdRange )
+    raw[0] |= 1 << 3;
+  
+  if( oneshotMode )
+  {
+    raw[0] |= 1 << 1;
+    raw[0] |= 1 << 2;
+  }
+  
+  if( shutdown )
+    raw[0] |= 1;
+  
+  return veml6075registerWrite(
+    bus,
+    0x00,
+    raw
+  );
+}
+
+dev$clockRate = EsFtdiMpsseI2cClock$$FAST;
+dev.configApply();
+
+// Lookup devices on I1C bus
+var addr, addrs = [], tmp, str, tmo;
+for(addr = 0; addr < 128; ++addr)
+{
+  // Ping devices for read
+  if( 
+    dev.ping(
+      addr,
+      false
+    )
+  )
+    addrs += addr;
+}
+
+if( addrs#countGet() )
+{
+  EsScriptDebug::log(
+    "Found I2C devices on bus: %s",
+    addrs
+  );
+  
+  if( c_veml6075_addr in addrs )
+  {
+    EsScriptDebug::log(
+      "VEML6075 found."
+    );
+  
+    tmp = veml6075idRead(dev);
+    EsScriptDebug::log(
+      "VEML6075 ID: 0x%04X",
+      tmp
+    );
+  
+    tmp = veml6075configRead(dev);
+    str = "VEML6075 config:" + 
+      "\nconv time=" + tmp[0]#asString() + 
+      "\ndynamic range=" + (( 0 == tmp[1] ) ? "Normal" : "HDR") + 
+      "\nin one-shot=" + ((0 == tmp[2]) ? "No" : "Yes") +
+      "\nwork mode=" + ((0 == tmp[3]) ? "Continuous" : "One-Shot") +
+      "\npower=" + ((0 == tmp[4]) ? "Active" : "Shutdown");
+    
+    EsScriptDebug::log( 
+      "%s\nStarting one-shot conversions...",
+      str
+    );
+
+    tmo = 100;
+    while( 1 )
+    {
+      if( 
+        !veml6075configWrite(
+          dev, 
+          tmo, 
+          false, //< HDR 
+          true, //< One-shot
+          false //< Not in shutdown
+        )
+      )
+      {
+        EsScriptDebug::log("Could not start conversion");
+        break;
+      }
+
+      EsThreadWorker::sleep(tmo+500);
+      
+      tmp = veml6075configRead(dev);
+      str = "VEML6075 status:" + 
+        "\nconv time=" + tmp[0]#asString() + 
+        "\ndynamic range=" + (( 0 == tmp[1] ) ? "Normal" : "HDR") + 
+        "\nwork mode=" + ((0 == tmp[3]) ? "Continuous" : "One-Shot") +
+        "\npower=" + ((0 == tmp[4]) ? "Active" : "Shutdown");
+
+      EsScriptDebug::log(str);
+
+      tmp = veml6075uvaRead(dev);
+      EsScriptDebug::log("UVA: %s", tmp);
+
+      tmp = veml6075uvbRead(dev);
+      EsScriptDebug::log("UVB: %s", tmp);
+
+      tmp = veml6075uvcomp1Read(dev);
+      EsScriptDebug::log("VIS: %s", tmp);
+
+      tmp = veml6075uvcomp2Read(dev);
+      EsScriptDebug::log("IR: %s", tmp);
+
+      EsThreadWorker::sleep(1000);
+    }
+  }
+}
+else
+  EsScriptDebug::log(
+    "I2C devices not found"
+  );
+
+dev.close();
+
+// Restore OS systicks
+EsUtilities::systickRestore( systick );
