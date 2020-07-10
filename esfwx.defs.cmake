@@ -5,7 +5,7 @@ set(framework             "ECO-E Framework" CACHE INTERNAL "")
 set(frameworkCopyright	  "Copyright 2009-2019" CACHE INTERNAL "")
 set(framework_VER_MAJOR	  1 CACHE INTERNAL "")
 set(framework_VER_MINOR	  25 CACHE INTERNAL "")
-set(framework_BUILD_NUM	  0 CACHE INTERNAL "")
+set(framework_BUILD_NUM	  1 CACHE INTERNAL "")
 
 set(ESFWX_VERSION_SUFFIX  "v${framework_VER_MAJOR}_${framework_VER_MINOR}_${framework_BUILD_NUM}" CACHE INTERNAL "")
 message(
