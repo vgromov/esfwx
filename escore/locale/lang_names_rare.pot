@@ -1,0 +1,192 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: escore 1.1.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-29 12:38+0400\n"
+"PO-Revision-Date: 2013-07-29 12:52+0400\n"
+"Last-Translator: Vsevolod V Gromov <gromov.vsevolod@yandex.ru>\n"
+"Language-Team: Vsevolod V Gromov <gromov.vsevolod@yandex.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+
+msgid "Achinese"
+msgstr ""
+
+msgid "Awadhi"
+msgstr ""
+
+msgid "Baluchi"
+msgstr ""
+
+msgid "Balinese"
+msgstr ""
+
+msgid "Beja;Bedawiyet"
+msgstr ""
+
+msgid "Bemba"
+msgstr ""
+
+msgid "Bhojpuri"
+msgstr ""
+
+msgid "Bikol"
+msgstr ""
+
+msgid "Bini;Edo"
+msgstr ""
+
+msgid "Buginese"
+msgstr ""
+
+msgid "Cebuano"
+msgstr ""
+
+msgid "Dinka"
+msgstr ""
+
+msgid "Dogri"
+msgstr ""
+
+msgid "Filipino;Pilipino"
+msgstr ""
+
+msgid "Fon"
+msgstr ""
+
+msgid "Gondi"
+msgstr ""
+
+msgid "Swiss German;Alemannic;Alsatian"
+msgstr ""
+
+msgid "Hiligaynon"
+msgstr ""
+
+msgid "Hmong"
+msgstr ""
+
+msgid "Iloko"
+msgstr ""
+
+msgid "Kabyle"
+msgstr ""
+
+msgid "Kamba"
+msgstr ""
+
+msgid "Kabardian"
+msgstr ""
+
+msgid "Kimbundu"
+msgstr ""
+
+msgid "Konkani"
+msgstr ""
+
+msgid "Kurukh"
+msgstr ""
+
+msgid "Luba-Lulua"
+msgstr ""
+
+msgid "Luo"
+msgstr ""
+
+msgid "Madurese"
+msgstr ""
+
+msgid "Magahi"
+msgstr ""
+
+msgid "Maithili"
+msgstr ""
+
+msgid "Makasar"
+msgstr ""
+
+msgid "Mandingo"
+msgstr ""
+
+msgid "Mende"
+msgstr ""
+
+msgid "Minangkabau"
+msgstr ""
+
+msgid "Manipuri"
+msgstr ""
+
+msgid "Mossi"
+msgstr ""
+
+msgid "Marwari"
+msgstr ""
+
+msgid "Neapolitan"
+msgstr ""
+
+msgid "Pedi;Sepedi;Northern Sotho"
+msgstr ""
+
+msgid "Nyamwezi"
+msgstr ""
+
+msgid "Nyankole"
+msgstr ""
+
+msgid "Pangasinan"
+msgstr ""
+
+msgid "Pampanga;Kapampangan"
+msgstr ""
+
+msgid "Rajasthani"
+msgstr ""
+
+msgid "Sasak"
+msgstr ""
+
+msgid "Santali"
+msgstr ""
+
+msgid "Sicilian"
+msgstr ""
+
+msgid "Shan"
+msgstr ""
+
+msgid "Sidamo"
+msgstr ""
+
+msgid "Serer"
+msgstr ""
+
+msgid "Sukuma"
+msgstr ""
+
+msgid "Susu"
+msgstr ""
+
+msgid "Timne"
+msgstr ""
+
+msgid "Tiv"
+msgstr ""
+
+msgid "Tumbuka"
+msgstr ""
+
+msgid "Umbundu"
+msgstr ""
+
+msgid "Walamo"
+msgstr ""
+
+msgid "Waray"
+msgstr ""
+
+msgid "Yao"
+msgstr ""

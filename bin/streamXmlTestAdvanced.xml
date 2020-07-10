@@ -1,0 +1,952 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CONTEXT NAME="ROOT">
+	<OBJECT TYPENAME="EL3C_CalibrationSession">
+		<VALUE NAME="created" TYPENAME="EsDateTime" TYPE="VAR_OBJECT">
+			<OBJECT TYPENAME="EsDateTime" TYPE="VAR_INT64">482580329565</OBJECT>
+		</VALUE>
+		<VALUE NAME="mode" TYPE="VAR_INT">3</VALUE>
+		<VALUE NAME="completed" TYPENAME="EsDateTime" TYPE="VAR_OBJECT">
+			<OBJECT TYPENAME="EsDateTime" TYPE="VAR_INT64">482584311326</OBJECT>
+		</VALUE>
+		<VALUE NAME="bak" TYPENAME="EL3C_Settings" TYPE="VAR_OBJECT">
+			<OBJECT TYPENAME="EL3C_Settings">
+				<FIELDS>
+					<FIELD NAME="f_fwId" TYPENAME="EsFirmwareId" TYPE="VAR_OBJECT">
+						<OBJECT TYPENAME="EsFirmwareId">
+							<FIELDS>
+								<FIELD NAME="f_devType" TYPENAME="esU16" TYPE="VAR_UINT">10</FIELD>
+								<FIELD NAME="f_serial" TYPENAME="EsDeviceSerial" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsDeviceSerial">
+										<FIELDS>
+											<FIELD NAME="f_year" TYPENAME="esU16" TYPE="VAR_UINT">2015</FIELD>
+											<FIELD NAME="f_order" TYPENAME="esU16" TYPE="VAR_UINT">1902</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_fwVer" TYPENAME="EsVerInfo" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsVerInfo">
+										<FIELDS>
+											<FIELD NAME="f_major" TYPENAME="esU8" TYPE="VAR_BYTE">1</FIELD>
+											<FIELD NAME="f_minor" TYPENAME="esU8" TYPE="VAR_BYTE">0</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+							</FIELDS>
+						</OBJECT>
+					</FIELD>
+					<FIELD NAME="f_swInfo" TYPENAME="EsSoftwareInfo" TYPE="VAR_OBJECT">
+						<OBJECT TYPENAME="EsSoftwareInfo">
+							<FIELDS>
+								<FIELD NAME="f_fwSwInfo" TYPENAME="EsFirmwareSwInfo" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsFirmwareSwInfo">
+										<VALUE NAME="name" TYPE="VAR_STRING">Встроенное ПО ИГ Эколайт-01-К</VALUE>
+										<VALUE NAME="file" TYPE="VAR_STRING">PHAC1-HW1.HEX</VALUE>
+										<VALUE NAME="crc" TYPENAME="EsSoftwareCrcInfo" TYPE="VAR_OBJECT">
+											<OBJECT TYPENAME="EsSoftwareCrcInfo">
+												<FIELDS>
+													<FIELD NAME="f_crcPrev" TYPENAME="esU32" TYPE="VAR_UINT">0</FIELD>
+													<FIELD NAME="f_crcCur" TYPENAME="esU32" TYPE="VAR_UINT">723087883</FIELD>
+													<FIELD NAME="f_ts" TYPENAME="esDT" TYPE="VAR_INT64">482432680503</FIELD>
+												</FIELDS>
+											</OBJECT>
+										</VALUE>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_crcCalibration" TYPENAME="EsSoftwareCrcInfo" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSoftwareCrcInfo">
+										<FIELDS>
+											<FIELD NAME="f_crcPrev" TYPENAME="esU32" TYPE="VAR_UINT">0</FIELD>
+											<FIELD NAME="f_crcCur" TYPENAME="esU32" TYPE="VAR_UINT">0</FIELD>
+											<FIELD NAME="f_ts" TYPENAME="esDT" TYPE="VAR_INT64">0</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+							</FIELDS>
+						</OBJECT>
+					</FIELD>
+					<FIELD NAME="f_autosaveInterval" TYPENAME="esU16" TYPE="VAR_UINT">5</FIELD>
+					<FIELD NAME="f_bgndExp" TYPENAME="esU16" TYPE="VAR_UINT">5</FIELD>
+					<FIELD NAME="f_calClear" TYPENAME="EL3C_CalibrationClear" TYPE="VAR_OBJECT">
+						<OBJECT TYPENAME="EL3C_CalibrationClear">
+							<FIELDS>
+								<FIELD NAME="f_csIllum" TYPENAME="EsSpline" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSpline">
+										<FIELDS>
+											<FIELD NAME="f_cnt" TYPENAME="esU16" TYPE="VAR_UINT">2</FIELD>
+											<FIELD NAME="f_nodes" TYPENAME="array of EsSplineNode" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">1</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="1" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">200000</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">1</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">214</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_csLum" TYPENAME="EsSpline" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSpline">
+										<FIELDS>
+											<FIELD NAME="f_cnt" TYPENAME="esU16" TYPE="VAR_UINT">2</FIELD>
+											<FIELD NAME="f_nodes" TYPENAME="array of EsSplineNode" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.3</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="1" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">200000</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.3</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">49</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_csKp" TYPENAME="EsSpline" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSpline">
+										<FIELDS>
+											<FIELD NAME="f_cnt" TYPENAME="esU16" TYPE="VAR_UINT">2</FIELD>
+											<FIELD NAME="f_nodes" TYPENAME="array of EsSplineNode" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">1</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="1" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">100</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">1</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">143</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+							</FIELDS>
+						</OBJECT>
+					</FIELD>
+					<FIELD NAME="f_calColor" TYPENAME="EL3C_CalibrationColor" TYPE="VAR_OBJECT">
+						<OBJECT TYPENAME="EL3C_CalibrationColor">
+							<FIELDS>
+								<FIELD NAME="f_ccm" TYPENAME="EL3C_CorMatrix" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EL3C_CorMatrix">
+										<FIELDS>
+											<FIELD NAME="f_items" TYPENAME="array of esF" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="1" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="2" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="3" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="4" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="5" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="6" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="7" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="8" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="9" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="10" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="11" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="12" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="13" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="14" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="15" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">107</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_tcm" TYPENAME="EL3C_CorMatrix" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EL3C_CorMatrix">
+										<FIELDS>
+											<FIELD NAME="f_items" TYPENAME="array of esF" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="1" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="2" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="3" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="4" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="5" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="6" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="7" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="8" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="9" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="10" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="11" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="12" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="13" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="14" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="15" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">107</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_ccIllum" TYPENAME="EsSpline" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSpline">
+										<FIELDS>
+											<FIELD NAME="f_cnt" TYPENAME="esU16" TYPE="VAR_UINT">2</FIELD>
+											<FIELD NAME="f_nodes" TYPENAME="array of EsSplineNode" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">-0.015</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.01</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="1" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">15500</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">-7.66</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.0352</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">182</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_ccLum" TYPENAME="EsSpline" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSpline">
+										<FIELDS>
+											<FIELD NAME="f_cnt" TYPENAME="esU16" TYPE="VAR_UINT">2</FIELD>
+											<FIELD NAME="f_nodes" TYPENAME="array of EsSplineNode" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">-0.005</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.002</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="1" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">15500</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">-2</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.006</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">112</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_acf" TYPENAME="array of esF" TYPE="VAR_OBJECT">
+									<ITEMS>
+										<ITEM IDX="0" TYPENAME="esF" TYPE="VAR_DOUBLE">1</ITEM>
+										<ITEM IDX="1" TYPENAME="esF" TYPE="VAR_DOUBLE">1</ITEM>
+										<ITEM IDX="2" TYPENAME="esF" TYPE="VAR_DOUBLE">1</ITEM>
+									</ITEMS>
+								</FIELD>
+								<FIELD NAME="f_acfCrc" TYPENAME="esU8" TYPE="VAR_BYTE">5</FIELD>
+							</FIELDS>
+						</OBJECT>
+					</FIELD>
+				</FIELDS>
+			</OBJECT>
+		</VALUE>
+		<VALUE NAME="cur" TYPENAME="EL3C_Settings" TYPE="VAR_OBJECT">
+			<OBJECT TYPENAME="EL3C_Settings">
+				<FIELDS>
+					<FIELD NAME="f_fwId" TYPENAME="EsFirmwareId" TYPE="VAR_OBJECT">
+						<OBJECT TYPENAME="EsFirmwareId">
+							<FIELDS>
+								<FIELD NAME="f_devType" TYPENAME="esU16" TYPE="VAR_UINT">10</FIELD>
+								<FIELD NAME="f_serial" TYPENAME="EsDeviceSerial" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsDeviceSerial">
+										<FIELDS>
+											<FIELD NAME="f_year" TYPENAME="esU16" TYPE="VAR_UINT">2015</FIELD>
+											<FIELD NAME="f_order" TYPENAME="esU16" TYPE="VAR_UINT">1902</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_fwVer" TYPENAME="EsVerInfo" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsVerInfo">
+										<FIELDS>
+											<FIELD NAME="f_major" TYPENAME="esU8" TYPE="VAR_BYTE">1</FIELD>
+											<FIELD NAME="f_minor" TYPENAME="esU8" TYPE="VAR_BYTE">0</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+							</FIELDS>
+						</OBJECT>
+					</FIELD>
+					<FIELD NAME="f_swInfo" TYPENAME="EsSoftwareInfo" TYPE="VAR_OBJECT">
+						<OBJECT TYPENAME="EsSoftwareInfo">
+							<FIELDS>
+								<FIELD NAME="f_fwSwInfo" TYPENAME="EsFirmwareSwInfo" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsFirmwareSwInfo">
+										<VALUE NAME="name" TYPE="VAR_STRING">Встроенное ПО ИГ Эколайт-01-К</VALUE>
+										<VALUE NAME="file" TYPE="VAR_STRING">PHAC1-HW1.HEX</VALUE>
+										<VALUE NAME="crc" TYPENAME="EsSoftwareCrcInfo" TYPE="VAR_OBJECT">
+											<OBJECT TYPENAME="EsSoftwareCrcInfo">
+												<FIELDS>
+													<FIELD NAME="f_crcPrev" TYPENAME="esU32" TYPE="VAR_UINT">0</FIELD>
+													<FIELD NAME="f_crcCur" TYPENAME="esU32" TYPE="VAR_UINT">723087883</FIELD>
+													<FIELD NAME="f_ts" TYPENAME="esDT" TYPE="VAR_INT64">482432680503</FIELD>
+												</FIELDS>
+											</OBJECT>
+										</VALUE>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_crcCalibration" TYPENAME="EsSoftwareCrcInfo" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSoftwareCrcInfo">
+										<FIELDS>
+											<FIELD NAME="f_crcPrev" TYPENAME="esU32" TYPE="VAR_UINT">0</FIELD>
+											<FIELD NAME="f_crcCur" TYPENAME="esU32" TYPE="VAR_UINT">0</FIELD>
+											<FIELD NAME="f_ts" TYPENAME="esDT" TYPE="VAR_INT64">0</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+							</FIELDS>
+						</OBJECT>
+					</FIELD>
+					<FIELD NAME="f_autosaveInterval" TYPENAME="esU16" TYPE="VAR_UINT">5</FIELD>
+					<FIELD NAME="f_bgndExp" TYPENAME="esU16" TYPE="VAR_UINT">5</FIELD>
+					<FIELD NAME="f_calClear" TYPENAME="EL3C_CalibrationClear" TYPE="VAR_OBJECT">
+						<OBJECT TYPENAME="EL3C_CalibrationClear">
+							<FIELDS>
+								<FIELD NAME="f_csIllum" TYPENAME="EsSpline" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSpline">
+										<FIELDS>
+											<FIELD NAME="f_cnt" TYPENAME="esU16" TYPE="VAR_UINT">5</FIELD>
+											<FIELD NAME="f_nodes" TYPENAME="array of EsSplineNode" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">1.04036</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">3.34319</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-0.0227469</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">6.89284e-18</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="1" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">8.57554</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">23.9</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">3.00039</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-0.0227469</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0.000301571</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="2" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">33.8206</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">90</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">2.42848</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">9.26021e-05</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">-1.7919e-06</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="3" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">187.118</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">458</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">2.33054</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-0.000731477</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">-3.56489e-21</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="4" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">389.648</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">900</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">2.34564</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">225</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_csLum" TYPENAME="EsSpline" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSpline">
+										<FIELDS>
+											<FIELD NAME="f_cnt" TYPENAME="esU16" TYPE="VAR_UINT">4</FIELD>
+											<FIELD NAME="f_nodes" TYPENAME="array of EsSplineNode" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">1.04036</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.525387</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-0.000106773</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">-1.05923e-21</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="1" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">116.425</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">59.2</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.500747</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-0.000106773</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">4.25346e-08</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="2" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">651.303</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">303</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.423032</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-3.85206e-05</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">1.08846e-22</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="3" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">1391.44</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">595</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.4352</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">167</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_csKp" TYPENAME="EsSpline" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSpline">
+										<FIELDS>
+											<FIELD NAME="f_cnt" TYPENAME="esU16" TYPE="VAR_UINT">3</FIELD>
+											<FIELD NAME="f_nodes" TYPENAME="array of EsSplineNode" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">1.09956</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-0.00099565</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">-4.40992e-20</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="1" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">57.5679</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">60</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.98493</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-0.00099565</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">-8.29689e-20</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="2" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">100</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">100</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">1.01052</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">22</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+							</FIELDS>
+						</OBJECT>
+					</FIELD>
+					<FIELD NAME="f_calColor" TYPENAME="EL3C_CalibrationColor" TYPE="VAR_OBJECT">
+						<OBJECT TYPENAME="EL3C_CalibrationColor">
+							<FIELDS>
+								<FIELD NAME="f_ccm" TYPENAME="EL3C_CorMatrix" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EL3C_CorMatrix">
+										<FIELDS>
+											<FIELD NAME="f_items" TYPENAME="array of esF" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="1" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="2" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="3" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="4" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="5" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="6" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="7" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="8" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="9" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="10" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="11" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="12" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="13" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="14" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="15" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">107</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_tcm" TYPENAME="EL3C_CorMatrix" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EL3C_CorMatrix">
+										<FIELDS>
+											<FIELD NAME="f_items" TYPENAME="array of esF" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="1" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="2" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="3" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="4" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="5" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="6" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="7" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="8" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="9" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="10" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="11" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="12" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="13" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="14" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+													<ITEM IDX="15" TYPENAME="esF" TYPE="VAR_DOUBLE">0</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">107</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_ccIllum" TYPENAME="EsSpline" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSpline">
+										<FIELDS>
+											<FIELD NAME="f_cnt" TYPENAME="esU16" TYPE="VAR_UINT">6</FIELD>
+											<FIELD NAME="f_nodes" TYPENAME="array of EsSplineNode" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">1.625</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.0171491</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">6.54738e-06</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">-5.25098e-23</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="1" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">247.875</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">4.62</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.0203737</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">6.54738e-06</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">-2.77293e-09</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="2" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">1056.12</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">23.9</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.0255231</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-1.76252e-07</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">6.38463e-11</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="3" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">3648.75</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">90</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.0258967</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">3.20337e-07</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">-1.49456e-11</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="4" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">17027</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">458</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.026443</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-2.795e-07</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">-3.94621e-27</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="5" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">38713</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">900</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.0238462</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">38</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_ccLum" TYPENAME="EsSpline" TYPE="VAR_OBJECT">
+									<OBJECT TYPENAME="EsSpline">
+										<FIELDS>
+											<FIELD NAME="f_cnt" TYPENAME="esU16" TYPE="VAR_UINT">4</FIELD>
+											<FIELD NAME="f_nodes" TYPENAME="array of EsSplineNode" TYPE="VAR_OBJECT">
+												<ITEMS>
+													<ITEM IDX="0" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">1.625</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.00463016</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">1.84645e-08</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">5.18503e-27</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="1" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">12194.5</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">59.2</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.00508043</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">1.84645e-08</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">-2.6726e-13</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="2" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">57614</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">303</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.00510371</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">-1.7952e-08</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">1.39312e-29</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+													<ITEM IDX="3" TYPENAME="EsSplineNode" TYPE="VAR_OBJECT">
+														<OBJECT TYPENAME="EsSplineNode">
+															<FIELDS>
+																<FIELD NAME="f_x" TYPENAME="esF" TYPE="VAR_DOUBLE">136988</FIELD>
+																<FIELD NAME="f_a" TYPENAME="esF" TYPE="VAR_DOUBLE">595</FIELD>
+																<FIELD NAME="f_b" TYPENAME="esF" TYPE="VAR_DOUBLE">0.00448364</FIELD>
+																<FIELD NAME="f_c" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+																<FIELD NAME="f_d" TYPENAME="esF" TYPE="VAR_DOUBLE">0</FIELD>
+															</FIELDS>
+														</OBJECT>
+													</ITEM>
+												</ITEMS>
+											</FIELD>
+											<FIELD NAME="f_crc" TYPENAME="esU8" TYPE="VAR_BYTE">136</FIELD>
+										</FIELDS>
+									</OBJECT>
+								</FIELD>
+								<FIELD NAME="f_acf" TYPENAME="array of esF" TYPE="VAR_OBJECT">
+									<ITEMS>
+										<ITEM IDX="0" TYPENAME="esF" TYPE="VAR_DOUBLE">1</ITEM>
+										<ITEM IDX="1" TYPENAME="esF" TYPE="VAR_DOUBLE">1</ITEM>
+										<ITEM IDX="2" TYPENAME="esF" TYPE="VAR_DOUBLE">1</ITEM>
+									</ITEMS>
+								</FIELD>
+								<FIELD NAME="f_acfCrc" TYPENAME="esU8" TYPE="VAR_BYTE">5</FIELD>
+							</FIELDS>
+						</OBJECT>
+					</FIELD>
+				</FIELDS>
+			</OBJECT>
+		</VALUE>
+		<VALUE NAME="profileClear" TYPENAME="EL3C_ClearCalibrationProfile" TYPE="VAR_OBJECT">
+			<OBJECT TYPENAME="EL3C_ClearCalibrationProfile">
+				<VALUE NAME="name" TYPE="VAR_STRING">DefaultProfile</VALUE>
+				<VALUE NAME="lux" TYPE="VAR_VARIANT_COLLECTION">
+					<ITEMS>
+						<ITEM IDX="0" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">0</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_DOUBLE">1.04036</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_DOUBLE">1.625</PROPERTY>
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">1</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="1" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">4.62</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_EMPTY" />
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_DOUBLE">247.875</PROPERTY>
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="2" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">23.9</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_DOUBLE">8.57554</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_DOUBLE">1056.12</PROPERTY>
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="3" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">90</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_DOUBLE">33.8206</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_DOUBLE">3648.75</PROPERTY>
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="4" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">458</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_DOUBLE">187.118</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_DOUBLE">17027</PROPERTY>
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="5" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">900</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_DOUBLE">389.648</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_DOUBLE">38713</PROPERTY>
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+					</ITEMS>
+				</VALUE>
+				<VALUE NAME="cdm" TYPE="VAR_VARIANT_COLLECTION">
+					<ITEMS>
+						<ITEM IDX="0" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">0</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_DOUBLE">1.04036</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_DOUBLE">1.625</PROPERTY>
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">1</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="1" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">3.05</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_EMPTY" />
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_EMPTY" />
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="2" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">15.83</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_EMPTY" />
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_EMPTY" />
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="3" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">59.2</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_DOUBLE">116.425</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_DOUBLE">12194.5</PROPERTY>
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="4" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">303</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_DOUBLE">651.303</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_DOUBLE">57614</PROPERTY>
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="5" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">595</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.03</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_DOUBLE">1391.44</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_DOUBLE">136988</PROPERTY>
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+					</ITEMS>
+				</VALUE>
+				<VALUE NAME="kp" TYPE="VAR_VARIANT_COLLECTION">
+					<ITEMS>
+						<ITEM IDX="0" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">0</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.08</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_INT">0</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_EMPTY" />
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">1</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="1" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">60</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.08</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_DOUBLE">57.5679</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_EMPTY" />
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">0</VALUE>
+							</OBJECT>
+						</ITEM>
+						<ITEM IDX="2" TYPENAME="EL3C_ClearProfileNode" TYPE="VAR_OBJECT">
+							<OBJECT TYPENAME="EL3C_ClearProfileNode">
+								<PROPERTIES>
+									<PROPERTY NAME="ref" TYPE="VAR_DOUBLE">100</PROPERTY>
+									<PROPERTY NAME="deviation" TYPE="VAR_DOUBLE">0.08</PROPERTY>
+									<PROPERTY NAME="rawOsram" TYPE="VAR_INT">100</PROPERTY>
+									<PROPERTY NAME="rawMax4400x" TYPE="VAR_EMPTY" />
+									<PROPERTY NAME="verified" TYPE="VAR_EMPTY" />
+								</PROPERTIES>
+								<VALUE NAME="isSystem" TYPE="VAR_BOOL">1</VALUE>
+							</OBJECT>
+						</ITEM>
+					</ITEMS>
+				</VALUE>
+			</OBJECT>
+		</VALUE>
+		<VALUE NAME="profileColor" TYPE="VAR_EMPTY" />
+	</OBJECT>
+</CONTEXT>

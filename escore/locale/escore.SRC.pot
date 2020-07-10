@@ -1,0 +1,398 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-09 18:52+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "January"
+msgstr ""
+
+msgid "February"
+msgstr ""
+
+msgid "March"
+msgstr ""
+
+msgid "April"
+msgstr ""
+
+msgid "May"
+msgstr ""
+
+msgid "June"
+msgstr ""
+
+msgid "July"
+msgstr ""
+
+msgid "August"
+msgstr ""
+
+msgid "September"
+msgstr ""
+
+msgid "October"
+msgstr ""
+
+msgid "November"
+msgstr ""
+
+msgid "December"
+msgstr ""
+
+msgid "Jan"
+msgstr ""
+
+msgid "Feb"
+msgstr ""
+
+msgid "Mar"
+msgstr ""
+
+msgid "Apr"
+msgstr ""
+
+msgid "Jun"
+msgstr ""
+
+msgid "Jul"
+msgstr ""
+
+msgid "Aug"
+msgstr ""
+
+msgid "Sep"
+msgstr ""
+
+msgid "Oct"
+msgstr ""
+
+msgid "Nov"
+msgstr ""
+
+msgid "Dec"
+msgstr ""
+
+msgid "Monday"
+msgstr ""
+
+msgid "Tuesday"
+msgstr ""
+
+msgid "Wednesday"
+msgstr ""
+
+msgid "Thursday"
+msgstr ""
+
+msgid "Friday"
+msgstr ""
+
+msgid "Saturday"
+msgstr ""
+
+msgid "Sunday"
+msgstr ""
+
+msgid "Mon"
+msgstr ""
+
+msgid "Tue"
+msgstr ""
+
+msgid "Wed"
+msgstr ""
+
+msgid "Thu"
+msgstr ""
+
+msgid "Fri"
+msgstr ""
+
+msgid "Sat"
+msgstr ""
+
+msgid "Sun"
+msgstr ""
+
+msgid "AM"
+msgstr ""
+
+msgid "PM"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "No value exists"
+msgstr ""
+
+msgid "Item is not of indexed type"
+msgstr ""
+
+msgid "Operation is not supported for this type"
+msgstr ""
+
+#, c-format
+msgid "Operation '%s' is not supported for this type"
+msgstr ""
+
+#, c-format
+msgid "Operation '%s' is not supported for type '%s'"
+msgstr ""
+
+msgid "Division by zero encountered"
+msgstr ""
+
+#, c-format
+msgid "Overflow in operation '%s'"
+msgstr ""
+
+#, c-format
+msgid "%s: Overflow in operation '%s'"
+msgstr ""
+
+#, c-format
+msgid "Underflow in operation '%s'"
+msgstr ""
+
+#, c-format
+msgid "%s: Underflow in operation '%s'"
+msgstr ""
+
+#, c-format
+msgid "Object type is incompatible with '%s'"
+msgstr ""
+
+#, c-format
+msgid "%s: Object type is incompatible with '%s'"
+msgstr ""
+
+#, c-format
+msgid "User '%s' does not exist"
+msgstr ""
+
+#, c-format
+msgid "%s: User '%s' does not exist"
+msgstr ""
+
+#, c-format
+msgid "User '%s' already exists"
+msgstr ""
+
+#, c-format
+msgid "%s: User '%s' already exists"
+msgstr ""
+
+#, c-format
+msgid "Adding users with role '%s' is not allowed"
+msgstr ""
+
+#, c-format
+msgid "%s: Adding users with role '%s' is not allowed"
+msgstr ""
+
+msgid "Password is not valid"
+msgstr ""
+
+#, c-format
+msgid "%s: Password is not valid"
+msgstr ""
+
+#, c-format
+msgid "Users with role '%s' may only change themselves"
+msgstr ""
+
+#, c-format
+msgid "%s: Users with role '%s' may only change themselves"
+msgstr ""
+
+#, c-format
+msgid "Attribute '%s' could not be found in '%s'"
+msgstr ""
+
+#, c-format
+msgid "%s: Attribute '%s' could not be found in '%s'"
+msgstr ""
+
+#, c-format
+msgid "Objects types '%s' and '%s' are incompatible"
+msgstr ""
+
+#, c-format
+msgid "%s: Objects types '%s' and '%s' are incompatible"
+msgstr ""
+
+#, c-format
+msgid "Object '%s' size is wrong, expected %u, got %u"
+msgstr ""
+
+#, c-format
+msgid "%s: Object '%s' size is wrong, expected %u, got %u"
+msgstr ""
+
+msgid "Value is not an object instance"
+msgstr ""
+
+#, c-format
+msgid "%s: Value is not an object instance"
+msgstr ""
+
+msgid "Object is not of reflected kind"
+msgstr ""
+
+#, c-format
+msgid "%s: Object is not of reflected kind"
+msgstr ""
+
+#, c-format
+msgid "Value '%s'=%f is out of [%f, %f] range"
+msgstr ""
+
+#, c-format
+msgid "Value %f is out of [%f, %f] range"
+msgstr ""
+
+#, c-format
+msgid "Value '%s'=%d is out of [%d, %d] range"
+msgstr ""
+
+#, c-format
+msgid "Value %d is out of [%d, %d] range"
+msgstr ""
+
+#, c-format
+msgid "Value '%s'=%u is out of [%u, %u] range"
+msgstr ""
+
+#, c-format
+msgid "Value %u is out of [%u, %u] range"
+msgstr ""
+
+#, c-format
+msgid "Value '%s'=%lld is out of [%lld, %lld] range"
+msgstr ""
+
+#, c-format
+msgid "Value %lld is out of [%lld, %lld] range"
+msgstr ""
+
+#, c-format
+msgid "Value '%s'=%llu is out of [%llu, %llu] range"
+msgstr ""
+
+#, c-format
+msgid "Value %llu is out of [%llu, %llu] range"
+msgstr ""
+
+msgid "File Name"
+msgstr ""
+
+msgid "Input text delimiters"
+msgstr ""
+
+#, c-format
+msgid "Could not convert string '%s' to %s"
+msgstr ""
+
+#, c-format
+msgid "Could not convert string '%s' to floating point value"
+msgstr ""
+
+#, c-format
+msgid "Wide character with code 0x%X encountered in place where only eight-bit characters allowed"
+msgstr ""
+
+#, c-format
+msgid "Unknown string escape sequence with character '%c'"
+msgstr ""
+
+#, c-format
+msgid "Unknown string escape sequence with character code 0x%X"
+msgstr ""
+
+#, c-format
+msgid "Unknown XML sequence '%s'"
+msgstr ""
+
+msgid "true"
+msgstr ""
+
+msgid "false"
+msgstr ""
+
+msgid "Thread is already executing"
+msgstr ""
+
+msgid "Thread is in stopping stage and could not be started until after termination"
+msgstr ""
+
+msgid "Unknown exception occured on entering worker thread"
+msgstr ""
+
+msgid "Unknown exception occured in worker thread"
+msgstr ""
+
+msgid "Unknown exception occured upon exiting worker thread"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Guest"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "Superuser"
+msgstr ""
+
+msgid "Administrator"
+msgstr ""
+
+msgid "Developer"
+msgstr ""
+
+msgid "Invalid role value"
+msgstr ""
+
+#, c-format
+msgid "'%s' is not a valid GUID string"
+msgstr ""
+
+#, c-format
+msgid "Could not convert %s='%f.0' to double word"
+msgstr ""
+
+#, c-format
+msgid "Could not convert %s='%s' to signed integer"
+msgstr ""
+
+#, c-format
+msgid "Could not convert %s='%.0f' to signed integer"
+msgstr ""
+
+#, c-format
+msgid "Could not convert %s='%.0f' to unsigned integer"
+msgstr ""
+
+#, c-format
+msgid "Sizes of items are different, %d and %d"
+msgstr ""
+
+msgid "Unknown parser error."
+msgstr ""

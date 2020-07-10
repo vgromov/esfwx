@@ -1,0 +1,58 @@
+#ifndef _es_core_config_h_
+#define _es_core_config_h_
+
+/// @file EsCoreConfig_sample.h
+/// Ekosf Framework components default configuration sample file. Its contents should be copied
+/// to the real framework configuration file, EsCoreConfig.h, which should be available anywhere on
+/// the project search paths.
+///
+
+/// Use our own std::locale facet implementations, with locale cultural data embedded directly into our core code
+#cmakedefine ES_USE_EMBEDDED_LOCALE_IMPL 1
+
+/// Use localization engine, based on gettext
+#cmakedefine ES_I18N
+#cmakedefine ES_I18N_RARE_LANGS
+
+/// Use embarcadero zlib implementation from crtl
+#cmakedefine ES_USE_ZLIB
+#cmakedefine ES_USE_ECC_ZLIB
+
+// Cryptography configuration
+#ifndef __APPLE__
+#cmakedefine ES_USE_CRYPTO
+#endif
+
+#cmakedefine ES_USE_CRYPTO_LEGACY
+
+/// Uncomment to debug trace crypto engine parts
+#cmakedefine ES_USE_CRYPTODES_DEBUG_TRACE
+
+/// Regex engine configuration
+///
+#cmakedefine ES_USE_REGEX
+#cmakedefine ES_USE_REGEX_STD
+#cmakedefine ES_USE_REGEX_PCRE
+
+/// Misc defines
+///
+// Use diagnotic linker messages when linking boost libraries to us
+#cmakedefine BOOST_LIB_DIAGNOSTIC
+
+// Disable boost multi-thread support
+#cmakedefine BOOST_DISABLE_THREADS
+
+/// baseintf-impl objects refcount change trace
+#cmakedefine ES_USE_TRACE_BASEINTF_REFCNT
+
+/// Uncomment to output debug trace information for EsStream internal operations
+#cmakedefine ES_USE_STREAM_TRACE
+
+/// Uncommend to output C++ reflected method call trace
+#cmakedefine ES_USE_REFLECTED_CALL_TRACE
+
+/// Memory leak tracking
+#cmakedefine ES_USE_MEMLEAK_TRACE
+
+#endif // _es_core_config_h_
+

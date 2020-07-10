@@ -1,0 +1,11 @@
+#ifndef _es_mdi_config_h_
+#define _es_mdi_config_h_
+
+/// @file EsMdiConfig_sample.h
+/// Ekosf MDI Framework components default configuration sample file. Its contents should be copied
+/// to the real framework configuration file, EsMdiConfig.h, which should be available anywhere on
+/// the project search paths.
+///
+
+#endif // _es_mdi_config_h_
+

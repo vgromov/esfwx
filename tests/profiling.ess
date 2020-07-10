@@ -1,0 +1,220 @@
+const c_cnt = 100;
+
+object TestDataSimple
+{
+  esU16 f_u16;
+  esU8 f_u8;
+  esU32 f_u32;
+  esF f_f;
+}
+
+object TestData extends TestDataSimple
+{
+  esU32 f_uu;
+  esU8 f_u8_1;
+  esU32 f_u32_1;
+}
+
+object TestArraySimple
+{
+  TestDataSimple f_as[100];
+}
+
+object TestArray
+{
+  TestData f_as[100];
+}
+
+object ProfilingTest
+{
+  var m_coll;
+
+  function basicsForLoop()
+  var idx;
+  {
+     for(idx = 0; idx < 100; ++idx)
+     {
+     }
+  }
+
+  function basicsForLoopWithNamedConstCnt()
+  var idx;
+  {
+     for(idx = 0; idx < c_cnt; ++idx)
+     {
+     }
+  }
+
+  function basicsForLoopFillBuff()
+  var idx, buff = [];
+  {
+     for(idx = 0; idx < 100; ++idx)
+     {
+        buff += idx;
+     }
+  }
+
+  function basicsForLoopFillBuffWithNamedConstCnt()
+  var idx, buff = [];
+  {
+     for(idx = 0; idx < c_cnt; ++idx)
+     {
+        buff += idx;
+     }
+  }
+
+  function basicsForLoopFillBuffWithPrealloc()
+  var idx, buff = [];
+  {
+     buff#countSet(100);
+     for(idx = 0; idx < 100; ++idx)
+     {
+        buff[idx] = idx;
+     }
+  }
+
+  function forLoopReflectedStaticCallRetNoParams()
+  var idx;
+  {
+     for(idx = 0; idx < 100; ++idx)
+     {
+        EsOsInfo::asString();
+     }
+  }
+  
+  function forLoopReflectedStaticCallRet4params()
+  var idx;
+  {
+     for(idx = 0; idx < 100; ++idx)
+     {
+        EsOsInfo::compare(1, 2, 3, 4);
+     }
+  }  
+  
+  function dataObjectCollectionInit()
+  var idx, tmp;
+  {
+    m_coll = [];
+    
+    for(idx = 0; idx < 100; ++idx)
+    {
+      tmp = new TestDataSimple();
+      m_coll += tmp;
+    }
+  }
+
+  function dataObjectCollectionInitWithMiddleFieldAssign()
+  var idx, tmp;
+  {
+    m_coll = [];
+    
+    for(idx = 0; idx < 100; ++idx)
+    {
+      tmp = new TestDataSimple();
+      tmp.f_u32 = 123456;
+      m_coll += tmp;
+    }
+  }
+  
+  function derivedDataObjectCollectionInit()
+  var idx, tmp;
+  {
+    m_coll = [];
+    
+    for(idx = 0; idx < 100; ++idx)
+    {
+      tmp = new TestData();
+      m_coll += tmp;
+    }
+  }
+
+  function derivedDataObjectCollectionInitWithThisMiddleFieldAssign()
+  var idx, tmp;
+  {
+    m_coll = [];
+    
+    for(idx = 0; idx < 100; ++idx)
+    {
+      tmp = new TestData();
+      tmp.f_u8_1 = 11;
+      m_coll += tmp;
+    }
+  }  
+  
+  function derivedDataObjectCollectionInitWithBaseMiddleFieldAssign()
+  var idx, tmp;
+  {
+    m_coll = [];
+    
+    for(idx = 0; idx < 100; ++idx)
+    {
+      tmp = new TestData();
+      tmp.f_u32 = 123456;
+      m_coll += tmp;
+    }
+  }  
+  
+  function simpleArrayObjectInitTest()
+  {
+    m_coll = new TestArraySimple();
+  }
+
+  function derivedArrayObjectInitTest()
+  {
+    m_coll = new TestArray();
+  }
+  
+  function simpleArrayObjectInitWithIndexedIterationAndMiddleFldAssignTest()
+  var idx;
+  {
+    simpleArrayObjectInitTest();
+    
+    for(idx = 0; idx < m_coll.f_as.countGet(); ++idx)
+    {
+      m_coll.f_as[idx].f_u32 = 123456;
+    }
+  }
+  
+  function simpleArrayObjectInitWithIndexedIterationCachedCntAndMiddleFldAssignTest()
+  var idx, cnt;
+  {
+    simpleArrayObjectInitTest();
+    cnt = m_coll.f_as.countGet();
+    for(idx = 0; idx < cnt; ++idx)
+    {
+      m_coll.f_as[idx].f_u32 = 123456;
+    }
+  }
+  
+  function simpleArrayObjectInitWithForEachIterationAndMiddleFldAssignTest()
+  var item;
+  {
+    simpleArrayObjectInitTest();
+
+    foreach(item in m_coll.f_as)
+    {
+      item.f_u32 = 123456;
+    }
+  }
+ 
+  function memleakTest0()
+  var idx;
+  {
+    m_coll = [];
+
+    for(idx = 0; idx < 2; ++idx)
+      m_coll += idx;
+  }
+
+  function memleakTest1()
+  var idx, tmp;
+  {
+    m_coll = [];
+
+    tmp = new TestDataSimple();
+    m_coll += tmp;
+
+    tmp = new TestDataSimple();
+    m_coll += tmp;
+  }
+}

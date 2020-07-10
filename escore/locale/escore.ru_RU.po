@@ -1,0 +1,1407 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: escore 1.15\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-29 12:38+0400\n"
+"PO-Revision-Date: 2015-03-27 17:37+0300\n"
+"Last-Translator: Vsevolod V Gromov <gromov.vsevolod@yandex.ru>\n"
+"Language-Team: Vsevolod V Gromov <gromov.vsevolod@yandex.ru>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#, c-format
+msgid "'%s' is not a valid GUID string"
+msgstr "'%s' не является допустимым строковым представлением GUID"
+
+msgid "(Afan) Oromo"
+msgstr ""
+
+msgid "AM"
+msgstr "ДП"
+
+msgid "Abkhazian"
+msgstr ""
+
+msgid "Achinese"
+msgstr ""
+
+#, c-format
+msgid "Adding users with role '%s' is not allowed"
+msgstr "Добавление пользователей с доступом '%s' запрещено"
+
+msgid "Administrator"
+msgstr "Администратор"
+
+msgid "Afar"
+msgstr ""
+
+msgid "Afrikaans"
+msgstr ""
+
+msgid "Akan"
+msgstr ""
+
+msgid "Albanian"
+msgstr ""
+
+msgid "Amharic"
+msgstr ""
+
+msgid "Apr"
+msgstr "Апр"
+
+msgid "April"
+msgstr "Апрель"
+
+msgid "Arabic"
+msgstr ""
+
+msgid "Aragonese"
+msgstr ""
+
+msgid "Armenian"
+msgstr ""
+
+msgid "Assamese"
+msgstr ""
+
+msgid "Aug"
+msgstr "Авг"
+
+msgid "August"
+msgstr "Август"
+
+msgid "Avaric"
+msgstr ""
+
+msgid "Avestan"
+msgstr ""
+
+msgid "Awadhi"
+msgstr ""
+
+msgid "Aymara"
+msgstr ""
+
+msgid "Azerbaijani"
+msgstr ""
+
+msgid "Balinese"
+msgstr ""
+
+msgid "Baluchi"
+msgstr ""
+
+msgid "Bambara"
+msgstr ""
+
+msgid "Bashkir"
+msgstr ""
+
+msgid "Basque"
+msgstr ""
+
+msgid "Beja;Bedawiyet"
+msgstr ""
+
+msgid "Belarusian"
+msgstr ""
+
+msgid "Bemba"
+msgstr ""
+
+msgid "Bengali"
+msgstr ""
+
+msgid "Bhojpuri"
+msgstr ""
+
+msgid "Bihari"
+msgstr ""
+
+msgid "Bikol"
+msgstr ""
+
+msgid "Bini;Edo"
+msgstr ""
+
+msgid "Bislama"
+msgstr ""
+
+msgid "Bosnian"
+msgstr ""
+
+msgid "Breton"
+msgstr ""
+
+msgid "Buginese"
+msgstr ""
+
+msgid "Bulgarian"
+msgstr ""
+
+msgid "Burmese"
+msgstr ""
+
+msgid "Catalan"
+msgstr ""
+
+msgid "Cebuano"
+msgstr ""
+
+msgid "CentralKhmer;Cambodian"
+msgstr ""
+
+msgid "Chamorro"
+msgstr ""
+
+msgid "Chechen"
+msgstr ""
+
+msgid "Chichewa;Nyanja"
+msgstr ""
+
+msgid "Chinese"
+msgstr ""
+
+msgid "Church Slavic"
+msgstr ""
+
+msgid "Chuvash"
+msgstr ""
+
+msgid "Cornish"
+msgstr ""
+
+msgid "Corsican"
+msgstr ""
+
+#, c-format
+msgid "Could not convert '%.0f' to integer"
+msgstr "Невозможно преобразовать '%.0f' в integer"
+
+#, c-format
+msgid "Could not convert '%.0f' to unsigned integer"
+msgstr "Невозможно преобразовать '%.0f' в unsigned integer"
+
+#, c-format
+msgid "Could not convert '%f.0' to integer"
+msgstr "Невозможно преобразовать '%f.0' в integer"
+
+#, c-format
+msgid "Could not convert '%s' to signed integer"
+msgstr "Невозможно преобразовать '%s' в signed integer"
+
+#, c-format
+msgid "Could not convert string '%s' to %s"
+msgstr "Невозможно преобразовать строку '%s' в '%s'"
+
+#, c-format
+msgid "Could not convert string '%s' to floating point value"
+msgstr "Невозможно преобразовать строку '%s' в вещественное число"
+
+#, c-format
+msgid "Could not find symbol: '%s', in '%s'; reason: '%s'"
+msgstr "Невозможно найти символ: '%s', в '%s'; по причине: '%s'"
+
+#, c-format
+msgid "Could not load library '%s'; reason: '%s'"
+msgstr "Ошибка загрузки библиотеки '%s'; по причине: '%s'"
+
+msgid "Cree"
+msgstr ""
+
+msgid "Croatian"
+msgstr ""
+
+msgid "Czech"
+msgstr ""
+
+msgid "Danish"
+msgstr ""
+
+msgid "Dec"
+msgstr "Дек"
+
+msgid "December"
+msgstr "Декабрь"
+
+msgid "Developer"
+msgstr "Разработчик"
+
+msgid "Dinka"
+msgstr ""
+
+msgid "Divehi;Maldivian"
+msgstr ""
+
+msgid "Division by zero encountered"
+msgstr "Деление на ноль"
+
+msgid "Dogri"
+msgstr ""
+
+msgid "Dutch"
+msgstr ""
+
+msgid "Dzongkha;Bhutani"
+msgstr ""
+
+msgid "English"
+msgstr "Английский"
+
+msgid "Esperanto"
+msgstr ""
+
+msgid "Estonian"
+msgstr ""
+
+msgid "Ewe"
+msgstr ""
+
+msgid "Faroese"
+msgstr ""
+
+msgid "Feb"
+msgstr "Фев"
+
+msgid "February"
+msgstr "Февраль"
+
+msgid "Fijian;Fiji"
+msgstr ""
+
+msgid "File Name"
+msgstr "Имя файла"
+
+msgid "Filipino;Pilipino"
+msgstr ""
+
+msgid "Finnish"
+msgstr ""
+
+msgid "Fon"
+msgstr ""
+
+msgid "French"
+msgstr ""
+
+msgid "Fri"
+msgstr "Пт"
+
+msgid "Friday"
+msgstr "Пятница"
+
+msgid "Fulah"
+msgstr ""
+
+msgid "Galician"
+msgstr ""
+
+msgid "Ganda"
+msgstr ""
+
+msgid "Georgian"
+msgstr ""
+
+msgid "German"
+msgstr "Немецкий"
+
+msgid "Gondi"
+msgstr ""
+
+msgid "Greek"
+msgstr ""
+
+msgid "Guarani"
+msgstr ""
+
+msgid "Guest"
+msgstr "Гость"
+
+msgid "Gujarati"
+msgstr ""
+
+msgid "Haitian;Haitian Creole"
+msgstr ""
+
+msgid "Hausa"
+msgstr ""
+
+msgid "Hebrew"
+msgstr ""
+
+msgid "Herero"
+msgstr ""
+
+msgid "Hiligaynon"
+msgstr ""
+
+msgid "Hindi"
+msgstr ""
+
+msgid "HiriMotu"
+msgstr ""
+
+msgid "Hmong"
+msgstr ""
+
+msgid "Hungarian"
+msgstr ""
+
+msgid "Icelandic"
+msgstr ""
+
+msgid "Ido"
+msgstr ""
+
+msgid "Igbo"
+msgstr ""
+
+msgid "Iloko"
+msgstr ""
+
+msgid "Indonesian"
+msgstr ""
+
+msgid "Interlingua"
+msgstr ""
+
+msgid "Interlingue;Occidental"
+msgstr ""
+
+msgid "Inuktitut"
+msgstr ""
+
+msgid "Inupiak;Inupiaq"
+msgstr ""
+
+msgid "Invalid role value"
+msgstr "Неверное значение роли"
+
+msgid "Irish"
+msgstr ""
+
+msgid "Italian"
+msgstr ""
+
+msgid "Item is not of indexed type"
+msgstr "Не индексируемый тип"
+
+msgid "Jan"
+msgstr "Янв"
+
+msgid "January"
+msgstr "Январь"
+
+msgid "Japanese"
+msgstr ""
+
+msgid "Javanese"
+msgstr ""
+
+msgid "Jul"
+msgstr "Июл"
+
+msgid "July"
+msgstr "Июль"
+
+msgid "Jun"
+msgstr "Июн"
+
+msgid "June"
+msgstr "Июнь"
+
+msgid "Kabardian"
+msgstr ""
+
+msgid "Kabyle"
+msgstr ""
+
+msgid "Kalaallisut;Greenlandic"
+msgstr ""
+
+msgid "Kamba"
+msgstr ""
+
+msgid "Kannada"
+msgstr ""
+
+msgid "Kanuri"
+msgstr ""
+
+msgid "Kashmiri"
+msgstr ""
+
+msgid "Kazakh"
+msgstr ""
+
+msgid "Kikuyu;Gikuyu"
+msgstr ""
+
+msgid "Kimbundu"
+msgstr ""
+
+msgid "Kinyarwanda"
+msgstr ""
+
+msgid "Kirghiz"
+msgstr ""
+
+msgid "Komi"
+msgstr ""
+
+msgid "Kongo"
+msgstr ""
+
+msgid "Konkani"
+msgstr ""
+
+msgid "Korean"
+msgstr ""
+
+msgid "Kuanyama;Kwanyama"
+msgstr ""
+
+msgid "Kurdish"
+msgstr ""
+
+msgid "Kurukh"
+msgstr ""
+
+msgid "Lao;Laotian"
+msgstr ""
+
+msgid "Latin"
+msgstr ""
+
+msgid "Latvian;Lettish"
+msgstr ""
+
+msgid "Letzeburgesch;Luxembourgish"
+msgstr ""
+
+msgid "Limburgish;Limburger;Limburgan"
+msgstr ""
+
+msgid "Lingala"
+msgstr ""
+
+msgid "Lithuanian"
+msgstr ""
+
+msgid "Luba-Katanga"
+msgstr ""
+
+msgid "Luba-Lulua"
+msgstr ""
+
+msgid "Luo"
+msgstr ""
+
+msgid "Macedonian"
+msgstr ""
+
+msgid "Madurese"
+msgstr ""
+
+msgid "Magahi"
+msgstr ""
+
+msgid "Maithili"
+msgstr ""
+
+msgid "Makasar"
+msgstr ""
+
+msgid "Malagasy"
+msgstr ""
+
+msgid "Malay"
+msgstr ""
+
+msgid "Malayalam"
+msgstr ""
+
+msgid "Maltese"
+msgstr ""
+
+msgid "Mandingo"
+msgstr ""
+
+msgid "Manipuri"
+msgstr ""
+
+msgid "Manx"
+msgstr ""
+
+msgid "Maori"
+msgstr ""
+
+msgid "Mar"
+msgstr "Мар"
+
+msgid "Marathi"
+msgstr ""
+
+msgid "March"
+msgstr "Март"
+
+msgid "Marshallese"
+msgstr ""
+
+msgid "Marwari"
+msgstr ""
+
+msgid "May"
+msgstr "Май"
+
+msgid "Mende"
+msgstr ""
+
+msgid "Minangkabau"
+msgstr ""
+
+msgid "Moldavian"
+msgstr ""
+
+msgid "Mon"
+msgstr "Пон"
+
+msgid "Monday"
+msgstr "Понедельник"
+
+msgid "Mongolian"
+msgstr ""
+
+msgid "Mossi"
+msgstr ""
+
+msgid "Nauru"
+msgstr ""
+
+msgid "Navajo;Navaho"
+msgstr ""
+
+msgid "Ndebele North"
+msgstr ""
+
+msgid "Ndebele South"
+msgstr ""
+
+msgid "Ndonga"
+msgstr ""
+
+msgid "Neapolitan"
+msgstr ""
+
+msgid "Nepali"
+msgstr ""
+
+msgid "No value exists"
+msgstr "Несуществующее значение"
+
+msgid "None"
+msgstr "Нет"
+
+msgid "Northern Sami"
+msgstr ""
+
+msgid "Norwegian"
+msgstr ""
+
+msgid "Norwegian Bokmal"
+msgstr ""
+
+msgid "Norwegian Nynorsk"
+msgstr ""
+
+msgid "Nov"
+msgstr "Нояб"
+
+msgid "November"
+msgstr "Ноябрь"
+
+msgid "Nyamwezi"
+msgstr ""
+
+msgid "Nyankole"
+msgstr ""
+
+#, c-format
+msgid "Object type is incompatible with '%s'"
+msgstr "Тип объекта несовместим с '%s'"
+
+msgid "Occitan;Provençal"
+msgstr ""
+
+msgid "Oct"
+msgstr "Окт"
+
+msgid "October"
+msgstr "Октябрь"
+
+msgid "Ojibwa"
+msgstr ""
+
+msgid "Operation is not supported for this type"
+msgstr "Операция не поддерживается для данного типа"
+
+msgid "Oriya"
+msgstr ""
+
+msgid "Ossetian;Ossetic"
+msgstr ""
+
+#, c-format
+msgid "Overflow in operation '%s'"
+msgstr "Переполнение в операции '%s'"
+
+msgid "PM"
+msgstr "ПП"
+
+msgid "Pali"
+msgstr ""
+
+msgid "Pampanga;Kapampangan"
+msgstr ""
+
+msgid "Pangasinan"
+msgstr ""
+
+msgid "Panjabi;Punjabi"
+msgstr ""
+
+msgid "Pashto;Pushto"
+msgstr ""
+
+msgid "Password is not valid"
+msgstr "Пароль не верен"
+
+msgid "Pedi;Sepedi;Northern Sotho"
+msgstr ""
+
+msgid "Persian"
+msgstr ""
+
+msgid "Polish"
+msgstr ""
+
+msgid "Portuguese"
+msgstr ""
+
+msgid "Quechua"
+msgstr ""
+
+msgid "Rajasthani"
+msgstr ""
+
+msgid "Romanian"
+msgstr ""
+
+msgid "Romansh"
+msgstr ""
+
+msgid "Rundi;Kirundi"
+msgstr ""
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "Samoan"
+msgstr ""
+
+msgid "Sango;Sangro"
+msgstr ""
+
+msgid "Sanskrit"
+msgstr ""
+
+msgid "Santali"
+msgstr ""
+
+msgid "Sardinian"
+msgstr ""
+
+msgid "Sasak"
+msgstr ""
+
+msgid "Sat"
+msgstr "Сб"
+
+msgid "Saturday"
+msgstr "Суббота"
+
+msgid "Scottish Gaelic"
+msgstr ""
+
+msgid "Sep"
+msgstr "Сен"
+
+msgid "September"
+msgstr "Сентябрь"
+
+msgid "Serbian"
+msgstr ""
+
+msgid "Serer"
+msgstr ""
+
+msgid "Sesotho;Sotho Southern"
+msgstr ""
+
+msgid "Shan"
+msgstr ""
+
+msgid "Shona"
+msgstr ""
+
+msgid "SichuanYi;Nuosu"
+msgstr ""
+
+msgid "Sicilian"
+msgstr ""
+
+msgid "Sidamo"
+msgstr ""
+
+msgid "Sindhi"
+msgstr ""
+
+msgid "Sinhala;Sinhalese"
+msgstr ""
+
+#, c-format
+msgid "Sizes of items are different, %d and %d"
+msgstr "Размеры элементов отличаются, %d и %d"
+
+msgid "Slovak"
+msgstr ""
+
+msgid "Slovenian"
+msgstr ""
+
+msgid "Somali"
+msgstr ""
+
+msgid "Spanish"
+msgstr ""
+
+msgid "Sukuma"
+msgstr ""
+
+msgid "Sun"
+msgstr "Вс"
+
+msgid "Sundanese"
+msgstr ""
+
+msgid "Sunday"
+msgstr "Воскресенье"
+
+msgid "Superuser"
+msgstr "Суперпользователь"
+
+msgid "Susu"
+msgstr ""
+
+msgid "Swahili"
+msgstr ""
+
+msgid "Swati;Siswati"
+msgstr ""
+
+msgid "Swedish"
+msgstr ""
+
+msgid "Swiss German;Alemannic;Alsatian"
+msgstr ""
+
+msgid "Tagalog"
+msgstr ""
+
+msgid "Tahitian"
+msgstr ""
+
+msgid "Tajik"
+msgstr ""
+
+msgid "Tamil"
+msgstr ""
+
+msgid "Tatar"
+msgstr ""
+
+msgid "Telugu"
+msgstr ""
+
+msgid "Thai"
+msgstr ""
+
+msgid "Thread is already executing"
+msgstr "Поток уже выполняется"
+
+msgid ""
+"Thread is in stopping stage and could not be started until after termination"
+msgstr ""
+"Поток находится в стадии прекращения, и может быть запущен только после "
+"окончательного завершения своей работы"
+
+msgid "Thu"
+msgstr "Чт"
+
+msgid "Thursday"
+msgstr "Четверг"
+
+msgid "Tibetan"
+msgstr ""
+
+msgid "Tigrinya"
+msgstr ""
+
+msgid "Timne"
+msgstr ""
+
+msgid "Tiv"
+msgstr ""
+
+msgid "Tonga"
+msgstr ""
+
+msgid "Tsonga"
+msgstr ""
+
+msgid "Tswana;Setswana"
+msgstr ""
+
+msgid "Tue"
+msgstr "Вт"
+
+msgid "Tuesday"
+msgstr "Вторник"
+
+msgid "Tumbuka"
+msgstr ""
+
+msgid "Turkish"
+msgstr ""
+
+msgid "Turkmen"
+msgstr ""
+
+msgid "Twi"
+msgstr ""
+
+msgid "Uighur"
+msgstr ""
+
+msgid "Ukrainian"
+msgstr ""
+
+msgid "Umbundu"
+msgstr ""
+
+#, c-format
+msgid "Underflow in operation '%s'"
+msgstr "Потеря точности в операции '%s'"
+
+#, c-format
+msgid "Unknown XML sequence '%s'"
+msgstr "Неизвестная последовательность XML '%s'"
+
+msgid "Unknown exception occured in worker thread"
+msgstr "Неизветсное исключение возникло в рабочем потоке"
+
+msgid "Unknown exception occured on entering worker thread"
+msgstr "Неизвестная ошибка возникла при запуске потока"
+
+msgid "Unknown exception occured upon exiting worker thread"
+msgstr "Неизвестная ошибка возникла при выходе из рабочего потока"
+
+msgid "Unknown parser error."
+msgstr "Неизвестная ошибка парсера."
+
+#, c-format
+msgid "Unknown string escape sequence with character '%c'"
+msgstr "Неизвестная управляющая последовательность с символом '%c'"
+
+#, c-format
+msgid "Unknown string escape sequence with character code 0x%X"
+msgstr "Неизвестная управляющая последовательность с кодом 0x%X"
+
+msgid "Unsupported pointer size"
+msgstr "Неподдерживаемый размер указателя"
+
+msgid "Urdu"
+msgstr ""
+
+msgid "User"
+msgstr "Пользователь"
+
+#, c-format
+msgid "User '%s' already exists"
+msgstr "Пользователь '%s' уже существует"
+
+#, c-format
+msgid "User '%s' does not exist"
+msgstr "Пользователь '%s' не существует"
+
+#, c-format
+msgid "Users with role '%s' may only change themselves"
+msgstr "Пользователи с ролью '%s' могут менять только свои данные"
+
+msgid "Uzbek"
+msgstr ""
+
+#, c-format
+msgid "Value %d is out of [%d, %d] range"
+msgstr "Значение %d выпадает из диапазона [%d, %d]"
+
+#, c-format
+msgid "Value %f is out of [%f, %f] range"
+msgstr "Значение %f выпадает из диапазона [%f, %f]"
+
+#, c-format
+msgid "Value %lld is out of [%lld, %lld] range"
+msgstr "Значение %lld выпадает из диапазона [%lld, %lld]"
+
+#, c-format
+msgid "Value %llu is out of [%llu, %llu] range"
+msgstr "Значение %llu выпадает из диапазона [%llu, %llu]"
+
+#, c-format
+msgid "Value %u is out of [%u, %u] range"
+msgstr "Значение %u выпадает из диапазона [%u, %u]"
+
+#, c-format
+msgid "Value '%s'=%d is out of [%d, %d] range"
+msgstr "Значение '%s'=%d выпадает из диапазона [%d, %d]"
+
+#, c-format
+msgid "Value '%s'=%f is out of [%f, %f] range"
+msgstr "Значение '%s'=%f выпадает из диапазона [%f, %f]"
+
+#, c-format
+msgid "Value '%s'=%lld is out of [%lld, %lld] range"
+msgstr "Значение '%s'=%lld выпадает из диапазона [%lld, %lld]"
+
+#, c-format
+msgid "Value '%s'=%llu is out of [%llu, %llu] range"
+msgstr "Значение '%s'=%llu выпадает из диапазона [%llu, %llu]"
+
+#, c-format
+msgid "Value '%s'=%u is out of [%u, %u] range"
+msgstr "Значение '%s'=%u выпадает из диапазона [%u, %u]"
+
+msgid "Venda"
+msgstr ""
+
+msgid "Vietnamese"
+msgstr ""
+
+msgid "Volapuk"
+msgstr ""
+
+msgid "Walamo"
+msgstr ""
+
+msgid "Walloon"
+msgstr ""
+
+msgid "Waray"
+msgstr ""
+
+msgid "Wed"
+msgstr "Ср"
+
+msgid "Wednesday"
+msgstr "Среда"
+
+msgid "Welsh"
+msgstr ""
+
+msgid "Western Frisian"
+msgstr ""
+
+#, c-format
+msgid ""
+"Wide character with code 0x%X encountered in place where only eight-bit "
+"characters allowed"
+msgstr ""
+"Многобайтовый символ с кодом 0x%X обнаружен там где допустимы только "
+"восьмибитовые символы."
+
+msgid "Wolof"
+msgstr ""
+
+msgid "Xhosa"
+msgstr ""
+
+msgid "Yao"
+msgstr ""
+
+msgid "Yiddish"
+msgstr ""
+
+msgid "Yoruba"
+msgstr ""
+
+msgid "Zhuang"
+msgstr ""
+
+msgid "Zulu"
+msgstr ""
+
+msgid "false"
+msgstr "Нет"
+
+msgid "true"
+msgstr "Да"
+
+#~ msgid "Could not convert integer to string"
+#~ msgstr "Невозможно преобразовать целое в строку"
+
+#~ msgid "Could not convert unsigned integer to string"
+#~ msgstr "Невозможно преобразовать беззнаковое целое в строку"
+
+#~ msgid "Could not convert 64 bit integer to string"
+#~ msgstr "Невозможно преобразовать 64 bit integer в строку "
+
+#~ msgid "Could not convert unsigned 64 bit integer to string"
+#~ msgstr "Невозможно преобразовать беззнаковое 64-битное целое в строку"
+
+#~ msgid "Cannot call method %s.%s of type %s without an object."
+#~ msgstr "Невозможно выполнить метод %s.%s типа %s без экземпляра объекта. "
+
+#~ msgid "Cannot create worker thread"
+#~ msgstr "Невозможно создать поток"
+
+#~ msgid "Cannot find file|directory"
+#~ msgstr "Невозможно найти файл|директорию"
+
+#~ msgid "Cannot find path"
+#~ msgstr "Невозможно найти путь"
+
+#~ msgid "Cannot get property without an object."
+#~ msgstr "Невозможно прочесть свойство без экземпляра объекта."
+
+#~ msgid "Cannot launch worker thread"
+#~ msgstr "Невозможно запустить поток"
+
+#~ msgid "Cannot set property without an object."
+#~ msgstr "Невозможно записать свойство без экземпляра объекта."
+
+#~ msgid "Child page index %d is out of [0, %d[ range."
+#~ msgstr "Индекс %d дочерней страницы выпадает из диапазона [0, %d[."
+
+#~ msgid "Class \"%s\" is not registered."
+#~ msgstr "Класс '%s' не зарегистрирован."
+
+#~ msgid "Class method %s, taking %d parameters, is not found in class %s"
+#~ msgstr "Метод класса %s, принимающий %d параметров, не найден в классе %s."
+
+#~ msgid "Contents:"
+#~ msgstr "Содержание:"
+
+#~ msgid "Could not convert %d to a byte"
+#~ msgstr "Невозможно преобразовать %d в byte"
+
+#~ msgid "Could not convert '%s' to a byte"
+#~ msgstr "Невозможно преобразовать '%s' в byte"
+
+#~ msgid "Could not convert '%s' to a single character"
+#~ msgstr "Невозможно преобразовать '%s' в char"
+
+#~ msgid "Could not convert binary buffer %d bytes long to a byte"
+#~ msgstr "Невозможно преобразовать буфер длиной %d байт в byte"
+
+#~ msgid "Could not convert binary buffer %d bytes long to a single character"
+#~ msgstr "Невозможно преобразовать буфер длиной %d байт в single character"
+
+#~ msgid "Data:"
+#~ msgstr "Данные:"
+
+#~ msgid "Device %d is not a hub."
+#~ msgstr "Устройство %d не пульт."
+
+#~ msgid "Device type %d is not an appliance."
+#~ msgstr "Устройство %d не является измерительной головкой."
+
+#~ msgid "Disk Error"
+#~ msgstr "Дисковоя ошибка"
+
+#~ msgid "Disk drive is not ready|no media in drive"
+#~ msgstr "Диск не готов|носитель отсутствует"
+
+#~ msgid "Disk is write protected"
+#~ msgstr "Диск защищен от записи"
+
+#~ msgid "Empty enum restriction definition is not allowed."
+#~ msgstr "Пустое определение перечесляемого типа не допускается."
+
+#~ msgid "Empty string"
+#~ msgstr "Пустая строка"
+
+#~ msgid "Error"
+#~ msgstr "Ошибка"
+
+#~ msgid ""
+#~ "Error composing DATETIME from:\n"
+#~ "year: %d, month: %d, day: %d,\n"
+#~ "hour: %d, minute: %d, second: %d, millisecond: %d"
+#~ msgstr ""
+#~ "Ошибка инициализации DATETIME из компонентов:\n"
+#~ "год: %d, месяц: %d, день: %d,\n"
+#~ "час: %d, минута: %d, секунда: %d, миллисекунда: %d"
+
+#~ msgid "File operation timed-out"
+#~ msgstr "Таймаут файловой операции"
+
+#~ msgid "File system object is invalid"
+#~ msgstr "Неправильный объект файловой системы "
+
+#~ msgid "File|path name is invalid"
+#~ msgstr "Неправильный путь|имя файла"
+
+#~ msgid "Header:"
+#~ msgstr "Заголовок:"
+
+#~ msgid "Help for plugin '%s'"
+#~ msgstr "Справка для модуля '%s'"
+
+#~ msgid "Internal Error"
+#~ msgstr "Внутренняя ошибка"
+
+#~ msgid "Invalid data file page offset specified: %d"
+#~ msgstr "Указано неверное смещение страницы данных: %d"
+
+#~ msgid "Invalid enumeration %s item index %d."
+#~ msgstr "Для перечисляемого типа %s указан неверный индекс члена %d. "
+
+#~ msgid "Invalid method signature value: %d."
+#~ msgstr "Неверное значение сигнатуры метода: %d"
+
+#~ msgid "Invalid registered plugin index: %d."
+#~ msgstr "Неверный индекс подкл. модуля: %d."
+
+#~ msgid "Main header page index %d out of [0, %d[ range."
+#~ msgstr "Индекс главной страницы %d должен быть в диапазоне [0, %d[."
+
+#~ msgid "Make file system call failed"
+#~ msgstr "Вызов форматирования файловой системы не выполнен."
+
+#~ msgid "Method %s, taking %d parameters, is not found in class %s"
+#~ msgstr "Метод %s, принимающий %d параметров, не найден в классе %s"
+
+#~ msgid "Method %s.%s of type %s does not expect parameters."
+#~ msgstr "Метод %s.%s типа %s не принимает входных параметров."
+
+#~ msgid "No Error"
+#~ msgstr "Нет ошибок."
+
+#~ msgid "No file system is found"
+#~ msgstr "Файловая система не обнаружена."
+
+#~ msgid "No schema entry is registered for hub %d."
+#~ msgstr "Функциональная схема не зарегистрирована для пульта %d."
+
+#~ msgid "Object already exists"
+#~ msgstr "Объект уже существует."
+
+#~ msgid "Page index %d out of [0, %d[ range."
+#~ msgstr "Индекс страницы %d должен быть в диапазоне [0, %d[."
+
+#~ msgid "Parameter list expected in call to %s.%s of type %s."
+#~ msgstr "Вызов метода %s.%s, типа %s, ожидает список входных параметров."
+
+#~ msgid "Plugin '%s' activated"
+#~ msgstr "Модуль '%s' активирован"
+
+#~ msgid "Plugin '%s' de-activated"
+#~ msgstr "Модуль '%s' деактивирован"
+
+#~ msgid "Property %s.%s does not have default value."
+#~ msgstr "Свойство %s.%s не имеет значения по-умолчанию."
+
+#~ msgid "Restriction value may not be NULL for non-empty restriction type"
+#~ msgstr ""
+#~ "Значение ограничения не может быть пустым для не-пустого типа ограничения."
+
+#~ msgid "Restriction value may not be non-NULL for empty restriction type"
+#~ msgstr ""
+#~ "Значение ограничения не может быть не-пустым для пустого типа ограничения"
+
+#~ msgid "Select '%s' language"
+#~ msgstr "Выберите язык '%s'"
+
+#~ msgid "Session %d:"
+#~ msgstr "Сессия %d:"
+
+#~ msgid "The drive number is invalid"
+#~ msgstr "Неверный номер дискового устройства"
+
+#~ msgid ""
+#~ "The file or directory has read-only attribute, or the directory is not "
+#~ "empty"
+#~ msgstr ""
+#~ "Файл или папка доступны только для чтения, или папка не является пустой"
+
+#~ msgid "The logical drive has no work area"
+#~ msgstr "Логический диск не содержит рабочей области"
+
+#~ msgid "The method %s.%s of type %s is class method."
+#~ msgstr "Метод %s.%s типа %s является методом класса."
+
+#~ msgid ""
+#~ "The method %s.%s of type %s is not a class method and cannot be called "
+#~ "without an object."
+#~ msgstr ""
+#~ "Метод %s.%s типа %s не является методом класса, и не может быть вызван "
+#~ "без экземпляра объекта."
+
+#~ msgid "There is no \"%s\" property in class \"%s\"."
+#~ msgstr "Свойства \"%s\" у объекта \"%s\" нет."
+
+#~ msgid "Unique identifier"
+#~ msgstr "Уникальный идентификатор"
+
+#~ msgid "Unknown class method signature: %d."
+#~ msgstr "Неизвестная сигнатура %d метода класса."
+
+#~ msgid "Unknown configuration property '%s'"
+#~ msgstr "Неизвестный конфигурационный параметр'%s'"
+
+#~ msgid "Unknown device."
+#~ msgstr "Неизвестное устройство."
+
+#~ msgid "Unknown device: %d."
+#~ msgstr "Неизвестное устройство: %d."
+
+#~ msgid "Unknown file system result value: %d"
+#~ msgstr "Неизвестный результат файловой операции: %d"
+
+#~ msgid "Unknown method signature: %d."
+#~ msgstr "Неизвестная сигнатура метода: %d. "
+
+#~ msgid "Unknown plugin ID: %d."
+#~ msgstr "Неизвестный идентификатор подкл. модуля: %d."
+
+#~ msgid "Unknown signature %d"
+#~ msgstr "Неизвестная сигнатура %d."
+
+#~ msgid "User Interface Language Changed"
+#~ msgstr "Язык пользовательского интерфейса изменен"
+
+#~ msgid ""
+#~ "User Interface Language is changed. It will not take place until after "
+#~ "application is restarted."
+#~ msgstr ""
+#~ "Язык пользовательского интерфейса изменен. Изменения вступят в силу "
+#~ "только после перезагрузки приложения."
+
+#~ msgid "Validation error"
+#~ msgstr "Ошибка проверки"
+
+#~ msgid ""
+#~ "Validation failed for %s\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Проверка не прошла для %s\n"
+#~ "%s"
+
+#~ msgid "Validator is not associated with control"
+#~ msgstr "Проверяющий объект не ассоциирован с элементом"
+
+#~ msgid "Value %s is not a member of enumeration %s."
+#~ msgstr "Значение %s не является членом перечисляемого типа %s."
+
+#~ msgid "Value must be greater than or equal to %f"
+#~ msgstr "Значение должно быть больше или равно %f"
+
+#~ msgid "Value must be in range [%f, %f]"
+#~ msgstr "Значение должно лежать в диапазоне [%f, %f]"
+
+#~ msgid "Value must be less than or equal to %f"
+#~ msgstr "Значение должно быть меньше или равно %f"
+
+#~ msgid "Value name may not be the empty string."
+#~ msgstr "Имя значения не может быть пустой строкой."
+
+#~ msgid "Value of %s must be greater than %s"
+#~ msgstr "Значение %s должно быть больше, чем %s"
+
+#~ msgid "Value of %s must be greater than or equal to %s"
+#~ msgstr "Значение %s должно быть больше, или равно %s"
+
+#~ msgid "Value of %s must be less than %s"
+#~ msgstr "Значение %s должно быть меньше, чем %s"
+
+#~ msgid "Value of %s must be less than or equal to %s"
+#~ msgstr "Значение %s должно быть меньше, или равно %s"
+
+#~ msgid ""
+#~ "Value of %s must be one of:\n"
+#~ "\t%s"
+#~ msgstr ""
+#~ "Значение %s должно быть одним из:\n"
+#~ "\t%s"
+
+#~ msgid "Value of %s must fall in [%s,%s[ range"
+#~ msgstr "Значение %s должно лежать в диапазоне [%s, %s["
+
+#~ msgid "Value of %s must fall in [%s,%s] range"
+#~ msgstr "Значение %s должно лежать в диапазоне [%s, %s]"
+
+#~ msgid "Value of %s must fall in ]%s,%s[ range"
+#~ msgstr "Значение %s должно лежать в диапазоне ]%s, %s["
+
+#~ msgid "Value of %s must fall in ]%s,%s] range"
+#~ msgstr "Значение %s должно лежать в диапазоне ]%s, %s]"
+
+#~ msgid "Value with name '%s' already exists."
+#~ msgstr "Значение с именем '%s' уже существует."
+
+#~ msgid "Value with name '%s' does not exist."
+#~ msgstr "Значение с именем '%s' не существует."
+
+#~ msgid "Wrong configuration name. Expected '%s', got '%s'"
+#~ msgstr "Неверное имя конфигурации. Вместо '%s' выставлено '%s'"
+
+#~ msgid ""
+#~ "Wrong element count in range restriction definition. Expected 2, "
+#~ "encountered %d."
+#~ msgstr ""
+#~ "Неверное число элементов в определении ограничения по диапазону. "
+#~ "Ожидалось 2, найдено %d."
+
+#~ msgid ""
+#~ "Wrong parameters count in call to %s.%s of type %s. Expected %d, got %d."
+#~ msgstr ""
+#~ "Неверное число параметров в вызове %s.%s типа %s. Ожидалось %d, получено "
+#~ "%d."
+
+#~ msgid "Wrong range restriction. Min value may not be greater than Max one."
+#~ msgstr ""
+#~ "Неверное ограничение по диапазону. Минимум не может быть больше максимума."
+
+#~ msgid "Wrong restriction type. Array type is expected."
+#~ msgstr "Неверный тип ограничения. Ожидается ограничение типа \"массив\"."
+
+#~ msgid "XML document is malformed."
+#~ msgstr "Документ XML неверно сформирован."
+
+#~ msgid "getAllLabels service is only valid for enumeration properties"
+#~ msgstr "getAllLabels метод доступен только для свойств перечисляемого типа."
+
+#~ msgid "getEnumItem service is only valid for enumeration properties"
+#~ msgstr "getEnumItems метод доступен только для свойств перечисляемого типа."
+
+#~ msgid "getValueLabel service is only valid for enumeration properties"
+#~ msgstr ""
+#~ "getValueLabel метод доступен только для свойств перечисляемого типа."

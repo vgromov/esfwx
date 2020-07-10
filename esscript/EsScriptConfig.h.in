@@ -1,0 +1,28 @@
+#ifndef _es_script_config_h_
+#define _es_script_config_h_
+
+/// Use script compiler functionality
+/// if 0 or not defined, compiler and scriptlet components will not be
+/// included in target buid. but, there still will be ability to load
+/// and execute pre-compiled script binaries
+///
+#cmakedefine ES_USE_COMPILER_IMPLEMENTATION 1
+
+// Debug trace definitions
+#cmakedefine ESSCRIPT_COMPILER_USE_TRACE
+
+#cmakedefine ESSCRIPT_MACHINE_USE_TRACE
+#cmakedefine ESSCRIPT_INSTRUCTION_USE_TRACE
+#cmakedefine ESSCRIPT_MACHINE_USE_DATA_TRACE
+#cmakedefine ESSCRIPT_MACHINE_USE_CALL_TRACE
+
+#cmakedefine ESSCRIPT_CONTEXT_DOCALL_TRACE
+#cmakedefine ESSCRIPT_CODESECTION_USE_TRACE
+#cmakedefine ESSCRIPT_DATA_STACK_USE_TRACE
+#cmakedefine ESSCRIPT_OBJECT_USE_TRACE
+#cmakedefine ESSCRIPT_OBJECT_BUFFER_USE_TRACE
+#cmakedefine ESSCRIPT_VALACCESS_USE_TRACE
+#cmakedefine ESSCRIPT_COMPILED_USE_TRACE
+#cmakedefine ESSCRIPT_USE_DEBUG_LOG_TRACE
+
+#endif // _es_script_config_h_

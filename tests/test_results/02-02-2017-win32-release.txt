@@ -1,0 +1,182 @@
+Win32 release
+[==========] Running 41 tests from 23 test cases.
+[----------] Global test environment set-up.
+[----------] 1 test from EsOsInfoTest
+[ RUN      ] EsOsInfoTest.Test
+[          ] Os info: 'Windows 6.2.9200'
+[          ] Os name: 'Windows'
+[          ] Os SP name: ''
+[          ] Os architecture: '2'
+[          ] Os platform: '1'
+[          ] Os build: '23F0'
+[          ] Os version: '6.2'
+[          ] Os SP version: '0.0'
+[       OK ] EsOsInfoTest.Test (0 ms)
+[----------] 1 test from EsOsInfoTest (0 ms total)
+
+[----------] 4 tests from EsRegExTest
+[ RUN      ] EsRegExTest.MatchI18N
+[       OK ] EsRegExTest.MatchI18N (0 ms)
+[ RUN      ] EsRegExTest.StrFormat
+[       OK ] EsRegExTest.StrFormat (0 ms)
+[ RUN      ] EsRegExTest.Match
+[       OK ] EsRegExTest.Match (0 ms)
+[ RUN      ] EsRegExTest.Replace
+[       OK ] EsRegExTest.Replace (0 ms)
+[----------] 4 tests from EsRegExTest (0 ms total)
+
+[----------] 2 tests from BasicTypesTest
+[ RUN      ] BasicTypesTest.testINT64
+[       OK ] BasicTypesTest.testINT64 (0 ms)
+[ RUN      ] BasicTypesTest.EsStringHash
+[       OK ] BasicTypesTest.EsStringHash (0 ms)
+[----------] 2 tests from BasicTypesTest (0 ms total)
+
+[----------] 4 tests from EsUtilitiesTest
+[ RUN      ] EsUtilitiesTest.ByteInversion
+[       OK ] EsUtilitiesTest.ByteInversion (0 ms)
+[ RUN      ] EsUtilitiesTest.Zip
+[       OK ] EsUtilitiesTest.Zip (0 ms)
+[ RUN      ] EsUtilitiesTest.Des
+[       OK ] EsUtilitiesTest.Des (0 ms)
+[ RUN      ] EsUtilitiesTest.Codec
+[       OK ] EsUtilitiesTest.Codec (0 ms)
+[----------] 4 tests from EsUtilitiesTest (0 ms total)
+
+[----------] 1 test from EsReflectionTest
+[ RUN      ] EsReflectionTest.Basics
+[       OK ] EsReflectionTest.Basics (0 ms)
+[----------] 1 test from EsReflectionTest (1 ms total)
+
+[----------] 3 tests from EsDateTimeTest
+[ RUN      ] EsDateTimeTest.Now
+[       OK ] EsDateTimeTest.Now (0 ms)
+[ RUN      ] EsDateTimeTest.DiffSum
+[       OK ] EsDateTimeTest.DiffSum (0 ms)
+[ RUN      ] EsDateTimeTest.StringFormat
+[       OK ] EsDateTimeTest.StringFormat (0 ms)
+[----------] 3 tests from EsDateTimeTest (1 ms total)
+
+[----------] 2 tests from EsStringTest
+[ RUN      ] EsStringTest.Basics
+[       OK ] EsStringTest.Basics (0 ms)
+[ RUN      ] EsStringTest.Encoding
+[       OK ] EsStringTest.Encoding (0 ms)
+[----------] 2 tests from EsStringTest (0 ms total)
+
+[----------] 1 test from EsTokenizerTest
+[ RUN      ] EsTokenizerTest.All
+[       OK ] EsTokenizerTest.All (0 ms)
+[----------] 1 test from EsTokenizerTest (0 ms total)
+
+[----------] 1 test from EsDesTest
+[ RUN      ] EsDesTest.Basics
+[       OK ] EsDesTest.Basics (4275 ms)
+[----------] 1 test from EsDesTest (4275 ms total)
+
+[----------] 1 test from EsPathTest
+[ RUN      ] EsPathTest.Basics
+D:\Users\Vsevolod\Documents\Projects\esfwx-1.21\tests/testEsFile.cc:52: Failure
+Value of: p2.fileExists()
+  Actual: false
+Expected: true
+[  FAILED  ] EsPathTest.Basics (16 ms)
+[----------] 1 test from EsPathTest (16 ms total)
+
+[----------] 1 test from EsPathEnumeratorTest
+[ RUN      ] EsPathEnumeratorTest.Basics
+[       OK ] EsPathEnumeratorTest.Basics (0 ms)
+[----------] 1 test from EsPathEnumeratorTest (0 ms total)
+
+[----------] 1 test from EsFileTest
+[ RUN      ] EsFileTest.Basics
+[       OK ] EsFileTest.Basics (0 ms)
+[----------] 1 test from EsFileTest (0 ms total)
+
+[----------] 1 test from EsStreamXmlTest0
+[ RUN      ] EsStreamXmlTest0.ContextsWrite
+[       OK ] EsStreamXmlTest0.ContextsWrite (15 ms)
+[----------] 1 test from EsStreamXmlTest0 (15 ms total)
+
+[----------] 1 test from EsStreamXmlTest1
+[ RUN      ] EsStreamXmlTest1.ContextsRead
+[       OK ] EsStreamXmlTest1.ContextsRead (0 ms)
+[----------] 1 test from EsStreamXmlTest1 (0 ms total)
+
+[----------] 2 tests from EsStreamXmlTest2
+[ RUN      ] EsStreamXmlTest2.ReSaveStream
+[       OK ] EsStreamXmlTest2.ReSaveStream (116 ms)
+[ RUN      ] EsStreamXmlTest2.ObjectCreateFromStream
+[       OK ] EsStreamXmlTest2.ObjectCreateFromStream (153 ms)
+[----------] 2 tests from EsStreamXmlTest2 (269 ms total)
+
+[----------] 1 test from EsStreamXmlTest3
+[ RUN      ] EsStreamXmlTest3.ObjectWriteToStream
+[       OK ] EsStreamXmlTest3.ObjectWriteToStream (179 ms)
+[----------] 1 test from EsStreamXmlTest3 (179 ms total)
+
+[----------] 1 test from EsStreamBinaryTest0
+[ RUN      ] EsStreamBinaryTest0.BinaryStreamObjectWrite
+[          ] 0 ms[       OK ] EsStreamBinaryTest0.BinaryStreamObjectWrite (168 ms)
+[----------] 1 test from EsStreamBinaryTest0 (168 ms total)
+
+[----------] 1 test from EsStreamBinaryTest1
+[ RUN      ] EsStreamBinaryTest1.BinaryStreamObjectRead
+[          ] 53 ms[       OK ] EsStreamBinaryTest1.BinaryStreamObjectRead (138 ms)
+[----------] 1 test from EsStreamBinaryTest1 (138 ms total)
+
+[----------] 1 test from EsStreamBinaryTest2
+[ RUN      ] EsStreamBinaryTest2.Stream2StreamCopy
+[          ] 0 ms[       OK ] EsStreamBinaryTest2.Stream2StreamCopy (31 ms)
+[----------] 1 test from EsStreamBinaryTest2 (31 ms total)
+
+[----------] 2 tests from EsSyncObjectTest
+[ RUN      ] EsSyncObjectTest.Basics
+[       OK ] EsSyncObjectTest.Basics (0 ms)
+[ RUN      ] EsSyncObjectTest.Semaphore
+[       OK ] EsSyncObjectTest.Semaphore (0 ms)
+[----------] 2 tests from EsSyncObjectTest (0 ms total)
+
+[----------] 2 tests from EsThreadTest
+[ RUN      ] EsThreadTest.Basics
+[       OK ] EsThreadTest.Basics (516 ms)
+[ RUN      ] EsThreadTest.EventDispatch
+[       OK ] EsThreadTest.EventDispatch (1769 ms)
+[----------] 2 tests from EsThreadTest (2285 ms total)
+
+[----------] 5 tests from EsScriptProfileTest
+[ RUN      ] EsScriptProfileTest.BasicsForLoop
+[       OK ] EsScriptProfileTest.BasicsForLoop (85 ms)
+[ RUN      ] EsScriptProfileTest.BasicsForLoopFillBuff
+[       OK ] EsScriptProfileTest.BasicsForLoopFillBuff (10015 ms)
+[ RUN      ] EsScriptProfileTest.BasicsForLoopFillBuffWithPreAlloc
+[       OK ] EsScriptProfileTest.BasicsForLoopFillBuffWithPreAlloc (154 ms)
+[ RUN      ] EsScriptProfileTest.ForLoopReflectedStaticCallRetNoParams
+[       OK ] EsScriptProfileTest.ForLoopReflectedStaticCallRetNoParams (95 ms)
+[ RUN      ] EsScriptProfileTest.ForLoopReflectedStaticCallRet4params
+[       OK ] EsScriptProfileTest.ForLoopReflectedStaticCallRet4params (157 ms)
+[----------] 5 tests from EsScriptProfileTest (10507 ms total)
+
+[----------] 2 tests from EsSocketTest
+[ RUN      ] EsSocketTest.IANA_Registry
+[       OK ] EsSocketTest.IANA_Registry (0 ms)
+[ RUN      ] EsSocketTest.AddressIpV4
+D:\Users\Vsevolod\Documents\Projects\esfwx-1.21\tests/testEsSocket.cc:35: Failure
+Value of: addr == esT("localhost")
+  Actual: false
+Expected: true
+D:\Users\Vsevolod\Documents\Projects\esfwx-1.21\tests/testEsSocket.cc:58: Failure
+Value of: addr == name1
+  Actual: false
+Expected: true
+[  FAILED  ] EsSocketTest.AddressIpV4 (9 ms)
+[----------] 2 tests from EsSocketTest (9 ms total)
+
+[----------] Global test environment tear-down
+[==========] 41 tests from 23 test cases ran. (17930 ms total)
+[  PASSED  ] 39 tests.
+[  FAILED  ] 2 tests, listed below:
+[  FAILED  ] EsPathTest.Basics
+[  FAILED  ] EsSocketTest.AddressIpV4
+
+ 2 FAILED TESTS
