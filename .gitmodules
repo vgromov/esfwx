@@ -1,0 +1,8 @@
+[submodule "escmake"]
+	path = escmake
+	url = https://github.com/vgromov/escmake
+	branch = 1.0
+[submodule "external/esfwxe"]
+	path = external/esfwxe
+	url = https://github.com/vgromov/esfwxe
+	branch = 2.3
