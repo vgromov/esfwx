@@ -268,7 +268,24 @@ if(WIN32)
   set(ESCORE_EXTRA_LIBRARIES version winmm rpcrt4)
 else(WIN32)
   set(ESCORE_EXTRA_LIBRARIES dl pthread)
+  if(APPLE)
+    find_library(CORE_FOUNDATION CoreFoundation)
+    if(NOT CORE_FOUNDATION)
+      message(FATAL_ERROR "CoreFoundation not found")
+    endif()
+
+    find_library(IO_KIT IOKit)
+    if(NOT IO_KIT)
+      message(FATAL_ERROR "IOKit not found")
+    endif()
+    list(APPEND
+      ESCORE_EXTRA_LIBRARIES
+      ${CORE_FOUNDATION}
+      ${IO_KIT}
+    )
+  endif(APPLE)
 endif(WIN32)
+
 target_link_libraries( 
   ${ESCORE_LIB_TARGET} 
   ${ESCORE_EXTRA_LIBRARIES}

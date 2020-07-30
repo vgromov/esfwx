@@ -889,8 +889,7 @@ EsString EsString::formatV(const std::locale& loc, const EsString& fmt, const Es
         flags |= std::ios::scientific;
       else if( typeIsFixedFloat(type) )
         flags |= std::ios::fixed;
-#ifndef __GLIBCXX__
-      // hexfloat is currently not supported in gnu libstdc++ used in Android
+#if defined(ES_STL_HAS_HEXFLOAT)
       else if( typeIsHexFloat(type) )
         flags |= std::ios::hexfloat;
 #endif
@@ -1255,7 +1254,8 @@ EsString EsString::format(const std::locale& loc, const EsString& fmt, const EsV
 static inline void checkCharRange(int c)
 {
   if ( c < std::numeric_limits<char>::min() || c > std::numeric_limits<unsigned char>::max() ) // Check -127 .. 255
-    EsException::Throw(
+
+    EsException::Throw(
       _("Wide character with code 0x%X encountered in place where only eight-bit characters allowed"),
       static_cast<unsigned>(c)
     );
