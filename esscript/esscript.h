@@ -25,7 +25,7 @@
 #endif
 
 // Core export-import defines
-#ifdef ES_USE_DLLS
+#ifdef ES_DYNAMIC_LINKAGE
 #  ifdef ESSCRIPT_EXPORTS
 #    define ESSCRIPT_CLASS              ES_EXPORT_SPEC
 #    define ESSCRIPT_FUNC(type, decl)   ES_FUNCEXPORT_SPEC(type, decl)

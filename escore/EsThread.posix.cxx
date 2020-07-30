@@ -86,7 +86,7 @@ ES_COMPILE_TIME_ASSERT(sizeof(pthread_t) == sizeof(EsThreadId), _check_pthread_t
 
 EsThreadId EsThread::pthreadIdGet(const pthread_t& thread) ES_NOTHROW
 {
-  return static_cast<EsThreadId>(thread);
+  return reinterpret_cast<EsThreadId>(thread);
 }
 //---------------------------------------------------------------------------
 

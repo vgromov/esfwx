@@ -1,6 +1,5 @@
 //---------------------------------------------------------------------------
 #include <IOKit/IOKitKeys.h>
-#include <IOKit/IOKitLib.h>
 #include <sys/sysctl.h>
 
 class EsMacOsInfo
@@ -58,7 +57,7 @@ private:
 
     m_str = EsString::format(
       esT("%s %u.%u.%u"),
-      m_name.c_str(),
+      m_name,
       m_major,
       m_minor,
       m_spMajor
@@ -114,13 +113,13 @@ const EsString& EsOsInfo::spNameGet()
 
 ulong EsOsInfo::architectureGet()
 {
-  return EsMacOsInfo::inst().m_arch;
+  return static_cast<ulong>(EsMacOsInfo::inst().m_arch);
 }
 //---------------------------------------------------------------------------
 
 ulong EsOsInfo::platformGet()
 {
-  return EsMacOsInfo::inst().m_platform;
+  return static_cast<ulong>(EsMacOsInfo::inst().m_platform);
 }
 //---------------------------------------------------------------------------
 

@@ -43,8 +43,11 @@
 #if defined(__WINDOWS__) || defined(__WIN32__) || _WIN32 || _WIN64
 #  define ES_OS                         ES_OS_WINDOWS
 #elif defined(__APPLE__)
-# include "TargetConditionals.h"
-# if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+# include <TargetConditionals.h>
+# include <IOKit/IOKitLib.h>
+# include <IOKit/IOTypes.h>
+# if (defined(TARGET_OS_IPHONE) && 1 == TARGET_OS_IPHONE) || \
+     (defined(TARGET_IPHONE_SIMULATOR) && 1 == TARGET_IPHONE_SIMULATOR)
 #   define ES_OS                        ES_OS_IOS
 #   define ES_IS_MOBILE_OS
 # else

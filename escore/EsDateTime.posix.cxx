@@ -1,7 +1,7 @@
 // This file must not be included in project directly
 // It's implicitly included in EsDateTime.cpp
 //
-#if (ES_OS_LINUX == ES_OS) || (ES_OS_UNIX == ES_OS)
+#if (ES_OS_LINUX == ES_OS) || (ES_OS_UNIX == ES_OS) || (ES_OS_MAC == ES_OS)
 # include <sys/time.h>
 #endif
 

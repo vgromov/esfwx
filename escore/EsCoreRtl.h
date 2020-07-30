@@ -91,7 +91,8 @@ ESCORE_FUNC( void, EsExceptionThrow(const EsString& fmt, const EsVariant& arg0, 
 ESCORE_FUNC( void, EsExceptionThrow(const EsString& fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5, const EsVariant& arg6, const EsVariant& arg7) );
 ESCORE_FUNC( void, EsExceptionThrow(const EsString& fmt, const EsVariant& arg0, const EsVariant& arg1, const EsVariant& arg2, const EsVariant& arg3, const EsVariant& arg4, const EsVariant& arg5, const EsVariant& arg6, const EsVariant& arg7, const EsVariant& arg8) );
 
-#if ES_COMPILER_VENDOR_BORLAND == ES_COMPILER_VENDOR
+#if ES_COMPILER_VENDOR_BORLAND == ESCOMPILER_VENDOR || \
+    defined(ES_CLANG)
 /// Compatibility interface. Reason:
 /// Some versions of Borland and ECC compilers are unable to derive EsString ctor from esT macro type
 ///

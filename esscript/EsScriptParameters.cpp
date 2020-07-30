@@ -1,3 +1,5 @@
+#include "esscriptpch.h"
+#pragma hdrstop
 
 #include "EsScriptParameters.h"
 //--------------------------------------------------------------------------------

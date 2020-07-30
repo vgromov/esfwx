@@ -445,7 +445,8 @@ void EsExceptionThrow(const EsString& fmt, const EsVariant& arg0, const EsVarian
 }
 //---------------------------------------------------------------------------
 
-#if ES_COMPILER_VENDOR_BORLAND == ES_COMPILER_VENDOR
+#if ES_COMPILER_VENDOR_BORLAND == ESCOMPILER_VENDOR || \
+    defined(ES_CLANG)
 void EsExceptionThrow(ES_CTSTR error)
 {
   EsExceptionThrow(
@@ -562,3 +563,11 @@ void EsExceptionThrow(ES_CTSTR fmt, const EsVariant& arg0, const EsVariant& arg1
 }
 #endif
 
+#if (ES_OS_WINDOWS != ES_OS) && !defined(__ANDROID__)
+const EsGUID& EsGUID::null() ES_NOTHROW
+{
+  static const EsGUID sc_null = {0};
+  
+  return sc_null;
+}
+#endif

@@ -431,7 +431,6 @@ ESCORE_FUNC( EsString, sysctlStrGet(int subjId, int dataId) );
 ///
 # if ES_OS == ES_OS_MAC || \
      ES_OS == ES_OS_IOS
-
 /// Try to find registry key in svc object. Return empty variant if nothing was found
 /// otherwise, return either integer or string value, depending on key type
 ///

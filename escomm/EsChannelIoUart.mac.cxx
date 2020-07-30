@@ -143,9 +143,9 @@ void EsUartEnumerator::enumerate(bool busyPortsInclude /*= true*/)
           if( !prodstr.empty() && !vendorstr.empty() )
             info->m_strFriendlyName = EsString::format(
               esT("%s %s (%s)"),
-              prodstr.c_str(),
-              vendorstr.c_str(),
-              info->m_strName.c_str()
+              prodstr,
+              vendorstr,
+              info->m_strName
             );
         }
       }

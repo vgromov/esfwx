@@ -7,14 +7,14 @@
 // product version
 #define FRAMEWORK_VER_MAJOR                 1
 #define FRAMEWORK_VER_MINOR                 25
-#define FRAMEWORK_BUILD_NUM                 0
+#define FRAMEWORK_BUILD_NUM                 1
       
 #define FRAMEWORK_VENDOR_SHORT              esT("ECO-E")
 #define FRAMEWORK_VENDOR                    esT("ECO-Electronics")
 #define FRAMEWORK                           esT("ECO-E Framework")
 #define FRAMEWORK_COPYRIGHT                 esT("Copyright 2009-2019")
       
-#define FRAMEWORK_VERSION_STRING            esT("1.25.0")
+#define FRAMEWORK_VERSION_STRING            esT("1.25.1")
 
 #if defined(_DEBUG) || defined(DEBUG)
 #  define FRAMEWORK_VERSION_STRING_SHORT    FRAMEWORK esT(" ") FRAMEWORK_VERSION_STRING esT(" DEBUG")
